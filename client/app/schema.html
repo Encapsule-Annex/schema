@@ -1,50 +1,36 @@
 <!DOCTYPE html>
-<!-- 
-     MinKoSam.html
-     Minimal HTML5 application demonstrating the use of Sammy.js
-     with Knockout.js in Coffescript.
+<html>
+  <!--
 
-     Copyright 2013 Chris Russell (chrisrus@encapsule.org)
-     Published under the Boost Software Licene v1.0
-     http://www.boost.org/LICENSE_1_0.txt
+  http://schema.encapsule.org/schema.html
+
+  A single-page HTML5 application for creating, visualizing, and editing
+  JSON-encoded Soft Circuit Description Language (SCDL) models.
+
+  Copyright 2013 Encapsule Project, Copyright 2013 Chris Russell
+
+  Distributed under the terms of the Boost Software License Version 1.0
+  See included license.txt or http://www.boost.org/LICENSE_1_0.txt
+
+  Sources on GitHub: https://github.com/Encapsule-Project/schema
+
+  Visit http://www.encapsule.org for more information and happy hacking.
 
   -->
-<html>
   <head>
-    <title>MinKoSam.html</title>
+    <title>schema.encapsule.org</title>
+    <link rel="stylesheet" type="text/css" href="css/schema.css">
     <meta charset="UTF-8">
-    <!-- lib scripts -->
-    <script src="./js/libs/jquery-1.8.3.js" type="text/javascript"></script>
-    <script src="./js/libs/sammy.js" type="text/javascript"></script>
-    <script src="./js/libs/knockout-2.2.1.debug.js" type="text/javascript"></script>
-    <!-- app scripts -->
-    <!-- <script src="./js/minkosam-handcrafted.js" type="text/javascript"></script> -->
-    <script src="./js/minkosam.js" type="text/javascript"></script>
+    <!-- JS lib scripts -->
+    <script src="js/jquery-1.8.3.js" type="text/javascript"></script>
+    <script src="js/sammy.js" type="text/javascript"></script>
+    <script src="js/knockout-2.2.1.debug.js" type="text/javascript"></script>
+    <!-- JS app scripts -->
+    <script src="js/schema.js" type="text/javascript"></script>
   </head>
-  <body style="background-color: white;">
-    <h1>minKoSam.html</h1>
+  <body>
 
-    <p>
-     Minimal HTML5 application demonstrating the use of <a href="http://sammyjs.org/">Sammy.js</a>
-     with <a href="http://knockoutjs.com/index.html">Knockout.js</a> in <a href="http://coffeescript.org/">Coffescript</a>.
-    </p>
-
-
-<div style="background-color: #F0F0F0; border: 1px solid #CCCCCC; padding: 10px;">
-This is a DIV that contains a DIV whose inner text is bound to the Knockout view model observable samPath.
-      <div id="samPathDisplay" data-bind="text: samPath" style="background-color: #DDEEFF; border: 1px solid #CCCCCC;">
-	STATE #1: initial value set statically in the HTML document source
-      </div>
-</div>
-
-<p>
-[ <a href="./minkosam.html">./minkosam.html</a> ]
-[ <a href="#">#</a> ]
-[ <a href="#/">#/</a> ]
-[ <a href="#/hello">#/hello</a> ]
-</p>
-
-<p style="text-align: right">Copyright 2013 <a href="https://www.github.com/ChrisRus">ChrisRus</a><br><a href="http://www.boost.org/LICENSE_1_0.txt">Boost Software License v1.0</a></p>
-
+    <audio src="audio/electronics025.wav" autoplay></audio>
+  
   </body>
 </html>
