@@ -1,0 +1,20 @@
+    <--
+              _                          
+     ___  ___| |__   ___ _ __ ___   __ _ 
+    / __|/ __| '_ \ / _ \ '_ ` _ \ / _` |
+    \__ \ (__| | | |  __/ | | | | | (_| |
+    |___/\___|_| |_|\___|_| |_| |_|\__,_|
+    
+    schema.encapsule.org/schema.html
+
+    A single-page HTML5 application for creating, visualizing, and editing
+    JSON-encoded Soft Circuit Description Language (SCDL) models.
+
+    Copyright 2013 Encapsule Project
+    Author(s): Chris Russell https://github.com/ChrisRus
+    Distributed under the terms of the Boost Software License Version 1.0
+    Please visit http://www.boost.org/LICENSE_1_0.txt for details.
+
+    Encapsule Project http://www.encapsule.org
+
+    -->
