@@ -1,0 +1,44 @@
+# 
+# .htacces (typically ignored by Apache unless use is explicitly enabled)
+# 
+# This .htaccess is kept up-to-date in the repo for reference and for use
+# on development / non-performance critical deployments.
+
+#
+
+# Directory listing customization
+IndexIgnore .htaccess
+
+# Directory index customization
+DirectoryIndex app.html
+
+# Shut off access to directory listings
+# Options -Indexes
+
+# Directory security (securityModelNone)
+# the contents of this cell are public
+
+# ISP-specific configuration
+# htaccess customizations for standard deployment on Pair Networks
+
+# Run PHP scripts as user orbital2
+#Action application/x-pair-sphp /cgi-sys/php-cgiwrap/orbital2/php4.cgi
+#AddType application/x-pair-sphp .php .php3 .phtml .php4 .htm .html
+
+# Turn on the mod_rewrite URL re-writing engine
+#RewriteEngine On
+#RewriteBase /
+
+# Re-direct requests for non-existent php files to error 404 document
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule    ^[0-9a-zA-Z_/.-]+\.*$    /usr/www/users/orbital2/redirect.html
+
+# Error document
+#ErrorDocument 401 /redirect.html
+#ErrorDocument 403 /redirect.html
+#ErrorDocument 404 /redirect.html
+
+
+
+
+

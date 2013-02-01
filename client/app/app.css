@@ -1,0 +1,103 @@
+body
+{
+margin: 0px; padding: 0px;
+background-color: #333333; font-family: Arial; font-size: 10pt;
+}
+
+div { border: 1px solid #444444; margin: 5px; padding: 5px; }
+
+.classInvisibleDivContainer
+{ margin: 0px; padding: 0px; border: none;}
+
+.classLayerBoundingBox
+{
+position: absolute;
+top: 10px; left: 10px;
+width: 1280px;
+border: 0px solid #330033;
+margin: 0px; padding: 0px;
+}
+
+#idConsoleBar
+{
+z-index: 50;
+background-color: #99CCFF;
+}
+
+#idConsole
+{
+font-family: Courier; font-size: 8pt;
+}
+
+#idWindowButtonBar
+{
+z-index: 100;
+}
+
+#idWindowButtons
+{
+margin: 0px; padding: 5px;
+border: none;
+}
+
+#idMainRenderArea
+{
+z-index: 0;
+background-color: #FFFFF0;
+}
+
+/* Top-level "Logo Bar" */
+#idLogoBar
+{
+z-index: 1;
+background: #99CC66;
+}
+
+/* SVG schema.encapsule.org logo (float left) */
+#idLogoBarLogo
+{
+float: left;
+background-color: #77AA44;
+}
+
+/* Logo text styles */
+#idLogoBarLogoText
+{ font-family: Courier; font-size: 14pt; font-weight: bold; fill: #000066; }
+
+/* "App Status Bar" embedded in "Logo Bar" */
+#idLogoBarAppStatus
+{
+float: right;
+margin-left: 0px;
+margin-right: 70px;
+background-color: #FFFF99;
+color: black;
+border: none;
+}
+
+#idNavigatorBar
+{
+z-index: 50;
+background-color: #CCCCCC;
+}
+
+#idNavigator
+{
+background-color: #000033; color: #00CCFF; font-family: Courier; font-size: 10pt;
+}
+
+
+#idProfileBar
+{
+z-index: 1;
+background-color: #0066CC;
+width: 300px;
+top: 0px;
+}
+
+#idProfile
+{
+background-color: #77AA44;
+color: white;
+}
+
