@@ -9,8 +9,9 @@ echo -----------------------------------------------------------------
 
 current_dir=`cd`
 
-app_release_version=1.0
-app_release_name=nunki
+app_name=schema.encapsule.org
+app_release_version="<0"
+app_release_name=prerelease
 app_builder=$*
 x=`hostname`
 y=`whoami`
@@ -77,8 +78,13 @@ echo . >> $build_log
 echo $y $x $t by $app_builder >> $build_log
 echo . >> $build_log
 echo ---
-echo "var appReleaseVersion = \""$app_release_version"\"; var appReleaseName =\""$app_release_name"\";" > $build_id_js
-echo "var appBuildTime = \""$t"\"; var appBuilder =\""$app_builder"\";" >> $build_id_js
+echo "// encapsule-build.js (generated)" > $build_id_js
+echo "var appName = \""$app_name"\";" >> $build_id_js
+echo "var appReleaseVersion = \""$app_release_version"\";" >> $build_id_js
+echo "var appReleaseName = \""$app_release_name"\";" >> $build_id_js
+echo "var appBuildTime = \""$t"\";" >> $build_id_js
+echo "var appBuilder = \""$app_builder"\";" >> $build_id_js
+echo "var appBuilderHost = \"trickster\";" >> $build_id_js
 
 cd $schema_client_app
 echo =================================================================
