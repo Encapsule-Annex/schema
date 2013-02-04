@@ -99,9 +99,9 @@ drawLogo = (parentElement_, options_) ->
 
 
 
-class namespaceWidget.EncapsuleLogo
+class namespaceWidget.logo
 
     @optionsDefault: optionsDefault
     @optionsOutlineOnly: optionsOutlineOnly
-    @drawLogo: drawLogo
+    @draw: drawLogo
 
