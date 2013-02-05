@@ -7,8 +7,6 @@ clear
 echo Building schema.encapsule.org deployment package...
 echo -----------------------------------------------------------------
 
-current_dir=`cd`
-
 app_name=schema.encapsule.org
 app_release_version="<0"
 app_release_name=prerelease
@@ -21,7 +19,9 @@ t=`date -u`
 
 # level 0
 schema_repo=~/Code/schema
-cd $schema_repo ; pwd
+current_dir=`cd`
+cd $schema_repo
+pwd
 
 # level 1 : root/
 schema_client=$schema_repo/client
@@ -47,11 +47,15 @@ schema_deploy_client_html=$schema_deploy_client/public_html
 
 schema_deploy_client_html_css=$schema_deploy_client_html/css
 schema_deploy_client_html_js=$schema_deploy_client_html/js
+schema_deploy_client_html_img=$schema_deploy_client_html/img
+schema_deploy_client_html_audio=$schema_deploy_client_html/audio
+schema_deploy_client_html_scdl=$schema_deploy_client_html/scdl
 
 # Special files (e.g. build logs)
 
 build_log=$schema_deploy_client/build.log
 build_id_js=$schema_deploy_client_html_js/encapsule-build.js
+build_appcache_manifest=$schema_deploy_client_html/schema.appcache
 
 #### BUILD: CLEAN
 
@@ -93,13 +97,52 @@ echo Building application Coffeescript libraries:
 coffee -o $schema_deploy_client_html_js/ -c *.coffee
 echo === ^--- COFFEESCRIPT: EXPECT NO ERRORS =========================
 echo =================================================================
-echo Generated JS resources: `ls $client_output_js`
+echo Deployed Javascripts:
+ls -lRat $schema_deploy_client
 
 echo Build complete. Generated output listing: >> $build_log
 echo . >> $build_log
 
 ls -lRat $schema_deploy_client >> $build_log
 echo --- >> $build_log
+
+cd $schema_deploy_client_html
+appCache=`find *.html css/*.css js/*.js audio/*.wav scdl/*.json -type f`
+echo APP CACHE:
+echo $appCache
+echo .
+echo $appCache | sort -k3,3
+
+echo CACHE MANIFEST > $build_appcache_manifest
+echo "# "$app_name "v"$app_release_version "("$app_release_name")" >> $build_appcache_manifest
+echo "# Built "$t" by "$app_builder >> $build_appcache_manifest
+echo "#" >> $build_appcache_manifest
+echo "# These files will be cached for offline use by the app." >> $build_appcache_manifest
+for x in $appCache
+do
+    cacheFilename=`echo $x | sed -e 's/\.\//\//'`
+    echo $cacheFilename
+    if [ "$cacheFilename" != "/.htaccess" ] && [ "`echo $cacheFilename | grep .gitignore`" = "" ] && [ "`echo $cacheFilename | grep .directory`" = "" ]
+    then
+       echo $cacheFilename >> $build_appcache_manifest
+    else
+       echo SKIPPED!
+    fi
+done
+echo "#" >> $build_appcache_manifest
+echo "# These files require server access." >> $build_appcache_manifest
+echo "NETWORK:" >> $build_appcache_manifest
+echo "#" >> $build_appcache_manifest
+echo "# Map failed requests for online resources." >> $build_appcache_manifest
+echo "NETWORK:" >> $build_appcache_manifest
+echo "#" >> $build_appcache_manifest
+echo "# EOM" >> $build_appcache_manifest
+
+echo Wrote application cache manifest to $build_appcache_manifest
+
+
+
+
 
 #### BUILD: COMPLETE
 

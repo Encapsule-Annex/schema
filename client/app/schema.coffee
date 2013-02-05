@@ -14,24 +14,36 @@ $ ->
     Encapsule.view.widget.logo.draw bodyElement, Encapsule.view.widget.logo.optionsDefault
 
 
-    blipHost = Encapsule.audio.widget.blipper.createHost bodyElement
-    blipper = blipHost.createBlipper "test", "audio/doorbell.wav"
+    hal1 = Encapsule.schema.widget.hal9000.create bodyElement
+    hal2 = Encapsule.schema.widget.hal9000.create bodyElement
 
-    #blipHost.blip("test")
+    hal1.blip "comp-link-established"
 
     setInterval (->
-        #blipHost.blip("test")
-        ), 3000
+        hal1.blip("doorbell")
+        ), 10000
 
-    hal = Encapsule.schema.widget.hal9000.create bodyElement
+    setInterval (->
+        hal1.blip("beep-high")
+        ), 3333
+
+    setInterval (->
+        hal1.blip("beep-acknowledge")
+        ), 30000
+
+    setInterval (->
+        hal1.blip("beep-high")
+        ), 15000
+
+    setInterval (->
+        hal1.blip("beep-tripple")
+        ), 60000
 
 
-
-
-
+    ###
     fireAtRandomInterval = (_name) ->
-        interval = 5000 + (Math.random() * 25000)
-        x = hal
+        interval = 15000 + (Math.random() * 60000)
+        x = hal2
         setTimeout ( ->  
             x.blip(_name)
             x = x
@@ -51,7 +63,7 @@ $ ->
     fireAtRandomInterval "comp-emergency-power"
     fireAtRandomInterval "comp-link-established"
     fireAtRandomInterval "comp-update-complete"
-
+    ###
     @
    
 
