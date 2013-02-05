@@ -6,6 +6,10 @@
 clear
 echo Building schema.encapsule.org deployment package...
 echo -----------------------------------------------------------------
+echo -----------------------------------------------------------------
+echo -----------------------------------------------------------------
+echo -----------------------------------------------------------------
+echo -----------------------------------------------------------------
 
 app_name=schema.encapsule.org
 app_release_version="<0"
@@ -14,6 +18,11 @@ app_builder=$*
 x=`hostname`
 y=`whoami`
 t=`date -u`
+echo $x $y $t
+if [ "$app_builder" = "" ]
+then
+    app_builder="(local user) "$y"@"$x
+fi
 
 # Declarations: customize for local repo
 
@@ -39,6 +48,10 @@ schema_deploy_client=$schema_deploy/client
 schema_deploy_data=$schema_deploy/data
 schema_deploy_server=$schema_deploy/server
 
+# level 3: root/client/app
+schema_client_app_css=$schema_client_app/css
+schema_client_app_coffee=$schema_client_app/coffee
+
 # level 3: root/deployment/client
 
 schema_deploy_client_html=$schema_deploy_client/public_html
@@ -59,7 +72,6 @@ build_appcache_manifest=$schema_deploy_client_html/schema.appcache
 
 #### BUILD: CLEAN
 
-set | grep schema
 echo App builder e-mail specified on command line: $app_builder
 
 echo -----------------------------------------------------------------
@@ -73,7 +85,7 @@ mkdir $schema_deploy_client_html
 cp -rv $schema_client_lib/* $schema_deploy_client_html/
 cp -v $schema_client_app/*.html $schema_deploy_client_html/
 cp -v $schema_client_app/.htaccess $schema_deploy_client_html/
-cp -v $schema_client_app/*.css $schema_deploy_client_html_css/
+cp -v $schema_client_app_css/*.css $schema_deploy_client_html_css/
 
 #### BUILD: COFFEESCRIPT COMPILE
 
@@ -88,14 +100,17 @@ echo "var appReleaseVersion = \""$app_release_version"\";" >> $build_id_js
 echo "var appReleaseName = \""$app_release_name"\";" >> $build_id_js
 echo "var appBuildTime = \""$t"\";" >> $build_id_js
 echo "var appBuilder = \""$app_builder"\";" >> $build_id_js
-echo "var appBuilderHost = \"trickster\";" >> $build_id_js
 
-cd $schema_client_app
+cd $schema_client_app_coffee
+echo =================================================================
+echo =================================================================
 echo =================================================================
 echo === v--- COFFEESCRIPT: EXPECT NO ERRORS =========================
 echo Building application Coffeescript libraries:
 coffee -o $schema_deploy_client_html_js/ -c *.coffee
 echo === ^--- COFFEESCRIPT: EXPECT NO ERRORS =========================
+echo =================================================================
+echo =================================================================
 echo =================================================================
 echo Deployed Javascripts:
 ls -lRat $schema_deploy_client
@@ -151,6 +166,10 @@ cd $current_dir
 #echo Generated build output:
 #ls -lRat $schema_deploy_client
 
+echo -----------------------------------------------------------------
+echo -----------------------------------------------------------------
+echo -----------------------------------------------------------------
+echo -----------------------------------------------------------------
 echo -----------------------------------------------------------------
 echo Build complete. Logfile: $build_log
 echo .

@@ -76,7 +76,7 @@ drawLogo = (parentElement_, options_) ->
         "<rect x=\"10\" y=\"10\" width=\"#{parentWidth - 20}\" height=\"#{parentHeight - 20}\" style=\"
         stroke-width: #{options_.rectStrokeWidth}; stroke: #{options_.rectStrokeColor}; fill: none;\" />
         <text x=\"15\" y=\"20\" style=\"fill: #{options_.outerFillColor}; font-family: Courier; font-size: 8pt;\">
-        #{appName} v#{appReleaseVersion} (#{appReleaseName}) built #{appBuildTime} by #{appBuilder} on host #{appBuilderHost}
+        #{appName} v#{appReleaseVersion} (#{appReleaseName}) built #{appBuildTime} by #{appBuilder}
         </text>
         <text x=\"#{parentWidth - 520}\" y=\"20\" style=\"fill: #{options_.innerFillColor}; font-family: Courier; font-size: 8pt;\">
         client width=#{parentWidth} height=#{parentHeight} with display aspect=#{assumedAspectRatio}
