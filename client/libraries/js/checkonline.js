@@ -21,6 +21,10 @@ https://github.com/devinrhode2/check-online MIT license
 
 Originally by Rob: http://ednortonengineeringsociety.blogspot.com/2010/10/detecting-offline-status-in-html-5.html<br>
 
+The first argument is your result callback.
+
+The second argument is 
+
 When you're working with a jQuery ajax failure, you can pass the fail callback `arguments`<br>
 as a second parameter to check offline, to potentially short circuit the operation<br>
 - if the failure looks like it was from being offline, we'll double check you're offline<br>
@@ -30,9 +34,15 @@ as a second parameter to check offline, to potentially short circuit the operati
 !IMPORTANT expects /onlineCheck.json to contain just 'online'<br>
 Your server also needs to support filename based cache busting, which html5 boilerplate's .htaccess file has for you<br>
 but you will need to add json to the list of file extensions list.<br>
+
+2013.02.06 ChrisRus: I'm hacking this up a little to help me integrate into the schema.encapsule.org application.
+Primarily I'm interested in making this library a bit more customizable. Rather than explode the checkOnline parameter
+list, I'm replacing the resultCallback parameter with a generic options object from which we'll cherry pick the
+parameters we know about (or use internal default values).<br>
+
 ```javascript
  */
-var checkOnline = function checkOnlineF(resultCallback, jQueryXhrFailArgs) {
+var checkOnline = function checkOnlineF(resultCallback, options_, jQueryXhrFailArgs) {
   'use strict';
   if (navigator.onLine) {
     
@@ -73,14 +83,24 @@ var checkOnline = function checkOnlineF(resultCallback, jQueryXhrFailArgs) {
     // Check to see if we are really online by making a call for a static JSON resource on
     // the originating Web site. If we can get to it, we're online. If not, assume we're offline.
     try {
+        var options = (typeof options_ != "undefined" && options_ != null) && options_ || {};
+        var ajaxTimeoutMs = (typeof options.timeout != "undefined" && options.timeout != null) && options.timeout || 2800;
+        var ajaxUrlPingRelative = (typeof options.pingRelative != "undefined" && options.pingRelative != null) && options.pingRelative || false;
+        var ajaxUrlFilePrefix = (typeof options.pingFilePrefix != "undefined" && options.pingFilePrefix != null) && options.pingFilePrefix ||
+            ('/onlineCheck.' + Math.random() * 99999999999999999);
+        var ajaxUrlArgs = (typeof options.pingArgs != "undefined" && options.pingArgs != null) && options.pingArgs || "";
+        // and finally...
+        var ajaxUrl = location.protocol + '//' + location.hostname + ajaxUrlFilePrefix + '.json' + ajaxUrlArgs;
+
+
       $.ajax({
         /* cache: false, //Omitted because cachebusting via querystring is unreliable.
            some proxy servers only update a cache if the filename changes, not a querystring.
            There's a apache rule to resolve the random number places in the url in the HTML5 BoilerPlate .htaccess file */
         
-        timeout: 2800, //you could decrese this, and automatically assume offline if the internet is just CRAWLING - this may already be too low
+        timeout: ajaxTimeoutMs, //you could decrese this, and automatically assume offline if the internet is just CRAWLING - this may already be too low
         
-        url: location.protocol + '//' + location.hostname + '/onlineCheck.' + Math.random() * 99999999999999999 + '.json'
+        url: ajaxUrl
       })
       .done(function onlineCheckDone(resp) {
         if (resp === 'online') {
