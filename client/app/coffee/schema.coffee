@@ -46,7 +46,7 @@ $ ->
     checkOnlineOptions = {
         timeout: 12000,
         pingRelative: true,
-        pingArgs: "?appname=#{appName}&buildname=#{appReleaseName}"
+        pingArgs: "?packageID=#{appPackageId}"
         }
 
     checkOnline( ( (online_) ->
