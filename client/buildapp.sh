@@ -19,9 +19,10 @@ app_uuid="{56611225-be91-40cf-b9b8-5c7b8a6c6f3d}"
 # manifest contains the date stamp of the execution of this script and
 # thus always ensures a appcache refresh. However, these contants should
 # be refreshed in order to provide meaning to server logfiles (please).
-app_version="<0"
+app_version="0.01"
 app_release_name=prerelease
-app_version_uuid="{a77513c7-439c-445b-91f9-6919c2a30c7f}"
+app_version_uuid="{1d7c5dec-fa1c-44d6-85bd-274c15d4ce77}"
+
 
 app_builder=$*
 app_build_host=`hostname`

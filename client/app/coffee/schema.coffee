@@ -38,23 +38,28 @@ class schemaApplication
 
 
 $ ->
-    blipper = Encapsule.schema.widget.audioTheme.create($("body"))
-    blipper.blip "heartbeat"
- 
-    appBootContext = { blipper: blipper }
+    console.log "BOOT: #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
+    console.log "#{appName}: #{appBuildTime} by #{appBuilder}"
+
+    appCacheMonitor();
 
     checkOnlineOptions = {
-        timeout: 12000,
+        timeout: 6000,
         pingRelative: true,
         pingArgs: "?packageID=#{appPackageId}"
         }
 
     checkOnline( ( (online_) ->
         if online? and online_
-            alert "You are reported as being online."
+            console.log "#{appName}: You are reported as being ONLINE."
         else
-            alert "You are reported as being OFFLINE."
+            console.log "#{appName}: You are reported as being OFFLINE."
         ), checkOnlineOptions )
+
+    blipper = Encapsule.schema.widget.audioTheme.create($("body"))
+    blipper.blip "heartbeat"
+ 
+    appBootContext = { blipper: blipper }
 
     # Create the application object and call its run method. Note the timer simulates
     # several steps taht need to occur to ascertain on/offline status
@@ -62,7 +67,7 @@ $ ->
     setTimeout ( ->
 
         schemaApp.run() ),
-        10
+        6000
 
 
     @
