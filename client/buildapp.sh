@@ -11,17 +11,28 @@ echo -----------------------------------------------------------------
 echo -----------------------------------------------------------------
 echo -----------------------------------------------------------------
 
+# These identifiers should never change.
 app_name=schema.encapsule.org
-app_release_version="<0"
+app_uuid="{56611225-be91-40cf-b9b8-5c7b8a6c6f3d}"
+
+# These should be tweaked prior to deployment. Note that the appcache
+# manifest contains the date stamp of the execution of this script and
+# thus always ensures a appcache refresh. However, these contants should
+# be refreshed in order to provide meaning to server logfiles (please).
+app_version="<0"
 app_release_name=prerelease
+app_version_uuid="{a77513c7-439c-445b-91f9-6919c2a30c7f}"
+
 app_builder=$*
-x=`hostname`
-y=`whoami`
-t=`date -u`
-echo $x $y $t
+app_build_host=`hostname`
+app_builder_local=`whoami`
+app_build_date=`date -u`
+app_build_uuid="{"`uuidgen`"}"
+app_package_id="["$app_uuid":"$app_version_uuid":"$app_build_uuid"]"
+
 if [ "$app_builder" = "" ]
 then
-    app_builder="(local user) "$y"@"$x
+    app_builder="(local user) "$app_builder_local"@"$app_build_host
 fi
 
 # Declarations: customize for local repo
@@ -103,11 +114,15 @@ echo $y $x $t by $app_builder >> $build_log
 echo . >> $build_log
 echo ---
 echo "// encapsule-build.js (generated)" > $build_id_js
+echo "var appPackageId = \""$app_package_id"\";" >> $build_id_js
 echo "var appName = \""$app_name"\";" >> $build_id_js
-echo "var appReleaseVersion = \""$app_release_version"\";" >> $build_id_js
+echo "var appId = \""$app_uuid"\";" >> $build_id_js
+echo "var appVersion = \""$app_version"\";" >> $build_id_js
 echo "var appReleaseName = \""$app_release_name"\";" >> $build_id_js
-echo "var appBuildTime = \""$t"\";" >> $build_id_js
+echo "var appReleaseId = \""$app_version_uuid"\";" >> $build_id_js
+echo "var appBuildId = \""$app_build_uuid"\";" >> $build_id_js
 echo "var appBuilder = \""$app_builder"\";" >> $build_id_js
+echo "var appBuildTime = \""$app_build_date"\";" >> $build_id_js
 
 cd $schema_client_app_coffee
 echo =================================================================
@@ -137,8 +152,8 @@ echo .
 echo $appCache | sort -k3,3
 
 echo CACHE MANIFEST > $build_appcache_manifest
-echo "# "$app_name "v"$app_release_version "("$app_release_name")" >> $build_appcache_manifest
-echo "# Built "$t" by "$app_builder >> $build_appcache_manifest
+echo "# Package ID: "$app_package_id  >> $build_appcache_manifest
+echo "# Package Detail: "$app_name" v"$app_version" tag=\""$app_release_name"\" built "$app_build_date" by "$app_builder >> $build_appcache_manifest
 echo "#" >> $build_appcache_manifest
 echo "# These files will be cached for offline use by the app." >> $build_appcache_manifest
 for x in $appCache
@@ -152,13 +167,10 @@ do
        echo SKIPPED!
     fi
 done
-echo "#" >> $build_appcache_manifest
 echo "# These files require server access." >> $build_appcache_manifest
 echo "NETWORK:" >> $build_appcache_manifest
-echo "#" >> $build_appcache_manifest
 echo "# Map failed requests for online resources." >> $build_appcache_manifest
-echo "NETWORK:" >> $build_appcache_manifest
-echo "#" >> $build_appcache_manifest
+echo "FALLBACK:" >> $build_appcache_manifest
 echo "# EOM" >> $build_appcache_manifest
 
 echo Wrote application cache manifest to $build_appcache_manifest

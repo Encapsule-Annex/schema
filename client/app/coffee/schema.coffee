@@ -43,12 +43,18 @@ $ ->
  
     appBootContext = { blipper: blipper }
 
-    checkOnline( (online_) ->
+    checkOnlineOptions = {
+        timeout: 12000,
+        pingRelative: true,
+        pingArgs: "?appname=#{appName}&buildname=#{appReleaseName}"
+        }
+
+    checkOnline( ( (online_) ->
         if online? and online_
             alert "You are reported as being online."
         else
             alert "You are reported as being OFFLINE."
-        )
+        ), checkOnlineOptions )
 
     # Create the application object and call its run method. Note the timer simulates
     # several steps taht need to occur to ascertain on/offline status
