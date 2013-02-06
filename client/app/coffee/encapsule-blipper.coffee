@@ -18,22 +18,53 @@ createBlipper = (hostElement_, name_, source_, options_) ->
     items = hostElement_.blippers
     items[name_] = blipperElement
 
+
 createBlipperHost = (parentElement_, options_) ->
     if not parentElement_? then throw "parentElement_ must be specified as a JQuery selector object"
     blipperHostId = "id#{uuid.v4()}"
     blipperHostHtml = "<div id=\"#{blipperHostId}\" style=\"\" class=\"classBlipperHost\"></div>"
     parentElement_.append($(blipperHostHtml))
     blipperHost = $("##{blipperHostId}")
+
     blipperHost.createBlipper = (name_, source_, options_) ->
         if not name_? or not source_? then throw "name_ and _source parameters must be specified"
         createBlipper blipperHost, name_, source_, options_
+
     blipperHost.blip = (name_) ->
         items = @blippers
         blipper = items[name_]
-        if blipper? then blipper.get(0).play()
+        if blipper?
+            nativeAudioObject =  blipper.get(0)
+            nativeAudioObject.play()
+
+    blipperHost.fireAtRandom = (name_, minMsSilence_, maxMsSilence_) ->
+        if not name_ or not minMsSilence_ or not maxMsSilence_ 
+            throw "name_, minMsSilence_, and maxMsSilence_ params must be specified."
+        fireAtRandom blipperHost, name_ minMsSilence_, maxMsSilence_
+
     blipperHost.blippers = {}
+
     blipperHost
+
+
+
 
 class namespaceWidget.blipper
     @createHost: createBlipperHost
 
+
+
+fireAtRandom = (blipperHost_, name_, minMsSilence_, maxMsSilence_) ->
+    blipper = blipperHost_
+    name = name_
+    minMs = minMsSilence_
+    randSeedMs = maxMsSilence_ - minMsSilence_
+    interval = minMs + (Math.random() * randSeedMs)
+    setTimeout ( ->
+        blipper.blip name
+        fireAtRandom = fireAtRandom
+        fireAtRandom blipper, name, minMs, (randSeedMs + minMs)
+        ), interval
+
+class namespaceWidget.util
+    @blipAtRandom: fireAtRandom

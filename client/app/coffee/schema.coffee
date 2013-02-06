@@ -17,16 +17,21 @@ class schemaApplication
         # Setup closure
         blipper = @appBootContext.blipper
 
-        # Acknowledge
+        # Acknowledge page loaded
         blipper.blip("beep")
 
-        closureContext = @context
-
         # Then announce
-        setTimeout((=> blipper.blip "update-complete"), 1000)
+        setTimeout((-> blipper.blip "update-complete"), 1000)
+
+        # Set background
+        blipper.blip("regen")
+        setTimeout((-> blipper.blip "regen-abort"), 6800)
+     
 
         # Set the heart beat beacon
-        setInterval((=> blipper.blip "heartbeat"), 60000)
+        setInterval((-> blipper.blip "heartbeat"), 60000)
+
+        Encapsule.audio.widget.util.blipAtRandom blipper, "beep4", 1000, 7000
 
 
 
@@ -38,13 +43,20 @@ $ ->
  
     appBootContext = { blipper: blipper }
 
+    checkOnline( (online_) ->
+        if online? and online_
+            alert "You are reported as being online."
+        else
+            alert "You are reported as being OFFLINE."
+        )
+
     # Create the application object and call its run method. Note the timer simulates
     # several steps taht need to occur to ascertain on/offline status
     schemaApp = new schemaApplication(appBootContext)
     setTimeout ( ->
 
         schemaApp.run() ),
-        5000
+        10
 
 
     @
