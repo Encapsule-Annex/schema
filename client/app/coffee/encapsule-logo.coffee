@@ -26,7 +26,7 @@ drawLogo = (parentElement_, options_) ->
     goldenRatio = 1.6180339887498948482
 
     # ratio of drawing area height to outer circle diameter
-    outerRadiusBias = 0.9
+    outerRadiusBias = 0.5
 
     # ratio of the outer to inner circle diameter
     innerRadiusBias = 0.87
@@ -38,7 +38,7 @@ drawLogo = (parentElement_, options_) ->
     innerCircleTranslationBias = 0.9
 
     # angle to displace inner circle
-    logoAngle = 225 * (Math.PI/180)
+    logoAngle = 45 * (Math.PI/180)
 
     # we can reliably get the width of the parent element via JQuery
     parentWidth = parentElement_.width()

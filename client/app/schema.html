@@ -18,23 +18,51 @@
 
   -->
   <head>
+    <!-- Tell us about yourself -->
     <meta charset="UTF-8">
+    <meta name="description" content="Schema.encapsule.org is visualization and editing tool for working with Soft Circuit Description Languge (SCDL) models written in HTML5.">
+    <meta name="keywords" content="encapsule, scdl, software, modeling, program transformation, design, architecture, circuit, state machine, visualization, html5">
+    <meta name="author" content="Encapsule Project (http://www.encapsule.org)">
     <title>schema.encapsule.org</title>
+    <!-- and your sense of style -->
     <link rel="stylesheet" type="text/css" href="css/schema.css">
-    <!-- for debugging: <meta http-equiv="Refresh" content="20; URL=http://localhost/schema/deployment/client/public_html/schema.html"> -->
-    <!-- JS lib scripts -->
+    <!-- ... and the tools you use -->
     <script src="js/jquery-1.8.3.js" type="text/javascript"></script>
+    <script src="js/checkonline.js" type="text/javascript"></script>
     <script src="js/jquery.indexeddb.js" type="text/javascript"></script>
     <script src="js/sammy.js" type="text/javascript"></script>
     <script src="js/knockout-2.2.1.debug.js" type="text/javascript"></script>
     <script src="js/uuid.js" type="text/javascript"></script>
-    <!-- JS app scripts -->
+
+    <!-- to implement your app -->
     <script src="js/encapsule-build.js" type="text/javascript"></script>
     <script src="js/encapsule-logo.js" type="text/javascript"></script>
     <script src="js/encapsule-blipper.js" type="text/javascript"></script>
-    <script src="js/schema-audio-hal.js" type="text/javascript"></script>
+    <script src="js/schema-audio-theme.js" type="text/javascript"></script>
+
     <script src="js/schema.js" type="text/javascript"></script>
   </head>
-  <body>
+  <body class="classBlueCircuitTheme">
+    <!--
+        The schema application's "main" routine is implemented in Javascript
+        invoked in response to the document.body.onLoad DOM event.
+
+        By design, no scripts loaded in the head section of this page modify
+        the contents of the body until after this invocation.
+
+        By convention the application will replace the contents of the body DOM
+        element when it boots. Thus, what appears inline below is the application
+        "boot" screen.
+
+        Note that becaue this application leverages HTML5 application cache,
+        this page will typically not be visible unless the user is online AND
+        the application cache manifet has been updated. In this case they may
+        be some lag between when the HTML renders and when the onLoad event
+        fires during which time the static body below will be visible.
+      -->
+    <audio src="audio/klingon_transporter_clean.mp3" preload loop autoplay></audio>
+    <h1>Updating...</h1>
+
+
   </body>
 </html>

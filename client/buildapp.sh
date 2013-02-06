@@ -51,6 +51,7 @@ schema_deploy_server=$schema_deploy/server
 # level 3: root/client/app
 schema_client_app_css=$schema_client_app/css
 schema_client_app_coffee=$schema_client_app/coffee
+schema_client_app_img=$schema_client_app/img
 
 # level 3: root/deployment/client
 
@@ -58,10 +59,10 @@ schema_deploy_client_html=$schema_deploy_client/public_html
 
 # level 4: root/deployment/client/public_html
 
-schema_deploy_client_html_css=$schema_deploy_client_html/css
-schema_deploy_client_html_js=$schema_deploy_client_html/js
-schema_deploy_client_html_img=$schema_deploy_client_html/img
 schema_deploy_client_html_audio=$schema_deploy_client_html/audio
+schema_deploy_client_html_css=$schema_deploy_client_html/css
+schema_deploy_client_html_img=$schema_deploy_client_html/img
+schema_deploy_client_html_js=$schema_deploy_client_html/js
 schema_deploy_client_html_scdl=$schema_deploy_client_html/scdl
 
 # Special files (e.g. build logs)
@@ -81,11 +82,18 @@ echo Creating directories...
 rm -rfv $schema_deploy_client_html/*
 echo $schema_deploy_client_html
 mkdir $schema_deploy_client_html
+mkdir $schema_deploy_client_html_audio
+mkdir $schema_deploy_client_html_css
+mkdir $schema_deploy_client_html_img
+mkdir $schema_deploy_client_html_js
+mkdir $schema_deploy_client_html_scdl
 
 cp -rv $schema_client_lib/* $schema_deploy_client_html/
 cp -v $schema_client_app/*.html $schema_deploy_client_html/
 cp -v $schema_client_app/.htaccess $schema_deploy_client_html/
 cp -v $schema_client_app_css/*.css $schema_deploy_client_html_css/
+cp -v $schema_client_app_img/*.jpg $schema_deploy_client_html_img/
+cp -v $schema_client_app_img/*.png $schema_deploy_client_html_img/
 
 #### BUILD: COFFEESCRIPT COMPILE
 
@@ -122,7 +130,7 @@ ls -lRat $schema_deploy_client >> $build_log
 echo --- >> $build_log
 
 cd $schema_deploy_client_html
-appCache=`find *.html css/*.css js/*.js audio/*.wav scdl/*.json -type f`
+appCache=`find *.html css/*.css js/*.js audio/*.wav audio/*.mp3 scdl/*.json img/*.jpg img/*.png -type f`
 echo APP CACHE:
 echo $appCache
 echo .
