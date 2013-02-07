@@ -38,6 +38,10 @@ class schemaApplication
 
 
 $ ->
+    # $("#idBootConsoleLogoText").text "#{appName} v#{appVersion} (#{appReleaseName}"
+
+    Console.init()
+    Console.message "#{appName} v#{appVersion} initializing..."
     console.log "BOOT: #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
     console.log "#{appName}: #{appBuildTime} by #{appBuilder}"
 
@@ -46,7 +50,8 @@ $ ->
     checkOnlineOptions = {
         timeout: 6000,
         pingRelative: true,
-        pingArgs: "?packageID=#{appPackageId}"
+        pingFilePrefix: "json/client-ping",
+        pingArgs: "?appId=#{appId}&appVerId=#{appReleaseId}&appBuildId=#{appBuildId}&pingTime=#{Encapsule.util.getEpochTime()}"
         }
 
     checkOnline( ( (online_) ->

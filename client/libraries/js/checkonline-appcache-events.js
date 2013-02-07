@@ -1,34 +1,53 @@
 
+var appCacheResourceCount = 0;
 
 var appCacheMonitor = function() {
 
 var cache = window.applicationCache;
 
 cache.addEventListener("cached", function () {
-    console.log("schema appcache: All resources for this web app have now been downloaded. You can run this application while not connected to the internet");
+    $("#idBootConsoleLogo").css( { backgroundColor: "#00CCFF" } );
+    Console.messageEnd("");
+    Console.message("app cache: Congradulations! " + appCacheResourceCount + " resources were installed in your application cache.");
+    Console.message("app cache: " + appName + " v" + appVersion + " is installed and ready for use both on and offline.");
 }, false);
 cache.addEventListener("checking", function () {
-    console.log("schema appcache: Checking manifest");
+    $("#idBootConsoleLogo").css( { backgroundColor: "#003366"} );
+    Console.message("app cache: " + appName + " v" + appVersion + " checking encapsule.org for app updates...")
 }, false);
 cache.addEventListener("downloading", function () {
-    console.log("schema appcache: Starting download of cached files");
+    $("#idBootConsoleLogo").css( { backgroundColor: "#CC9900"} );
+    Console.message("app cache: " + appName + " updates have been posted on encapsule.org.")
+    Console.messageStart("app cache: Please wait while updates are downloaded");
+
 }, false);
 cache.addEventListener("error", function (e) {
-    console.log("schema appcache: There was an error in the manifest, downloading cached files or you're offline: " + e);
+    $("#idBootConsoleLogo").css( { backgroundColor: "#FF0000"} );
+    Console.messageEnd("");
+    Console.message("app cache: Unable to check for app updates at this time. Perhaps you\'re offline?");
+    Console.message("app cache: Booting v" + appVersion + " app core from application cache...");
+    Console.message("app cache: If network connectivity is restored during your session, we\'ll let you know.");
 }, false);
 cache.addEventListener("noupdate", function () {
-    console.log("schema appache: There was no update needed");
+    $("#idBootConsoleLogo").css( { backgroundColor: "#00CC00"} );
+    Console.message("app cache: You have the latest version of " + appName);
+    Console.message("app cache: Proceeding with v" + appVersion + " app core boot from offline app cache.");
 }, false);
 cache.addEventListener("progress", function () {
-    console.log("schema appcache: Downloading cached files");
+    $("#idBootConsoleLogo").css( { backgroundColor: "#DDAA00"} );
+    appCacheResourceCount++;
+    Console.messageRaw(".")
 }, false);
 cache.addEventListener("updateready", function () {
+    // Even after swapping the cache the currently loaded page won't use it until it is reloaded, so force a reload so it is current.
+    $("#idBootConsoleLogo").css( { backgroundColor: "#FFCC00"} );
     cache.swapCache();
-    console.log("schema appache: Updated cache is ready");
-    // Even after swapping the cache the currently loaded page won't use it
-    // until it is reloaded, so force a reload so it is current.
-    window.location.reload(true);
-    console.log("schema appcache: WINDOW RELOADED!");
+    Console.messageEnd("");
+    Console.message("app cache: Congradulations! " + appCacheResourceCount + " resources were installed in your application cache");
+    Console.message("app cache: and an updated version of " + appName + " is now ready for use both on and offline.");
+    Console.message("app cache: GOODBYE from v" + appVersion + " app core. Booting updated " + appName + ". BRB...");
+    setTimeout((function() { return window.location.reload(true); }), 5000);
+
 }, false);
 
 }

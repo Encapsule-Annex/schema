@@ -44,13 +44,14 @@
 
     <!-- to implement your app -->
     <script src="js/encapsule-build.js" type="text/javascript"></script>
-    <script src="js/encapsule-logo.js" type="text/javascript"></script>
-    <script src="js/encapsule-blipper.js" type="text/javascript"></script>
-    <script src="js/schema-audio-theme.js" type="text/javascript"></script>
-
+    <script src="js/encapsule-lib-audio.js" type="text/javascript"></script>
+    <script src="js/encapsule-lib-audio-theme-01.js" type="text/javascript"></script>
+    <script src="js/encapsule-lib-console.js" type="text/javascript"></script>
+    <script src="js/encapsule-lib-logo.js" type="text/javascript"></script>
+    <script src="js/encapsule-lib-util.js" type="text/javascript"></script>
     <script src="js/schema.js" type="text/javascript"></script>
   </head>
-  <body class="classBlueCircuitTheme">
+  <body>
     <!--
         The schema application's "main" routine is implemented in Javascript
         invoked in response to the document.body.onLoad DOM event.
@@ -69,6 +70,12 @@
         fires during which time the static body below will be visible.
       -->
     <audio src="audio/klingon_transporter_clean.mp3" preload loop autoplay></audio>
-    <center><h1>Updating...</h1></center>
+    <div id="idBootConsole">
+      <div id="idBootConsoleLogo">
+        <img src="img/encapsule-logo-128x128.png" align=left style="border: none; width: 128px; height: 128px; align: left;">
+        <span id="idBootConsoleLogoText">schema.encapsule.org initializing...</span><br clear="all">
+      </div>
+      <div id="idConsole"></div>
+    </div>
   </body>
 </html>
