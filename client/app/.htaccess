@@ -25,7 +25,7 @@ DirectoryIndex app.html
 #Action application/x-pair-sphp /cgi-sys/php-cgiwrap/orbital2/php4.cgi
 #AddType application/x-pair-sphp .php .php3 .phtml .php4 .htm .html
 
-AddType text/cache-manifest appcache
+AddType text/cache-manifest .appcache
 
 # Turn on the mod_rewrite URL re-writing engine
 #RewriteEngine On

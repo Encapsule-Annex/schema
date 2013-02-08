@@ -16,7 +16,6 @@ class namespaceWidget.audioTheme
         host.createBlipper "initializing", "audio/klingon_transporter_clean.mp3"
         host.createBlipper "heartbeat", "audio/doorbell.wav"
         host.createBlipper "update-complete", "audio/stng-comp-update-complete.wav"
-        host.createBlipper "beep", "audio/romulan_computerbeep3.mp3"
         host.createBlipper "beep1", "audio/romulan_computerbeep1.mp3"
         host.createBlipper "beep2", "audio/romulan_computerbeep3.mp3"
         host.createBlipper "beep3", "audio/romulan_computerbeep6.mp3"
