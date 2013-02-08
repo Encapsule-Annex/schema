@@ -48,7 +48,7 @@ $ ->
         # If supported browser proceed silently and immediately to phase 2
     
         Console.init()
-        Console.message("Hello from the app bootrapper!")
+        Console.message("Hello from the schema bootrapper!")
         console.log "#{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
         console.log "#{appName}: #{appBuildTime} by #{appBuilder}"
     
@@ -68,9 +68,9 @@ $ ->
             onChecking: ->
                 Console.messageStart("Checking origin server for app udpates: ")
             , onDownloading: ->
-                Console.messageEnd("<strong>UPDATING</strong>")
+                Console.messageEnd("<strong>Updating</strong>")
                 Console.messageStart("files ")
-            , onProgress: ->
+            , onProgress: (fileCount_) ->
                 Console.messageRaw(".")
             , onError: ->
                 Console.messageEnd(" <strong>OH SNAP!</strong>")
@@ -79,16 +79,13 @@ $ ->
                 Console.messageEnd("<strong>OFFLINE</strong>");
                 Console.message("Origin server is unreachable. Please try again later.")
             , onCached: (fileCount_) ->
-                Console.messageEnd(" complete.")
+                Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
                 Console.message("<strong>The application has been installed!</strong>")
-                Console.message("#{fileCount_} files installed.")
             , onNoUpdate: ->
-                Console.messageEnd("<strong>NO UPDATE<strong>")
-                Console.message("You already have the latest build installed.")
+                Console.messageEnd("<strong>No update<strong>")
+                Console.message("You have the latest build, v#{appVersion}, installed.")
             , onUpdateReady: (fileCount_) ->
-                Console.messageEnd(" complete.")
-                Console.message("<strong>UPDATE COMPLETE.</strong>")
-                Console.message("#{fileCount_} files installed for offline use.")
+                Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
                 Console.messageRaw("<h2>applying update</h2>")
                 setTimeout ( -> window.location.reload(true) ), 2000
             }

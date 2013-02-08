@@ -21,7 +21,7 @@ class namespaceBoot.AppCacheMonitor
         @appCallbacks.onDownloading()
     onProgress: =>
         @fileCount++
-        @appCallbacks.onProgress()
+        @appCallbacks.onProgress(@fileCount)
     onError: =>
         if @status == "downloading"
             @status = "error"

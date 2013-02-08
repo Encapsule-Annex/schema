@@ -13,7 +13,7 @@ class window.Console
             Clear</button></div>
             <p><span style=\"font-size: 16pt; font-weight: bold;\">#{appName} #{appReleaseName} v#{appVersion}</span><br>
             Build: #{appBuildTime} // Builder: #{appBuilder} // 
-            [ <a href=\"http://https://github.com/Encapsule/schema\">GitHub</a> ]
+            [ <a href=\"https://github.com/Encapsule/schema\">GitHub</a> ]
             [ <a href=\"http://blog.encapsule.org\">Blog</a> ] 
             </p>"
             )

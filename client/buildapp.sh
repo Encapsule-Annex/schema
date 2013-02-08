@@ -19,9 +19,10 @@ app_uuid="{56611225-be91-40cf-b9b8-5c7b8a6c6f3d}"
 # manifest contains the date stamp of the execution of this script and
 # thus always ensures a appcache refresh. However, these contants should
 # be refreshed in order to provide meaning to server logfiles (please).
-app_version="0.01"
-app_release_name=prerelease
-app_version_uuid="{1d7c5dec-fa1c-44d6-85bd-274c15d4ce77}"
+app_version="0.0.0.10"
+app_release_name=Roraima
+app_version_uuid="4cde4003-cc50-4d3f-98ad-3cf0c8da4e39"
+
 
 
 app_builder=$*
