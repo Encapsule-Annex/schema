@@ -11,7 +11,11 @@ class window.Console
             <button id=\"idButtonClearConsole\"
             class=\"button blue medium\">
             Clear</button></div>
-            <h1>console: #{appName} v#{appVersion} (#{appReleaseName})</h1><br>"
+            <p><span style=\"font-size: 16pt; font-weight: bold;\">#{appName} #{appReleaseName} v#{appVersion}</span><br>
+            Build: #{appBuildTime} // Builder: #{appBuilder} // 
+            [ <a href=\"http://https://github.com/Encapsule/schema\">GitHub</a> ]
+            [ <a href=\"http://blog.encapsule.org\">Blog</a> ] 
+            </p>"
             )
 
         $("#idButtonClearConsole").click( ->

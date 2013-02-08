@@ -35,7 +35,7 @@
     <!-- ... and the tools you use -->
     <script src="js/jquery-1.8.3.js" type="text/javascript"></script>
     <script src="js/checkonline.js" type="text/javascript"></script>
-    <script src="js/checkonline-appcache-events.js" type="text/javascript"></script>
+    <!-- <script src="js/checkonline-appcache-events.js" type="text/javascript"></script> -->
 
     <script src="js/jquery.indexeddb.js" type="text/javascript"></script>
     <script src="js/sammy.js" type="text/javascript"></script>
@@ -44,6 +44,8 @@
 
     <!-- to implement your app -->
     <script src="js/encapsule-build.js" type="text/javascript"></script>
+    <script src="js/encapsule-lib-appcache-monitor.js" type="text/javascript"></script>
+
     <script src="js/encapsule-lib-audio.js" type="text/javascript"></script>
     <script src="js/encapsule-lib-audio-theme-01.js" type="text/javascript"></script>
     <script src="js/encapsule-lib-console.js" type="text/javascript"></script>
@@ -69,13 +71,9 @@
         be some lag between when the HTML renders and when the onLoad event
         fires during which time the static body below will be visible.
       -->
-    <audio src="audio/klingon_transporter_clean.mp3" preload loop autoplay></audio>
-    <div id="idBootConsole">
-      <div id="idBootConsoleLogo">
-        <img src="img/encapsule-logo-128x128.png" align=left style="border: none; width: 128px; height: 128px; align: left;">
-        <span id="idBootConsoleLogoText">schema.encapsule.org initializing...</span><br clear="all">
-      </div>
-      <div id="idConsole"></div>
-    </div>
+    <!-- STFU <audio src="audio/klingon_transporter_clean.mp3" preload loop autoplay></audio> -->
+    <img src="img/encapsule-logo-128x128.png" align=left style="border: none; width: 128px; height: 128px;">
+    <div id="idConsole"></div>
+
   </body>
 </html>
