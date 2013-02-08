@@ -49,8 +49,8 @@ $ ->
     
         Console.init()
         Console.message("Hello from the schema bootrapper!")
-        console.log "#{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
-        console.log "#{appName}: #{appBuildTime} by #{appBuilder}"
+        Console.log "#{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
+        Console.log "#{appName}: #{appBuildTime} by #{appBuilder}"
     
         userAgent = navigator.userAgent
         Console.message("Your browser purports to be a \"#{userAgent}\"")

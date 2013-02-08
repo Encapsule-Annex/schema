@@ -51,7 +51,7 @@ class namespaceBoot.AppCacheMonitor
         cache = window.applicationCache
         if not (cache? and cache)
             @status = "failed"
-            @error = "Unable to monitor to monitor this application's offline cache."
+            @error = "Your browser does not appear to support HTML5 application cache."
             throw @error
 
         @status = "hookingEvents"

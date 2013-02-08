@@ -11,17 +11,27 @@ class window.Console
             <button id=\"idButtonClearConsole\"
             class=\"button blue medium\">
             Clear</button></div>
-            <p><span style=\"font-size: 16pt; font-weight: bold;\">#{appName} #{appReleaseName} v#{appVersion}</span><br>
-            Build: #{appBuildTime} // Builder: #{appBuilder} // 
-            [ <a href=\"https://github.com/Encapsule/schema\">GitHub</a> ]
-            [ <a href=\"http://blog.encapsule.org\">Blog</a> ] 
-            </p>"
+
+            <div style=\"\">
+                <div style=\"float: left;\"><img src=\"img/encapsule-logo-48x48.png\" width=\"48\" height=\"48\"></div>
+                <div style=\"float: left;\">
+                    <span style=\"font-size: 20pt; font-weight: normal;\">#{appName} #{appReleaseName} v#{appVersion}</span><br>
+                    <span style=\"font-size: 9pt; padding-top: 10px;\">Build: #{appBuildTime} // Builder: #{appBuilder} // 
+                    [ <a href=\"https://github.com/Encapsule/schema\">GitHub</a> ]
+                    [ <a href=\"http://blog.encapsule.org\">Blog</a> ]</span>
+                </div>
+                <div style=\"border-bottom: 1px solid black; clear: both;\"></div>
+            </div><br>"
             )
 
         $("#idButtonClearConsole").click( ->
             Console.init()
             Console.message("Console re-initialized.")
             )
+
+    @log: (trace) =>
+        if console? and console and console.log? and console.log
+           console.log trace
 
 
     @message: (trace) =>
@@ -44,7 +54,7 @@ class window.Console
              <span style=\"font-weight: bold; color:red\">#{errorException}</span><br>
             </div>"
         Console.messageRaw(errorMessage)
-        console.log("Encapsule:: #{errorException}")
+        @log("Encapsule:: #{errorException}")
         alert(errorException)
 
 
