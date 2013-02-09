@@ -17,8 +17,8 @@ class window.Console
                 <div style=\"float: left;\">
                     <span style=\"font-size: 20pt; font-weight: normal;\">#{appName} <a href=\"#{appReleaseNameFunUrl}\" title=\"What's an #{appReleaseName}?\" target=\"_blank\">#{appReleaseName}</a> v#{appVersion}</span><br>
                     <span style=\"font-size: 9pt; padding-top: 10px;\">Build: #{appBuildTime} // Builder: #{appBuilder} // 
-                    [ <a href=\"https://github.com/Encapsule/schema\">GitHub</a> ]
-                    [ <a href=\"http://blog.encapsule.org\">Blog</a> ]</span>
+                    [ <a href=\"https://github.com/Encapsule/schema\" title=\"Encapsule Project on GitHub\">GitHub</a> ]
+                    [ <a href=\"http://blog.encapsule.org\" title=\"Encapsule Project Blog\">Blog</a> ]</span>
                 </div>
                 <div style=\"border-bottom: 1px solid black; clear: both;\"></div>
             </div><br>"

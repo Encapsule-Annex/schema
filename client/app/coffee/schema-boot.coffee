@@ -14,17 +14,21 @@ phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
     # If supported browser proceed silently and immediately to phase 2
          
     Console.init()
-    Console.message("BOOTSTAP PHASE 1:")
+    Console.messageRaw("<h3>BOOTSTRAP PHASE 1</h3>")
     Console.log "#{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
     Console.log "#{appName}: #{appBuildTime} by #{appBuilder}"
+
+    phase1Out = bootstrapperOptions_.phase1 = {}
+
         
-    bootstrapperOptions.userAgent = userAgent = navigator.userAgent
+    phase1Out.userAgent = userAgent = navigator.userAgent
+    browser = $.browser
+    phase1Out.isChrome = isChrome = browser? and browser and browser.chrome? and browser.chrome or false
+    phase1Out.isWebKit = isWebKit = browser? and browser and browser.webkit? and browser.webkit or false
+    phase1Out.browserVersion = browserVersion = browser? and browser and browser.version? and browser.version or "unknown"
+
     Console.message("Blah blah browser identity spew...")
     Console.message("#{userAgent}")
-    browser = $.browser
-    isChrome = browser? and browser and browser.chrome? and browser.chrome or false
-    isWebKit = browser? and browser and browser.webkit? and browser.webkit or false
-    browserVersion = browser? and browser and browser.version? and browser.version or "unknown"
     Console.message("isChrome=#{isChrome} isWebKit=#{isWebKit} browserVersion=#{browserVersion}")
     if isChrome
         Console.message("Your chrome shines brightly.")
@@ -37,15 +41,65 @@ phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
     # Here's where we could bail and abort the bootstrap. For now we're just
     # pass through.
 
-    onPhaseComplete_()
+    #onPhaseComplete_()
+    phase2(bootstrapperOptions_)
 
-phase2 = (bootstrapperOptions_, onPhaseComplete_) ->
-    Console.message("BOOTSTRAP PHASE 2")
+phase2 = (bootstrapperOptions_) ->
+    Console.messageRaw("<h3>BOOTSTRAP PHASE 2</h3>")
 
-    
+    # APP BOOT PHASE 2 : Application cache monitor
+    #
+    # Instantiate application cache monitor to hook application cache events.
+    # 
+    # We expect one of the following sequences of application cache events to occur:
+    #
+
+    phase2Out = bootstrapperOptions_.phase2 = {}
+    appCacheTerminalState = phase2Out.appCacheMonitorTerminalState = undefined
+
+    appCacheCallbacks = {
+        onChecking: ->
+            Console.messageStart("Checking origin server for app udpates: ")
+        , onDownloading: ->
+            Console.messageEnd("<strong>Updating</strong>")
+            Console.messageStart("files ")
+        , onProgress: (fileCount_) ->
+            Console.messageRaw(".")
+        , onError: ->
+            Console.messageEnd(" <strong>OH SNAP!</strong>")
+            Console.messageRaw("<h3>attention please</h3>")
+            Console.messageRaw("<p>There has been a disturbance in the force.</p>")
+            Console.messageRaw("<p>Please refresh your browser to try again.</p>")
+            Console.messageRaw("<p>If the problem persists, I've been abducted. Please notify the authorities.<p>")
+            Console.messageRaw("<p>More seriously, if you absolutely can't get by PHASE 2 bootstrap, please send me an e-mail.</p>")
+            appCacheTerminalState = "error"
+        , onOffline: ->
+            Console.messageEnd("<strong>OFFLINE</strong>");
+            Console.message("Origin server is unreachable. Please try again later.")
+            appCacheTerminaState = "offline"
+            phase3(bootstrapperOptions_)
+        , onCached: (fileCount_) ->
+            Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
+            Console.message("<strong>The application has been installed!</strong>")
+            appCacheTerminalState = "cached"
+            phase3(bootstrapperOptions_)
+        , onNoUpdate: ->
+            Console.messageEnd("<strong>No update<strong>")
+            Console.message("You have the latest build schema #{appReleaseName} build installed.")
+            appCacheTerminalState = "noupdate"
+            phase3(bootstrapperOptions_)
+        , onUpdateReady: (fileCount_) ->
+            Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
+            Console.messageRaw("<h2>applying update</h2>")
+            # setting the appCacheTerminalState is pointless in this case.
+            setTimeout ( -> window.location.reload(true) ), 2000
+        }
+    appCacheMonitor = new Encapsule.core.boot.AppCacheMonitor(appCacheCallbacks)
+
+phase3 = (boostrapperOptions_) ->
+    Console.messageRaw("<h3>BOOTSTRAP PHASE 3</h3>")      
 
 class namespaceCore.bootstrapper
- 
     
     @run: (bootstrapperOptions_) ->
         if not bootstrapperOptions_? or not bootstrapperOptions_
@@ -54,6 +108,7 @@ class namespaceCore.bootstrapper
 
     @phase1: phase1
     @phase2: phase2
+    @phase3: phase3
 
 
 

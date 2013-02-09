@@ -40,8 +40,11 @@ class schemaApplication
 $ ->
     try
         bootstrapperOptions = {
+
             onBootstrapComplete: (bootstrapperStatus_) ->
                 Console.message("onBootstrapperComplete with status=#{bootstrapperStatus_}")
+
+
         }
 
         Encapsule.core.bootstrapper.run bootstrapperOptions
@@ -49,44 +52,6 @@ $ ->
         return
 
 
-        # APP BOOT PHASE 2 : Application cache monitor
-        #
-        # Instantiate application cache monitor to hook application cache events.
-        # 
-        # We expect one of the following sequences of application cache events to occur:
-        #
-
-        appCacheCallbacks = {
-            onChecking: ->
-                Console.messageStart("Checking origin server for app udpates: ")
-            , onDownloading: ->
-                Console.messageEnd("<strong>Updating</strong>")
-                Console.messageStart("files ")
-            , onProgress: (fileCount_) ->
-                Console.messageRaw(".")
-            , onError: ->
-                Console.messageEnd(" <strong>OH SNAP!</strong>")
-                Console.message("The download was interrupted. Please try again later.")
-            , onOffline: ->
-                Console.messageEnd("<strong>OFFLINE</strong>");
-                Console.message("Origin server is unreachable. Please try again later.")
-            , onCached: (fileCount_) ->
-                Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
-                Console.message("<strong>The application has been installed!</strong>")
-            , onNoUpdate: ->
-                Console.messageEnd("<strong>No update<strong>")
-                Console.message("You have the latest build, v#{appVersion}, installed.")
-            , onUpdateReady: (fileCount_) ->
-                Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
-                Console.messageRaw("<h2>applying update</h2>")
-                setTimeout ( -> window.location.reload(true) ), 2000
-            }
-
-        appCacheMonitor = new Encapsule.core.boot.AppCacheMonitor(appCacheCallbacks)
-
-        return;
-
-        appCacheMonitor();
 
         checkOnlineOptions = {
             timeout: 6000,
