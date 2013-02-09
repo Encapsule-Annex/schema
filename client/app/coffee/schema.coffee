@@ -39,23 +39,15 @@ class schemaApplication
 
 $ ->
     try
-        # APP BOOT PHASE 1 : Supported browser
-        #
-        # Draw the boot UI
-        # Initialize the debug console for this app instance
-        # Confirm the visitor's browser identity and reject unsupported browsers.
-        # If unsupported browser display browser help UI
-        # If supported browser proceed silently and immediately to phase 2
-    
-        Console.init()
-        Console.message("Hello from the schema bootrapper!")
-        Console.log "#{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
-        Console.log "#{appName}: #{appBuildTime} by #{appBuilder}"
-    
-        userAgent = navigator.userAgent
-        Console.message("Your browser purports to be a \"#{userAgent}\"")
-        browser = $.browser
-    
+        bootstrapperOptions = {
+            onBootstrapComplete: (bootstrapperStatus_) ->
+                Console.message("onBootstrapperComplete with status=#{bootstrapperStatus_}")
+        }
+
+        Encapsule.core.bootstrapper.run bootstrapperOptions
+
+        return
+
 
         # APP BOOT PHASE 2 : Application cache monitor
         #

@@ -19,8 +19,14 @@ app_uuid="{56611225-be91-40cf-b9b8-5c7b8a6c6f3d}"
 # manifest contains the date stamp of the execution of this script and
 # thus always ensures a appcache refresh. However, these contants should
 # be refreshed in order to provide meaning to server logfiles (please).
-app_version="0.0.0.8"
-app_release_name=Roraima
+#
+#app_version="0.0.0.8"
+#app_release_name=Roraima
+#app_version_uuid="bcdcee5f-ae59-4db8-99e4-3f0fc0b3b590"
+#
+app_version="0.0.0.9"
+app_release_name="Amapá"
+app_release_fun_url="http://en.wikipedia.org/wiki/Amap%C3%A1"
 app_version_uuid="bcdcee5f-ae59-4db8-99e4-3f0fc0b3b590"
 
 
@@ -121,6 +127,7 @@ echo "var appName = \""$app_name"\";" >> $build_id_js
 echo "var appId = \""$app_uuid"\";" >> $build_id_js
 echo "var appVersion = \""$app_version"\";" >> $build_id_js
 echo "var appReleaseName = \""$app_release_name"\";" >> $build_id_js
+echo "var appReleaseNameFunUrl = \""$app_release_fun_url"\";" >> $build_id_js
 echo "var appReleaseId = \""$app_version_uuid"\";" >> $build_id_js
 echo "var appBuildId = \""$app_build_uuid"\";" >> $build_id_js
 echo "var appBuilder = \""$app_builder"\";" >> $build_id_js

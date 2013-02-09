@@ -15,7 +15,7 @@ class window.Console
             <div style=\"\">
                 <div style=\"float: left;\"><img src=\"img/encapsule-logo-48x48.png\" width=\"48\" height=\"48\"></div>
                 <div style=\"float: left;\">
-                    <span style=\"font-size: 20pt; font-weight: normal;\">#{appName} #{appReleaseName} v#{appVersion}</span><br>
+                    <span style=\"font-size: 20pt; font-weight: normal;\">#{appName} <a href=\"#{appReleaseNameFunUrl}\" title=\"What's an #{appReleaseName}?\" target=\"_blank\">#{appReleaseName}</a> v#{appVersion}</span><br>
                     <span style=\"font-size: 9pt; padding-top: 10px;\">Build: #{appBuildTime} // Builder: #{appBuilder} // 
                     [ <a href=\"https://github.com/Encapsule/schema\">GitHub</a> ]
                     [ <a href=\"http://blog.encapsule.org\">Blog</a> ]</span>
