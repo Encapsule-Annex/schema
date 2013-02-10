@@ -67,6 +67,8 @@ schema_deploy_server=$schema_deploy/server
 schema_client_app_css=$schema_client_app/css
 schema_client_app_coffee=$schema_client_app/coffee
 schema_client_app_img=$schema_client_app/img
+schema_client_app_json=$schema_client_app/json
+schema_client_app_nocache=$schema_client_app/no-cache
 
 # level 3: root/deployment/client
 
@@ -79,6 +81,7 @@ schema_deploy_client_html_css=$schema_deploy_client_html/css
 schema_deploy_client_html_img=$schema_deploy_client_html/img
 schema_deploy_client_html_js=$schema_deploy_client_html/js
 schema_deploy_client_html_scdl=$schema_deploy_client_html/scdl
+schema_deploy_client_html_nocache=$schema_deploy_client_html/no-cache
 
 # Special files (e.g. build logs)
 
@@ -102,6 +105,7 @@ mkdir $schema_deploy_client_html_css
 mkdir $schema_deploy_client_html_img
 mkdir $schema_deploy_client_html_js
 mkdir $schema_deploy_client_html_scdl
+mkdir $schema_deploy_client_html_nocache
 
 cp -rv $schema_client_lib/* $schema_deploy_client_html/
 cp -v $schema_client_app/*.html $schema_deploy_client_html/
@@ -109,6 +113,7 @@ cp -v $schema_client_app/.htaccess $schema_deploy_client_html/
 cp -v $schema_client_app_css/*.css $schema_deploy_client_html_css/
 cp -v $schema_client_app_img/*.jpg $schema_deploy_client_html_img/
 cp -v $schema_client_app_img/*.png $schema_deploy_client_html_img/
+cp -rv $schema_client_app_nocache/* $schema_deploy_client_html_nocache/
 
 #### BUILD: COFFEESCRIPT COMPILE
 
@@ -128,6 +133,8 @@ echo "var appReleaseId = \""$app_version_uuid"\";" >> $build_id_js
 echo "var appBuildId = \""$app_build_uuid"\";" >> $build_id_js
 echo "var appBuilder = \""$app_builder"\";" >> $build_id_js
 echo "var appBuildTime = \""$app_build_date"\";" >> $build_id_js
+echo "var appCacheManifestUrl = \""$build_appcache_manifest"\";" >> $build_id_js
+echo "var appBuildLogUrl = \""$build_log"\";" >> $build_id_js
 
 cd $schema_client_app_coffee
 echo =================================================================
@@ -150,7 +157,7 @@ ls -lRat $schema_deploy_client >> $build_log
 echo --- >> $build_log
 
 cd $schema_deploy_client_html
-appCache=`find *.html css/*.css js/*.js audio/*.wav audio/*.mp3 scdl/*.json img/*.jpg img/*.png -type f`
+appCache=`find *.html css/*.css js/*.js audio/*.wav audio/*.mp3 scdl/*.json json/*.json img/*.jpg img/*.png -type f`
 echo APP CACHE:
 echo $appCache
 echo .
@@ -174,6 +181,7 @@ do
 done
 echo "# These files require server access." >> $build_appcache_manifest
 echo "NETWORK:" >> $build_appcache_manifest
+echo 'no-cache/json/client-ping.json' >> $build_appcache_manifest
 echo "# Map failed requests for online resources." >> $build_appcache_manifest
 echo "FALLBACK:" >> $build_appcache_manifest
 echo "# EOM" >> $build_appcache_manifest

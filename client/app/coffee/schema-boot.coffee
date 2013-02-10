@@ -20,15 +20,13 @@ phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
 
     phase1Out = bootstrapperOptions_.phase1 = {}
 
-        
     phase1Out.userAgent = userAgent = navigator.userAgent
     browser = $.browser
     phase1Out.isChrome = isChrome = browser? and browser and browser.chrome? and browser.chrome or false
     phase1Out.isWebKit = isWebKit = browser? and browser and browser.webkit? and browser.webkit or false
     phase1Out.browserVersion = browserVersion = browser? and browser and browser.version? and browser.version or "unknown"
 
-    Console.message("Blah blah browser identity spew...")
-    Console.message("#{userAgent}")
+    Console.message("Your browser purports to be a \"<strong>#{userAgent}</strong>\"")
     Console.message("isChrome=#{isChrome} isWebKit=#{isWebKit} browserVersion=#{browserVersion}")
     if isChrome
         Console.message("Your chrome shines brightly.")
@@ -103,8 +101,40 @@ phase2 = (bootstrapperOptions_) ->
         }
     appCacheMonitor = new Encapsule.core.boot.AppCacheMonitor(appCacheCallbacks)
 
-phase3 = (boostrapperOptions_) ->
+phase3 = (bootstrapperOptions_) ->
+
     Console.messageRaw("<h3>BOOTSTRAP PHASE 3</h3>")      
+
+    phase3Out = bootstrapperOptions_.phase3 = {}
+    originServerOnline = phase3Out.originServerOnline = false
+    blipper = phase3Out.blipper = Encapsule.schema.widget.audioTheme.create($("body"))
+
+    checkOnlineOptions = {
+        timeout: 5000,
+        pingRelative: true,
+        pingFilePrefix: "no-cache/json/client-ping",
+        #pingArgs: "?appBuildId=#{appBuildId}&pingTime=#{Encapsule.util.getEpochTime()}"
+        }
+
+    checkOnlineFunction = ((statusOut_) ->
+        #statusOut = statusOut_
+        #blipper = blipper
+        checkOnline ((statusIn_) -> 
+            statusOut = statusIn_
+            if statusOut
+                blipper.blip "blip"
+            else
+                blipper.blip "heartbeat"
+            ), checkOnlineOptions
+        )
+
+
+    checkOnlineFunction originServerOnline
+
+    setInterval ( -> checkOnlineFunction(originServerOnline) ), 15000
+
+    blipper.blip "heartbeat"
+    
 
 class namespaceCore.bootstrapper
     

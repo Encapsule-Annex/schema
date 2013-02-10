@@ -90,7 +90,15 @@ var checkOnline = function checkOnlineF(resultCallback, options_, jQueryXhrFailA
             ('/onlineCheck.' + Math.random() * 99999999999999999);
         var ajaxUrlArgs = (typeof options.pingArgs != "undefined" && options.pingArgs != null) && options.pingArgs || "";
         // and finally...
-        var ajaxUrl = location.protocol + '//' + location.hostname + ajaxUrlFilePrefix + '.json' + ajaxUrlArgs;
+
+        var ajaxUrl = ""
+        if (ajaxUrlPingRelative == false) {
+            // The original library behavior essentially
+            ajaxUrl = location.protocol + '//' + location.hostname + ajaxUrlFilePrefix + '.json' + ajaxUrlArgs;
+        } else {
+            // Modification to allow the JSON file to reside relative to the location of a single page HTML5 application.
+            ajaxUrl = ajaxUrlFilePrefix + '.json' + ajaxUrlArgs;
+        }
 
 
       $.ajax({
@@ -103,11 +111,15 @@ var checkOnline = function checkOnlineF(resultCallback, options_, jQueryXhrFailA
         url: ajaxUrl
       })
       .done(function onlineCheckDone(resp) {
-        if (resp === 'online') {
-          resultCallback(true); //ZOMG ONLINE
-        } else {
-          resultCallback(false);
-        }
+          var online = (typeof resp.online !== "undefined" && resp.online !== null) && resp.online || false;
+          resultCallback(online);
+        // Chris: I don't understand this. Corectly formed JSON will get you a response object?
+        // if (resp === 'online') {
+          //if (typeof resp.online !== "undefined" && resp.online !== null) 
+          //resultCallback(true); //ZOMG ONLINE
+        //} else {
+        //  resultCallback(false);
+       //}
       })
       .fail(function onlineCheckFail() {
         // We might not be technically "offline" if the error is not a timeout, but

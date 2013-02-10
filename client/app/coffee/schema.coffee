@@ -2,54 +2,15 @@
 # schema.coffee
 #
 
-class schemaApplication
-    @appBootContext = undefined
-
-    constructor: (appBootContext_) ->
-        @appBootContext = appBootContext_
-        @
-
-    run: ->
-        bodyElement = $("body")
-        bodyElement.html ""
-        Encapsule.view.widget.logo.draw(bodyElement, Encapsule.view.widget.logo.optionsDefault)
-
-        # Setup closure
-        blipper = @appBootContext.blipper
-
-        # Acknowledge page loaded
-        blipper.blip("beep")
-
-        # Then announce
-        setTimeout((-> blipper.blip "update-complete"), 1000)
-
-        # Set background
-        blipper.blip("regen")
-        setTimeout((-> blipper.blip "regen-abort"), 6800)
-     
-
-        # Set the heart beat beacon
-        setInterval((-> blipper.blip "heartbeat"), 60000)
-
-        Encapsule.audio.widget.util.blipAtRandom blipper, "beep4", 1000, 7000
-
-
-
-
 
 $ ->
     try
-        bootstrapperOptions = {
 
+        Encapsule.core.bootstrapper.run {
             onBootstrapComplete: (bootstrapperStatus_) ->
                 Console.message("onBootstrapperComplete with status=#{bootstrapperStatus_}")
-
-
         }
-
-        Encapsule.core.bootstrapper.run bootstrapperOptions
-
-        return
+        return @
 
 
 
