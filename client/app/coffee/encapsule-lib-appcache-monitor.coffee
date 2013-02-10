@@ -1,3 +1,20 @@
+###
+
+  http://schema.encapsule.org/schema.html
+
+  A single-page HTML5 application for creating, visualizing, and editing
+  JSON-encoded Soft Circuit Description Language (SCDL) models.
+
+  Copyright 2013 Encapsule Project, Copyright 2013 Chris Russell
+
+  Distributed under the terms of the Boost Software License Version 1.0
+  See included license.txt or http://www.boost.org/LICENSE_1_0.txt
+
+  Sources on GitHub: https://github.com/Encapsule-Project/schema
+
+  Visit http://www.encapsule.org for more information and happy hacking.
+
+###
 #
 # encapsule-appcache-monitor.coffee
 #
@@ -29,8 +46,11 @@ class namespaceBoot.AppCacheMonitor
         else
             @status = "offline"
             @appCallbacks.onOffline()
+    onObsolete: =>
+        @status = "obsolete"
+        @appCallbacks.onObsolete()
     onCached: =>
-        @statatus = "cached"
+        @status = "cached"
         @appCallbacks.onCached(@fileCount)
     onNoUpdate: =>
         @status = "noupdate"
@@ -41,14 +61,15 @@ class namespaceBoot.AppCacheMonitor
 
     constructor: (callbacks_) ->
         @status = "initializing"
-
         if not (callbacks_? and callbacks_)
             @status = "failed"
             @error = "You must specifiy a callbacks object."
             throw @error
+
         @appCallbacks = callbacks_
 
         cache = window.applicationCache
+
         if not (cache? and cache)
             @status = "failed"
             @error = "Your browser does not appear to support HTML5 application cache."
@@ -57,6 +78,10 @@ class namespaceBoot.AppCacheMonitor
         @status = "hookingEvents"
 
         try
+            #
+            # Reference: http://www.whatwg.org/specs/web-apps/current-work/#applicationcache
+            #
+
             # MONITOR INITIAL STATE
 
             #
@@ -124,9 +149,17 @@ class namespaceBoot.AppCacheMonitor
             #
             cache.addEventListener "error", @onError, false
 
+            # onObsolete is called if the request to retrieve the app cache manifest file from
+            # the server returned an HTTP status 404 or 408 code. In the case of a 404 it's likely
+            # that the deployed application image on the server is being updated. In the case of a
+            # 408, it's likely that the server is temporarily overloaded. In either case the 
             #
-            # onOffline is a "virtual" event derived from the onError event and back history.
-            # See notes on onError above for details.
+            cache.addEventListener "obsolete", @onObsolete, false
+
+            #
+            # "onOffline" is a "virtual" event supported by the AppCacheMonitor. It is actually
+            # derived from cache.onError as explained above and is not actually added as an event
+            # to the cache object.
             #
 
             #

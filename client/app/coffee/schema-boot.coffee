@@ -69,10 +69,14 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd(" <strong>OH SNAP!</strong>")
             Console.messageRaw("<h3>attention please</h3>")
             Console.messageRaw("<p>There has been a disturbance in the force.</p>")
-            Console.messageRaw("<p>Please refresh your browser to try again.</p>")
-            Console.messageRaw("<p>If the problem persists, I've been abducted. Please notify the authorities.<p>")
-            Console.messageRaw("<p>More seriously, if you absolutely can't get by PHASE 2 bootstrap, please send me an e-mail.</p>")
+            Console.messageRaw("<p>Please refresh this page to try try again.</p>")
             appCacheTerminalState = "error"
+        , onObsolete: ->
+            Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
+            Console.messageRaw("<h3>attention please</h3>")
+            Console.messageRaw("<p>An updated version of #{appName} is required to proceed.</p>")
+            Console.messageRaw("<p>Sorry to inconvenience you. The update should be available shortly.</p>")
+            Console.messageRaw("<p>Please refresh this page to check for update.</p>")
         , onOffline: ->
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
@@ -92,7 +96,10 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.messageRaw("<h2>applying update</h2>")
             # setting the appCacheTerminalState is pointless in this case.
-            setTimeout ( -> window.location.reload(true) ), 2000
+            setTimeout ( -> 
+                window.applicationCache.swapCache()
+                window.location.reload(true) )
+                , 2000
         }
     appCacheMonitor = new Encapsule.core.boot.AppCacheMonitor(appCacheCallbacks)
 
