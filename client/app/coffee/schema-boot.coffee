@@ -60,11 +60,13 @@ phase2 = (bootstrapperOptions_) ->
         onChecking: ->
             Console.messageStart("Checking origin server for app udpates: ")
         , onDownloading: ->
+            $("#idConsole").show()
             Console.messageEnd("<strong>Updating</strong>")
             Console.messageStart("files ")
         , onProgress: (fileCount_) ->
             Console.messageRaw(".")
         , onError: ->
+            $("#idConsole").show()
             phase2Out.appCacheMonitorState = "error"
             Console.messageEnd(" <strong>OH SNAP!</strong>")
             Console.messageRaw("<h3>attention please</h3>")
@@ -72,6 +74,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw("<p>Please refresh this page to try try again.</p>")
             phase2Out.appCacheTerminalState = "error"
         , onObsolete: ->
+            $("#idConsole").show()
             phase2Out.appCacheMonitorState = "obsolete"
             Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
             Console.messageRaw("<h3>attention please</h3>")
@@ -95,9 +98,11 @@ phase2 = (bootstrapperOptions_) ->
             Console.message("No updates were necessary.")
             phase3(bootstrapperOptions_)
         , onUpdateReady: (fileCount_) ->
+            $("#idConsole").show()
             phase2Out.appCacheMonitorState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.messageRaw("<h2>applying update</h2>")
+            $("#idConsole").fadeOut(2000)
             setTimeout ( -> 
                 window.applicationCache.swapCache()
                 window.location.reload(true) )

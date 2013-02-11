@@ -6,7 +6,6 @@ class window.Console
     @init: => 
         $("#idConsole").html(
             "<div id=\"idClearConsole\"
-            class=\"classInvisibleDivContainer\"
             style=\"float: right;\">
             <button id=\"idButtonClearConsole\"
             class=\"button blue medium\">
