@@ -12,7 +12,7 @@ echo -----------------------------------------------------------------
 echo -----------------------------------------------------------------
 
 # These identifiers should never change.
-app_name=schema.encapsule.org
+app_name="Encapsule Schema"
 app_uuid="{56611225-be91-40cf-b9b8-5c7b8a6c6f3d}"
 
 # These should be tweaked prior to deployment. Note that the appcache
@@ -20,12 +20,10 @@ app_uuid="{56611225-be91-40cf-b9b8-5c7b8a6c6f3d}"
 # thus always ensures a appcache refresh. However, these contants should
 # be refreshed in order to provide meaning to server logfiles (please).
 #
-app_version="0.10"
+app_version="0.11"
 app_release_name="Amapá"
 app_release_fun_url="http://en.wikipedia.org/wiki/Amap%C3%A1"
-app_version_uuid="bcdcee5f-ae59-4db8-99e4-3f0fc0b3b590"
-
-
+app_version_uuid="eacb862a-62c3-42f1-9318-091f3b99defa"
 
 app_builder=$*
 app_build_host=`hostname`
@@ -123,6 +121,7 @@ echo $y $x $t by $app_builder >> $build_log
 echo . >> $build_log
 echo ---
 echo "// encapsule-build.js (generated)" > $build_id_js
+
 echo "var appPackageId = \""$app_package_id"\";" >> $build_id_js
 echo "var appName = \""$app_name"\";" >> $build_id_js
 echo "var appId = \""$app_uuid"\";" >> $build_id_js
@@ -133,8 +132,14 @@ echo "var appReleaseId = \""$app_version_uuid"\";" >> $build_id_js
 echo "var appBuildId = \""$app_build_uuid"\";" >> $build_id_js
 echo "var appBuilder = \""$app_builder"\";" >> $build_id_js
 echo "var appBuildTime = \""$app_build_date"\";" >> $build_id_js
-echo "var appCacheManifestUrl = \""$build_appcache_manifest"\";" >> $build_id_js
-echo "var appBuildLogUrl = \""$build_log"\";" >> $build_id_js
+echo "var appCacheManifestUrl = \"schema.appcache\";" >> $build_id_js
+echo "var appCopyright = \"Copyright 2013 Encapsule Project. Copyright 2013 Chris Russell\";" >> $build_id_js
+echo "var appLicense = \"Boost Software License v1.0\";" >> $build_id_js
+echo "var appLicenseUrl = \"http://www.boost.org/LICENSE_1_0.txt\";" >> $build_id_js
+echo "var appGitHubRepoName = \"encapsule/schema\";" >> build_is_js
+echo "var appGitHubRepoUrl = \"https://github.com/Encapsule/schema\";" >> $build_id_js
+echo "var appBlogName = \"Encapsule Project Blog\";" >> $build_id_js
+echo "var appBlogUrl = \"http://blog.encapsule.org\";" >> $build_id_js
 
 cd $schema_client_app_coffee
 echo =================================================================

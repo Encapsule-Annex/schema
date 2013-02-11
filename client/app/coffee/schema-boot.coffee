@@ -129,7 +129,7 @@ phase3 = (bootstrapperOptions_) ->
         )
 
     checkOnlineFunction()
-    setInterval ( -> checkOnlineFunction() ), 10000
+    setInterval ( -> checkOnlineFunction() ), 10 * 60 * 1000
 
     # We're done with bootrapping?
     bootstrapperOptions_.onBootstrapComplete "Everything is going extremely well."    

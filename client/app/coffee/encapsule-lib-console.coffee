@@ -11,17 +11,17 @@ class window.Console
             <button id=\"idButtonClearConsole\"
             class=\"button blue medium\">
             Clear</button></div>
-
-            <div style=\"\">
-                <div style=\"float: left;\"><img src=\"img/encapsule-logo-48x48.png\" width=\"48\" height=\"48\"></div>
-                <div style=\"float: left;\">
-                    <span style=\"font-size: 20pt; font-weight: normal;\">#{appName} <a href=\"#{appReleaseNameFunUrl}\" title=\"What's an #{appReleaseName}?\" target=\"_blank\">#{appReleaseName}</a> v#{appVersion}</span><br>
-                    <span style=\"font-size: 9pt; padding-top: 10px;\">Build: #{appBuildTime} // Builder: #{appBuilder} // 
-                    [ <a href=\"https://github.com/Encapsule/schema\" title=\"Encapsule Project on GitHub\">GitHub</a> ]
-                    [ <a href=\"http://blog.encapsule.org\" title=\"Encapsule Project Blog\">Blog</a> ]</span>
-                </div>
-                <div style=\"border-bottom: 1px solid black; clear: both;\"></div>
-            </div><br>"
+            <h1>#{appName} v#{appVersion} (\"#{appReleaseName}\" release)</h1>
+            <p>
+            #{appCopyright} //
+            Published under the <a href=\"#{appLicenseUrl}\" title=\"Read the #{appLicense} text...\" target=\"_blank\">#{appLicense}</a> //
+            [ <a href=\"https://github.com/Encapsule/schema\" title=\"Encapsule Project on GitHub\" target=\"_blank\">GitHub</a> ]
+            [ <a href=\"http://blog.encapsule.org\" title=\"Encapsule Project Blog\" target=\"_blank\">Blog</a> ] 
+            <p>
+            <p>
+            Released #{appBuildTime} by <a href=\"mailto:#{appBuilder}\">#{appBuilder}</a>
+            [ Build ID: #{appBuildId} ]
+            </p>"
             )
 
         $("#idButtonClearConsole").click( ->

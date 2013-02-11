@@ -1,7 +1,6 @@
 body
 {
 overflow: auto;
-background-color: #CCCCCC;
 margin: 0px; padding: 0px;
 // background-image: url('../img/encapsule-blue-circuit-bg-1920x1440.jpg');
 }
@@ -13,16 +12,6 @@ margin: 10px;
 padding: 0px;
 }
 
-#idBootConsoleLogo
-{
-border: 1px solid #CCCCCC;
-}
-
-#idBootConsoleLogoText
-{
-font-family: Verdana, Arial;
-}
-
 #idConsole
 {
 overflow: auto;
@@ -30,8 +19,11 @@ font-family: Lucida Console, Courier;
 font-size: 8pt;
 spacing: 5px;
 padding: 10px;
-color: black;
+color: #666666;
 }
 
+#idConsole h1 { color: #0099FF; }
+#idConsole h2 { color: red; font-size: 18pt; font-weight: bold;}
+#idConsole h3 { color: #00CC66; }
 
 
