@@ -54,7 +54,7 @@ phase2 = (bootstrapperOptions_) ->
     #
 
     phase2Out = bootstrapperOptions_.phase2 = {}
-    appCacheTerminalState = phase2Out.appCacheMonitorTerminalState = undefined
+    phase2Out.appCacheMonitorState = "initializing"
 
     appCacheCallbacks = {
         onChecking: ->
@@ -65,37 +65,39 @@ phase2 = (bootstrapperOptions_) ->
         , onProgress: (fileCount_) ->
             Console.messageRaw(".")
         , onError: ->
+            phase2Out.appCacheMonitorState = "error"
             Console.messageEnd(" <strong>OH SNAP!</strong>")
             Console.messageRaw("<h3>attention please</h3>")
             Console.messageRaw("<p>There has been a disturbance in the force.</p>")
             Console.messageRaw("<p>Please refresh this page to try try again.</p>")
-            appCacheTerminalState = "error"
+            phase2Out.appCacheTerminalState = "error"
         , onObsolete: ->
+            phase2Out.appCacheMonitorState = "obsolete"
             Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
             Console.messageRaw("<h3>attention please</h3>")
             Console.messageRaw("<p>An updated version of #{appName} is required to proceed.</p>")
             Console.messageRaw("<p>Sorry to inconvenience you. The update should be available shortly.</p>")
             Console.messageRaw("<p>Please refresh this page to check for update.</p>")
         , onOffline: ->
+            phase2Out.appCacheMonitorState = "offline"
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
-            appCacheTerminaState = "offline"
             phase3(bootstrapperOptions_)
         , onCached: (fileCount_) ->
+            phase2Out.appCacheMonitorState = "cached"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.message("<strong>The application has been installed!</strong>")
-            appCacheTerminalState = "cached"
             phase3(bootstrapperOptions_)
         , onNoUpdate: ->
+            phase2Out.appCacheMonitorState = "noupdate"
             Console.messageEnd("<strong>No update<strong>")
             Console.message("The most recent build of #{appName} is already cached locally for offline access.");
             Console.message("No updates were necessary.")
-            appCacheTerminalState = "noupdate"
             phase3(bootstrapperOptions_)
         , onUpdateReady: (fileCount_) ->
+            phase2Out.appCacheMonitorState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.messageRaw("<h2>applying update</h2>")
-            # setting the appCacheTerminalState is pointless in this case.
             setTimeout ( -> 
                 window.applicationCache.swapCache()
                 window.location.reload(true) )
@@ -108,7 +110,7 @@ phase3 = (bootstrapperOptions_) ->
     Console.messageRaw("<h3>BOOTSTRAP PHASE 3</h3>")      
 
     phase3Out = bootstrapperOptions_.phase3 = {}
-    originServerOnline = phase3Out.originServerOnline = false
+    phase3Out.originServerOnline = false
     blipper = phase3Out.blipper = Encapsule.schema.widget.audioTheme.create($("body"))
 
     checkOnlineOptions = {
@@ -121,7 +123,7 @@ phase3 = (bootstrapperOptions_) ->
     checkOnlineFunction = ( ->
 
         checkOnline ((statusIn_) -> 
-            originServerOnline = statusIn_
+            phase3Out.originServerOnline = statusIn_
             if statusIn_
                 blipper.blip "blip"
             else
@@ -133,7 +135,7 @@ phase3 = (bootstrapperOptions_) ->
     checkOnlineFunction()
     onlineCheckPeriodMs = 10 * 60 * 1000
     Console.message("Online status will be checked periodically every #{onlineCheckPeriodMs / 60000} minutes.")
-    setInterval ( -> checkOnlineFunction() ), 10 * 60 * 1000
+    setInterval ( -> checkOnlineFunction() ), onlineCheckPeriodMs
 
     # We're done with bootrapping?
     bootstrapperOptions_.onBootstrapComplete "Everything is going extremely well."    
