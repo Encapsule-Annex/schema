@@ -40,7 +40,8 @@ phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
     # pass through.
 
     #onPhaseComplete_()
-    phase2(bootstrapperOptions_)
+    bootstrapperOptions = bootstrapperOptions_
+    phase2(bootstrapperOptions)
 
 phase2 = (bootstrapperOptions_) ->
     Console.messageRaw("<h3>BOOTSTRAP PHASE 2</h3>")
@@ -116,25 +117,22 @@ phase3 = (bootstrapperOptions_) ->
         #pingArgs: "?appBuildId=#{appBuildId}&pingTime=#{Encapsule.util.getEpochTime()}"
         }
 
-    checkOnlineFunction = ((statusOut_) ->
-        #statusOut = statusOut_
-        #blipper = blipper
+    checkOnlineFunction = ( ->
+
         checkOnline ((statusIn_) -> 
-            statusOut = statusIn_
-            if statusOut
+            originServerOnline = statusIn_
+            if statusIn_
                 blipper.blip "blip"
             else
                 blipper.blip "heartbeat"
             ), checkOnlineOptions
         )
 
+    checkOnlineFunction()
+    setInterval ( -> checkOnlineFunction() ), 10000
 
-    checkOnlineFunction originServerOnline
-
-    setInterval ( -> checkOnlineFunction(originServerOnline) ), 15000
-
-    blipper.blip "heartbeat"
-    
+    # We're done with bootrapping?
+    bootstrapperOptions_.onBootstrapComplete "Everything is going extremely well."    
 
 class namespaceCore.bootstrapper
     
