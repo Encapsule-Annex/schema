@@ -88,7 +88,8 @@ phase2 = (bootstrapperOptions_) ->
             phase3(bootstrapperOptions_)
         , onNoUpdate: ->
             Console.messageEnd("<strong>No update<strong>")
-            Console.message("You have the latest build schema #{appReleaseName} build installed.")
+            Console.message("The most recent build of #{appName} is already cached locally for offline access.");
+            Console.message("No updates were necessary.")
             appCacheTerminalState = "noupdate"
             phase3(bootstrapperOptions_)
         , onUpdateReady: (fileCount_) ->
@@ -128,7 +129,10 @@ phase3 = (bootstrapperOptions_) ->
             ), checkOnlineOptions
         )
 
+    Console.message("Checking online status.")
     checkOnlineFunction()
+    onlineCheckPeriodMs = 10 * 60 * 1000
+    Console.message("Online status will be checked periodically every #{onlineCheckPeriodMs / 60000} minutes.")
     setInterval ( -> checkOnlineFunction() ), 10 * 60 * 1000
 
     # We're done with bootrapping?

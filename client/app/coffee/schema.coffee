@@ -7,7 +7,9 @@ namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
 
 @Encapsule.app.boot = {
     onBootstrapComplete: (bootstrapperStatus_) ->
-        Console.message("onBootstrapperComplete with status=#{bootstrapperStatus_}")
+        Console.messageRaw("<h3>APP PRE-BOOT</h3>")
+        Console.message("onBootstrapperComplete has been called with status=\"<strong>#{bootstrapperStatus_}</strong>\"")
+        Console.message("Instantiate and invoke your main application logic here...")
     }
 
 $ ->
