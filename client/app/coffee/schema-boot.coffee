@@ -69,7 +69,7 @@ phase2 = (bootstrapperOptions_) ->
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "error"
             Console.messageEnd(" <strong>OH SNAP!</strong>")
-            Console.messageRaw("<h3>attention please</h3>")
+            Console.messageRaw("<h2>attention please</h2>")
             Console.messageRaw("<p>There has been a disturbance in the force.</p>")
             Console.messageRaw("<p>Please refresh this page to try try again.</p>")
             phase2Out.appCacheTerminalState = "error"
@@ -77,10 +77,10 @@ phase2 = (bootstrapperOptions_) ->
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "obsolete"
             Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
-            Console.messageRaw("<h3>attention please</h3>")
-            Console.messageRaw("<p>An updated version of #{appName} is required to proceed.</p>")
-            Console.messageRaw("<p>Sorry to inconvenience you. The update should be available shortly.</p>")
-            Console.messageRaw("<p>Please refresh this page to check for update.</p>")
+            Console.messageRaw("<h2>attention please</h2>")
+            Console.messageRaw("<p>We're sorry to inconvience you!</p>")
+            Console.messageRaw("<p>Encapsule Project has issued a service advisory for #{appName} v#{appVersion} build ID #{appBuildId} and temporarily suspended service.</p>")
+            Console.messageRaw("<p>Please visit <a href=\"#{appBlogUrl}\" title=\"#{appBlogName}\">#{appBlogName}</a> for the news and advisories.</p>")
         , onOffline: ->
             phase2Out.appCacheMonitorState = "offline"
             Console.messageEnd("<strong>OFFLINE</strong>");
@@ -90,7 +90,11 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheMonitorState = "cached"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.message("<strong>The application has been installed!</strong>")
-            phase3(bootstrapperOptions_)
+            Console.messageRaw("<h2>app cached</h2>")
+            $("#idConsole").fadeOut(2000)
+            setTimeout ( ->
+                phase3(bootstrapperOptions_) )
+                , 2000
         , onNoUpdate: ->
             phase2Out.appCacheMonitorState = "noupdate"
             Console.messageEnd("<strong>No update<strong>")
@@ -101,7 +105,7 @@ phase2 = (bootstrapperOptions_) ->
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
-            Console.messageRaw("<h2>applying update</h2>")
+            Console.messageRaw("<h2>app cache updated</h2>")
             $("#idConsole").fadeOut(2000)
             setTimeout ( -> 
                 window.applicationCache.swapCache()

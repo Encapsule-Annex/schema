@@ -2,7 +2,7 @@ body
 {
 overflow: auto;
 margin: 0px; padding: 0px;
-// background-image: url('../img/encapsule-blue-circuit-bg-1920x1440.jpg');
+background-color: #6699CC;
 }
 
 #idConsole
@@ -13,13 +13,13 @@ font-family: Lucida Console, Courier;
 font-size: 8pt;
 spacing: 5px;
 padding: 10px;
-color: #666666;
-background-color: #DDEEFF;
+color: #000033;
+background-color: #77AADD;
 display: none; // displayed only as needed
 }
 
-#idConsole h1 { color: #0099FF; }
-#idConsole h2 { color: red; font-size: 18pt; font-weight: bold;}
-#idConsole h3 { color: #00CC66; }
+#idConsole h1 { color: white; }
+#idConsole h2 { color: yellow; font-size: 20pt; font-weight: bold;}
+#idConsole h3 { color: #00FF00; }
 
 
