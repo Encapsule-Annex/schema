@@ -15,8 +15,8 @@ class window.Console
             <p>
             #{appCopyright} //
             Published under the <a href=\"#{appLicenseUrl}\" title=\"Read the #{appLicense} text...\" target=\"_blank\">#{appLicense}</a> //
-            [ <a href=\"https://github.com/Encapsule/schema\" title=\"Encapsule Project on GitHub\" target=\"_blank\">GitHub</a> ]
-            [ <a href=\"http://blog.encapsule.org\" title=\"Encapsule Project Blog\" target=\"_blank\">Blog</a> ] 
+            [ <a href=\"#{appGitHubRepoUrl}\" title=\"#{appGitHubRepoName} repo on GitHub\" target=\"_blank\">GitHub repo #{appGitHubRepoName}</a> ]
+            [ <a href=\"#{appBlogUrl}\" title=\"Visit #{appBlogName}\" target=\"_blank\">#{appBlogName}</a> ] 
             <p>
             <p>
             Released #{appBuildTime} by <a href=\"mailto:#{appBuilder}\">#{appBuilder}</a>
