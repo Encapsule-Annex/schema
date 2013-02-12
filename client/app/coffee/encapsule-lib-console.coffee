@@ -5,22 +5,21 @@ class window.Console
 
     @init: => 
         $("#idConsole").html(
-            "<div id=\"idClearConsole\"
-            style=\"float: right;\">
-            <button id=\"idButtonClearConsole\"
-            class=\"button blue medium\">
-            Clear</button></div>
-            <h1>#{appName} v#{appVersion} (\"#{appReleaseName}\" release)</h1>
+            """
+            <div id="idClearConsole" style="float: right;">
+            <button id="idButtonClearConsole" class="button blue medium">Clear</button></div>
+            <h1>#{appName} v#{appVersion} ("#{appReleaseName}" release)</h1>
+            <p>#{appCopyright} // Published under the
+            <a href="#{appLicenseUrl}" title="Read the #{appLicense} text..." target="_blank">#{appLicense}</a>
+            // [ <a href="#{appGitHubRepoUrl}" title="#{appGitHubRepoName} repo on GitHub" 
+            target="_blank">GitHub repo #{appGitHubRepoName}</a> ]
+            [ <a href="#{appBlogUrl}" title="Visit #{appBlogName}" target="_blank">#{appBlogName}</a> ] 
+            </p>
             <p>
-            #{appCopyright} //
-            Published under the <a href=\"#{appLicenseUrl}\" title=\"Read the #{appLicense} text...\" target=\"_blank\">#{appLicense}</a> //
-            [ <a href=\"#{appGitHubRepoUrl}\" title=\"#{appGitHubRepoName} repo on GitHub\" target=\"_blank\">GitHub repo #{appGitHubRepoName}</a> ]
-            [ <a href=\"#{appBlogUrl}\" title=\"Visit #{appBlogName}\" target=\"_blank\">#{appBlogName}</a> ] 
-            <p>
-            <p>
-            Released #{appBuildTime} by <a href=\"mailto:#{appBuilder}\">#{appBuilder}</a>
+            Released #{appBuildTime} by <a href="mailto:#{appBuilder}">#{appBuilder}</a>
             [ Build ID: #{appBuildId} ]
-            </p>"
+            </p>
+            """
             )
 
         $("#idButtonClearConsole").click( ->
