@@ -57,11 +57,11 @@ class namespaceApp.Schema
             """
             <div id="idSchemaAppView">
             <div id="idAppPath" data-bind="text: samPath"></div>
-<div id="idJSONSourceViewer"><strong>SCDL Catalogue JSON</strong><pre data-bind="text: toJSON" /></div>
+<div id="idJSONSourceViewer" data-bind="with: scdlHost"><strong>SCDL Catalogue JSON</strong><pre data-bind="text: toJSON" /></div>
 
 <h1>SCDL Editor</h1>
 
-<div class="classScdlCatalogueHost">
+<div class="classScdlCatalogueHost" data-bind="with: scdlHost">
 <h2>Catalogue <button data-bind="click: resetCatalogue">Reset Catalogue</button></h2>
 
 <div data-bind="with: catalogueShim" class="classScdlCatalogueShim">
