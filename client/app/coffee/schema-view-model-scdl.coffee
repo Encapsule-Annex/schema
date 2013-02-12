@@ -97,14 +97,14 @@ class namespaceScdl.ViewModel_ScdlAssets
 class namespaceScdl.ViewModel_ScdlType
     constructor: ->
         Console.message("ViewModel_ScdlType::constructor")
-        @meta = ko.observable new ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
 
 
 
 class namespaceScdl.ViewModel_ScdlPin
     constructor: ->
         Console.message("ViewModel_ScdlPin::constructor")
-        @meta = ko.observable new ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
         @type = ko.observable undefined
 
         @resetPin = =>
@@ -117,7 +117,7 @@ class namespaceScdl.ViewModel_ScdlPin
 class namespaceScdl.ViewModel_ScdlTransition
     constructor: ->
         Console.message("ViewModel_ScdlTransition::constructor")
-        @meta = ko.observable new ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
         @targetState = ko.observable undefined
         @expression = ko.observable undefined
 
@@ -130,7 +130,7 @@ class namespaceScdl.ViewModel_ScdlTransition
 class namespaceScdl.ViewModel_ScdlState
     constructor: ->
         Console.message("ViewModel_ScdlState::constructor")
-        @meta = ko.observable new ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
         @enterAction = ko.observable undefined
         @exitAction = ko.observable undefined
         @transitions = ko.observableArray []
@@ -144,52 +144,52 @@ class namespaceScdl.ViewModel_ScdlState
 class namespaceScdl.ViewModel_ScdlMachine
     constructor: ->
         Console.message("ViewModel_ScldMachine::constructor")
-        @meta = ko.observable new ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
         @inputPins = ko.observableArray []
         @addInputPin = =>
             Console.message("ViewModel_ScdlMachine::addInputPin")
-            @inputPins.push new ViewModel_ScdlPin()
+            @inputPins.push new namespaceScdl.ViewModel_ScdlPin()
 
         @outputPins = ko.observableArray []
         @addOutputPin = =>
             Console.message("ViewModel_ScdlMachine::addOutputPin")
-            @outputPins.push new ViewModel_ScdlPin()
+            @outputPins.push new namespaceScdl.ViewModel_ScdlPin()
 
         @states = ko.observableArray []
 
         @addState = =>
             Console.message("ViewModel_ScdlMachine::addState")
-            @states.push new ViewModel_ScdlMachineState()
+            @states.push new namespaceScdl.ViewModel_ScdlMachineState()
 
 
 
 class namespaceScdl.ViewModel_ScdlSystem
     constructor: ->
         Console.message("ViewModel_ScdlSystem::constructor")
-        @meta = ko.observable new ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
 
 
 
 class namespaceScdl.ViewModel_ScdlCatalogue
     constructor: ->
         Console.message("ViewModel_ScdlCatalogue::constructor")
-        @meta = ko.observable new ViewModel_ScdlEntityMeta()
-        @assets = ko.observable new ViewModel_ScdlAssets()
+        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
+        @assets = ko.observable new namespaceScdl.ViewModel_ScdlAssets()
         @types = ko.observableArray []
         @machines = ko.observableArray []
         @systems = ko.observableArray []
 
         @addType = =>
             Console.message("ViewModel_ScdlCatalogue::addType")
-            @types.push new ViewModel_ScdlType()
+            @types.push new namespaceScdl.ViewModel_ScdlType()
 
         @addMachine = =>
             Console.message("ViewModel_ScdlCatalogue::addMachine")
-            @machines.push new ViewModel_ScdlMachine()
+            @machines.push new namespaceScdl.ViewModel_ScdlMachine()
 
         @addSystem = =>
             Console.message("ViewModel_ScdlCatalogue::addSystem")
-            @systems.push new ViewModel_ScdlSystem()
+            @systems.push new namespaceScdl.ViewModel_ScdlSystem()
 
         @resetCatalogue = =>
             Console.message("ViewModel_ScdlCatalogue::resetCatalogue")
@@ -226,7 +226,7 @@ class namespaceScdl.ViewModel_ScdlCatalogue
 class namespaceScdl.ViewModel_ScdlCatalogueShim
     constructor: ->
         Console.message("ViewModel_ScdlCatalogueShim::constructor")
-        @scdl_v1_catalogue = ko.observable new ViewModel_ScdlCatalogue()
+        @scdl_v1_catalogue = ko.observable new namespaceScdl.ViewModel_ScdlCatalogue()
 
 
         @resetCatalogue = =>
@@ -242,7 +242,7 @@ class namespaceScdl.ViewModel_ScdlCatalogueShim
 class namespaceScdl.ViewModel_ScdlCatalogueHost
     constructor: ->
         Console.message("ViewModel_ScdlCatalogueHost::constructor")
-        @catalogueShim = ko.observable new ViewModel_ScdlCatalogueShim()
+        @catalogueShim = ko.observable new namespaceScdl.ViewModel_ScdlCatalogueShim()
 
         @toJSON = ko.computed =>
             ko.toJSON @catalogueShim(), undefined, 1

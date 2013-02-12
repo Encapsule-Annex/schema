@@ -11,7 +11,8 @@ namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
 class namespaceApp.SchemaViewModel
     constructor: ->
         self = @
-        self.samPath = ko.observable "test"
+        self.samPath = ko.observable ""
+        self.scdlHost = ko.observable new Encapsule.app.viewmodel.scdl.ViewModel_ScdlCatalogueHost()
 
 
         sammyRouter = $.sammy( ->

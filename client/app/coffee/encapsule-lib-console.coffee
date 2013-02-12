@@ -54,6 +54,7 @@ class window.Console
             </div>"
         Console.messageRaw(errorMessage)
         @log("Encapsule:: #{errorException}")
+        $("#idConsole").show()
         alert(errorException)
 
 
