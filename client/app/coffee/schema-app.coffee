@@ -13,6 +13,7 @@ class namespaceApp.SchemaViewModel
         self = @
         self.samPath = ko.observable "test"
 
+
         sammyRouter = $.sammy( ->
             @get '', (context_) ->
                 self.samPath(context_.path)
@@ -23,7 +24,7 @@ class namespaceApp.SchemaViewModel
             @get '#/', (context_) ->
                 self.samPath(context_.path)
                 @
-            @get '#/hell', (context_) ->
+            @get '#/hello', (context_) ->
                 self.samPath(context_.path)
                 @
             )
