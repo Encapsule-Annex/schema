@@ -151,9 +151,9 @@ phase3 = (bootstrapperOptions_) ->
         checkOnline ((statusIn_) -> 
             phase3Out.originServerOnline = statusIn_
             if statusIn_
-                blipper.blip "blip"
+                blipper.blip "xindi-on"
             else
-                blipper.blip "heartbeat"
+                blipper.blip "xindi-off"
             ), checkOnlineOptions
         )
 

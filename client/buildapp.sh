@@ -12,7 +12,11 @@ echo -----------------------------------------------------------------
 echo -----------------------------------------------------------------
 
 # These identifiers should never change.
-app_name="Encapsule Schema"
+
+app_package_publisher="Encapsule Project"
+app_package_publisher_url="http://www.encapsule.org"
+
+app_name="Schema"
 app_uuid="{56611225-be91-40cf-b9b8-5c7b8a6c6f3d}"
 
 # These should be tweaked prior to deployment. Note that the appcache
@@ -20,6 +24,7 @@ app_uuid="{56611225-be91-40cf-b9b8-5c7b8a6c6f3d}"
 # thus always ensures a appcache refresh. However, these contants should
 # be refreshed in order to provide meaning to server logfiles (please).
 #
+
 app_version="0.13"
 app_release_name="Amapá"
 app_release_fun_url="http://en.wikipedia.org/wiki/Amap%C3%A1"
@@ -123,6 +128,8 @@ echo . >> $build_log
 echo ---
 echo "// encapsule-build.js (generated)" > $build_id_js
 
+echo "var appPackagePublisher = \""$app_package_publisher"\";" >> $build_id_js
+echo "var appPackagePublisherUrl = \""$app_package_publisher_url"\";" >> $build_id_js
 echo "var appPackageId = \""$app_package_id"\";" >> $build_id_js
 echo "var appName = \""$app_name"\";" >> $build_id_js
 echo "var appId = \""$app_uuid"\";" >> $build_id_js
