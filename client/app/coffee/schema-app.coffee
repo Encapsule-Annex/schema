@@ -30,6 +30,13 @@ class namespaceApp.SchemaViewModel
         try
             self = @
             self.samPath = ko.observable ""
+
+            self.navCore = ko.observable ( ->
+                self = @
+                self.hot = ko.observable "alpha control"
+                )()
+
+
             self.scdlHost = ko.observable new Encapsule.app.viewmodel.scdl.ViewModel_ScdlCatalogueHost()
 
             sammyRouter = $.sammy( ->
@@ -117,6 +124,12 @@ class namespaceApp.Schema
                 </div><!-- with: catalogueShim .classScdlCatalogueShim-->
                 </div><!-- classScdlCatalogHost -->
                 </div>
+
+
+                <div data-bind="text: navCore.hot">Huh what?</div>
+
+
+
                 """
                 )
         

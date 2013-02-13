@@ -263,19 +263,3 @@ class namespaceScdl.ViewModel_ScdlCatalogueHost
             catch errorException
                 Console.messageError(errorException)
 
-
-###
-$ ->
-
-    try
-        Console.init()
-        Console.message("Okay. We're starting to have some fun with this now :)")
-        
-        scdlCatalogueHost = new ViewModel_ScdlCatalogueHost();
-
-        # I believe this establishes the KO binding at the document level of the DOM
-        ko.applyBindings scdlCatalogueHost
-
-    catch errorException
-        Console.messageError(errorException)
-###
