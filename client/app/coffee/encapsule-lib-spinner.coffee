@@ -64,7 +64,7 @@ class namespaceWidget.spinner
             @embeddedSpinnerObject = new Spinner(options).spin(spinnerHostDN)
             spinnerJN.append($("""<img id="idSpinnerCore" src="img/core-yellow-128x128.png"
             style="margin-left: -64px; margin-top: -64px; 
-            opacity: 0.5">
+            opacity: 0.5; background-color: #77AADD; ">
             """))
             @enabled = true
 

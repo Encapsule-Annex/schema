@@ -8,7 +8,7 @@
 IndexIgnore .htaccess
 
 # Directory index customization
-DirectoryIndex index.html
+DirectoryIndex schema.html
 
 # Shut off access to directory listings
 # Options -Indexes
