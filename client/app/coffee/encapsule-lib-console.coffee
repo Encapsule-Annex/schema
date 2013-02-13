@@ -27,6 +27,7 @@ class window.Console
             """
             <div id="idClearConsole" style="float: right;">
             <button id="idButtonClearConsole" class="button blue medium">Clear</button></div>
+            <img src="img/core-seablue-72x72.png" style="float:left;">
             <h1>#{appName} v#{appVersion} ("#{appReleaseName}" release)</h1>
             <p>#{appCopyright} // Published under the
             <a href="#{appLicenseUrl}" title="Read the #{appLicense} text..." target="_blank">#{appLicense}</a>

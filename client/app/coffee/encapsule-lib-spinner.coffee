@@ -32,14 +32,14 @@ namespaceWidget = Encapsule.view.widget? and Encapsule.view.widget or @Encapsule
 
 optionsDefault = {
     lines: 7,
-    length: 0,
-    width: 20,
-    radius: 20,
+    length: 1,
+    width: 10,
+    radius: 3,
     corners: 0.5,
     rotate: 0,
-    trail: 100,
-    speed: 1.0,
-    color: "#99CCFF",
+    trail: 40,
+    speed: 1,
+    color: "#6699CC",
     shadow: off,
     hwaccel: on
     }
@@ -56,20 +56,28 @@ class namespaceWidget.spinner
     draw: (options_) ->
         if not @enabled
             options = options_? and options_ or @optionsDefault
-            targetDN = document.getElementById("idSpinner")
-            targetJN = $("#idSpinner")
-            targetJN.hide().fadeIn(1000)
-            @embeddedSpinnerObject = new Spinner(options).spin(targetDN)
+            spinnerJN = $("#idSpinner")
+            spinnerJN.html($("""<div id="idSpinnerHostContainer"></div>"""))
+            spinnerHostJN = $("#idSpinnerHostContainer")
+            spinnerHostDN = document.getElementById("idSpinnerHostContainer")
+            spinnerJN.hide().fadeIn(1000)
+            @embeddedSpinnerObject = new Spinner(options).spin(spinnerHostDN)
+            spinnerJN.append($("""<img id="idSpinnerCore" src="img/core-yellow-128x128.png"
+            style="margin-left: -64px; margin-top: -64px; 
+            opacity: 0.5">
+            """))
             @enabled = true
 
     cancel: ->
         if @enabled
             targetJN = $("#idSpinner")
             targetJN.fadeOut(2000)
-            embeddedSpinnerObject = @embeddedSpinnerObject     
+            embeddedSpinnerObject = @embeddedSpinnerObject
+            $("#idSpinnerCore").attr { src: "img/core-green-128x128.png" }   
             @enabled = false
             setTimeout( ( ->
                 embeddedSpinnerObject.stop()
+                $("#idSpinner").html("")
                 )
                 , 2000)
 
