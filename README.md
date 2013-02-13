@@ -9,7 +9,7 @@ Copyright: https://github.com/Encapsule/schema/blob/master/copyright.txt
 
 License: https://github.com/Encapsule/schema/blob/master/license.txt
 
-Visit Encapsule Project: http://blog.encapsule.org
+Visit Encapsule Project: http://blog.encapsule.org or follow @Encapsule on Twitter.
 
 Thank you for your interest in Schema!
 
