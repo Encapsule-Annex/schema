@@ -130,3 +130,6 @@ System: <span data-bind="text: $index"></span>
         ko.applyBindings(appViewModel)
 
 
+        Encapsule.app.boot.phase1.spinner.stop()
+
+

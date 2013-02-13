@@ -5,6 +5,8 @@ margin: 0px; padding: 0px;
 background-color: #6699CC;
 }
 
+.classCentered { position: fixed; top: 50%; left: 50% }
+
 #idConsole
 {
 z-index: 100;
@@ -22,6 +24,7 @@ display: none; // displayed only as needed
 #idConsole h2 { color: yellow; font-size: 20pt; font-weight: bold;}
 #idConsole h3 { color: #00FF00; }
 
+#idSpinner { z-index: 200; }
 
 #idJSONSourceViewer
 { float: right; margin: 0px; padding: 10px; border: 1px solid black; background-color: #99CCFF; opacity: 0.5;}

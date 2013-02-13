@@ -29,13 +29,14 @@ phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
     # Confirm the visitor's browser identity and reject unsupported browsers.
     # If unsupported browser display browser help UI
     # If supported browser proceed silently and immediately to phase 2
-         
+
+    phase1Out = bootstrapperOptions_.phase1 = {}
+    phase1Out.spinner = Encapsule.view.widget.spinner.draw()
+
     Console.init()
     Console.messageRaw("<h3>BOOTSTRAP PHASE 1</h3>")
     Console.log "#{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
     Console.log "#{appName}: #{appBuildTime} by #{appBuilder}"
-
-    phase1Out = bootstrapperOptions_.phase1 = {}
 
     phase1Out.userAgent = userAgent = navigator.userAgent
     browser = $.browser
