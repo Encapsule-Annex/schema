@@ -65,11 +65,14 @@ class window.Console
 
     @messageError: (errorException) =>
         errorMessage =
-            "<div style=\"margin: 5px; margin-top-15px; padding: 10px;
-             background-color: #FFEEDD; border: 5px solid red;\">
-             <strong>The application crashed due to an unhandled exception:</strong><br><br>
-             <span style=\"font-weight: bold; color:red\">#{errorException}</span><br>
-            </div>"
+            """
+            <h2>attention please</h2>
+            <h3>An unexpected error has occurred in #{appName} v#{appVersion} #{appReleaseName}.</h3>
+            <p>Exception detail:</p>
+            <div style="margin: 5px; margin-top-15px; padding: 10px; background-color: #FFEEDD;
+                border: 5px solid red;">#{errorException}</div>
+            """
+
         Console.messageRaw(errorMessage)
         @log("Encapsule:: #{errorException}")
         $("#idConsole").show()

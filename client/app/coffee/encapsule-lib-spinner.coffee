@@ -32,30 +32,45 @@ namespaceWidget = Encapsule.view.widget? and Encapsule.view.widget or @Encapsule
 
 optionsDefault = {
     lines: 7,
-    length: 1,
-    width: 18,
-    radius: 10,
+    length: 0,
+    width: 20,
+    radius: 20,
     corners: 0.5,
     rotate: 0,
     trail: 100,
-    speed: 0.7,
+    speed: 1.0,
     color: "#99CCFF",
     shadow: off,
     hwaccel: on
-
     }
 
-drawSpinner = (options_) ->
-    options = options_? and options_ or @optionsDefault
-    target = document.getElementById('idSpinner')
-    spinner = new Spinner(options).spin(target)
-
-
-cancelSpinner = ->
-     $("idSpinner").remove()
-
 class namespaceWidget.spinner
+    embeddedSpinnerObject: undefined
+    enabled: false
+
+    optionsDefault: optionsDefault
+   
     constructor: ->
- 
-    @optionsDefault: optionsDefault
-    @draw: drawSpinner
+        Console.message("Constructed a spinner wrapper object.")
+
+    draw: (options_) ->
+        if not @enabled
+            options = options_? and options_ or @optionsDefault
+            targetDN = document.getElementById("idSpinner")
+            targetJN = $("#idSpinner")
+            targetJN.hide().fadeIn(1000)
+            @embeddedSpinnerObject = new Spinner(options).spin(targetDN)
+            @enabled = true
+
+    cancel: ->
+        if @enabled
+            targetJN = $("#idSpinner")
+            targetJN.fadeOut(2000)
+            embeddedSpinnerObject = @embeddedSpinnerObject     
+            @enabled = false
+            setTimeout( ( ->
+                embeddedSpinnerObject.stop()
+                )
+                , 2000)
+
+

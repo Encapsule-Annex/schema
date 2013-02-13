@@ -31,7 +31,8 @@ phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
     # If supported browser proceed silently and immediately to phase 2
 
     phase1Out = bootstrapperOptions_.phase1 = {}
-    phase1Out.spinner = Encapsule.view.widget.spinner.draw()
+    phase1Out.spinner = new Encapsule.view.widget.spinner()
+    phase1Out.spinner.draw()
 
     Console.init()
     Console.messageRaw("<h3>BOOTSTRAP PHASE 1</h3>")

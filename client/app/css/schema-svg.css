@@ -1,0 +1,16 @@
+////
+// SCG CSS
+
+#idSchemaDiagram { margin: 0px; padding: 0px; }
+
+#idSchemaDiagramSVG { background-color: white; border-top: 1px solid #F0F0F0; border-left: 1px solid #F0F0F0;
+border-bottom: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC; }
+
+.classSchemaDiagramModels { }
+
+.classSchemaElementModel { fill: #FFEEDD; stroke: black; stroke-width: 0.25px; }
+
+.classSchemaElementLabelText { font-family: Courier; font-size: 8pt; fill: black; background-color: #FFEEDD; }
+
+.classSchemaElementLabelLine { stroke: #999999; stroke-width: 0.25px }
+

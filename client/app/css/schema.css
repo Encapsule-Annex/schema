@@ -1,9 +1,4 @@
-body
-{
-overflow: auto;
-margin: 0px; padding: 0px;
-background-color: #6699CC;
-}
+body { overflow: auto; margin: 0px; padding: 0px; background-color: #6699CC; }
 
 .classCentered { position: fixed; top: 50%; left: 50% }
 
@@ -20,79 +15,17 @@ background-color: #77AADD;
 display: none; // displayed only as needed
 }
 
+#idSchemaAppView { font-family: Verdana, Arial; font-size: 10pt; }
+
+#idJSONSourceViewer { float: right; margin: 0px; padding: 10px; border: 1px solid black; background-color: #99CCFF; opacity: 0.5; font-family: Courier; font-size: 8pt; }
+
 #idConsole h1 { color: white; }
 #idConsole h2 { color: yellow; font-size: 20pt; font-weight: bold;}
 #idConsole h3 { color: #00FF00; }
 
 #idSpinner { z-index: 200; }
 
-#idJSONSourceViewer
-{ float: right; margin: 0px; padding: 10px; border: 1px solid black; background-color: #99CCFF; opacity: 0.5;}
+.classTitleSiteName { font-family: Courier; font-size: 16pt; font-weight: bold; fill: #CCCCCC; }
 
-.classTitleSiteName
-{ font-family: Courier; font-size: 16pt; font-weight: bold; fill: #CCCCCC; }
-
-.classBodySection
-{ border: 1px solid #CCCCCC; margin-bottom: 10px; }
-
-#idSchemaDiagram
-{ margin: 0px; padding: 0px; }
-
-#idSchemaDiagramSVG
-{ background-color: white; border-top: 1px solid #F0F0F0; border-left: 1px solid #F0F0F0;
-border-bottom: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC; }
-
-.classSchemaDiagramModels
-{ }
-
-.classSchemaElementModel
-{ fill: #FFEEDD; stroke: black; stroke-width: 0.25px; }
-
-.classSchemaElementLabelText
-{ font-family: Courier; font-size: 8pt; fill: black; background-color: #FFEEDD; }
-
-.classSchemaElementLabelLine
-{ stroke: #999999; stroke-width: 0.25px }
-
-.classScdlCatalogueHost
-{ margin: 0px; padding: 10px; border: 1px solid black;}
-
-.classScdlCatalogueShim
-{ margin: 0px; padding: 0px;}
-
-.classScdlCatalogue
-{ margin: 0px; padding: 0px;}
-
-.classEditAreaMeta
-{ margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: white;}
-
-.classEditAreaAssets
-{ margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: white;}
-
-.classEditAreaTypes
-{ margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
-
-.classEditAreaMachines
-{ margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: #99CC00;}
-
-.classEditAreaSystems
-{ margin: 0px; padding: 10px; border: 1px solid black; background-color: #FF9900;}
-
-.classScdlTypes
-{ margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
-
-.classScdlMachines
-{ margin: 2px; padding: 2px; border: 0px solid black; background-color: #669900; }
-
-.classScdlSystems
-{ margin: 2px; padding: 2px; border: 0px solid black; background-color: #CC6600; }
-
-.classScdlType
-{ margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
-
-.classScdlMachine
-{ margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
-
-.classScdlSystem
-{ margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
+.classBodySection { border: 1px solid #CCCCCC; margin-bottom: 10px; }
 
