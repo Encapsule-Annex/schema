@@ -43,9 +43,9 @@ class namespaceApp.Schema
             document.title = "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName}"
             bodyElement = $("body")
 
-            appViewHtml = Encapsule.app.html.get()
-        
-            bodyElement.append appViewHtml
+            router = Encapsule.app.routes.install()
+
+            bodyElement.append Encapsule.app.html.get()
             appViewModel = new Encapsule.app.SchemaViewModel()
             ko.applyBindings(appViewModel)
 
