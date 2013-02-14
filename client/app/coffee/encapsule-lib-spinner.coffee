@@ -31,15 +31,15 @@ namespaceWidget = Encapsule.view.widget? and Encapsule.view.widget or @Encapsule
 # http://fgnass.github.com/spin.js/#?
 
 optionsDefault = {
-    lines: 7,
-    length: 1,
-    width: 10,
-    radius: 3,
-    corners: 0.5,
+    lines: 11,
+    length: 0,
+    width: 5,
+    radius: 7,
+    corners: 0,
     rotate: 0,
-    trail: 40,
-    speed: 1,
-    color: "#6699CC",
+    trail: 33,
+    speed: 1.0,
+    color: "#006600",
     shadow: off,
     hwaccel: on
     }
@@ -63,8 +63,11 @@ class namespaceWidget.spinner
             spinnerJN.hide().fadeIn(1000)
             @embeddedSpinnerObject = new Spinner(options).spin(spinnerHostDN)
             spinnerJN.append($("""<img id="idSpinnerCore" src="img/core-yellow-128x128.png"
-            style="margin-left: -64px; margin-top: -64px; 
-            opacity: 0.5; background-color: #77AADD; ">
+            style="margin-left: -65px; margin-top: -62px; 
+            opacity: 0.95; background-color: #4477AA;
+            -webkit-border-radius: 0.75em; -moz-border-radius: 0.75em; border-radius: 0.75em;
+            border: 2px solid #CCCCFF;
+            ">
             """))
             @enabled = true
 

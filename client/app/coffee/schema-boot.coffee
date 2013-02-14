@@ -126,10 +126,17 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.messageRaw("<h2>app cache updated</h2>")
             $("#idConsole").fadeOut(2000)
-            setTimeout ( -> 
-                window.applicationCache.swapCache()
-                window.location.reload(true) )
-                , 2000
+            setTimeout ( ->
+                try
+                    window.applicationCache.swapCache()
+                    window.location.reload(true)
+                catch exception
+                    Console.message("Well that's interesting... While attempting to swap in the newly updated application cache we caught an unexpected exception.")
+                    Console.message("I _believe_ this is exceptionally rare and occurs only when the app has previously been cached from a FQ path (e.g. http://schema.encapsule.org/schema.html) and is then accessed via a non-qualified URL (e.g. http://schema.encapsule.org).")
+                    Console.messageRaw("<p>If you encounter this error under different circumstances please let me know.</p>")
+                    Console.messageRaw("<p><strong>Note: you can typically recover from a DOM exception in this case by simply refreshing the page.</strong></p>")
+                    Console.messageError(exception)
+                ) , 2000
         }
     appCacheMonitor = new Encapsule.core.boot.AppCacheMonitor(appCacheCallbacks)
 
