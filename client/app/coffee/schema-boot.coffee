@@ -37,6 +37,8 @@ phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
     phase1Out.spinner = new Encapsule.view.widget.spinner()
     phase1Out.spinner.draw()
 
+    document.title = "#{appName}: booting..."
+
     Console.init()
     Console.messageRaw("<h3>BOOTSTRAP PHASE 1</h3>")
     Console.log "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
@@ -81,13 +83,17 @@ phase2 = (bootstrapperOptions_) ->
     appCacheCallbacks = {
         onChecking: ->
             Console.messageStart("Checking origin server for app udpates: ")
+            document.title = "#{appName}: checking for updates ..."
         , onDownloading: ->
+            document.title = "#{appName}: downloading updates..."
             $("#idConsole").show()
             Console.messageEnd("<strong>Updating</strong>")
             Console.messageStart("files ")
         , onProgress: (fileCount_) ->
+            document.title = "#{appName}: #{fileCount_} files downloaded ..."
             Console.messageRaw(".")
         , onError: ->
+            document.title = "#{appName}: application boot error!"
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "error"
             Console.messageEnd(" <strong>OH SNAP!</strong>")
@@ -96,6 +102,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw("<p>Please refresh this page to try try again.</p>")
             phase2Out.appCacheTerminalState = "error"
         , onObsolete: ->
+            document.title = "#{appName}: application package is locked!"
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "obsolete"
             Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
@@ -104,6 +111,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw("<p>Encapsule Project has issued a service advisory for #{appName} v#{appVersion} build ID #{appBuildId} and temporarily suspended service.</p>")
             Console.messageRaw("<p>Please visit <a href=\"#{appBlogUrl}\" title=\"#{appBlogName}\">#{appBlogName}</a> for the news and advisories.</p>")
         , onOffline: ->
+            document.title = "#{appName}: application cached offline"
             phase2Out.appCacheMonitorState = "offline"
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
@@ -114,10 +122,12 @@ phase2 = (bootstrapperOptions_) ->
             Console.message("<strong>The application has been installed!</strong>")
             Console.messageRaw("<h2>app cached</h2>")
             $("#idConsole").fadeOut(2000)
+            document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 phase3(bootstrapperOptions_) )
                 , 2000
         , onNoUpdate: ->
+            document.title = "#{appName}: application cached"
             phase2Out.appCacheMonitorState = "noupdate"
             Console.messageEnd("<strong>No update<strong>")
             Console.message("The most recent build of #{appName} is already cached locally for offline access.");
@@ -129,6 +139,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.messageRaw("<h2>app cache updated</h2>")
             $("#idConsole").fadeOut(2000)
+            document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 try
                     window.applicationCache.swapCache()
