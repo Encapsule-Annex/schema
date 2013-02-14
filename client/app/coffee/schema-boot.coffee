@@ -30,14 +30,17 @@ phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
     # If unsupported browser display browser help UI
     # If supported browser proceed silently and immediately to phase 2
 
+    bodyJN = $("body")
+    bodyJN.html($("""<div id="idSpinner" class="classCentered"></div><div id="idConsole"></div>"""))
+
     phase1Out = bootstrapperOptions_.phase1 = {}
     phase1Out.spinner = new Encapsule.view.widget.spinner()
     phase1Out.spinner.draw()
 
     Console.init()
     Console.messageRaw("<h3>BOOTSTRAP PHASE 1</h3>")
-    Console.log "#{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
-    Console.log "#{appName}: #{appBuildTime} by #{appBuilder}"
+    Console.log "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
+    Console.log "#{appName}: #{appBuildTime} by #{appBuilder} :: Thanks for using #{appName}. #{appPackagePublisherUrl}"
 
     phase1Out.userAgent = userAgent = navigator.userAgent
     browser = $.browser

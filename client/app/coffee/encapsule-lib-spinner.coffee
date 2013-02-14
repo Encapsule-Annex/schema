@@ -63,8 +63,8 @@ class namespaceWidget.spinner
             spinnerJN.hide().fadeIn(1000)
             @embeddedSpinnerObject = new Spinner(options).spin(spinnerHostDN)
             spinnerJN.append($("""<img id="idSpinnerCore" src="img/core-yellow-128x128.png"
-            style="margin-left: -65px; margin-top: -62px; 
-            opacity: 0.95; background-color: #4477AA;
+            style="margin-left: -66px; margin-top: -65px; 
+            opacity: 0.7; background-color: #4477AA;
             -webkit-border-radius: 0.75em; -moz-border-radius: 0.75em; border-radius: 0.75em;
             border: 2px solid #CCCCFF;
             ">

@@ -30,24 +30,8 @@ class namespaceApp.SchemaViewModel
         try
             self = @
             self.samPath = ko.observable ""
-
             self.scdlHost = ko.observable new Encapsule.app.viewmodel.scdl.ViewModel_ScdlCatalogueHost()
 
-            sammyRouter = $.sammy( ->
-                @get '', (context_) ->
-                    self.samPath(context_.path)
-                    @
-                @get '#', (context_) ->
-                    self.samPath(context_.path)
-                    @
-                @get '#/', (context_) ->
-                    self.samPath(context_.path)
-                    @
-                @get '#/hello', (context_) ->
-                    self.samPath(context_.path)
-                    @
-                )
-            sammyRouter.run()
         catch exception
             Console.messageError(exception)
 
@@ -65,6 +49,19 @@ class namespaceApp.Schema
                 <div id="idJSONSourceViewer" data-bind="with: scdlHost"><strong>SCDL Catalogue JSON</strong><pre data-bind="text: toJSON" /></div>
 
                 <h1>SCDL Editor</h1>
+
+[ <a href="#/">#/<a> ]
+[ <a href="#/does">#/does<a> ]
+[ <a href="#/eat">#/eat<a> ]
+[ <a href="#/oats">#/oats<a> ]
+[ <a href="#/and">#/and<a> ]
+[ <a href="#/cows">#/cows<a> ]
+[ <a href="#/little">#/little<a> ]
+[ <a href="#/little">#/little<a> ]
+[ <a href="#/little">#/little<a> ]
+[ <a href="#/little/lambs">#/little/lambs<a> ]
+
+
 
                 <div class="classScdlCatalogueHost" data-bind="with: scdlHost">
                 <h2>Catalogue <button data-bind="click: resetCatalogue">Reset Catalogue</button></h2>
