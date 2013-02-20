@@ -29,7 +29,7 @@ class window.Console
             <button id="idButtonHideConsole" class="button orange medium">Hide</button>
             <button id="idButtonClearConsole" class="button blue medium">Clear</button></div>
             <img src="img/core-seablue-48x48.png" style="float:left; margin-right: 10px;">
-            <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName}</h1>
+            <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} (#{appReleasePhase})</h1>
             <div style="clear: both;"></div>
             <p>#{appCopyright} // Published under the
             <a href="#{appLicenseUrl}" title="Read the #{appLicense} text..." target="_blank">#{appLicense}</a>
