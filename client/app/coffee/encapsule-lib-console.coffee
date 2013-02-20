@@ -28,8 +28,9 @@ class window.Console
             <div id="idClearConsole" style="float: right;">
             <button id="idButtonHideConsole" class="button orange medium">Hide</button>
             <button id="idButtonClearConsole" class="button blue medium">Clear</button></div>
-            <img src="img/core-seablue-72x72.png" style="float:left;">
-            <h1>#{appName} v#{appVersion} ("#{appReleaseName}" release)</h1>
+            <img src="img/core-seablue-48x48.png" style="float:left; margin-right: 10px;">
+            <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName}</h1>
+            <div style="clear: both;"></div>
             <p>#{appCopyright} // Published under the
             <a href="#{appLicenseUrl}" title="Read the #{appLicense} text..." target="_blank">#{appLicense}</a>
             // [ <a href="#{appGitHubRepoUrl}" title="#{appGitHubRepoName} repo on GitHub" 

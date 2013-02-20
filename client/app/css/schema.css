@@ -12,18 +12,19 @@ spacing: 5px;
 padding: 10px;
 color: #000033;
 background-color: #77AADD;
+border-top: 3px solid yellow; border-bottom: 3px solid yellow; 
 display: none; // displayed only as needed
 }
+
+#idConsole h1 { color: white; font-size: 14pt; text-shadow: black 0.1em 0.1em 0.2em}
+#idConsole h2 { color: yellow; font-size: 16pt; font-weight: bold; text-shadow: black 0.1em 0.1em 0.2em}
+#idConsole h3 { color: #CCCCFF; font-size: 10pt; text-shadow: black 0.1em 0.1em 0.2em}
+
 
 #idSchemaAppView { font-family: Verdana, Arial; font-size: 10pt; }
 
 #idJSONSourceViewer { float: right; margin: 0px; padding: 10px; border: 1px solid black; background-color: #99CCFF; opacity: 0.5; font-family: Courier; font-size: 8pt; }
 
-#idConsole { z-index: 100; border-top: 3px solid yellow; border-bottom: 3px solid yellow; }
-
-#idConsole h1 { color: white; }
-#idConsole h2 { color: yellow; font-size: 20pt; font-weight: bold;}
-#idConsole h3 { color: #00FF00; }
 
 #idSpinner { z-index: 200; }
 

@@ -47,7 +47,7 @@ class namespaceApp.Schema
             document.title = "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName}"
             bodyElement = $("body")
 
-            Console.messageRaw("<h3>APPLICATION STARTING</h3>")
+            Console.messageRaw("<h3>STARTING APPLICATION</h3>")
 
             router = new Encapsule.app.InPageHashRouter()
             router.setApplicationRouteCallback(applicationRouteCallback)

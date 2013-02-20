@@ -121,7 +121,7 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheMonitorState = "cached"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.message("<strong>The application has been installed!</strong>")
-            Console.messageRaw("<h2>app cached</h2>")
+            Console.messageRaw("<h2>#{appName} v#{appVersion} #{appReleaseName} INSTALLED</h2>")
             #$("#idConsole").fadeOut(2000)
             #$("#idConsole").fadeTo(2000, 0.6)
             document.title = "#{appName}: rebooting..."
@@ -139,7 +139,7 @@ phase2 = (bootstrapperOptions_) ->
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
-            Console.messageRaw("<h2>app cache updated</h2>")
+            Console.messageRaw("<h2>#{appName} v#{appVersion} #{appReleaseName} UPDATED</h2>")
             #$("#idConsole").fadeOut(2000)
             #$("#idConsole").fadeTo(2000, 0.6)
             document.title = "#{appName}: rebooting..."
