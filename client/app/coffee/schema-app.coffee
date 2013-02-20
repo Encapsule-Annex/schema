@@ -38,6 +38,10 @@ class namespaceApp.SchemaViewModel
 
 
 class namespaceApp.Schema
+
+    applicationRouteCallback = ->
+        Console.message("#{appName}'s main applicationRouteCallback has been called.")
+
     constructor: ->
         try
             document.title = "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName}"
@@ -46,6 +50,8 @@ class namespaceApp.Schema
             Console.messageRaw("<h3>APPLICATION STARTING</h3>")
 
             router = new Encapsule.app.InPageHashRouter()
+            router.setApplicationRouteCallback(applicationRouteCallback)
+            router.setApplicationRouteCallback(applicationRouteCallback)
 
             bodyElement.append Encapsule.app.html.get()
             appViewModel = new Encapsule.app.SchemaViewModel()
