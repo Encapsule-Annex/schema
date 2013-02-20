@@ -42,6 +42,13 @@ class namespaceApp.InPageHashRouter
     applicationRouteCallback = undefined
 
     allRoutes = ->
+        if document.location.hash == ""
+            # It's possible for the user to manipulate the URI, hit enter, and affect a route dispatch to
+            # a malformed route. For exmple, foobar.com/index.html# vs. foobar.com/index.html#/
+            # We consider this 'no route' and redirect back to #/
+            clientRouter.setRoute("")
+            return
+
         internalAllRoutesCallbackCount++
         if not initialRoute
             initialRoute = clientRouter.getRoute()
@@ -49,11 +56,11 @@ class namespaceApp.InPageHashRouter
         lastTriggeredRoute = clientRouter.getRoute()
         lastTriggeredLocation = document.location
         if applicationRouteCallback? and applicationRouteCallback
-            Console.message("#{appName} router: dispatching #{routerSequenceNumber} : #{document.location}")
+            Console.message("#{appName} router: dispatching #{routerSequenceNumber} : #{document.location.hash}")
             applicationRouteCallback(@)
             routerSequenceNumber++
         else
-            Console.message("#{appName} router: caching #{routerSequenceNumber} : #{document.location}")
+            Console.message("#{appName} router: caching #{routerSequenceNumber} : #{document.location.hash}")
 
     clientRoutes = {}
 
@@ -70,7 +77,13 @@ class namespaceApp.InPageHashRouter
     # by the contained Director.js instance. If a listener has been registered, the route is
     # dispatched immediately to the listener. If there is no active listener, the event is not
     # dispatched until the application calls the setApplicationRouteCallback method of this class.
-    # In the case of re-registration, the active 
+    #
+    # In the case of re-registration, the active route is re-dispatched to the newly registered
+    # listener. Note that the 'routerSequenceNumber' is not incremented when the route is dispatched
+    # in this case. 'routerSequenceNumber' should be used to chronoligically order the sequence of
+    # observed route changes. In the case of listener re-registration, an actual route change has
+    # not occurred. Rather, the newly registered listener is informed of the _last_ set route.
+    #
     clientOptions = {
         #before: onBefore,
         #on: allRoutes,
@@ -96,8 +109,8 @@ class namespaceApp.InPageHashRouter
         Console.message("#{appName} router: started.")
 
         if internalAllRoutesCallbackCount == 0
-            Console.message("#{appName} router: redirecting to default route 'boot'")
-            clientRouter.setRoute("boot")
+            Console.message("#{appName} router: redirecting to default route.")
+            clientRouter.setRoute("")
 
     setApplicationRouteCallback: (applicationRouteCallback_) ->
 
@@ -106,7 +119,8 @@ class namespaceApp.InPageHashRouter
 
         if applicationRouteCallback? or applicationRouteCallback
             Console.message("#{appName} router: re-registering application route callback.")
-            routerSequenceNumber--
+            if routerSequenceNumber > 0
+                routerSequenceNumber--
         else
             Console.message("#{appName} router: registering application route callback.")
 

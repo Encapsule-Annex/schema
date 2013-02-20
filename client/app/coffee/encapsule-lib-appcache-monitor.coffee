@@ -69,7 +69,6 @@ class namespaceBoot.AppCacheMonitor
         @appCallbacks = callbacks_
 
         cache = window.applicationCache
-
         if not (cache? and cache)
             @status = "failed"
             @error = "Your browser does not appear to support HTML5 application cache."
@@ -182,5 +181,28 @@ class namespaceBoot.AppCacheMonitor
             throw @error
 
         @status = "waiting"
+
+
+    stop: ->
+        cache = window.applicationCache
+        if not (cache? and cache)
+            @status = "failed"
+            @error = "Your browser does not appear to support HTML5 application cache."
+            throw @error
+        try
+            cache.removeEventListener "checking",  @onChecking
+            cache.removeEventListener "downloading", @onDownloading
+            cache.removeEventListener "progress", @onProgress
+            cache.removeEventListener "error", @onError
+            cache.removeEventListener "obsolete", @onObsolete
+            cache.removeEventListener "cached", @onCached
+            cache.removeEventListener "noupdate", @onNoUpdate
+            cache.removeEventListener "updateready", @onUpdateReady
+            @status = "stopped"
+        catch exception
+            throw "In stopAppCacheMonitor #{exception}"
+
+
+
 
 

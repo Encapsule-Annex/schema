@@ -155,11 +155,13 @@ phase2 = (bootstrapperOptions_) ->
                     Console.messageError(exception)
                 ) , 2000
         }
-    appCacheMonitor = new Encapsule.core.boot.AppCacheMonitor(appCacheCallbacks)
+    phase2Out.appCacheMonitor = new Encapsule.core.boot.AppCacheMonitor(appCacheCallbacks)
 
 phase3 = (bootstrapperOptions_) ->
 
-    Console.messageRaw("<h3>BOOTSTRAP PHASE 3</h3>")      
+    Console.messageRaw("<h3>BOOTSTRAP PHASE 3</h3>")
+
+    bootstrapperOptions_.phase2.appCacheMonitor.stop()   
 
     phase3Out = bootstrapperOptions_.phase3 = {}
     phase3Out.originServerOnline = false
