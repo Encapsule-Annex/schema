@@ -16,7 +16,7 @@ border-top: 3px solid yellow; border-bottom: 3px solid yellow;
 display: none; // displayed only as needed
 }
 
-#idConsole h1 { color: white; font-size: 14pt; text-shadow: black 0.1em 0.1em 0.2em}
+#idConsole h1 { color: white; font-size: 16pt; text-shadow: black 0.1em 0.1em 0.2em}
 #idConsole h2 { color: yellow; font-size: 16pt; font-weight: bold; text-shadow: black 0.1em 0.1em 0.2em}
 #idConsole h3 { color: #CCCCFF; font-size: 10pt; text-shadow: black 0.1em 0.1em 0.2em}
 

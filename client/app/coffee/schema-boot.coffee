@@ -21,9 +21,11 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 namespaceCore = Encapsule.core? and Encapsule.core or @Encapsule.core = {}
 
-phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
-    # APP BOOT PHASE 1 : Supported browser
+phase0 = (bootstrapperOptions_) ->
+    # APP BOOT PHASE 0 : Draw the boot UI and install the in-page hash router
     #
+    phase0Out = bootstrapperOptions_.phase0 = {}
+
     # Draw the boot UI
     # Initialize the debug console for this app instance
     # Confirm the visitor's browser identity and reject unsupported browsers.
@@ -33,23 +35,37 @@ phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
     bodyJN = $("body")
     bodyJN.html($("""<div id="idSpinner" class="classCentered"></div><div id="idConsole"></div>"""))
 
-    phase1Out = bootstrapperOptions_.phase1 = {}
-    phase1Out.spinner = new Encapsule.view.widget.spinner()
-    phase1Out.spinner.draw()
+    phase0Out = bootstrapperOptions_.phase0 = {}
+    phase0Out.spinner = new Encapsule.view.widget.spinner()
+    phase0Out.spinner.draw()
 
     document.title = "#{appName}: booting..."
 
     Console.init()
     Console.show()
-    Console.messageRaw("<h3>BOOTSTRAP PHASE 1</h3>")
+    Console.messageRaw("<h3>BOOTSTRAP PHASE 0</h3>")
     Console.log "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
     Console.log "#{appName}: #{appBuildTime} by #{appBuilder} :: Thanks for using #{appName}. #{appPackagePublisherUrl}"
 
+    phase0Out.router = new Encapsule.app.InPageHashRouter()
+    bootstrapperOptions = bootstrapperOptions_
+
+    phase0Out.router.setApplicationRouteCallback( (router_) ->
+        phase1(bootstrapperOptions)
+        )
+
+phase1 = (bootstrapperOptions_) ->
+    # APP BOOT PHASE 1 : Supported browser
+    #
+
+    phase1Out = bootstrapperOptions_.phase1 = {}
     phase1Out.userAgent = userAgent = navigator.userAgent
     browser = $.browser
     phase1Out.isChrome = isChrome = browser? and browser and browser.chrome? and browser.chrome or false
     phase1Out.isWebKit = isWebKit = browser? and browser and browser.webkit? and browser.webkit or false
     phase1Out.browserVersion = browserVersion = browser? and browser and browser.version? and browser.version or "unknown"
+
+    Console.messageRaw("<h3>BOOTSTRAP PHASE 1</h3>")
 
     Console.message("Your browser purports to be a \"<strong>#{userAgent}</strong>\"")
     Console.message("isChrome=#{isChrome} isWebKit=#{isWebKit} browserVersion=#{browserVersion}")
@@ -64,7 +80,6 @@ phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
     # Here's where we could bail and abort the bootstrap. For now we're just
     # pass through.
 
-    #onPhaseComplete_()
     bootstrapperOptions = bootstrapperOptions_
     phase2(bootstrapperOptions)
 
@@ -199,8 +214,9 @@ class namespaceCore.bootstrapper
     @run: (bootstrapperOptions_) ->
         if not bootstrapperOptions_? or not bootstrapperOptions_
             throw "You must specify a callback function to be called on success."
-        @phase1(bootstrapperOptions_, @phase2)
+        @phase0(bootstrapperOptions_)
 
+    @phase0: phase0
     @phase1: phase1
     @phase2: phase2
     @phase3: phase3

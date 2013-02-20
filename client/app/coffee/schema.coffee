@@ -22,7 +22,7 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
 
-@Encapsule.app.boot = {
+@Encapsule.app.bootOptions = {
     onBootstrapComplete: (bootstrapperStatus_) ->
         Console.messageRaw("<h3>BOOTSTRAP COMPLETE</h3>")
         Console.message("status=\"<strong>#{bootstrapperStatus_}</strong>\"")
@@ -31,7 +31,7 @@ namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
 
 $ ->
     try
-        Encapsule.core.bootstrapper.run Encapsule.app.boot
+        Encapsule.core.bootstrapper.run Encapsule.app.bootOptions
     catch exception
         Console.messageError(exception)
     @

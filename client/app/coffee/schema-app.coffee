@@ -49,15 +49,14 @@ class namespaceApp.Schema
 
             Console.messageRaw("<h3>STARTING APPLICATION</h3>")
 
-            router = new Encapsule.app.InPageHashRouter()
-            router.setApplicationRouteCallback(applicationRouteCallback)
-            router.setApplicationRouteCallback(applicationRouteCallback)
+            # Take over the applicationRouteCallback registration from the bootstrapper
+            Encapsule.app.bootOptions.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
 
             bodyElement.append Encapsule.app.html.get()
             appViewModel = new Encapsule.app.SchemaViewModel()
             ko.applyBindings(appViewModel)
 
-            Encapsule.app.boot.phase1.spinner.cancel()
+            Encapsule.app.bootOptions.phase0.spinner.cancel()
 
         catch exception
             Console.messageError(exception)
