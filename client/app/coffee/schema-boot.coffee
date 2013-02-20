@@ -40,6 +40,7 @@ phase1 = (bootstrapperOptions_, onPhaseComplete_) ->
     document.title = "#{appName}: booting..."
 
     Console.init()
+    Console.show()
     Console.messageRaw("<h3>BOOTSTRAP PHASE 1</h3>")
     Console.log "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
     Console.log "#{appName}: #{appBuildTime} by #{appBuilder} :: Thanks for using #{appName}. #{appPackagePublisherUrl}"
@@ -121,7 +122,8 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.message("<strong>The application has been installed!</strong>")
             Console.messageRaw("<h2>app cached</h2>")
-            $("#idConsole").fadeOut(2000)
+            #$("#idConsole").fadeOut(2000)
+            #$("#idConsole").fadeTo(2000, 0.6)
             document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 phase3(bootstrapperOptions_) )
@@ -138,7 +140,8 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheMonitorState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.messageRaw("<h2>app cache updated</h2>")
-            $("#idConsole").fadeOut(2000)
+            #$("#idConsole").fadeOut(2000)
+            #$("#idConsole").fadeTo(2000, 0.6)
             document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 try

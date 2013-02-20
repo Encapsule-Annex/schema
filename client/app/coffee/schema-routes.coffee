@@ -20,32 +20,63 @@
 #
 # In-page hash routing using Director.js
 #
+# This class is based on learnings from my Director.js test page, re-director.
+# See https://github.com/ChrisRus/re-director for background information.
+#
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
 
+class namespaceApp.InPageHashRouter
 
-hello = ->
-    alert "Hello!"
+    #
+    # class instance state
 
-allroutes = ->
-    alert "Hello all routes!"
+    clientRouter = undefined
+    routerSequenceNumber = 0
+    initialRoute = undefined;
+    initialLocation = undefined;
+    lastTriggeredRoute = undefined
+    lastTriggeredLocation = undefined
+    applicationRouteCallback = undefined
 
-class namespaceApp.routes
+    routeNotFound = ->
+        routerSequenceNumber++
+        if not initialRoute
+            initialRoute = clientRouter.getRoute()
+            initialLocation = document.location
+        lastTriggeredRoute = clientRouter.getRoute()
+        lastTriggeredLocation = document.location
+        if applicationRouteCallback? and applicationRouteCallback
+            applicationRouteCallback(this)
 
-    @install: ->
+    clientRoutes = {
+        # look Mom - no routes!
+        }
 
-        hello = ->
-            alert "Hello"
+    clientOptions = {
+        #before: onBefore,
+        #on: allRoutes,
+        #after: onAfter,
+        #once: onOnce,
+        notfound: routeNotFound,
+        async: false, # true or false (see re-director: async feature in Director.js isn't 100%)
+        strict: true, # true or false (we take 'strict' to limit noise)
+        recurse: false # "forward", "backward", or "false" (we take 'false' as 
+        html5history: false, # true/false (enabled use of HTML5 pushstate)
+        run_handler_in_init: false # true/false (we handle this case ourselves)
+        }
 
-        allroutes = ->
-            Console.log "all routes"
+    constructor: ->
 
-        routes = {
-            '/hello': hello
-            }
+        clientRouter = Router(clientRoutes)
 
-        router = Router(routes)
+        clientRouter.configure(clientOptions)
+        clientRouter.init()
 
-        router.configure { on: allroutes }
-        router.init()
+        if routerSequenceNumber == 0
+            clientRouter.setRoute('/#/')
+
+
+
+

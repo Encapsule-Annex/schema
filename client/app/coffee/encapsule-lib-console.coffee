@@ -26,6 +26,7 @@ class window.Console
         $("#idConsole").html(
             """
             <div id="idClearConsole" style="float: right;">
+            <button id="idButtonHideConsole" class="button orange medium">Hide</button>
             <button id="idButtonClearConsole" class="button blue medium">Clear</button></div>
             <img src="img/core-seablue-72x72.png" style="float:left;">
             <h1>#{appName} v#{appVersion} ("#{appReleaseName}" release)</h1>
@@ -46,6 +47,20 @@ class window.Console
             Console.init()
             Console.message("Console re-initialized.")
             )
+
+        $("#idButtonHideConsole").click( ->
+            Console.hide()
+            )
+
+    @show: () =>
+        consoleEl = $("#idConsole")
+        if consoleEl? and consoleEl
+            consoleEl.show()
+
+    @hide: () =>
+        consoleEl = $("#idConsole")
+        if consoleEl? and consoleEl
+            consoleEl.hide()
 
     @log: (trace) =>
         if console? and console and console.log? and console.log

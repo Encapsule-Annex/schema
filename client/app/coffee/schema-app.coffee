@@ -43,7 +43,9 @@ class namespaceApp.Schema
             document.title = "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName}"
             bodyElement = $("body")
 
-            router = Encapsule.app.routes.install()
+            Console.messageRaw("<h3>APPLICATION STARTING</h3>")
+
+            router = new Encapsule.app.InPageHashRouter()
 
             bodyElement.append Encapsule.app.html.get()
             appViewModel = new Encapsule.app.SchemaViewModel()

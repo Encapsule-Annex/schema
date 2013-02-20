@@ -25,8 +25,7 @@ namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
 @Encapsule.app.boot = {
     onBootstrapComplete: (bootstrapperStatus_) ->
         Console.messageRaw("<h3>BOOTSTRAP COMPLETE</h3>")
-        Console.message("onBootstrapperComplete has been called with status=\"<strong>#{bootstrapperStatus_}</strong>\"")
-        Console.message("Booting #{appName}...")
+        Console.message("status=\"<strong>#{bootstrapperStatus_}</strong>\"")
         appSchema = new Encapsule.app.Schema()
     }
 
