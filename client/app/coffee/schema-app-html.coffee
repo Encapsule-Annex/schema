@@ -29,7 +29,7 @@ getHtml = -> $("""
 <!-- Schema app runtime view -->
 <div id="idSchemaAppView">
 
-    <div id="idAppPath" data-bind="text: samPath"></div>
+    <div id="idAppPath" data-bind="text: appPath"></div>
     <div id="idJSONSourceViewer" data-bind="with: scdlHost"><strong>SCDL Catalogue JSON</strong><pre data-bind="text: toJSON" /></div>
 
     <h1>SCDL Editor</h1>

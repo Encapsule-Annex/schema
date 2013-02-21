@@ -42,7 +42,7 @@ phase0 = (bootstrapperOptions_) ->
     document.title = "#{appName}: booting..."
 
     Console.init()
-    Console.show()
+    # enable for debug Console.show()
     Console.messageRaw("<h3>BOOTSTRAP PHASE 0</h3>")
     Console.log "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
     Console.log "#{appName}: #{appBuildTime} by #{appBuilder} :: Thanks for using #{appName}. #{appPackagePublisherUrl}"
@@ -102,7 +102,7 @@ phase2 = (bootstrapperOptions_) ->
             document.title = "#{appName}: checking for updates ..."
         , onDownloading: ->
             document.title = "#{appName}: downloading updates..."
-            $("#idConsole").show()
+            Console.show()
             Console.messageEnd("<strong>Updating</strong>")
             Console.messageStart("files ")
         , onProgress: (fileCount_) ->
@@ -110,7 +110,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw(".")
         , onError: ->
             document.title = "#{appName}: application boot error!"
-            $("#idConsole").show()
+            Console.show()
             phase2Out.appCacheMonitorState = "error"
             Console.messageEnd(" <strong>OH SNAP!</strong>")
             Console.messageRaw("<h2>attention please</h2>")
@@ -119,7 +119,7 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheTerminalState = "error"
         , onObsolete: ->
             document.title = "#{appName}: application package is locked!"
-            $("#idConsole").show()
+            Console.show()
             phase2Out.appCacheMonitorState = "obsolete"
             Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
             Console.messageRaw("<h2>attention please</h2>")
@@ -151,6 +151,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.message("No updates were necessary.")
             phase3(bootstrapperOptions_)
         , onUpdateReady: (fileCount_) ->
+            Console.show()
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")

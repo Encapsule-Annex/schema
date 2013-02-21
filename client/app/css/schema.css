@@ -4,6 +4,11 @@ body { overflow: auto; margin: 0px; padding: 0px; background-color: #6699CC; }
 
 #idConsole
 {
+position: absolute;
+top: 0px;
+left: 0px;
+//bottom: -0px;
+right: -0px;
 z-index: 100;
 overflow: auto;
 font-family: Lucida Console, Courier;
@@ -12,7 +17,7 @@ spacing: 5px;
 padding: 10px;
 color: #000033;
 background-color: #77AADD;
-border-top: 3px solid yellow; border-bottom: 3px solid yellow; 
+border-bottom: 2px solid #99CCFF;
 display: none; // displayed only as needed
 }
 

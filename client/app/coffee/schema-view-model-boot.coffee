@@ -16,26 +16,18 @@
 
 ###
 #
-# schema.coffee
-#
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
+namespaceViewModel = Encapsule.app.viewmodel? and Encapsule.app.viewModel or @Encapsule.app.viewmodel = {}
 
-@Encapsule.app.boot = {
-    onBootstrapComplete: (bootstrapperStatus_) ->
-        Console.messageRaw("<h3>BOOTSTRAP COMPLETE</h3>")
-        Console.message("status=\"<strong>#{bootstrapperStatus_}</strong>\"")
-        appSchema = new Encapsule.app.Schema()
-    }
+class namespaceViewModel.ViewModel_AppBootInfo
 
-$ ->
-    try
-        Encapsule.core.bootstrapper.run Encapsule.app.boot
-    catch exception
-        Console.messageError(exception)
-    @
+    parentJN = undefined
 
-
+    constructor: ->
+        @isChrome = ko.observable Encapsule.app.boot.phase1.isChrome
+        @isWebKit = ko.observable Encapsule.app.boot.phase1.isWebKit
+        @browserVersion = ko.observable Encapsule.app.boot.phase1.browserVersion
 
 

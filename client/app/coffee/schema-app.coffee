@@ -29,7 +29,8 @@ class namespaceApp.SchemaViewModel
     constructor: ->
         try
             self = @
-            self.samPath = ko.observable ""
+            self.appPath = ko.observable ""
+            # self.appBootInfo = ko.observable new Encapsule.app.viewmodel.ViewModel_AppBootInfo()
             self.scdlHost = ko.observable new Encapsule.app.viewmodel.scdl.ViewModel_ScdlCatalogueHost()
             @
 
@@ -50,13 +51,13 @@ class namespaceApp.Schema
             Console.messageRaw("<h3>STARTING APPLICATION</h3>")
 
             # Take over the applicationRouteCallback registration from the bootstrapper
-            Encapsule.app.bootOptions.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
+            Encapsule.app.boot.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
 
             bodyElement.append Encapsule.app.html.get()
             appViewModel = new Encapsule.app.SchemaViewModel()
             ko.applyBindings(appViewModel)
 
-            Encapsule.app.bootOptions.phase0.spinner.cancel()
+            Encapsule.app.boot.phase0.spinner.cancel()
 
         catch exception
             Console.messageError(exception)
