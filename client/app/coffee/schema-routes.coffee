@@ -57,8 +57,8 @@ class namespaceApp.InPageHashRouter
         lastTriggeredLocation = document.location
         if applicationRouteCallback? and applicationRouteCallback
             Console.message("#{appName} router: dispatching #{routerSequenceNumber} : #{document.location.hash}")
-            applicationRouteCallback(@)
             routerSequenceNumber++
+            applicationRouteCallback(@)
         else
             Console.message("#{appName} router: caching #{routerSequenceNumber} : #{document.location.hash}")
 
@@ -129,3 +129,5 @@ class namespaceApp.InPageHashRouter
         if internalAllRoutesCallbackCount > 0
             allRoutes()
 
+    routerSequenceNumber: -> routerSequenceNumber - 1
+    initialLocation:  -> initialLocation

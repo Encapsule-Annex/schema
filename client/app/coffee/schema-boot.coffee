@@ -120,7 +120,7 @@ phase2 = (bootstrapperOptions_) ->
         , onObsolete: ->
             document.title = "#{appName}: application package is locked!"
             Console.show()
-            phase2Out.appCacheMonitorState = "obsolete"
+            phase2Out.appCacheMonitorState = "locked (obsolete)"
             Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
             Console.messageRaw("<h2>attention please</h2>")
             Console.messageRaw("<p>We're sorry to inconvience you!</p>")
@@ -208,6 +208,7 @@ phase3 = (bootstrapperOptions_) ->
     setInterval ( -> checkOnlineFunction() ), onlineCheckPeriodMs
 
     # We're done with bootrapping?
+    bootstrapperOptions_.exitStatus = "success"
     bootstrapperOptions_.onBootstrapComplete "Everything is going extremely well."    
 
 class namespaceCore.bootstrapper

@@ -55,7 +55,11 @@ class namespaceApp.Schema
 
             bodyElement.append Encapsule.app.html.get()
             appViewModel = new Encapsule.app.SchemaViewModel()
-            ko.applyBindings(appViewModel)
+            ko.applyBindings(appViewModel, document.getElementById("idSchemaAppView"))
+
+            bootView = new Encapsule.app.viewmodel.ViewModel_AppBootInfo()
+            bodyElement.append(bootView.html)
+            ko.applyBindings(bootView, document.getElementById("idAppBoot"))
 
             Encapsule.app.boot.phase0.spinner.cancel()
 
