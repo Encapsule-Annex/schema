@@ -9,9 +9,9 @@ Copyright: https://github.com/Encapsule/schema/blob/master/copyright.txt
 
 License: https://github.com/Encapsule/schema/blob/master/license.txt
 
-Visit Encapsule Project: http://blog.encapsule.org or follow @Encapsule on Twitter.
+Please visit Encapsule Project: http://www.encapsule.org and follow the project on Twitter: @Encapsule
 
-Thank you for your interest in Schema!
+Thank you for your interest in Encapsule Project and the Schema application!
 
 Regards, Chris (chrisrus@encapsule.org)
 
