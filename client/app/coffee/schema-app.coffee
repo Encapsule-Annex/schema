@@ -53,13 +53,16 @@ class namespaceApp.Schema
             # Take over the applicationRouteCallback registration from the bootstrapper
             Encapsule.app.boot.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
 
-            bodyElement.append Encapsule.app.html.get()
-            appViewModel = new Encapsule.app.SchemaViewModel()
-            ko.applyBindings(appViewModel, document.getElementById("idSchemaAppView"))
+            # Instantiate and initialize the SCDL view model.
+            bodyElement.append Encapsule.app.scdlview.html
+            @viewmodel = {}
+            @viewmodel.scdl = new Encapsule.app.SchemaViewModel()
+            ko.applyBindings @viewmodel.scdl, document.getElementById("idSchemaAppView")
 
-            bootView = new Encapsule.app.viewmodel.ViewModel_AppBootInfo()
-            bodyElement.append(bootView.html)
-            ko.applyBindings(bootView, document.getElementById("idAppBoot"))
+            # Instantiate an initialize the boot page view model.
+            @viewmodel.boot = new Encapsule.app.viewmodel.ViewModel_AppBootInfo()
+            bodyElement.append @viewmodel.boot.html
+            ko.applyBindings @viewmodel.boot, document.getElementById("idAppBoot")
 
             Encapsule.app.boot.phase0.spinner.cancel()
 

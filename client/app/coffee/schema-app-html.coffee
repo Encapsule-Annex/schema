@@ -24,13 +24,16 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
 
-getHtml = -> $("""
+
+class namespaceApp.scdlview
+
+    @html = $("""
 
 <!-- Schema app runtime view -->
 <div id="idSchemaAppView">
 
     <div id="idJSONSourceViewer" data-bind="with: scdlHost">
-        <button class="button green small" style="float: right;">Save As...</button>
+        <button class="button green small" style="float: right;" onclick="Encapsule.app.scdl.saveas()">Save As...</button>
         <strong>SCDL Catalogue JSON</strong>
         <pre data-bind="text: toJSON"></pre>
     </div>
@@ -100,6 +103,3 @@ getHtml = -> $("""
 </div>
 """)
 
-class namespaceApp.html
-
-    @get: getHtml
