@@ -22,7 +22,7 @@
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 
 

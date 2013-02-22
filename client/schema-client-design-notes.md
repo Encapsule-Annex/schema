@@ -30,7 +30,7 @@ Encpasule.code.lib.view.spinner ................... class
 
 Encapsule.runtime ................................. application runtime state
 Encapsule.runtime.app ............................. application runtime state 
-Encapsule.runtime.boot ............................ application boot state
+Encapsule.runtime.boot ............................ namepsace object (filed during boot)
 
 
 

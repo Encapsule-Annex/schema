@@ -19,7 +19,7 @@
 
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 namespaceEncapsule_code_app_viewmodel = Encapsule.code.app.viewmodel? and Encapsule.code.app.viewmodel or @Encapsule.code.app.viewmodel = {}
 

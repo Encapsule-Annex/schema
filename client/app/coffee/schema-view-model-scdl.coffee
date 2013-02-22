@@ -27,12 +27,12 @@
 
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 namespaceEncapsule_code_app_viewmodel = Encapsule.code.app.viewmodel? and Encapsule.code.app.viewmodel or @Encapsule.code.app.viewmodel = {}
 
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlPerson
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPerson
     constructor: (nameFirst_, nameLast_, email_, website_) ->
         Console.message("ViewModel_ScdlPerson::constructor")
         @uuid = ko.observable uuid.v4()
@@ -41,7 +41,7 @@ class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlPerson
         @email = ko.observable email_
         @website = ko.observable website_
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlOrganization
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlOrganization
     constructor: (name_, email_, website_) ->
         Console.message("ViewModel_ScdlOrganization::constructor")
         @uuid = ko.observable uuid.v4()
@@ -49,7 +49,7 @@ class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlOrganization
         @email = ko.observable email_
         @website = ko.observable website_
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta
     constructor: ->
         Console.message("ViewModel_ScdlEntityMeta::constructor")
         @uuid = ko.observable uuid.v4()
@@ -78,7 +78,7 @@ class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta
 
 
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlAssets
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlAssets
     constructor: ->
         Console.message("ViewModel_ScdlAssets::constructor")
         @people = ko.observableArray []
@@ -95,17 +95,17 @@ class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlAssets
 
 
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlType
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlType
     constructor: ->
         Console.message("ViewModel_ScdlType::constructor")
-        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
 
 
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlPin
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin
     constructor: ->
         Console.message("ViewModel_ScdlPin::constructor")
-        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @type = ko.observable undefined
 
         @resetPin = =>
@@ -115,10 +115,10 @@ class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlPin
 
 
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlTransition
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition
     constructor: ->
         Console.message("ViewModel_ScdlTransition::constructor")
-        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @targetState = ko.observable undefined
         @expression = ko.observable undefined
 
@@ -128,10 +128,10 @@ class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlTransition
             @targetState(undefined)
             @expression(undefined)
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlState
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlState
     constructor: ->
         Console.message("ViewModel_ScdlState::constructor")
-        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @enterAction = ko.observable undefined
         @exitAction = ko.observable undefined
         @transitions = ko.observableArray []
@@ -142,55 +142,55 @@ class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlState
             @exitAction(undefined)
             @transitions.removeAll()
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlMachine
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
     constructor: ->
         Console.message("ViewModel_ScldMachine::constructor")
-        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @inputPins = ko.observableArray []
         @addInputPin = =>
             Console.message("ViewModel_ScdlMachine::addInputPin")
-            @inputPins.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlPin()
+            @inputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin()
 
         @outputPins = ko.observableArray []
         @addOutputPin = =>
             Console.message("ViewModel_ScdlMachine::addOutputPin")
-            @outputPins.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlPin()
+            @outputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin()
 
         @states = ko.observableArray []
 
         @addState = =>
             Console.message("ViewModel_ScdlMachine::addState")
-            @states.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlMachineState()
+            @states.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachineState()
 
 
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlSystem
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
     constructor: ->
         Console.message("ViewModel_ScdlSystem::constructor")
-        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
 
 
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogue
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogue
     constructor: ->
         Console.message("ViewModel_ScdlCatalogue::constructor")
-        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @assets = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlAssets()
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @assets = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlAssets()
         @types = ko.observableArray []
         @machines = ko.observableArray []
         @systems = ko.observableArray []
 
         @addType = =>
             Console.message("ViewModel_ScdlCatalogue::addType")
-            @types.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlType()
+            @types.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlType()
 
         @addMachine = =>
             Console.message("ViewModel_ScdlCatalogue::addMachine")
-            @machines.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlMachine()
+            @machines.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine()
 
         @addSystem = =>
             Console.message("ViewModel_ScdlCatalogue::addSystem")
-            @systems.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlSystem()
+            @systems.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem()
 
         @resetCatalogue = =>
             Console.message("ViewModel_ScdlCatalogue::resetCatalogue")
@@ -224,10 +224,10 @@ class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogue
 
 
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogueShim
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueShim
     constructor: ->
         Console.message("ViewModel_ScdlCatalogueShim::constructor")
-        @scdl_v1_catalogue = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogue()
+        @scdl_v1_catalogue = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogue()
 
 
         @resetCatalogue = =>
@@ -240,10 +240,10 @@ class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogueShim
 
 
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogueHost
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueHost
     constructor: ->
         Console.message("ViewModel_ScdlCatalogueHost::constructor")
-        @catalogueShim = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogueShim()
+        @catalogueShim = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueShim()
 
         @toJSON = ko.computed =>
             ko.toJSON @catalogueShim(), undefined, 1
