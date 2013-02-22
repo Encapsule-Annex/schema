@@ -25,13 +25,14 @@
 # SCDL data model "observable".
 #
 
-namespaceEncapsule = Encapsule? and Encapsule or @Encapusle = {}
-namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
-namespaceViewModel = Encapsule.app.viewmodel? and Encapsule.app.viewmodel or @Encapsule.app.viewmodel = {}
-namespaceScdl = Encapsule.app.viewmodel.scdl? and Encapsule.app.viewmodel.scdl or @Encapsule.app.viewmodel.scdl = {}
+
+namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
+namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
+namespaceEncapsule_code_app_viewmodel = Encapsule.code.app.viewmodel? and Encapsule.code.app.viewmodel or @Encapsule.code.app.viewmodel = {}
 
 
-class namespaceScdl.ViewModel_ScdlPerson
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlPerson
     constructor: (nameFirst_, nameLast_, email_, website_) ->
         Console.message("ViewModel_ScdlPerson::constructor")
         @uuid = ko.observable uuid.v4()
@@ -40,7 +41,7 @@ class namespaceScdl.ViewModel_ScdlPerson
         @email = ko.observable email_
         @website = ko.observable website_
 
-class namespaceScdl.ViewModel_ScdlOrganization
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlOrganization
     constructor: (name_, email_, website_) ->
         Console.message("ViewModel_ScdlOrganization::constructor")
         @uuid = ko.observable uuid.v4()
@@ -48,7 +49,7 @@ class namespaceScdl.ViewModel_ScdlOrganization
         @email = ko.observable email_
         @website = ko.observable website_
 
-class namespaceScdl.ViewModel_ScdlEntityMeta
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta
     constructor: ->
         Console.message("ViewModel_ScdlEntityMeta::constructor")
         @uuid = ko.observable uuid.v4()
@@ -77,7 +78,7 @@ class namespaceScdl.ViewModel_ScdlEntityMeta
 
 
 
-class namespaceScdl.ViewModel_ScdlAssets
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlAssets
     constructor: ->
         Console.message("ViewModel_ScdlAssets::constructor")
         @people = ko.observableArray []
@@ -94,17 +95,17 @@ class namespaceScdl.ViewModel_ScdlAssets
 
 
 
-class namespaceScdl.ViewModel_ScdlType
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlType
     constructor: ->
         Console.message("ViewModel_ScdlType::constructor")
-        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
 
 
 
-class namespaceScdl.ViewModel_ScdlPin
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlPin
     constructor: ->
         Console.message("ViewModel_ScdlPin::constructor")
-        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @type = ko.observable undefined
 
         @resetPin = =>
@@ -114,10 +115,10 @@ class namespaceScdl.ViewModel_ScdlPin
 
 
 
-class namespaceScdl.ViewModel_ScdlTransition
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlTransition
     constructor: ->
         Console.message("ViewModel_ScdlTransition::constructor")
-        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @targetState = ko.observable undefined
         @expression = ko.observable undefined
 
@@ -127,10 +128,10 @@ class namespaceScdl.ViewModel_ScdlTransition
             @targetState(undefined)
             @expression(undefined)
 
-class namespaceScdl.ViewModel_ScdlState
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlState
     constructor: ->
         Console.message("ViewModel_ScdlState::constructor")
-        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @enterAction = ko.observable undefined
         @exitAction = ko.observable undefined
         @transitions = ko.observableArray []
@@ -141,55 +142,55 @@ class namespaceScdl.ViewModel_ScdlState
             @exitAction(undefined)
             @transitions.removeAll()
 
-class namespaceScdl.ViewModel_ScdlMachine
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlMachine
     constructor: ->
         Console.message("ViewModel_ScldMachine::constructor")
-        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @inputPins = ko.observableArray []
         @addInputPin = =>
             Console.message("ViewModel_ScdlMachine::addInputPin")
-            @inputPins.push new namespaceScdl.ViewModel_ScdlPin()
+            @inputPins.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlPin()
 
         @outputPins = ko.observableArray []
         @addOutputPin = =>
             Console.message("ViewModel_ScdlMachine::addOutputPin")
-            @outputPins.push new namespaceScdl.ViewModel_ScdlPin()
+            @outputPins.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlPin()
 
         @states = ko.observableArray []
 
         @addState = =>
             Console.message("ViewModel_ScdlMachine::addState")
-            @states.push new namespaceScdl.ViewModel_ScdlMachineState()
+            @states.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlMachineState()
 
 
 
-class namespaceScdl.ViewModel_ScdlSystem
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlSystem
     constructor: ->
         Console.message("ViewModel_ScdlSystem::constructor")
-        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
 
 
 
-class namespaceScdl.ViewModel_ScdlCatalogue
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogue
     constructor: ->
         Console.message("ViewModel_ScdlCatalogue::constructor")
-        @meta = ko.observable new namespaceScdl.ViewModel_ScdlEntityMeta()
-        @assets = ko.observable new namespaceScdl.ViewModel_ScdlAssets()
+        @meta = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @assets = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlAssets()
         @types = ko.observableArray []
         @machines = ko.observableArray []
         @systems = ko.observableArray []
 
         @addType = =>
             Console.message("ViewModel_ScdlCatalogue::addType")
-            @types.push new namespaceScdl.ViewModel_ScdlType()
+            @types.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlType()
 
         @addMachine = =>
             Console.message("ViewModel_ScdlCatalogue::addMachine")
-            @machines.push new namespaceScdl.ViewModel_ScdlMachine()
+            @machines.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlMachine()
 
         @addSystem = =>
             Console.message("ViewModel_ScdlCatalogue::addSystem")
-            @systems.push new namespaceScdl.ViewModel_ScdlSystem()
+            @systems.push new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlSystem()
 
         @resetCatalogue = =>
             Console.message("ViewModel_ScdlCatalogue::resetCatalogue")
@@ -223,10 +224,10 @@ class namespaceScdl.ViewModel_ScdlCatalogue
 
 
 
-class namespaceScdl.ViewModel_ScdlCatalogueShim
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogueShim
     constructor: ->
         Console.message("ViewModel_ScdlCatalogueShim::constructor")
-        @scdl_v1_catalogue = ko.observable new namespaceScdl.ViewModel_ScdlCatalogue()
+        @scdl_v1_catalogue = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogue()
 
 
         @resetCatalogue = =>
@@ -239,10 +240,10 @@ class namespaceScdl.ViewModel_ScdlCatalogueShim
 
 
 
-class namespaceScdl.ViewModel_ScdlCatalogueHost
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogueHost
     constructor: ->
         Console.message("ViewModel_ScdlCatalogueHost::constructor")
-        @catalogueShim = ko.observable new namespaceScdl.ViewModel_ScdlCatalogueShim()
+        @catalogueShim = ko.observable new namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlCatalogueShim()
 
         @toJSON = ko.computed =>
             ko.toJSON @catalogueShim(), undefined, 1
@@ -262,4 +263,99 @@ class namespaceScdl.ViewModel_ScdlCatalogueHost
                 @catalogueShim().resetCatalogue()
             catch errorException
                 Console.messageError(errorException)
+
+
+class namespaceEncapsule_code_app_viewmodel.scdl
+    constructor: ->
+        try
+            self = @
+            self.appPath = ko.observable ""
+            # self.appBootInfo = ko.observable new Encapsule.app.viewmodel.ViewModel_AppBootInfo()
+            self.scdlHost = ko.observable new Encapsule.app.viewmodel.scdl.ViewModel_ScdlCatalogueHost()
+
+
+            @html = $("""
+
+<!-- Schema app runtime view -->
+<div id="idSchemaAppView">
+
+    <div id="idJSONSourceViewer" data-bind="with: scdlHost">
+        <button class="button green small" style="float: right;" onclick="Encapsule.app.scdl.saveas()">Save As...</button>
+        <strong>SCDL Catalogue JSON</strong>
+        <pre data-bind="text: toJSON"></pre>
+    </div>
+
+    <h1>SCDL Editor</h1>
+
+    <div class="classScdlCatalogueHost" data-bind="with: scdlHost">
+
+        <h2>Catalogue <button data-bind="click: resetCatalogue">Reset Catalogue</button></h2>
+
+        <div data-bind="with: catalogueShim" class="classScdlCatalogueShim">
+
+            <div class="classScdlCatalogue" data-bind="with: scdl_v1_catalogue">
+
+                <div data-bind="with: meta" class="classEditAreaMeta"><h2>Meta</h2>
+                    <p>
+                        UUID: <span data-bind="text: uuid"></span><br>
+                        Name: <span data-bind="text: name"></span><br>
+                        Description: <span data-bind="text: description"></span><br>
+                        Author: <span data-bind="text: author"></span><br>
+                        Organization: <span data-bind="text: organization"></span><br>
+                        License: <span data-bind="text: license"></span><br>
+                        Revision: <span data-bind="text: revision"></span><br>
+                        Create: <span data-bind="text: createTime"></span><br>
+                        Update: <span data-bind="text: updateTime"></span><br>
+                    </p>
+                </div><!-- with: meta -->
+    
+                <div data-bind="with: assets" class="classEditAreaAssets">
+                    <h2>Assets <button data-bind="click: resetAssets">Reset Assets</button></h2>
+                    People: <span data-bind="text: people"></span><br>
+                    Organizations: <span data-bind="text: organizations"></span><br>
+                    Licenses: <span data-bind="text: licenses"></span><br>
+                    Copyrights: <span data-bind="text: copyrights"></span><br>
+                </div><!-- with: assets -->
+    
+                <div class="classEditAreaTypes">
+                    <h2>Types <button data-bind="click: addType">Add Type</button> <button data-bind="click: resetTypes">Reset Types</button></h2>
+                    <div data-bind="foreach: types" class="classScdlTypes">
+                        <div class="classScdlType">
+                            Type <span data-bind="text: $index"></span>
+                        </div><!-- classScdlType -->
+                    </div><!--classScdlTypes -->
+                </div><!-- classEditAreaTypes -->
+    
+                <div class="classEditAreaMachines">
+                    <h2>Machines <button data-bind="click: addMachine">Add Machine</button> <button data-bind="click: resetMachines">Reset Types</button></h2> 
+                    <div data-bind="foreach: machines" class="classScdlMachines">
+                        <div class="classScdlMachine">
+                            Machine: <span data-bind="text: $index"></span>
+                        </div><!-- classScdlMachine -->
+                    </div><!-- classScdlMachines -->
+                </div><!-- classEditAreaMachines -->
+    
+                <div class="classEditAreaSystems">
+                    <h2>Systems <button data-bind="click: addSystem">Add System</button> <button data-bind="click: resetSystems">Reset Types</button></h2>
+                    <div data-bind="foreach: systems" class="classScdlSystems">
+                        <div class="classScdlSystem">
+                            System: <span data-bind="text: $index"></span>
+                        </div><!-- classScdlSystem -->
+                    </div><!-- classScdlSystems -->
+                </div><!-- classEditAreaSystems -->
+
+            </div><!-- with: scdl_v1_catalogue .classScdlCatalogue -->
+        </div><!-- with: catalogueShim .classScdlCatalogueShim-->
+    </div><!-- classScdlCatalogHost -->
+</div>
+            """)
+
+
+
+
+
+            @
+
+        catch exception
+            Console.messageError(exception)
 

@@ -22,23 +22,13 @@
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
+namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 
 
-class namespaceApp.SchemaViewModel
-    constructor: ->
-        try
-            self = @
-            self.appPath = ko.observable ""
-            # self.appBootInfo = ko.observable new Encapsule.app.viewmodel.ViewModel_AppBootInfo()
-            self.scdlHost = ko.observable new Encapsule.app.viewmodel.scdl.ViewModel_ScdlCatalogueHost()
-            @
-
-        catch exception
-            Console.messageError(exception)
 
 
-class namespaceApp.Schema
+class namespaceEncapsule_code_app.Schema
 
     applicationRouteCallback = ->
         Console.message("#{appName}'s main applicationRouteCallback has been called.")

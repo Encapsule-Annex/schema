@@ -21,12 +21,15 @@
 # Based on encapsule-blipper.js library.
 #
 
+
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceSchema = Encapsule.schema? and Encapsule.schema or @Encapsule.schema = {}
-namespaceWidget = Encapsule.schema.widget? and Encapsule.schema.widget or @Encapsule.schema.widget = {}
+namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code_lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
+namespaceEncapsule_code_lib_audio = Encapsule.code.lib.audio? and Encapsule.code.lib.audio or @Encapsule.code.lib.audio
 
 
-class namespaceWidget.audioTheme
+
+class Encapsule.code.lib.audio.theme
 
     @create: (parentElement_) ->
         host = Encapsule.audio.widget.blipper.createHost(parentElement_)

@@ -3,8 +3,14 @@
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceView = Encapsule.view? and Encapsule.view or @Encapsule.view = {}
-namespaceWidget = Encapsule.view.widget? and Encapsule.view.widget or @Encapsule.view.widget = {}
+namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code_lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
+namepsaceEncapsule_code_lib_view = Encapsule.code.lib.view? and Encapsule.code.lib.view or @Encapsule.code.lib.view = {}
+
+
+
+
+get = {}
 
 # parentElement_ is a JQuery element, presumably a DIV
 #
@@ -94,12 +100,11 @@ drawLogo = (parentElement_, options_) ->
     logoElementToBeInserted = $(logoHtml)
     logoElement = parentElement_.append logoElementToBeInserted
     logoElement.css { margin: "0px", padding: "0px" }
-
     @
 
 
 
-class namespaceWidget.logo
+class namespaceEncapsule_code_lib_view.logo
 
     @optionsDefault: optionsDefault
     @optionsOutlineOnly: optionsOutlineOnly

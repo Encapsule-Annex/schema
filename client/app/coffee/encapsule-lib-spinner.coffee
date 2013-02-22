@@ -23,10 +23,11 @@
 #
 
 
-
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceView = Encapsule.view? and Encapsule.view or @Encapsule.view = {}
-namespaceWidget = Encapsule.view.widget? and Encapsule.view.widget or @Encapsule.view.widget = {}
+namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code_lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
+namepsaceEncapsule_code_lib_view = Encapsule.code.lib.view? and Encapsule.code.lib.view or @Encapsule.code.lib.view = {}
+
 
 # http://fgnass.github.com/spin.js/#?
 
@@ -44,7 +45,7 @@ optionsDefault = {
     hwaccel: on
     }
 
-class namespaceWidget.spinner
+class namepsaceEncapsule_code_lib_view.spinner
     embeddedSpinnerObject: undefined
     enabled: false
 

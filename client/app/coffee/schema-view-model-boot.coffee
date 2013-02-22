@@ -17,11 +17,13 @@
 ###
 #
 
-namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
-namespaceViewModel = Encapsule.app.viewmodel? and Encapsule.app.viewModel or @Encapsule.app.viewmodel = {}
 
-class namespaceViewModel.ViewModel_AppBootInfo
+namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
+namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
+namespaceEncapsule_code_app_viewmodel = Encapsule.code.app.viewmodel? and Encapsule.code.app.viewmodel or @Encapsule.code.app.viewmodel = {}
+
+class namespaceEncapsule_code_app_viewmodel.ViewModel_AppBootInfo
 
     constructor: ->
         @visible = ko.observable true

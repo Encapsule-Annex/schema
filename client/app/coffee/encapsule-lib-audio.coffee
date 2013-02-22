@@ -24,8 +24,12 @@
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceAudio = Encapsule.audio? and Encapsule.audio or @Encapsule.audio = {}
-namespaceWidget = Encapsule.audio.widget? and Encapsule.audio.widget or @Encapsule.audio.widget = {}
+namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code_lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
+namespaceEncapsule_code_lib_audio = Encapsule.code.lib.audio? and Encapsule.code.lib.audio or @Encapsule.code.lib.audio
+
+
+
 
 createBlipper = (hostElement_, name_, source_, options_) ->
     blipperId = "id#{uuid.v4()}"
@@ -66,7 +70,7 @@ createBlipperHost = (parentElement_, options_) ->
 
 
 
-class namespaceWidget.blipper
+class namespaceEncapsule_code_lib_audio.blipper
     @createHost: createBlipperHost
 
 
@@ -83,5 +87,5 @@ fireAtRandom = (blipperHost_, name_, minMsSilence_, maxMsSilence_) ->
         fireAtRandom blipper, name, minMs, (randSeedMs + minMs)
         ), interval
 
-class namespaceWidget.util
+class namespaceEncapsule_code_lib_audio.util
     @blipAtRandom: fireAtRandom

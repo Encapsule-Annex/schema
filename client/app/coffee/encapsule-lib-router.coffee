@@ -16,7 +16,7 @@
 
 ###
 #
-# schema-routes.coffee
+# encapsule-lib-router.coffee
 #
 # In-page hash routing using Director.js
 #
@@ -24,10 +24,13 @@
 # See https://github.com/ChrisRus/re-director for background information.
 #
 
-namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceApp = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
 
-class namespaceApp.InPageHashRouter
+namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
+namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code_lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
+
+
+class namespaceEncapsule_code_lib.router
 
     #
     # class instance state

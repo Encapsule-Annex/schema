@@ -18,8 +18,16 @@
 #
 # schema-boot.coffee
 #
+
+
+
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceCore = Encapsule.core? and Encapsule.core or @Encapsule.core = {}
+namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
+
+
+
+
 
 phase0 = (bootstrapperOptions_) ->
     # APP BOOT PHASE 0 : Draw the boot UI and install the in-page hash router
@@ -211,7 +219,7 @@ phase3 = (bootstrapperOptions_) ->
     bootstrapperOptions_.exitStatus = "success"
     bootstrapperOptions_.onBootstrapComplete "Everything is going extremely well."    
 
-class namespaceCore.bootstrapper
+class namespaceEncapsule_code_app.bootstrapper
     
     @run: (bootstrapperOptions_) ->
         if not bootstrapperOptions_? or not bootstrapperOptions_

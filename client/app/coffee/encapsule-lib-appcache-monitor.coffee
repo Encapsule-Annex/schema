@@ -20,10 +20,11 @@
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceCore = Encapsule.core? and Encapsule.core or @Encapsule.core = {}
-namespaceBoot = Encapsule.core.boot? and Encapsule.core.boot or @Encapsule.core.boot = {}
+namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code_lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 
-class namespaceBoot.AppCacheMonitor
+
+class namespaceEncapsule_code_lib.appcachemonitor
  
     appCallbacks: undefined
     status: undefined

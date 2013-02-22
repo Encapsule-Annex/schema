@@ -25,12 +25,15 @@
 # ^--- doesn't scale to multiple coffee modules as contents of Encapsule gets whacked
 # v--- my solution seems to work for client-side. likely need to use both on node.js
 
-encapsuleNamespace = Encapsule? and Encapsule or @Encapsule = {}
+namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
+namespaceEncapsule_code = Encapsule.code? and Encpasule.code or @Encapusle.code = {}
+namespaceEncapsule_code_lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
+
 
 getEpochTime = ->
     Math.round new Date().getTime() / 1000.0
 
-class Encapsule.util
+class namespaceEncapsule_code_lib.util
 
     # Call externally as: Encapsule.util.getEpochTime()
     @getEpochTime: getEpochTime
