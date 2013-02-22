@@ -25,13 +25,6 @@ class namespaceViewModel.ViewModel_AppBootInfo
 
     constructor: ->
         @visible = ko.observable true
-        @routerSequenceNumber = ko.computed => Encapsule.app.boot.phase0.router.routerSequenceNumber()
-        @routerBootLocation = ko.observable Encapsule.app.boot.phase0.router.initialLocation()
-        @userAgent = ko.observable Encapsule.app.boot.phase1.userAgent
-        @isChrome = ko.observable Encapsule.app.boot.phase1.isChrome
-        @isWebKit = ko.observable Encapsule.app.boot.phase1.isWebKit
-        @browserVersion = ko.observable Encapsule.app.boot.phase1.browserVersion
-        @appCacheState = ko.observable Encapsule.app.boot.phase2.appCacheMonitorState
 
         @html = """
             <div id="idAppBoot">
@@ -54,13 +47,13 @@ class namespaceViewModel.ViewModel_AppBootInfo
             <br>
             <strong>Application Boot Information</strong><br>
             Bootstrapper exit status: <span data-bind="text: Encapsule.app.boot.exitStatus"></span><br>
-            Current route #: <span data-bind="text: routerSequenceNumber"></span><br>
-            Boot location: <span data-bind="text: routerBootLocation"></span><br>
-            User Agent: <span data-bind="text: userAgent"></span><br>
-            Chrome Browser: <span data-bind="text: isChrome"></span><br>
-            WebKit Browser: <span data-bind="text: isWebKit"></span><br>
-            Browser Version: <span data-bind="text: browserVersion"></span>
-            Application cache status: <span data-bind="text: appCacheState"></span>
+            Current route #: <span data-bind="text: Encapsule.app.boot.phase0.router.routerSequenceNumber"></span><br>
+            Boot location: <span data-bind="text: Encapsule.app.boot.phase0.router.initialLocation"></span><br>
+            User Agent: <span data-bind="text: Encapsule.app.boot.phase1.userAgent"></span><br>
+            Chrome Browser: <span data-bind="text: Encapsule.app.boot.phase1.isChrome"></span><br>
+            WebKit Browser: <span data-bind="text: Encapsule.app.boot.phase1.isWebKit"></span><br>
+            Browser Version: <span data-bind="text: Encapsule.app.boot.phase1.browserVersion"></span>
+            Application cache status: <span data-bind="text: Encapsule.app.boot.phase2.appCacheMonitorState"></span>
             </div>
             </div><!-- idAppBoot -->
             """
