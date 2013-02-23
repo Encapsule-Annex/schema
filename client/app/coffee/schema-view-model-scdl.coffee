@@ -265,6 +265,11 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueHost
                 Console.messageError(errorException)
 
 
+        @saveJSONAs = =>
+            Console.message("ViewModel_ScdlCatalogueHost::saveJSONAs")
+            Console.message(@toJSON())
+
+
 class namespaceEncapsule_code_app_viewmodel.scdl
     constructor: ->
         try
@@ -278,7 +283,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             <div id="idSchemaAppView">
 
                 <div id="idJSONSourceViewer" data-bind="with: scdlHost">
-                    <button class="button green small" style="float: right;" onclick="Encapsule.app.scdl.saveas()">Save As...</button>
+                    <button class="button green small" style="float: right;" onclick="Encapsule.runtime.app.viewmodel.scdl.scdlHost().saveJSONAs()">Save As...</button>
                     <strong>SCDL Catalogue JSON</strong>
                     <pre data-bind="text: toJSON"></pre>
                 </div>

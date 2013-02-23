@@ -25,6 +25,9 @@ namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 
+namespaceEncapsule_runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runtime = {}
+namespaceEncapsule_runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
+
 
 
 
@@ -45,16 +48,16 @@ class namespaceEncapsule_code_app.Schema
 
             # Instantiate and initialize the SCDL view model.
 
-            @viewmodel = {}
-            @viewmodel.scdl = new Encapsule.code.app.viewmodel.scdl()
-            bodyElement.append @viewmodel.scdl.html
-            ko.applyBindings @viewmodel.scdl, document.getElementById("idSchemaAppView")
+            Encapsule.runtime.app.viewmodel = {}
+            Encapsule.runtime.app.viewmodel.scdl = new Encapsule.code.app.viewmodel.scdl()
+            bodyElement.append Encapsule.runtime.app.viewmodel.scdl.html
+            ko.applyBindings Encapsule.runtime.app.viewmodel.scdl, document.getElementById("idSchemaAppView")
 
             # Instantiate an initialize the boot page view model.
 
-            @viewmodel.boot = new Encapsule.code.app.viewmodel.boot()
-            bodyElement.append @viewmodel.boot.html
-            ko.applyBindings @viewmodel.boot, document.getElementById("idAppBoot")
+            Encapsule.runtime.app.viewmodel.boot = new Encapsule.code.app.viewmodel.boot()
+            bodyElement.append Encapsule.runtime.app.viewmodel.boot.html
+            ko.applyBindings Encapsule.runtime.app.viewmodel.boot, document.getElementById("idAppBoot")
 
             Encapsule.runtime.boot.phase0.spinner.cancel()
 
