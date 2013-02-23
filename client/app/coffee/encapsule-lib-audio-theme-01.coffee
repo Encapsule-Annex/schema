@@ -32,7 +32,7 @@ namespaceEncapsule_code_lib_audio = Encapsule.code.lib.audio? and Encapsule.code
 class Encapsule.code.lib.audio.theme
 
     @create: (parentElement_) ->
-        host = Encapsule.audio.widget.blipper.createHost(parentElement_)
+        host = Encapsule.code.lib.audio.blipper.createHost(parentElement_)
         host.createBlipper "initializing", "audio/klingon_transporter_clean.mp3"
         host.createBlipper "heartbeat", "audio/doorbell.wav"
         host.createBlipper "update-complete", "audio/stng-comp-update-complete.wav"

@@ -60,8 +60,8 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta
         @organization = ko.observable undefined
         @license = ko.observable undefined
         @revision = ko.observable 0
-        @createTime = ko.observable Encapsule.util.getEpochTime()
-        @updateTime = ko.observable Encapsule.util.getEpochTime()
+        @createTime = ko.observable Encapsule.code.lib.util.getEpochTime()
+        @updateTime = ko.observable Encapsule.code.lib.util.getEpochTime()
 
         @resetMeta = =>
             Console.message("ViewModel_ScdlEntityMeta::resetMeta")
@@ -73,8 +73,8 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta
             @organization(undefined)
             @license(undefined)
             @revision(0)
-            @createTime(Encapsule.util.getEpochTime())
-            @updateTime(Encapsule.util.getEpochTime())
+            @createTime(Encapsule.code.lib.util.getEpochTime())
+            @updateTime(Encapsule.code.lib.util.getEpochTime())
 
 
 
@@ -270,8 +270,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
         try
             self = @
             self.appPath = ko.observable ""
-            # self.appBootInfo = ko.observable new Encapsule.app.viewmodel.ViewModel_AppBootInfo()
-            self.scdlHost = ko.observable new Encapsule.app.viewmodel.scdl.ViewModel_ScdlCatalogueHost()
+            self.scdlHost = ko.observable new Encapsule.code.app.viewmodel.ViewModel_ScdlCatalogueHost()
 
 
             @html = $("""

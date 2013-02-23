@@ -41,20 +41,22 @@ class namespaceEncapsule_code_app.Schema
             Console.messageRaw("<h3>STARTING APPLICATION</h3>")
 
             # Take over the applicationRouteCallback registration from the bootstrapper
-            Encapsule.app.boot.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
+            Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
 
             # Instantiate and initialize the SCDL view model.
-            bodyElement.append Encapsule.app.scdlview.html
+
             @viewmodel = {}
-            @viewmodel.scdl = new Encapsule.app.SchemaViewModel()
+            @viewmodel.scdl = new Encapsule.code.app.viewmodel.scdl()
+            bodyElement.append @viewmodel.scdl.html
             ko.applyBindings @viewmodel.scdl, document.getElementById("idSchemaAppView")
 
             # Instantiate an initialize the boot page view model.
-            @viewmodel.boot = new Encapsule.app.viewmodel.ViewModel_AppBootInfo()
+
+            @viewmodel.boot = new Encapsule.code.app.viewmodel.boot()
             bodyElement.append @viewmodel.boot.html
             ko.applyBindings @viewmodel.boot, document.getElementById("idAppBoot")
 
-            Encapsule.app.boot.phase0.spinner.cancel()
+            Encapsule.runtime.boot.phase0.spinner.cancel()
 
         catch exception
             Console.messageError(exception)

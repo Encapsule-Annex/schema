@@ -41,7 +41,7 @@ phase0 = (bootstrapperOptions_) ->
     bodyJN.html($("""<div id="idSpinner" class="classCentered"></div><div id="idConsole"></div>"""))
 
     phase0Out = bootstrapperOptions_.phase0 = {}
-    phase0Out.spinner = new Encapsule.view.widget.spinner()
+    phase0Out.spinner = new Encapsule.code.lib.view.spinner()
     phase0Out.spinner.draw()
 
     document.title = "#{appName}: booting..."
@@ -52,7 +52,7 @@ phase0 = (bootstrapperOptions_) ->
     Console.log "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
     Console.log "#{appName}: #{appBuildTime} by #{appBuilder} :: Thanks for using #{appName}. #{appPackagePublisherUrl}"
 
-    phase0Out.router = new Encapsule.app.InPageHashRouter()
+    phase0Out.router = new Encapsule.code.lib.router()
     bootstrapperOptions = bootstrapperOptions_
 
     phase0Out.router.setApplicationRouteCallback( (router_) ->
@@ -176,7 +176,7 @@ phase2 = (bootstrapperOptions_) ->
                     Console.messageError(exception)
                 ) , 2000
         }
-    phase2Out.appCacheMonitor = new Encapsule.core.boot.AppCacheMonitor(appCacheCallbacks)
+    phase2Out.appCacheMonitor = new Encapsule.code.lib.appcachemonitor(appCacheCallbacks)
 
 phase3 = (bootstrapperOptions_) ->
 
@@ -186,7 +186,7 @@ phase3 = (bootstrapperOptions_) ->
 
     phase3Out = bootstrapperOptions_.phase3 = {}
     phase3Out.originServerOnline = false
-    blipper = phase3Out.blipper = Encapsule.schema.widget.audioTheme.create($("body"))
+    blipper = phase3Out.blipper = Encapsule.code.lib.audio.theme.create($("body"))
 
     checkOnlineOptions = {
         timeout: 5000,

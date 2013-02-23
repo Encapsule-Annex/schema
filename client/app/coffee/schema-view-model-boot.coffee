@@ -23,7 +23,7 @@ namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code 
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 namespaceEncapsule_code_app_viewmodel = Encapsule.code.app.viewmodel? and Encapsule.code.app.viewmodel or @Encapsule.code.app.viewmodel = {}
 
-class namespaceEncapsule_code_app_viewmodel.ViewModel_AppBootInfo
+class namespaceEncapsule_code_app_viewmodel.boot
 
     constructor: ->
         @visible = ko.observable true
@@ -48,14 +48,14 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_AppBootInfo
             Application Source Code: <span data-bind="text: appGitHubRepoUrl"></span> (<span data-bind="text: appGitHubRepoName"></span> Git repository)<br>
             <br>
             <strong>Application Boot Information</strong><br>
-            Bootstrapper exit status: <span data-bind="text: Encapsule.app.boot.exitStatus"></span><br>
-            Current route #: <span data-bind="text: Encapsule.app.boot.phase0.router.routerSequenceNumber"></span><br>
-            Boot location: <span data-bind="text: Encapsule.app.boot.phase0.router.initialLocation"></span><br>
-            User Agent: <span data-bind="text: Encapsule.app.boot.phase1.userAgent"></span><br>
-            Chrome Browser: <span data-bind="text: Encapsule.app.boot.phase1.isChrome"></span><br>
-            WebKit Browser: <span data-bind="text: Encapsule.app.boot.phase1.isWebKit"></span><br>
-            Browser Version: <span data-bind="text: Encapsule.app.boot.phase1.browserVersion"></span>
-            Application cache status: <span data-bind="text: Encapsule.app.boot.phase2.appCacheMonitorState"></span>
+            Bootstrapper exit status: <span data-bind="text: Encapsule.runtime.boot.exitStatus"></span><br>
+            Current route #: <span data-bind="text: Encapsule.runtime.boot.phase0.router.routerSequenceNumber"></span><br>
+            Boot location: <span data-bind="text: Encapsule.runtime.boot.phase0.router.initialLocation"></span><br>
+            User Agent: <span data-bind="text: Encapsule.runtime.boot.phase1.userAgent"></span><br>
+            Chrome Browser: <span data-bind="text: Encapsule.runtime.boot.phase1.isChrome"></span><br>
+            WebKit Browser: <span data-bind="text: Encapsule.runtime.boot.phase1.isWebKit"></span><br>
+            Browser Version: <span data-bind="text: Encapsule.runtime.boot.phase1.browserVersion"></span>
+            Application cache status: <span data-bind="text: Encapsule.runtime.boot.phase2.appCacheMonitorState"></span>
             </div>
             </div><!-- idAppBoot -->
             """

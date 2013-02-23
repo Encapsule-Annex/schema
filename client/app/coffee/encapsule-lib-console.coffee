@@ -93,7 +93,7 @@ class window.Console
         Console.messageRaw(errorMessage)
         @log("Encapsule:: #{errorException}")
         $("#idConsole").show()
-        Encapsule.app.boot.phase0.spinner.cancel()
+        Encapsule.runtime.boot.phase0.spinner.cancel()
         alert(errorException)
 
 
