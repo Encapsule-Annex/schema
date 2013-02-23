@@ -38,7 +38,10 @@ phase0 = (bootstrapperOptions_) ->
     # If supported browser proceed silently and immediately to phase 2
 
     bodyJN = $("body")
-    bodyJN.html($("""<div id="idSpinner" class="classCentered"></div><div id="idConsole"></div>"""))
+    bodyJN.html($("""
+
+        <div id="idSpinner" class="classCentered"></div><div id="idConsole"></div>
+        """))
 
     phase0Out = bootstrapperOptions_.phase0 = {}
     phase0Out.spinner = new Encapsule.code.lib.view.spinner()
@@ -47,8 +50,20 @@ phase0 = (bootstrapperOptions_) ->
     document.title = "#{appName}: booting..."
 
     Console.init()
-    # enable for debug Console.show()
-    Console.messageRaw("<h3>BOOTSTRAP PHASE 0</h3>")
+    Console.show()
+    Console.messageRaw("""
+        <div id="idPreBootMessage">
+            <p><strong>This application uses HTML5 features are not supported by any version of Microsoft's Internet Explorer browser.</strong></p>
+            <p>Please ensure that you are using the latest version of one of the following supported browser:</p>
+            <h4>Supported Browsers:</h4>
+            <ul>
+                <li><a href="https://www.google.com/intl/en/chrome/browser/" title="Install Chrome">Google Chrome</a></li>
+                <li><a href="http://www.apple.com/safari/" title="Install Safari">Apple Safari</a></li>
+                <li><a href="http://www.mozilla.org/en-US/" title="Install Firefox">Mozilla Firefox</a></li>
+            </ul>
+        </div>
+        <h3>BOOTSTRAP PHASE 0</h3>
+        """)
     Console.log "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
     Console.log "#{appName}: #{appBuildTime} by #{appBuilder} :: Thanks for using #{appName}. #{appPackagePublisherUrl}"
 
@@ -86,7 +101,7 @@ phase1 = (bootstrapperOptions_) ->
     # pass through.
 
     bootstrapperOptions = bootstrapperOptions_
-    phase2(bootstrapperOptions)
+    setTimeout( ( -> phase2(bootstrapperOptions_) ), 1)
 
 phase2 = (bootstrapperOptions_) ->
     Console.messageRaw("<h3>BOOTSTRAP PHASE 2</h3>")
@@ -107,7 +122,6 @@ phase2 = (bootstrapperOptions_) ->
             document.title = "#{appName}: checking for updates ..."
         , onDownloading: ->
             document.title = "#{appName}: downloading updates..."
-            Console.show()
             Console.messageEnd("<strong>Updating</strong>")
             Console.messageStart("files ")
         , onProgress: (fileCount_) ->
@@ -115,35 +129,34 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw(".")
         , onError: ->
             document.title = "#{appName}: application boot error!"
-            Console.show()
             phase2Out.appCacheMonitorState = "error"
             Console.messageEnd(" <strong>OH SNAP!</strong>")
             Console.messageRaw("<h2>attention please</h2>")
             Console.messageRaw("<p>There has been a disturbance in the force.</p>")
             Console.messageRaw("<p>Please refresh this page to try try again.</p>")
             phase2Out.appCacheTerminalState = "error"
+            Console.messageError "An error has occurred caching application files from the #{appPackagePublisher}'s servers."
         , onObsolete: ->
             document.title = "#{appName}: application package is locked!"
-            Console.show()
             phase2Out.appCacheMonitorState = "locked (obsolete)"
             Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
-            Console.messageRaw("<h2>attention please</h2>")
+            Console.messageRaw("<h2>OH SNAP!</h2>")
             Console.messageRaw("<p>We're sorry to inconvience you!</p>")
             Console.messageRaw("<p>Encapsule Project has issued a service advisory for #{appName} v#{appVersion} build ID #{appBuildId} and temporarily suspended service.</p>")
             Console.messageRaw("<p>Please visit <a href=\"#{appBlogUrl}\" title=\"#{appBlogName}\">#{appBlogName}</a> for the news and advisories.</p>")
+            Console.messageError "#{appName} has been locked by Encpausle Project."
         , onOffline: ->
             document.title = "#{appName}: application cached offline"
             phase2Out.appCacheMonitorState = "offline"
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
-            phase3(bootstrapperOptions_)
+            Console.messageRaw("<h2>Offline. Booting #{appName} from app cache....</h2>")
+            setTimeout( ( -> phase3(bootstrapperOptions_) ), 2000)
         , onCached: (fileCount_) ->
             phase2Out.appCacheMonitorState = "cached"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.message("<strong>The application has been installed!</strong>")
-            Console.messageRaw("<h2>#{appName} v#{appVersion} #{appReleaseName} INSTALLED</h2>")
-            #$("#idConsole").fadeOut(2000)
-            #$("#idConsole").fadeTo(2000, 0.6)
+            Console.messageRaw("<h2>#{appName} v#{appVersion} #{appReleaseName} installed! Booting...</h2>")
             document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 phase3(bootstrapperOptions_) )
@@ -154,15 +167,13 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd("<strong>No update<strong>")
             Console.message("The most recent build of #{appName} is already cached locally for offline access.");
             Console.message("No updates were necessary.")
-            phase3(bootstrapperOptions_)
+            Console.messageRaw("<h2>No updates available. Booting #{appName} from app cache...</h2>")
+            setTimeout( ( -> phase3(bootstrapperOptions_) ), 2000)
         , onUpdateReady: (fileCount_) ->
-            Console.show()
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
-            Console.messageRaw("<h2>#{appName} v#{appVersion} #{appReleaseName} UPDATED</h2>")
-            #$("#idConsole").fadeOut(2000)
-            #$("#idConsole").fadeTo(2000, 0.6)
+            Console.messageRaw("<h2>#{appName} v#{appVersion} #{appReleaseName} updated! Booting...</h2>")
             document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 try

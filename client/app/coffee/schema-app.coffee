@@ -60,6 +60,7 @@ class namespaceEncapsule_code_app.Schema
             ko.applyBindings Encapsule.runtime.app.viewmodel.boot, document.getElementById("idAppBootView")
 
             Encapsule.runtime.boot.phase0.spinner.cancel()
+            Console.hide()
 
         catch exception
             Console.messageError(exception)
