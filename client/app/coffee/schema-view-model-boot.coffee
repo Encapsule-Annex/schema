@@ -29,7 +29,7 @@ class namespaceEncapsule_code_app_viewmodel.boot
         @visible = ko.observable true
 
         @html = """
-            <div id="idAppBoot">
+            <div id="idAppBootView">
             <div data-bind="style: { display : visible() ? 'inline' : 'none' }">
             <strong>Application Build Information</strong><br>
             Application Package Publisher: <span data-bind="text: appPackagePublisher"></span> (<span data-bind="text: appPackagePublisherUrl"></span>)<br>
@@ -37,7 +37,7 @@ class namespaceEncapsule_code_app_viewmodel.boot
             Application Name: <span data-bind="text: appName"></span><br>
             Application Version: <span data-bind="text: appVersion"></span><br>
             Application Release Phase: <span data-bind="text: appReleasePhase"></span><br>
-            Application Release: <span data-bind="text: appReleaseName"></span><br>
+            Application Release: <span data-bind="text: appReleaseName"></span> (span data-bind="text: appReleaseFunUrl"></span>)<br>
             Application Build Date: <span data-bind="text: appBuildTime"></span><br>
             Application Builder: <span data-bind="text: appBuilder"></span><br>
             Application Copyright: <span data-bind="text: appCopyright"></span><br>
@@ -54,7 +54,7 @@ class namespaceEncapsule_code_app_viewmodel.boot
             User Agent: <span data-bind="text: Encapsule.runtime.boot.phase1.userAgent"></span><br>
             Chrome Browser: <span data-bind="text: Encapsule.runtime.boot.phase1.isChrome"></span><br>
             WebKit Browser: <span data-bind="text: Encapsule.runtime.boot.phase1.isWebKit"></span><br>
-            Browser Version: <span data-bind="text: Encapsule.runtime.boot.phase1.browserVersion"></span>
+            Browser Version: <span data-bind="text: Encapsule.runtime.boot.phase1.browserVersion"></span><br>
             Application cache status: <span data-bind="text: Encapsule.runtime.boot.phase2.appCacheMonitorState"></span>
             </div>
             </div><!-- idAppBoot -->

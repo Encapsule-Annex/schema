@@ -57,7 +57,7 @@ class namespaceEncapsule_code_app.Schema
 
             Encapsule.runtime.app.viewmodel.boot = new Encapsule.code.app.viewmodel.boot()
             bodyElement.append Encapsule.runtime.app.viewmodel.boot.html
-            ko.applyBindings Encapsule.runtime.app.viewmodel.boot, document.getElementById("idAppBoot")
+            ko.applyBindings Encapsule.runtime.app.viewmodel.boot, document.getElementById("idAppBootView")
 
             Encapsule.runtime.boot.phase0.spinner.cancel()
 

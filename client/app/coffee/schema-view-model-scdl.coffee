@@ -265,10 +265,10 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueHost
                 Console.messageError(errorException)
 
 
-        @saveJSONAs = =>
-            Console.message("ViewModel_ScdlCatalogueHost::saveJSONAs")
-            Console.message(@toJSON())
+        @saveJSONAsLinkHtml = ko.computed =>
 
+            # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
+            html = "<a href=\"data:text/json;base64,#{window.btoa(@toJSON())}\" target=\"_blank\">JSON</a>"
 
 class namespaceEncapsule_code_app_viewmodel.scdl
     constructor: ->
@@ -283,12 +283,11 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             <div id="idSchemaAppView">
 
                 <div id="idJSONSourceViewer" data-bind="with: scdlHost">
-                    <button class="button green small" style="float: right;" onclick="Encapsule.runtime.app.viewmodel.scdl.scdlHost().saveJSONAs()">Save As...</button>
-                    <strong>SCDL Catalogue JSON</strong>
+                    <strong>SCDL Catalogue <span id="idJSONSourceDownload" data-bind="html: saveJSONAsLinkHtml"></span></strong>
                     <pre data-bind="text: toJSON"></pre>
                 </div>
 
-                <h1>SCDL Editor</h1>
+                <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName}</h1>
 
                 <div class="classScdlCatalogueHost" data-bind="with: scdlHost">
                     <h2>Catalogue <button data-bind="click: resetCatalogue">Reset Catalogue</button></h2>
