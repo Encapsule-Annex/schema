@@ -189,6 +189,22 @@ phase2 = (bootstrapperOptions_) ->
         }
     phase2Out.appCacheMonitor = new Encapsule.code.lib.appcachemonitor(appCacheCallbacks)
 
+    # I don't any way to actually detect if the cache has been updated before the event listeners are registered.
+    # There simply isn't enough information available from the applicationCache object to determine what's happened
+    # already.
+    # Let's say that if none of our monitoring callbacks are invoked within two seconds that AND the reported cache
+    # status is IDLE that we missed the show and everything is set to go.
+    setTimeout( ( ->
+        applicationCacheStatus = window.applicationCache.status
+        applicationCacheMonitorStatus = phase2Out.appCacheMonitor.status
+        Console.message("application cache status = #{applicationCacheStatus} // application cache monitor status = #{applicationCacheMonitorStatus}")
+        if applicationCacheMonitorStatus == "intializing" and applicationCacheStatus == window.applicationCache.IDLE
+            alert("Special handling of HTML5 application cache race condition: Manually invoking onNoUpdate callback >:/")
+            appCacheCallbacks.onNoUpdate()
+
+        ), 2000)
+
+
 phase3 = (bootstrapperOptions_) ->
 
     Console.messageRaw("<h3>BOOTSTRAP PHASE 3</h3>")
