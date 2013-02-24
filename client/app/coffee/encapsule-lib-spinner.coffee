@@ -65,7 +65,7 @@ class namespaceEncapsule_code_lib_view.spinner
             @embeddedSpinnerObject = new Spinner(options).spin(spinnerHostDN)
             spinnerJN.append($("""<img id="idSpinnerCore" src="img/core-yellow-128x128.png"
             style="margin-left: -66px; margin-top: -65px; 
-            opacity: 0.7; background-color: #4477AA;
+            opacity: 0.7; background-color: #0099CC;
             -webkit-border-radius: 0.75em; -moz-border-radius: 0.75em; border-radius: 0.75em;
             border: 2px solid #CCCCFF;
             ">
