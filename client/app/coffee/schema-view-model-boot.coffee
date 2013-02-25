@@ -55,7 +55,8 @@ class namespaceEncapsule_code_app_viewmodel.boot
             Chrome Browser: <span data-bind="text: Encapsule.runtime.boot.phase1.isChrome"></span><br>
             WebKit Browser: <span data-bind="text: Encapsule.runtime.boot.phase1.isWebKit"></span><br>
             Browser Version: <span data-bind="text: Encapsule.runtime.boot.phase1.browserVersion"></span><br>
-            Application cache status: <span data-bind="text: Encapsule.runtime.boot.phase2.appCacheMonitorState"></span>
+            Application cache status: <span data-bind="text: Encapsule.runtime.boot.phase2.appCacheMonitorState"></span><br>
+            Application cache race condition handled: <span data-bind="text: Encapsule.runtime.boot.phase2.appCacheRaceConditionBroken"></span><br>
             </div>
             </div><!-- idAppBoot -->
             """

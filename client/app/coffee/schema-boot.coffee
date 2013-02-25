@@ -200,7 +200,10 @@ phase2 = (bootstrapperOptions_) ->
             applicationCacheMonitorStatus = phase2Out.appCacheMonitor.status
             if applicationCacheMonitorStatus == "waiting" and  applicationCacheStatus == window.applicationCache.IDLE
                 #alert("Special handling of HTML5 application cache race condition: Manually invoking onNoUpdate callback >:/")
+                phase2Out.appCacheRaceConditionBroken = true
                 appCacheCallbacks.onNoUpdate()
+            else
+                phase2Out.appCacheRaceConditionBroken = false
             ), 2000)
     catch exception
         Console.messageError(exception)
