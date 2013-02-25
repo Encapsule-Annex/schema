@@ -150,13 +150,13 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheMonitorState = "offline"
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
-            Console.messageRaw("<h2>Offline. Booting #{appName} from app cache....</h2>")
+            Console.messageRaw("<h2>#{appPacakgePublisher} origin server unreachable. #{appName} starting...</h2>")
             setTimeout( ( -> phase3(bootstrapperOptions_) ), 2000)
         , onCached: (fileCount_) ->
             phase2Out.appCacheMonitorState = "cached"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.message("<strong>The application has been installed!</strong>")
-            Console.messageRaw("<h2>#{appName} v#{appVersion} #{appReleaseName} installed! Booting...</h2>")
+            Console.messageRaw("<h2>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} installed! Starting...</h2>")
             document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 phase3(bootstrapperOptions_) )
@@ -167,13 +167,13 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd("<strong>No update<strong>")
             Console.message("The most recent build of #{appName} is already cached locally for offline access.");
             Console.message("No updates were necessary.")
-            Console.messageRaw("<h2>No updates available. Booting #{appName} from app cache...</h2>")
+            Console.messageRaw("<h2>#{appPackagePublisher} #{appName} is up-to-date. Starting...</h2>")
             setTimeout( ( -> phase3(bootstrapperOptions_) ), 2000)
         , onUpdateReady: (fileCount_) ->
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
-            Console.messageRaw("<h2>#{appName} v#{appVersion} #{appReleaseName} updated! Booting...</h2>")
+            Console.messageRaw("<h2>#{appPackagePublisher} #{appName} has been updated. Restarting...</h2>")
             document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 try
