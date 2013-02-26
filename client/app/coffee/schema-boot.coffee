@@ -150,7 +150,7 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheMonitorState = "offline"
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
-            Console.messageRaw("<h2>#{appPacakgePublisher} origin server unreachable. #{appName} starting...</h2>")
+            Console.messageRaw("<h2>#{appPackagePublisher} origin server unreachable. #{appName} starting...</h2>")
             setTimeout( ( -> phase3(bootstrapperOptions_) ), 2000)
         , onCached: (fileCount_) ->
             phase2Out.appCacheMonitorState = "cached"
