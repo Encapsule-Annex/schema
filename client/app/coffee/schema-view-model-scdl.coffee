@@ -78,6 +78,16 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlLicense
             @website(undefined)
 
 
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCopyright
+    constructor: (notice_) ->
+        @uuid = ko.observable uuid.v4()
+        @notice = ko.observable notice_
+
+        @resetCopyright = =>
+            @uuid(uuid.v4())
+            @notice(undefined)
+
+
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta
     constructor: ->
         Console.message("ViewModel_ScdlEntityMeta::constructor")
@@ -144,7 +154,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlAssets
             @licenses.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlLicense()
 
         @addCopyright = =>
-            @copyrights.push new namespaceEncapsule_code_app_viewmodel.ViewModel_Copyright()
+            @copyrights.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCopyright()
 
 
             
@@ -344,7 +354,8 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                     <button data-bind="click: resetPerson" class="button small red">Reset Person</button>
                 </h3>
                 UUID: <span data-bind="text: uuid"></span><br>
-                Name: <span data-bind="text: nameFirst"></span> <span data-bind="text: nameLast"></span><br>
+                First Name: <span data-bind="text: nameFirst"></span><br>
+                Last Name: <span data-bind="text: nameLast"></span><br>
                 E-mail: <span data-bind="text: email"></span><br>
                 Website: <span data-bind="text: website"></span><br>
                 GitUsername: <span data-bind="text: gitUsername"></span><br>            
@@ -400,6 +411,23 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             </script><!-- idKoTemplate_ScdlLicenses_View -->
 
 
+            <script type="text/html" id="idKoTemplate_ScdlCopyright_View">
+                <h3>
+                    Copyright:
+                    <button data-bind="click: resetCopyright" class="button small red">Reset Copyright</button>
+                </h3>
+                UUID: <span data-bind="text: uuid"></span><br>
+                Notice: <span data-bind="text: notice"></span><br>
+            </script><!-- idKoTemplate_ScdlLicense_View -->
+
+            <script type="text/html" id="idKoTemplate_ScdlCopyrights_View">
+                <h2>
+                    Copyright Notices:
+                    <button data-bind="click: addCopyright" class="button small green">Add Copyright</button>
+                    <button data-bind="click: resetCopyrights" class="button small red">Reset Copyrights</button>
+                </h2>
+                <div data-bind="template: { name: 'idKoTemplate_ScdlCopyright_View', foreach: copyrights }"></div>
+            </script><!-- idKoTemplate_ScdlLicenses_View -->
 
             <script type="text/html" id="idKoTemplate_ScdlMeta_View">
                 <h2>
@@ -447,8 +475,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                                 <span data-bind="template: { name: 'idKoTemplate_ScdlPeople_View' }"></span>
                                 <span data-bind="template: { name: 'idKoTemplate_ScdlOrganizations_View' }"></span>
                                 <span data-bind="template: { name: 'idKoTemplate_ScdlLicenses_View' }"></span>
-
-                                Copyrights: <span data-bind="text: copyrights"></span><br>
+                                <span data-bind="template: { name: 'idKoTemplate_ScdlCopyrights_View' }"></span>
                             </div><!-- with: assets -->
     
                             <div class="classEditAreaTypes">
