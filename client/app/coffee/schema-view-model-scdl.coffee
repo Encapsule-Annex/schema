@@ -64,6 +64,20 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlOrganization
             @email(undefined)
             @website(undefined)
 
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlLicense
+    constructor: (name_, terms_, website_) ->
+        @uuid = ko.observable uuid.v4()
+        @name = ko.observable name_
+        @terms = ko.observable terms_
+        @website = ko.observable website_
+
+        @resetLicense = =>
+            @uuid(uuid.v4())
+            @name(undefined)
+            @terms(undefined)
+            @website(undefined)
+
+
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta
     constructor: ->
         Console.message("ViewModel_ScdlEntityMeta::constructor")
@@ -114,7 +128,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlAssets
         @resetOrganizations = =>
             @organizations.removeAll()
 
-        @resetLicesnes = =>
+        @resetLicenses = =>
             @licenses.removeAll()
 
         @resetCopyrights = =>
@@ -343,7 +357,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                     <button data-bind="click: resetPeople" class="button small red">Reset People</button>
                 </h2>
                 <div data-bind="template: { name: 'idKoTemplate_ScdlPerson_View', foreach: people }"></div>
-            </script>
+            </script><!-- idKoTemplate_ScdlPeople_View -->
 
 
             <script type="text/html" id="idKoTemplate_ScdlOrganization_View">
@@ -354,7 +368,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 Name: <span data-bind="text: name"></span><br>
                 E-mail: <span data-bind="text: email"></span><br>
                 Website: <span data-bind="text: website"></span><br>
-            </script>
+            </script><!-- idKoTempalte_ScdlOrganization_View -->
 
             <script type="text/html" id="idKoTemplate_ScdlOrganizations_View">
                 <h2>
@@ -363,9 +377,27 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                     <button data-bind="click: resetOrganizations" class="button small red">Reset Organizations</button>
                 </h2>
                 <div data-bind="template: { name: 'idKoTemplate_ScdlOrganization_View', foreach: organizations }"></div>
-            </script>
+            </script><!-- idKoTemplate_ScdlOrganizations_View -->
 
+            <script type="text/html" id="idKoTemplate_ScdlLicense_View">
+                <h3>
+                    License:
+                    <button data-bind="click: resetLicense" class="button small red">Reset License</button>
+                </h3>
+                UUID: <span data-bind="text: uuid"></span><br>
+                Name: <span data-bind="text: name"></span><br>
+                Terms: <span data-bind="text: terms"></span><br>
+                Website: <span data-bind="text: website"></span><br>
+            </script><!-- idKoTemplate_ScdlLicense_View -->
 
+            <script type="text/html" id="idKoTemplate_ScdlLicenses_View">
+                <h2>
+                    Licenses:
+                    <button data-bind="click: addLicense" class="button small green">Add License</button>
+                    <button data-bind="click: resetLicenses" class="button small red">Reset Licenses</button>
+                </h2>
+                <div data-bind="template: { name: 'idKoTemplate_ScdlLicense_View', foreach: licenses }"></div>
+            </script><!-- idKoTemplate_ScdlLicenses_View -->
 
 
 
@@ -396,7 +428,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                     <pre data-bind="text: toJSON"></pre>
                 </div>
 
-                <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName}</h1>
+                <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} (#{appReleasePhase})</h1>
 
                 <div class="classScdlCatalogueHost" data-bind="with: scdlHost">
                     <h2>Catalogue <button data-bind="click: resetCatalogue" class="button small red">Reset Catalogue</button></h2>
@@ -414,8 +446,8 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                                 </h2>
                                 <span data-bind="template: { name: 'idKoTemplate_ScdlPeople_View' }"></span>
                                 <span data-bind="template: { name: 'idKoTemplate_ScdlOrganizations_View' }"></span>
+                                <span data-bind="template: { name: 'idKoTemplate_ScdlLicenses_View' }"></span>
 
-                                Licenses: <span data-bind="text: licenses"></span><br>
                                 Copyrights: <span data-bind="text: copyrights"></span><br>
                             </div><!-- with: assets -->
     
