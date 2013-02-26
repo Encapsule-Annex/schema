@@ -33,13 +33,22 @@ namespaceEncapsule_code_app_viewmodel = Encapsule.code.app.viewmodel? and Encaps
 
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPerson
-    constructor: (nameFirst_, nameLast_, email_, website_) ->
+    constructor: (nameFirst_, nameLast_, email_, website_, gitUsername_) ->
         Console.message("ViewModel_ScdlPerson::constructor")
         @uuid = ko.observable uuid.v4()
         @nameFirst = ko.observable nameFirst_
         @nameLast = ko.observable nameLast_
         @email = ko.observable email_
         @website = ko.observable website_
+        @gitUsername = ko.observable gitUsername_
+
+        @resetPerson = =>
+            @uuid(uuid.v4())
+            @nameFirst(undefined)
+            @nameLast(undefined)
+            @email(undefined)
+            @website(undefined)
+            @gitUsername(undefined)
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlOrganization
     constructor: (name_, email_, website_) ->
@@ -48,6 +57,12 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlOrganization
         @name = ko.observable name_
         @email = ko.observable email_
         @website = ko.observable website_
+
+        @resetOrganization = =>
+            @uuid(uuid.v4())
+            @name(undefined)
+            @email(undefined)
+            @website(undefined)
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta
     constructor: ->
@@ -92,6 +107,33 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlAssets
             @organizations.removeAll()
             @licenses.removeAll()
             @copyrights.removeAll()
+
+        @resetPeople = =>
+            @people.removeAll()
+
+        @resetOrganizations = =>
+            @organizations.removeAll()
+
+        @resetLicesnes = =>
+            @licenses.removeAll()
+
+        @resetCopyrights = =>
+            @copyrights.removeAll()
+
+        @addPerson = =>
+            @people.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPerson()
+
+        @addOrganization = =>
+            @organizations.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlOrganization()
+
+        @addLicense = =>
+            @licenses.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlLicense()
+
+        @addCopyright = =>
+            @copyrights.push new namespaceEncapsule_code_app_viewmodel.ViewModel_Copyright()
+
+
+            
 
 
 
@@ -279,6 +321,73 @@ class namespaceEncapsule_code_app_viewmodel.scdl
 
 
             @html = $("""
+
+            <!-- experiments with KO templates -->
+
+            <script type="text/html" id="idKoTemplate_ScdlPerson_View">
+                <h3>
+                    Person:
+                    <button data-bind="click: resetPerson" class="button small red">Reset Person</button>
+                </h3>
+                UUID: <span data-bind="text: uuid"></span><br>
+                Name: <span data-bind="text: nameFirst"></span> <span data-bind="text: nameLast"></span><br>
+                E-mail: <span data-bind="text: email"></span><br>
+                Website: <span data-bind="text: website"></span><br>
+                GitUsername: <span data-bind="text: gitUsername"></span><br>            
+            </script><!-- idKoTemplate_ScdlPerson_View -->
+
+            <script type="text/html" id="idKoTemplate_ScdlPeople_View">
+                <h2>
+                    People:
+                    <button data-bind="click: addPerson" class="button small green">Add Person</button>
+                    <button data-bind="click: resetPeople" class="button small red">Reset People</button>
+                </h2>
+                <div data-bind="template: { name: 'idKoTemplate_ScdlPerson_View', foreach: people }"></div>
+            </script>
+
+
+            <script type="text/html" id="idKoTemplate_ScdlOrganization_View">
+                <h3>Organization:
+                    <button data-bind="click: resetOrganization" class="button small red">Reset Organization</button>
+                </h3>
+                UUID: <span data-bind="text: uuid"></span><br>
+                Name: <span data-bind="text: name"></span><br>
+                E-mail: <span data-bind="text: email"></span><br>
+                Website: <span data-bind="text: website"></span><br>
+            </script>
+
+            <script type="text/html" id="idKoTemplate_ScdlOrganizations_View">
+                <h2>
+                    Organizations:
+                    <button data-bind="click: addOrganization" class="button small green">Add Organization</button>
+                    <button data-bind="click: resetOrganizations" class="button small red">Reset Organizations</button>
+                </h2>
+                <div data-bind="template: { name: 'idKoTemplate_ScdlOrganization_View', foreach: organizations }"></div>
+            </script>
+
+
+
+
+
+            <script type="text/html" id="idKoTemplate_ScdlMeta_View">
+                <h2>
+                    Meta
+                    <button data-bind="click: resetMeta" class="button small red">Reset Meta</button>
+                </h2>
+                UUID: <span data-bind="text: uuid"></span><br>
+                Name: <span data-bind="text: name"></span><br>
+                Description: <span data-bind="text: description"></span><br>
+                Author: <span data-bind="text: author"></span><br>
+                Organization: <span data-bind="text: organization"></span><br>
+                License: <span data-bind="text: license"></span><br>
+                Revision: <span data-bind="text: revision"></span><br>
+                Create: <span data-bind="text: createTime"></span><br>
+                Update: <span data-bind="text: updateTime"></span><br>
+            </script><!-- idKoTemplate_ScdlMeta -->
+
+
+
+
             <!-- Schema app runtime view -->
             <div id="idSchemaAppView">
 
@@ -290,33 +399,32 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName}</h1>
 
                 <div class="classScdlCatalogueHost" data-bind="with: scdlHost">
-                    <h2>Catalogue <button data-bind="click: resetCatalogue">Reset Catalogue</button></h2>
+                    <h2>Catalogue <button data-bind="click: resetCatalogue" class="button small red">Reset Catalogue</button></h2>
                     <div data-bind="with: catalogueShim" class="classScdlCatalogueShim">
                         <div class="classScdlCatalogue" data-bind="with: scdl_v1_catalogue">
-                            <div data-bind="with: meta" class="classEditAreaMeta"><h2>Meta</h2>
-                                <p>
-                                    UUID: <span data-bind="text: uuid"></span><br>
-                                    Name: <span data-bind="text: name"></span><br>
-                                    Description: <span data-bind="text: description"></span><br>
-                                    Author: <span data-bind="text: author"></span><br>
-                                    Organization: <span data-bind="text: organization"></span><br>
-                                    License: <span data-bind="text: license"></span><br>
-                                    Revision: <span data-bind="text: revision"></span><br>
-                                    Create: <span data-bind="text: createTime"></span><br>
-                                    Update: <span data-bind="text: updateTime"></span><br>
-                                </p>
-                             </div><!-- with: meta -->
+
+                            <div data-bind="with: meta">
+                                <div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }" class="classEditAreaMeta"></div>
+                            </div><!-- with: meta -->
     
                             <div data-bind="with: assets" class="classEditAreaAssets">
-                                <h2>Assets <button data-bind="click: resetAssets">Reset Assets</button></h2>
-                                People: <span data-bind="text: people"></span><br>
-                                Organizations: <span data-bind="text: organizations"></span><br>
+                                <h2>
+                                    Assets
+                                    <button data-bind="click: resetAssets" class="button small red">Reset Assets</button>
+                                </h2>
+                                <span data-bind="template: { name: 'idKoTemplate_ScdlPeople_View' }"></span>
+                                <span data-bind="template: { name: 'idKoTemplate_ScdlOrganizations_View' }"></span>
+
                                 Licenses: <span data-bind="text: licenses"></span><br>
                                 Copyrights: <span data-bind="text: copyrights"></span><br>
                             </div><!-- with: assets -->
     
                             <div class="classEditAreaTypes">
-                                <h2>Types <button data-bind="click: addType">Add Type</button> <button data-bind="click: resetTypes">Reset Types</button></h2>
+                                <h2>
+                                    Types
+                                    <button data-bind="click: addType" class="button small green">Add Type</button>
+                                    <button data-bind="click: resetTypes" class="button small red">Reset Types</button>
+                                </h2>
                                 <div data-bind="foreach: types" class="classScdlTypes">
                                     <div class="classScdlType">
                                         Type <span data-bind="text: $index"></span>
@@ -325,7 +433,11 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                             </div><!-- classEditAreaTypes -->
     
                             <div class="classEditAreaMachines">
-                                <h2>Machines <button data-bind="click: addMachine">Add Machine</button> <button data-bind="click: resetMachines">Reset Types</button></h2> 
+                                <h2>
+                                    Machines
+                                    <button data-bind="click: addMachine" class="button small green">Add Machine</button>
+                                    <button data-bind="click: resetMachines"  class="button small red">Reset Machines</button>
+                                </h2> 
                                 <div data-bind="foreach: machines" class="classScdlMachines">
                                     <div class="classScdlMachine">
                                         Machine: <span data-bind="text: $index"></span>
@@ -334,7 +446,11 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                             </div><!-- classEditAreaMachines -->
     
                             <div class="classEditAreaSystems">
-                                <h2>Systems <button data-bind="click: addSystem">Add System</button> <button data-bind="click: resetSystems">Reset Types</button></h2>
+                                <h2>
+                                    Systems
+                                    <button data-bind="click: addSystem"  class="button small green">Add System</button>
+                                    <button data-bind="click: resetSystems"  class="button small red">Reset Systems</button>
+                                </h2>
                                 <div data-bind="foreach: systems" class="classScdlSystems">
                                     <div class="classScdlSystem">
                                         System: <span data-bind="text: $index"></span>
