@@ -1,9 +1,8 @@
-
 In order to keep the Schema client app organized and modular, the following
 conventions for the creating of global Encapsule object namesspace and its
 subobjects will be used:
 
-
+```
 Encapsule
 
 Encapsule.code .................................... re-usable JS libs registgered here on definition
@@ -32,6 +31,7 @@ Encpasule.code.lib.view.spinner ................... class
 Encapsule.runtime ................................. application runtime state
 Encapsule.runtime.app ............................. application runtime state 
 Encapsule.runtime.boot ............................ namepsace object (filed during boot)
+```
 
 
 
