@@ -8,33 +8,51 @@
 
 .classScdlCatalogue { margin: 0px; padding: 0px;}
 
-.classEditAreaMeta { margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: #F0F0F0;}
+.classEditAreaMeta { margin: 0px; padding: 10px; border: 1px solid black; background-color: #F0F0F0;}
 
-.classEditAreaAssets { margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: #FFEEDD; }
+.classEditAreaAssets { margin: 0px; padding: 10px; border: 1px solid black; background-color: #FFEEDD; }
 
-.classEditAreaAssetsPeople { margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
+.classEditAreaAssetsPeople { margin: 0px; padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
 .classScdlAssetsPeople { margin: 2px; padding: 2px; border: 0px solid black; background-color: #DDCCBB; }
 .classScdlAssetsPerson { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
 
-.classEditAreaAssetsOrganizations { margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
+.classEditAreaAssetsOrganizations { margin: 0px;  padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
 .classScdlAssetsOrganizations { margin: 2px; padding: 2px; border: 0px solid black; background-color: #DDCCBB; }
 .classScdlAssetsOrganization { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
 
-.classEditAreaAssetsLicenses { margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
+.classEditAreaAssetsLicenses { margin: 0px; padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
 .classScdlAssetsLicenses { margin: 2px; padding: 2px; border: 0px solid black; background-color: #DDCCBB; }
 .classScdlAssetsLicense { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
 
-.classEditAreaAssetsCopyrights { margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
+.classEditAreaAssetsCopyrights { margin: 0px; padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
 .classScdlAssetsCopyrights { margin: 2px; padding: 2px; border: 0px solid black; background-color: #DDCCBB; }
 .classScdlAssetsCopyright { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
 
-
-
-.classEditAreaTypes { margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
+.classEditAreaTypes { margin: 0px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
 .classScdlTypes { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
 .classScdlType { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
 
-.classEditAreaMachines { margin: 0px; margin-bottom: 10px; padding: 10px; border: 1px solid black; background-color: #99CC00;}
+.classEditAreaMachinePins { margin: 0px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
+.classScdlMachinePins { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
+
+.classEditAreaMachineInputPins { margin: 0px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
+.classScdlMachineInputPins { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
+
+.classEditAreaMachineOutputPins { margin: 0px;  padding: 10px; border: 1px solid black; background-color: #66CCFF;}
+.classScdlMachineOutputPins { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
+
+.classEditAreaMachinePin { margin: 0px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
+.classScdlMachinePin { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
+
+.classEditAreaMachineStates { margin: 0px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
+.classScdlMachineStates { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
+.classScdlMachineState { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
+
+.classEditAreaMachineTransitions { margin: 0px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
+.classScdlMachineTransitions { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
+.classScdlMachineTransition { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
+
+.classEditAreaMachines { margin: 0px; padding: 10px; border: 1px solid black; background-color: #99CC00;}
 .classScdlMachines { margin: 2px; padding: 2px; border: 0px solid black; background-color: #669900; }
 .classScdlMachine { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
 

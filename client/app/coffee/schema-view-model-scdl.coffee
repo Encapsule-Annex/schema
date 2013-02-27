@@ -224,6 +224,9 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
 
         @states = ko.observableArray []
 
+        @resetMeta = =>
+            @meta().resetMeta()
+
         @addState = =>
             Console.message("ViewModel_ScdlMachine::addState")
             @states.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachineState()
@@ -483,6 +486,72 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             </script><!-- idKoTemplate_ScdlTypes_View -->
 
 
+            <script type="text/html" id="idKoTemplate_ScdlMachineState_View">
+            </script><!-- idKoTemplate_ScdlMachineState_View -->
+
+            <script type="text/html" id="idKoTemplate_ScdlMachineStates_View">
+                <div class="classEditAreaMachineStates">
+                    <h3>States:</h3>
+                </div>
+            </script><!-- idKoTemplate_ScdlMachineStates -->
+
+            <script type="text/html" id="idKoTemplate_ScdlMachineTransition_View">
+            </script>
+
+            <script type="text/html" id="idKoTemplate_ScdlMachineTransitions_View">
+                <div class="classEditAreaMachineTransitions">
+                    <h3>Transitions:</h3>
+                </div>
+            </script>
+
+            <script type="text/html" id="idKoTemplate_ScdlMachinePin_View">
+                <div class="classScdlMachinePin">
+                    <h5>Pin:</h5>
+                </div>
+            </script><!-- idKoTemplate_ScdlMachinePin_View -->
+
+            <script type="text/html" id="idKoTemplate_ScdlMachineInputPins_View">
+                <div class="classEditAreaMachineInputPins">
+                    <h4>Input Pins:</h4>
+                </div>
+            </script><!-- idKoTemplate_ScdlMachinePins_View -->
+
+            <script type="text/html" id="idKoTemplate_ScdlMachineOutputPins_View">
+                <div class="classEditAreaMachineInputPins">
+                    <h4>Output Pins:</h4>
+                </div>
+            </script><!-- idKoTemplate_ScdlMachinePins_View -->
+
+            <script type="text/html" id="idKoTemplate_ScdlMachinePins_View">
+                <div class="classEditAreaMachinePins">
+                    <h3>
+                        Pins:
+                    </h3>
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlMachineInputPins_View' }" class="classEditAreaMachineInputPins"></div>
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlMachineOutputPins_View' }" class="classEditAreaMachineOutputPins"></div>
+                </div>
+            </script><!-- idKoTemplate_ScdlMachinePins_View -->
+
+
+            <script type="text/html" id="idKoTemplate_ScdlMachines_View">
+                <h2>
+                    Machines:
+                    <button data-bind="click: addMachine" class="button small green">Add Machine</button>
+                    <button data-bind="click: resetMachines"  class="button small red">Reset Machines</button>
+                </h2> 
+                <div data-bind="foreach: machines" class="classScdlMachines">
+                    <div class="classScdlMachine">
+                        Machine <span data-bind="text: $index"></span>:<br>
+                        <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
+                        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStates_View' }"></div>
+                        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransitions_View' }"></div>
+                        <div data-bind="template: { name: 'idKoTemplate_ScdlMachinePins_View' }"></div>
+                    </div><!-- classScdlMachine -->
+                </div><!-- classScdlMachines -->
+            </script><!-- idKoTemplate_ScdlMachiens_View -->
+
+
+
             <!-- SCDL HTML VIEW DEFINITION -->
 
             <div id="idSchemaAppView">
@@ -513,22 +582,11 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                                 <span data-bind="template: { name: 'idKoTemplate_ScdlLicenses_View' }"></span>
                                 <span data-bind="template: { name: 'idKoTemplate_ScdlCopyrights_View' }"></span>
                             </div><!-- with: assets -->
-    
-                            <div class="classEditAreaTypes">
-                                <div data-bind="template: { name: 'idKoTemplate_ScdlTypes_View' }"></div>
+
+                            <div data-bind="template: { name: 'idKoTemplate_ScdlTypes_View' }" class="classEditAreaTypes">
                             </div><!-- with: types -->
     
-                            <div class="classEditAreaMachines">
-                                <h2>
-                                    Machines
-                                    <button data-bind="click: addMachine" class="button small green">Add Machine</button>
-                                    <button data-bind="click: resetMachines"  class="button small red">Reset Machines</button>
-                                </h2> 
-                                <div data-bind="foreach: machines" class="classScdlMachines">
-                                    <div class="classScdlMachine">
-                                        Machine: <span data-bind="text: $index"></span>
-                                    </div><!-- classScdlMachine -->
-                                </div><!-- classScdlMachines -->
+                            <div data-bind="template: { name: 'idKoTemplate_ScdlMachines_View' }" class="classEditAreaMachines">
                             </div><!-- classEditAreaMachines -->
     
                             <div class="classEditAreaSystems">
