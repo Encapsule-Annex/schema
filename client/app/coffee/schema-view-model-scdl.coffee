@@ -487,6 +487,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
 
 
             <script type="text/html" id="idKoTemplate_ScdlMachineState_View">
+
             </script><!-- idKoTemplate_ScdlMachineState_View -->
 
             <script type="text/html" id="idKoTemplate_ScdlMachineStates_View">
@@ -513,12 +514,18 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             <script type="text/html" id="idKoTemplate_ScdlMachineInputPins_View">
                 <div class="classEditAreaMachineInputPins">
                     <h4>Input Pins:</h4>
+                    <div class="classScdlMachineInputPins">
+                        <div data-bind="template: { name: 'idKoTemplate_ScdlMachinePin_View', foreach: inputPins }"></div>
+                    </div>
                 </div>
             </script><!-- idKoTemplate_ScdlMachinePins_View -->
 
             <script type="text/html" id="idKoTemplate_ScdlMachineOutputPins_View">
                 <div class="classEditAreaMachineInputPins">
                     <h4>Output Pins:</h4>
+                    <div class="classScdlMachineOutputPins">
+                        <div data-bind="temlate: { name: 'idKoTemplate_ScdlMachinePin_View', foreach: outputPins }"></div>
+                    </div>
                 </div>
             </script><!-- idKoTemplate_ScdlMachinePins_View -->
 
