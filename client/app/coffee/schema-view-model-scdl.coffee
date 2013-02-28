@@ -184,19 +184,32 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin
             @type(undefined)
 
 
-
-class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector
     constructor: ->
         Console.message("ViewModel_ScdlTransition::constructor")
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @targetState = ko.observable undefined
         @expression = ko.observable undefined
 
-        @resetTransition = =>
+        @resetTransitionVector = =>
             Console.message("ViewModel_ScdlTransition::resetTransition")
             @meta().resetMeta()
             @targetState(undefined)
             @expression(undefined)
+
+
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition
+    constructor: ->
+        @startState = ko.observable undefined
+        @transitionVectors = ko.observableArray []
+
+        @resetTransition = =>
+            @startState(undefined)
+            @transitionVectors.removeAll()
+
+        @addTransitionVector = =>
+            @transitionVectors.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector()
+
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlState
     constructor: ->
@@ -204,37 +217,42 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlState
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @enterAction = ko.observable undefined
         @exitAction = ko.observable undefined
-        @transitions = ko.observableArray []
 
         @resetState = =>
             @meta().resetMeta()
             @enterAction(undefined)
             @exitAction(undefined)
-            @transitions.removeAll()
+
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
     constructor: ->
         Console.message("ViewModel_ScldMachine::constructor")
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @inputPins = ko.observableArray []
+        @outputPins = ko.observableArray []
+        @states = ko.observableArray []
+        @transitions = ko.observableArray []
+
+        @resetMeta = =>
+            @meta().resetMeta()
+
         @addInputPin = =>
             Console.message("ViewModel_ScdlMachine::addInputPin")
             @inputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin("Input")
 
-        @outputPins = ko.observableArray []
         @addOutputPin = =>
             Console.message("ViewModel_ScdlMachine::addOutputPin")
             @outputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin("Output")
-
-        @states = ko.observableArray []
-
-        @resetMeta = =>
-            @meta().resetMeta()
 
         @addState = =>
             Console.message("ViewModel_ScdlMachine::addState")
             @states.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachineState()
 
+        @addTransition = =>
+            @transitions.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition()
+
+        @resetTransitions = =>
+            @transitions.removeAll()
 
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
@@ -500,18 +518,32 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 </div>
             </script><!-- idKoTemplate_ScdlMachineStates -->
 
+            <script type="text/html" id="idKoTemplate_ScdlMachineTransitionVector_View">
+            </script><!-- idKoTemplate_ScdlMachineTransitionVector_View -->
+
             <script type="text/html" id="idKoTemplate_ScdlMachineTransition_View">
-            </script>
+                <div class="classScdlMachineTransition">
+                    This is a transition
+                </div>
+            </script><!-- idKoTemplate_ScdlMachineTransition_View -->
 
             <script type="text/html" id="idKoTemplate_ScdlMachineTransitions_View">
                 <div class="classEditAreaMachineTransitions">
-                    <h3>Transitions:</h3>
+                    <h3>
+                       Transitions:
+                       <button data-bind="click: addTransition" class="button small green">Add Transition</button>
+                       <button data-bind="click: resetTransitions" class="button small red">Reset Transitions</button>
+                    </h3>
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransition_View', foreach: transitions}" class="classScdlMachineTransitions"></div>
                 </div>
             </script>
 
             <script type="text/html" id="idKoTemplate_ScdlMachinePin_View">
                 <div class="classScdlMachinePin">
-                    <h5><span data-bind="text: direction"></span> Pin <span data-bind="text: $index ">:</h5>
+                    <h5>
+                        <span data-bind="text: direction"></span> Pin <span data-bind="text: $index "></span>:
+                        <button data-bind="click: resetPin" class="button small red">Reset Pin</button>
+                    </h5>
                     Data type: <span data-bind="text: type"></span><br>
                     <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
                 </div>
@@ -559,8 +591,8 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                         Machine <span data-bind="text: $index"></span>:<br>
                         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
                         <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStates_View' }"></div>
-                        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransitions_View' }"></div>
                         <div data-bind="template: { name: 'idKoTemplate_ScdlMachinePins_View' }"></div>
+                        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransitions_View' }"></div>
                     </div><!-- classScdlMachine -->
                 </div><!-- classScdlMachines -->
             </script><!-- idKoTemplate_ScdlMachiens_View -->
