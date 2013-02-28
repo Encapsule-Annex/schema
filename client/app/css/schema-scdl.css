@@ -52,6 +52,10 @@
 .classScdlMachineTransitions { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
 .classScdlMachineTransition { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
 
+.classEditAreaMachineTransitionVectors { margin: 0px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
+.classScdlMachineTransitionVector { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
+
+
 .classEditAreaMachines { margin: 0px; padding: 10px; border: 1px solid black; background-color: #99CC00;}
 .classScdlMachines { margin: 2px; padding: 2px; border: 0px solid black; background-color: #669900; }
 .classScdlMachine { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }

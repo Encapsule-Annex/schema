@@ -188,7 +188,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector
     constructor: ->
         Console.message("ViewModel_ScdlTransition::constructor")
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @targetState = ko.observable undefined
+        @nextState = ko.observable undefined
         @expression = ko.observable undefined
 
         @resetTransitionVector = =>
@@ -201,14 +201,14 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition
     constructor: ->
         @startState = ko.observable undefined
-        @transitionVectors = ko.observableArray []
+        @vectors = ko.observableArray []
 
         @resetTransition = =>
             @startState(undefined)
-            @transitionVectors.removeAll()
+            @vectors.removeAll()
 
-        @addTransitionVector = =>
-            @transitionVectors.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector()
+        @addVector = =>
+            @vectors.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector()
 
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlState
@@ -519,11 +519,24 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             </script><!-- idKoTemplate_ScdlMachineStates -->
 
             <script type="text/html" id="idKoTemplate_ScdlMachineTransitionVector_View">
+                <div class="classScdlMachineTransitionVector">
+                    Next State: <span data-bind="text: nextState"></span><br>
+                    Condition: <span data-bind="text: expression"></span><br>
+                </div>
             </script><!-- idKoTemplate_ScdlMachineTransitionVector_View -->
 
             <script type="text/html" id="idKoTemplate_ScdlMachineTransition_View">
                 <div class="classScdlMachineTransition">
-                    This is a transition
+                    <h4>
+                        State Transition <span data-bind="text: $index"></span>:
+                        <button data-bind="click: addVector" class="button small green">Add Vector</button>
+                        <button data-bind="click: resetTransition" class="button small green">Reset Transition</button>
+                    </h4>
+                    Start State: <span data-bind="text: startState"></span><br>
+                    <div class="classEditAreaMachineTransitionVectors">
+                        <h4>Vectors:</h4>
+                        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransitionVector_View', foreach: vectors }"></div>
+                    </div>
                 </div>
             </script><!-- idKoTemplate_ScdlMachineTransition_View -->
 
