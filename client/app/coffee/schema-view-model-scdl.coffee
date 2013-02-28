@@ -169,10 +169,14 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlType
 
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin
-    constructor: ->
+    constructor: (direction_) ->
         Console.message("ViewModel_ScdlPin::constructor")
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @type = ko.observable undefined
+        @direction = ko.observable direction_
+
+        @resetMeta = =>
+            @meta().resetMeta()
 
         @resetPin = =>
             Console.message("ViewModel_ScdlPin::resetPin")
@@ -215,12 +219,12 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
         @inputPins = ko.observableArray []
         @addInputPin = =>
             Console.message("ViewModel_ScdlMachine::addInputPin")
-            @inputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin()
+            @inputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin("Input")
 
         @outputPins = ko.observableArray []
         @addOutputPin = =>
             Console.message("ViewModel_ScdlMachine::addOutputPin")
-            @outputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin()
+            @outputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin("Output")
 
         @states = ko.observableArray []
 
@@ -351,6 +355,8 @@ class namespaceEncapsule_code_app_viewmodel.scdl
 
             <!-- SCDL HTML VIEW TEMPLATES -->
 
+            <div id="idKoTemplates" style="display: none;">
+
             <script type="text/html" id="idKoTemplate_ScdlPerson_View">
                 <div class="classScdlAssetsPerson">
                     <h3>
@@ -464,7 +470,6 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 Update: <span data-bind="text: updateTime"></span><br>
             </script><!-- idKoTemplate_ScdlMeta -->
 
-
             <script type="text/html" id="idKoTemplate_ScdlType_View">
                 <div class="classScdlType">
                     <h3>
@@ -487,7 +492,6 @@ class namespaceEncapsule_code_app_viewmodel.scdl
 
 
             <script type="text/html" id="idKoTemplate_ScdlMachineState_View">
-
             </script><!-- idKoTemplate_ScdlMachineState_View -->
 
             <script type="text/html" id="idKoTemplate_ScdlMachineStates_View">
@@ -507,7 +511,9 @@ class namespaceEncapsule_code_app_viewmodel.scdl
 
             <script type="text/html" id="idKoTemplate_ScdlMachinePin_View">
                 <div class="classScdlMachinePin">
-                    <h5>Pin:</h5>
+                    <h5><span data-bind="text: direction"></span> Pin <span data-bind="text: $index ">:</h5>
+                    Data type: <span data-bind="text: type"></span><br>
+                    <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
                 </div>
             </script><!-- idKoTemplate_ScdlMachinePin_View -->
 
@@ -521,10 +527,10 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             </script><!-- idKoTemplate_ScdlMachinePins_View -->
 
             <script type="text/html" id="idKoTemplate_ScdlMachineOutputPins_View">
-                <div class="classEditAreaMachineInputPins">
+                <div class="classEditAreaMachineOutputPins">
                     <h4>Output Pins:</h4>
                     <div class="classScdlMachineOutputPins">
-                        <div data-bind="temlate: { name: 'idKoTemplate_ScdlMachinePin_View', foreach: outputPins }"></div>
+                        <div data-bind="template: { name: 'idKoTemplate_ScdlMachinePin_View', foreach: outputPins }"></div>
                     </div>
                 </div>
             </script><!-- idKoTemplate_ScdlMachinePins_View -->
@@ -533,6 +539,8 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 <div class="classEditAreaMachinePins">
                     <h3>
                         Pins:
+                        <button data-bind="click: addInputPin" class="button small green">Add Input Pin</button>
+                        <button data-bind="click: addOutputPin"  class="button small green">Add Output Pin</button>
                     </h3>
                     <div data-bind="template: { name: 'idKoTemplate_ScdlMachineInputPins_View' }" class="classEditAreaMachineInputPins"></div>
                     <div data-bind="template: { name: 'idKoTemplate_ScdlMachineOutputPins_View' }" class="classEditAreaMachineOutputPins"></div>
@@ -557,7 +565,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 </div><!-- classScdlMachines -->
             </script><!-- idKoTemplate_ScdlMachiens_View -->
 
-
+            </div><!-- idKoTemplates -->
 
             <!-- SCDL HTML VIEW DEFINITION -->
 
