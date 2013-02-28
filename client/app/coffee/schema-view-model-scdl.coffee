@@ -42,7 +42,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPerson
         @website = ko.observable website_
         @gitUsername = ko.observable gitUsername_
 
-        @resetPerson = =>
+        @reinitializePerson = =>
             @uuid(uuid.v4())
             @nameFirst(undefined)
             @nameLast(undefined)
@@ -58,7 +58,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlOrganization
         @email = ko.observable email_
         @website = ko.observable website_
 
-        @resetOrganization = =>
+        @reinitializeOrganization = =>
             @uuid(uuid.v4())
             @name(undefined)
             @email(undefined)
@@ -71,7 +71,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlLicense
         @terms = ko.observable terms_
         @website = ko.observable website_
 
-        @resetLicense = =>
+        @reinitializeLicense = =>
             @uuid(uuid.v4())
             @name(undefined)
             @terms(undefined)
@@ -83,7 +83,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCopyright
         @uuid = ko.observable uuid.v4()
         @notice = ko.observable notice_
 
-        @resetCopyright = =>
+        @reinitializeCopyright = =>
             @uuid(uuid.v4())
             @notice(undefined)
 
@@ -102,8 +102,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta
         @createTime = ko.observable Encapsule.code.lib.util.getEpochTime()
         @updateTime = ko.observable Encapsule.code.lib.util.getEpochTime()
 
-        @resetMeta = =>
-            Console.message("ViewModel_ScdlEntityMeta::resetMeta")
+        @reinitializeMeta = =>
             @uuid(uuid.v4())
             @name(undefined)
             @description(undefined)
@@ -125,23 +124,22 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlAssets
         @licenses = ko.observableArray []
         @copyrights = ko.observableArray []
 
-        @resetAssets = =>
-            Console.message("ViewModel_ScdlAssets::resetAssets")
+        @removeAllAssets = =>
             @people.removeAll()
             @organizations.removeAll()
             @licenses.removeAll()
             @copyrights.removeAll()
 
-        @resetPeople = =>
+        @removeAllPeople = =>
             @people.removeAll()
 
-        @resetOrganizations = =>
+        @removeAllOrganizations = =>
             @organizations.removeAll()
 
-        @resetLicenses = =>
+        @removeAllLicenses = =>
             @licenses.removeAll()
 
-        @resetCopyrights = =>
+        @removeAllCopyrights = =>
             @copyrights.removeAll()
 
         @addPerson = =>
@@ -164,7 +162,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlType
         @descriptor = ko.observable undefined
 
         @resetType = =>
-             @meta().resetMeta()
+             @meta().reinitializeMeta()
              @descriptor(undefined)
 
 
@@ -175,12 +173,12 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin
         @type = ko.observable undefined
         @direction = ko.observable direction_
 
-        @resetMeta = =>
-            @meta().resetMeta()
+        @reinitializeMeta = =>
+            @meta().reinitializeMeta()
 
-        @resetPin = =>
+        @reinitializePin = =>
             Console.message("ViewModel_ScdlPin::resetPin")
-            @meta().resetMeta()
+            @meta().reinitializeMeta()
             @type(undefined)
 
 
@@ -193,7 +191,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector
 
         @resetTransitionVector = =>
             Console.message("ViewModel_ScdlTransition::resetTransition")
-            @meta().resetMeta()
+            @meta().reinitializeMeta()
             @targetState(undefined)
             @expression(undefined)
 
@@ -203,8 +201,11 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition
         @startState = ko.observable undefined
         @vectors = ko.observableArray []
 
-        @resetTransition = =>
+        @reinitializeTransition = =>
             @startState(undefined)
+            @vectors.removeAll()
+
+        @removeAllVectors = =>
             @vectors.removeAll()
 
         @addVector = =>
@@ -219,7 +220,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlState
         @exitAction = ko.observable undefined
 
         @resetState = =>
-            @meta().resetMeta()
+            @meta().reinitializeMeta()
             @enterAction(undefined)
             @exitAction(undefined)
 
@@ -233,8 +234,31 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
         @states = ko.observableArray []
         @transitions = ko.observableArray []
 
-        @resetMeta = =>
-            @meta().resetMeta()
+        @reinitializeMachine = =>
+            @reinitializeMeta()
+            @removeAllInputPins()
+            @removeAllOutputPins()
+            @removeAllTransitions()
+            @removeAllStates()
+
+        @reinitializeMeta = =>
+            @meta().reinitializeMeta()
+
+        @removeAllInputPins = =>
+            @inputPins.removeAll()
+
+        @removeAllOutputPins = =>
+            @outputPins.removeAll()
+
+        @removeAllPins = =>
+            @removeAllInputPins()
+            @removeAllOutputPins()
+
+        @removeAllTransitions = =>
+            @transitions.removeAll()
+
+        @removeAllStates = =>
+            @states.removeAll()
 
         @addInputPin = =>
             Console.message("ViewModel_ScdlMachine::addInputPin")
@@ -250,9 +274,6 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
 
         @addTransition = =>
             @transitions.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition()
-
-        @resetTransitions = =>
-            @transitions.removeAll()
 
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
@@ -283,34 +304,27 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogue
             Console.message("ViewModel_ScdlCatalogue::addSystem")
             @systems.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem()
 
-        @resetCatalogue = =>
+        @reinitializeCatalogue = =>
             Console.message("ViewModel_ScdlCatalogue::resetCatalogue")
-            @resetMeta()
-            @resetAssets()
-            @resetTypes()
-            @resetMachines()
-            @resetSystems()
+            @reinitializeMeta()
+            @removeAllAssets()
+            @removeAllTypes()
+            @removeAllMachines()
+            @removeAllSystems()
 
-        @resetMeta = =>
-            Console.message("ViewMode_ScdlCatalog::resetMeta")
-            @meta().resetMeta()
+        @reinitializeMeta = =>
+            @meta().reinitializeMeta()
 
-        @resetAssets = =>
-            Console.message("ViewModel_ScdlCatalogue::resetAssets")
-            @assets().resetAssets()
+        @removeAllAssets = =>
+            @assets().removeAllAssets()
             
-
-        @resetTypes = =>
-            Console.message("ViewModel_ScdlCatalogue::resetTypes")
+        @removeAllTypes = =>
             @types.removeAll()
 
-
-        @resetMachines = =>
-            Console.message("ViewModel_ScdlCatalogue::resetMachines")
+        @removeAllMachines = =>
             @machines.removeAll()
 
-        @resetSystems = =>
-            Console.message("ViewModel_ScdlCatalogue::resetSystems")
+        @removeAllSystems = =>
             @systems.removeAll()
 
 
@@ -321,10 +335,10 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueShim
         @scdl_v1_catalogue = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogue()
 
 
-        @resetCatalogue = =>
+        @reinitializeCatalogue = =>
             Console.message("ViewModel_ScdlCatalogueShim::resetCatalogue")
             try
-                @scdl_v1_catalogue().resetCatalogue()
+                @scdl_v1_catalogue().reinitializeCatalogue()
             catch errorException
                 Console.messageError(errorException)
 
@@ -348,10 +362,10 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueHost
         @initFromModelLibraryObject = (object_) =>
             @catalogueShim object_
 
-        @resetCatalogue = =>
+        @reinitializeCatalogue = =>
             Console.message("ViewModel_ScdlCatalogueHost::resetCatalogue")
             try
-                @catalogueShim().resetCatalogue()
+                @catalogueShim().reinitializeCatalogue()
             catch errorException
                 Console.messageError(errorException)
 
@@ -379,7 +393,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 <div class="classScdlAssetsPerson">
                     <h3>
                         Person:
-                        <button data-bind="click: resetPerson" class="button small red">Reset Person</button>
+                        <button data-bind="click: reinitializePerson" class="button small red">Re-initialize Person</button>
                     </h3>
                     UUID: <span data-bind="text: uuid"></span><br>
                     First Name: <span data-bind="text: nameFirst"></span><br>
@@ -390,12 +404,13 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 </div>
             </script><!-- idKoTemplate_ScdlPerson_View -->
 
+
             <script type="text/html" id="idKoTemplate_ScdlPeople_View" class="classEditAreaAssetsPeople">
                 <div class="classEditAreaAssetsPeople">
                     <h2>
                         People:
                         <button data-bind="click: addPerson" class="button small green">Add Person</button>
-                        <button data-bind="click: resetPeople" class="button small red">Reset People</button>
+                        <button data-bind="click: removeAllPeople" class="button small red">Remove All People</button>
                     </h2>
                     <div data-bind="template: { name: 'idKoTemplate_ScdlPerson_View', foreach: people }" class="classScdlAssetsPeople"></div>
                 </div>
@@ -405,7 +420,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             <script type="text/html" id="idKoTemplate_ScdlOrganization_View">
                 <div class="classScdlAssetsOrganization">
                     <h3>Organization:
-                        <button data-bind="click: resetOrganization" class="button small red">Reset Organization</button>
+                        <button data-bind="click: reinitializeOrganization" class="button small red">Re-initialize Organization</button>
                     </h3>
                     UUID: <span data-bind="text: uuid"></span><br>
                     Name: <span data-bind="text: name"></span><br>
@@ -419,7 +434,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                     <h2>
                         Organizations:
                         <button data-bind="click: addOrganization" class="button small green">Add Organization</button>
-                        <button data-bind="click: resetOrganizations" class="button small red">Reset Organizations</button>
+                        <button data-bind="click: removeAllOrganizations" class="button small red">Remove All Organizations</button>
                     </h2>
                     <div data-bind="template: { name: 'idKoTemplate_ScdlOrganization_View', foreach: organizations }" class="classScdlAssetsOrganizations"></div>
                 </div>
@@ -429,7 +444,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 <div class="classScdlAssetsLicense">
                     <h3>
                         License:
-                        <button data-bind="click: resetLicense" class="button small red">Reset License</button>
+                        <button data-bind="click: reinitializeLicense" class="button small red">Re-initialize License</button>
                     </h3>
                     UUID: <span data-bind="text: uuid"></span><br>
                     Name: <span data-bind="text: name"></span><br>
@@ -443,7 +458,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                     <h2>
                          Licenses:
                          <button data-bind="click: addLicense" class="button small green">Add License</button>
-                         <button data-bind="click: resetLicenses" class="button small red">Reset Licenses</button>
+                         <button data-bind="click: removeAllLicenses" class="button small red">Remove All Licenses</button>
                     </h2>
                     <div data-bind="template: { name: 'idKoTemplate_ScdlLicense_View', foreach: licenses }" class="classScdlAssetsLicenses"></div>
                 </div>
@@ -454,7 +469,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 <div class="classScdlAssetsCopyright">
                     <h3>
                         Copyright:
-                        <button data-bind="click: resetCopyright" class="button small red">Reset Copyright</button>
+                        <button data-bind="click: reinitializeCopyright" class="button small red">Re-initialize Copyright</button>
                     </h3>
                     UUID: <span data-bind="text: uuid"></span><br>
                     Notice: <span data-bind="text: notice"></span><br>
@@ -466,7 +481,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                     <h2>
                         Copyright Notices:
                         <button data-bind="click: addCopyright" class="button small green">Add Copyright</button>
-                        <button data-bind="click: resetCopyrights" class="button small red">Reset Copyrights</button>
+                        <button data-bind="click: removeAllCopyrights" class="button small red">Remove All Copyrights</button>
                     </h2>
                     <div data-bind="template: { name: 'idKoTemplate_ScdlCopyright_View', foreach: copyrights }" class="classScdlAssetsCopyrights"></div>
                 </div>
@@ -475,7 +490,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             <script type="text/html" id="idKoTemplate_ScdlMeta_View">
                 <h2>
                     Meta
-                    <button data-bind="click: resetMeta" class="button small red">Reset Meta</button>
+                    <button data-bind="click: reinitializeMeta" class="button small red">Re-initialize Meta</button>
                 </h2>
                 UUID: <span data-bind="text: uuid"></span><br>
                 Name: <span data-bind="text: name"></span><br>
@@ -503,7 +518,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 <h2>
                     Types:
                     <button data-bind="click: addType" class="button small green">Add Type</button>
-                    <button data-bind="click: resetTypes" class="button small red">Reset Types</button>
+                    <button data-bind="click: removeAllTypes" class="button small red">Remove All Types</button>
                 </h2>
                 <div data-bind="template: { name: 'idKoTemplate_ScdlType_View', foreach: types }" class="classScdlTypes"></div>
             </script><!-- idKoTemplate_ScdlTypes_View -->
@@ -529,12 +544,15 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 <div class="classScdlMachineTransition">
                     <h4>
                         State Transition <span data-bind="text: $index"></span>:
-                        <button data-bind="click: addVector" class="button small green">Add Vector</button>
-                        <button data-bind="click: resetTransition" class="button small green">Reset Transition</button>
+                        <button data-bind="click: reinitializeTransition" class="button small red">Re-initialize Transition</button>
                     </h4>
                     Start State: <span data-bind="text: startState"></span><br>
                     <div class="classEditAreaMachineTransitionVectors">
-                        <h4>Vectors:</h4>
+                        <h4>
+                            Vectors:
+                            <button data-bind="click: addVector" class="button small green">Add Vector</button>
+                            <button data-bind="click: removeAllVectors" class="button small red">Remove All Vectors</button>
+                        </h4>
                         <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransitionVector_View', foreach: vectors }"></div>
                     </div>
                 </div>
@@ -545,7 +563,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                     <h3>
                        Transitions:
                        <button data-bind="click: addTransition" class="button small green">Add Transition</button>
-                       <button data-bind="click: resetTransitions" class="button small red">Reset Transitions</button>
+                       <button data-bind="click: removeAllTransitions" class="button small red">Remove All Transitions</button>
                     </h3>
                     <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransition_View', foreach: transitions}" class="classScdlMachineTransitions"></div>
                 </div>
@@ -555,7 +573,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 <div class="classScdlMachinePin">
                     <h5>
                         <span data-bind="text: direction"></span> Pin <span data-bind="text: $index "></span>:
-                        <button data-bind="click: resetPin" class="button small red">Reset Pin</button>
+                        <button data-bind="click: reinitializePin" class="button small red">Re-initialize Pin</button>
                     </h5>
                     Data type: <span data-bind="text: type"></span><br>
                     <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
@@ -564,7 +582,11 @@ class namespaceEncapsule_code_app_viewmodel.scdl
 
             <script type="text/html" id="idKoTemplate_ScdlMachineInputPins_View">
                 <div class="classEditAreaMachineInputPins">
-                    <h4>Input Pins:</h4>
+                    <h4>
+                        Input Pins:
+                        <button data-bind="click: addInputPin" class="button small green">Add Input Pin</button>
+                        <button data-bind="click: removeAllInputPins" class="button small red">Remove All Input Pins</button>
+                    </h4>
                     <div class="classScdlMachineInputPins">
                         <div data-bind="template: { name: 'idKoTemplate_ScdlMachinePin_View', foreach: inputPins }"></div>
                     </div>
@@ -573,7 +595,11 @@ class namespaceEncapsule_code_app_viewmodel.scdl
 
             <script type="text/html" id="idKoTemplate_ScdlMachineOutputPins_View">
                 <div class="classEditAreaMachineOutputPins">
-                    <h4>Output Pins:</h4>
+                    <h4>
+                        Output Pins:
+                        <button data-bind="click: addOutputPin"  class="button small green">Add Output Pin</button>
+                        <button data-bind="click: removeAllOutputPins" class="button small red">Remove All Output Pins</button>
+                    </h4>
                     <div class="classScdlMachineOutputPins">
                         <div data-bind="template: { name: 'idKoTemplate_ScdlMachinePin_View', foreach: outputPins }"></div>
                     </div>
@@ -584,8 +610,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 <div class="classEditAreaMachinePins">
                     <h3>
                         Pins:
-                        <button data-bind="click: addInputPin" class="button small green">Add Input Pin</button>
-                        <button data-bind="click: addOutputPin"  class="button small green">Add Output Pin</button>
+                        <button data-bind="click: removeAllPins" class="button small red">Remove All Pins</button>
                     </h3>
                     <div data-bind="template: { name: 'idKoTemplate_ScdlMachineInputPins_View' }" class="classEditAreaMachineInputPins"></div>
                     <div data-bind="template: { name: 'idKoTemplate_ScdlMachineOutputPins_View' }" class="classEditAreaMachineOutputPins"></div>
@@ -597,11 +622,14 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 <h2>
                     Machines:
                     <button data-bind="click: addMachine" class="button small green">Add Machine</button>
-                    <button data-bind="click: resetMachines"  class="button small red">Reset Machines</button>
+                    <button data-bind="click: removeAllMachines"  class="button small red">Remove All Machines</button>
                 </h2> 
                 <div data-bind="foreach: machines" class="classScdlMachines">
                     <div class="classScdlMachine">
-                        Machine <span data-bind="text: $index"></span>:<br>
+                        <h3>
+                            Machine <span data-bind="text: $index"></span>:
+                            <button data-bind="click: reinitializeMachine" class="button small red">Re-initialize Machine</button>
+                        </h3>
                         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
                         <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStates_View' }"></div>
                         <div data-bind="template: { name: 'idKoTemplate_ScdlMachinePins_View' }"></div>
@@ -624,7 +652,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} (#{appReleasePhase})</h1>
 
                 <div class="classScdlCatalogueHost" data-bind="with: scdlHost">
-                    <h2>Catalogue <button data-bind="click: resetCatalogue" class="button small red">Reset Catalogue</button></h2>
+                    <h2>Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></h2>
                     <div data-bind="with: catalogueShim" class="classScdlCatalogueShim">
                         <div class="classScdlCatalogue" data-bind="with: scdl_v1_catalogue">
 
@@ -635,7 +663,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                             <div data-bind="with: assets" class="classEditAreaAssets">
                                 <h2>
                                     Assets
-                                    <button data-bind="click: resetAssets" class="button small red">Reset Assets</button>
+                                    <button data-bind="click: removeAllAssets" class="button small red">Remove All Assets</button>
                                 </h2>
                                 <span data-bind="template: { name: 'idKoTemplate_ScdlPeople_View' }"></span>
                                 <span data-bind="template: { name: 'idKoTemplate_ScdlOrganizations_View' }"></span>
@@ -653,7 +681,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                                 <h2>
                                     Systems
                                     <button data-bind="click: addSystem"  class="button small green">Add System</button>
-                                    <button data-bind="click: resetSystems"  class="button small red">Reset Systems</button>
+                                    <button data-bind="click: removeAllSystems"  class="button small red">Remove All Systems</button>
                                 </h2>
                                 <div data-bind="foreach: systems" class="classScdlSystems">
                                     <div class="classScdlSystem">
