@@ -37,7 +37,7 @@ class namespaceEncapsule_code_app_viewmodel.boot
             Application Name: <span data-bind="text: appName"></span><br>
             Application Version: <span data-bind="text: appVersion"></span><br>
             Application Release Phase: <span data-bind="text: appReleasePhase"></span><br>
-            Application Release: <span data-bind="text: appReleaseName"></span> (span data-bind="text: appReleaseFunUrl"></span>)<br>
+            Application Release: <span data-bind="text: appReleaseName"></span> (fun: <span data-bind="text: appReleaseNameFunUrl"></span>)<br>
             Application Build Date: <span data-bind="text: appBuildTime"></span><br>
             Application Builder: <span data-bind="text: appBuilder"></span><br>
             Application Copyright: <span data-bind="text: appCopyright"></span><br>
@@ -49,8 +49,7 @@ class namespaceEncapsule_code_app_viewmodel.boot
             <br>
             <strong>Application Boot Information</strong><br>
             Bootstrapper exit status: <span data-bind="text: Encapsule.runtime.boot.exitStatus"></span><br>
-            Current route #: <span data-bind="text: Encapsule.runtime.boot.phase0.router.routerSequenceNumber"></span><br>
-            Boot location: <span data-bind="text: Encapsule.runtime.boot.phase0.router.initialLocation"></span><br>
+            Page Entry URI: <span data-bind="text: Encapsule.runtime.boot.phase0.router.initialLocation"></span><br>
             User Agent: <span data-bind="text: Encapsule.runtime.boot.phase1.userAgent"></span><br>
             Chrome Browser: <span data-bind="text: Encapsule.runtime.boot.phase1.isChrome"></span><br>
             WebKit Browser: <span data-bind="text: Encapsule.runtime.boot.phase1.isWebKit"></span><br>

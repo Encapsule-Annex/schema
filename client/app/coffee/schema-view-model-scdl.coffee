@@ -98,6 +98,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta
         @author = ko.observable undefined
         @organization = ko.observable undefined
         @license = ko.observable undefined
+        @copyright = ko.observable undefined
         @revision = ko.observable 0
         @createTime = ko.observable Encapsule.code.lib.util.getEpochTime()
         @updateTime = ko.observable Encapsule.code.lib.util.getEpochTime()
@@ -219,7 +220,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachineState
         @enterAction = ko.observable undefined
         @exitAction = ko.observable undefined
 
-        @resetState = =>
+        @reinitializeState = =>
             @meta().reinitializeMeta()
             @enterAction(undefined)
             @exitAction(undefined)
@@ -488,25 +489,30 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             </script><!-- idKoTemplate_ScdlLicenses_View -->
 
             <script type="text/html" id="idKoTemplate_ScdlMeta_View">
-                <h2>
-                    Meta
-                    <button data-bind="click: reinitializeMeta" class="button small red">Re-initialize Meta</button>
-                </h2>
-                UUID: <span data-bind="text: uuid"></span><br>
-                Name: <span data-bind="text: name"></span><br>
-                Description: <span data-bind="text: description"></span><br>
-                Author: <span data-bind="text: author"></span><br>
-                Organization: <span data-bind="text: organization"></span><br>
-                License: <span data-bind="text: license"></span><br>
-                Revision: <span data-bind="text: revision"></span><br>
-                Create: <span data-bind="text: createTime"></span><br>
-                Update: <span data-bind="text: updateTime"></span><br>
+                <div class="classEditAreaMeta">
+                    <h2>
+                        Meta
+                        <button data-bind="click: reinitializeMeta" class="button small red">Re-initialize Meta</button>
+                    </h2>
+                    UUID: <span data-bind="text: uuid"></span> 
+                    Revision: <span data-bind="text: revision"></span>
+                    Create: <span data-bind="text: createTime"></span>
+                    Update: <span data-bind="text: updateTime"></span><br>
+
+                    Name: <span data-bind="text: name"></span>
+                    Description: <span data-bind="text: description"></span><br>
+                    Author: <span data-bind="text: author"></span>
+                    Organization: <span data-bind="text: organization"></span><br>
+                    License: <span data-bind="text: license"></span>
+                    Copyright: <span data-bind="text: copyright"></span>
+                    <br>
+                </div>
             </script><!-- idKoTemplate_ScdlMeta -->
 
             <script type="text/html" id="idKoTemplate_ScdlType_View">
                 <div class="classScdlType">
                     <h3>
-                        Type:
+                        Type <span data-bind="text: $index"></span>:
                         <button data-bind="click: resetType" class="button small red">Reset Type</button>
                     </h3>
                     <span data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></span>
@@ -524,9 +530,26 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             </script><!-- idKoTemplate_ScdlTypes_View -->
 
 
+           <script type="text/html" id="idKoTemplate_ScdlMachineStateEnter_View">
+               State Enter Action: <span data-bind="text: enterAction"></span>
+           </script>
+
+           <script type="text/html" id="idKoTemplate_ScdlMachineStateExit_View">
+               State Exit Action: <span data-bind="text: exitAction"></span>
+           </script>
+
             <script type="text/html" id="idKoTemplate_ScdlMachineState_View">
-                   this is a state
+                <div class="classScdlMachineState">
+                    <h4>
+                        State <span data-bind="text: $index"></span>:
+                        <button data-bind="click: reinitializeState" class="button small red">Re-initialize State</button>
+                    </h4>
+                    <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStateEnter_View' }" class="classScdlMachineStateEnter"></div>
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStateExit_View' }" class="classScdlMachineStateExit"></div>
+                </div>
             </script><!-- idKoTemplate_ScdlMachineState_View -->
+
 
             <script type="text/html" id="idKoTemplate_ScdlMachineStates_View">
                 <div class="classEditAreaMachineStates">
@@ -541,6 +564,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
 
             <script type="text/html" id="idKoTemplate_ScdlMachineTransitionVector_View">
                 <div class="classScdlMachineTransitionVector">
+                    <h5>Vector <span data-bind="text: $index"></span>:</h5>
                     Next State: <span data-bind="text: nextState"></span><br>
                     Condition: <span data-bind="text: expression"></span><br>
                 </div>
@@ -581,8 +605,8 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                         <span data-bind="text: direction"></span> Pin <span data-bind="text: $index "></span>:
                         <button data-bind="click: reinitializePin" class="button small red">Re-initialize Pin</button>
                     </h5>
-                    Data type: <span data-bind="text: type"></span><br>
                     <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
+                    Data type: <span data-bind="text: type"></span><br>
                 </div>
             </script><!-- idKoTemplate_ScdlMachinePin_View -->
 
@@ -637,8 +661,8 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                             <button data-bind="click: reinitializeMachine" class="button small red">Re-initialize Machine</button>
                         </h3>
                         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
-                        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStates_View' }"></div>
                         <div data-bind="template: { name: 'idKoTemplate_ScdlMachinePins_View' }"></div>
+                        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStates_View' }"></div>
                         <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransitions_View' }"></div>
                     </div><!-- classScdlMachine -->
                 </div><!-- classScdlMachines -->
@@ -663,7 +687,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                         <div class="classScdlCatalogue" data-bind="with: scdl_v1_catalogue">
 
                             <div data-bind="with: meta">
-                                <div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }" class="classEditAreaMeta"></div>
+                                <div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div>
                             </div><!-- with: meta -->
     
                             <div data-bind="with: assets" class="classEditAreaAssets">
