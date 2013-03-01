@@ -681,6 +681,19 @@ class namespaceEncapsule_code_app_viewmodel.scdl
 
                 <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} (#{appReleasePhase})</h1>
 
+                <h2>Thanks for checking out the #{appName} application! This is a <u>#{appReleasePhase}</u> deployment for testing.</h2>
+
+                <p>What you're seeing here is the Soft Circuit Description Language (SCDL) data model bound into the DOM using Knockout.js</p>
+
+                <p>You can mess around with the buttons at this point and start to get a sense for what types
+                of entities can be modeled using SCDL. Note that as you add/remove model entities, the JSON
+                that comprises your SCDL catalogue is dynamically updated.</p>
+
+                <p>Once the data model is complete, I'll starting building the D3js views so that instead of dealing with complex forms
+                full of data, you can instead see and interact with the beautiful mathematical graphs that underpin SCDL models.</p>
+
+
+
                 <div class="classScdlCatalogueHost" data-bind="with: scdlHost">
                     <h2>Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></h2>
                     <div data-bind="with: catalogueShim" class="classScdlCatalogueShim">

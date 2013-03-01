@@ -210,7 +210,10 @@ phase2 = (bootstrapperOptions_) ->
             #Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorState}")
             #Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorTerminalState}")
             if not applicationCacheMonitorTerminalState and  applicationCacheStatus == window.applicationCache.IDLE
-                alert("Your Internet connection is so fast that page booted before we could start monitoring the browser's application cache. If you see this alert frequently please let me know because you SHOULD NOT BE SEEING THIS!")
+                alert("""
+                   Your Internet connection is so fast that page booted before we could
+                   start monitoring the browser's application cache. If you see this alert
+                   frequently please let me know because you SHOULD NOT BE SEEING THIS!""")
                 phase2Out.appCacheRaceConditionBroken = true
                 appCacheCallbacks.onNoUpdate()
             else
