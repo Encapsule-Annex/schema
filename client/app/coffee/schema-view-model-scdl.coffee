@@ -212,7 +212,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition
             @vectors.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector()
 
 
-class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlState
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachineState
     constructor: ->
         Console.message("ViewModel_ScdlState::constructor")
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
@@ -525,11 +525,17 @@ class namespaceEncapsule_code_app_viewmodel.scdl
 
 
             <script type="text/html" id="idKoTemplate_ScdlMachineState_View">
+                   this is a state
             </script><!-- idKoTemplate_ScdlMachineState_View -->
 
             <script type="text/html" id="idKoTemplate_ScdlMachineStates_View">
                 <div class="classEditAreaMachineStates">
-                    <h3>States:</h3>
+                    <h3>
+                        States:
+                        <button data-bind="click: addState" class="button small green">Add State</button>
+                        <button data-bind="click: removeAllStates" class="button small red">Remove All States</button>
+                    </h3>
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlMachineState_View', foreach: states }" class="classScdlMachineStates"></div>
                 </div>
             </script><!-- idKoTemplate_ScdlMachineStates -->
 
