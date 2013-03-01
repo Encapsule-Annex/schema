@@ -115,6 +115,7 @@ phase2 = (bootstrapperOptions_) ->
 
     phase2Out = bootstrapperOptions_.phase2 = {}
     phase2Out.appCacheMonitorState = "initializing"
+    phase2Out.appCacheTerminalState = undefined
 
     appCacheCallbacks = {
         onChecking: ->
@@ -130,15 +131,16 @@ phase2 = (bootstrapperOptions_) ->
         , onError: ->
             document.title = "#{appName}: application boot error!"
             phase2Out.appCacheMonitorState = "error"
+            phase2Out.appCacheTerminalState = "error"
             Console.messageEnd(" <strong>OH SNAP!</strong>")
             Console.messageRaw("<h2>attention please</h2>")
             Console.messageRaw("<p>There has been a disturbance in the force.</p>")
             Console.messageRaw("<p>Please refresh this page to try try again.</p>")
-            phase2Out.appCacheTerminalState = "error"
             Console.messageError "An error has occurred caching application files from the #{appPackagePublisher}'s servers."
         , onObsolete: ->
             document.title = "#{appName}: application package is locked!"
             phase2Out.appCacheMonitorState = "locked (obsolete)"
+            phase2Out.appCacheTerminalState = "locked (obsolete)"
             Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
             Console.messageRaw("<h2>OH SNAP!</h2>")
             Console.messageRaw("<p>We're sorry to inconvience you!</p>")
@@ -148,12 +150,14 @@ phase2 = (bootstrapperOptions_) ->
         , onOffline: ->
             document.title = "#{appName}: application cached offline"
             phase2Out.appCacheMonitorState = "offline"
+            phase2Out.appCacheTerminalState = "locked (obsolete)"
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
             Console.messageRaw("<h2>#{appPackagePublisher} origin server unreachable. #{appName} starting...</h2>")
             setTimeout( ( -> phase3(bootstrapperOptions_) ), 2000)
         , onCached: (fileCount_) ->
             phase2Out.appCacheMonitorState = "cached"
+            phase2Out.appCacheTerminalState = "cached"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.message("<strong>The application has been installed!</strong>")
             Console.messageRaw("<h2>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} installed! Starting...</h2>")
@@ -164,6 +168,7 @@ phase2 = (bootstrapperOptions_) ->
         , onNoUpdate: ->
             document.title = "#{appName}: application cached"
             phase2Out.appCacheMonitorState = "noupdate"
+            phase2Out.appCacheTerminalState = "noupdate"
             Console.messageEnd("<strong>No update<strong>")
             Console.message("The most recent build of #{appName} is already cached locally for offline access.");
             Console.message("No updates were necessary.")
@@ -172,6 +177,7 @@ phase2 = (bootstrapperOptions_) ->
         , onUpdateReady: (fileCount_) ->
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "updateready"
+            phase2Out.appCacheTerminalState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.messageRaw("<h2>#{appPackagePublisher} #{appName} has been updated. Restarting...</h2>")
             document.title = "#{appName}: rebooting..."
@@ -197,9 +203,14 @@ phase2 = (bootstrapperOptions_) ->
         # status is IDLE that we missed the show and everything is set to go.
         setTimeout( ( ->
             applicationCacheStatus = window.applicationCache.status
-            applicationCacheMonitorStatus = phase2Out.appCacheMonitor.status
-            if applicationCacheMonitorStatus == "waiting" and  applicationCacheStatus == window.applicationCache.IDLE
-                #alert("Special handling of HTML5 application cache race condition: Manually invoking onNoUpdate callback >:/")
+            applicationCacheMonitorState = phase2Out.appCacheMonitorState
+            applicationCacheMonitorTerminalState = phase2Out.appCacheTerminalState
+            #Console.messageRaw("<br>")
+            #Console.message("App cache watchdog: Browser app cache reports status = #{applicationCacheStatus}")
+            #Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorState}")
+            #Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorTerminalState}")
+            if not applicationCacheMonitorTerminalState and  applicationCacheStatus == window.applicationCache.IDLE
+                alert("Your Internet connection is so fast that page booted before we could start monitoring the browser's application cache. If you see this alert frequently please let me know because you SHOULD NOT BE SEEING THIS!")
                 phase2Out.appCacheRaceConditionBroken = true
                 appCacheCallbacks.onNoUpdate()
             else
