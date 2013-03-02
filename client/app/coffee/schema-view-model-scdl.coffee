@@ -277,10 +277,31 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
             @transitions.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition()
 
 
+
+class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlSystemSignal
+    constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        # UUID of SCDL type
+        @type = ko.observable undefined
+        # either "forward" or "reverse" 
+        @polarity = ko.observable undefined
+
+
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlBus
+    constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @signals = ko.observableArray []
+        @channels = ko.observableArray []
+
+
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
     constructor: ->
         Console.message("ViewModel_ScdlSystem::constructor")
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @externalInputPins = ko.observableArray []
+        @externalOutputPins = ko.observableArray []
+        @subsystems = ko.observableArray []
+
 
 
 
@@ -705,8 +726,6 @@ class namespaceEncapsule_code_app_viewmodel.scdl
 
                 <p>Once the data model is complete, I'll starting building the D3js views so that instead of dealing with complex forms
                 full of data, you can instead see and interact with the beautiful mathematical graphs that underpin SCDL models.</p>
-
-
 
                 <div class="classScdlCatalogueHost" data-bind="with: scdlHost">
                     <h2>Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></h2>
