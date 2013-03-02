@@ -509,6 +509,20 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 </div>
             </script><!-- idKoTemplate_ScdlMeta -->
 
+            <script type="text/html" id="idKoTemplate_ScdlAssets_View">
+                <div class="classEditAreaAssets">
+                    <h2>
+                        Assets
+                        <button data-bind="click: removeAllAssets" class="button small red">Remove All Assets</button>
+                    </h2>
+                    <span data-bind="template: { name: 'idKoTemplate_ScdlPeople_View' }"></span>
+                    <span data-bind="template: { name: 'idKoTemplate_ScdlOrganizations_View' }"></span>
+                    <span data-bind="template: { name: 'idKoTemplate_ScdlLicenses_View' }"></span>
+                    <span data-bind="template: { name: 'idKoTemplate_ScdlCopyrights_View' }"></span>
+                </div>
+            </script>
+
+
             <script type="text/html" id="idKoTemplate_ScdlType_View">
                 <div class="classScdlType">
                     <h3>
@@ -703,15 +717,8 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                                 <div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div>
                             </div><!-- with: meta -->
     
-                            <div data-bind="with: assets" class="classEditAreaAssets">
-                                <h2>
-                                    Assets
-                                    <button data-bind="click: removeAllAssets" class="button small red">Remove All Assets</button>
-                                </h2>
-                                <span data-bind="template: { name: 'idKoTemplate_ScdlPeople_View' }"></span>
-                                <span data-bind="template: { name: 'idKoTemplate_ScdlOrganizations_View' }"></span>
-                                <span data-bind="template: { name: 'idKoTemplate_ScdlLicenses_View' }"></span>
-                                <span data-bind="template: { name: 'idKoTemplate_ScdlCopyrights_View' }"></span>
+                            <div data-bind="with: assets">
+                                <div data-bind="template: { name: 'idKoTemplate_ScdlAssets_View' }"></div>
                             </div><!-- with: assets -->
 
                             <div data-bind="template: { name: 'idKoTemplate_ScdlTypes_View' }" class="classEditAreaTypes">
