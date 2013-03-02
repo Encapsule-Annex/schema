@@ -278,7 +278,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
 
 
 
-class namespaceEncpasule_code_app_viewmodel.ViewModel_ScdlSystemSignal
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystemSignal
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         # UUID of SCDL type
