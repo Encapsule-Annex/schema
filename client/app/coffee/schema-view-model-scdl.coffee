@@ -277,7 +277,8 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
             @transitions.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition()
 
 
-
+# Not sure what I'm doing with "signals" yet. Doesn't feel quite right yet.
+#
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlBusSignal
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
@@ -293,7 +294,33 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlBus
         @signals = ko.observableArray []
         @subbuses = ko.observableArray []
 
-class namespaceEncapsule_code_app_viewmodel.ViewMode_ScdlSignalConnection
+
+# SCDL socket entities are used to model system extensibility points in manner analogous to a
+# physical socket on a printed circuit board. 
+#
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocket
+    constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @inputPins = ko.observableArray []
+        @outputPins = ko.observableArray []
+
+
+# A SCDL system model encapsulates one or more sub-machine(s), sub-system(s) or sub-socket SCDL
+# entities whose input and output pins are connected in some topology. Each system sub-entity
+# is specified by a pair of UUID's indicating the model identity of the sub-entity and a unique
+# instance within the system.
+#
+class namespaceEncapsule_code_app_viewmodel.ViewModel_SystemInternalEntity_View
+    constructor: ->
+        # UUID of the meta object is used to identify the specific instance of the contained model entity.
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @modelEntity = ko.observable undefined
+
+class namespaceEncapsule_code_app_viewmodel.ViewModel_SystemInternalPinDesignator_View
+    construct: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_
+
+class namespaceEncapsule_code_app_viewmodel.ViewModelScdlSignalConnection
     constructor: ->
         @outputPin = ko.observable undefined
         @inputPins = ko.observableArray []
@@ -304,12 +331,6 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSignalConnectionMap
         @outerEntityUuid = ko.observable undefined
         @innerEntityUuid = ko.observable undefined
         @connections = ko.observableArray []
-
-class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocket
-    constructor: ->
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @inputPins = ko.observableArray []
-        @outputPins = ko.observableArray []
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
     constructor: ->
@@ -570,6 +591,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 </div>
             </script><!-- idKoTemplate_ScdlType_View -->
 
+
             <script type="text/html" id="idKoTemplate_ScdlTypes_View">
                 <h2>
                     Types:
@@ -638,6 +660,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 </div>
             </script><!-- idKoTemplate_ScdlMachineTransition_View -->
 
+
             <script type="text/html" id="idKoTemplate_ScdlMachineTransitions_View">
                 <div class="classEditAreaMachineTransitions">
                     <h3>
@@ -649,6 +672,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 </div>
             </script>
 
+
             <script type="text/html" id="idKoTemplate_ScdlMachinePin_View">
                 <div class="classScdlMachinePin">
                     <h5>
@@ -659,6 +683,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                     Data type: <span data-bind="text: type"></span><br>
                 </div>
             </script><!-- idKoTemplate_ScdlMachinePin_View -->
+
 
             <script type="text/html" id="idKoTemplate_ScdlMachineInputPins_View">
                 <div class="classEditAreaMachineInputPins">
@@ -673,6 +698,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 </div>
             </script><!-- idKoTemplate_ScdlMachinePins_View -->
 
+
             <script type="text/html" id="idKoTemplate_ScdlMachineOutputPins_View">
                 <div class="classEditAreaMachineOutputPins">
                     <h4>
@@ -685,6 +711,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                     </div>
                 </div>
             </script><!-- idKoTemplate_ScdlMachinePins_View -->
+
 
             <script type="text/html" id="idKoTemplate_ScdlMachinePins_View">
                 <div class="classEditAreaMachinePins">
@@ -718,7 +745,31 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                 </div><!-- classScdlMachines -->
             </script><!-- idKoTemplate_ScdlMachiens_View -->
 
+
+            <script type="text/html" id="idKoTemplate_ScdlSystem_View">
+                <h3>
+                    System <span data-bind="text: $index"></span>:
+                </h3>
+            </script><!-- idKoTemplate_ScdlSystem_View -->
+
+
+            <script type="text/html" id="idKoTemplate_ScdlSystems_View">
+                <h2>
+                    Systems
+                    <button data-bind="click: addSystem"  class="button small green">Add System</button>
+                    <button data-bind="click: removeAllSystems"  class="button small red">Remove All Systems</button>
+                </h2>
+                <div data-bind="template: { name: 'idKoTemplate_ScdlSystem_View', foreach: systems }" class="classScdlSystems"></div>
+            </script>
+
+
+
+
+
+
             </div><!-- idKoTemplates -->
+
+
 
             <!-- SCDL HTML VIEW DEFINITION -->
 
@@ -767,24 +818,11 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                                 <div data-bind="template: { name: 'idKoTemplate_ScdlAssets_View' }"></div>
                             </div><!-- with: assets -->
 
-                            <div data-bind="template: { name: 'idKoTemplate_ScdlTypes_View' }" class="classEditAreaTypes">
-                            </div><!-- with: types -->
+                            <div data-bind="template: { name: 'idKoTemplate_ScdlTypes_View' }" class="classEditAreaTypes"></div>
     
-                            <div data-bind="template: { name: 'idKoTemplate_ScdlMachines_View' }" class="classEditAreaMachines">
-                            </div><!-- classEditAreaMachines -->
+                            <div data-bind="template: { name: 'idKoTemplate_ScdlMachines_View' }" class="classEditAreaMachines"></div>
     
-                            <div class="classEditAreaSystems">
-                                <h2>
-                                    Systems
-                                    <button data-bind="click: addSystem"  class="button small green">Add System</button>
-                                    <button data-bind="click: removeAllSystems"  class="button small red">Remove All Systems</button>
-                                </h2>
-                                <div data-bind="foreach: systems" class="classScdlSystems">
-                                    <div class="classScdlSystem">
-                                        System: <span data-bind="text: $index"></span>
-                                    </div><!-- classScdlSystem -->
-                                </div><!-- classScdlSystems -->
-                            </div><!-- classEditAreaSystems -->
+                            <div data-bind="template: { name: 'idKoTemplate_ScdlSystems_View' }" class="classEditAreaSystems"></div>
 
                         </div><!-- with: scdl_v1_catalogue .classScdlCatalogue -->
                     </div><!-- with: catalogueShim .classScdlCatalogueShim-->
