@@ -25,7 +25,7 @@ app_uuid="56611225-be91-40cf-b9b8-5c7b8a6c6f3d"
 # be refreshed in order to provide meaning to server logfiles (please).
 #
 
-app_version="0.73"
+app_version="0.74"
 app_release_name="Amapá"
 app_release_fun_url="http://en.wikipedia.org/wiki/Amap%C3%A1"
 app_version_uuid="42c28c61-da0d-4abd-9821-86e57c129239"
@@ -75,11 +75,12 @@ schema_client_app_json=$schema_client_app/json
 schema_client_app_nocache=$schema_client_app/no-cache
 
 # level 3: root/deployment/client
-
 schema_deploy_client_html=$schema_deploy_client/public_html
 
-# level 4: root/deployment/client/public_html
+# level 4: /root/client/app/coffee
+schema_client_app_coffee_scdl=$schema_client_app_coffee/scdl
 
+# level 4: root/deployment/client/public_html
 schema_deploy_client_html_audio=$schema_deploy_client_html/audio
 schema_deploy_client_html_css=$schema_deploy_client_html/css
 schema_deploy_client_html_img=$schema_deploy_client_html/img
@@ -150,12 +151,14 @@ echo "var appGitHubRepoUrl = \"https://github.com/Encapsule/schema\";" >> $build
 echo "var appBlogName = \"Encapsule Project Blog\";" >> $build_id_js
 echo "var appBlogUrl = \"http://blog.encapsule.org\";" >> $build_id_js
 
-cd $schema_client_app_coffee
 echo =================================================================
 echo =================================================================
 echo =================================================================
 echo === v--- COFFEESCRIPT: EXPECT NO ERRORS =========================
 echo Building application Coffeescript libraries:
+cd $schema_client_app_coffee
+coffee -o $schema_deploy_client_html_js/ -c *.coffee
+cd $schema_client_app_coffee_scdl
 coffee -o $schema_deploy_client_html_js/ -c *.coffee
 echo === ^--- COFFEESCRIPT: EXPECT NO ERRORS =========================
 echo =================================================================
