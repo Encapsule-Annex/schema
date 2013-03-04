@@ -327,7 +327,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocket
         @partitionType = ko.observable undefined
 
 
-class namespaceEncapsule_code_app_viewmodel.ViewModel.ScdlSocketContract
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocketContract
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @socketUuid = ko.observable undefined
@@ -338,7 +338,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel.ScdlSocketContract
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-^^^^LEAVING OFF HERE
+
 
 
 
