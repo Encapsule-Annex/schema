@@ -31,8 +31,6 @@ namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code 
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 namespaceEncapsule_code_app_viewmodel = Encapsule.code.app.viewmodel? and Encapsule.code.app.viewmodel or @Encapsule.code.app.viewmodel = {}
 
-namespaceEncapsule.UuidUndefined = "DEADBEEF-0000-0000-0000-000000000000"
-
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPerson
     constructor: (nameFirst_, nameLast_, email_, website_, gitUsername_) ->
@@ -162,7 +160,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlType
     constructor: ->
         Console.message("ViewModel_ScdlType::constructor")
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @descriptor = ko.observable Encapsule.UuidUndefined
+        @descriptor = ko.observable undefined
 
         @resetType = =>
              @meta().reinitializeMeta()
@@ -280,19 +278,11 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
 
 
 
-class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocket
-    constructor: ->
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @inputPins = ko.observableArray []
-        @outputPins = ko.observableArray []
-        @populationRequired = ko.observable false
-        @populationLimit = ko.observable 1
-        @partitionPopulation = ko.observable false
-        @partitionType = ko.observable undefined
 
 
 
-class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPinRef
+
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPinInstance
     constructor: ->
         modelInstanceId = ko.observable undefined
         pinId = ko.obvervable undefined
@@ -304,8 +294,8 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlNode
     # components.
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-
-
+        @sourcePinInstance = ko.observable new namespaceEncapsule_code_app_viewmode.ViewModel_ScdlPinInstance()
+        @sinkPinInstances = ko.observableArray []
 
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlModelInstance
@@ -313,11 +303,9 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlModelInstance
     constructor: ->
         # UUID of the meta object is used to identify the specific instance of the contained model entity.
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @modelRef = ko.observable undefined
         @modelEntityRef = ko.observable undefined
 
-
-
-# SCDL modules are re-usable building blocks that are similar to a multi-chip hardware modules.
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlModule
     constructor: ->
@@ -325,18 +313,32 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlModule
         @externalInputPins = ko.observableArray []
         @externalOutputPins = ko.observableArray []
         @internalModelInstances = ko.observableArray []
+        @internalNodes = ko.observableArray []
 
 
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocket
+    constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @inputPins = ko.observableArray []
+        @outputPins = ko.observableArray []
+        @populationRequired = ko.observable false
+        @populationLimit = ko.observable 1
+        @partitionPopulation = ko.observable false
+        @partitionType = ko.observable undefined
 
 
-
-
-
+class namespaceEncapsule_code_app_viewmodel.ViewModel.ScdlSocketContract
+    constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @socketUuid = ko.observable undefined
+        @modelUuid = ko.observable undefined
+        @nodes = ko.observableArray [] # array of ScdlNode objects
+        
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @subsystemRefs = ko.observableArray []
+^^^^LEAVING OFF HERE
 
 
 
