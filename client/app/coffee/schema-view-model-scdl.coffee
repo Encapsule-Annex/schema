@@ -31,6 +31,8 @@ namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code 
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 namespaceEncapsule_code_app_viewmodel = Encapsule.code.app.viewmodel? and Encapsule.code.app.viewmodel or @Encapsule.code.app.viewmodel = {}
 
+namespaceEncapsule.UuidUndefined = "DEADBEEF-0000-0000-0000-000000000000"
+
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPerson
     constructor: (nameFirst_, nameLast_, email_, website_, gitUsername_) ->
@@ -160,7 +162,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlType
     constructor: ->
         Console.message("ViewModel_ScdlType::constructor")
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @descriptor = ko.observable undefined
+        @descriptor = ko.observable Encapsule.UuidUndefined
 
         @resetType = =>
              @meta().reinitializeMeta()
@@ -169,9 +171,8 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlType
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin
     constructor: (direction_) ->
-        Console.message("ViewModel_ScdlPin::constructor")
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @type = ko.observable undefined
+        @typeRef = ko.observable undefined
         @direction = ko.observable direction_
 
         @reinitializeMeta = =>
@@ -180,7 +181,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin
         @reinitializePin = =>
             Console.message("ViewModel_ScdlPin::resetPin")
             @meta().reinitializeMeta()
-            @type(undefined)
+            @typeRef(undefined)
 
 
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector
@@ -277,67 +278,65 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
             @transitions.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition()
 
 
-# Not sure what I'm doing with "signals" yet. Doesn't feel quite right yet.
-#
-class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlBusSignal
-    constructor: ->
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        # UUID of SCDL type
-        @type = ko.observable undefined
-        # either "inward" or "outward" 
-        @polarity = ko.observable undefined
 
 
-class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlBus
-    constructor: ->
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @signals = ko.observableArray []
-        @subbuses = ko.observableArray []
-
-
-# SCDL socket entities are used to model system extensibility points in manner analogous to a
-# physical socket on a printed circuit board. 
-#
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocket
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @inputPins = ko.observableArray []
         @outputPins = ko.observableArray []
+        @populationRequired = ko.observable false
+        @populationLimit = ko.observable 1
+        @partitionPopulation = ko.observable false
+        @partitionType = ko.observable undefined
 
 
-# A SCDL system model encapsulates one or more sub-machine(s), sub-system(s) or sub-socket SCDL
-# entities whose input and output pins are connected in some topology. Each system sub-entity
-# is specified by a pair of UUID's indicating the model identity of the sub-entity and a unique
-# instance within the system.
-#
-class namespaceEncapsule_code_app_viewmodel.ViewModel_SystemInternalEntity_View
+
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPinRef
+    constructor: ->
+        modelInstanceId = ko.observable undefined
+        pinId = ko.obvervable undefined
+
+
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlNode
+    # A SCDL node model defines a binding between a specific output pin and some number of input
+    # pins. Arrays of SCDL node models are used to define data flow graph I/O topologies between
+    # components.
+    constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+
+
+
+
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlModelInstance
+    # A SCDL model instance references a system, machine, or socket model indirectly via it's UUID.
     constructor: ->
         # UUID of the meta object is used to identify the specific instance of the contained model entity.
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @modelEntity = ko.observable undefined
+        @modelEntityRef = ko.observable undefined
 
-class namespaceEncapsule_code_app_viewmodel.ViewModel_SystemInternalPinDesignator_View
-    construct: ->
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_
 
-class namespaceEncapsule_code_app_viewmodel.ViewModelScdlSignalConnection
-    constructor: ->
-        @outputPin = ko.observable undefined
-        @inputPins = ko.observableArray []
 
-class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSignalConnectionMap
-    constructor: ->
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @outerEntityUuid = ko.observable undefined
-        @innerEntityUuid = ko.observable undefined
-        @connections = ko.observableArray []
+# SCDL modules are re-usable building blocks that are similar to a multi-chip hardware modules.
 
-class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlModule
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @externalInputPins = ko.observableArray []
         @externalOutputPins = ko.observableArray []
-        @subsystems = ko.observableArray []
+        @internalModelInstances = ko.observableArray []
+
+
+
+
+
+
+
+
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
+    constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @subsystemRefs = ko.observableArray []
 
 
 
@@ -680,7 +679,7 @@ class namespaceEncapsule_code_app_viewmodel.scdl
                         <button data-bind="click: reinitializePin" class="button small red">Re-initialize Pin</button>
                     </h5>
                     <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
-                    Data type: <span data-bind="text: type"></span><br>
+                    Data type: <span data-bind="text: typeRef"></span><br>
                 </div>
             </script><!-- idKoTemplate_ScdlMachinePin_View -->
 
