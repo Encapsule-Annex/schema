@@ -335,9 +335,53 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocketContract
         @nodes = ko.observableArray [] # array of ScdlNode objects
         
 
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocketBoundModule
+    constructor: ->
+        @socketContractId = ko.observable undefined # the identity of the socket binding contract
+        @socketedModuleInstance = ko.observable undefined
+
+
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystemModuleSocketBinder
+    constructor: ->
+        # moduleSocketInstanceId is the instance ID of a specific SCDL socket contained within
+        # a SCDL module model.
+        @moduleSocketInstanceId = ko.observable undefined
+
+        @socketedSystemModuleInstances = ko.observableArray []
+
+
+
+
+class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystemModule
+    constructor: ->
+
+        # The contained moduleInstance is a ScdlModelInstance refering to a unique instance
+        # of a SCDL module model.
+
+        @moduleInstance = ko.observable undefined
+
+        # A SCDL module model may optionally define one or more extensibility points via contained
+        # SCDL socket model(s). Our frame of reference in this object scope here is a single module.
+        #
+        # moduleSocketBindings is an array of ScdlSystemModuleSocketBinder objects each of which
+        # map a socket instance defined by this ScdlSystemModule's associated ScdlModule model to
+        # an array of ScdlSystemModule objects that are "socketed" (i.e. connected via the terms
+        # of a ScdlSocketContract object.
+
+
+        @moduleSocketBindings = ko.observableArray [] # an array of ScdlSystemModuleSocketBinder objects
+
+
+
+
+
+ 
+
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+
+        # An array of SCDL module module instances
 
 
 
