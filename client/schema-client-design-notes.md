@@ -13,7 +13,35 @@ Encpasule.code.app.Schema ......................... main Schema application clas
 
 Encapsule.code.app.viewmodel ...................... namespace object for view model classes
 Encapsule.code.app.viewmodel.boot ................. App boot information Knockout.js view model class
-Encpasule.code.app.viewmodel.scdl ................. SCDL Knockout.js view model class
+
+Encpasule.code.app.scdl ............................................... Encapsule SCDL client-side code namespace
+
+Encapsule.code.app.scdl.ObservableAssetCatalogue ...................... KO data model class
+Encapsule.code.app.scdl.ObservableMeta ................................ KO data model class
+
+Encapsule.code.app.scdl.asset ......................................... SCDL asset namespace
+Encpasule.code.app.scdl.asset.ObservablePerson ........................ KO data model class
+Encapsule.code.app.scdl.asset.ObservableOrganization .................. KO data model class
+Encapsule.code.app.scdl.asset.ObservableLicense ....................... KO data model class
+Encapsule.code.app.scdl.asset.ObservableCopyright ..................... KO data model class
+
+
+
+Encapsule.code.app.scdl.model ........................ ................ SCDL model namespace
+
+Encapsule.code.app.scdl.model.type ................ SCDL type model namespace
+
+Encapsule.code.app.scdl.model.pin ................. SCDL pin model namespace
+
+Encapsule.code.app.scdl.model.
+
+Encapsule.code.app.scdl.type ...................... SCDL type namespace
+
+Encapsule.code.app.scdl.interconnect .............. SCDL interconnection topology namespace
+
+Encapsule.code.app.scdl.extension ................. SCDL extensibility namespace
+
+
 
 
 Encapsule.code.lib ................................ app-independent function/class definitions
