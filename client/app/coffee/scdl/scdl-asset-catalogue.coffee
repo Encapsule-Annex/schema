@@ -24,10 +24,8 @@ namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code 
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.app.scdl or @Encapsule.code.app.scdl = {}
 
-namespaceEncapsule_code_app_scdl_asset = Encapsule.code.app.scdl.asset? and Encapsule.code.app.scdl.asset or @Encapsule.code.app.scdl.asset = {}
 
-
-class namespaceEncapsule_code_app_scdl_asset.ObservableAssetCatalogue
+class namespaceEncapsule_code_app_scdl.ObservableAssetCatalogue
     constructor: ->
         Console.message("ViewModel_ScdlAssets::constructor")
         @people = ko.observableArray []
