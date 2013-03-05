@@ -16,7 +16,7 @@
 
 ###
 #
-# schema/client/app/coffee/scdl/scdl-asset-person.coffee
+# schema/client/app/coffee/scdl/scdl-asset-organization.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
