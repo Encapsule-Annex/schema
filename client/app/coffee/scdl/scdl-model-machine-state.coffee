@@ -28,3 +28,11 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableMachineState
     constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @enterAction = ko.observable undefined
+        @exitAction = ko.observable undefined
+
+        @reinitializeState = =>
+            @meta().reinitializeMeta()
+            @enterAction(undefined)
+            @exitAction(undefined)

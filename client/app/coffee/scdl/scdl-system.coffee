@@ -29,3 +29,6 @@ namespaceEncapsule_code_app_scdl_system = Encapsule.code.app.scdl.system? and En
 
 class namespaceEncapsule_code_app_scdl_system.ObservableSystem
     constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+
+        # An array of SCDL module module instances

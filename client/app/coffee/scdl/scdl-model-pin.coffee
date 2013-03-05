@@ -28,3 +28,14 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservablePin
     constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @typeRef = ko.observable undefined
+        @direction = ko.observable direction_
+
+        @reinitializeMeta = =>
+            @meta().reinitializeMeta()
+
+        @reinitializePin = =>
+            Console.message("ViewModel_ScdlPin::resetPin")
+            @meta().reinitializeMeta()
+            @typeRef(undefined)

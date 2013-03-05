@@ -27,4 +27,10 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 
 class namespaceEncapsule_code_app_scdl_model.ObservableModelInstance
+    # A SCDL model instance references a system, machine, or socket model indirectly via it's UUID.
     constructor: ->
+        # UUID of the meta object is used to identify the specific instance of the contained model entity.
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @modelRef = ko.observable undefined
+        @modelEntityRef = ko.observable undefined
+

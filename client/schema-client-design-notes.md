@@ -18,6 +18,8 @@ Encpasule.code.app.scdl ............................................... Encapsul
 
 Encapsule.code.app.scdl.ObservableAssetCatalogue ...................... KO data model class
 Encapsule.code.app.scdl.ObservableCatalogue ........................... KO data model class (THE UBER CONTAINER)
+Encapsule.code.app.scdl.ObservableCatalogueShim ....................... KO data model class (JSON shim)
+Encapsule.code.app.scdl.ObservableCatalogueShimHost ................... KO data model class (JSON shim host)
 Encapsule.code.app.scdl.ObservableMeta ................................ KO data model class
 Encapsule.code.app.scdl.ObservableModelCatalogue ...................... KO data model class
 Encapsule.code.app.scdl.ObservableSystemCatalogue ..................... KO data model class
@@ -28,7 +30,6 @@ Encapsule.code.app.scdl.asset.ObservableOrganization .................. KO data 
 Encapsule.code.app.scdl.asset.ObservableLicense ....................... KO data model class
 Encapsule.code.app.scdl.asset.ObservableCopyright ..................... KO data model class
 
-Encapsule.code.app.scdl.ObservableModelCatalogue ...................... KO data model class
 Encapsule.code.app.scdl.model ........................................  SCDL model namespace
 Encapsule.code.app.scdl.model.ObservableMachine ....................... KO data model class
 Encapsule.code.app.scdl.model.ObservableMachineTransitionVector ....... KO data model class
@@ -44,10 +45,10 @@ Encapsule.code.app.scdl.model.ObservableSocketContract ................ KO data 
 Encapsule.code.app.scdl.model.ObservableType .......................... KO data model class
 
 Encapsule.code.app.scdl.system ........................................ SCDL system namespace
-Encapsule.code.app.scdl.system.ObservableSocketedSystemModule ......... KO data model class
+Encapsule.code.app.scdl.system.ObservableSocketBoundModule ............ KO data model class
 Encapsule.code.app.scdl.system.ObservableSystem ....................... KO data model class (THE GRAIL)
-Encapsule.code.app.scdl.system.ObservableSystemModule ................. KO data model class
-Encapsule.code.app.scdl.system.ObservableSystemModuleSocketBinder ..... KO data model class
+Encapsule.code.app.scdl.system.ObservableContainedModule .............. KO data model class
+Encapsule.code.app.scdl.system.ObservableModuleSocketBinder ..... KO data model class
 
 Encapsule.code.lib .................................................... app-independent function/class definitions
 Encpausle.code.lib.appcachemonitor .................................... class

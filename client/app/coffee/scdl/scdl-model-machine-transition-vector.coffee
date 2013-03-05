@@ -28,3 +28,13 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableMachineTransitionVector
     constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @nextState = ko.observable undefined
+        @expression = ko.observable undefined
+
+        @resetTransitionVector = =>
+            Console.message("ViewModel_ScdlTransition::resetTransition")
+            @meta().reinitializeMeta()
+            @targetState(undefined)
+            @expression(undefined)
+

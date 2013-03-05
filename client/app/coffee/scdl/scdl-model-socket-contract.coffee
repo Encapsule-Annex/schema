@@ -28,3 +28,7 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableSocketContract
     constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @socketUuid = ko.observable undefined
+        @modelUuid = ko.observable undefined
+        @nodes = ko.observableArray [] # array of ScdlNode objects

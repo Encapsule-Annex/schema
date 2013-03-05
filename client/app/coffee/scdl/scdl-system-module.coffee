@@ -16,7 +16,7 @@
 
 ###
 #
-# schema/client/app/coffee/scdl/scdl-system-socketed-module.coffee
+# schema/client/app/coffee/scdl/scdl-system-contained-module.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
@@ -26,5 +26,20 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 namespaceEncapsule_code_app_scdl_system = Encapsule.code.app.scdl.system? and Encapsule.code.app.scdl.system or @Encapsule.code.app.scdl.system = {}
 
 
-class namespaceEncapsule_code_app_scdl_system.ObservableSystemModule
+class namespaceEncapsule_code_app_scdl_system.ObservableContainedModule
     constructor: ->
+        # The contained moduleInstance is a ScdlModelInstance refering to a unique instance
+        # of a SCDL module model.
+
+        @moduleInstance = ko.observable undefined
+
+        # A SCDL module model may optionally define one or more extensibility points via contained
+        # SCDL socket model(s). Our frame of reference in this object scope here is a single module.
+        #
+        # moduleSocketBindings is an array of ScdlSystemModuleSocketBinder objects each of which
+        # map a socket instance defined by this ScdlSystemModule's associated ScdlModule model to
+        # an array of ScdlSystemModule objects that are "socketed" (i.e. connected via the terms
+        # of a ScdlSocketContract object.
+
+
+        @moduleSocketBindings = ko.observableArray [] # an array of ScdlSystemModuleSocketBinder objects

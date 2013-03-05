@@ -28,3 +28,9 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableModule
     constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @externalInputPins = ko.observableArray []
+        @externalOutputPins = ko.observableArray []
+        @internalModelInstances = ko.observableArray []
+        @internalNodes = ko.observableArray []
+

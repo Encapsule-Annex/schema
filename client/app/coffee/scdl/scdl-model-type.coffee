@@ -28,3 +28,9 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableType
     constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @descriptor = ko.observable undefined
+
+        @resetType = =>
+             @meta().reinitializeMeta()
+             @descriptor(undefined)

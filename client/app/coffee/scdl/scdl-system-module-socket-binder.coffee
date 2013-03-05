@@ -26,5 +26,8 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 namespaceEncapsule_code_app_scdl_system = Encapsule.code.app.scdl.system? and Encapsule.code.app.scdl.system or @Encapsule.code.app.scdl.system = {}
 
 
-class namespaceEncapsule_code_app_scdl_system.ObservableSocketedModule
+class namespaceEncapsule_code_app_scdl_system.ObservableModuleSocketBinder
     constructor: ->
+        # moduleSocketInstanceId is the instance ID of a specific SCDL socket contained within a SCDL module model.
+        @moduleSocketInstanceId = ko.observable undefined
+        @socketedSystemModuleInstances = ko.observableArray []

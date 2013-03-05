@@ -31,7 +31,7 @@ namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code 
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 namespaceEncapsule_code_app_viewmodel = Encapsule.code.app.viewmodel? and Encapsule.code.app.viewmodel or @Encapsule.code.app.viewmodel = {}
 
-
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPerson
     constructor: (nameFirst_, nameLast_, email_, website_, gitUsername_) ->
         Console.message("ViewModel_ScdlPerson::constructor")
@@ -50,6 +50,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPerson
             @website(undefined)
             @gitUsername(undefined)
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlOrganization
     constructor: (name_, email_, website_) ->
         Console.message("ViewModel_ScdlOrganization::constructor")
@@ -64,6 +65,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlOrganization
             @email(undefined)
             @website(undefined)
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlLicense
     constructor: (name_, terms_, website_) ->
         @uuid = ko.observable uuid.v4()
@@ -78,6 +80,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlLicense
             @website(undefined)
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCopyright
     constructor: (notice_) ->
         @uuid = ko.observable uuid.v4()
@@ -88,6 +91,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCopyright
             @notice(undefined)
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta
     constructor: ->
         Console.message("ViewModel_ScdlEntityMeta::constructor")
@@ -117,6 +121,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta
 
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlAssets
     constructor: ->
         Console.message("ViewModel_ScdlAssets::constructor")
@@ -156,6 +161,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlAssets
             @copyrights.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCopyright()
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlType
     constructor: ->
         Console.message("ViewModel_ScdlType::constructor")
@@ -167,6 +173,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlType
              @descriptor(undefined)
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin
     constructor: (direction_) ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
@@ -182,6 +189,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin
             @typeRef(undefined)
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector
     constructor: ->
         Console.message("ViewModel_ScdlTransition::constructor")
@@ -196,6 +204,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector
             @expression(undefined)
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition
     constructor: ->
         @startState = ko.observable undefined
@@ -211,7 +220,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition
         @addVector = =>
             @vectors.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector()
 
-
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachineState
     constructor: ->
         Console.message("ViewModel_ScdlState::constructor")
@@ -225,6 +234,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachineState
             @exitAction(undefined)
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
     constructor: ->
         Console.message("ViewModel_ScldMachine::constructor")
@@ -280,14 +290,14 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine
 
 
 
-
-
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPinInstance
     constructor: ->
         modelInstanceId = ko.observable undefined
         pinId = ko.obvervable undefined
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlNode
     # A SCDL node model defines a binding between a specific output pin and some number of input
     # pins. Arrays of SCDL node models are used to define data flow graph I/O topologies between
@@ -298,6 +308,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlNode
         @sinkPinInstances = ko.observableArray []
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlModelInstance
     # A SCDL model instance references a system, machine, or socket model indirectly via it's UUID.
     constructor: ->
@@ -307,6 +318,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlModelInstance
         @modelEntityRef = ko.observable undefined
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlModule
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
@@ -316,6 +328,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlModule
         @internalNodes = ko.observableArray []
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocket
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
@@ -327,6 +340,8 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocket
         @partitionType = ko.observable undefined
 
 
+
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocketContract
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
@@ -335,23 +350,24 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocketContract
         @nodes = ko.observableArray [] # array of ScdlNode objects
         
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSocketBoundModule
     constructor: ->
         @socketContractId = ko.observable undefined # the identity of the socket binding contract
         @socketedModuleInstance = ko.observable undefined
 
 
+
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystemModuleSocketBinder
     constructor: ->
         # moduleSocketInstanceId is the instance ID of a specific SCDL socket contained within
         # a SCDL module model.
         @moduleSocketInstanceId = ko.observable undefined
-
         @socketedSystemModuleInstances = ko.observableArray []
 
 
-
-
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystemModule
     constructor: ->
 
@@ -373,10 +389,8 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystemModule
 
 
 
-
-
  
-
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
     constructor: ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
@@ -385,7 +399,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem
 
 
 
-
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogue
     constructor: ->
         Console.message("ViewModel_ScdlCatalogue::constructor")
@@ -432,6 +446,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogue
 
 
 
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueShim
     constructor: ->
         Console.message("ViewModel_ScdlCatalogueShim::constructor")
@@ -447,7 +462,7 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueShim
 
 
 
-
+# MIGRATED
 class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueHost
     constructor: ->
         Console.message("ViewModel_ScdlCatalogueHost::constructor")
@@ -477,6 +492,16 @@ class namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueHost
 
             # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
             html = "<a href=\"data:text/json;base64,#{window.btoa(@toJSON())}\" target=\"_blank\">JSON</a>"
+
+
+
+
+
+
+
+
+
+
 
 class namespaceEncapsule_code_app_viewmodel.scdl
     constructor: ->

@@ -28,3 +28,16 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableMachineTransition
     constructor: ->
+        @startState = ko.observable undefined
+        @vectors = ko.observableArray []
+
+        @reinitializeTransition = =>
+            @startState(undefined)
+            @vectors.removeAll()
+
+        @removeAllVectors = =>
+            @vectors.removeAll()
+
+        @addVector = =>
+            @vectors.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector()
+

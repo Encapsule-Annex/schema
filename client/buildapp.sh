@@ -159,6 +159,8 @@ echo Building application Coffeescript libraries:
 cd $schema_client_app_coffee
 coffee -o $schema_deploy_client_html_js/ -c *.coffee
 cd $schema_client_app_coffee_scdl
+# cat *.coffee > encapsule-lib-scdl.coffee
+# coffee -o $schema_deploy_client_html_js/ -c encapsule-scdl.coffee
 coffee -o $schema_deploy_client_html_js/ -c *.coffee
 echo === ^--- COFFEESCRIPT: EXPECT NO ERRORS =========================
 echo =================================================================

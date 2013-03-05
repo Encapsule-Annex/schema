@@ -26,5 +26,7 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 namespaceEncapsule_code_app_scdl_system = Encapsule.code.app.scdl.system? and Encapsule.code.app.scdl.system or @Encapsule.code.app.scdl.system = {}
 
 
-class namespaceEncapsule_code_app_scdl_system.ObservableSocketedSystemModule
+class namespaceEncapsule_code_app_scdl_system.ObservableSocketBoundModule
     constructor: ->
+        @socketContractId = ko.observable undefined # the identity of the socket binding contract
+        @socketedModuleInstance = ko.observable undefined

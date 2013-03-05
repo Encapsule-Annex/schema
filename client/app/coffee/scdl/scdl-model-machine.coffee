@@ -28,3 +28,52 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableMachine
     constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @inputPins = ko.observableArray []
+        @outputPins = ko.observableArray []
+        @states = ko.observableArray []
+        @transitions = ko.observableArray []
+
+        @reinitializeMachine = =>
+            @reinitializeMeta()
+            @removeAllInputPins()
+            @removeAllOutputPins()
+            @removeAllTransitions()
+            @removeAllStates()
+
+        @reinitializeMeta = =>
+            @meta().reinitializeMeta()
+
+        @removeAllInputPins = =>
+            @inputPins.removeAll()
+
+        @removeAllOutputPins = =>
+            @outputPins.removeAll()
+
+        @removeAllPins = =>
+            @removeAllInputPins()
+            @removeAllOutputPins()
+
+        @removeAllTransitions = =>
+            @transitions.removeAll()
+
+        @removeAllStates = =>
+            @states.removeAll()
+
+        @addInputPin = =>
+            Console.message("ViewModel_ScdlMachine::addInputPin")
+            @inputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin("Input")
+
+        @addOutputPin = =>
+            Console.message("ViewModel_ScdlMachine::addOutputPin")
+            @outputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin("Output")
+
+        @addState = =>
+            Console.message("ViewModel_ScdlMachine::addState")
+            @states.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachineState()
+
+        @addTransition = =>
+            @transitions.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition()
+
+
+
