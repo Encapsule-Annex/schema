@@ -20,7 +20,7 @@ Encapsule.code.app.scdl.ObservableAssetCatalogue ...................... KO data 
 Encapsule.code.app.scdl.ObservableCatalogue ........................... KO data model class (THE UBER CONTAINER)
 Encapsule.code.app.scdl.ObservableCatalogueShim ....................... KO data model class (JSON shim)
 Encapsule.code.app.scdl.ObservableCatalogueShimHost ................... KO data model class (JSON shim host)
-Encapsule.code.app.scdl.ObservableMeta ................................ KO data model class
+Encapsule.code.app.scdl.ObservableCommonMeta .......................... KO data model class
 Encapsule.code.app.scdl.ObservableModelCatalogue ...................... KO data model class
 Encapsule.code.app.scdl.ObservableSystemCatalogue ..................... KO data model class
 

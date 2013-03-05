@@ -27,8 +27,9 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 
 class namespaceEncapsule_code_app_scdl.ObservableCatalogue
     constructor: ->
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
-        @assets = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlAssets()
+
+        @meta = ko.observable new namespaceEncapsule_code_app_scdl.ObservableCommonMeta()
+        @assetCatalogue = ko.observable new namespaceEncapsule_code_app_scdl.ObservableAssetCatalogue()
         @types = ko.observableArray []
         @machines = ko.observableArray []
         @systems = ko.observableArray []
@@ -68,10 +69,11 @@ class namespaceEncapsule_code_app_scdl.ObservableCatalogue
         @removeAllSystems = =>
             @systems.removeAll()
 
-namespaceEncapsule_code_app_scdl.ObservableCatalogueShim
+
+
+class namespaceEncapsule_code_app_scdl.ObservableCatalogueShim
     constructor: ->
-        Console.message("ViewModel_ScdlCatalogueShim::constructor")
-        @scdl_v1_catalogue = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogue()
+        @scdl_v1_catalogue = ko.observable new namespaceEncapsule_code_app_scdl.ObservableCatalogue()
 
         @reinitializeCatalogue = =>
             Console.message("ViewModel_ScdlCatalogueShim::resetCatalogue")
@@ -80,10 +82,11 @@ namespaceEncapsule_code_app_scdl.ObservableCatalogueShim
             catch errorException
                 Console.messageError(errorException)
 
-namespaceEncapsule_code_app_scdl.ObservableCatalogueShimHost
+
+
+class namespaceEncapsule_code_app_scdl.ObservableCatalogueShimHost
     constructor: ->
-        Console.message("ViewModel_ScdlCatalogueHost::constructor")
-        @catalogueShim = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCatalogueShim()
+        @catalogueShim = ko.observable new namespaceEncapsule_code_app_scdl.ObservableCatalogueShim()
 
         @toJSON = ko.computed =>
             ko.toJSON @catalogueShim(), undefined, 1
