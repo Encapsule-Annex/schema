@@ -17,7 +17,10 @@ Encapsule.code.app.viewmodel.boot ..................................... App boot
 Encpasule.code.app.scdl ............................................... Encapsule SCDL client-side code namespace
 
 Encapsule.code.app.scdl.ObservableAssetCatalogue ...................... KO data model class
+Encapsule.code.app.scdl.ObservableCatalogue ........................... KO data model class (THE UBER CONTAINER)
 Encapsule.code.app.scdl.ObservableMeta ................................ KO data model class
+Encapsule.code.app.scdl.ObservableModelCatalogue ...................... KO data model class
+Encapsule.code.app.scdl.ObservableSystemCatalogue ..................... KO data model class
 
 Encapsule.code.app.scdl.asset ......................................... SCDL asset namespace
 Encpasule.code.app.scdl.asset.ObservablePerson ........................ KO data model class
@@ -42,7 +45,7 @@ Encapsule.code.app.scdl.model.ObservableType .......................... KO data 
 
 Encapsule.code.app.scdl.system ........................................ SCDL system namespace
 Encapsule.code.app.scdl.system.ObservableSocketedSystemModule ......... KO data model class
-Encapsule.code.app.scdl.system.ObservableSystem ....................... KO data model class (the grail)
+Encapsule.code.app.scdl.system.ObservableSystem ....................... KO data model class (THE GRAIL)
 Encapsule.code.app.scdl.system.ObservableSystemModule ................. KO data model class
 Encapsule.code.app.scdl.system.ObservableSystemModuleSocketBinder ..... KO data model class
 
