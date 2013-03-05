@@ -28,47 +28,28 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 class namespaceEncapsule_code_app_scdl.ObservableCatalogue
     constructor: ->
 
-        @meta = ko.observable new namespaceEncapsule_code_app_scdl.ObservableCommonMeta()
-        @assetCatalogue = ko.observable new namespaceEncapsule_code_app_scdl.ObservableAssetCatalogue()
-        @types = ko.observableArray []
-        @machines = ko.observableArray []
-        @systems = ko.observableArray []
-
-        @addType = =>
-            Console.message("ViewModel_ScdlCatalogue::addType")
-            @types.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlType()
-
-        @addMachine = =>
-            Console.message("ViewModel_ScdlCatalogue::addMachine")
-            @machines.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachine()
-
-        @addSystem = =>
-            Console.message("ViewModel_ScdlCatalogue::addSystem")
-            @systems.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlSystem()
+        @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
+        @assetCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableAssetCatalogue()
+        @modelCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableModelCatalogue()
+        @systemCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableSystemCatalogue()
 
         @reinitializeCatalogue = =>
-            Console.message("ViewModel_ScdlCatalogue::resetCatalogue")
             @reinitializeMeta()
             @removeAllAssets()
-            @removeAllTypes()
-            @removeAllMachines()
+            @removeAllModels()
             @removeAllSystems()
 
         @reinitializeMeta = =>
             @meta().reinitializeMeta()
 
         @removeAllAssets = =>
-            @assets().removeAllAssets()
-            
-        @removeAllTypes = =>
-            @types.removeAll()
+            @assetCatalogue().removeAllAssets()
 
-        @removeAllMachines = =>
-            @machines.removeAll()
+        @removeAllModels = =>
+            @modelCatalogue().removeAllModels()
 
         @removeAllSystems = =>
-            @systems.removeAll()
-
+            @systemCatalogue().removeAllSystems()
 
 
 class namespaceEncapsule_code_app_scdl.ObservableCatalogueShim

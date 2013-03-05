@@ -27,3 +27,45 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 
 class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
     constructor: ->
+
+        @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
+        @types = ko.observableArray []
+        @machines = ko.observableArray []
+        @sockets = ko.observableArray []
+        @socketContracts = ko.observableArray []
+
+        @addType = =>
+            @types.push new Encapsule.code.app.scdl.model.ObservableType()
+
+        @addMachine = =>
+            @machines.push new Encapsule.code.app.scdl.model.ObservableMachine()
+
+        @addSocket = =>
+            @sockets.push new Encapsule.code.app.scdl.model.ObservableSocket()
+
+        @addSocketContract = =>
+            @socketContracts.push new Encapsule.code.app.scdl.model.ObservableSocketContract()
+
+        @reinitializeMeta = =>
+            @meta().reinitializeMeta()
+
+        @removeAllModels = =>
+            @reinitializeMeta()
+            @removeAllTypes()
+            @removeAllMachines()
+            @removeAllSockets()
+            @removeAllSocketContracts()
+
+        @removeAllTypes = =>
+            @types.removeAll()
+
+        @removeAllMachines = =>
+            @machines.removeAll()
+
+        @removeAllSockets = =>
+            @sockets.removeAll()
+
+        @removeAllSocketContracts = =>
+            @socketsContracts.removeAll()
+
+

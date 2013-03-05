@@ -27,7 +27,8 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 
 class namespaceEncapsule_code_app_scdl.ObservableAssetCatalogue
     constructor: ->
-        Console.message("ViewModel_ScdlAssets::constructor")
+        @meta = ko.observable new namespaceEncapsule_code_app_scdl.ObservableCommonMeta()
+
         @people = ko.observableArray []
         @organizations = ko.observableArray []
         @licenses = ko.observableArray []
@@ -52,13 +53,13 @@ class namespaceEncapsule_code_app_scdl.ObservableAssetCatalogue
             @copyrights.removeAll()
 
         @addPerson = =>
-            @people.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPerson()
+            @people.push new Encapsule.code.app.scdl.asset.ObservablePerson()
 
         @addOrganization = =>
-            @organizations.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlOrganization()
+            @organizations.push new Encapsule.code.app.scdl.asset.ObservableOrganization()
 
         @addLicense = =>
-            @licenses.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlLicense()
+            @licenses.push new Encapsule.code.app.scdl.asset.ObservableLicense()
 
         @addCopyright = =>
-            @copyrights.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlCopyright()
+            @copyrights.push new Encapsule.code.app.scdl.asset.ObservableCopyright()

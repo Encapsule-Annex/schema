@@ -128,7 +128,7 @@ phase2 = (bootstrapperOptions_) ->
         , onProgress: (fileCount_) ->
             completionPercent = Math.max( Math.floor( (fileCount_ / appBuildCacheFileCount) * 100), 100)
             document.title = "#{appName}: #{completionPercent}% ..."
-            Console.messageRaw("+")
+            Console.messageRaw("&bull;")
         , onError: ->
             document.title = "#{appName}: boot error!"
             phase2Out.appCacheMonitorState = "error"
