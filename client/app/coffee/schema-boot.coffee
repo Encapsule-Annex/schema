@@ -126,10 +126,10 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd("<strong>Updating</strong>")
             Console.messageStart("files ")
         , onProgress: (fileCount_) ->
-            document.title = "#{appName}: #{fileCount_} files downloaded ..."
-            Console.messageRaw(".")
+            document.title = "#{appName}: #{Math::round((fileCount_ / appBuildCacheFileCount) * 100)}% ..."
+            Console.messageRaw("#")
         , onError: ->
-            document.title = "#{appName}: application boot error!"
+            document.title = "#{appName}: boot error!"
             phase2Out.appCacheMonitorState = "error"
             phase2Out.appCacheTerminalState = "error"
             Console.messageEnd(" <strong>OH SNAP!</strong>")
@@ -138,7 +138,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw("<p>Please refresh this page to try try again.</p>")
             Console.messageError "An error has occurred caching application files from the #{appPackagePublisher}'s servers."
         , onObsolete: ->
-            document.title = "#{appName}: application package is locked!"
+            document.title = "#{appName}: package locked!"
             phase2Out.appCacheMonitorState = "locked (obsolete)"
             phase2Out.appCacheTerminalState = "locked (obsolete)"
             Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
@@ -148,7 +148,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw("<p>Please visit <a href=\"#{appBlogUrl}\" title=\"#{appBlogName}\">#{appBlogName}</a> for the news and advisories.</p>")
             Console.messageError "#{appName} has been locked by Encpausle Project."
         , onOffline: ->
-            document.title = "#{appName}: application cached offline"
+            document.title = "#{appName}: boot from cache..."
             phase2Out.appCacheMonitorState = "offline"
             phase2Out.appCacheTerminalState = "locked (obsolete)"
             Console.messageEnd("<strong>OFFLINE</strong>");
@@ -210,7 +210,7 @@ phase2 = (bootstrapperOptions_) ->
             #Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorState}")
             #Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorTerminalState}")
             if not applicationCacheMonitorTerminalState and  applicationCacheStatus == window.applicationCache.IDLE
-                alert("The browser application cache subsystem is not dispatching status events as expected. However, your cached copy of this application appears to be ready to boot. Please click okay to proceed.")
+                alert("The browser application cache subsystem is not dispatching status events as expected. However, your cached copy of this application appears to be ready to boot. Typically this indicates that you're using Chrome and that your Internet connection is beyond crazy fast (or you're running off a local server). Please click okay to proceed.")
                 phase2Out.appCacheRaceConditionBroken = true
                 appCacheCallbacks.onNoUpdate()
             else

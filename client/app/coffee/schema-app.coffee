@@ -38,7 +38,7 @@ class namespaceEncapsule_code_app.Schema
 
     constructor: ->
         try
-            document.title = "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName}"
+            document.title = "#{appName} v#{appVersion} #{appReleaseName}"
             bodyElement = $("body")
 
             Console.messageRaw("<h3>STARTING APPLICATION</h3>")

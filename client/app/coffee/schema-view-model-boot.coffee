@@ -39,6 +39,7 @@ class namespaceEncapsule_code_app_viewmodel.boot
             Application Release Phase: <span data-bind="text: appReleasePhase"></span><br>
             Application Release: <span data-bind="text: appReleaseName"></span> (fun: <span data-bind="text: appReleaseNameFunUrl"></span>)<br>
             Application Build Date: <span data-bind="text: appBuildTime"></span><br>
+            Application Build Cached File Count: <span data-bind="text: appBuildCacheFileCount"></span><br>
             Application Builder: <span data-bind="text: appBuilder"></span><br>
             Application Copyright: <span data-bind="text: appCopyright"></span><br>
             Application License: <span data-bind="text: appLicense"></span> (<span data-bind="text: appLicenseUrl"></span>)<br>
