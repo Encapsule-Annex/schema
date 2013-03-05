@@ -188,6 +188,7 @@ echo "# Package ID: "$app_package_id  >> $build_appcache_manifest
 echo "# Package Detail: "$app_name" v"$app_version" tag=\""$app_release_name"\" built "$app_build_date" by "$app_builder >> $build_appcache_manifest
 echo "#" >> $build_appcache_manifest
 echo "# These files will be cached for offline use by the app." >> $build_appcache_manifest
+count=0
 for x in $appCache
 do
     cacheFilename=`echo $x | sed -e 's/\.\//\//'`
@@ -195,10 +196,13 @@ do
     if [ "$cacheFilename" != "/.htaccess" ] && [ "`echo $cacheFilename | grep .gitignore`" = "" ] && [ "`echo $cacheFilename | grep .directory`" = "" ]
     then
        echo $cacheFilename >> $build_appcache_manifest
+       count=$((count + 1))
     else
        echo SKIPPED!
     fi
 done
+echo Total files in the cache: $count
+echo "var appBuildCacheFileCount = "$count";" >> $build_id_js
 echo "# These files require server access." >> $build_appcache_manifest
 echo "NETWORK:" >> $build_appcache_manifest
 echo 'no-cache/json/client-ping.json' >> $build_appcache_manifest
