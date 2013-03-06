@@ -28,7 +28,7 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableMachine
     constructor: ->
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
         @inputPins = ko.observableArray []
         @outputPins = ko.observableArray []
         @states = ko.observableArray []
@@ -62,11 +62,11 @@ class namespaceEncapsule_code_app_scdl_model.ObservableMachine
 
         @addInputPin = =>
             Console.message("ViewModel_ScdlMachine::addInputPin")
-            @inputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin("Input")
+            @inputPins.push new Encapsule.code.app.scdl.model.ObservablePin("Input")
 
         @addOutputPin = =>
             Console.message("ViewModel_ScdlMachine::addOutputPin")
-            @outputPins.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlPin("Output")
+            @outputPins.push new Encapsule.code.app.scdl.model.ObservablePin("Output")
 
         @addState = =>
             Console.message("ViewModel_ScdlMachine::addState")

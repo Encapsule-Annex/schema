@@ -72,7 +72,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAsse
         <h2>People:</h2>
         <button data-bind="click: addPerson" class="button small green">Add Person</button>
         <button data-bind="click: removeAllPeople" class="button small red">Remove All People</button>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlPerson_View', foreach: people }" class="classScdlAssetsPeople"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlAssetPerson', foreach: people }" class="classScdlAssetsPeople"></div>
     </div>
     """))
 
@@ -83,7 +83,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAsse
         <h2>Organizations:</h2>
         <button data-bind="click: addOrganization" class="button small green">Add Organization</button>
         <button data-bind="click: removeAllOrganizations" class="button small red">Remove All Organizations</button>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlOrganization_View', foreach: organizations }" class="classScdlAssetsOrganizations"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlAssetOrganization', foreach: organizations }" class="classScdlAssetsOrganizations"></div>
     </div>
     """))
 
@@ -94,7 +94,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAsse
         <h2>Licenses:</h2>
         <button data-bind="click: addLicense" class="button small green">Add License</button>
         <button data-bind="click: removeAllLicenses" class="button small red">Remove All Licenses</button>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlLicense_View', foreach: licenses }" class="classScdlAssetsLicenses"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlAssetLicense', foreach: licenses }" class="classScdlAssetsLicenses"></div>
     </div>
     """))
 
@@ -106,7 +106,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAsse
         <h2>Copyright Notices:</h2>
         <button data-bind="click: addCopyright" class="button small green">Add Copyright</button>
         <button data-bind="click: removeAllCopyrights" class="button small red">Remove All Copyrights</button>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlCopyright_View', foreach: copyrights }" class="classScdlAssetsCopyrights"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlAssetCopyright', foreach: copyrights }" class="classScdlAssetsCopyrights"></div>
     </div>
     """))
 
@@ -118,10 +118,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAsse
     <div class="classEditAreaAssets">
         <h2>Assets:</h2>
         <button data-bind="click: removeAllAssets" class="button small red">Remove All Assets</button>
-        <span data-bind="template: { name: 'idKoTemplate_ScdlPeople_View' }"></span>
-        <span data-bind="template: { name: 'idKoTemplate_ScdlOrganizations_View' }"></span>
-        <span data-bind="template: { name: 'idKoTemplate_ScdlLicenses_View' }"></span>
-        <span data-bind="template: { name: 'idKoTemplate_ScdlCopyrights_View' }"></span>
+        <span data-bind="template: { name: 'idKoTemplate_ScdlAssetPeople' }"></span>
+        <span data-bind="template: { name: 'idKoTemplate_ScdlAssetOrganizations' }"></span>
+        <span data-bind="template: { name: 'idKoTemplate_ScdlAssetLicenses' }"></span>
+        <span data-bind="template: { name: 'idKoTemplate_ScdlAssetCopyrights' }"></span>
     </div>
     """))
 

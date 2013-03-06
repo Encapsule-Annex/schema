@@ -11,7 +11,7 @@ Encapsule.code.app .................................................... app-spec
 Encapsule.code.app.bootstrapper ....................................... class
 Encpasule.code.app.Schema ............................................. main Schema application class
 
-Encapsule.code.app.viewmodel .......................................... namespace object for view model classes
+???? Encapsule.code.app.viewmodel .......................................... namespace object for view model classes
 Encapsule.code.app.viewmodel.boot ..................................... App boot information Knockout.js view model class
 
 Encpasule.code.app.scdl ............................................... Encapsule SCDL client-side code namespace

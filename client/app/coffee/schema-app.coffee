@@ -47,18 +47,13 @@ class namespaceEncapsule_code_app.Schema
             Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
 
             # Instantiate and initialize the SCDL view model.
-
-            Encapsule.runtime.app.viewmodel = {}
-            Encapsule.runtime.app.viewmodel.scdl = new Encapsule.code.app.viewmodel.scdl()
-
-            #bodyElement.append Encapsule.runtime.app.viewmodel.scdl.html
-
-            # Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplate("idKoTemplate_Test", Encapsule.runtime.app.viewmodel.scdl.html)
-
             Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates()
 
+            Encapsule.runtime.app.viewmodel = {}
+            Encapsule.runtime.app.viewmodel.scdl = new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
 
 
+            bodyElement.append("""<div data-bind="template: { name: 'idKoTemplate_ScdlCatalogueShimHost' }" id="idSchemaAppView"></div>""")
 
 
             ko.applyBindings Encapsule.runtime.app.viewmodel.scdl, document.getElementById("idSchemaAppView")

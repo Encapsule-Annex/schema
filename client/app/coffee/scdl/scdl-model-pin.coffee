@@ -27,7 +27,7 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 
 class namespaceEncapsule_code_app_scdl_model.ObservablePin
-    constructor: ->
+    constructor: (direction_) ->
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
         @typeRef = ko.observable undefined
         @direction = ko.observable direction_

@@ -27,6 +27,15 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 
 class namespaceEncapsule_code_app_scdl.ObservableSystemCatalogue
     constructor: ->
+        @meta = ko.observable new namespaceEncapsule_code_app_scdl.ObservableCommonMeta()
+
+        @systems = ko.observableArray []
+
+        @removeAllSystems = =>
+            @systems.removeAll()
+
+
+
 
 
 

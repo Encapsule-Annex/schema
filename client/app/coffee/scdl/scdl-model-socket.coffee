@@ -28,7 +28,7 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableSocket
     constructor: ->
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
         @inputPins = ko.observableArray []
         @outputPins = ko.observableArray []
         @populationRequired = ko.observable false

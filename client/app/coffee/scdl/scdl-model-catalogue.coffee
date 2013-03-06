@@ -31,6 +31,7 @@ class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
         @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
         @types = ko.observableArray []
         @machines = ko.observableArray []
+        @modules = ko.observableArray []
         @sockets = ko.observableArray []
         @socketContracts = ko.observableArray []
 
@@ -39,6 +40,9 @@ class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
 
         @addMachine = =>
             @machines.push new Encapsule.code.app.scdl.model.ObservableMachine()
+
+        @addModule = =>
+            @modules.push new Encapsule.code.app.scdl.model.ObservableModule()
 
         @addSocket = =>
             @sockets.push new Encapsule.code.app.scdl.model.ObservableSocket()
@@ -53,6 +57,7 @@ class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
             @reinitializeMeta()
             @removeAllTypes()
             @removeAllMachines()
+            @removeAllModules()
             @removeAllSockets()
             @removeAllSocketContracts()
 
@@ -62,11 +67,14 @@ class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
         @removeAllMachines = =>
             @machines.removeAll()
 
+        @removeAllModules = =>
+            @modules.removeAll()
+ 
         @removeAllSockets = =>
             @sockets.removeAll()
 
         @removeAllSocketContracts = =>
-            @socketsContracts.removeAll()
+            @socketContracts.removeAll()
 
 
 
@@ -80,10 +88,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
             <button data-bind="click: removeAllMachines"  class="button small red">Remove All Machines</button>
             <button data-bind="click: addModule" class="button small green">Add Module</button>
             <button data-bind="click: removeAllModules"  class="button small red">Remove All Modules</button>
-            <button data-bind="click: addSocket" class="button small green">Add Machine</button>
-            <button data-bind="click: removeAllSockets"  class="button small red">Remove All Machines</button>
+            <button data-bind="click: addSocket" class="button small green">Add Socket</button>
+            <button data-bind="click: removeAllSockets"  class="button small red">Remove All Sockets</button>
             <button data-bind="click: addSocketContract" class="button small green">Add Socket Contract</button>
-            <button data-bind="click: removeAllSockets"  class="button small red">Remove All Socket Contracts</button>
+            <button data-bind="click: removeAllSocketContracts"  class="button small red">Remove All Socket Contracts</button>
             <button data-bind="click: addType" class="button small green">Add Type</button>
             <button data-bind="click: removeAllTypes" class="button small red">Remove All Types</button>
         </div>
@@ -95,7 +103,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelTypes", ( ->
     """
     <h2>Types:</h2>
-    <div data-bind="template: { name: 'idKoTemplate_ScdlType_View', foreach: types }" class="classScdlTypes"></div>
+    <div data-bind="template: { name: 'idKoTemplate_ScdlModel', foreach: types }" class="classScdlTypes"></div>
     """))
 
 
@@ -106,10 +114,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
         <div class="classScdlMachine">
             <h3>Machine <span data-bind="text: $index"></span>:</h3>
             <button data-bind="click: reinitializeMachine" class="button small red">Re-initialize Machine</button>
-            <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
-            <div data-bind="template: { name: 'idKoTemplate_ScdlMachinePins_View' }"></div>
-            <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStates_View' }"></div>
-            <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransitions_View' }"></div>
+            <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
+            <div data-bind="template: { name: 'idKoTemplate_ScdlModelPins' }"></div>
+            <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineStates' }"></div>
+            <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineTransitions' }"></div>
         </div><!-- classScdlMachine -->
     </div><!-- classScdlMachines -->
     """))

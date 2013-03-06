@@ -93,3 +93,56 @@ class namespaceEncapsule_code_app_scdl.ObservableCatalogueShimHost
             # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
             html = "<a href=\"data:text/json;base64,#{window.btoa(@toJSON())}\" target=\"_blank\">JSON</a>"
 
+
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCatalogueShimHost", ( ->
+    """
+    <div id="idJSONSourceViewer">
+        <strong>SCDL Catalogue <span id="idJSONSourceDownload" data-bind="html: saveJSONAsLinkHtml"></span></strong>
+        <pre data-bind="text: toJSON"></pre>
+    </div>
+
+    <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} (#{appReleasePhase})</h1>
+
+    <h2>Thanks for checking out the #{appName} application! This is a <u>#{appReleasePhase}</u> deployment for testing.</h2>
+
+    <p>
+        [ Main: <a href="#{appPackagePublisherUrl}" title="Visit #{appPackagePublisher}">#{appPackagePublisher}</a> ]
+        [ Blog: <a href="#{appBlogUrl}" title="Visit the #{appBlogName}">#{appBlogName}</a> ]
+        [ GitHub: <a href="#{appGitHubRepoUrl}" title="#{appPackagePublisher} #{appName} Git Repo">#{appGitHubRepoName}</a> ]
+    </p>
+
+    <p>What you're seeing here is the Soft Circuit Description Language (SCDL pronounced "scuddle") data model bound into the
+    DOM using Knockout.js. If you're interested in SCDL, I've written a bit about the subject on the #{appBlogName}. Expect
+    dozens of articles on SCDL once this application is functional.</p>
+
+    <p>If you're primarily interested in the HTML5 aspects of this project see my personal blog where I've been writing regularly
+    on the subject. <a href="http://blog.chrisrussell.net" title="Chris' blog">blog.chrisrussell.net</a>.</p>
+
+    <p>You can mess around with the buttons at this point and start to get a sense for what types
+    of entities can be modeled using SCDL. Note that as you add/remove model entities, the JSON
+    that comprises your SCDL catalogue is dynamically updated.</p>
+
+    <p>Once the data model is complete, I'll begin exposing the SCDL models via interactive SVG visualizations. Stay tuned,
+    I think this is going to be cool...</p>
+
+    <h2>Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></h2>
+
+        <div data-bind="with: catalogueShim" class="classScdlCatalogueShim">
+            <div class="classScdlCatalogue" data-bind="with: scdl_v1_catalogue">
+                <div data-bind="with: meta">
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div>
+                </div><!-- with: meta -->
+                <div data-bind="with: assetCatalogue">
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlAssetCatalogue' }"></div>
+                </div><!-- with: assetCatologue -->
+                <div data-bind="with: modelCatalogue">
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlModelCatalogue' }"></div>
+                </div><!-- with: modelCatalogue
+            </div><!-- with: scdl_v1_catalogue .classScdlCatalogue -->
+        </div><!-- with: catalogueShim .classScdlCatalogueShim-->
+
+    """))
+
