@@ -26,7 +26,7 @@ namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code 
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 
 namespaceEncapsule_runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runtime = {}
-namespaceEncapsule_runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
+namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
 
 
 
@@ -50,7 +50,17 @@ class namespaceEncapsule_code_app.Schema
 
             Encapsule.runtime.app.viewmodel = {}
             Encapsule.runtime.app.viewmodel.scdl = new Encapsule.code.app.viewmodel.scdl()
-            bodyElement.append Encapsule.runtime.app.viewmodel.scdl.html
+
+            #bodyElement.append Encapsule.runtime.app.viewmodel.scdl.html
+
+            # Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplate("idKoTemplate_Test", Encapsule.runtime.app.viewmodel.scdl.html)
+
+            Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates()
+
+
+
+
+
             ko.applyBindings Encapsule.runtime.app.viewmodel.scdl, document.getElementById("idSchemaAppView")
 
             # Instantiate an initialize the boot page view model.

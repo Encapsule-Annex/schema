@@ -42,11 +42,9 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             self.scdlHost = ko.observable new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
 
 
-            @html = $("""
+            @html = """
 
             <!-- SCDL HTML VIEW TEMPLATES -->
-
-            <div id="idKoTemplates" style="display: none;">
 
             <script type="text/html" id="idKoTemplate_ScdlPerson_View">
                 <div class="classScdlAssetsPerson">
@@ -196,8 +194,6 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             <script type="text/html" id="idKoTemplate_ScdlTypes_View">
                 <h2>
                     Types:
-                    <button data-bind="click: addType" class="button small green">Add Type</button>
-                    <button data-bind="click: removeAllTypes" class="button small red">Remove All Types</button>
                 </h2>
                 <div data-bind="template: { name: 'idKoTemplate_ScdlType_View', foreach: types }" class="classScdlTypes"></div>
             </script><!-- idKoTemplate_ScdlTypes_View -->
@@ -329,8 +325,6 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             <script type="text/html" id="idKoTemplate_ScdlMachines_View">
                 <h2>
                     Machines:
-                    <button data-bind="click: addMachine" class="button small green">Add Machine</button>
-                    <button data-bind="click: removeAllMachines"  class="button small red">Remove All Machines</button>
                 </h2> 
                 <div data-bind="foreach: machines" class="classScdlMachines">
                     <div class="classScdlMachine">
@@ -364,14 +358,13 @@ class namespaceEncapsule_code_app_viewmodel.scdl
             </script>
 
 
+            """
 
 
 
 
-            </div><!-- idKoTemplates -->
 
-
-
+            @pageHtml = $("""
             <!-- SCDL HTML VIEW DEFINITION -->
 
             <div id="idSchemaAppView">
@@ -417,13 +410,12 @@ class namespaceEncapsule_code_app_viewmodel.scdl
     
                             <div data-bind="with: assetCatalogue">
                                 <div data-bind="template: { name: 'idKoTemplate_ScdlAssets_View' }"></div>
-                            </div><!-- with: assets -->
+                            </div><!-- with: assetCatologue -->
 
-                            <div data-bind="template: { name: 'idKoTemplate_ScdlTypes_View' }" class="classEditAreaTypes"></div>
-    
-                            <div data-bind="template: { name: 'idKoTemplate_ScdlMachines_View' }" class="classEditAreaMachines"></div>
-    
-                            <div data-bind="template: { name: 'idKoTemplate_ScdlSystems_View' }" class="classEditAreaSystems"></div>
+                            <div data-bind="with: modelCatalogue">
+                                <div data-bind="template: { name: 'idKoTemplate_ModelCatalogue' }"></div>
+                            </div><!-- with: modelCatalogue
+
 
                         </div><!-- with: scdl_v1_catalogue .classScdlCatalogue -->
                     </div><!-- with: catalogueShim .classScdlCatalogueShim-->

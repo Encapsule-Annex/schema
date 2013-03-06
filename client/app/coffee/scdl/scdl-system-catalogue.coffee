@@ -27,3 +27,18 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 
 class namespaceEncapsule_code_app_scdl.ObservableSystemCatalogue
     constructor: ->
+
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSystemCatalogue", ( ->
+    """
+    <div class="classScdlSystemCatalogue">
+        <h2>This is a SCDL system catalogue</h2>
+        <div class="classScdlCatalogueButtons">
+            <button data-bind="click: addSystem" class="button small green">Add System</button>
+            <button data-bind="click: removeAllSystems"  class="button small red">Remove All Systems</button>
+        </div>
+    </div>
+    """))
+

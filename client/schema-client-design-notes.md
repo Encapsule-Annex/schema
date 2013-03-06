@@ -48,7 +48,7 @@ Encapsule.code.app.scdl.system ........................................ SCDL sys
 Encapsule.code.app.scdl.system.ObservableSocketBoundModule ............ KO data model class
 Encapsule.code.app.scdl.system.ObservableSystem ....................... KO data model class (THE GRAIL)
 Encapsule.code.app.scdl.system.ObservableContainedModule .............. KO data model class
-Encapsule.code.app.scdl.system.ObservableModuleSocketBinder ..... KO data model class
+Encapsule.code.app.scdl.system.ObservableModuleSocketBinder ........... KO data model class
 
 Encapsule.code.lib .................................................... app-independent function/class definitions
 Encpausle.code.lib.appcachemonitor .................................... class
@@ -56,6 +56,7 @@ Encapsule.code.lib.audio .............................................. namespac
 Encapsule.code.lib.audio.blipper ...................................... class
 Encapsule.code.lib.audio.theme ........................................ class
 Encapsule.code.lib.audio.util ......................................... class
+Encapsule.code.lib.kohelpers .......................................... namespace object for Knockout.js helpers
 Encapsule.code.lib.router ............................................. class
 Encapsule.code.lib.util ............................................... class
 Encapsule.code.lib.view ............................................... namespace object for view classes

@@ -69,3 +69,24 @@ class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
             @socketsContracts.removeAll()
 
 
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelCatalogue", ( ->
+    """
+    <div class="classScdlModelCatalogue">
+        <h2>This is a SCDL model catalogue</h2>
+        <div class="classScdlCatalogueButtons">
+            <button data-bind="click: addMachine" class="button small green">Add Machine</button>
+            <button data-bind="click: removeAllMachines"  class="button small red">Remove All Machines</button>
+            <button data-bind="click: addModule" class="button small green">Add Module</button>
+            <button data-bind="click: removeAllModules"  class="button small red">Remove All Modules</button>
+            <button data-bind="click: addSocket" class="button small green">Add Machine</button>
+            <button data-bind="click: removeAllSockets"  class="button small red">Remove All Machines</button>
+            <button data-bind="click: addSocketContract" class="button small green">Add Socket Contract</button>
+            <button data-bind="click: removeAllSockets"  class="button small red">Remove All Socket Contracts</button>
+            <button data-bind="click: addType" class="button small green">Add Type</button>
+            <button data-bind="click: removeAllTypes" class="button small red">Remove All Types</button>
+        </div>
+    </div>
+    """))
+
