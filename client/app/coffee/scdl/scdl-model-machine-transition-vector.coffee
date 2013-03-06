@@ -28,12 +28,11 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableMachineTransitionVector
     constructor: ->
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
         @nextState = ko.observable undefined
         @expression = ko.observable undefined
 
         @resetTransitionVector = =>
-            Console.message("ViewModel_ScdlTransition::resetTransition")
             @meta().reinitializeMeta()
             @targetState(undefined)
             @expression(undefined)
@@ -41,7 +40,7 @@ class namespaceEncapsule_code_app_scdl_model.ObservableMachineTransitionVector
 
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMachineTransitionVector", ( ->
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachineTransitionVector", ( ->
     """
     <div class="classScdlMachineTransitionVector">
         <h5>Vector <span data-bind="text: $index"></span>:</h5>

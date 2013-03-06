@@ -70,12 +70,35 @@ class namespaceEncapsule_code_app_scdl_model.ObservableMachine
 
         @addState = =>
             Console.message("ViewModel_ScdlMachine::addState")
-            @states.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlMachineState()
+            @states.push new Encapsule.code.app.scdl.model.ObservableMachineState()
 
         @addTransition = =>
-            @transitions.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransition()
+            @transitions.push new Encapsule.code.app.scdl.model.ObservableMachineTransition()
 
 
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachine", ( ->
+    """
+    <div class="classScdlMachine">
+        <h3>Machine <span data-bind="text: $index"></span>:</h3>
+        <button data-bind="click: reinitializeMachine" class="button small red">Re-initialize Machine</button>
+        <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelPins' }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineStates' }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineTransitions' }"></div>
+    </div><!-- classScdlMachine -->
+    """))
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachineStates", ( ->
+    """
+    <div class="classScdlModelMachineStates">
+        <h3>Machine States</h3>
+        <button data-bind="click: addState" class="button small green">Add State</button>
+        <button data-bind="click: removeAllStates" class="button small red">Remove All States</button>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineState', foreach: states }"></div>
+    </div>
+    """))
 
 
 
@@ -85,7 +108,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
         <h3>Transitions:</h3>
         <button data-bind="click: addTransition" class="button small green">Add Transition</button>
         <button data-bind="click: removeAllTransitions" class="button small red">Remove All Transitions</button>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransition_View', foreach: transitions}" class="classScdlMachineTransitions"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineTransition', foreach: transitions}"></div>
     </div>
     """))
 

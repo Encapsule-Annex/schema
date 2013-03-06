@@ -39,11 +39,11 @@ class namespaceEncapsule_code_app_scdl_model.ObservableMachineTransition
             @vectors.removeAll()
 
         @addVector = =>
-            @vectors.push new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlTransitionVector()
+            @vectors.push new Encapsule.code.app.scdl.model.ObservableMachineTransitionVector()
 
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMachineTransition", ( ->
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachineTransition", ( ->
     """
     <div class="classScdlMachineTransition">
         <h4>State Transition <span data-bind="text: $index"></span>:</h4>
@@ -53,7 +53,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMach
             <h4>Vectors:</h4>
             <button data-bind="click: addVector" class="button small green">Add Vector</button>
             <button data-bind="click: removeAllVectors" class="button small red">Remove All Vectors</button>
-            <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransitionVector_View', foreach: vectors }"></div>
+
+            <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineTransitionVector', foreach: vectors }"></div>
         </div>
     </div>
     """))

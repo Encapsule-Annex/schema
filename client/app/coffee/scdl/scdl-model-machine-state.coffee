@@ -28,7 +28,7 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableMachineState
     constructor: ->
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
         @enterAction = ko.observable undefined
         @exitAction = ko.observable undefined
 
@@ -39,27 +39,27 @@ class namespaceEncapsule_code_app_scdl_model.ObservableMachineState
 
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMachineStateEnter", ( ->
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachineStateEnter", ( ->
     """
     State Enter Action: <span data-bind="text: enterAction"></span>
     """))
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMachineStateExit", ( ->
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachineStateExit", ( ->
     """
     State Exit Action: <span data-bind="text: exitAction"></span>
     """))
 
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMachineState", ( ->
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachineState", ( ->
     """
     <div class="classScdlMachineState">
         <h4>State <span data-bind="text: $index"></span>:</h4>
         <button data-bind="click: reinitializeState" class="button small red">Re-initialize State</button>
-        <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStateEnter_View' }" class="classScdlMachineStateEnter"></div>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStateExit_View' }" class="classScdlMachineStateExit"></div>
+        <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineStateEnter' }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineStateExit' }"></div>
     </div>
     """))
 

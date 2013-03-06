@@ -35,9 +35,9 @@ class namespaceEncapsule_code_app_scdl.ObservableCatalogue
 
         @reinitializeCatalogue = =>
             @reinitializeMeta()
-            @removeAllAssets()
-            @removeAllModels()
-            @removeAllSystems()
+            @assetCatalogue().reinitializeCatalogue()
+            @modelCatalogue().reinitializeCatalogue()
+            @systemCatalogue().reinitializeCatalogue()
 
         @reinitializeMeta = =>
             @meta().reinitializeMeta()
@@ -54,12 +54,11 @@ class namespaceEncapsule_code_app_scdl.ObservableCatalogue
 
 class namespaceEncapsule_code_app_scdl.ObservableCatalogueShim
     constructor: ->
-        @scdl_v1_catalogue = ko.observable new namespaceEncapsule_code_app_scdl.ObservableCatalogue()
+        @scdlCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableCatalogue()
 
         @reinitializeCatalogue = =>
-            Console.message("ViewModel_ScdlCatalogueShim::resetCatalogue")
             try
-                @scdl_v1_catalogue().reinitializeCatalogue()
+                @scdlCatalogue().reinitializeCatalogue()
             catch errorException
                 Console.messageError(errorException)
 
@@ -82,7 +81,6 @@ class namespaceEncapsule_code_app_scdl.ObservableCatalogueShimHost
             @catalogueShim object_
 
         @reinitializeCatalogue = =>
-            Console.message("ViewModel_ScdlCatalogueHost::resetCatalogue")
             try
                 @catalogueShim().reinitializeCatalogue()
             catch errorException
@@ -131,7 +129,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCata
     <h2>Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></h2>
 
         <div data-bind="with: catalogueShim" class="classScdlCatalogueShim">
-            <div class="classScdlCatalogue" data-bind="with: scdl_v1_catalogue">
+            <div class="classScdlCatalogue" data-bind="with: scdlCatalogue">
                 <div data-bind="with: meta">
                     <div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div>
                 </div><!-- with: meta -->
@@ -140,7 +138,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCata
                 </div><!-- with: assetCatologue -->
                 <div data-bind="with: modelCatalogue">
                     <div data-bind="template: { name: 'idKoTemplate_ScdlModelCatalogue' }"></div>
-                </div><!-- with: modelCatalogue
+                </div><!-- with: modelCatalogue -->
+                <div data-bind="with: systemCatalogue">
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlSystemCatalogue' }"></div>
+                </div><!-- with: systemCatalogue -->
             </div><!-- with: scdl_v1_catalogue .classScdlCatalogue -->
         </div><!-- with: catalogueShim .classScdlCatalogueShim-->
 

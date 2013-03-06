@@ -31,8 +31,19 @@ class namespaceEncapsule_code_app_scdl.ObservableSystemCatalogue
 
         @systems = ko.observableArray []
 
+        @reinitializeMeta = =>
+            @meta().reinitializeMeta()
+
+        @reinitializeCatalogue = =>
+            @reinitializeMeta()
+            @removeAllSystems()
+
         @removeAllSystems = =>
             @systems.removeAll()
+
+        @addSystem = =>
+            @systems.push new Encapsule.code.app.scdl.system.ObservableSystem()
+
 
 
 

@@ -34,6 +34,10 @@ class namespaceEncapsule_code_app_scdl.ObservableAssetCatalogue
         @licenses = ko.observableArray []
         @copyrights = ko.observableArray []
 
+        @reinitializeCatalogue = =>
+            @meta().reinitializeMeta()
+            @removeAllAssets()
+
         @removeAllAssets = =>
             @people.removeAll()
             @organizations.removeAll()

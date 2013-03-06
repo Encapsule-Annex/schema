@@ -44,7 +44,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     <div class="classScdlType">
        <h3>Type <span data-bind="text: $index"></span>:</h3>
        <button data-bind="click: resetType" class="button small red">Reset Type</button>
-       <span data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></span>
+       <span data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></span>
        Descriptor: <span data-bind="text: descriptor"></span><br>
     </div>
     """))
