@@ -90,3 +90,28 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     </div>
     """))
 
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelTypes", ( ->
+    """
+    <h2>Types:</h2>
+    <div data-bind="template: { name: 'idKoTemplate_ScdlType_View', foreach: types }" class="classScdlTypes"></div>
+    """))
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachines", ( ->
+    """
+    <h2>Machines:</h2> 
+    <div data-bind="foreach: machines" class="classScdlMachines">
+        <div class="classScdlMachine">
+            <h3>Machine <span data-bind="text: $index"></span>:</h3>
+            <button data-bind="click: reinitializeMachine" class="button small red">Re-initialize Machine</button>
+            <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
+            <div data-bind="template: { name: 'idKoTemplate_ScdlMachinePins_View' }"></div>
+            <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStates_View' }"></div>
+            <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransitions_View' }"></div>
+        </div><!-- classScdlMachine -->
+    </div><!-- classScdlMachines -->
+    """))
+
+

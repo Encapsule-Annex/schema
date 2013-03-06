@@ -34,3 +34,18 @@ class namespaceEncapsule_code_app_scdl_model.ObservableType
         @resetType = =>
              @meta().reinitializeMeta()
              @descriptor(undefined)
+
+
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelType", ( ->
+    """
+    <div class="classScdlType">
+       <h3>Type <span data-bind="text: $index"></span>:</h3>
+       <button data-bind="click: resetType" class="button small red">Reset Type</button>
+       <span data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></span>
+       Descriptor: <span data-bind="text: descriptor"></span><br>
+    </div>
+    """))
+

@@ -42,3 +42,11 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSyst
     </div>
     """))
 
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSystems", ( ->
+    """
+    <h2>Systems:</h2>
+    <button data-bind="click: addSystem"  class="button small green">Add System</button>
+    <button data-bind="click: removeAllSystems"  class="button small red">Remove All Systems</button>
+    <div data-bind="template: { name: 'idKoTemplate_ScdlSystem_View', foreach: systems }" class="classScdlSystems"></div>
+    """))

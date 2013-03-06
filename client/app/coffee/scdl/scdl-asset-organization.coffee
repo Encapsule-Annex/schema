@@ -39,3 +39,17 @@ class namespaceEncapsule_code_app_scdl_asset.ObservableOrganization
             @name(undefined)
             @email(undefined)
             @website(undefined)
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAssetOrganization", ( ->
+    """
+    <div class="classScdlAssetsOrganization">
+        <h3>Organization:</h3>
+        <button data-bind="click: reinitializeOrganization" class="button small red">Re-initialize Organization</button>
+        UUID: <span data-bind="text: uuid"></span><br>
+        Name: <span data-bind="text: name"></span><br>
+        E-mail: <span data-bind="text: email"></span><br>
+        Website: <span data-bind="text: website"></span><br>
+    </div>
+    """))
+

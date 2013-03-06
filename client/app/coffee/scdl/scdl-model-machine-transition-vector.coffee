@@ -38,3 +38,15 @@ class namespaceEncapsule_code_app_scdl_model.ObservableMachineTransitionVector
             @targetState(undefined)
             @expression(undefined)
 
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMachineTransitionVector", ( ->
+    """
+    <div class="classScdlMachineTransitionVector">
+        <h5>Vector <span data-bind="text: $index"></span>:</h5>
+        Next State: <span data-bind="text: nextState"></span><br>
+        Condition: <span data-bind="text: expression"></span><br>
+    </div>
+    """))
+

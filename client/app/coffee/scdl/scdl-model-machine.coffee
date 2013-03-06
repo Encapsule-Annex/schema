@@ -77,3 +77,15 @@ class namespaceEncapsule_code_app_scdl_model.ObservableMachine
 
 
 
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachineTransitions", ( ->
+    """
+    <div class="classEditAreaMachineTransitions">
+        <h3>Transitions:</h3>
+        <button data-bind="click: addTransition" class="button small green">Add Transition</button>
+        <button data-bind="click: removeAllTransitions" class="button small red">Remove All Transitions</button>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineTransition_View', foreach: transitions}" class="classScdlMachineTransitions"></div>
+    </div>
+    """))
+

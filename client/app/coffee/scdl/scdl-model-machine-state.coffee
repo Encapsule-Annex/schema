@@ -36,3 +36,30 @@ class namespaceEncapsule_code_app_scdl_model.ObservableMachineState
             @meta().reinitializeMeta()
             @enterAction(undefined)
             @exitAction(undefined)
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMachineStateEnter", ( ->
+    """
+    State Enter Action: <span data-bind="text: enterAction"></span>
+    """))
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMachineStateExit", ( ->
+    """
+    State Exit Action: <span data-bind="text: exitAction"></span>
+    """))
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMachineState", ( ->
+    """
+    <div class="classScdlMachineState">
+        <h4>State <span data-bind="text: $index"></span>:</h4>
+        <button data-bind="click: reinitializeState" class="button small red">Re-initialize State</button>
+        <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlMeta_View' }"></div></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStateEnter_View' }" class="classScdlMachineStateEnter"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlMachineStateExit_View' }" class="classScdlMachineStateExit"></div>
+    </div>
+    """))
+

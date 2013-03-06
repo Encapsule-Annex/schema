@@ -32,3 +32,13 @@ class namespaceEncapsule_code_app_scdl_system.ObservableSystem
         @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
 
         # An array of SCDL module module instances
+
+
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSystem", ( ->
+    """
+    <h3>System <span data-bind="text: $index"></span>:</h3>
+    """))
+

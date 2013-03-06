@@ -43,3 +43,19 @@ class namespaceEncapsule_code_app_scdl_asset.ObservablePerson
             @email(undefined)
             @website(undefined)
             @gitUsername(undefined)
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAssetPerson", ( ->
+    """
+    <div class="classScdlAssetsPerson">
+        <h3>Person:</h3>
+        <button data-bind="click: reinitializePerson" class="button small red">Re-initialize Person</button>
+        UUID: <span data-bind="text: uuid"></span><br>
+        First Name: <span data-bind="text: nameFirst"></span><br>
+        Last Name: <span data-bind="text: nameLast"></span><br>
+        E-mail: <span data-bind="text: email"></span><br>
+        Website: <span data-bind="text: website"></span><br>
+        GitUsername: <span data-bind="text: gitUsername"></span><br>            
+    </div>
+    """))

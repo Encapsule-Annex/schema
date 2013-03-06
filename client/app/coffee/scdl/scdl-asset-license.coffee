@@ -39,3 +39,17 @@ class namespaceEncapsule_code_app_scdl_asset.ObservableLicense
             @name(undefined)
             @terms(undefined)
             @website(undefined)
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAssetLicense", ( ->
+    """
+    <div class="classScdlAssetsLicense">
+        <h3>License:</h3>
+        <button data-bind="click: reinitializeLicense" class="button small red">Re-initialize License</button>
+        UUID: <span data-bind="text: uuid"></span><br>
+        Name: <span data-bind="text: name"></span><br>
+        Terms: <span data-bind="text: terms"></span><br>
+        Website: <span data-bind="text: website"></span><br>
+    </div>
+    """))
+
