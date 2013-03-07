@@ -29,10 +29,55 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 class namespaceEncapsule_code_app_scdl_model.ObservableModule
     constructor: ->
         @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
-        @externalInputPins = ko.observableArray []
-        @externalOutputPins = ko.observableArray []
-        @internalModelInstances = ko.observableArray []
-        @internalNodes = ko.observableArray []
+        @inputPins = ko.observableArray []
+        @outputPins = ko.observableArray []
+        @modelInstances = ko.observableArray []
+        @nodes = ko.observableArray []
+
+        @reinitializeMeta = =>
+            @meta().reinitializeMeta()
+
+        @addInputPin = =>
+            @inputPins.push new Encapsule.code.app.scdl.model.ObservablePin("Input")
+
+        @removeAllInputPins = =>
+            @inputPins.removeAll()
+
+        @addOutputPin = =>
+            @outputPins.push new Encapsule.code.app.scdl.model.ObservablePin("Output")
+
+        @removeAllOutputPins = =>
+            @outputPins.removeAll()
+
+        @removeAllPins = =>
+            @removeAllInputPins()
+            @removeAllOutputPins()
+
+        @addMachineInstance = (machineUuid_) =>
+            @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance("Machine", machineUuid_)
+
+        @addModelInstance = (moduleUuid_) =>
+            @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance("Module", moduleUuid_)
+
+        @addSocketInstance = (socketUuid_) =>
+            @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance("Socket", moduleUuid_)
+
+        @removeAllModelInstances = =>
+            @modelInstances.removeAll()
+
+        @addNode = =>
+            @nodes.push new Encapsule.code.app.scdl.model.ObservableNode()
+
+        @removeAllNodes = =>
+            @nodes.removeAll()
+
+        @reinitializeModule = =>
+            @removeAllPins()
+            @removeAllModelInstances()
+            @removeAllNodes()
+
+
+
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelModule", ( ->

@@ -29,7 +29,7 @@ app_version="0.75"
 app_release_name="Amapá"
 app_release_fun_url="http://en.wikipedia.org/wiki/Amap%C3%A1"
 app_version_uuid="42c28c61-da0d-4abd-9821-86e57c129239"
-app_release_phase="pre-alpha"
+app_release_phase="pre-alpha dev"
 
 app_builder_email=$*
 app_build_host=`hostname`

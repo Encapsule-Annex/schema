@@ -103,28 +103,12 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCata
     </div>
 
     <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} (#{appReleasePhase})</h1>
-
-    <h2>Thanks for checking out the #{appName} application! This is a <u>#{appReleasePhase}</u> deployment for testing.</h2>
-
     <p>
         [ Main: <a href="#{appPackagePublisherUrl}" title="Visit #{appPackagePublisher}">#{appPackagePublisher}</a> ]
         [ Blog: <a href="#{appBlogUrl}" title="Visit the #{appBlogName}">#{appBlogName}</a> ]
         [ GitHub: <a href="#{appGitHubRepoUrl}" title="#{appPackagePublisher} #{appName} Git Repo">#{appGitHubRepoName}</a> ]
     </p>
 
-    <p>What you're seeing here is the Soft Circuit Description Language (SCDL pronounced "scuddle") data model bound into the
-    DOM using Knockout.js. If you're interested in SCDL, I've written a bit about the subject on the #{appBlogName}. Expect
-    dozens of articles on SCDL once this application is functional.</p>
-
-    <p>If you're primarily interested in the HTML5 aspects of this project see my personal blog where I've been writing regularly
-    on the subject. <a href="http://blog.chrisrussell.net" title="Chris' blog">blog.chrisrussell.net</a>.</p>
-
-    <p>You can mess around with the buttons at this point and start to get a sense for what types
-    of entities can be modeled using SCDL. Note that as you add/remove model entities, the JSON
-    that comprises your SCDL catalogue is dynamically updated.</p>
-
-    <p>Once the data model is complete, I'll begin exposing the SCDL models via interactive SVG visualizations. Stay tuned,
-    I think this is going to be cool...</p>
 
     <h2>Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></h2>
 
