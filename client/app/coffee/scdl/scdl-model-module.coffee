@@ -53,14 +53,15 @@ class namespaceEncapsule_code_app_scdl_model.ObservableModule
             @removeAllInputPins()
             @removeAllOutputPins()
 
-        @addMachineInstance = (machineUuid_) =>
-            @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance("Machine", machineUuid_)
+        #@addMachineInstance = (machineUuid_) =>
+        @addMachineInstance =  =>
+            @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance("Machine")
 
-        @addModelInstance = (moduleUuid_) =>
+        @addModuleInstance = (moduleUuid_) =>
             @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance("Module", moduleUuid_)
 
         @addSocketInstance = (socketUuid_) =>
-            @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance("Socket", moduleUuid_)
+            @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance("Socket", socketUuid_)
 
         @removeAllModelInstances = =>
             @modelInstances.removeAll()
@@ -78,12 +79,28 @@ class namespaceEncapsule_code_app_scdl_model.ObservableModule
 
 
 
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelInstances", ( ->
+    """
+    <div class="classScdlModelInstances">
+        <h2>Contained Model Instances:</h2>
+        <button data-bind="click: addMachineInstance" class="button small green">Add Machine Instance</button>
+        <button data-bind="click: addModuleInstance" class="button small green">Add Module Instance</button>
+        <button data-bind="click: addSocketInstance" class="button small green">Add Socket Instance</button>
+        <button data-bind="click: removeAllModelInstances" class="button small red">Remove All Model Instances</button>
+
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelInstance', foreach: modelInstances }"></div>
+    </div>
+    """))
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelModule", ( ->
     """
     <div class="classScdlModelModule">
         <h3>Module <span data-bind="text: $index"></span>:</h3>
+        <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelPins' }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelInstances' }"></div>
+
     </div>
     """))
 

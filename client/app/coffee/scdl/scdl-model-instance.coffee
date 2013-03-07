@@ -36,10 +36,20 @@ class namespaceEncapsule_code_app_scdl_model.ObservableModelInstance
     constructor: (classification_, modelUuid_) ->
 
         # UUID of the meta object is used to identify the specific instance of the contained model entity.
-        @meta = ko.observable new namespaceEncapsule_code_app_viewmodel.ViewModel_ScdlEntityMeta()
+        @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
         @classification = ko.observable classification_
         @modelUuid = ko.observable modelUuid_
 
         # I honestly can't remember what this dimension is. Leaving for now.
         @modelEntityRef = ko.observable undefined
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelInstance", ( ->
+    """
+    <div class="classScdlModelInstance">
+        Hello
+    </div>
+    """))
+
 
