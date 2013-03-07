@@ -34,3 +34,11 @@ class namespaceEncapsule_code_app_scdl_model.ObservableModule
         @internalModelInstances = ko.observableArray []
         @internalNodes = ko.observableArray []
 
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelModule", ( ->
+    """
+    <div class="classScdlModelModule">
+        <h3>Module <span data-bind="text: $index"></span>:</h3>
+    </div>
+    """))
+

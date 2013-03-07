@@ -87,20 +87,13 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     <div class="classScdlModelCatalogue">
         <h2>This is a SCDL model catalogue</h2>
         <div class="classScdlCatalogueButtons">
-            <button data-bind="click: addMachine" class="button small green">Add Machine</button>
-            <button data-bind="click: removeAllMachines"  class="button small red">Remove All Machines</button>
-            <button data-bind="click: addModule" class="button small green">Add Module</button>
-            <button data-bind="click: removeAllModules"  class="button small red">Remove All Modules</button>
-            <button data-bind="click: addSocket" class="button small green">Add Socket</button>
-            <button data-bind="click: removeAllSockets"  class="button small red">Remove All Sockets</button>
-            <button data-bind="click: addSocketContract" class="button small green">Add Socket Contract</button>
-            <button data-bind="click: removeAllSocketContracts"  class="button small red">Remove All Socket Contracts</button>
-            <button data-bind="click: addType" class="button small green">Add Type</button>
-            <button data-bind="click: removeAllTypes" class="button small red">Remove All Types</button>
         </div>
         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelTypes' }"></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachines' }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelSockets' }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelSocketContracts' }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelModules' }"></div>
 
     </div>
     """))
@@ -110,14 +103,45 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelTypes", ( ->
     """
     <h2>Types:</h2>
+    <button data-bind="click: addType" class="button small green">Add Type</button>
+    <button data-bind="click: removeAllTypes" class="button small red">Remove All Types</button>
     <div data-bind="template: { name: 'idKoTemplate_ScdlModelType', foreach: types }"></div>
     """))
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachines", ( ->
     """
-    <h2>Machines:</h2> 
+    <h2>Machines:</h2>
+    <button data-bind="click: addMachine" class="button small green">Add Machine</button>
+    <button data-bind="click: removeAllMachines"  class="button small red">Remove All Machines</button>
     <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachine', foreach: machines }"></div>
+    """))
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelSockets", ( ->
+    """
+    <h2>Sockets:</h2>
+    <button data-bind="click: addSocket" class="button small green">Add Socket</button>
+    <button data-bind="click: removeAllSockets"  class="button small red">Remove All Sockets</button>
+    <div data-bind="template: { name: 'idKoTemplate_ScdlModelSocket', foreach: sockets }"></div>
+    """))
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelSocketContracts", ( ->
+    """
+    <h2>Socket Contracts:</h2>
+    <button data-bind="click: addSocketContract" class="button small green">Add Socket Contract</button>
+    <button data-bind="click: removeAllSocketContracts"  class="button small red">Remove All Socket Contracts</button>
+    <div data-bind="template: { name: 'idKoTemplate_ScdlModelSocketContract', foreach: socketContracts }"></div>
+    """))
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelModules", ( ->
+    """
+    <h2>Modules:</h2>
+    <button data-bind="click: addModule" class="button small green">Add Module</button>
+    <button data-bind="click: removeAllModules"  class="button small red">Remove All Modules</button>
+    <div data-bind="template: { name: 'idKoTemplate_ScdlModelModule', foreach: modules }"></div>
     """))
 
 

@@ -27,7 +27,37 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 
 class namespaceEncapsule_code_app_scdl_model.ObservablePinInstance
-    constructor: ->
-        modelInstanceId = ko.observable undefined
-        pinId = ko.obvervable undefined
+    constructor: (direction_) ->
+        @direction = ko.observable direction_
+        @modelInstanceUuid = ko.observable undefined
+        @pinUuid = ko.observable undefined
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelPinInstance", ( ->
+    """
+    <div class="classScdlPinInstance">
+        <h4><span data-bind="text: direction"></span> Pin Instance <span data-bind="text: $index"></span>:</h4>
+        <div>SCDL model instance UUID: <span data-bind="text: modelInstanceUuid"></span></div>
+        <div>SCDL pin identifer on model: <span data-bind="text: pinUuid"></span></div>
+    </div>
+    """))
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelInputPinInstances", ( ->
+    """
+    <div class="classScdlInputPinInstances">
+        <h3>Input Pin Instances:</h3>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelPinInstance', foreach: inputPinInstances }"></div>
+    </div>
+    """))
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelOutputPinInstances", ( ->
+    """
+    <div class="classScdlOutputPinInstances">
+        <h3>Output Pin Instances:</h3>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelPinInstance', foreach: outputPinInstances }"></div>
+    </div>
+    """))
+
+
 

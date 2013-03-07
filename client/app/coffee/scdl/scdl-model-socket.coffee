@@ -33,5 +33,43 @@ class namespaceEncapsule_code_app_scdl_model.ObservableSocket
         @outputPins = ko.observableArray []
         @populationRequired = ko.observable false
         @populationLimit = ko.observable 1
-        @partitionPopulation = ko.observable false
-        @partitionType = ko.observable undefined
+        @populationPartition = ko.observable undefined
+
+        @reinitializeMeta = =>
+            @meta().reinitializeMeta()
+
+        @resetSocket = =>
+            @populationRequired(false)
+            @populationLimit(1)
+            @populationPartition(undefined)
+
+        @removeAllInputPins = =>
+            @inputPins.removeAll()
+
+        @removeAllOutputPins = =>
+            @outputPins.removeAll()
+
+        @removeAllPins = =>
+            @removeAllInputPins()
+            @removeAllOutputPins()
+
+        @addInputPin = =>
+            @inputPins.push new Encapsule.code.app.scdl.model.ObservablePin("Input")
+
+        @addOutputPin = =>
+            @outputPins.push new Encapsule.code.app.scdl.model.ObservablePin("Output")
+
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelSocket", ( ->
+    """
+    <div class="classScdlModelSocket">
+        <h3>Socket <span data-bind="text: $index"></span>:</h3>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelPins' }"></div>
+        <div>Population required: <span data-bind="text: populationRequired"></span></div>
+        <div>Population limit: <span data-bind="text: populationLimit"></span></div>
+        <div>Population partition: <span data-bind="text: populationPartition"></span></div>
+    </div>
+    """))
+

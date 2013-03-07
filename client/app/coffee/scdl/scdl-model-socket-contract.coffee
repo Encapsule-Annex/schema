@@ -32,3 +32,32 @@ class namespaceEncapsule_code_app_scdl_model.ObservableSocketContract
         @socketUuid = ko.observable undefined
         @modelUuid = ko.observable undefined
         @nodes = ko.observableArray [] # array of ScdlNode objects
+
+        @reinitializeMeta = =>
+            @meta().reinitializeMeta()
+
+        @resetSocketUuid = =>
+            @socketUuid(undefined)
+
+        @resetModelUuid = =>
+            @modelUuid(undefined)
+
+        @removeAllNodes = =>
+            @nodes.removeAll()
+
+        @addNode = =>
+            @nodes.push new Encapsule.code.app.scdl.model.ObservableNode()
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelSocketContract", ( ->
+    """
+    <div class="classScdlModelSocketContract">
+        <h3>Socket Contract <span data-bind="text: $index"></span>:</h3>
+        <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
+        <div>Contract for socket UUID: <span data-bind="text: socketUuid"></span></div>
+        <div>Extensible by model UUID: <span data-bind="text: modelUuid"></span></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelNodes' }"></div>
+
+    </div>
+    """))
