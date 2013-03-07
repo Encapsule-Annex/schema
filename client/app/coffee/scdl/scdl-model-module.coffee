@@ -53,15 +53,8 @@ class namespaceEncapsule_code_app_scdl_model.ObservableModule
             @removeAllInputPins()
             @removeAllOutputPins()
 
-        #@addMachineInstance = (machineUuid_) =>
-        @addMachineInstance =  =>
-            @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance("Machine")
-
-        @addModuleInstance = (moduleUuid_) =>
-            @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance("Module", moduleUuid_)
-
-        @addSocketInstance = (socketUuid_) =>
-            @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance("Socket", socketUuid_)
+        @addModelInstance = =>
+            @modelInstances.push new Encapsule.code.app.scdl.model.ObservableModelInstance()
 
         @removeAllModelInstances = =>
             @modelInstances.removeAll()
@@ -83,11 +76,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     """
     <div class="classScdlModelInstances">
         <h2>Contained Model Instances:</h2>
-        <button data-bind="click: addMachineInstance" class="button small green">Add Machine Instance</button>
-        <button data-bind="click: addModuleInstance" class="button small green">Add Module Instance</button>
-        <button data-bind="click: addSocketInstance" class="button small green">Add Socket Instance</button>
+        <button data-bind="click: addModelInstance" class="button small green">Add Model Intance</button>
         <button data-bind="click: removeAllModelInstances" class="button small red">Remove All Model Instances</button>
-
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelInstance', foreach: modelInstances }"></div>
     </div>
     """))
