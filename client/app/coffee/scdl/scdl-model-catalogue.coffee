@@ -84,7 +84,7 @@ class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelCatalogue", ( ->
     """
-    <div class="classScdlModelCatalogue">
+    <div class="classScdlSubCatalogue">
         <h2>This is a SCDL model catalogue</h2>
         <div class="classScdlCatalogueButtons">
         </div>

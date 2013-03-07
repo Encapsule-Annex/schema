@@ -2,70 +2,14 @@
 // SCDL object model CSS class attributes
 //
 
-.classScdlCatalogueHost { margin: 0px; padding: 10px; border: 1px solid black;}
-
-.classScdlCatalogueShim { margin: 0px; padding: 0px;}
-
-.classScdlCatalogue { margin: 0px; padding: 0px;}
-
-.classEditAreaMeta { margin: 2px; padding: 5px; border: 1px solid black; background-color: #CCCCCC;}
-
-.classEditAreaAssets { margin: 0px; padding: 10px; border: 1px solid black; background-color: #FFEEDD; }
-
-.classEditAreaAssetsPeople { margin: 0px; padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
-.classScdlAssetsPeople { margin: 2px; padding: 2px; border: 0px solid black; background-color: #DDCCBB; }
-.classScdlAssetsPerson { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
-
-.classEditAreaAssetsOrganizations { margin: 0px;  padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
-.classScdlAssetsOrganizations { margin: 2px; padding: 2px; border: 0px solid black; background-color: #DDCCBB; }
-.classScdlAssetsOrganization { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
-
-.classEditAreaAssetsLicenses { margin: 0px; padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
-.classScdlAssetsLicenses { margin: 2px; padding: 2px; border: 0px solid black; background-color: #DDCCBB; }
-.classScdlAssetsLicense { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
-
-.classEditAreaAssetsCopyrights { margin: 0px; padding: 10px; border: 1px solid black; background-color: #EEDDCC; }
-.classScdlAssetsCopyrights { margin: 2px; padding: 2px; border: 0px solid black; background-color: #DDCCBB; }
-.classScdlAssetsCopyright { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
-
-.classEditAreaTypes { margin: 0px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
-.classScdlTypes { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
-.classScdlType { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
-
-.classEditAreaMachinePins { margin: 0px; padding: 10px; border: 1px solid black; background-color: #99CC00;}
-.classScdlMachinePins { margin: 2px; padding: 2px; border: 0px solid black; background-color: #AADD00; }
-
-.classEditAreaMachineInputPins { margin: 0px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
-.classScdlMachineInputPins { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
-
-.classEditAreaMachineOutputPins { margin: 0px;  padding: 10px; border: 1px solid black; background-color: #66CCFF;}
-.classScdlMachineOutputPins { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
-
-.classEditAreaMachinePin { margin: 0px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
-.classScdlMachinePin { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
-
-.classEditAreaMachineStates { margin: 0px; padding: 10px; border: 1px solid black; background-color: #99CC00;}
-.classScdlMachineStates { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
-.classScdlMachineState { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
-
-.classScdlMachineStateEnter { border: 1px solid black; }
-.classScdlMachineStateExit { border: 1px solid black; }
-
-.classEditAreaMachineTransitions { margin: 0px; padding: 10px; border: 1px solid black; background-color: #99CC33;}
-.classScdlMachineTransitions { margin: 2px; padding: 2px; border: 0px solid black; background-color: #3399CC; }
-.classScdlMachineTransition { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
-
-.classEditAreaMachineTransitionVectors { margin: 0px; padding: 10px; border: 1px solid black; background-color: #66CCFF;}
-.classScdlMachineTransitionVector { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
-
-.classEditAreaMachines { margin: 0px; padding: 10px; border: 1px solid black; background-color: #99CC00;}
-.classScdlMachines { margin: 2px; padding: 2px; border: 0px solid black; background-color: #88BB00; }
-.classScdlMachine { margin: 2px; padding: 2px; border: 1px solid black; background-color: #AADD00; }
-
-.classEditAreaSystems { margin: 0px; padding: 10px; border: 1px solid black; background-color: #FF9900;}
-.classScdlSystems { margin: 2px; padding: 2px; border: 0px solid black; background-color: #CC6600; }
-.classScdlSystem { margin: 2px; padding: 2px; border: 1px solid black; background-color: white; }
 
 
 
+.classScdlCatalogueShim { margin: 0px; padding: 5px; background-color: #FF00FF; }
 
+.classScdlCatalogue { margin: 0px; padding: 5px; background-color: #BBCCDD; }
+
+.classScdlSubCatalogue { margin: 0px; margin-bottom: 5px; padding: 5px; background-color: #AABBCC; border: 1px solid #000000; }
+
+
+.classScdlCatalogueShimHost { margin: 0px; padding 10px; border: 1px solid black; background-color: #DDEEFF; }

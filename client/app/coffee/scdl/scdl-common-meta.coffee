@@ -57,7 +57,6 @@ class namespaceEncapsule_code_app_scdl.ObservableCommonMeta
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCommonMeta", ( ->
     """
     <div class="classEditAreaMeta">
-        <h2>Meta:</h2>
         <button data-bind="click: reinitializeMeta" class="button small red">Re-initialize Meta</button>
         <div>
         UUID: <span data-bind="text: uuid"></span> 

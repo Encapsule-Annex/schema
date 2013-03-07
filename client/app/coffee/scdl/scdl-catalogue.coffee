@@ -109,11 +109,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCata
         [ GitHub: <a href="#{appGitHubRepoUrl}" title="#{appPackagePublisher} #{appName} Git Repo">#{appGitHubRepoName}</a> ]
     </p>
 
-
-    <h2>Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></h2>
-
+    <div class="classScdlCatalogueShimHost">
+        <h1>SCDL Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></H1>
         <div data-bind="with: catalogueShim" class="classScdlCatalogueShim">
-            <div class="classScdlCatalogue" data-bind="with: scdlCatalogue">
+            <div data-bind="with: scdlCatalogue" class="classScdlCatalogue" >
                 <div data-bind="with: meta">
                     <div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div>
                 </div><!-- with: meta -->
@@ -126,8 +125,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCata
                 <div data-bind="with: systemCatalogue">
                     <div data-bind="template: { name: 'idKoTemplate_ScdlSystemCatalogue' }"></div>
                 </div><!-- with: systemCatalogue -->
-            </div><!-- with: scdl_v1_catalogue .classScdlCatalogue -->
+            </div><!-- with: scdlCatalogue -->
         </div><!-- with: catalogueShim .classScdlCatalogueShim-->
-
+    </div><!-- classScdlCatalogueShimHost -->
     """))
 

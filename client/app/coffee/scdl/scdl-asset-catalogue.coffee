@@ -119,8 +119,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAsse
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAssetCatalogue", ( ->
     """
-    <div class="classEditAreaAssets">
-        <h2>Assets:</h2>
+    <div class="classScdlSubCatalogue">
+        <h2>Asset Sub-Catalogue:</h2>
         <button data-bind="click: removeAllAssets" class="button small red">Remove All Assets</button>
         <span data-bind="template: { name: 'idKoTemplate_ScdlAssetPeople' }"></span>
         <span data-bind="template: { name: 'idKoTemplate_ScdlAssetOrganizations' }"></span>

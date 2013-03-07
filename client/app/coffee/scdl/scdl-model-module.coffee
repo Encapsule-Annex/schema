@@ -90,6 +90,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelPins' }"></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelInstances' }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelNodes' }"></div>
 
     </div>
     """))
