@@ -110,7 +110,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCata
     </p>
 
     <div class="classScdlCatalogueShimHost">
-        <h1>SCDL Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></H1>
+        <h1>SCDL Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></h1>
         <div data-bind="with: catalogueShim" class="classScdlCatalogueShim">
             <div data-bind="with: scdlCatalogue" class="classScdlCatalogue" >
                 <div data-bind="with: meta">

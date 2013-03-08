@@ -45,15 +45,14 @@ class namespaceEncapsule_code_app_scdl_model.ObservableMachineTransition
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachineTransition", ( ->
     """
-    <div class="classScdlMachineTransition">
+    <div class="classScdlModelMachineTransition">
         <h4>State Transition <span data-bind="text: $index"></span>:</h4>
         <button data-bind="click: reinitializeTransition" class="button small red">Re-initialize Transition</button>
         Start State: <span data-bind="text: startState"></span><br>
-        <div class="classEditAreaMachineTransitionVectors">
+        <div class="classScdlModelMachineTransitionVectors">
             <h4>Vectors:</h4>
             <button data-bind="click: addVector" class="button small green">Add Vector</button>
             <button data-bind="click: removeAllVectors" class="button small red">Remove All Vectors</button>
-
             <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineTransitionVector', foreach: vectors }"></div>
         </div>
     </div>

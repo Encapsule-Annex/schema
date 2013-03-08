@@ -52,11 +52,11 @@ class namespaceEncapsule_code_app_scdl_model.ObservableNode
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelNode", ( ->
     """
-    <div class="classScdlModelNode">
+    <div class="classScdlModelSocketContractNode">
         <h4>Node <span data-bind="text: $index"></span>:</h4>
         <button data-bind="click: addInputPinInstance" class="button small green">Add Input Pin Instance</button>
         <button data-bind="click: removeAllPinInstances" class="button small red">Remove All Pin Instances</button>
-        <div data-bind="with: outputPinInstance"><div data-bind="template: { name: 'idKoTemplate_ScdlModelPinInstance' }"></div></div>
+        <div data-bind="with: outputPinInstance"><div data-bind="template: { name: 'idKoTemplate_ScdlModelOutputPinInstance' }"></div></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelInputPinInstances' }"></div>
     </div>
     """))
@@ -64,11 +64,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelNodes", ( ->
     """
-    <div class="classScdlModelNodes">
+    <div class="classScdlModelSocketContractNodes">
         <h3>Nodes:</h3>
         <button data-bind="click: addNode" class="button small green">Add Node</button>
         <button data-bind="click: removeAllNodes" class="button small red">Remove All Nodes</button>
-
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelNode', foreach: nodes }"></div>
     </div>
     """))

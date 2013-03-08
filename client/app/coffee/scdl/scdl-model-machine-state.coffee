@@ -54,7 +54,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachineState", ( ->
     """
-    <div class="classScdlMachineState">
+    <div class="classScdlModelMachineState">
         <h4>State <span data-bind="text: $index"></span>:</h4>
         <button data-bind="click: reinitializeState" class="button small red">Re-initialize State</button>
         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>

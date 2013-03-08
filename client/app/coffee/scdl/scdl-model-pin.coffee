@@ -43,7 +43,15 @@ class namespaceEncapsule_code_app_scdl_model.ObservablePin
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelPin", ( ->
     """
-    <div class="classScdlMachinePin">
+    <h5><span data-bind="text: direction"></span> Pin <span data-bind="text: $index "></span>:</h5>
+    <button data-bind="click: reinitializePin" class="button small red">Re-initialize Pin</button>
+    <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
+    <strong>Data type: </strong><span data-bind="text: typeRef"></span><br>
+    """))
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelInputPin", ( ->
+    """
+    <div class="classScdlModelMachineInputPin">
         <h5><span data-bind="text: direction"></span> Pin <span data-bind="text: $index "></span>:</h5>
         <button data-bind="click: reinitializePin" class="button small red">Re-initialize Pin</button>
         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
@@ -52,40 +60,49 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     """))
 
 
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelOutputPin", ( ->
+    """
+    <div class="classScdlModelMachineOutputPin">
+        <h5><span data-bind="text: direction"></span> Pin <span data-bind="text: $index "></span>:</h5>
+        <button data-bind="click: reinitializePin" class="button small red">Re-initialize Pin</button>
+        <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
+        <strong>Data type: </strong><span data-bind="text: typeRef"></span><br>
+    </div>
+    """))
+
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelInputPins", ( ->
     """
-    <div class="classEditAreaMachineInputPins">
+    <div class="classScdlModelMachineInputPins">
         <h4>Input Pins:</h4>
         <button data-bind="click: addInputPin" class="button small green">Add Input Pin</button>
         <button data-bind="click: removeAllInputPins" class="button small red">Remove All Input Pins</button>
-        <div class="classScdlMachineInputPins">
-            <div data-bind="template: { name: 'idKoTemplate_ScdlModelPin', foreach: inputPins }"></div>
-        </div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelInputPin', foreach: inputPins }"></div>
     </div>
     """))
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelOutputPins", ( ->
     """
-    <div class="classEditAreaMachineOutputPins">
+    <div class="classScdlModelMachineOutputPins">
         <h4>Output Pins:</h4>
         <button data-bind="click: addOutputPin"  class="button small green">Add Output Pin</button>
         <button data-bind="click: removeAllOutputPins" class="button small red">Remove All Output Pins</button>
-        <div class="classScdlMachineOutputPins">
-            <div data-bind="template: { name: 'idKoTemplate_ScdlModelPin', foreach: outputPins }"></div>
-        </div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelOutputPin', foreach: outputPins }"></div>
     </div>
     """))
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelPins", ( ->
     """
-    <div class="classEditAreaMachinePins">
+    <div class="classScdlModelMachinePins">
         <h3>Pins:</h3>
         <button data-bind="click: removeAllPins" class="button small red">Remove All Pins</button>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlModelInputPins' }" class="classEditAreaMachineInputPins"></div>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlModelOutputPins' }" class="classEditAreaMachineOutputPins"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelInputPins' }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelOutputPins' }"></div>
     </div>
     """))
+
+
+
 

@@ -34,28 +34,37 @@ class namespaceEncapsule_code_app_scdl_model.ObservablePinInstance
 
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelPinInstance", ( ->
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelInputPinInstance", ( ->
     """
-    <div class="classScdlPinInstance">
+    <div class="classScdlModelInputPinInstance">
         <h4><span data-bind="text: direction"></span> Pin Instance <span data-bind="text: $index"></span>:</h4>
-        <div>SCDL model instance UUID: <span data-bind="text: modelInstanceUuid"></span></div>
-        <div>SCDL pin identifer on model: <span data-bind="text: pinUuid"></span></div>
+        <span>SCDL model instance UUID: <span data-bind="text: modelInstanceUuid"></span></span><br>
+        <span>SCDL pin identifer on model: <span data-bind="text: pinUuid"></span></span>
+    </div>
+    """))
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelOutputPinInstance", ( ->
+    """
+    <div class="classScdlModelOutputPinInstance">
+        <h4><span data-bind="text: direction"></span> Pin Instance <span data-bind="text: $index"></span>:</h4>
+        <span>SCDL model instance UUID: <span data-bind="text: modelInstanceUuid"></span></span><br>
+        <span>SCDL pin identifer on model: <span data-bind="text: pinUuid"></span></span>
     </div>
     """))
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelInputPinInstances", ( ->
     """
-    <div class="classScdlInputPinInstances">
+    <div class="classScdlModelInputPinInstances">
         <h3>Input Pin Instances:</h3>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlModelPinInstance', foreach: inputPinInstances }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelInputPinInstance', foreach: inputPinInstances }"></div>
     </div>
     """))
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelOutputPinInstances", ( ->
     """
-    <div class="classScdlOutputPinInstances">
+    <div class="classScdlModelOutputPinInstances">
         <h3>Output Pin Instances:</h3>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlModelPinInstance', foreach: outputPinInstances }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelOutputPinInstance', foreach: outputPinInstances }"></div>
     </div>
     """))
 

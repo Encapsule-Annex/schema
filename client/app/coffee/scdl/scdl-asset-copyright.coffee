@@ -40,7 +40,7 @@ class namespaceEncapsule_code_app_scdl_asset.ObservableCopyright
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAssetCopyright", ( ->
     """
-    <div class="classScdlAssetsCopyright">
+    <div class="classScdlAssetCopyright">
        <h3>Copyright:</h3>
        <button data-bind="click: reinitializeCopyright" class="button small red">Re-initialize Copyright</button>
        UUID: <span data-bind="text: uuid"></span><br>

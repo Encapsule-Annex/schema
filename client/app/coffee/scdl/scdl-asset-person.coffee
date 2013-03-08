@@ -48,7 +48,7 @@ class namespaceEncapsule_code_app_scdl_asset.ObservablePerson
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlAssetPerson", ( ->
     """
-    <div class="classScdlAssetsPerson">
+    <div class="classScdlAssetPerson">
         <h3>Person:</h3>
         <button data-bind="click: reinitializePerson" class="button small red">Re-initialize Person</button>
         UUID: <span data-bind="text: uuid"></span><br>

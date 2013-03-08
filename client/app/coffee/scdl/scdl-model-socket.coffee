@@ -64,7 +64,7 @@ class namespaceEncapsule_code_app_scdl_model.ObservableSocket
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelSocket", ( ->
     """
-    <div class="classScdlModelSocket">
+    <div class="classScdlSubCatalogueSection2Item classScdlModelSocket">
         <h3>Socket <span data-bind="text: $index"></span>:</h3>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelPins' }"></div>
         <div>Population required: <span data-bind="text: populationRequired"></span></div>

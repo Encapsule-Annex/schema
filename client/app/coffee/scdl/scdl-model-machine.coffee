@@ -79,7 +79,7 @@ class namespaceEncapsule_code_app_scdl_model.ObservableMachine
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachine", ( ->
     """
-    <div class="classScdlMachine">
+    <div class="classScdlModelMachine">
         <h3>Machine <span data-bind="text: $index"></span>:</h3>
         <button data-bind="click: reinitializeMachine" class="button small red">Re-initialize Machine</button>
         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
@@ -104,7 +104,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachineTransitions", ( ->
     """
-    <div class="classEditAreaMachineTransitions">
+    <div class="classScdlModelMachineTransitions">
         <h3>Transitions:</h3>
         <button data-bind="click: addTransition" class="button small green">Add Transition</button>
         <button data-bind="click: removeAllTransitions" class="button small red">Remove All Transitions</button>
