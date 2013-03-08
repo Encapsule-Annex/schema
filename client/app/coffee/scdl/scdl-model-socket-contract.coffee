@@ -57,7 +57,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
         <div>Contract for socket UUID: <span data-bind="text: socketUuid"></span></div>
         <div>Extensible by model UUID: <span data-bind="text: modelUuid"></span></div>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlModelNodes' }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelNodes' }" class="classScdlSocketContractNodes"></div>
 
     </div>
     """))
