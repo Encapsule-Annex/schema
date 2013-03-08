@@ -66,6 +66,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     """
     <div class="classScdlModelSocketContractNodes">
         <h3>Nodes:</h3>
+        <p>SCDL nodes model a connection between a SCDL output pin and some number of SCDL input pins. SCDL nodes are used to define data dependecy relationships and can be thought of the conductive traces on an integrated circuit board. Sets of SCDL node models define data flow topology. Another way to think about SCDL nodes is to see them as little contracts that state "if somebody alters the value of this output pin, then the owners of the following input pins need to know about it so they can respond."</p>
         <button data-bind="click: addNode" class="button small green">Add Node</button>
         <button data-bind="click: removeAllNodes" class="button small red">Remove All Nodes</button>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelNode', foreach: nodes }"></div>

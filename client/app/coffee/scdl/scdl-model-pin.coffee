@@ -74,7 +74,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelInputPins", ( ->
     """
     <div class="classScdlModelMachineInputPins">
-        <h4>Input Pins:</h4>
+        <h4>SCDL Input Pin Models:</h4>
+        <p>SCDL input pins model data receivers. Any number of SCDL pins may be connected to a SCDL node.</p>
         <button data-bind="click: addInputPin" class="button small green">Add Input Pin</button>
         <button data-bind="click: removeAllInputPins" class="button small red">Remove All Input Pins</button>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelInputPin', foreach: inputPins }"></div>
@@ -85,7 +86,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelOutputPins", ( ->
     """
     <div class="classScdlModelMachineOutputPins">
-        <h4>Output Pins:</h4>
+        <h4>SCDL Output Pin Models:</h4>
+        <p>SCDL output pins model data transimitters. A single SCDL output pin may be connected to any number of SCDL input pins via a SCDL node model in order to define a data dependency relationship.</p>
         <button data-bind="click: addOutputPin"  class="button small green">Add Output Pin</button>
         <button data-bind="click: removeAllOutputPins" class="button small red">Remove All Output Pins</button>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelOutputPin', foreach: outputPins }"></div>
@@ -96,7 +98,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelPins", ( ->
     """
     <div class="classScdlModelMachinePins">
-        <h3>Pins:</h3>
+        <h3>SCDL Pin Models:</h3>
+        <p>SCDL pin models define points of connectivity between SCDL machines, modules, and sockets. Pins are constrained to carry one and only one type of information indicated by the pin's associated SCDL type model attribute.</p>
         <button data-bind="click: removeAllPins" class="button small red">Remove All Pins</button>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelInputPins' }"></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelOutputPins' }"></div>

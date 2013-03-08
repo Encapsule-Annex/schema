@@ -75,7 +75,8 @@ class namespaceEncapsule_code_app_scdl_model.ObservableModule
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelInstances", ( ->
     """
     <div class="classScdlModelInstances">
-        <h2>Contained Model Instances:</h2>
+        <h4>Contained Model Instances:</h4>
+        <p>A SCDL module model may contain one or more SCDL machine, SCDL machine, or SCDL socket model instances connected to one another and to the module's input and output pins via SCDL nodes. We do not allow a SCDL module to directly contain itself, or another component that contains it... (i.e. no cycles) because this results in an infinitely large data flow graph. Cycles may be broken with SCDL sockets however.</p>
         <button data-bind="click: addModelInstance" class="button small green">Add Model Intance</button>
         <button data-bind="click: removeAllModelInstances" class="button small red">Remove All Model Instances</button>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelInstance', foreach: modelInstances }"></div>
@@ -86,7 +87,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelModule", ( ->
     """
     <div class="classScdlModelModule">
-        <h3>Module <span data-bind="text: $index"></span>:</h3>
+        <h4>Module <span data-bind="text: $index"></span>:</h4>
+        <p>A re-usable system building block.</p>
         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelPins' }"></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelInstances' }"></div>

@@ -81,6 +81,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     """
     <div class="classScdlModelMachine">
         <h3>Machine <span data-bind="text: $index"></span>:</h3>
+        <p>SCDL machine models are state machines that encapsulate the details of an algorithm, process, proceedure, transformation... Virtually anything may be modeled as a state machine. In general designers should seek to create small state machines that are easily understood and leverage SCDL module models to build more complex systems of SCDL machines that communicate with one another via their connected input and output pins.</p>
         <button data-bind="click: reinitializeMachine" class="button small red">Re-initialize Machine</button>
         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelPins' }"></div>
@@ -94,6 +95,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     """
     <div class="classScdlModelMachineStates">
         <h3>Machine States</h3>
+        <p>Every SCDL machine may define any number of "states". States are labels that indicate progress (or lack of progress) through some proceedure. Machine states are the basis of machine transitions (i.e. they are used internally by the machine to track its progress). Intrinsically, the state of a SCDL machine model is an output of the machine that can be connected to the input(s) of other SCDL machine and module models. A SCDL machine state model may optionally specify an entry and/or exit action. Actions associated with a state do actual work: actions read input pin values and write output pin values. SCDL machine models do not provide any sort of back history (if you need this facility it can easily be modeled with pins).</p>
         <button data-bind="click: addState" class="button small green">Add State</button>
         <button data-bind="click: removeAllStates" class="button small red">Remove All States</button>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineState', foreach: states }"></div>
@@ -106,6 +108,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     """
     <div class="classScdlModelMachineTransitions">
         <h3>Transitions:</h3>
+        <p>A SCDL machine transition is a simple statement of the form "if the machine is in state X and some condition T is true, exit state X and enter state Y". For convenience, a SCDL machine transition model is associated with a single "current machine state" and a set of "transition vectors" that indicate the machine states reachable from the "current state" and the conditions to be evaluated to determine which (if any) state that machine will transition to next.</p>
         <button data-bind="click: addTransition" class="button small green">Add Transition</button>
         <button data-bind="click: removeAllTransitions" class="button small red">Remove All Transitions</button>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachineTransition', foreach: transitions}"></div>
