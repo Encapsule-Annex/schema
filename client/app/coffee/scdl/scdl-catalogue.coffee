@@ -31,13 +31,13 @@ class namespaceEncapsule_code_app_scdl.ObservableCatalogue
         @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
         @assetCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableAssetCatalogue()
         @modelCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableModelCatalogue()
-        @systemCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableSystemCatalogue()
+        @specificationCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableSpecificationCatalogue()
 
         @reinitializeCatalogue = =>
             @reinitializeMeta()
             @assetCatalogue().reinitializeCatalogue()
             @modelCatalogue().reinitializeCatalogue()
-            @systemCatalogue().reinitializeCatalogue()
+            @specificationCatalogue().reinitializeCatalogue()
 
         @reinitializeMeta = =>
             @meta().reinitializeMeta()
@@ -48,8 +48,8 @@ class namespaceEncapsule_code_app_scdl.ObservableCatalogue
         @removeAllModels = =>
             @modelCatalogue().removeAllModels()
 
-        @removeAllSystems = =>
-            @systemCatalogue().removeAllSystems()
+        @removeAllSpecifications = =>
+            @specificationsCatalogue().removeAllSpecifications()
 
 
 class namespaceEncapsule_code_app_scdl.ObservableCatalogueShim
@@ -128,8 +128,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCata
                 <div data-bind="with: modelCatalogue">
                     <div data-bind="template: { name: 'idKoTemplate_ScdlModelCatalogue' }"></div>
                 </div><!-- with: modelCatalogue -->
-                <div data-bind="with: systemCatalogue">
-                    <div data-bind="template: { name: 'idKoTemplate_ScdlSystemCatalogue' }"></div>
+                <div data-bind="with: specificationCatalogue">
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlSpecificationCatalogue' }"></div>
                 </div><!-- with: systemCatalogue -->
             </div><!-- with: scdlCatalogue -->
         </div><!-- with: catalogueShim .classScdlCatalogueShim-->

@@ -16,26 +16,26 @@
 
 ###
 #
-# schema/client/app/coffee/scdl/scdl-system-module-socket-binder.coffee
+# schema/client/app/coffee/scdl/scdl-specification-socket-instance-binder.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.app.scdl or @Encapsule.code.app.scdl = {}
-namespaceEncapsule_code_app_scdl_system = Encapsule.code.app.scdl.system? and Encapsule.code.app.scdl.system or @Encapsule.code.app.scdl.system = {}
+namespaceEncapsule_code_app_scdl_specification = Encapsule.code.app.scdl.specification? and Encapsule.code.app.scdl.specification or @Encapsule.code.app.scdl.specification = {}
 
 
-class namespaceEncapsule_code_app_scdl_system.ObservableModuleSocketBinder
+class namespaceEncapsule_code_app_scdl_specification.ObservableSocketInstanceBinder
     constructor: ->
-        # moduleSocketInstanceId is the instance ID of a specific SCDL socket contained within a SCDL module model.
-        @moduleSocketInstanceId = ko.observable undefined
-        @socketedSystemModuleInstances = ko.observableArray []
+        # systemSocketInstanceId is the instance ID of a specific SCDL socket instance contained within an instance of a SCDL system that is part of a SCDL specification.
+        @systemSocketInstanceId = ko.observable undefined
+        @socketedSystemInstances = ko.observableArray []
 
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSystemModuleSocketBinder", ( ->
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSpecificationSocketInstanceBinder", ( ->
     """
-    <h5>Module Socket Binder <span data-bind="text: $index"></span>:</h5>
+    <h5>Socket Instance Binder <span data-bind="text: $index"></span>:</h5>
     """))
 

@@ -22,7 +22,7 @@ Encapsule.code.app.scdl.ObservableCatalogueShim ....................... KO data 
 Encapsule.code.app.scdl.ObservableCatalogueShimHost ................... KO data model class (JSON shim host)
 Encapsule.code.app.scdl.ObservableCommonMeta .......................... KO data model class
 Encapsule.code.app.scdl.ObservableModelCatalogue ...................... KO data model class
-Encapsule.code.app.scdl.ObservableSystemCatalogue ..................... KO data model class
+Encapsule.code.app.scdl.ObservableSpecificationCatalogue .............. KO data model class
 
 Encapsule.code.app.scdl.asset ......................................... SCDL asset namespace
 Encpasule.code.app.scdl.asset.ObservablePerson ........................ KO data model class
@@ -44,11 +44,10 @@ Encapsule.code.app.scdl.model.ObservableSocketContract ................ KO data 
 Encapsule.code.app.scdl.model.ObservableSystem ........................ KO data model class
 Encapsule.code.app.scdl.model.ObservableType .......................... KO data model class
 
-Encapsule.code.app.scdl.system ........................................ SCDL system namespace
-Encapsule.code.app.scdl.system.ObservableSocketBoundModule ............ KO data model class
-Encapsule.code.app.scdl.system.ObservableSystem ....................... KO data model class (THE GRAIL)
-Encapsule.code.app.scdl.system.ObservableContainedModule .............. KO data model class
-Encapsule.code.app.scdl.system.ObservableModuleSocketBinder ........... KO data model class
+Encapsule.code.app.scdl.specification ................................. SCDL specification namespace
+Encapsule.code.app.scdl.specification.ObservableSpecification.......... KO data model class (THE GRAIL)
+Encapsule.code.app.scdl.specification.ObservableSystemInstance ........ KO data model class
+Encapsule.code.app.scdl.specification.ObservableSocketInstanceBinder .. KO data model class
 
 Encapsule.code.lib .................................................... app-independent function/class definitions
 Encpausle.code.lib.appcachemonitor .................................... class
