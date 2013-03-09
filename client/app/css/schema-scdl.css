@@ -68,8 +68,8 @@ CSS3 styles for SCDL object Knockout.js view models.
 
 
 
-.classScdlModelModules { background-color: #FF6600; }
-.classScdlModelModule { background-color: #FF3300; border: 3px solid black; }
+.classScdlModelSystems { background-color: #FF6600; }
+.classScdlModelSystem { background-color: #FF3300; border: 3px solid black; }
 
 
 .classScdlModelInstances { background-color: #FFCC00; }

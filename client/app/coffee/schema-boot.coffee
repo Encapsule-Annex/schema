@@ -211,7 +211,7 @@ phase2 = (bootstrapperOptions_) ->
             #Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorState}")
             #Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorTerminalState}")
             if not applicationCacheMonitorTerminalState and  applicationCacheStatus == window.applicationCache.IDLE
-                alert("The browser application cache subsystem is not dispatching status events as expected. However, your cached copy of this application appears to be ready to boot. Typically this indicates that you're using Chrome and that your Internet connection is beyond crazy fast (or you're running off a local server). Please click okay to proceed.")
+                alert("The browser application cache subsystem is not dispatching status events as expected. Empirically, this may occur if you're loading from a local server, or a crazy fast Internet connection. Please click okay to proceed.")
                 phase2Out.appCacheRaceConditionBroken = true
                 appCacheCallbacks.onNoUpdate()
             else

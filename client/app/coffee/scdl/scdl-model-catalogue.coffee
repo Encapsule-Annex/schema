@@ -31,7 +31,7 @@ class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
         @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
         @types = ko.observableArray []
         @machines = ko.observableArray []
-        @modules = ko.observableArray []
+        @systems = ko.observableArray []
         @sockets = ko.observableArray []
         @socketContracts = ko.observableArray []
 
@@ -41,8 +41,8 @@ class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
         @addMachine = =>
             @machines.push new Encapsule.code.app.scdl.model.ObservableMachine()
 
-        @addModule = =>
-            @modules.push new Encapsule.code.app.scdl.model.ObservableModule()
+        @addSystem = =>
+            @systems.push new Encapsule.code.app.scdl.model.ObservableSystem()
 
         @addSocket = =>
             @sockets.push new Encapsule.code.app.scdl.model.ObservableSocket()
@@ -60,7 +60,7 @@ class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
         @removeAllModels = =>
             @removeAllTypes()
             @removeAllMachines()
-            @removeAllModules()
+            @removeAllSystems()
             @removeAllSockets()
             @removeAllSocketContracts()
 
@@ -70,8 +70,8 @@ class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
         @removeAllMachines = =>
             @machines.removeAll()
 
-        @removeAllModules = =>
-            @modules.removeAll()
+        @removeAllSystems = =>
+            @systems.removeAll()
  
         @removeAllSockets = =>
             @sockets.removeAll()
@@ -91,7 +91,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelMachines' }"></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelSockets' }"></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelSocketContracts' }"></div>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlModelModules' }"></div>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelSystems' }"></div>
     </div>
     """))
 
@@ -145,14 +145,14 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     """))
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelModules", ( ->
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelSystems", ( ->
     """
-    <div class="classScdlModelModules">
-        <h3>SCDL Module Models:</h3>
-        <p>A SCDL module defines a re-usable topology of SCDL machines, other modules, and sockets that functions as the atomic building block of SCDL systems. You should think of a SCDL module as a special purpose circuit board that embodies some useful functionality. Importantly, because SCDL modules may contain SCDL sockets, a set of SCDL modules along with a set of SCDL socket contracts, constitutes a "kit" from which entire classes of systems may be constructed (i.e. any system for which an edge exists in the SCDL socket closure graph may be composed). This is an insanely powerful concept that we hope to leverage to promote broad re-use of IP encapsulated in SCDL.</p>
-        <button data-bind="click: addModule" class="button small green">Add Module</button>
-        <button data-bind="click: removeAllModules"  class="button small red">Remove All Modules</button>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlModelModule', foreach: modules }"></div>
+    <div class="classScdlModelSystems">
+        <h3>SCDL System Models:</h3>
+        <p>A SCDL system defines a re-usable topology of SCDL machines, other systems, and sockets that functions as the atomic building block of SCDL systems. You should think of a SCDL system as a special purpose circuit board that embodies some useful functionality. Importantly, because SCDL systems may contain SCDL sockets, a set of SCDL systems along with a set of SCDL socket contracts, constitutes a "kit" from which entire classes of systems may be constructed (i.e. any system for which an edge exists in the SCDL socket closure graph may be composed). This is an insanely powerful concept that we hope to leverage to promote broad re-use of IP encapsulated in SCDL.</p>
+        <button data-bind="click: addSystem" class="button small green">Add System</button>
+        <button data-bind="click: removeAllSystems"  class="button small red">Remove All Systems</button>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelSystem', foreach: systems }"></div>
     </div>
     """))
 

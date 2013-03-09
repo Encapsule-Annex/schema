@@ -16,7 +16,7 @@
 
 ###
 #
-# schema/client/app/coffee/scdl/scdl-model-module.coffee
+# schema/client/app/coffee/scdl/scdl-model-system.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
@@ -26,7 +26,7 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Encapsule.code.app.scdl.model or @Encapsule.code.app.scdl.model = {}
 
 
-class namespaceEncapsule_code_app_scdl_model.ObservableModule
+class namespaceEncapsule_code_app_scdl_model.ObservableSystem
     constructor: ->
         @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
         @inputPins = ko.observableArray []
@@ -65,18 +65,19 @@ class namespaceEncapsule_code_app_scdl_model.ObservableModule
         @removeAllNodes = =>
             @nodes.removeAll()
 
-        @reinitializeModule = =>
+        @reinitializeSystem = =>
             @removeAllPins()
             @removeAllModelInstances()
             @removeAllNodes()
 
 
 
+# Note to self: we do not allow cycles -> infinite graph. Cycles may be broken with a socket but require manual composition (i.e. finite).
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelInstances", ( ->
     """
     <div class="classScdlModelInstances">
         <h4>Contained Model Instances:</h4>
-        <p>A SCDL module model may contain one or more SCDL machine, SCDL machine, or SCDL socket model instances connected to one another and to the module's input and output pins via SCDL nodes. We do not allow a SCDL module to directly contain itself, or another component that contains it... (i.e. no cycles) because this results in an infinitely large data flow graph. Cycles may be broken with SCDL sockets however.</p>
+        <p>A SCDL system model may contain one or more SCDL machine, SCDL system, or SCDL socket model instances connected to one another and to the system's input and output pins via SCDL nodes.</p>
         <button data-bind="click: addModelInstance" class="button small green">Add Model Intance</button>
         <button data-bind="click: removeAllModelInstances" class="button small red">Remove All Model Instances</button>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelInstance', foreach: modelInstances }"></div>
@@ -84,10 +85,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     """))
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelModule", ( ->
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelSystem", ( ->
     """
-    <div class="classScdlModelModule">
-        <h4>Module <span data-bind="text: $index"></span>:</h4>
+    <div class="classScdlModelSystem">
+        <h4>System <span data-bind="text: $index"></span>:</h4>
         <p>A re-usable system building block.</p>
         <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelPins' }"></div>

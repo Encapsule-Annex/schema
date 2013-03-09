@@ -36,12 +36,12 @@ Encapsule.code.app.scdl.model.ObservableMachineTransitionVector ....... KO data 
 Encapsule.code.app.scdl.model.ObservableMachineTransition ............. KO data model class
 Encapsule.code.app.scdl.model.ObservableMachineState .................. KO data model class
 Encapsule.code.app.scdl.model.ObservableModelInstance ................. KO data model class
-Encapsule.code.app.scdl.model.ObservableModule ........................ KO data model class
 Encapsule.code.app.scdl.model.ObservableNode .......................... KO data model class
 Encapsule.code.app.scdl.model.ObservablePin ........................... KO data model class
 Encapsule.code.app.scdl.model.ObservablePinInstance ................... KO data model class
 Encapsule.code.app.scdl.model.ObservableSocket ........................ KO data model class
 Encapsule.code.app.scdl.model.ObservableSocketContract ................ KO data model class
+Encapsule.code.app.scdl.model.ObservableSystem ........................ KO data model class
 Encapsule.code.app.scdl.model.ObservableType .......................... KO data model class
 
 Encapsule.code.app.scdl.system ........................................ SCDL system namespace
