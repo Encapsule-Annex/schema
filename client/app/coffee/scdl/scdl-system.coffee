@@ -32,13 +32,29 @@ class namespaceEncapsule_code_app_scdl_system.ObservableSystem
         @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
 
         # An array of SCDL module module instances
+        @containedModuleInstances = ko.observableArray []
 
+        @addContainedModuleInstance = =>
+            @containedModuleInstances.push new Encapsule.code.app.scdl.system.ObservableContainedModuleInstance()
 
-
+        @removeAllContainedModuleInstances = =>
+            @containedModuleInstances.removeAll()
+       
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSystem", ( ->
     """
     <h3>System <span data-bind="text: $index"></span>:</h3>
+    <button data-bind="click: addContainedModuleInstance" class="button small green">Add Contained Module Instance</button>
+    <button data-bind="click: removeAllContainedModuleInstances"  class="button small red">Remove All Contained Module Instances</button>
+    <div data-bind="template: { name: 'idKoTemplate_ScdlSystemContainedModuleInstances' }"></div>
     """))
 
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSystemContainedModuleInstances", ( ->
+    """
+    <div class="classScdlSystemContainedModules">
+        <h4>Contained Modules:</h4>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlSystemContainedModuleInstance', foreach: containedModuleInstances }"></div>
+    </div>
+    """))

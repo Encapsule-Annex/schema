@@ -16,7 +16,7 @@
 
 ###
 #
-# schema/client/app/coffee/scdl/scdl-system-contained-module.coffee
+# schema/client/app/coffee/scdl/scdl-system-module.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
@@ -26,7 +26,7 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 namespaceEncapsule_code_app_scdl_system = Encapsule.code.app.scdl.system? and Encapsule.code.app.scdl.system or @Encapsule.code.app.scdl.system = {}
 
 
-class namespaceEncapsule_code_app_scdl_system.ObservableContainedModule
+class namespaceEncapsule_code_app_scdl_system.ObservableContainedModuleInstance
     constructor: ->
         # The contained moduleInstance is a ScdlModelInstance refering to a unique instance
         # of a SCDL module model.
@@ -42,4 +42,37 @@ class namespaceEncapsule_code_app_scdl_system.ObservableContainedModule
         # of a ScdlSocketContract object.
 
 
-        @moduleSocketBindings = ko.observableArray [] # an array of ScdlSystemModuleSocketBinder objects
+        @moduleSocketBinders = ko.observableArray [] # an array of ScdlSystemModuleSocketBinder objects
+
+        @addModuleSocketBinder = =>
+            @moduleSocketBinders.push new Encapsule.code.app.scdl.system.ObservableModuleSocketBinder()
+
+        @removeAllModuleSocketBinders = =>
+            @moduleSocketBinders.removeAll()
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSystemContainedModuleInstance", ( ->
+    """
+    <div class="classScdlSystemContainedModule">
+        <h5>Contained Module <span data-bind="text: $index"></span>:</h5>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlSystemModuleSocketBinders' }"></div>
+    </div>
+    """))
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSystemModuleSocketBinders", ( ->
+    """
+    <div class="classScdlSystemModuleSocketBinders">
+        <h5>Contained Module Socket Bindings:</h5>
+        <button data-bind="click: addModuleSocketBinder" class="button small green">Add Module Socket Binder</button>
+        <button data-bind="click: removeAllModuleSocketBinders"  class="button small red">Remove All Module Socket Binders</button>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlSystemModuleSocketBinder', foreach: moduleSocketBinders }"></div>
+    </div>
+    """))
+
+
+
+
+
+
+

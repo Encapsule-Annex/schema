@@ -31,3 +31,11 @@ class namespaceEncapsule_code_app_scdl_system.ObservableModuleSocketBinder
         # moduleSocketInstanceId is the instance ID of a specific SCDL socket contained within a SCDL module model.
         @moduleSocketInstanceId = ko.observable undefined
         @socketedSystemModuleInstances = ko.observableArray []
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSystemModuleSocketBinder", ( ->
+    """
+    <h5>Module Socket Binder <span data-bind="text: $index"></span>:</h5>
+    """))
+

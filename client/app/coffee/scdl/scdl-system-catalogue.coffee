@@ -46,11 +46,6 @@ class namespaceEncapsule_code_app_scdl.ObservableSystemCatalogue
 
 
 
-
-
-
-
-
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSystemCatalogue", ( ->
     """
     <div class="classScdlSystemCatalogue">
@@ -64,11 +59,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSyst
         <p>This means that you can build "kits" of SCDL models from which <i>anyone</i> can compose a custom SCDL system specification.</p>
         <p>SCDL system specifications can be converted into runtime code via automated program transformation (or interpreted by a fancy generic program).</p>
         <p>So LEGO for software IP. Is it starting to make sense?</p>
-
-        <div class="classScdlCatalogueButtons">
-            <button data-bind="click: addSystem" class="button small green">Add System</button>
-            <button data-bind="click: removeAllSystems"  class="button small red">Remove All Systems</button>
-        </div>
+        <button data-bind="click: addSystem" class="button small green">Add System</button>
+        <button data-bind="click: removeAllSystems"  class="button small red">Remove All Systems</button>
+        <span data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></span>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlSystems' }"></div>
     </div>
     """))
 
@@ -76,7 +70,5 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSyst
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlSystems", ( ->
     """
     <h2>Systems:</h2>
-    <button data-bind="click: addSystem"  class="button small green">Add System</button>
-    <button data-bind="click: removeAllSystems"  class="button small red">Remove All Systems</button>
-    <div data-bind="template: { name: 'idKoTemplate_ScdlSystem_View', foreach: systems }" class="classScdlSystems"></div>
+    <div data-bind="template: { name: 'idKoTemplate_ScdlSystem', foreach: systems }"></div>
     """))
