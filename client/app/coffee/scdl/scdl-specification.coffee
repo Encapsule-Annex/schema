@@ -34,7 +34,7 @@ class namespaceEncapsule_code_app_scdl_specification.ObservableSpecification
         # An array of SCDL module system instances
         @systemInstances = ko.observableArray []
 
-        @addSystemInstance = =>
+        @addSystemInstance = (thisObject_) =>
             @systemInstances.push new Encapsule.code.app.scdl.specification.ObservableSystemInstance()
 
         @removeAllSystemInstances = =>
