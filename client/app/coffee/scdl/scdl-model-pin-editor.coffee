@@ -37,7 +37,6 @@ class Encapsule.code.app.scdl.editor.ObservablePinEditor
             @fnNewPinCallback(@newPin)
             
         # SCDL editor state
-
         @availableTypes = ko.computed( ->
             test = Encapsule.runtime.app.viewmodel.scdl.catalogueShim().scdlCatalogue().modelCatalogue().types
             )
@@ -49,6 +48,4 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     <span data-bind="with: scdlModelPinEditor">
         <button data-bind="click: submitNewPin" class="button small green">Submit New Pin</button>
     </span>
-    
-
     """))
