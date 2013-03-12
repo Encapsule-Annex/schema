@@ -33,9 +33,9 @@ class Encapsule.code.app.scdl.editor.ObservablePinEditor
 
         @fnNewPinCallback  = fnNewPinCallback_
 
-        # Immediate callback to test the call path
-        @fnNewPinCallback(@newPin)
-
+        @submitNewPin = (this_) =>
+            @fnNewPinCallback(@newPin)
+            
         # SCDL editor state
 
         @availableTypes = ko.computed( ->
@@ -46,6 +46,9 @@ class Encapsule.code.app.scdl.editor.ObservablePinEditor
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelPinEditor", ( ->
     """
     <h2>Hello this is the Pin Editor</h2>
+    <span data-bind="with: scdlModelPinEditor">
+        <button data-bind="click: submitNewPin" class="button small green">Submit New Pin</button>
+    </span>
     
 
     """))

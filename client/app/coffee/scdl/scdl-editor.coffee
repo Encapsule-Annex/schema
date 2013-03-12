@@ -30,10 +30,19 @@ class Encapsule.code.app.scdl.editor.ObservableEditor
     constructor: ->
 
         @scdlModelPinEditor = ko.observable undefined
+        @fnNewPinCallback = undefined
 
 
         @createPin = (direction_, fnNewPinCallback_) =>
-            @scdlModelPinEditor new Encapsule.code.app.scdl.editor.ObservablePinEditor(direction_, fnNewPinCallback_)
+            @fnNewPinCallback = fnNewPinCallback_
+            @scdlModelPinEditor new Encapsule.code.app.scdl.editor.ObservablePinEditor(direction_, @submitNewPin)
+
+        @submitNewPin = (newPin_) =>
+            @fnNewPinCallback newPin_
+            @fnNewPinCallback = undefined
+            @scdlModelPinEditor(undefined)
+         
+            
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlEditor", ( ->
