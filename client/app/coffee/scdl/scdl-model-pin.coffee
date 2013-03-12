@@ -26,8 +26,9 @@ namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.a
 namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Encapsule.code.app.scdl.model or @Encapsule.code.app.scdl.model = {}
 
 
-class namespaceEncapsule_code_app_scdl_model.ObservablePin
+class Encapsule.code.app.scdl.model.ObservablePin
     constructor: (direction_) ->
+        # SCDL data
         @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
         @typeRef = ko.observable undefined
         @direction = ko.observable direction_
@@ -41,6 +42,7 @@ class namespaceEncapsule_code_app_scdl_model.ObservablePin
 
 
 
+
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelPin", ( ->
     """
     <h5><span data-bind="text: direction"></span> Pin <span data-bind="text: $index "></span>:</h5>
@@ -48,6 +50,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     <div data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></div>
     <strong>Data type: </strong><span data-bind="text: typeRef"></span><br>
     """))
+
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelInputPin", ( ->
     """
@@ -76,7 +79,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
     <div class="classScdlModelMachineInputPins">
         <h4>SCDL Input Pin Models:</h4>
         <p>SCDL input pins model data receivers. Any number of SCDL pins may be connected to a SCDL node.</p>
-        <button data-bind="click: addInputPin" class="button small green">Add Input Pin</button>
+        <button data-bind="click: editNewInputPin" class="button small green">Add Input Pin</button>
         <button data-bind="click: removeAllInputPins" class="button small red">Remove All Input Pins</button>
         <div data-bind="template: { name: 'idKoTemplate_ScdlModelInputPin', foreach: inputPins }"></div>
     </div>

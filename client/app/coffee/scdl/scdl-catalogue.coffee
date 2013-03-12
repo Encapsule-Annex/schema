@@ -29,9 +29,9 @@ class namespaceEncapsule_code_app_scdl.ObservableCatalogue
     constructor: ->
 
         @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
-        @assetCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableAssetCatalogue()
         @modelCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableModelCatalogue()
         @specificationCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableSpecificationCatalogue()
+        @assetCatalogue = ko.observable new Encapsule.code.app.scdl.ObservableAssetCatalogue()
 
         @reinitializeCatalogue = =>
             @reinitializeMeta()
@@ -122,15 +122,15 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCata
                 <div data-bind="with: meta">
                     <div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div>
                 </div><!-- with: meta -->
-                <div data-bind="with: assetCatalogue">
-                    <div data-bind="template: { name: 'idKoTemplate_ScdlAssetCatalogue' }"></div>
-                </div><!-- with: assetCatologue -->
                 <div data-bind="with: modelCatalogue">
                     <div data-bind="template: { name: 'idKoTemplate_ScdlModelCatalogue' }"></div>
                 </div><!-- with: modelCatalogue -->
                 <div data-bind="with: specificationCatalogue">
                     <div data-bind="template: { name: 'idKoTemplate_ScdlSpecificationCatalogue' }"></div>
                 </div><!-- with: systemCatalogue -->
+                <div data-bind="with: assetCatalogue">
+                    <div data-bind="template: { name: 'idKoTemplate_ScdlAssetCatalogue' }"></div>
+                </div><!-- with: assetCatologue -->
             </div><!-- with: scdlCatalogue -->
         </div><!-- with: catalogueShim .classScdlCatalogueShim-->
     </div><!-- classScdlCatalogueShimHost -->

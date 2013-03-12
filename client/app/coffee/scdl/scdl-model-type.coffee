@@ -28,6 +28,7 @@ namespaceEncapsule_code_app_scdl_model = Encapsule.code.app.scdl.model? and Enca
 
 class namespaceEncapsule_code_app_scdl_model.ObservableType
     constructor: ->
+
         @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
         @descriptor = ko.observable undefined
 
@@ -37,12 +38,23 @@ class namespaceEncapsule_code_app_scdl_model.ObservableType
 
 
 
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelTypes", ( ->
+    """
+    <div class="classScdlModelTypes">
+        <h3>SCDL Type Models:</h3>
+        <p>A SCDL type model is a label applied to input and output pins to denote the type of information that passed between pins via SCDL node models.</p>
+        <button data-bind="click: addType" class="button small green">Add Type</button>
+        <button data-bind="click: removeAllTypes" class="button small red">Remove All Types</button>
+        <div data-bind="template: { name: 'idKoTemplate_ScdlModelType', foreach: types }"></div>
+    </div>
+    """))
+
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelType", ( ->
     """
     <div class="classScdlModelType">
-       <h3>Type <span data-bind="text: $index"></span>:</h3>
+       <h3>Type <span data-bind="text: $index"></span>: {<span data-bind="with: meta"><span data-bind="text: uuid"></span></span>}</h3>
        <button data-bind="click: resetType" class="button small red">Reset Type</button>
        <span data-bind="with: meta"><div data-bind="template: { name: 'idKoTemplate_ScdlCommonMeta' }"></div></span>
        Descriptor: <span data-bind="text: descriptor"></span><br>

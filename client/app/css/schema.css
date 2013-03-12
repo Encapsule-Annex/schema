@@ -1,5 +1,10 @@
 body { overflow: auto; margin: 0px; padding: 0px; background-color: #003366; }
 
+table {border: 1px solid black; width: 100%;}
+th {border: 1px solid black; }
+td {border: 1px solid black; }
+
+
 .classCentered { position: fixed; top: 50%; left: 50% }
 
 #idConsole
@@ -24,7 +29,6 @@ display: none; // displayed only as needed
 #idConsole h1 { color: white; font-size: 16pt; text-shadow: black 0.1em 0.1em 0.2em}
 #idConsole h2 { color: yellow; font-size: 16pt; font-weight: bold; text-shadow: black 0.1em 0.1em 0.2em}
 #idConsole h3 { color: #CCCCFF; font-size: 10pt; text-shadow: black 0.1em 0.1em 0.2em}
-
 
 
 #idAppBootView { border: 1px solid black; margin: 10px; padding: 10px; font-family: Courier; font-size: 8pt; }

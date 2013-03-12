@@ -14,7 +14,7 @@ Encpasule.code.app.Schema ............................................. main Sch
 ???? Encapsule.code.app.viewmodel .......................................... namespace object for view model classes
 Encapsule.code.app.viewmodel.boot ..................................... App boot information Knockout.js view model class
 
-Encpasule.code.app.scdl ............................................... Encapsule SCDL client-side code namespace
+Encpasule.code.app.scdl ............................................... Encapsule SCDL data model namespace
 
 Encapsule.code.app.scdl.ObservableAssetCatalogue ...................... KO data model class
 Encapsule.code.app.scdl.ObservableCatalogue ........................... KO data model class (THE UBER CONTAINER)
@@ -24,13 +24,13 @@ Encapsule.code.app.scdl.ObservableCommonMeta .......................... KO data 
 Encapsule.code.app.scdl.ObservableModelCatalogue ...................... KO data model class
 Encapsule.code.app.scdl.ObservableSpecificationCatalogue .............. KO data model class
 
-Encapsule.code.app.scdl.asset ......................................... SCDL asset namespace
+Encapsule.code.app.scdl.asset ......................................... SCDL asset data model namespace
 Encpasule.code.app.scdl.asset.ObservablePerson ........................ KO data model class
 Encapsule.code.app.scdl.asset.ObservableOrganization .................. KO data model class
 Encapsule.code.app.scdl.asset.ObservableLicense ....................... KO data model class
 Encapsule.code.app.scdl.asset.ObservableCopyright ..................... KO data model class
 
-Encapsule.code.app.scdl.model ........................................  SCDL model namespace
+Encapsule.code.app.scdl.model ........................................  SCDL model data model namespace
 Encapsule.code.app.scdl.model.ObservableMachine ....................... KO data model class
 Encapsule.code.app.scdl.model.ObservableMachineTransitionVector ....... KO data model class
 Encapsule.code.app.scdl.model.ObservableMachineTransition ............. KO data model class
@@ -44,10 +44,11 @@ Encapsule.code.app.scdl.model.ObservableSocketContract ................ KO data 
 Encapsule.code.app.scdl.model.ObservableSystem ........................ KO data model class
 Encapsule.code.app.scdl.model.ObservableType .......................... KO data model class
 
-Encapsule.code.app.scdl.specification ................................. SCDL specification namespace
+Encapsule.code.app.scdl.specification ................................. SCDL specification data model namespace
 Encapsule.code.app.scdl.specification.ObservableSpecification.......... KO data model class (THE GRAIL)
 Encapsule.code.app.scdl.specification.ObservableSystemInstance ........ KO data model class
 Encapsule.code.app.scdl.specification.ObservableSocketInstanceBinder .. KO data model class
+
 
 Encapsule.code.lib .................................................... app-independent function/class definitions
 Encpausle.code.lib.appcachemonitor .................................... class
@@ -61,6 +62,15 @@ Encapsule.code.lib.util ............................................... class
 Encapsule.code.lib.view ............................................... namespace object for view classes
 Encapsule.code.lib.view.logo .......................................... class
 Encpasule.code.lib.view.spinner ....................................... class
+
+Encapsule.code.app.schema ............................................. Schema app implementation code namespace
+
+Encapsule.code.app.schema.editcontext ................................. Schema editor context
+
+Encapsule.code.app.schema.editcontext.ObservableEditorContext ......... Top-level editor context data model class
+
+
+
 
 Encapsule.runtime ..................................................... application runtime state
 Encapsule.runtime.app ................................................. application runtime state 

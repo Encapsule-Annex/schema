@@ -7,6 +7,8 @@ CSS3 styles for SCDL object Knockout.js view models.
 
 #idJSONSourceViewer { float: right; margin: 0px; padding: 10px; border: 1px solid black; background-color: #99CCFF; opacity: 0.5; font-family: Courier; font-size: 8pt; }
 
+#idSchemaEditorView { 
+  margin: 0px; padding: 5px; font-family: Verdana, Arial; font-size: 10pt; background-color: white;  }
 
 
 .classScdlCatalogueShimHost { background-color: #FFFF00; border: 1px solid black; }

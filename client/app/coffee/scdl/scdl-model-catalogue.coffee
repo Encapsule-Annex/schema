@@ -97,17 +97,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlMode
 
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelTypes", ( ->
-    """
-    <div class="classScdlModelTypes">
-        <h3>SCDL Type Models:</h3>
-        <p>A SCDL type model is a label applied to input and output pins to denote the type of information that passed between pins via SCDL node models.</p>
-        <button data-bind="click: addType" class="button small green">Add Type</button>
-        <button data-bind="click: removeAllTypes" class="button small red">Remove All Types</button>
-        <div data-bind="template: { name: 'idKoTemplate_ScdlModelType', foreach: types }"></div>
-    </div>
-    """))
-
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlModelMachines", ( ->
     """

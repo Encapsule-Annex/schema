@@ -61,12 +61,17 @@ class namespaceEncapsule_code_app_scdl_model.ObservableMachine
             @states.removeAll()
 
         @addInputPin = =>
-            Console.message("ViewModel_ScdlMachine::addInputPin")
             @inputPins.push new Encapsule.code.app.scdl.model.ObservablePin("Input")
 
         @addOutputPin = =>
-            Console.message("ViewModel_ScdlMachine::addOutputPin")
             @outputPins.push new Encapsule.code.app.scdl.model.ObservablePin("Output")
+
+        @editNewInputPin = =>
+            Encapsule.runtime.app.viewmodel.scdleditor.createPin("Input", @addNewInputPinEditorCallback)
+
+        @addNewInputPinEditorCallback = (newPin_) =>
+            @inputPins.push newPin_
+
 
         @addState = =>
             Console.message("ViewModel_ScdlMachine::addState")
