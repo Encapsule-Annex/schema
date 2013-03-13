@@ -53,16 +53,16 @@ phase0 = (bootstrapperOptions_) ->
     Console.show()
     Console.messageRaw("""
         <div id="idPreBootMessage">
-            <p><strong>This application uses HTML5 features are not supported by any version of Microsoft's Internet Explorer browser.</strong></p>
-            <p>Please ensure that you are using the latest version of one of the following supported browser:</p>
-            <h4>Supported Browsers:</h4>
+            <h3>This single-page HTML 5 app requires a modern browser!</h3>
+            <p>If you encounter problems during app boot, please ensure you're using the latest version of one of the following browsers:</p>
             <ul>
                 <li><a href="https://www.google.com/intl/en/chrome/browser/" title="Install Chrome">Google Chrome</a></li>
                 <li><a href="http://www.apple.com/safari/" title="Install Safari">Apple Safari</a></li>
                 <li><a href="http://www.mozilla.org/en-US/" title="Install Firefox">Mozilla Firefox</a></li>
+                <li><a href="http://windows.microsoft.com/en-us/internet-explorer/downloads/ie-10/worldwide-languages" title="Install Microsoft IE 10">Microsoft IE 10</a> (might work)</li>
             </ul>
         </div>
-        <h3>BOOTSTRAP PHASE 0</h3>
+        <h3>BOOTSTRAP PHASE 0 : establish local URI routing</h3>
         """)
     Console.log "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
     Console.log "#{appName}: #{appBuildTime} by #{appBuilder} :: Thanks for using #{appName}. #{appPackagePublisherUrl}"
@@ -85,7 +85,7 @@ phase1 = (bootstrapperOptions_) ->
     phase1Out.isWebKit = isWebKit = browser? and browser and browser.webkit? and browser.webkit or false
     phase1Out.browserVersion = browserVersion = browser? and browser and browser.version? and browser.version or "unknown"
 
-    Console.messageRaw("<h3>BOOTSTRAP PHASE 1</h3>")
+    Console.messageRaw("<h3>BOOTSTRAP PHASE 1 : browser check</h3>")
 
     Console.message("Your browser purports to be a \"<strong>#{userAgent}</strong>\"")
     Console.message("isChrome=#{isChrome} isWebKit=#{isWebKit} browserVersion=#{browserVersion}")
@@ -104,7 +104,7 @@ phase1 = (bootstrapperOptions_) ->
     setTimeout( ( -> phase2(bootstrapperOptions_) ), 1)
 
 phase2 = (bootstrapperOptions_) ->
-    Console.messageRaw("<h3>BOOTSTRAP PHASE 2</h3>")
+    Console.messageRaw("<h3>BOOTSTRAP PHASE 2 : offline application cache</h3>")
 
     # APP BOOT PHASE 2 : Application cache monitor
     #
@@ -206,12 +206,11 @@ phase2 = (bootstrapperOptions_) ->
             applicationCacheStatus = window.applicationCache.status
             applicationCacheMonitorState = phase2Out.appCacheMonitorState
             applicationCacheMonitorTerminalState = phase2Out.appCacheTerminalState
-            #Console.messageRaw("<br>")
-            #Console.message("App cache watchdog: Browser app cache reports status = #{applicationCacheStatus}")
-            #Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorState}")
-            #Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorTerminalState}")
             if not applicationCacheMonitorTerminalState and  applicationCacheStatus == window.applicationCache.IDLE
-                alert("The browser application cache subsystem is not dispatching status events as expected. Empirically, this may occur if you're loading from a local server, or a crazy fast Internet connection. Please click okay to proceed.")
+                Console.message("App cache watchdog: Browser app cache reports status = #{applicationCacheStatus}")
+                Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorState}")
+                Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorTerminalState}")
+                alert("Running from local server? Please click okay to proceed.")
                 phase2Out.appCacheRaceConditionBroken = true
                 appCacheCallbacks.onNoUpdate()
             else
@@ -223,7 +222,7 @@ phase2 = (bootstrapperOptions_) ->
 
 phase3 = (bootstrapperOptions_) ->
 
-    Console.messageRaw("<h3>BOOTSTRAP PHASE 3</h3>")
+    Console.messageRaw("<h3>BOOTSTRAP PHASE 3 : online status monitoring</h3>")
 
     bootstrapperOptions_.phase2.appCacheMonitor.stop()   
 

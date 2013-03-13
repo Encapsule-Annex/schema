@@ -73,7 +73,9 @@ class window.Console
         @messageEnd("")
 
     @messageRaw: (trace) => 
-        $("#idConsole").append("#{trace}")
+        consoleEl = $("#idConsole")
+        consoleEl.append("#{trace}")
+
 
     @messageStart: (trace) => Console.messageRaw("> #{trace}")
 

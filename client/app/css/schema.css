@@ -1,9 +1,9 @@
-body { overflow: auto; margin: 0px; padding: 0px; background-color: #003366; }
+
+body { margin: 0px; padding: 0px; }
 
 table {border: 1px solid black; width: 100%;}
 th {border: 1px solid black; }
 td {border: 1px solid black; }
-
 
 .classCentered { position: fixed; top: 50%; left: 50% }
 
@@ -15,16 +15,17 @@ left: 0px;
 //bottom: -0px;
 right: -0px;
 z-index: 100;
-overflow: auto;
 font-family: Lucida Console, Courier;
 font-size: 8pt;
 spacing: 5px;
 padding: 10px;
 color: #000033;
 background-color: #006699;
-border-bottom: 2px solid #99CCFF;
+border-bottom: 10px solid #003366;
 display: none; // displayed only as needed
 }
+
+#idConsole a { color: #00FFFF; font-weight: bold; }
 
 #idConsole h1 { color: white; font-size: 16pt; text-shadow: black 0.1em 0.1em 0.2em}
 #idConsole h2 { color: yellow; font-size: 16pt; font-weight: bold; text-shadow: black 0.1em 0.1em 0.2em}
@@ -34,7 +35,15 @@ display: none; // displayed only as needed
 #idAppBootView { border: 1px solid black; margin: 10px; padding: 10px; font-family: Courier; font-size: 8pt; }
 #idSpinner { z-index: 200; }
 
+
 .classTitleSiteName { font-family: Courier; font-size: 16pt; font-weight: bold; fill: #CCCCCC; }
 
 .classBodySection { border: 1px solid #CCCCCC; margin-bottom: 10px; }
 
+
+/* ============================================================== */
+
+#idSchema {
+position: fixed; top: 50%; left: 50%;
+padding: 0px; margin: 0px;
+}

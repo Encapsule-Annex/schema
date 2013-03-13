@@ -49,6 +49,17 @@ class namespaceEncapsule_code_app.Schema
             # Instantiate and initialize the SCDL view model.
             Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates()
 
+            Encapsule.runtime.app.SchemaView = new Encapsule.code.app.SchemaView()
+            bodyElement.append("""
+                <div id="idSchema" data-bind="
+                    template: { name: 'idKoTemplate_Schema' }, 
+                    style: { marginLeft: viewMarginLeftOffsetPixels(), marginTop: viewMarginTopOffsetPixels(), width: viewWidthPixels(), height: viewHeightPixels() }
+                    ">
+                </div>
+                """)
+            ko.applyBindings Encapsule.runtime.app.SchemaView, document.getElementById("idSchema")
+          
+            ###
             # Instantiate the SCDL data catalogue
             Encapsule.runtime.app.viewmodel = {}
             Encapsule.runtime.app.viewmodel.scdl = new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
@@ -66,6 +77,7 @@ class namespaceEncapsule_code_app.Schema
             Encapsule.runtime.app.viewmodel.boot = new Encapsule.code.app.viewmodel.boot()
             bodyElement.append Encapsule.runtime.app.viewmodel.boot.html
             ko.applyBindings Encapsule.runtime.app.viewmodel.boot, document.getElementById("idAppBootView")
+            ###
 
             Encapsule.runtime.boot.phase0.spinner.cancel()
             Console.hide()
