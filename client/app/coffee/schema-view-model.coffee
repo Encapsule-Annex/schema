@@ -29,7 +29,7 @@ namespaceEncapsule_runtime = Encapsule.runtime? and Encapsule.runtime or @Encaps
 namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
 
 
-class Encapsule.code.app.SchemaView
+class Encapsule.code.app.SchemaViewModel
     constructor: ->
 
         @documentWidth = ko.observable $(document).innerWidth()
@@ -44,7 +44,7 @@ class Encapsule.code.app.SchemaView
         @viewMarginLeftOffset = ko.computed => Math.round @viewWidth() / -2
         @viewMarginLeftOffsetPixels = ko.computed => @viewMarginLeftOffset() + "px"
 
-        @viewMarginTopOffset = ko.computed => Math.round @viewHeight() / -2
+        @viewMarginTopOffset = ko.computed => ( Math.round @viewHeight() / -2 ) - 1
         @viewMarginTopOffsetPixels = ko.computed => @viewMarginTopOffset() + "px"
 
         @documentResizeCallback = (args_) =>
@@ -58,7 +58,7 @@ class Encapsule.code.app.SchemaView
         setInterval @documentResizeCallback, 100 # This catches everything (including browser restore) eventually
         window.addEventListener 'resize', @documentResizeCallback
 
-        @viewNavigation = ko.observable undefined
+        @viewNavigator = ko.observable new Encapsule.code.app.SchemaViewModelNavigator(@viewHeight())
         @viewNavigationPath = ko.observable undefined
         @viewOperations = ko.observable undefined
   
@@ -71,8 +71,14 @@ class Encapsule.code.app.SchemaView
         @viewAppAdvanced = ko.observable undefined
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Schema", ( ->
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModel", ( ->
     """
-    Width: <span data-bind="text: documentWidth"></span>
-    Height: <span data-bind="text: documentHeight"></span>
+    <span data-bind="with: viewNavigator">
+        <div id="idSchemaViewModelNavigator" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigator' }  , style: { height: viewHeight() }">
+        </div>
+    </span>
     """))
+
+
+#
+       

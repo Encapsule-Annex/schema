@@ -29,23 +29,23 @@ class window.Console
             <button id="idButtonHideConsole" class="button orange small">Hide</button>
             <button id="idButtonClearConsole" class="button blue small">Clear</button></div>
             <img src="img/core-seablue-48x48.png" style="float:left; margin-right: 10px;">
-            <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} (#{appReleasePhase})</h1>
+            <h1>#{appName} v#{appVersion}</h1>
             <div style="clear: both;"></div>
-            <p>#{appCopyright} // Published under the
-            <a href="#{appLicenseUrl}" title="Read the #{appLicense} text..." target="_blank">#{appLicense}</a>
-            // [ <a href="#{appGitHubRepoUrl}" title="#{appGitHubRepoName} repo on GitHub" 
-            target="_blank">GitHub repo #{appGitHubRepoName}</a> ]
-            [ <a href="#{appBlogUrl}" title="Visit #{appBlogName}" target="_blank">#{appBlogName}</a> ] 
-            </p>
+            <p><strong>
+                Published by <a href="#{appPackagePublisherUrl}" title="#{appPackagePublisher}" target="_blank">#{appPackagePublisher}</a> //
+                #{appCopyright} //
+                <strong>License:</strong> <a href="#{appLicenseUrl}" title="Read the #{appLicense} text..." target="_blank">#{appLicense}</a> //
+                <strong>Sources:</strong> <a href="#{appGitHubRepoUrl}" title="#{appGitHubRepoName} repo on GitHub" target="_blank">#{appGitHubRepoName}</a>
+            </strong></p>
             <p>
-            Released #{appBuildTime} by <a href="mailto:#{appBuilder}">#{appBuilder}</a>
-            [ Build ID: #{appBuildId} ]
+            Build: {#{appBuildId}}  #{appBuildTime} by <a href="mailto:#{appBuilder}">#{appBuilder}</a>
             </p>
             """
             )
 
         $("#idButtonClearConsole").click( ->
             Console.init()
+            $("#idConsole").css( { backgroundColor: "white" } )
             Console.message("Console re-initialized.")
             )
 
@@ -53,6 +53,11 @@ class window.Console
             Console.hide()
             )
 
+    @opacity: (opacity_) =>
+        consoleEl = $("#idConsole")
+        consoleEl.css( { opacity: "#{opactity_}" } )
+
+    
     @show: () =>
         consoleEl = $("#idConsole")
         if consoleEl? and consoleEl
@@ -85,16 +90,18 @@ class window.Console
     @messageError: (errorException) =>
         errorMessage =
             """
-            <h2>attention please</h2>
+            <h2>#{appName} v#{appVersion} Exception</h2>
             <h3>An unexpected error has occurred in #{appName} v#{appVersion} #{appReleaseName}.</h3>
             <p>Exception detail:</p>
-            <div style="margin: 5px; margin-top-15px; padding: 10px; background-color: #FFEEDD;
-                border: 5px solid red;">#{errorException}</div>
+            <div style="margin: 5px; margin-top-15px; padding: 10px; background-color: #FF9900;
+                border: 1px solid yellow;">#{errorException}</div>
             """
 
         Console.messageRaw(errorMessage)
         @log("Encapsule:: #{errorException}")
-        $("#idConsole").show()
+        consoleEl = $("#idConsole")
+        consoleEl.show()
+        consoleEl.css( { opacity: "1.0", backgroundColor: "#FFCC00" } )
         Encapsule.runtime.boot.phase0.spinner.cancel()
         alert(errorException)
 

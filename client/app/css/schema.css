@@ -1,5 +1,5 @@
 
-body { margin: 0px; padding: 0px; }
+body { margin: 0px; padding: 0px; background-color: white; }
 
 table {border: 1px solid black; width: 100%;}
 th {border: 1px solid black; }
@@ -19,17 +19,19 @@ font-family: Lucida Console, Courier;
 font-size: 8pt;
 spacing: 5px;
 padding: 10px;
-color: #000033;
-background-color: #006699;
-border-bottom: 10px solid #003366;
-display: none; // displayed only as needed
+color: black;
+border-bottom: 1px solid #999999;
+background-color: white;
+display: none; /* displayed only as needed */
+opacity: 0.3;
 }
 
-#idConsole a { color: #00FFFF; font-weight: bold; }
+#idConsole a { color: #0000AA; font-weight: bold; }
+#idConsole a:hover { color: #0066CC; font-weight: bold; }
 
-#idConsole h1 { color: white; font-size: 16pt; text-shadow: black 0.1em 0.1em 0.2em}
-#idConsole h2 { color: yellow; font-size: 16pt; font-weight: bold; text-shadow: black 0.1em 0.1em 0.2em}
-#idConsole h3 { color: #CCCCFF; font-size: 10pt; text-shadow: black 0.1em 0.1em 0.2em}
+#idConsole h1 { color: white; font-size: 16pt; text-shadow: black 0.1em 0.1em 0.1em}
+#idConsole h2 { color: white; font-size: 14pt; font-weight: bold; text-shadow: black 0.1em 0.1em 0.2em}
+#idConsole h3 { color: #EEEEEE; font-size: 10pt; text-shadow: black 0.1em 0.1em 0.2em}
 
 
 #idAppBootView { border: 1px solid black; margin: 10px; padding: 10px; font-family: Courier; font-size: 8pt; }
@@ -43,7 +45,23 @@ display: none; // displayed only as needed
 
 /* ============================================================== */
 
-#idSchema {
-position: fixed; top: 50%; left: 50%;
-padding: 0px; margin: 0px;
-}
+/* outer-most level zero container for the Schema view model */
+#idSchemaViewModel { position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; background-color: #CCCCCC; }
+
+
+
+/* first-level container for the Schema navigator view model */
+#idSchemaViewModelNavigator { position: fixed; top: 0px; left: 0px; width: 200px; height: 100%;
+border-right: 1px solid black; background-color: #CCFFCC; overflow: auto; 
+font-family: Courier; }
+
+
+.classSchemaViewModelNavigatorHeading1 { font: Lucida Console, Courier; font-size: 18pt; font-weight: bold; background-color: #99CCFF; }
+.classSchemaViewModelNavigatorHeading2 { padding-left: 5px; font: Lucida Console, Courier; font-size: 16pt; font-weight: bold; background-color: #88BBEE; }
+.classSchemaViewModelNavigatorHeading3 { padding-left: 10px; font: Lucida Console, Courier; font-size: 14pt; font-weight: bold; background-color: #77AADD; }
+.classSchemaViewModelNavigatorHeading4 { padding-left: 15px;font: Lucida Console, Courier; font-size: 12pt; font-weight: bold; background-color: #6699CC; }
+.classSchemaViewModelNavigatorHeading5 { padding-left: 20px;font: Lucida Console, Courier; font-size: 10pt; font-weight: bold; background-color: #5588BB; }
+.classSchemaViewModelNavigatorHeading6 { padding-left: 25px;font: Lucida Console, Courier; font-size: 9pt; font-weight: bold;  background-color: #4477AA; }
+.classSchemaViewModelNavigatorHeading7 { padding-left: 30px;font: Lucida Console, Courier; font-size: 8pt; font-weight: bold;  background-color: #336699; }
+.classSchemaViewModelNavigatorHeading8 { padding-left: 35px;font: Lucida Console, Courier; font-size: 7pt; font-weight: bold;  background-color: #225588; }
+.classSchemaViewModelNavigatorHeading9 { padding-left: 40px;font: Lucida Console, Courier; font-size: 6pt; font-weight: bold;  background-color: #114477;  }

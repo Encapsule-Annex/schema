@@ -123,6 +123,7 @@ phase2 = (bootstrapperOptions_) ->
             document.title = "#{appName}: checking for updates ..."
         , onDownloading: ->
             document.title = "#{appName}: downloading updates..."
+            Console.opacity(0.6)
             Console.messageEnd("<strong>Updating</strong>")
             Console.messageStart("files ")
         , onProgress: (fileCount_) ->
@@ -155,7 +156,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
             Console.messageRaw("<h2>#{appPackagePublisher} origin server unreachable. #{appName} starting...</h2>")
-            setTimeout( ( -> phase3(bootstrapperOptions_) ), 2000)
+            setTimeout( ( -> phase3(bootstrapperOptions_) ), 1)
         , onCached: (fileCount_) ->
             phase2Out.appCacheMonitorState = "cached"
             phase2Out.appCacheTerminalState = "cached"
@@ -174,7 +175,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.message("The most recent build of #{appName} is already cached locally for offline access.");
             Console.message("No updates were necessary.")
             Console.messageRaw("<h2>#{appPackagePublisher} #{appName} is up-to-date. Starting...</h2>")
-            setTimeout( ( -> phase3(bootstrapperOptions_) ), 2000)
+            setTimeout( ( -> phase3(bootstrapperOptions_) ), 1)
         , onUpdateReady: (fileCount_) ->
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "updateready"
