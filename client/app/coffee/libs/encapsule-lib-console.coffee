@@ -22,8 +22,12 @@
 class window.Console
     constructor: ->
 
-    @init: => 
-        $("#idConsole").html(
+    @init: =>
+        consoleEl = $("#idConsole")
+        if not consoleEl? or not consoleEl
+            throw "Unable to resolve the #{appName} console!"
+
+        consoleEl.html(
             """
             <div id="idClearConsole" style="float: right;">
             <button id="idButtonHideConsole" class="button orange small">Hide</button>
@@ -42,6 +46,9 @@ class window.Console
             </p>
             """
             )
+        consoleEl.css( { opacity: "0.0" } )
+        consoleEl.show()
+
 
         $("#idButtonClearConsole").click( ->
             Console.init()
@@ -61,12 +68,18 @@ class window.Console
     @show: () =>
         consoleEl = $("#idConsole")
         if consoleEl? and consoleEl
-            consoleEl.show()
+            consoleEl.hide 0, ->
+                Console.opacity(1.0)
+                consoleEl.show 500
+
+
 
     @hide: () =>
         consoleEl = $("#idConsole")
         if consoleEl? and consoleEl
-            consoleEl.hide()
+            consoleEl.hide 500, ->
+                Console.opacity(0.0)
+
 
     @log: (trace) =>
         if console? and console and console.log? and console.log
@@ -90,6 +103,7 @@ class window.Console
     @messageError: (errorException) =>
         errorMessage =
             """
+            <strong>THAT DIDN'T WORK OUT SO WELL >:(</strong>
             <h2 style="color: #990000;">#{appName} Runtime Exception</h2>
             <div class="classConsoleExceptionContainer">
                 <h3 style="color: #660000">#{appName} v#{appVersion} release \"#{appReleaseName}\" runtime exception report:</h3>
@@ -112,6 +126,8 @@ class window.Console
             blipper.blip "beep2"
             blipper.blip "regen"
 
-        alert "A runtime exception has occurred in #{appName}. The error is \"#{errorException}\". Please see the #{appName} console for details and consider filing a bug report."
+        setTimeout ( ->
+            alert "A runtime exception has occurred in #{appName}. The error is \"#{errorException}\". Please see the #{appName} console for details and consider filing a bug report."
+            ), 500
 
 

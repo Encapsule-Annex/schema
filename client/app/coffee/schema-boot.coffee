@@ -50,8 +50,6 @@ phase0 = (bootstrapperOptions_) ->
     document.title = "#{appName}: booting..."
 
     Console.init()
-    Console.show()
-    Console.opacity(0)
     Console.messageRaw("""
         <div id="idPreBootMessage">
             <h3>This single-page HTML 5 app requires a modern browser!</h3>
@@ -131,7 +129,7 @@ phase2 = (bootstrapperOptions_) ->
             completionPercent = Math.min( Math.floor( (fileCount_ / appBuildCacheFileCount) * 100), 100)
             document.title = "#{appName}: #{completionPercent}% ..."
             Console.messageRaw(".")
-            Console.opacity(Math.round completionPercent / 100)
+            Console.opacity(completionPercent / 100)
         , onError: ->
             document.title = "#{appName}: boot error!"
             phase2Out.appCacheMonitorState = "error"

@@ -66,13 +66,17 @@ class Encapsule.code.app.SchemaViewModelNavigator
                 headings.each ->
                     headingEl = $(this)
                     if levelToggle > levelCurrent
-                        headingEl[0].hide()
+                        headingEl.hide()
                     else
-                        headingEl[0].show()
+                        headingEl.show()
 
 
             toggleLevel target for target in [1..10]
 
+        @showConsole = =>
+            consoleEl = $("#idConsole")
+            if consoleEl? and console
+                Console.show()
 
 
 
@@ -104,5 +108,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     <div class="classSchemaViewModelNavigatorHeading4">System</div>
     <div class="classSchemaViewModelNavigatorHeading4">Machine</div>
     <div class="classSchemaViewModelNavigatorHeading4">Socket</div>
-
+    <p style="text-align: center;">
+        <button data-bind="click: showConsole" class="button small green">Show Console</button>
+    </p>
     """))
