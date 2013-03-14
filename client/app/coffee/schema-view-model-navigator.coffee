@@ -45,6 +45,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 
 class Encapsule.code.app.SchemaViewModelNavigator
     constructor: (initialHeight_) ->
+        Console.message "Initializing #{appName} navigator data model."
         @navigatorEl = $("#ididSchemaViewModelNavigator")
 
         @viewHeight = ko.observable initialHeight_

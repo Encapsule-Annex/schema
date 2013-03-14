@@ -34,22 +34,25 @@ namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.ap
 class namespaceEncapsule_code_app.Schema
 
     applicationRouteCallback = ->
-        Console.message("#{appName}'s main applicationRouteCallback has been called.")
+        Console.message "#{appName} local URI routing hooked."
 
     constructor: ->
         try
             document.title = "#{appName} v#{appVersion} #{appReleaseName}"
             bodyElement = $("body")
 
-            Console.messageRaw("<h3>STARTING APPLICATION</h3>")
+            Console.messageRaw "<h3>STARTING APPLICATION</h3>"
 
-            # Take over the applicationRouteCallback registration from the bootstrapper
+            Console.message "Initializing local URI routing:"
             Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
 
-            # Instantiate and initialize the SCDL view model.
+            Console.message "Inserting #{appName} view templates into DOM:"
             Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates()
 
+            Console.message "Initializing #{appName} model."
             Encapsule.runtime.app.SchemaViewModel = new Encapsule.code.app.SchemaViewModel()
+
+            Console.message "Binding top-level #{appName} view model to to DOM:"
             bodyElement.append("""
                 <div
                     id="idSchemaViewModel"
@@ -59,9 +62,14 @@ class namespaceEncapsule_code_app.Schema
                     ">
                 </div>
                 """)
+
+            Console.message "Binding #{appName} data model to view model."
             ko.applyBindings Encapsule.runtime.app.SchemaViewModel, document.getElementById("idSchemaViewModel")
+
             Encapsule.runtime.app.SchemaViewModel.viewNavigator().setLevelVisibility 1
           
+            Console.messageRaw "<h3>#{appName} is running :)</h3>"
+
             ###
             # Instantiate the SCDL data catalogue
             Encapsule.runtime.app.viewmodel = {}

@@ -31,6 +31,7 @@ namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.ap
 
 class Encapsule.code.app.SchemaViewModel
     constructor: ->
+        Console.message("Initializing #{appName} data model.")
 
         @documentWidth = ko.observable $(document).innerWidth()
         @documentHeight = ko.observable $(document).innerHeight()

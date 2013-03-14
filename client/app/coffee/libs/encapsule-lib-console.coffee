@@ -55,7 +55,7 @@ class window.Console
 
     @opacity: (opacity_) =>
         consoleEl = $("#idConsole")
-        consoleEl.css( { opacity: "#{opactity_}" } )
+        consoleEl.css( { opacity: "#{opacity_}" } )
 
     
     @show: () =>
@@ -90,19 +90,28 @@ class window.Console
     @messageError: (errorException) =>
         errorMessage =
             """
-            <h2>#{appName} v#{appVersion} Exception</h2>
-            <h3>An unexpected error has occurred in #{appName} v#{appVersion} #{appReleaseName}.</h3>
-            <p>Exception detail:</p>
-            <div style="margin: 5px; margin-top-15px; padding: 10px; background-color: #FF9900;
-                border: 1px solid yellow;">#{errorException}</div>
+            <h2 style="color: #990000;">#{appName} Runtime Exception</h2>
+            <div class="classConsoleExceptionContainer">
+                <h3 style="color: #660000">#{appName} v#{appVersion} release \"#{appReleaseName}\" runtime exception report:</h3>
+                <p>#{appPackagePublisher} build </strong> {#{appId}}::{#{appReleaseId}}::{#{appBuildId}} dated #{appBuildTime}.</p>
+                <p>Runtime exception message:</p>
+                <div style="margin: 5px; margin-top-15px; padding: 10px; background-color: #FF9900; border: 1px solid black;">#{errorException}</div>
+            </div>
             """
 
         Console.messageRaw(errorMessage)
-        @log("Encapsule:: #{errorException}")
+        @log("#{appPackagePublisher}::#{appName}:: Runtime Exception :: #{errorException}")
         consoleEl = $("#idConsole")
         consoleEl.show()
         consoleEl.css( { opacity: "1.0", backgroundColor: "#FFCC00" } )
         Encapsule.runtime.boot.phase0.spinner.cancel()
-        alert(errorException)
+
+        blipper = Encapsule.runtime.boot.phase3.blipper
+        if blipper? and blipper
+            blipper.blip "beep4"
+            blipper.blip "beep2"
+            blipper.blip "regen"
+
+        alert "A runtime exception has occurred in #{appName}. The error is \"#{errorException}\". Please see the #{appName} console for details and consider filing a bug report."
 
 

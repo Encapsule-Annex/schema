@@ -54,6 +54,7 @@ namespaceEncapsule_code_lib_kohelpers.InstallKnockoutViewTemplate = (descriptor_
 
 namespaceEncapsule_code_lib_kohelpers.InstallKnockoutViewTemplates = ->
     for descriptor in Encapsule.runtime.app.kotemplates
+        Console.message "#{appName} view template: #{descriptor.selectorId_}"
         Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplate(descriptor)
 
 

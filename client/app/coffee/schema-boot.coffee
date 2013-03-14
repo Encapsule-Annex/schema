@@ -51,6 +51,7 @@ phase0 = (bootstrapperOptions_) ->
 
     Console.init()
     Console.show()
+    Console.opacity(0)
     Console.messageRaw("""
         <div id="idPreBootMessage">
             <h3>This single-page HTML 5 app requires a modern browser!</h3>
@@ -130,6 +131,7 @@ phase2 = (bootstrapperOptions_) ->
             completionPercent = Math.min( Math.floor( (fileCount_ / appBuildCacheFileCount) * 100), 100)
             document.title = "#{appName}: #{completionPercent}% ..."
             Console.messageRaw(".")
+            Console.opacity(Math.round completionPercent / 100)
         , onError: ->
             document.title = "#{appName}: boot error!"
             phase2Out.appCacheMonitorState = "error"
@@ -139,7 +141,9 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw("<p>There has been a disturbance in the force.</p>")
             Console.messageRaw("<p>Please refresh this page to try try again.</p>")
             Console.messageError "An error has occurred caching application files from the #{appPackagePublisher}'s servers."
+            throw "Manually refresh your browser to resolve. See log messages above for additional information."
         , onObsolete: ->
+            Console.opacity(1.0)
             document.title = "#{appName}: package locked!"
             phase2Out.appCacheMonitorState = "locked (obsolete)"
             phase2Out.appCacheTerminalState = "locked (obsolete)"
@@ -155,14 +159,15 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheTerminalState = "locked (obsolete)"
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
-            Console.messageRaw("<h2>#{appPackagePublisher} origin server unreachable. #{appName} starting...</h2>")
+            Console.messageRaw("<h2>#{appPackagePublisher} offline. #{appName} starting...</h2>")
             setTimeout( ( -> phase3(bootstrapperOptions_) ), 1)
         , onCached: (fileCount_) ->
+            Console.opacity(1.0)
             phase2Out.appCacheMonitorState = "cached"
             phase2Out.appCacheTerminalState = "cached"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.message("<strong>The application has been installed!</strong>")
-            Console.messageRaw("<h2>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} installed! Starting...</h2>")
+            Console.messageRaw("<h2>#{appName} has been cached. Starting...</h2>")
             document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 phase3(bootstrapperOptions_) )
@@ -174,9 +179,10 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd("<strong>No update<strong>")
             Console.message("The most recent build of #{appName} is already cached locally for offline access.");
             Console.message("No updates were necessary.")
-            Console.messageRaw("<h2>#{appPackagePublisher} #{appName} is up-to-date. Starting...</h2>")
+            Console.messageRaw("<h2>#{appName} is up-to-date. Starting...</h2>")
             setTimeout( ( -> phase3(bootstrapperOptions_) ), 1)
         , onUpdateReady: (fileCount_) ->
+            Console.opacity(1.0)
             $("#idConsole").show()
             phase2Out.appCacheMonitorState = "updateready"
             phase2Out.appCacheTerminalState = "updateready"

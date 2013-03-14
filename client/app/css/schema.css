@@ -21,17 +21,19 @@ spacing: 5px;
 padding: 10px;
 color: black;
 border-bottom: 1px solid #999999;
-background-color: white;
+background-color: #CCCCCC;
 display: none; /* displayed only as needed */
-opacity: 0.3;
+opacity: 0.0;
 }
 
-#idConsole a { color: #0000AA; font-weight: bold; }
+#idConsole a { color: #0099CC; font-weight: bold; }
 #idConsole a:hover { color: #0066CC; font-weight: bold; }
 
-#idConsole h1 { color: white; font-size: 16pt; text-shadow: black 0.1em 0.1em 0.1em}
-#idConsole h2 { color: white; font-size: 14pt; font-weight: bold; text-shadow: black 0.1em 0.1em 0.2em}
-#idConsole h3 { color: #EEEEEE; font-size: 10pt; text-shadow: black 0.1em 0.1em 0.2em}
+#idConsole h1 { color: white; font-size: 16pt; text-shadow: black 0.1em 0.1em 0.1em }
+#idConsole h2 { color: #0099CC; font-size: 14pt; font-weight: bold; text-shadow: white 0.1em 0.1em 0.1em; }
+#idConsole h3 { color: #003366; font-size: 10pt; text-shadow: white 0.1em 0.1em 0.1em }
+
+.classConsoleExceptionContainer { border: 5px solid #FF0000; background-color: #FF7700; padding: 10px; }
 
 
 #idAppBootView { border: 1px solid black; margin: 10px; padding: 10px; font-family: Courier; font-size: 8pt; }
@@ -52,7 +54,7 @@ opacity: 0.3;
 
 /* first-level container for the Schema navigator view model */
 #idSchemaViewModelNavigator { position: fixed; top: 0px; left: 0px; width: 200px; height: 100%;
-border-right: 1px solid black; background-color: #CCFFCC; overflow: auto; 
+border-right: 1px solid black; border-top: 1px solid white; background-color: #CCFFCC; overflow: auto; 
 font-family: Courier; }
 
 
