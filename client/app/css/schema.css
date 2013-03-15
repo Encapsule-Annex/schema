@@ -1,5 +1,5 @@
 
-body { margin: 0px; padding: 0px; background-color: white; }
+body { margin: 0px; padding: 0px; background-color: #CCCCCC; }
 
 table {border: 1px solid black; width: 100%;}
 th {border: 1px solid black; }
@@ -35,28 +35,22 @@ opacity: 0.0;
 
 .classConsoleExceptionContainer { border: 5px solid #FF0000; background-color: #FF7700; padding: 10px; }
 
-
 #idAppBootView { border: 1px solid black; margin: 10px; padding: 10px; font-family: Courier; font-size: 8pt; }
 #idSpinner { z-index: 200; }
-
 
 .classTitleSiteName { font-family: Courier; font-size: 16pt; font-weight: bold; fill: #CCCCCC; }
 
 .classBodySection { border: 1px solid #CCCCCC; margin-bottom: 10px; }
-
 
 /* ============================================================== */
 
 /* outer-most level zero container for the Schema view model */
 #idSchemaViewModel { position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; background-color: #CCCCCC; }
 
-
-
 /* first-level container for the Schema navigator view model */
-#idSchemaViewModelNavigator { position: fixed; top: 0px; left: 0px; width: 400px; height: 100%;
+#idSchemaViewModelNavigator { position: fixed; top: 0px; left: 0px; width: 240px; height: 100%;
 border-right: 1px solid black; border-top: 1px solid white; background-color: #00CCFF; overflow: auto; 
-font-family: Courier; }
-
+font-family: Verdana, Arial, Courier; }
 
 .classSchemaViewModelNavigatorHeading1 { font: Lucida Console, Courier; font-size: 18pt; font-weight: bold; background-color: #99CCFF; }
 .classSchemaViewModelNavigatorHeading2 { padding-left: 5px; font: Lucida Console, Courier; font-size: 16pt; font-weight: bold; background-color: #88BBEE; }
@@ -69,8 +63,7 @@ font-family: Courier; }
 .classSchemaViewModelNavigatorHeading9 { padding-left: 40px;font: Lucida Console, Courier; font-size: 6pt; font-weight: bold;  background-color: #114477;  }
 
 .classSchemaViewModelNavigatorMenuLevel {
-margin: 1px; 
-padding: 1px;
-font-size: 10pt; 
-border: 1px solid black;
+margin: 0px;
+padding: 2px;
+padding-right: 0px;
 }

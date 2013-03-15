@@ -30,8 +30,9 @@ class window.Console
         consoleEl.html(
             """
             <div id="idClearConsole" style="float: right;">
-            <button id="idButtonHideConsole" class="button orange small">Hide</button>
-            <button id="idButtonClearConsole" class="button blue small">Clear</button></div>
+                <button id="idButtonClearConsole" class="button red small">Reset Console</button>
+                <button id="idButtonHideConsole" class="button blue small">Hide Console</button>
+            </div>
             <img src="img/core-seablue-48x48.png" style="float:left; margin-right: 10px;">
             <h1>#{appName} v#{appVersion}</h1>
             <div style="clear: both;"></div>

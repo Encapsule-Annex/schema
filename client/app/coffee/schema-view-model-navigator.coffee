@@ -66,26 +66,26 @@ class Encapsule.code.app.SchemaViewModelNavigatorMenuLevel
             newMenuItem
 
         @getCssFontSize = =>
-            fontSize = 20 - (2 * @level())
+            fontSize = 17 - (@level())
             "#{fontSize}pt"
 
         @getCssBackgroundColor = =>
-            "#0099CC"
+            base = net.brehaut.Color("#0099CC")
+            ratio = @level() / 7
+            base.desaturateByRatio(ratio).toString()
 
         @getCssMarginLeft = =>
-            marginLeft = @level() * 5
-            "#{marginLeft}px"
+            "#{@level() * 10}px"
 
 
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
     """
-    <div class="classSchemaViewModelNavigatorMenuLevel" data-bind="style: { fontSize: getCssFontSize() }" >
-        <span data-bind="text: level"></span>
-        <span data-bind="text: label"></span>
-        <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div></span>
+    <div class="classSchemaViewModelNavigatorMenuLevel" data-bind="style: { fontSize: getCssFontSize(), paddingLeft: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()}" >
+    <span data-bind="text: label"></span>
     </div>
+    <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div></span>
     """))
 
 
@@ -102,6 +102,7 @@ class Encapsule.code.app.SchemaViewModelNavigator
         
         scdlSpecs =     menuViewModel.addSubMenu( { label: "Specs" } )
         scdlSpec =      scdlSpecs.addSubMenu( { label: "Spec" } )
+        scdlSpecSystems = scdlSpec.addSubMenu( { label: "Systems" } )
 
         scdlModels =    menuViewModel.addSubMenu( { label: "Models" } )
 
