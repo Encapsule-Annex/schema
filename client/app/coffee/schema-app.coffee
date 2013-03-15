@@ -66,9 +66,9 @@ class namespaceEncapsule_code_app.Schema
             Console.message "Binding #{appName} data model to view model."
             ko.applyBindings Encapsule.runtime.app.SchemaViewModel, document.getElementById("idSchemaViewModel")
 
-            Encapsule.runtime.app.SchemaViewModel.viewNavigator().setLevelVisibility 1
+
           
-            Console.messageRaw "<h3>#{appName} is running :)</h3>"
+            Console.message  "<strong>#{appName} runtime up.</strong>"
 
             ###
             # Instantiate the SCDL data catalogue

@@ -37,7 +37,7 @@ class window.Console
             <div style="clear: both;"></div>
             <p><strong>
                 <a href="#{appPackagePublisherUrl}" title="#{appPackagePublisher}" target="_blank">#{appCopyright}</a>
-                //
+
                 <strong>License:</strong> <a href="#{appLicenseUrl}" title="Read the #{appLicense} text..." target="_blank">#{appLicense}</a> //
                 <strong>Sources:</strong> <a href="#{appGitHubRepoUrl}" title="#{appGitHubRepoName} repo on GitHub" target="_blank">#{appGitHubRepoName}</a>
             </strong></p>
@@ -102,7 +102,6 @@ class window.Console
     @messageError: (errorException) =>
         errorMessage =
             """
-            <strong>THAT DIDN'T WORK OUT SO WELL >:(</strong>
             <h2 style="color: #990000;">#{appName} Runtime Exception</h2>
             <div class="classConsoleExceptionContainer">
                 <h3 style="color: #660000">#{appName} v#{appVersion} release \"#{appReleaseName}\" runtime exception report:</h3>

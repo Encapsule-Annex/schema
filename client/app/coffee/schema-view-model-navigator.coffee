@@ -29,17 +29,50 @@ namespaceEncapsule_runtime = Encapsule.runtime? and Encapsule.runtime or @Encaps
 namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
 
 
-class Encapsule.code.appSchemaViewModelNavigatorContextLevel
-    constructor: (level_, label_) ->
-        @level = level_
-        @label = label_
+class Encapsule.code.app.SchemaViewModelNavigatorMenuLevel
 
-        @fontSize = 20 - level_
-        @fontColorRed = 0
+    # options = {
+    #     parent: {}
+    #     label: ""
+    #     
+    #     }
+
+    constructor: (params_) ->
+        if not params_? or not params_
+            throw "You must specify a parameter object as the first argument to SchemaViewModelNavigatorMenuLevel instance constructor."
+
+        @parent = ko.observable params_.parent? and params_.parent or undefined
+
+        thisLevel = 1
+        if @parent()? and @parent()
+            if @parent().level? and @parent().level and @parent().level()
+                thisLevel = @parent().level() + 1
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorContextLevel", ( ->
+        @level = ko.observable thisLevel
+        @label = ko.observable params_? and params_ and params_.label? and params_.label or "set label in params"
+
+        @subMenus = ko.observableArray []
+
+        @addSubMenu = (childMenu_) =>
+            if not childMenu_? or not childMenu_
+                throw "You must specify a valid SchemaViewModelNavigatorMenuLevel object as the first argument to addSubMenu."
+
+            childMenu_.parent(@)
+            newLabel = "#{@label()} :: #{childMenu_.label()}"
+            childMenu_.label(newLabel)
+            @subMenus.push childMenu_
+
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
     """
+    Level: <span data-bind="text: level"></span><br>
+    Label: <span data-bind="text: label"><span><br>
+    SubMenus: <span data-bind="text: subMenus.length"></span<br>
+    <div style="border: 1px solid black;">
+        <div data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevelX', foreach: subMenus }"></div>
+    </div>
     """))
 
 
@@ -50,29 +83,19 @@ class Encapsule.code.app.SchemaViewModelNavigator
 
         @viewHeight = ko.observable initialHeight_
 
-        @currentContextLevel = ko.observable undefined
+        menuViewModel = new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel( { label: "SCDL Catalogue" } )
+        
+        scdlSpecs =     new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel( { label: "SCDL Specs" } )
+        scdlModels =    new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel( { label: "SCDL Models" } )
 
-        @setLevelVisibility = (levelTarget_) =>
+        menuViewModel.addSubMenu scdlSpecs
+        menuViewModel.addSubMenu scdlModels
+        
 
-            levelTarget = Math.min(9, Math.max(1, levelTarget_))
-            @currentContextLevel(levelTarget)
-
-            toggleLevel = (levelToggle_) =>
-                levelToggle = levelToggle_
-                levelCurrent = @currentContextLevel()
-                selectorString = ".classSchemaViewModelNavigatorHeading#{levelTarget_}"
-                headings = $(selectorString)
-
-                headings.each ->
-                    headingEl = $(this)
-                    if levelToggle > levelCurrent
-                        headingEl.hide()
-                    else
-                        headingEl.show()
+        @menuViewModel = ko.observable menuViewModel
 
 
-            toggleLevel target for target in [1..10]
-
+        # For 'show console button click'
         @showConsole = =>
             consoleEl = $("#idConsole")
             if consoleEl? and console
@@ -87,28 +110,8 @@ class Encapsule.code.app.SchemaViewModelNavigator
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigator", ( ->
     """
-    <div class="classSchemaViewModelNavigatorHeading1">Catalogue</div>
-    <div class="classSchemaViewModelNavigatorHeading2">Specifications</div>
-    <div class="classSchemaViewModelNavigatorHeading2">Models</div>
-    <div class="classSchemaViewModelNavigatorHeading3">Systems</div>
-    <div class="classSchemaViewModelNavigatorHeading3">Machines</div>
-    <div class="classSchemaViewModelNavigatorHeading3">Sockets</div>
-    <div class="classSchemaViewModelNavigatorHeading3">Contracts</div>
-    <div class="classSchemaViewModelNavigatorHeading1">Context</div>
-    <div class="classSchemaViewModelNavigatorHeading2">Model</div>
-    <div class="classSchemaViewModelNavigatorHeading3">System</div>
-    <div class="classSchemaViewModelNavigatorHeading4">I/O</div>
-    <div class="classSchemaViewModelNavigatorHeading5">Input Pin</div>
-    <div class="classSchemaViewModelNavigatorHeading5">Output Pin</div>
-    <div class="classSchemaViewModelNavigatorHeading4">Interconnect</div>
-    <div class="classSchemaViewModelNavigatorHeading5">Node</div>
-    <div class="classSchemaViewModelNavigatorHeading6">Source</div>
-    <div class="classSchemaViewModelNavigatorHeading6">Sinks</div>
-    <div class="classSchemaViewModelNavigatorHeading7">Sink</div>
-    <div class="classSchemaViewModelNavigatorHeading4">System</div>
-    <div class="classSchemaViewModelNavigatorHeading4">Machine</div>
-    <div class="classSchemaViewModelNavigatorHeading4">Socket</div>
+    <span data-bind="with: menuViewModel"><div data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel' }"></div></span>
     <p style="text-align: center;">
-        <button data-bind="click: showConsole" class="button small green">Show Console</button>
+        <button data-bind="click: showConsole" class="button small yellow">Show Console</button>
     </p>
     """))

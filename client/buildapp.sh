@@ -25,11 +25,11 @@ app_uuid="56611225-be91-40cf-b9b8-5c7b8a6c6f3d"
 # be refreshed in order to provide meaning to server logfiles (please).
 #
 
-app_version="0.79"
-app_release_name="Amapá"
-app_release_fun_url="http://en.wikipedia.org/wiki/Amap%C3%A1"
+app_version="0.80"
+app_release_name="Gongga Shan"
+app_release_fun_url="http://www.geolocation.ws/v/P/34381835/gongga-shan-seen-from-hailuogou-glacier/en"
 app_version_uuid="42c28c61-da0d-4abd-9821-86e57c129239"
-app_release_phase="pre-alpha dev"
+app_release_phase="unreleased work in progress"
 
 app_builder_email=$*
 app_build_host=`hostname`
@@ -144,7 +144,7 @@ echo "var appBuildId = \""$app_build_uuid"\";" >> $build_id_js
 echo "var appBuilder = \""$app_builder_email"\";" >> $build_id_js
 echo "var appBuildTime = \""$app_build_date"\";" >> $build_id_js
 echo "var appCacheManifestUrl = \"schema.appcache\";" >> $build_id_js
-echo "var appCopyright = \"Copyright 2013 Encapsule Project // Copyright 2013 Chris Russell\";" >> $build_id_js
+echo "var appCopyright = \"Copyright 2013 Encapsule Project\";" >> $build_id_js
 echo "var appLicense = \"Boost Software License v1.0\";" >> $build_id_js
 echo "var appLicenseUrl = \"http://www.boost.org/LICENSE_1_0.txt\";" >> $build_id_js
 echo "var appGitHubRepoName = \"encapsule/schema\";" >> $build_id_js
