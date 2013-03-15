@@ -36,8 +36,8 @@ class window.Console
             <h1>#{appName} v#{appVersion}</h1>
             <div style="clear: both;"></div>
             <p><strong>
-                Published by <a href="#{appPackagePublisherUrl}" title="#{appPackagePublisher}" target="_blank">#{appPackagePublisher}</a> //
-                #{appCopyright} //
+                <a href="#{appPackagePublisherUrl}" title="#{appPackagePublisher}" target="_blank">#{appCopyright}</a>
+                //
                 <strong>License:</strong> <a href="#{appLicenseUrl}" title="Read the #{appLicense} text..." target="_blank">#{appLicense}</a> //
                 <strong>Sources:</strong> <a href="#{appGitHubRepoUrl}" title="#{appGitHubRepoName} repo on GitHub" target="_blank">#{appGitHubRepoName}</a>
             </strong></p>
@@ -52,7 +52,6 @@ class window.Console
 
         $("#idButtonClearConsole").click( ->
             Console.init()
-            $("#idConsole").css( { backgroundColor: "white" } )
             Console.message("Console re-initialized.")
             )
 

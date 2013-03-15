@@ -67,7 +67,7 @@ class namespaceEncapsule_code_lib_view.spinner
             style="margin-left: -66px; margin-top: -65px; 
             opacity: 0.7; background-color: #0099CC;
             -webkit-border-radius: 0.75em; -moz-border-radius: 0.75em; border-radius: 0.75em;
-            border: 2px solid #CCCCFF;
+            border: 1px solid #006699;
             ">
             """))
             @enabled = true

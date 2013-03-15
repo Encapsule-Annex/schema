@@ -58,7 +58,7 @@ phase0 = (bootstrapperOptions_) ->
                 <li><a href="https://www.google.com/intl/en/chrome/browser/" title="Install Chrome">Google Chrome</a></li>
                 <li><a href="http://www.apple.com/safari/" title="Install Safari">Apple Safari</a></li>
                 <li><a href="http://www.mozilla.org/en-US/" title="Install Firefox">Mozilla Firefox</a></li>
-                <li><a href="http://windows.microsoft.com/en-us/internet-explorer/downloads/ie-10/worldwide-languages" title="Install Microsoft IE 10">Microsoft IE 10</a> (might work)</li>
+                <li><a href="http://windows.microsoft.com/en-us/internet-explorer/downloads/ie-10/worldwide-languages" title="Install Microsoft IE 10">Microsoft IE 10</a></li>
             </ul>
         </div>
         <h3>BOOTSTRAP PHASE 0 : establish local URI routing</h3>
@@ -141,7 +141,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageError "An error has occurred caching application files from the #{appPackagePublisher}'s servers."
             throw "Manually refresh your browser to resolve. See log messages above for additional information."
         , onObsolete: ->
-            Console.opacity(1.0)
+            Console.show()
             document.title = "#{appName}: package locked!"
             phase2Out.appCacheMonitorState = "locked (obsolete)"
             phase2Out.appCacheTerminalState = "locked (obsolete)"
@@ -169,7 +169,7 @@ phase2 = (bootstrapperOptions_) ->
             document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 phase3(bootstrapperOptions_) )
-                , 2000
+                , 250
         , onNoUpdate: ->
             document.title = "#{appName}: application cached"
             phase2Out.appCacheMonitorState = "noupdate"
@@ -197,7 +197,7 @@ phase2 = (bootstrapperOptions_) ->
                     Console.messageRaw("<p>If you encounter this error under different circumstances please let me know.</p>")
                     Console.messageRaw("<p><strong>Note: you can typically recover from a DOM exception in this case by simply refreshing the page.</strong></p>")
                     Console.messageError(exception)
-                ) , 2000
+                ) , 250
         }
     try
         phase2Out.appCacheMonitor = new Encapsule.code.lib.appcachemonitor(appCacheCallbacks)
