@@ -68,7 +68,8 @@ class namespaceEncapsule_code_app.Schema
 
 
           
-            Console.message  "<strong>#{appName} runtime up.</strong>"
+            Console.messageRaw  "<h3>APPLICATION RUNTIME</h3>"
+            Console.message "#{appName} v#{appVersion} is running..."
 
             ###
             # Instantiate the SCDL data catalogue

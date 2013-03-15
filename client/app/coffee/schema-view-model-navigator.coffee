@@ -71,17 +71,12 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     """
     <div class="classSchemaViewModelNavigatorMenuLevel">
         <span data-bind="text: label"></span>
-        <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel2', foreach: subMenus }"></div>
-    </div>
-    """))
-
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel2", ( ->
-    """
-    <div class="classSchemaViewModelNavigatorMenuLevel">
-        <span data-bind="text: label"></span><br>
         <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
     </div>
     """))
+
+
+
 
 class Encapsule.code.app.SchemaViewModelNavigator
     constructor: (initialHeight_) ->

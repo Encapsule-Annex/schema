@@ -35,11 +35,11 @@ class window.Console
             <img src="img/core-seablue-48x48.png" style="float:left; margin-right: 10px;">
             <h1>#{appName} v#{appVersion}</h1>
             <div style="clear: both;"></div>
-            <p><strong>
-                <strong>Copyright:</strong> #{appCopyright}
-                <strong>License:</strong> <a href="#{appLicenseUrl}" title="Read the #{appLicense} text..." target="_blank">#{appLicense}</a> //
+            <p>
+                <strong>Copyright:</strong> #{appCopyright} &bull;
+                <strong>License:</strong> <a href="#{appLicenseUrl}" title="Read the #{appLicense} text..." target="_blank">#{appLicense}</a> &bull;
                 <strong>Sources:</strong> <a href="#{appGitHubRepoUrl}" title="#{appGitHubRepoName} repo on GitHub" target="_blank">#{appGitHubRepoName}</a>
-            </strong></p>
+            </p>
             <p>
             Build: {#{appBuildId}}  #{appBuildTime} by <a href="mailto:#{appBuilder}">#{appBuilder}</a>
             </p>
