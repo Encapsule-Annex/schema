@@ -53,7 +53,7 @@ opacity: 0.0;
 
 
 /* first-level container for the Schema navigator view model */
-#idSchemaViewModelNavigator { position: fixed; top: 0px; left: 0px; width: 200px; height: 100%;
+#idSchemaViewModelNavigator { position: fixed; top: 0px; left: 0px; width: 400px; height: 100%;
 border-right: 1px solid black; border-top: 1px solid white; background-color: #CCFFCC; overflow: auto; 
 font-family: Courier; }
 
@@ -67,3 +67,5 @@ font-family: Courier; }
 .classSchemaViewModelNavigatorHeading7 { padding-left: 30px;font: Lucida Console, Courier; font-size: 8pt; font-weight: bold;  background-color: #336699; }
 .classSchemaViewModelNavigatorHeading8 { padding-left: 35px;font: Lucida Console, Courier; font-size: 7pt; font-weight: bold;  background-color: #225588; }
 .classSchemaViewModelNavigatorHeading9 { padding-left: 40px;font: Lucida Console, Courier; font-size: 6pt; font-weight: bold;  background-color: #114477;  }
+
+.classSchemaViewModelNavigatorMenuLevel { margin: 2px; padding: 2px; border: 1px solid black; }

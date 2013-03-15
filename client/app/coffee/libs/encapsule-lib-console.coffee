@@ -36,8 +36,7 @@ class window.Console
             <h1>#{appName} v#{appVersion}</h1>
             <div style="clear: both;"></div>
             <p><strong>
-                <a href="#{appPackagePublisherUrl}" title="#{appPackagePublisher}" target="_blank">#{appCopyright}</a>
-
+                <strong>Copyright:</strong> #{appCopyright}
                 <strong>License:</strong> <a href="#{appLicenseUrl}" title="Read the #{appLicense} text..." target="_blank">#{appLicense}</a> //
                 <strong>Sources:</strong> <a href="#{appGitHubRepoUrl}" title="#{appGitHubRepoName} repo on GitHub" target="_blank">#{appGitHubRepoName}</a>
             </strong></p>

@@ -41,56 +41,60 @@ class Encapsule.code.app.SchemaViewModelNavigatorMenuLevel
         if not params_? or not params_
             throw "You must specify a parameter object as the first argument to SchemaViewModelNavigatorMenuLevel instance constructor."
 
-        @parent = ko.observable params_.parent? and params_.parent or undefined
+        parent = params_.parent? and params_.parent or undefined
+        parent_level = parent? and parent and parent.level? and parent.level and parent.level() or -1
+        this_level = parent_level + 1
+        label = params_.label? and params_.label or ""
+        
+        Console.message "New menu item: #{label}"
 
-        thisLevel = 1
-        if @parent()? and @parent()
-            if @parent().level? and @parent().level and @parent().level()
-                thisLevel = @parent().level() + 1
-
-
-        @level = ko.observable thisLevel
-        @label = ko.observable params_? and params_ and params_.label? and params_.label or "set label in params"
-
+        @parent = ko.observable parent_level
+        @level = ko.observable this_level
+        @label = ko.observable label
         @subMenus = ko.observableArray []
 
-        @addSubMenu = (childMenu_) =>
-            if not childMenu_? or not childMenu_
-                throw "You must specify a valid SchemaViewModelNavigatorMenuLevel object as the first argument to addSubMenu."
+        @addSubMenu = (params_, callback_) =>
+            if not params_? or not params_
+                throw "You must specify a params object as the first arguemtn to addSubMenu"
 
-            childMenu_.parent(@)
-            newLabel = "#{@label()} :: #{childMenu_.label()}"
-            childMenu_.label(newLabel)
-            @subMenus.push childMenu_
+            params = params_
+            params.parent = @
+            Console.message("adding submenu #{params_.label}")
+            newMenuItem =  new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel(params_)
+            @subMenus.push newMenuItem
+            newMenuItem
+
 
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
     """
-    Level: <span data-bind="text: level"></span><br>
-    Label: <span data-bind="text: label"><span><br>
-    SubMenus: <span data-bind="text: subMenus.length"></span<br>
-    <div style="border: 1px solid black;">
-        <div data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevelX', foreach: subMenus }"></div>
+    <div class="classSchemaViewModelNavigatorMenuLevel">
+        <span data-bind="text: label"></span>
+        <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel2', foreach: subMenus }"></div>
     </div>
     """))
 
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel2", ( ->
+    """
+    <div class="classSchemaViewModelNavigatorMenuLevel">
+        <span data-bind="text: label"></span><br>
+        <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
+    </div>
+    """))
 
 class Encapsule.code.app.SchemaViewModelNavigator
     constructor: (initialHeight_) ->
         Console.message "Initializing #{appName} navigator data model."
-        @navigatorEl = $("#ididSchemaViewModelNavigator")
+        @navigatorEl = $("#idSchemaViewModelNavigator")
 
         @viewHeight = ko.observable initialHeight_
 
         menuViewModel = new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel( { label: "SCDL Catalogue" } )
         
-        scdlSpecs =     new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel( { label: "SCDL Specs" } )
-        scdlModels =    new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel( { label: "SCDL Models" } )
-
-        menuViewModel.addSubMenu scdlSpecs
-        menuViewModel.addSubMenu scdlModels
-        
+        scdlSpecs =     menuViewModel.addSubMenu( { label: "Specs" } )
+        scdlModels =    menuViewModel.addSubMenu( { label: "Models" } )
+        scdlModels.addSubMenu( { label: "Systems" } )
 
         @menuViewModel = ko.observable menuViewModel
 
@@ -110,6 +114,7 @@ class Encapsule.code.app.SchemaViewModelNavigator
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigator", ( ->
     """
+    <h3>Menu</h3>
     <span data-bind="with: menuViewModel"><div data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel' }"></div></span>
     <p style="text-align: center;">
         <button data-bind="click: showConsole" class="button small yellow">Show Console</button>
