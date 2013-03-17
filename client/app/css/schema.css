@@ -91,6 +91,22 @@ z-index: 50;
 background-color: #CCFF99;
 }
 
+#idSchemaViewSvgPlane {
+overflow: hidden;
+z-index: 50;
+-moz-border-radius: 15px; border-radius: 15px; border: 1px solid black;
+background-color: #99FFFF;
+}
+
+#idSchemaViewEdit {
+overflow: hidden;
+z-index: 50;
+-moz-border-radius: 15px; border-radius: 15px; border: 1px solid black;
+background-color: white;
+}
+
+
+
 
 #idSchemaViewModelSelect1 {
 overflow: hidden;
@@ -105,18 +121,7 @@ z-index: -1;
 -moz-border-radius: 15px; border-radius: 15px; border: 1px solid red;
 }
 
-#idSchemaViewModelEdit {
-overflow: hidden;
-z-index: -1;
--moz-border-radius: 15px; border-radius: 15px; border: 1px solid red;
-}
 
-#idSchemaViewModelSvgPlane {
-overflow: hidden;
-z-index: -1;
--moz-border-radius: 15px; border-radius: 15px; border: 1px solid black;
-background-color: #99FFFF;
-}
 
 
 

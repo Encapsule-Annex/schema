@@ -33,22 +33,30 @@ class Encapsule.code.app.SchemaViewModel
     constructor: ->
         Console.message("Initializing #{appName} data model.")
 
+        @viewNavigator = ko.observable new Encapsule.code.app.SchemaViewModelNavigator()
+        @viewNavigatorMode = ko.observable "min"
+        @viewNavigatorEnable = ko.observable true
+
+
         #
         # These are the top-level data models for each of Schema's main application windows.
         #      
 
         @viewToolbar = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewToolbarMode = ko.observable "full"
+        @viewToolbarMode = ko.observable "min"
         @viewToolbarEnable = ko.observable true
 
-        @viewNavigator = ko.observable new Encapsule.code.app.SchemaViewModelNavigator()
-        @viewNavigatorMode = ko.observable "full"
-        @viewNavigatorEnable = ko.observable true
+        @viewFrameStack = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
+        @viewFrameStackMode = ko.observable "min"
+        @viewFrameStackEnable = ko.observable true
 
         @viewSvgPlane = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
         @viewSvgPlaneMode = ko.observable "full"
         @viewSvgPlaneEnable = ko.observable true
 
+        @viewEdit1 = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
+        @viewEdit1Mode = ko.observable "min"
+        @viewEdit1Enable = ko.observable true
 
         @viewSelect1 = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
         @viewSelect1Mode = ko.observable "full"
@@ -58,13 +66,7 @@ class Encapsule.code.app.SchemaViewModel
         @viewSelect2Mode = ko.observable "full"
         @viewSelect2Enable = ko.observable true
 
-        @viewEdit1 = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewEdit1Mode = ko.observable "full"
-        @viewEdit1Enable = ko.observable true
 
-        @viewFrameStack = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewFrameStackMode = ko.observable "full"
-        @viewFrameStackEnable = ko.observable true
 
         #
         # All of this is to keep track of the inner dimensions of the browser window.
@@ -174,7 +176,7 @@ class Encapsule.code.app.SchemaViewModel
         @cssFrameStackOffsetTop = ko.computed => @framestackOffsetTop() + "px"
 
 
-        @refreshJ0Rects = =>
+        @viewJig0RectsRefresh = =>
             jig0 = @viewJig0Refresh()
 
             @viewJig0Rects.toolbarRect = jig0.quad1
@@ -196,13 +198,11 @@ class Encapsule.code.app.SchemaViewModel
 
 
 
-
-        @viewJig1Selections = undefined
+        @viewJig1 = {}
 
         @viewJig1Refresh = =>
 
-            jig0Rects = @refreshJ0Rects()
-
+            jig0Rects = @viewJig0RectsRefresh()
 
             centerPoint = {}
 
@@ -215,20 +215,70 @@ class Encapsule.code.app.SchemaViewModel
 
             if @viewEdit1Enable()
                 if @viewEdit1Mode() == "full"
-                    centerPoint.y = @viewHeight() - 400 - 1
+                    centerPoint.y = @viewJig0Rects.contentRect.height - 400 - 1
                 else
-                    centerPoint.y = @viewHeight() - 32 - 1
+                    centerPoint.y = @viewJig0Rects.contentRect.height - 32 - 1
             else
-                centerPoint.y = @viewHeight() - 1
+                centerPoint.y = @viewJig0Rects.contentRect.height - 1
 
-            jig = Encapsule.code.lib.kohelpers.SplitRectIntoQuads "Jig #1 (L)", @viewJ0ContentGeometry, centerPoint
+            jig = Encapsule.code.lib.kohelpers.SplitRectIntoQuads "Jig #1 (L)", @viewJig0Rects.contentRect, centerPoint
 
- 
+            @viewJig1 = jig
+            @viewJig1
+
+
+
+         @viewJig1Rects = {}
+
+         @svgPlaneWidth = ko.observable 0
+         @cssSvgPlaneWidth = ko.computed => @svgPlaneWidth() + "px"
+         @svgPlaneHeight = ko.observable 0
+         @cssSvgPlaneHeight = ko.computed => @svgPlaneHeight() + "px"
+         @svgPlaneOffsetLeft = ko.observable 0
+         @cssSvgPlaneOffsetLeft = ko.computed => @svgPlaneOffsetLeft() + "px"
+         @svgPlaneOffsetTop = ko.observable 0
+         @cssSvgPlaneOffsetTop = ko.computed => @svgPlaneOffsetTop() + "px"
+
+         @editWidth = ko.observable 0
+         @cssEditWidth = ko.computed => @editWidth() + "px"
+         @editHeight = ko.observable 0
+         @cssEditHeight = ko.computed => @editHeight() + "px"
+         @editOffsetLeft = ko.observable 0
+         @cssEditOffsetLeft = ko.computed => @editOffsetLeft() + "px"
+         @editOffsetTop = ko.observable 0
+         @cssEditOffsetTop = ko.computed => @editOffsetTop() + "px"
+
+         @viewJig1RectsRefresh = =>
+
+             viewJig1 = @viewJig1Refresh()
+
+             result = {}
+             result.svgplaneRect = viewJig1.quad2
+             result.editRect = viewJig1.quad4
+             result.selectRect = viewJig1.quad1
+             result.selectRect.height += viewJig1.quad3.height
+
+             @svgPlaneWidth(result.svgplaneRect.width)
+             @svgPlaneHeight(result.svgplaneRect.height)
+             @svgPlaneOffsetLeft(result.svgplaneRect.offsetLeft)
+             @svgPlaneOffsetTop(result.svgplaneRect.offsetTop)
+
+             @editWidth(result.editRect.width)
+             @editHeight(result.editRect.height)
+             @editOffsetLeft(result.editRect.offsetLeft)
+             @editOffsetTop(result.editRect.offsetTop)
+
+             @viewJig1Rects = result
+             @viewJig1Rects
+
+
+
+
 
 
 
         @documentResizeCallback = (args_) =>
-            result = @refreshJ0Rects()
+            result = @viewJig1RectsRefresh()
 
         # setInterval @documentResizeCallback, 5000 # This catches everything (including browser restore) eventually
         window.addEventListener 'resize', @documentResizeCallback
@@ -246,6 +296,12 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     </div>
 
     <div id="idSchemaViewFrameStack" class="classCentered" data-bind="style: { width: cssFrameStackWidth(), height: cssFrameStackHeight(), marginLeft: cssFrameStackOffsetLeft(), marginTop: cssFrameStackOffsetTop() }">
+    </div>
+
+    <div id="idSchemaViewSvgPlane" class="classCentered" data-bind="style: { width: cssSvgPlaneWidth(), height: cssSvgPlaneHeight(), marginLeft: cssSvgPlaneOffsetLeft(), marginTop: cssSvgPlaneOffsetTop() }">
+    </div>
+
+    <div id="idSchemaViewEdit" class="classCentered" data-bind="style: { width: cssEditWidth(), height: cssEditHeight(), marginLeft: cssEditOffsetLeft(), marginTop: cssEditOffsetTop() }">
     </div>
 
     """))
