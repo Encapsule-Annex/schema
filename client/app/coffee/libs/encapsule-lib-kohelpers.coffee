@@ -59,3 +59,69 @@ namespaceEncapsule_code_lib_kohelpers.InstallKnockoutViewTemplates = ->
 
 
 
+Encapsule.code.lib.kohelpers.SplitRectIntoQuads = (name_, containerRect_, centerPoint_) ->
+
+    try
+    
+        Console.message("SplitRectIntoQuads on #{name_}: width=#{containerRect_.width} px / height=#{containerRect_.height} px / offset={#{containerRect_.offsetLeft} px, #{containerRect_.offsetTop} px} on center={#{centerPoint_.x}px, #{centerPoint_.y}px}")
+
+        result = {}
+        result.name = name_
+
+        result.sources = {}
+        result.sources.containerRect = containerRect_
+        result.sources.centerPoint = centerPoint_
+
+        #
+        # Validate input parameters.
+        #
+
+        if not (name_? and name_ and containerRect_? and containerRect_ and centerPoint_? and centerPoint_)
+            throw "Invalid input parameter(s). You must name, containerRect, and centerPoint parameters."
+
+        if containerRect_.width < 0 then throw "Invalid input parameter: containerRect.width < 0"
+        if containerRect_.width > (1920 * 3) then throw "Invalad input parameter: containerRect.width > three 1080p display widths"
+
+        if containerRect_.height < 0 then throw "Invalid input parameter: containerRect.height < 0"
+        if containerRect_.height > (1080 * 3) then throw "Invalid input parameter: containerRect.height > three 1080p display heights"
+
+        if centerPoint_.x < 0 then throw "Invalid input parameter: centerPoint.x < 0"
+        if centerPoint_.x > containerRect_.width then throw "Invalid input parameter: centerPoint.x > containerRect.width"
+        if centerPoint_.y < 0 then throw "Invalid input parmeter: centerPoint.y < 0"
+        if centerPoint_.y > containerRect_.height then throw "Invalid input parameter: centerPoint.y > containerRect.height"
+ 
+        result.quad1 = {}
+
+        result.quad1.width = centerPoint_.x
+        result.quad1.height = centerPoint_.y
+        result.quad1.offsetLeft = containerRect_.offsetLeft
+        result.quad1.offsetTop = containerRect_.offsetTop
+
+        result.quad2 = {}
+        result.quad2.width = containerRect_.width - result.quad1.width + 1
+        result.quad2.height = centerPoint_.y
+        result.quad2.offsetLeft = containerRect_.offsetLeft + result.quad1.width
+        result.quad2.offsetTop = containerRect_.offsetTop
+
+        result.quad3 = {}
+        result.quad3.width = result.quad1.width
+        result.quad3.height = containerRect_.height - result.quad1.height + 1
+        result.quad3.offsetLeft = containerRect_.offsetLeft
+        result.quad3.offsetTop = containerRect_.offsetTop + result.quad1.height + 1
+
+        result.quad4 = {}
+        result.quad4.width = result.quad2.width
+        result.quad4.height = result.quad3.height
+        result.quad4.offsetLeft = result.quad2.offsetLeft
+        result.quad4.offsetTop = result.quad3.offsetTop
+
+        result
+
+    catch exception
+        messageError = "In SplitRectIntoQuads: #{exception}"
+        Console.messageError messageError
+        throw messageError
+
+        
+
+

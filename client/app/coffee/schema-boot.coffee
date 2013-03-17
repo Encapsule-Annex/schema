@@ -141,6 +141,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageError "An error has occurred caching application files from the #{appPackagePublisher}'s servers."
             throw "Manually refresh your browser to resolve. See log messages above for additional information."
         , onObsolete: ->
+            Console.opacity(1.0)
             Console.show()
             document.title = "#{appName}: package locked!"
             phase2Out.appCacheMonitorState = "locked (obsolete)"
@@ -180,8 +181,6 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw("<h2>#{appName} is up-to-date. Starting...</h2>")
             setTimeout( ( -> phase3(bootstrapperOptions_) ), 1)
         , onUpdateReady: (fileCount_) ->
-            Console.opacity(1.0)
-            $("#idConsole").show()
             phase2Out.appCacheMonitorState = "updateready"
             phase2Out.appCacheTerminalState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
@@ -197,7 +196,7 @@ phase2 = (bootstrapperOptions_) ->
                     Console.messageRaw("<p>If you encounter this error under different circumstances please let me know.</p>")
                     Console.messageRaw("<p><strong>Note: you can typically recover from a DOM exception in this case by simply refreshing the page.</strong></p>")
                     Console.messageError(exception)
-                ) , 250
+                ) , 350
         }
     try
         phase2Out.appCacheMonitor = new Encapsule.code.lib.appcachemonitor(appCacheCallbacks)

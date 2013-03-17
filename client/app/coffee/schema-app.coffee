@@ -53,14 +53,9 @@ class namespaceEncapsule_code_app.Schema
             Encapsule.runtime.app.SchemaViewModel = new Encapsule.code.app.SchemaViewModel()
 
             Console.message "Binding top-level #{appName} view model to to DOM:"
+
             bodyElement.append("""
-                <div
-                    id="idSchemaViewModel"
-                    data-bind="
-                        template: { name: 'idKoTemplate_SchemaViewModel' }, 
-                        style: { marginLeft: viewMarginLeftOffsetPixels(), marginTop: viewMarginTopOffsetPixels(), width: viewWidthPixels(), height: viewHeightPixels() }
-                    ">
-                </div>
+                <div id="idSchemaViewModel" data-bind="template: { name: 'idKoTemplate_SchemaViewModel' }, style: { marginLeft: cssOffsetLeft(), marginTop: cssOffsetTop(), width: cssWidth(), height: cssHeight() }"></div>
                 """)
 
             Console.message "Binding #{appName} data model to view model."

@@ -47,7 +47,7 @@ class window.Console
             """
             )
         consoleEl.css( { opacity: "0.0" } )
-        consoleEl.show()
+        consoleEl.hide()
 
 
         $("#idButtonClearConsole").click( ->
@@ -104,9 +104,12 @@ class window.Console
             """
             <h2 style="color: #990000;">#{appName} Runtime Exception</h2>
             <div class="classConsoleExceptionContainer">
-                <h3 style="color: #660000">#{appName} v#{appVersion} release \"#{appReleaseName}\" runtime exception report:</h3>
-                <p>#{appPackagePublisher} build </strong> {#{appId}}::{#{appReleaseId}}::{#{appBuildId}} dated #{appBuildTime}.</p>
-                <p>Runtime exception message:</p>
+                <h3 style="color: #660000">#{appName} v#{appVersion} RUNTIME EXCEPTION:</h3>
+                <p>AppID: <span data-bind="text: appId"></span><br>
+                   ReleaseID: <span data-bind="text: appReleaseId"></span><br>
+                   AppBuildId: <span data-bind="text: appBuildId"></span>
+                </p>
+
                 <div style="margin: 5px; margin-top-15px; padding: 10px; background-color: #FF9900; border: 1px solid black;">#{errorException}</div>
             </div>
             """
@@ -125,7 +128,7 @@ class window.Console
             blipper.blip "regen"
 
         setTimeout ( ->
-            alert "A runtime exception has occurred in #{appName}. The error is \"#{errorException}\". Please see the #{appName} console for details and consider filing a bug report."
-            ), 500
+            alert """Unexpected exception "#{errorException}". Scroll console for detail or Hide console to continue."""
+            ), 1776
 
 
