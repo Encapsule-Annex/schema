@@ -165,23 +165,32 @@ class Encapsule.code.app.SchemaViewModel
         @cssToolbarOffsetTop = ko.computed => @toolbarOffsetTop() + "px"
 
         @framestackWidth = ko.observable 0
+        @cssFrameStackWidth = ko.computed => @framestackWidth() + "px"
         @framestackHeight = ko.observable 0
+        @cssFrameStackHeight = ko.computed => @framestackHeight() + "px"
         @framestackOffsetLeft = ko.observable 0
+        @cssFrameStackOffsetLeft = ko.computed => @framestackOffsetLeft() + "px"
         @framestackOffsetTop = ko.observable 0
+        @cssFrameStackOffsetTop = ko.computed => @framestackOffsetTop() + "px"
 
 
         @refreshJ0Rects = =>
             jig0 = @viewJig0Refresh()
 
             @viewJig0Rects.toolbarRect = jig0.quad1
-            @viewJig0Rects.stackframeRect = jig0.quad2
-            @viewJig0Rects.stackframeRect.height += jig0.quad4.height
+            @viewJig0Rects.framestackRect = jig0.quad2
+            @viewJig0Rects.framestackRect.height += jig0.quad4.height
             @viewJig0Rects.contentRect =jig0.quad3
 
+            @toolbarWidth(@viewJig0Rects.toolbarRect.width)
+            @toolbarHeight(@viewJig0Rects.toolbarRect.height)
+            @toolbarOffsetLeft(@viewJig0Rects.toolbarRect.offsetLeft)
+            @toolbarOffsetTop(@viewJig0Rects.toolbarRect.offsetTop)
 
-          
-
-
+            @framestackWidth(@viewJig0Rects.framestackRect.width)
+            @framestackHeight(@viewJig0Rects.framestackRect.height)
+            @framestackOffsetLeft(@viewJig0Rects.framestackRect.offsetLeft)
+            @framestackOffsetTop(@viewJig0Rects.framestackRect.offsetTop)
 
             @viewJig0Rects
 
@@ -232,6 +241,13 @@ class Encapsule.code.app.SchemaViewModel
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModel", ( ->
     """
     Can has content?
+
+    <div id="idSchemaViewToolbar" class="classCentered" data-bind="style: { width: cssToolbarWidth(), height: cssToolbarHeight(), marginLeft: cssToolbarOffsetLeft(), marginTop: cssToolbarOffsetTop() }">
+    </div>
+
+    <div id="idSchemaViewFrameStack" class="classCentered" data-bind="style: { width: cssFrameStackWidth(), height: cssFrameStackHeight(), marginLeft: cssFrameStackOffsetLeft(), marginTop: cssFrameStackOffsetTop() }">
+    </div>
+
     """))
 
 
