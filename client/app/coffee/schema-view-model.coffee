@@ -42,27 +42,27 @@ class Encapsule.code.app.SchemaViewModel
         #      
 
         @viewToolbar = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewToolbarMode = ko.observable "min"
+        @viewToolbarMode = ko.observable "full" # == "full" | "min"
         @viewToolbarEnable = ko.observable true
 
         @viewFrameStack = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewFrameStackMode = ko.observable "min"
+        @viewFrameStackMode = ko.observable "full" # == "full | "min"
         @viewFrameStackEnable = ko.observable true
 
         @viewSvgPlane = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewSvgPlaneMode = ko.observable "full"
+        @viewSvgPlaneMode = ko.observable "full" # == "full | "min"
         @viewSvgPlaneEnable = ko.observable true
 
         @viewEdit1 = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewEdit1Mode = ko.observable "min"
+        @viewEdit1Mode = ko.observable "full" # == "full | "min"
         @viewEdit1Enable = ko.observable true
 
         @viewSelect1 = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewSelect1Mode = ko.observable "full"
+        @viewSelect1Mode = ko.observable "full" # == "full | "min"
         @viewSelect1Enable = ko.observable true
 
         @viewSelect2 = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewSelect2Mode = ko.observable "full"
+        @viewSelect2Mode = ko.observable "full" # == "full | "min"
         @viewSelect2Enable = ko.observable true
 
 
@@ -73,7 +73,7 @@ class Encapsule.code.app.SchemaViewModel
         # a 'resize' event or timer (used to catch problems with restore from full-screen).
         #
 
-        @mainViewOffset = 15
+        @mainViewOffset = 32
 
         @documentRect = {}
         @documentRect.width = 0
@@ -88,13 +88,26 @@ class Encapsule.code.app.SchemaViewModel
         @cssOffsetTop = ko.computed => @observableOffsetTop() + "px"
         @documentRectRefresh = =>
 
-            twiddleFactor = 2
+            twiddleFactor = 32
 
             # Determine the total area available for the Schema view model.
             queryEl = $(document) 
 
-            @documentRect.widthActual =  queryEl.innerWidth()
-            @documentRect.heightActual = queryEl.innerHeight()
+
+            @documentRect.widthActual =  queryEl.width()
+            @documentRect.heightActual = queryEl.height()
+
+            @documentRect.innerWidthActual = queryEl.innerWidth()
+            @documentRect.innerHeightActual = queryEl.innerHeight()
+
+            @documentRect.outerWidthActual = queryEl.outerWidth()
+            @documentRect.outerHeightActual = queryEl.outerHeight()
+
+            @documentRect.outerMarginWidthActual = queryEl.outerWidth(true)
+            @documentRect.outerMarginHeightActual = queryEl.outerHeight(true)
+
+         
+
 
             @documentRect.width = @documentRect.widthActual - twiddleFactor
             @documentRect.height = @documentRect.heightActual - twiddleFactor
@@ -134,11 +147,11 @@ class Encapsule.code.app.SchemaViewModel
             # center X is controlled by Q24 frame stack
             if @viewFrameStackEnable()
                 if @viewFrameStackMode() == "full"
-                    centerPoint.x = @viewRect.width - 300 - 1
+                    centerPoint.x = @viewRect.width - 300
                 else
-                    centerPoint.x = @viewRect.width - 32 - 1
+                    centerPoint.x = @viewRect.width - 32
             else
-                centerPoint.x = @viewRect.width - 1
+                centerPoint.x = @viewRect.width
 
             # center Y is controlled by Q1 toolbar
 
@@ -149,7 +162,7 @@ class Encapsule.code.app.SchemaViewModel
                     centerPoint.y = 32
             else
                 centerPoint.y = 0
-            jig = Encapsule.code.lib.kohelpers.SplitRectIntoQuads "Jig #0 (L)", @viewRect, centerPoint
+            jig = Encapsule.code.lib.kohelpers.SplitRectIntoQuads "Jig #0 (L)", @viewRect, centerPoint, 3
 
             @viewJig0 = jig
             @viewJig0
@@ -207,18 +220,18 @@ class Encapsule.code.app.SchemaViewModel
 
             centerPoint.x = 0
             if @viewSelect1Enable()
-                centerPoint.x += @viewSelect1Mode() == "full" and 300 or 32
+                centerPoint.x += @viewSelect1Mode() == "full" and 301 or 33
 
             if @viewSelect2Enable()
-                centerPoint.x += @viewSelect2Mode() == "full" and 300 or 32
+                centerPoint.x += @viewSelect2Mode() == "full" and 301 or 33
 
             if @viewEdit1Enable()
                 if @viewEdit1Mode() == "full"
-                    centerPoint.y = @viewJig0Rects.contentRect.height - 400 - 1
+                    centerPoint.y = @viewJig0Rects.contentRect.height - 400
                 else
-                    centerPoint.y = @viewJig0Rects.contentRect.height - 32 - 1
+                    centerPoint.y = @viewJig0Rects.contentRect.height - 32
             else
-                centerPoint.y = @viewJig0Rects.contentRect.height - 1
+                centerPoint.y = @viewJig0Rects.contentRect.height
 
             jig = Encapsule.code.lib.kohelpers.SplitRectIntoQuads "Jig #1 (L)", @viewJig0Rects.contentRect, centerPoint
 
@@ -238,14 +251,14 @@ class Encapsule.code.app.SchemaViewModel
          @svgPlaneOffsetTop = ko.observable 0
          @cssSvgPlaneOffsetTop = ko.computed => @svgPlaneOffsetTop() + "px"
 
-         @editWidth = ko.observable 0
-         @cssEditWidth = ko.computed => @editWidth() + "px"
-         @editHeight = ko.observable 0
-         @cssEditHeight = ko.computed => @editHeight() + "px"
-         @editOffsetLeft = ko.observable 0
-         @cssEditOffsetLeft = ko.computed => @editOffsetLeft() + "px"
-         @editOffsetTop = ko.observable 0
-         @cssEditOffsetTop = ko.computed => @editOffsetTop() + "px"
+         @edit1Width = ko.observable 0
+         @cssEdit1Width = ko.computed => @edit1Width() + "px"
+         @edit1Height = ko.observable 0
+         @cssEdit1Height = ko.computed => @edit1Height() + "px"
+         @edit1OffsetLeft = ko.observable 0
+         @cssEdit1OffsetLeft = ko.computed => @edit1OffsetLeft() + "px"
+         @edit1OffsetTop = ko.observable 0
+         @cssEdit1OffsetTop = ko.computed => @edit1OffsetTop() + "px"
 
          @viewJig1RectsRefresh = =>
 
@@ -253,7 +266,7 @@ class Encapsule.code.app.SchemaViewModel
 
              result = {}
              result.svgplaneRect = viewJig1.quad2
-             result.editRect = viewJig1.quad4
+             result.edit1Rect = viewJig1.quad4
              result.selectRect = viewJig1.quad1
              result.selectRect.height += viewJig1.quad3.height
 
@@ -262,10 +275,10 @@ class Encapsule.code.app.SchemaViewModel
              @svgPlaneOffsetLeft(result.svgplaneRect.offsetLeft)
              @svgPlaneOffsetTop(result.svgplaneRect.offsetTop)
 
-             @editWidth(result.editRect.width)
-             @editHeight(result.editRect.height)
-             @editOffsetLeft(result.editRect.offsetLeft)
-             @editOffsetTop(result.editRect.offsetTop)
+             @edit1Width(result.edit1Rect.width)
+             @edit1Height(result.edit1Rect.height)
+             @edit1OffsetLeft(result.edit1Rect.offsetLeft)
+             @edit1OffsetTop(result.edit1Rect.offsetTop)
 
              @viewJig1Rects = result
              @viewJig1Rects
@@ -335,25 +348,29 @@ class Encapsule.code.app.SchemaViewModel
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModel", ( ->
     """
-    Can has content?
 
-    <div id="idSchemaViewToolbar" class="classCentered" data-bind="style: { width: cssToolbarWidth(), height: cssToolbarHeight(), marginLeft: cssToolbarOffsetLeft(), marginTop: cssToolbarOffsetTop() }">
+    <div id="idSchemaViewToolbar" class="classSchemaLayerWindow classLayerWindowBorder classRoundedCorners15" data-bind="visible: viewToolbarEnable, style: { width: cssToolbarWidth(), height: cssToolbarHeight(), marginLeft: cssToolbarOffsetLeft(), marginTop: cssToolbarOffsetTop() }">
+        Toolbar
     </div>
 
-    <div id="idSchemaViewSelect1" class="classCentered" data-bind="style: { width: cssSelect1Width(), height: cssSelect1Height(), marginLeft: cssSelect1OffsetLeft(), marginTop: cssSelect1OffsetTop() }">
+    <div  id="idSchemaViewSelect1" class="classSchemaLayerWindow classRoundedCorners15" data-bind="visible: viewSelect1Enable, style: { width: cssSelect1Width(), height: cssSelect1Height(), marginLeft: cssSelect1OffsetLeft(), marginTop: cssSelect1OffsetTop() }">
+        Select 1
     </div>
 
-    <div id="idSchemaViewSelect2" class="classCentered" data-bind="style: { width: cssSelect2Width(), height: cssSelect2Height(), marginLeft: cssSelect2OffsetLeft(), marginTop: cssSelect2OffsetTop() }">
+    <div id="idSchemaViewSelect2" class="classSchemaLayerWindow classRoundedCorners15" data-bind="visible: viewSelect2Enable, style: { width: cssSelect2Width(), height: cssSelect2Height(), marginLeft: cssSelect2OffsetLeft(), marginTop: cssSelect2OffsetTop() }">
+        Select 2
     </div>
 
-
-    <div id="idSchemaViewFrameStack" class="classCentered" data-bind="style: { width: cssFrameStackWidth(), height: cssFrameStackHeight(), marginLeft: cssFrameStackOffsetLeft(), marginTop: cssFrameStackOffsetTop() }">
+    <div id="idSchemaViewFrameStack" class="classSchemaLayerWindow classRoundedCorners15"  data-bind="visible: viewFrameStackEnable, style: { width: cssFrameStackWidth(), height: cssFrameStackHeight(), marginLeft: cssFrameStackOffsetLeft(), marginTop: cssFrameStackOffsetTop() }">
+        Frame Stack
     </div>
 
-    <div id="idSchemaViewSvgPlane" class="classCentered" data-bind="style: { width: cssSvgPlaneWidth(), height: cssSvgPlaneHeight(), marginLeft: cssSvgPlaneOffsetLeft(), marginTop: cssSvgPlaneOffsetTop() }">
+    <div id="idSchemaViewSvgPlane" class="classSchemaLayerWindow classRoundedCorners15"  data-bind="visible: viewSvgPlaneEnable, style: { width: cssSvgPlaneWidth(), height: cssSvgPlaneHeight(), marginLeft: cssSvgPlaneOffsetLeft(), marginTop: cssSvgPlaneOffsetTop() }">
+        SVG Plane
     </div>
 
-    <div id="idSchemaViewEdit" class="classCentered" data-bind="style: { width: cssEditWidth(), height: cssEditHeight(), marginLeft: cssEditOffsetLeft(), marginTop: cssEditOffsetTop() }">
+    <div  id="idSchemaViewEdit" class="classSchemaLayerWindow classRoundedCorners15" data-bind="visible: viewEdit1Enable, style: { width: cssEdit1Width(), height: cssEdit1Height(), marginLeft: cssEdit1OffsetLeft(), marginTop: cssEdit1OffsetTop() }">
+        Edit 1
     </div>
 
     """))

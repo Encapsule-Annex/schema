@@ -59,7 +59,7 @@ namespaceEncapsule_code_lib_kohelpers.InstallKnockoutViewTemplates = ->
 
 
 
-Encapsule.code.lib.kohelpers.SplitRectIntoQuads = (name_, containerRect_, centerPoint_) ->
+Encapsule.code.lib.kohelpers.SplitRectIntoQuads = (name_, containerRect_, centerPoint_, paneMargin_) ->
 
     try
     
@@ -92,28 +92,55 @@ Encapsule.code.lib.kohelpers.SplitRectIntoQuads = (name_, containerRect_, center
  
         result.quad1 = {}
 
-        result.quad1.width = centerPoint_.x
-        result.quad1.height = centerPoint_.y
+        result.quad1.width = Math.max(0, centerPoint_.x - paneMargin_ - 1 )
+        result.quad1.height = Math.max(0, centerPoint_.y - paneMargin_ - 1 )
         result.quad1.offsetLeft = containerRect_.offsetLeft
         result.quad1.offsetTop = containerRect_.offsetTop
 
         result.quad2 = {}
-        result.quad2.width = containerRect_.width - result.quad1.width + 1
-        result.quad2.height = centerPoint_.y
-        result.quad2.offsetLeft = containerRect_.offsetLeft + result.quad1.width
+        result.quad2.width = Math.max( 0, containerRect_.width - result.quad1.width - paneMargin_ )
+        result.quad2.height = Math.max( 0, centerPoint_.y - paneMargin_ - 1 )
+        result.quad2.offsetLeft = containerRect_.offsetLeft + result.quad1.width + (2 * paneMargin_)
         result.quad2.offsetTop = containerRect_.offsetTop
 
         result.quad3 = {}
         result.quad3.width = result.quad1.width
-        result.quad3.height = containerRect_.height - result.quad1.height + 1
+        result.quad3.height = Math.max( 0, containerRect_.height - result.quad1.height - (2 * paneMargin_) )
         result.quad3.offsetLeft = containerRect_.offsetLeft
-        result.quad3.offsetTop = containerRect_.offsetTop + result.quad1.height + 1
+        result.quad3.offsetTop = containerRect_.offsetTop + result.quad1.height + (2 * paneMargin_)
 
         result.quad4 = {}
         result.quad4.width = result.quad2.width
         result.quad4.height = result.quad3.height
         result.quad4.offsetLeft = result.quad2.offsetLeft
         result.quad4.offsetTop = result.quad3.offsetTop
+
+        # QA
+
+        # Row 0 / Q1 Q2
+        if result.quad1.height != result.quad2.height
+            throw "Q1 and Q2 heights do not match!"
+        # Row 1 / Q3 Q4
+        if result.quad3.height != result.quad4.height
+            throw "Q3 and Q4 heights do not match!"
+        # Column 0 / Q1 Q3
+        if result.quad1.width != result.quad3.width
+            throw "Q1 and Q4 widths do not match!"
+        # Column 1 / Q2 Q4
+        if result.quad2.width != result.quad4.width
+            throw "Q2 and Q4 widths do not match!"
+
+        containerWidth = containerRect_.width
+        containerWidth -= 2 * paneMargin_
+        containerWidth -= result.quad1.width + result.quad2.width
+        if containerWidth not 0
+           Console.message "Total width distribution looks wrong?"
+
+        containerHeight = containerRect_.height
+
+        if containerRect_.height != ( result.quad1.height + result.quad3.height (2 * paneMargin_))
+            Console.message "Total height distribution looks wrong?"
+
 
         result
 
