@@ -37,7 +37,6 @@ class Encapsule.code.app.SchemaViewModel
         @viewNavigatorMode = ko.observable "min"
         @viewNavigatorEnable = ko.observable true
 
-
         #
         # These are the top-level data models for each of Schema's main application windows.
         #      
@@ -273,12 +272,58 @@ class Encapsule.code.app.SchemaViewModel
 
 
 
+        @viewJig2 = {}
+
+        @select1Width = ko.observable 0
+        @cssSelect1Width = ko.computed => @select1Width() + "px"
+        @select1Height = ko.observable 0
+        @cssSelect1Height = ko.computed => @select1Height() + "px"
+        @select1OffsetLeft = ko.observable 0
+        @cssSelect1OffsetLeft = ko.computed => @select1OffsetLeft() + "px"
+        @select1OffsetTop = ko.observable 0
+        @cssSelect1OffsetTop = ko.computed => @select1OffsetTop() + "px"
+
+        @select2Width = ko.observable 0
+        @cssSelect2Width = ko.computed => @select2Width() + "px"
+        @select2Height = ko.observable 0
+        @cssSelect2Height = ko.computed => @select2Height() + "px"
+        @select2OffsetLeft = ko.observable 0
+        @cssSelect2OffsetLeft = ko.computed => @select2OffsetLeft() + "px"
+        @select2OffsetTop = ko.observable 0
+        @cssSelect2OffsetTop = ko.computed => @select2OffsetTop() + "px"
 
 
+        @viewJig2Refresh = =>
+            viewJig1Rects = @viewJig1RectsRefresh()
+
+            centerPoint = {}
+            centerPoint.x = 0
+            centerPoint.y = @viewJig1Rects.selectRect.height
+
+            if @viewSelect1Enable()
+                centerPoint.x += @viewSelect1Mode() == "full" and 300 or 32
+          
+            jig = Encapsule.code.lib.kohelpers.SplitRectIntoQuads "Jig #2 (L)", @viewJig1Rects.selectRect, centerPoint 
+
+            @select1Height(jig.quad1.height)
+            @select1Width(jig.quad1.width)
+            @select1OffsetLeft (jig.quad1.offsetLeft)
+            @select1OffsetTop (jig.quad1.offsetTop)         
+
+            @select2Height(jig.quad2.height)
+            @select2Width(jig.quad2.width)
+            @select2OffsetTop(jig.quad2.offsetTop)
+            @select2OffsetLeft(jig.quad2.offsetLeft)   
+
+            @viewJigs2 = jig
+            @viewJigs2
+
+
+        
 
 
         @documentResizeCallback = (args_) =>
-            result = @viewJig1RectsRefresh()
+            result = @viewJig2Refresh()
 
         # setInterval @documentResizeCallback, 5000 # This catches everything (including browser restore) eventually
         window.addEventListener 'resize', @documentResizeCallback
@@ -294,6 +339,13 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 
     <div id="idSchemaViewToolbar" class="classCentered" data-bind="style: { width: cssToolbarWidth(), height: cssToolbarHeight(), marginLeft: cssToolbarOffsetLeft(), marginTop: cssToolbarOffsetTop() }">
     </div>
+
+    <div id="idSchemaViewSelect1" class="classCentered" data-bind="style: { width: cssSelect1Width(), height: cssSelect1Height(), marginLeft: cssSelect1OffsetLeft(), marginTop: cssSelect1OffsetTop() }">
+    </div>
+
+    <div id="idSchemaViewSelect2" class="classCentered" data-bind="style: { width: cssSelect2Width(), height: cssSelect2Height(), marginLeft: cssSelect2OffsetLeft(), marginTop: cssSelect2OffsetTop() }">
+    </div>
+
 
     <div id="idSchemaViewFrameStack" class="classCentered" data-bind="style: { width: cssFrameStackWidth(), height: cssFrameStackHeight(), marginLeft: cssFrameStackOffsetLeft(), marginTop: cssFrameStackOffsetTop() }">
     </div>

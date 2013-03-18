@@ -84,6 +84,21 @@ z-index: 50;
 background-color: #99CCFF;
 }
 
+#idSchemaViewSelect1 {
+overflow: hidden;
+z-index: -1;
+-moz-border-radius: 15px; border-radius: 15px; border: 1px solid black;
+background-color: #FFCC00;
+}
+
+#idSchemaViewSelect2 {
+overflow: hidden;
+z-index: -1;
+-moz-border-radius: 15px; border-radius: 15px; border: 1px solid black;
+background-color: #00CCCC;
+}
+
+
 #idSchemaViewFrameStack {
 overflow: hidden;
 z-index: 50;
@@ -108,18 +123,6 @@ background-color: white;
 
 
 
-#idSchemaViewModelSelect1 {
-overflow: hidden;
-z-index: -1;
--moz-border-radius: 15px; border-radius: 15px; border: 1px solid black;
-background-color: #FFCC00;
-}
-
-#idSchemaViewModelSelect2 {
-overflow: hidden;
-z-index: -1;
--moz-border-radius: 15px; border-radius: 15px; border: 1px solid red;
-}
 
 
 
