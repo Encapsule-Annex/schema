@@ -30,18 +30,6 @@ namespaceEncapsule_runtime_app_kotemplates = Encapsule.runtime.app.kotemplates? 
 
 
 
-class Encapsule.code.lib.kohelpers.observable
-    constructor: (type_) ->
-        @type = type_
-        @observers = []
-        @subscribe = (callback_) =>
-            @observers.push callback_
-        @read = => @type
-        @write = (value_) =>
-            @type = value_
-            for observer in observers
-                observer(@)
-
 
 
 class Encapsule.code.lib.kohelpers.Point

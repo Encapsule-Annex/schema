@@ -87,16 +87,17 @@ class Encapsule.code.app.SchemaViewModel
             twiddleFactor = 32
             # Determine the total area available for the Schema view model.
             queryEl = $(document) 
-            @documentRect.widthActual =  queryEl.width()
-            @documentRect.heightActual = queryEl.height()
-            @documentRect.innerWidthActual = queryEl.innerWidth()
-            @documentRect.innerHeightActual = queryEl.innerHeight()
-            @documentRect.outerWidthActual = queryEl.outerWidth()
-            @documentRect.outerHeightActual = queryEl.outerHeight()
+
+            #@documentRect.widthActual =  queryEl.width()
+            #@documentRect.heightActual = queryEl.height()
+            #@documentRect.innerWidthActual = queryEl.innerWidth()
+            #@documentRect.innerHeightActual = queryEl.innerHeight()
+            #@documentRect.outerWidthActual = queryEl.outerWidth()
+            #@documentRect.outerHeightActual = queryEl.outerHeight()
+
             @documentRect.outerMarginWidthActual = queryEl.outerWidth(true)
             @documentRect.outerMarginHeightActual = queryEl.outerHeight(true)
-         
-            rect = new Encapsule.code.lib.kohelpers.Rectangle (@documentRect.widthActual - twiddleFactor), (@documentRect.heightActual - twiddleFactor)
+            rect = new Encapsule.code.lib.kohelpers.Rectangle (@documentRect.outerMarginWidthActual - twiddleFactor), (@documentRect.outerMarginHeightActual - twiddleFactor)
 
             documentOffsetRect = new Encapsule.code.lib.kohelpers.OffsetRectangle(rect, { horizontal: 1.0, vertical: 1.0 } )
             @documentOffsetRect(documentOffsetRect)
@@ -183,7 +184,7 @@ class Encapsule.code.app.SchemaViewModel
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModel", ( ->
-    """What's up doc?"""))
+    """idKoTemplate_SchemaViewModel"""))
 
 ###
 
