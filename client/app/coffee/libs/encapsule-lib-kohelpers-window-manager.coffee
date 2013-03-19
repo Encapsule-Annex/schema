@@ -39,47 +39,134 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
     constructor: (layout_) ->
 
         try
+            # PARAMETER VALIDATION
+
             if not layout_? or not layout_
-                throw "You must specify an array of splitters."
+                throw "You must specify a layout to construct an ObservableWindowManager instance."
 
-            @offsetRectangle = new Encapsule.code.lib.kohelpers.OffsetRectangle()
+            if not layout_.layout? and not layout_.layout
+                throw "Expecting a top-level object named layout."
 
-            layoutLevel = 0
+
+            # INSTANCE STATE
+
+            # OBSERVABLES
+
+            @offsetRect = ko.observable new Encapsule.code.lib.kohelpers.OffsetRectangle()
+
+            # NON-OBSERVABLE INTERNAL INSTANCE STATE
+
+            @layout = layout_.layout
+            @planes = []
             @windows = []
             @splits = []
+             
+            # INTERNAL STATE INITIALIZATION
 
-            for splitter in layout_
+            $("body").css { backgroundColor: @layout.bodyBackgroundColor }
 
-                try
-                    Console.message("Window manager level #{layoutLevel}: #{splitter.name}")
-                    Console.message("... type = #{splitter.type}")
-                    Console.message("... Q1 window descriptor = #{splitter.Q1WindowDescriptor}")
-                    Console.message("... Q2 window descriptor = #{splitter.Q2WindowDescriptor}")
+            # The Window Manager takes as input a "layout" Javascript object.
+            # The layout is declarative and is parsed here to produce this window manager's internal runtime
+            # state model: a hierarchy of objects initialized using data from the layout. 
+            #
+            # We intend to bind the internal state of the window manager to the DOM via Knockout.js.
+            # As we parse the layout declaration below, build the HTML binding string.
+            #
 
-                    newSplit = new Encapsule.code.lib.kohelpers.WindowSplitter( splitter.type, splitter.Q1WindowDescriptor, splitter.Q2WindowDescriptor, @windows )
-                    @splits.push newSplit
+            htmlBindingBegin = """<div id="#{@layout.id}" class="classObservableWindowManager">"""
+            htmlBindingEnd = """</div>"""
 
-                    Console.message("... window manager level #{layoutLevel} processing completed.")
-                    layoutLevel++
+            @runtimeState = {}
+            @runtimeState.planes = []
+            @runtimeState.observableWindows = []
 
-                catch exception
-                    throw "Check level #{layoutLevel} for malformed input: #{exception}"
+            planeIndex = 0
+            for planeLayout in @layout.planes
+                # begin
+                planeRuntime = { id: planeLayout.id, name: planeLayout.name, splitterStack: [] }
+                htmlBindingBegin += """<div id="#{planeLayout.id}" class="classObservableManagedPlane">"""
+                htmlBindingEnd = """</div>""" + htmlBindingEnd
+                splitIndex = 0
+                for split in planeLayout.splitterStack
+                    # begin split scope
+                    try
+                        Console.message("Window manager: Starting plane #{planeIndex} split #{splitIndex} ...")
+                        Console.message("... type = #{split.type}")
+                        Console.message("... Q1 window descriptor = #{split.Q1WindowDescriptor}")
+                        Console.message("... Q2 window descriptor = #{split.Q2WindowDescriptor}")
 
-            Console.message("... Done instantiating managed observable windows.")
+                        splitterObservableWindows = []
+                        newSplit = new Encapsule.code.lib.kohelpers.WindowSplitter( split.type, split.Q1WindowDescriptor, split.Q2WindowDescriptor, splitterObservableWindows )
+                        planeRuntime.splitterStack.push newSplit
+                        for observableWindow in splitterObservableWindows
+                            @runtimeState.observableWindows.push observableWindow
+                            htmlBindingBegin += """<div id="#{observableWindow.id}" class="classObservableWindow"></div>"""
 
-            @setOffsetRectangle = (offsetRectangle_, forceEval_) =>
+                        Console.message("... Layout #{planeIndex} #{splitIndex} processed.")
+                        splitIndex++
+                    catch exception
+                        throw "Check level #{layoutLevel} for malformed input: #{exception}"
+                    # end split scope
+                # back at plane scope
+                @runtimeState.planes.push planeRuntime
+                Console.message("Layout plane #{planeIndex} processed.")
+                planeIndex++
+            Console.message("Done transforming layout into view model :)")
+
+            $("body").append( $(htmlBindingBegin + htmlBindingEnd) )
+
+
+
+
+
+            @getOffsetRectangle = =>
+                documentEl = $(document)
+                # width =  @documentEl.width()
+                # height = @documentEl.height()
+                # innerWidth = @documentEl.innerWidth()
+                # innerHeight = @documentEl.innerHeight()
+                # outerWidth = @documentEl.outerWidth()
+                # outerHeight = @documentEl.outerHeight()
+                marginWidth = documentEl.outerWidth(true)
+                marginHeight = documentEl.outerHeight(true)
+                viewRectangle = new Encapsule.code.lib.kohelpers.Rectangle marginWidth - 30, marginHeight - 30
+                viewOffsetRectangle = new Encapsule.code.lib.kohelpers.OffsetRectangle viewRectangle, undefined
+                viewOffsetRectangle
+
+
+            #
+            # Given a new offset rectangle representing the "view", determine if we need to
+            # re-evaluate the split stack.
+            #
+            
+            @updateViewState = (forceEval_) =>
+
                 # Return false iff no change and not forceEval_
-                
-                Console.message("Window manager setOffSetRectangle = #{offsetRectangle_} forceEval=#{forceEval_}")
 
-                if offsetRectangle_? and offsetRectangle_ and offsetRectangle_ == @offsetRectangle and not forceEval_
-                    Console.message("... No update necessary.")
-                    return false
+                forceEval = forceEval_? and forceEval_ or false
 
-                Console.message("... Bounding offset rectangle has been updated.")
-                @offsetRectangle = offsetRectangle_
+                oldOffsetRectangle = @offsetRect()
+                newOffsetRectangle = @getOffsetRectangle()
+
+                if newOffsetRectangle == oldOffsetRectangle and not forceEval
+                    return false;
+
+                @offsetRect newOffsetRectangle
+                Console.messageRaw(".")
 
 
+            # Update the view state to power-on defaults.
+            # @updateViewState(true)
+
+
+
+
+            # LASTLY, GO LIVE WITH VIEW STATE UPDATES IN RESPONSE TO BROWSER RESIZE EVENTS
+
+            # setInterval @updateViewState, 5000 # This catches everything (including browser restore) eventually
+            #window.addEventListener('resize', @updateViewState)
+
+            window.addEventListener 'resize', @updateViewState
 
             Console.message("... Window manager initialization complete.")
 

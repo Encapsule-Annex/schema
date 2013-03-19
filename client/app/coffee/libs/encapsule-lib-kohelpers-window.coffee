@@ -35,8 +35,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
         Console.message("... + WindowManager creating new window id=#{sourceDescriptor_.id} name=#{sourceDescriptor_.name}")
         @sourceDescriptor = sourceDescriptor_
 
-        @id = ko.observable sourceDescriptor_.id
-        @name = ko.observable sourceDescriptor_.name
+        @id = sourceDescriptor_.id
+        @name = sourceDescriptor_.name
 
 
         @offsetRectangle = undefined

@@ -51,6 +51,10 @@ class namespaceEncapsule_code_app.Schema
             Console.message "Inserting #{appName} view templates into DOM:"
             Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates()
 
+            Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager Encapsule.code.app.viewLayout
+
+            ### CUT THE CORD
+
             Console.message "Initializing #{appName} model."
             Encapsule.runtime.app.SchemaViewModel = new Encapsule.code.app.SchemaViewModel()
 
@@ -63,7 +67,7 @@ class namespaceEncapsule_code_app.Schema
             Console.message "Binding #{appName} data model to view model."
             ko.applyBindings Encapsule.runtime.app.SchemaViewModel, document.getElementById("idSchemaViewModel")
 
-
+            ###
           
             Console.messageRaw  "<h3>APPLICATION RUNTIME</h3>"
             Console.message "#{appName} v#{appVersion} is running..."

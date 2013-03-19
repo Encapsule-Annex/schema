@@ -99,6 +99,7 @@ phase1 = (bootstrapperOptions_) ->
     # Here's where we could bail and abort the bootstrap. For now we're just
     # pass through.
 
+
     bootstrapperOptions = bootstrapperOptions_
     setTimeout( ( -> phase2(bootstrapperOptions_) ), 1)
 
@@ -116,13 +117,15 @@ phase2 = (bootstrapperOptions_) ->
     phase2Out.appCacheMonitorState = "initializing"
     phase2Out.appCacheTerminalState = undefined
 
+    # Note to self: This entire subsystem will be completely redesigned using Schema v1.0.
+    Console.message("Checking #{appPackagePublisher} origin server for #{appName} vNext...")
+
     appCacheCallbacks = {
         onChecking: ->
-            Console.messageStart("Checking origin server for app udpates: ")
             document.title = "#{appName}: checking for updates ..."
         , onDownloading: ->
             document.title = "#{appName}: downloading updates..."
-            Console.opacity(0.6)
+            Console.opacity(0.3)
             Console.messageEnd("<strong>Updating</strong>")
             Console.messageStart("files ")
         , onProgress: (fileCount_) ->
@@ -158,7 +161,7 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheTerminalState = "locked (obsolete)"
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
-            Console.messageRaw("<h2>#{appPackagePublisher} offline. #{appName} starting...</h2>")
+            Console.messageRaw("<h2>#{appPackagePublisher} running offline from cache :)</h2>")
             setTimeout( ( -> phase3(bootstrapperOptions_) ), 1)
         , onCached: (fileCount_) ->
             Console.opacity(1.0)
@@ -166,7 +169,7 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheTerminalState = "cached"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.message("<strong>The application has been installed!</strong>")
-            Console.messageRaw("<h2>#{appName} has been cached. Starting...</h2>")
+            Console.messageRaw("<h2>#{appName} v#{appVersion} is now fully cached for on/offline use :)</h2>")
             document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 phase3(bootstrapperOptions_) )
@@ -176,15 +179,14 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheMonitorState = "noupdate"
             phase2Out.appCacheTerminalState = "noupdate"
             Console.messageEnd("<strong>No update<strong>")
-            Console.message("The most recent build of #{appName} is already cached locally for offline access.");
-            Console.message("No updates were necessary.")
-            Console.messageRaw("<h2>#{appName} is up-to-date. Starting...</h2>")
+            Console.messageRaw("<h2>#{appName} v#{appVersion} is good to go :-)</h2>")
             setTimeout( ( -> phase3(bootstrapperOptions_) ), 1)
         , onUpdateReady: (fileCount_) ->
             phase2Out.appCacheMonitorState = "updateready"
             phase2Out.appCacheTerminalState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
-            Console.messageRaw("<h2>#{appPackagePublisher} #{appName} has been updated. Restarting...</h2>")
+            Console.messageRaw("<h2>#{appName} has been updated :) Booting #{appName} vNext...</h2>")
+            Console.message("What could go wrong?")
             document.title = "#{appName}: rebooting..."
             setTimeout ( ->
                 try

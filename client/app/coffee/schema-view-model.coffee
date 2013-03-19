@@ -67,60 +67,11 @@ class Encapsule.code.app.SchemaViewModel
 
 
 
-        #
-        # All of this is to keep track of the inner dimensions of the browser window.
-        # The knockout observables should be considered as inputs written by either
-        # a 'resize' event or timer (used to catch problems with restore from full-screen).
-        #
-
-        @mainViewOffset = 32
-
-        @documentRect = {}
-        @documentOffsetRect = ko.observable new Encapsule.code.lib.kohelpers.OffsetRectangle()
-
-        @cssWidth = ko.computed => @documentOffsetRect().rectangle.width + "px"
-        @cssHeight = ko.computed => @documentOffsetRect().rectangle.height + "px"
-        @cssOffsetLeft = ko.computed => @documentOffsetRect().offset.left + "px"
-        @cssOffsetTop = ko.computed => @documentOffsetRect().offset.top + "px"
-
-        @documentOffsetRectRefresh = =>
-            twiddleFactor = 32
-            # Determine the total area available for the Schema view model.
-            queryEl = $(document) 
-
-            #@documentRect.widthActual =  queryEl.width()
-            #@documentRect.heightActual = queryEl.height()
-            #@documentRect.innerWidthActual = queryEl.innerWidth()
-            #@documentRect.innerHeightActual = queryEl.innerHeight()
-            #@documentRect.outerWidthActual = queryEl.outerWidth()
-            #@documentRect.outerHeightActual = queryEl.outerHeight()
-
-            @documentRect.outerMarginWidthActual = queryEl.outerWidth(true)
-            @documentRect.outerMarginHeightActual = queryEl.outerHeight(true)
-            rect = new Encapsule.code.lib.kohelpers.Rectangle (@documentRect.outerMarginWidthActual - twiddleFactor), (@documentRect.outerMarginHeightActual - twiddleFactor)
-
-            documentOffsetRect = new Encapsule.code.lib.kohelpers.OffsetRectangle(rect, { horizontal: 1.0, vertical: 1.0 } )
-            @documentOffsetRect(documentOffsetRect)
-
-
-        @viewOffsetRectangle = ko.computed =>
-            documentOffsetRect = @documentOffsetRect()
-            documentRect = documentOffsetRect.rectangle
-
-            viewRect = new Encapsule.code.lib.kohelpers.Rectangle( documentRect.width - @mainViewOffset, documentRect.height - @mainViewOffset )
-            viewOffsetRect = new Encapsule.code.lib.kohelpers.OffsetRectangle(viewRect, { horizontal: 1.0, vertical: 1.0 } )
-            return viewOffsetRect
-
 
         @windowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager( Encapsule.code.app.viewLayout )
         
-        @documentResizeCallback = (args_) =>
-            result =  @documentOffsetRectRefresh()
 
-        # setInterval @documentResizeCallback, 5000 # This catches everything (including browser restore) eventually
-        window.addEventListener 'resize', @documentResizeCallback
 
-        @documentResizeCallback()
 
 
 
