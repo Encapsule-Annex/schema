@@ -32,47 +32,6 @@ namespaceEncapsule_runtime_app_kotemplates = Encapsule.runtime.app.kotemplates? 
 
 
 
-class Encapsule.code.lib.kohelpers.Point
-    constructor: (x_, y_) ->
-        @x = x_
-        @y = y_
-
-class Encapsule.code.lib.kohelpers.OffsetPoint
-    constructor: (top_, left_) ->
-        @top = top_
-        @left = left_
-
-class Encapsule.code.lib.kohelpers.Rectangle
-    constructor: (width_, height_) ->
-        @width = width_? and Math.max(0, width_) or 0
-        @height = height_? and Math.max(0, height_) or 0
-        @visible = @width and @height
-
-class Encapsule.code.lib.kohelpers.OffsetRectangle
-    constructor: (rectangle_, bias_) ->
-
-        @bias = {}
-        if bias_? and bias_
-            @bias = bias_
-        else
-            @bias.horizontal = 1.0
-            @bias.vertical = 1.0
-
-        @rectangle = rectangle_? and rectangle_ or new Encapsule.code.lib.kohelpers.Rectangle()
-
-        #
-        # This algorithm models a DIV with postion: fixed, top: 50%, left: 50%; padding: 0px, margin-left: @offset.left, margin-top: @offset.top
-        #
-
-        displaceTop = @rectangle.height / -2
-        displaceTopBiased = Math.round displaceTop * @bias.horizontal
-
-        displaceLeft = @rectangle.width / -2
-        displaceLeftBiased = Math.round displaceLeft * @bias.vertical
-
-        @offset = new Encapsule.code.lib.kohelpers.OffsetPoint(displaceTopBiased, displaceLeftBiased)
-
-
 
 #
 # WindowModeDescriptor is a function that returns a Javascript object describing X and Y axes
