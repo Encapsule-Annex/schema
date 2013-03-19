@@ -42,8 +42,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             if not layout_? or not layout_
                 throw "You must specify an array of splitters."
 
-            @offsetRectangle = undefined
-
+            @offsetRectangle = new Encapsule.code.lib.kohelpers.OffsetRectangle()
 
             layoutLevel = 0
             @windows = []

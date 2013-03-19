@@ -112,63 +112,7 @@ class Encapsule.code.app.SchemaViewModel
             return viewOffsetRect
 
 
-        @windowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager [
-            {
-                name: "Frame Stack Split"
-                type: "vertical"
-                Q1WindowDescriptor: undefined
-                Q2WindowDescriptor: {
-                    id: "idFrameStack"
-                    name: "Frame Stack Window"
-                    modes: { full: { reserve: 300 }, min: { reserve: 64 } }
-                    }
-                },
-            {
-                name: "Toolbar Split"
-                type: "horizontal"
-                Q1WindowDescriptor: {
-                    id: "idToolbar"
-                    name: "Toolbar Window"
-                    modes: { full: { reserve: 128 }, min: { reserve: 64 } }
-                    }
-                Q2WindowDescriptor: undefined
-                },
-            {
-                name: "Select 1 Split"
-                type: "vertical"
-                Q1WindowDescriptor: {
-                    id: "idSelect1"
-                    name: "Select 1 Window"
-                    modes: { full: { reserve: 300 }, min: { reserve: 64 } }
-                    }
-                Q2WindowDescriptor: undefined
-                },
-            {
-                name: "Select 2 Split"
-                type: "vertical"
-                Q1WindowDescriptor: {
-                    id: "idSelect2"
-                    name: "Select 1 Window"
-                    modes: { full: { reserve: 300 }, min: { reserve: 64 } }
-                    }
-                Q2WindowDescriptor: undefined
-                },
-            {
-                name: "SVG/Edit Split"
-                type: "horizontal"
-                Q1WindowDescriptor: {
-                    id: "idSVGPlane"
-                    name: "SVG Plane"
-                    modes: { full: { reserve: 0 }, min: { reserve: 0 } }
-                    }
-                Q2WindowDescriptor: {
-                    id: "idEdit1"
-                    name: "Edit 1 Window"
-                    modes: { full: { reserve: 0 }, min: { reserve: 64 } }
-                    }
-                }
-            ] # :-)
-
+        @windowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager( Encapsule.code.app.viewLayout )
         
         @documentResizeCallback = (args_) =>
             result =  @documentOffsetRectRefresh()
