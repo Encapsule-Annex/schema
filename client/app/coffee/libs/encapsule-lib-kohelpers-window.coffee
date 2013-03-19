@@ -56,31 +56,31 @@ class Encapsule.code.lib.kohelpers.OffsetPoint
 
 class Encapsule.code.lib.kohelpers.Rectangle
     constructor: (width_, height_) ->
-        @width = Math.max 0, width_
-        @height = Math.max 0, height_
-        @visible = => @width and @height
+        @width = width_? and Math.max(0, width_) or 0
+        @height = height_? and Math.max(0, height_) or 0
+        @visible = @width and @height
 
 class Encapsule.code.lib.kohelpers.OffsetRectangle
     constructor: (rectangle_, bias_) ->
 
         @bias = {}
-        if bias_? and bias
+        if bias_? and bias_
             @bias = bias_
         else
             @bias.horizontal = 1.0
             @bias.vertical = 1.0
 
-        @rectangle = rectangle_
+        @rectangle = rectangle_? and rectangle_ or new Encapsule.code.lib.kohelpers.Rectangle()
 
         #
         # This algorithm models a DIV with postion: fixed, top: 50%, left: 50%; padding: 0px, margin-left: @offset.left, margin-top: @offset.top
         #
 
-        displaceTop = rectangle_.height / -2
-        displaceTopBiased = displaceTop * @bias.horizontal
+        displaceTop = @rectangle.height / -2
+        displaceTopBiased = Math.round displaceTop * @bias.horizontal
 
-        displaceLeft = rectangle_.width / -2
-        displaceLeftBiased = displaceLeft * @bias.vertical
+        displaceLeft = @rectangle.width / -2
+        displaceLeftBiased = Math.round displaceLeft * @bias.vertical
 
         @offset = new Encapsule.code.lib.kohelpers.OffsetPoint(displaceTopBiased, displaceLeftBiased)
 
@@ -125,6 +125,8 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
 
         @type = type_
 
+        @offsetRectangle = undefined
+
         @q1Descriptor = q1Descriptor_
         @q2Descriptor = q2Descriptor_
 
@@ -145,6 +147,27 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
             @q2Window = new Encapsule.code.lib.kohelpers.ObservableWindow(q2Descriptor_)
             windowEntry = { id: @q2Window.id, window: @q2Window }
             windows_.push windowEntry
+
+
+        # Set the bounding offset rectangle defining the outer dimension of this window splitter.
+
+        @setOffsetRectangle = (offsetRectangle_, forceEval_ ) =>
+
+            # Return false iff no change and not forceEval_
+
+            if offsetRectangle_? and offsetRectangle_ and offsetRectangle_ == @offsetRectangle and not forceEval_
+                return false
+            
+            # The bounding rectangle has been changed.
+
+            @offsetRectangle = offsetRectangle_
+
+
+
+            
+
+
+            
 
 
 
@@ -179,16 +202,13 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
 
 class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
-    constructor: (offsetRectangle_, layout_) ->
+    constructor: (layout_) ->
 
         try
-            if not offsetRectangle_? or not offsetRectangle_
-                throw "You must specify a function to call to get the offset rectangle to be used by the window manager."
-
             if not layout_? or not layout_
                 throw "You must specify an array of splitters."
 
-            @viewOffsetRectangle = offsetRectangle_
+            @offsetRectangle = undefined
 
 
             layoutLevel = 0
@@ -212,7 +232,22 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 catch exception
                     throw "Check level #{layoutLevel} for malformed input: #{exception}"
 
-        
+            Console.message("... Done instantiating managed observable windows.")
+
+            @setOffsetRectangle = (offsetRectangle_, forceEval_) =>
+                # Return false iff no change and not forceEval_
+                
+                Console.message("Window manager setOffSetRectangle = #{offsetRectangle_} forceEval=#{forceEval_}")
+
+                if offsetRectangle_? and offsetRectangle_ and offsetRectangle_ == @offsetRectangle and not forceEval_
+                    Console.message("... No update necessary.")
+                    return false
+
+                Console.message("... Bounding offset rectangle has been updated.")
+                @offsetRectangle = offsetRectangle_
+
+
+
             Console.message("... Window manager initialization complete.")
 
 

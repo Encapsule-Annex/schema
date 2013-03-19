@@ -76,70 +76,42 @@ class Encapsule.code.app.SchemaViewModel
         @mainViewOffset = 32
 
         @documentRect = {}
-        @documentRect.width = 0
-        @documentRect.height = 0
-        @observableWidth = ko.observable 0
-        @cssWidth = ko.computed => @observableWidth() + "px"
-        @observableHeight = ko.observable 0
-        @cssHeight = ko.computed => @observableHeight() + "px"
-        @observableOffsetLeft = ko.observable 0
-        @cssOffsetLeft = ko.computed => @observableOffsetLeft() + "px"
-        @observableOffsetTop = ko.observable 0
-        @cssOffsetTop = ko.computed => @observableOffsetTop() + "px"
-        @documentRectRefresh = =>
+        @documentOffsetRect = ko.observable new Encapsule.code.lib.kohelpers.OffsetRectangle()
 
+        @cssWidth = ko.computed => @documentOffsetRect().rectangle.width + "px"
+        @cssHeight = ko.computed => @documentOffsetRect().rectangle.height + "px"
+        @cssOffsetLeft = ko.computed => @documentOffsetRect().offset.left + "px"
+        @cssOffsetTop = ko.computed => @documentOffsetRect().offset.top + "px"
+
+        @documentOffsetRectRefresh = =>
             twiddleFactor = 32
-
             # Determine the total area available for the Schema view model.
             queryEl = $(document) 
-
-
             @documentRect.widthActual =  queryEl.width()
             @documentRect.heightActual = queryEl.height()
-
             @documentRect.innerWidthActual = queryEl.innerWidth()
             @documentRect.innerHeightActual = queryEl.innerHeight()
-
             @documentRect.outerWidthActual = queryEl.outerWidth()
             @documentRect.outerHeightActual = queryEl.outerHeight()
-
             @documentRect.outerMarginWidthActual = queryEl.outerWidth(true)
             @documentRect.outerMarginHeightActual = queryEl.outerHeight(true)
-
          
+            rect = new Encapsule.code.lib.kohelpers.Rectangle (@documentRect.widthActual - twiddleFactor), (@documentRect.heightActual - twiddleFactor)
+
+            documentOffsetRect = new Encapsule.code.lib.kohelpers.OffsetRectangle(rect, { horizontal: 1.0, vertical: 1.0 } )
+            @documentOffsetRect(documentOffsetRect)
 
 
-            @documentRect.width = @documentRect.widthActual - twiddleFactor
-            @documentRect.height = @documentRect.heightActual - twiddleFactor
+        @viewOffsetRectangle = ko.computed =>
+            documentOffsetRect = @documentOffsetRect()
+            documentRect = documentOffsetRect.rectangle
 
-            @observableWidth(@documentRect.width)
-            @observableHeight(@documentRect.height)
-            @observableOffsetLeft(  Math.round (@documentRect.width  / -2 ) - 1 )
-            @observableOffsetTop(   Math.round (@documentRect.height / -2 )  )
-        
-        @viewRect = {}
-        @viewRect.width = 0
-        @viewRect.height = 0
-        @viewRect.offsetLeft = 0
-        @viewRect.offsetTop = 0
-        @viewRectRefresh = =>
-            documentRect = @documentRectRefresh()
-            @viewRect.width = @documentRect.width - @mainViewOffset
-            @viewRect.height = @documentRect.height - @mainViewOffset
-            @viewRect.offsetLeft = Math.round @viewRect.width / -2
-            @viewRect.offsetTop = Math.round @viewRect.height / -2
-            @viewRect
+            viewRect = new Encapsule.code.lib.kohelpers.Rectangle( documentRect.width - @mainViewOffset, documentRect.height - @mainViewOffset )
+            viewOffsetRect = new Encapsule.code.lib.kohelpers.OffsetRectangle(viewRect, { horizontal: 1.0, vertical: 1.0 } )
+            return viewOffsetRect
 
 
-        @documentResizeCallback = (args_) =>
-            result = @viewRectRefresh()
-
-        # setInterval @documentResizeCallback, 5000 # This catches everything (including browser restore) eventually
-        window.addEventListener 'resize', @documentResizeCallback
-
-        @documentResizeCallback()
-
-        @windowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager @viewRect, [
+        @windowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager [
             {
                 name: "Frame Stack Split"
                 type: "vertical"
@@ -197,6 +169,14 @@ class Encapsule.code.app.SchemaViewModel
             ] # :-)
 
         
+        @documentResizeCallback = (args_) =>
+            result =  @documentOffsetRectRefresh()
+
+        # setInterval @documentResizeCallback, 5000 # This catches everything (including browser restore) eventually
+        window.addEventListener 'resize', @documentResizeCallback
+
+        @documentResizeCallback()
+
 
 
 
