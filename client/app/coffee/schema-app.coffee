@@ -41,6 +41,8 @@ class namespaceEncapsule_code_app.Schema
             document.title = "#{appName} v#{appVersion}"
             bodyElement = $("body")
 
+
+            Console.show()
             Console.messageRaw "<h3>STARTING APPLICATION</h3>"
 
             Console.message "Initializing local URI routing:"
@@ -87,7 +89,7 @@ class namespaceEncapsule_code_app.Schema
             ###
 
             Encapsule.runtime.boot.phase0.spinner.cancel()
-            Console.hide()
+            # Console.hide()
 
         catch exception
             Console.messageError(exception)

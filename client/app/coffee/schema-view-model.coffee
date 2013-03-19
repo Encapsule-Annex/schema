@@ -131,222 +131,82 @@ class Encapsule.code.app.SchemaViewModel
             @viewRect
 
 
-        @viewJig0 = {}
-
-        # Jig 1 depends on the current window dimensions, and the enable/mode of the toolbar and framestack windows
-        @viewJig0Refresh = =>
-
-            viewRect = @viewRectRefresh()
-
-            # Q1 = toolbar
-            # Q24 = frame stack
-            # Q3 = content
-
-            centerPoint = {}
-
-            # center X is controlled by Q24 frame stack
-            if @viewFrameStackEnable()
-                if @viewFrameStackMode() == "full"
-                    centerPoint.x = @viewRect.width - 300
-                else
-                    centerPoint.x = @viewRect.width - 32
-            else
-                centerPoint.x = @viewRect.width
-
-            # center Y is controlled by Q1 toolbar
-
-            if @viewToolbarEnable()
-                if @viewToolbarMode() == "full"
-                    centerPoint.y = 72
-                else
-                    centerPoint.y = 32
-            else
-                centerPoint.y = 0
-            jig = Encapsule.code.lib.kohelpers.SplitRectIntoQuads "Jig #0 (L)", @viewRect, centerPoint, 3
-
-            @viewJig0 = jig
-            @viewJig0
-
-        @viewJig0Rects = {}
-        
-        @toolbarWidth = ko.observable 0
-        @cssToolbarWidth = ko.computed => @toolbarWidth() + "px"
-        @toolbarHeight = ko.observable 0
-        @cssToolbarHeight = ko.computed => @toolbarHeight() + "px"
-        @toolbarOffsetLeft = ko.observable 0
-        @cssToolbarOffsetLeft = ko.computed => @toolbarOffsetLeft() + "px"
-        @toolbarOffsetTop = ko.observable 0
-        @cssToolbarOffsetTop = ko.computed => @toolbarOffsetTop() + "px"
-
-        @framestackWidth = ko.observable 0
-        @cssFrameStackWidth = ko.computed => @framestackWidth() + "px"
-        @framestackHeight = ko.observable 0
-        @cssFrameStackHeight = ko.computed => @framestackHeight() + "px"
-        @framestackOffsetLeft = ko.observable 0
-        @cssFrameStackOffsetLeft = ko.computed => @framestackOffsetLeft() + "px"
-        @framestackOffsetTop = ko.observable 0
-        @cssFrameStackOffsetTop = ko.computed => @framestackOffsetTop() + "px"
-
-
-        @viewJig0RectsRefresh = =>
-            jig0 = @viewJig0Refresh()
-
-            @viewJig0Rects.toolbarRect = jig0.quad1
-            @viewJig0Rects.framestackRect = jig0.quad2
-            @viewJig0Rects.framestackRect.height += jig0.quad4.height
-            @viewJig0Rects.contentRect =jig0.quad3
-
-            @toolbarWidth(@viewJig0Rects.toolbarRect.width)
-            @toolbarHeight(@viewJig0Rects.toolbarRect.height)
-            @toolbarOffsetLeft(@viewJig0Rects.toolbarRect.offsetLeft)
-            @toolbarOffsetTop(@viewJig0Rects.toolbarRect.offsetTop)
-
-            @framestackWidth(@viewJig0Rects.framestackRect.width)
-            @framestackHeight(@viewJig0Rects.framestackRect.height)
-            @framestackOffsetLeft(@viewJig0Rects.framestackRect.offsetLeft)
-            @framestackOffsetTop(@viewJig0Rects.framestackRect.offsetTop)
-
-            @viewJig0Rects
-
-
-
-        @viewJig1 = {}
-
-        @viewJig1Refresh = =>
-
-            jig0Rects = @viewJig0RectsRefresh()
-
-            centerPoint = {}
-
-            centerPoint.x = 0
-            if @viewSelect1Enable()
-                centerPoint.x += @viewSelect1Mode() == "full" and 301 or 33
-
-            if @viewSelect2Enable()
-                centerPoint.x += @viewSelect2Mode() == "full" and 301 or 33
-
-            if @viewEdit1Enable()
-                if @viewEdit1Mode() == "full"
-                    centerPoint.y = @viewJig0Rects.contentRect.height - 400
-                else
-                    centerPoint.y = @viewJig0Rects.contentRect.height - 32
-            else
-                centerPoint.y = @viewJig0Rects.contentRect.height
-
-            jig = Encapsule.code.lib.kohelpers.SplitRectIntoQuads "Jig #1 (L)", @viewJig0Rects.contentRect, centerPoint
-
-            @viewJig1 = jig
-            @viewJig1
-
-
-
-         @viewJig1Rects = {}
-
-         @svgPlaneWidth = ko.observable 0
-         @cssSvgPlaneWidth = ko.computed => @svgPlaneWidth() + "px"
-         @svgPlaneHeight = ko.observable 0
-         @cssSvgPlaneHeight = ko.computed => @svgPlaneHeight() + "px"
-         @svgPlaneOffsetLeft = ko.observable 0
-         @cssSvgPlaneOffsetLeft = ko.computed => @svgPlaneOffsetLeft() + "px"
-         @svgPlaneOffsetTop = ko.observable 0
-         @cssSvgPlaneOffsetTop = ko.computed => @svgPlaneOffsetTop() + "px"
-
-         @edit1Width = ko.observable 0
-         @cssEdit1Width = ko.computed => @edit1Width() + "px"
-         @edit1Height = ko.observable 0
-         @cssEdit1Height = ko.computed => @edit1Height() + "px"
-         @edit1OffsetLeft = ko.observable 0
-         @cssEdit1OffsetLeft = ko.computed => @edit1OffsetLeft() + "px"
-         @edit1OffsetTop = ko.observable 0
-         @cssEdit1OffsetTop = ko.computed => @edit1OffsetTop() + "px"
-
-         @viewJig1RectsRefresh = =>
-
-             viewJig1 = @viewJig1Refresh()
-
-             result = {}
-             result.svgplaneRect = viewJig1.quad2
-             result.edit1Rect = viewJig1.quad4
-             result.selectRect = viewJig1.quad1
-             result.selectRect.height += viewJig1.quad3.height
-
-             @svgPlaneWidth(result.svgplaneRect.width)
-             @svgPlaneHeight(result.svgplaneRect.height)
-             @svgPlaneOffsetLeft(result.svgplaneRect.offsetLeft)
-             @svgPlaneOffsetTop(result.svgplaneRect.offsetTop)
-
-             @edit1Width(result.edit1Rect.width)
-             @edit1Height(result.edit1Rect.height)
-             @edit1OffsetLeft(result.edit1Rect.offsetLeft)
-             @edit1OffsetTop(result.edit1Rect.offsetTop)
-
-             @viewJig1Rects = result
-             @viewJig1Rects
-
-
-
-        @viewJig2 = {}
-
-        @select1Width = ko.observable 0
-        @cssSelect1Width = ko.computed => @select1Width() + "px"
-        @select1Height = ko.observable 0
-        @cssSelect1Height = ko.computed => @select1Height() + "px"
-        @select1OffsetLeft = ko.observable 0
-        @cssSelect1OffsetLeft = ko.computed => @select1OffsetLeft() + "px"
-        @select1OffsetTop = ko.observable 0
-        @cssSelect1OffsetTop = ko.computed => @select1OffsetTop() + "px"
-
-        @select2Width = ko.observable 0
-        @cssSelect2Width = ko.computed => @select2Width() + "px"
-        @select2Height = ko.observable 0
-        @cssSelect2Height = ko.computed => @select2Height() + "px"
-        @select2OffsetLeft = ko.observable 0
-        @cssSelect2OffsetLeft = ko.computed => @select2OffsetLeft() + "px"
-        @select2OffsetTop = ko.observable 0
-        @cssSelect2OffsetTop = ko.computed => @select2OffsetTop() + "px"
-
-
-        @viewJig2Refresh = =>
-            viewJig1Rects = @viewJig1RectsRefresh()
-
-            centerPoint = {}
-            centerPoint.x = 0
-            centerPoint.y = @viewJig1Rects.selectRect.height
-
-            if @viewSelect1Enable()
-                centerPoint.x += @viewSelect1Mode() == "full" and 300 or 32
-          
-            jig = Encapsule.code.lib.kohelpers.SplitRectIntoQuads "Jig #2 (L)", @viewJig1Rects.selectRect, centerPoint 
-
-            @select1Height(jig.quad1.height)
-            @select1Width(jig.quad1.width)
-            @select1OffsetLeft (jig.quad1.offsetLeft)
-            @select1OffsetTop (jig.quad1.offsetTop)         
-
-            @select2Height(jig.quad2.height)
-            @select2Width(jig.quad2.width)
-            @select2OffsetTop(jig.quad2.offsetTop)
-            @select2OffsetLeft(jig.quad2.offsetLeft)   
-
-            @viewJigs2 = jig
-            @viewJigs2
-
-
-        
-
-
         @documentResizeCallback = (args_) =>
-            result = @viewJig2Refresh()
+            result = @viewRectRefresh()
 
         # setInterval @documentResizeCallback, 5000 # This catches everything (including browser restore) eventually
         window.addEventListener 'resize', @documentResizeCallback
 
-
         @documentResizeCallback()
+
+        @windowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager @viewRect, [
+            {
+                name: "Frame Stack Split"
+                type: "vertical"
+                Q1WindowDescriptor: undefined
+                Q2WindowDescriptor: {
+                    id: "idFrameStack"
+                    name: "Frame Stack Window"
+                    modes: { full: { reserve: 300 }, min: { reserve: 64 } }
+                    }
+                },
+            {
+                name: "Toolbar Split"
+                type: "horizontal"
+                Q1WindowDescriptor: {
+                    id: "idToolbar"
+                    name: "Toolbar Window"
+                    modes: { full: { reserve: 128 }, min: { reserve: 64 } }
+                    }
+                Q2WindowDescriptor: undefined
+                },
+            {
+                name: "Select 1 Split"
+                type: "vertical"
+                Q1WindowDescriptor: {
+                    id: "idSelect1"
+                    name: "Select 1 Window"
+                    modes: { full: { reserve: 300 }, min: { reserve: 64 } }
+                    }
+                Q2WindowDescriptor: undefined
+                },
+            {
+                name: "Select 2 Split"
+                type: "vertical"
+                Q1WindowDescriptor: {
+                    id: "idSelect2"
+                    name: "Select 1 Window"
+                    modes: { full: { reserve: 300 }, min: { reserve: 64 } }
+                    }
+                Q2WindowDescriptor: undefined
+                },
+            {
+                name: "SVG/Edit Split"
+                type: "horizontal"
+                Q1WindowDescriptor: {
+                    id: "idSVGPlane"
+                    name: "SVG Plane"
+                    modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                    }
+                Q2WindowDescriptor: {
+                    id: "idEdit1"
+                    name: "Edit 1 Window"
+                    modes: { full: { reserve: 0 }, min: { reserve: 64 } }
+                    }
+                }
+            ] # :-)
+
+        
+
+
 
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModel", ( ->
+    """What's up doc?"""))
+
+###
+
     """
 
     <div id="idSchemaViewToolbar" class="classSchemaLayerWindow classLayerWindowBorder classRoundedCorners15" data-bind="visible: viewToolbarEnable, style: { width: cssToolbarWidth(), height: cssToolbarHeight(), marginLeft: cssToolbarOffsetLeft(), marginTop: cssToolbarOffsetTop() }">
@@ -375,5 +235,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 
     """))
 
+###
 
        

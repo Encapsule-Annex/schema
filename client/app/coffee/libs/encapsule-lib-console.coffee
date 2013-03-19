@@ -46,11 +46,10 @@ class window.Console
             </p>
             """
             )
-        consoleEl.css( { opacity: "0.0" } )
-        consoleEl.hide()
 
 
         $("#idButtonClearConsole").click( ->
+            consoleEl = $("#idConsole").css( { backgroundColor: "#CCCCCC" } )
             Console.init()
             Console.message("Console re-initialized.")
             )
@@ -127,8 +126,10 @@ class window.Console
             blipper.blip "beep2"
             blipper.blip "regen"
 
+        ###
         setTimeout ( ->
             alert """Unexpected exception "#{errorException}". Scroll console for detail or Hide console to continue."""
             ), 1776
+        ###
 
 

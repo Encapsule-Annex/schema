@@ -28,10 +28,9 @@ namespaceEncapsule_runtime = Encapsule.runtime? and Encapsule.runtime or @Encaps
 namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
 namespaceEncapsule_runtime_app_kotemplates = Encapsule.runtime.app.kotemplates? and Encapsule.runtime.app.kotemplates or @Encapsule.runtime.app.kotemplates = []
 
-Encapsule.code.lib.kohelpers.util = {}
 
 
-class Encapsule.code.kohelpers.util.observable
+class Encapsule.code.lib.kohelpers.observable
     constructor: (type_) ->
         @type = type_
         @observers = []
@@ -87,23 +86,141 @@ class Encapsule.code.lib.kohelpers.OffsetRectangle
 
 
 
-class Encapsule.code.lib.kohelpers.WindowDescriptorMode
-    constructor: (modeName_, reserveX_, reserveY_) ->
+#
+# WindowModeDescriptor is a function that returns a Javascript object describing X and Y axes
+# reserve limits for a given "mode". Limits must be greater than or equal to zero and are in
+# assumed pixel units. A reserve value of zero indicates limitless greed. A specific value indicates
+# a fixed size request. If the window manager cannot satisfy the contraints requested in a window
+# descriptor mode, it will try the next mode. If no modes can be satisfied, the window manager
+# disables the window and removes it from the plane layout.
+#
+
+Encapsule.code.lib.kohelpers.WindowModeDescriptor = (modeName_, reserveX_, reserveY_) ->
+
         if not modeName_? and not modeName_ then throw "You must specifiy a mode name"
         if modeName_ != "full" and modeName_ != "min" then throw "Unrecognized mode name"
-        @mode = modeName_
-        @reserveX = reserveX_
-        @reserveY = reserveY_
-        @
+        windowMode = { name: modeName_, reserveX: reserveX_, reserveY: reserveY_ }
+        windowMode
+
+
+#
+# WindowDescriptor is a function that returns a Javascript object that describes what we want the
+# the window manager to provide for a specific window within a plane.
+#
+
+Encapsule.code.lib.kohelpers.WindowDescriptor = (id_, title_, orientation_, modes_) ->
+    windowDescriptor = { id: id_, title: title_, orientation: orientation_, modes: modes_ }
+    windowDescriptor
+
+Encapsule.code.lib.kohelpers.WindowDescriptorPair = (firstWindowDescriptor1_, secondWindowDescriptor_2) ->
+    windowDescriptorPair = {}
+    windowDescriptorPair.first = firstWindowDescriptor1_
+    windowDescriptorPair.second = secondWindowDescriptor2_
+    windowDescriptorPair
+
+
+
+class Encapsule.code.lib.kohelpers.WindowSplitter
+    constructor: (type_, q1Descriptor_, q2Descriptor_, windows_) ->
+
+        @type = type_
+
+        @q1Descriptor = q1Descriptor_
+        @q2Descriptor = q2Descriptor_
+
+        @q1OffsetRectangle = undefined
+        @q2OffsetRectangle = undefined
+
+        @q1Window = undefined
+        @q2Window = undefined
+
+        @unallocatedOffsetRect = undefined
+
+        if q1Descriptor_? and q1Descriptor_
+            @q1Window  = new Encapsule.code.lib.kohelpers.ObservableWindow(q1Descriptor_)
+            windowEntry = { id: @q1Window.id, window: @q1Window }
+            windows_.push windowEntry
+
+        if q2Descriptor_? and q2Descriptor_
+            @q2Window = new Encapsule.code.lib.kohelpers.ObservableWindow(q2Descriptor_)
+            windowEntry = { id: @q2Window.id, window: @q2Window }
+            windows_.push windowEntry
 
 
 
 
-class Encapsule.code.lib.kohelpers.WindowDescriptor
-    constructor: (title_, orientation_, modes_) ->
-        @
+
+class Encapsule.code.lib.kohelpers.ObservableWindow
+    constructor: (sourceDescriptor_) ->
+        Console.message("... + WindowManager creating new window id=#{sourceDescriptor_.id} name=#{sourceDescriptor_.name}")
+        @sourceDescriptor = sourceDescriptor_
+
+        @id = ko.observable sourceDescriptor_.id
+        @name = ko.observable sourceDescriptor_.name
+
+
+        @offsetRectangle = undefined
+
+        @setOffsetRectangle = (offsetRectangle_) =>
+            # We will do some checking here to ensure that a change actually occurred.
+            # If so, then we will update the Knockout.js observables contained by thie ObservableWindow instance
+            @offsetRectangle = offsetRectangle_
+
+
+            
 
 
 
 
-test = Encapsule.code.lib.kohelpers.WindowDescriptor( "Test", "column", [ Encapsule.code.lib.kohelpers.WindowDesriptorMode("full", 0, 200) ] )
+
+
+
+
+
+class Encapsule.code.lib.kohelpers.ObservableWindowManager
+
+    constructor: (offsetRectangle_, layout_) ->
+
+        try
+            if not offsetRectangle_? or not offsetRectangle_
+                throw "You must specify a function to call to get the offset rectangle to be used by the window manager."
+
+            if not layout_? or not layout_
+                throw "You must specify an array of splitters."
+
+            @viewOffsetRectangle = offsetRectangle_
+
+
+            layoutLevel = 0
+            @windows = []
+            @splits = []
+
+            for splitter in layout_
+
+                try
+                    Console.message("Window manager level #{layoutLevel}: #{splitter.name}")
+                    Console.message("... type = #{splitter.type}")
+                    Console.message("... Q1 window descriptor = #{splitter.Q1WindowDescriptor}")
+                    Console.message("... Q2 window descriptor = #{splitter.Q2WindowDescriptor}")
+
+                    newSplit = new Encapsule.code.lib.kohelpers.WindowSplitter( splitter.type, splitter.Q1WindowDescriptor, splitter.Q2WindowDescriptor, @windows )
+                    @splits.push newSplit
+
+                    Console.message("... window manager level #{layoutLevel} processing completed.")
+                    layoutLevel++
+
+                catch exception
+                    throw "Check level #{layoutLevel} for malformed input: #{exception}"
+
+        
+            Console.message("... Window manager initialization complete.")
+
+
+
+        catch exception
+            message = "In Encapsule.code.lib.kohelpers.WindowManager: #{exception}"
+            throw message
+
+
+
+
