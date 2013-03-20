@@ -1,5 +1,5 @@
 
-body { margin: 0px; padding: 0px; background-color: #777777; }
+body { margin: 0px; padding: 0px; }
 
 table {border: 1px solid black; width: 100%;}
 th {border: 1px solid black; }
@@ -118,6 +118,13 @@ background-color: #FFFFCC;
 }
 
 
+#idWindowManagerGlass {
+position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; z-index: -2
+}
+
+.classObservableWindowManager {
+position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; border: 1px solid black; z-index: -2
+}
 
 
 

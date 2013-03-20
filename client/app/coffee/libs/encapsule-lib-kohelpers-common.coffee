@@ -63,10 +63,10 @@ class Encapsule.code.lib.kohelpers.OffsetRectangle
         #
 
         displaceTop = @rectangle.height / -2
-        displaceTopBiased = Math.round displaceTop * @bias.horizontal
+        displaceTopBiased = Math.round displaceTop * @bias.horizontal - 1
 
         displaceLeft = @rectangle.width / -2
-        displaceLeftBiased = Math.round displaceLeft * @bias.vertical
+        displaceLeftBiased = Math.round displaceLeft * @bias.vertical - 1
 
         @offset = new Encapsule.code.lib.kohelpers.OffsetPoint(displaceTopBiased, displaceLeftBiased)
 

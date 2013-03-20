@@ -30,22 +30,28 @@ namespaceEncapsule_runtime_app_kotemplates = Encapsule.runtime.app.kotemplates? 
 
 
 class Encapsule.code.lib.kohelpers.WindowSplitter
-    constructor: (type_, q1Descriptor_, q2Descriptor_, windows_) ->
+    constructor: (splitDescriptor_, windows_) ->
+        
+        @splitDescriptor = splitDescriptor_
 
-        @type = type_
+        @id = @splitDescriptor.id
+        @type = @splitDescriptor.type
+        @name = @splitDescriptor.name
+        @offsetRectangle = new Encapsule.code.lib.kohelpers.OffsetRectangle()
 
-        @offsetRectangle = undefined
+        @q1Descriptor = @splitDescriptor.Q1WindowDescriptor
+        @q2Descriptor = @splitDescriptor.Q2WindowDescriptor
 
-        @q1Descriptor = q1Descriptor_
-        @q2Descriptor = q2Descriptor_
+        if not @q1Descriptor? and not @q1Descriptor and not @q2Descriptor? and not @q2Descriptor
+            throw "You need to attach at least one window to a splitter."
 
-        @q1OffsetRectangle = undefined
-        @q2OffsetRectangle = undefined
+        @q1OffsetRect = new Encapsule.code.lib.kohelpers.OffsetRectangle()
+        @q2OffsetRect = new Encapsule.code.lib.kohelpers.OffsetRectangle()
 
         @q1Window = undefined
         @q2Window = undefined
 
-        @unallocatedOffsetRect = undefined
+        @unallocatedOffsetRect = Encapsule.code.lib.kohelpers.OffsetRectangle()
 
         if q1Descriptor_? and q1Descriptor_
             @q1Window  = new Encapsule.code.lib.kohelpers.ObservableWindow(q1Descriptor_)
@@ -56,6 +62,9 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
             @q2Window = new Encapsule.code.lib.kohelpers.ObservableWindow(q2Descriptor_)
             windowEntry = { id: @q2Window.id, window: @q2Window }
             windows_.push windowEntry
+
+        if not @q1Window? and not @q1Window and not @q2Window? and @q2Window
+            throw "Expecting at least one window object to be created per splitter instantiation."
 
 
         # Set the bounding offset rectangle defining the outer dimension of this window splitter.
@@ -70,4 +79,29 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
             # The bounding rectangle has been changed.
 
             @offsetRectangle = offsetRectangle_
+
+
+            @q1OffsetRectangle = offsetRectangle_
+            @q2OffsetRectangle = offsetRectangle_
+
+            halfWidth = Math.round offsetRectangle_.rectangle.width / 2
+            @q1OffsetRectangle.rectangle.width = halfWidth
+            @q2OffsetRectangle.rectangle.width = halfWidth
+            @q2OffsetRectangle.offset.left += halfWidth
+
+            if q1Window? and q1Window
+                @q1Window.setOffsetRectangle(@q1OffsetRectangle)
+            else
+                @unallocatedOffsetRect = @q1OffsetRectangle
+
+            if q2Window? and q2Window
+                @q2Window.setOffsetRectangle(q2OffsetRectangle)
+            else
+                if @unallocatedOffsetRect? and @unallocatedOffsetRect
+                    @unallocatedOffsetRect = @q2OffsetRectangle
+
+
+ 
+
+
 

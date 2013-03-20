@@ -39,7 +39,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
         @name = sourceDescriptor_.name
 
 
-        @offsetRectangle = undefined
+        @offsetRectangle = new Encapsule.code.lib.kohelpers.OffsetRectangle()
 
         @setOffsetRectangle = (offsetRectangle_) =>
             # We will do some checking here to ensure that a change actually occurred.

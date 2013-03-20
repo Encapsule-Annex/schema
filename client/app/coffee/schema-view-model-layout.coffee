@@ -33,10 +33,15 @@ Dig this >:)-~
 Encapsule.code.app.viewLayout = {
     layout: {
         id: "idSchemaWindowManager"
-        name: "@{appName} v#{appVersion} Window Manager"
-        bodyBackgroundColor: "#003366"
-        windowManagerMargin: 32 # pixel offset from document
-        windowManagerBackgroundColor: "#006699"
+        name: "#{appName} v#{appVersion} Window Manager"
+        pageBackgroundColor: "#CCCCCC"
+        glassBackgroundColor: undefined # "#00CC00"
+        glassBackgroundImage: "fire-on-the-mountain.jpg"
+        glassOpacity: 0.2
+        windowManagerOuterOffset: 32 # from document edge to window manager edge
+        windowManagerMargin: 10 # from window manager edge to outer edge of managed windows
+        windowManagerBackgroundColor: "#CCCCCC"
+        windowManagerOpacity: .6
         planes: [
             {
                 id: "idSchemaPlaneDefault"
