@@ -53,6 +53,9 @@ class namespaceEncapsule_code_app.Schema
 
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager Encapsule.code.app.viewLayout
 
+
+
+
             ### CUT THE CORD
 
             Console.message "Initializing #{appName} model."

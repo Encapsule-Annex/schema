@@ -123,8 +123,6 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             for planeLayout in @layout.planes
                 # begin
                 planeRuntime = { id: planeLayout.id, name: planeLayout.name, splitterStack: [] }
-                htmlBindingBegin += """<div id="#{planeLayout.id}" class="classObservableManagedPlane">"""
-                htmlBindingEnd = """</div>""" + htmlBindingEnd
                 splitIndex = 0
                 for split in planeLayout.splitterStack
                     # begin split scope

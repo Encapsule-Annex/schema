@@ -37,7 +37,7 @@ Encapsule.code.app.viewLayout = {
         pageBackgroundColor: "#CCCCCC"
         glassBackgroundColor: undefined # "#00CC00"
         glassBackgroundImage: "fire-on-the-mountain.jpg"
-        glassOpacity: 0.2
+        glassOpacity: 0.1
         windowManagerOuterOffset: 32 # from document edge to window manager edge
         windowManagerMargin: 10 # from window manager edge to outer edge of managed windows
         windowManagerBackgroundColor: "#CCCCCC"
@@ -108,7 +108,29 @@ Encapsule.code.app.viewLayout = {
                         }                                                                
 
                     ]
-                } # end plane
+                },
+                # end plane / new plane
+            {
+                id: "idSchemaSettingsPlane"
+                name: "#{appName} Settings Plane"
+                splitterStack: [
+                    {
+                        id: "idSetttingsPLaneSplitter0"
+                        name: "what ever some descriptive text"
+                        type: "horizontal"
+                        Q1WindowDescriptor: {
+                            id: "idSettings1"
+                            name: "Settings 1 Window"
+                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                            }
+                        Q2WindowDescriptor: {
+                            id: "idSettings2"
+                            name: "Settings 2 Window"
+                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                            }
+                        }
+                    ]
+                }
             ] # end planes
         } # end layout
     } # end viewLayout

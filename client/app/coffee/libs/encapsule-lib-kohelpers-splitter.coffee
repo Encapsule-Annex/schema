@@ -53,15 +53,16 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
 
         @unallocatedOffsetRect = Encapsule.code.lib.kohelpers.OffsetRectangle()
 
-        if q1Descriptor_? and q1Descriptor_
-            @q1Window  = new Encapsule.code.lib.kohelpers.ObservableWindow(q1Descriptor_)
+        if @q1Descriptor? and @q1Descriptor
+            @q1Window  = new Encapsule.code.lib.kohelpers.ObservableWindow(@q1Descriptor)
             windowEntry = { id: @q1Window.id, window: @q1Window }
             windows_.push windowEntry
 
-        if q2Descriptor_? and q2Descriptor_
-            @q2Window = new Encapsule.code.lib.kohelpers.ObservableWindow(q2Descriptor_)
+        if @q2Descriptor? and @q2Descriptor
+            @q2Window = new Encapsule.code.lib.kohelpers.ObservableWindow(@q2Descriptor)
             windowEntry = { id: @q2Window.id, window: @q2Window }
             windows_.push windowEntry
+
 
         if not @q1Window? and not @q1Window and not @q2Window? and @q2Window
             throw "Expecting at least one window object to be created per splitter instantiation."

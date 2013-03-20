@@ -119,13 +119,13 @@ background-color: #FFFFCC;
 
 
 #idWindowManagerGlass {
-position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; z-index: -2
+position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; z-index: -2;
+background-size: 100%; backgroundAttachment: fixed;
 }
 
 .classObservableWindowManager {
 position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; border: 1px solid black; z-index: -2
 }
-
 
 
 

@@ -78,11 +78,6 @@ class Encapsule.code.app.SchemaViewModel
 
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModel", ( ->
-    """idKoTemplate_SchemaViewModel"""))
-
-
-
 
 ###
 
