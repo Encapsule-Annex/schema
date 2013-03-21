@@ -34,10 +34,10 @@ Encapsule.code.app.viewLayout = {
     layout: {
         id: "idSchemaWindowManager"
         name: "#{appName} v#{appVersion} Window Manager"
-        pageBackgroundColor: "#CCCCCC"
+        pageBackgroundColor: "black"
         glassBackgroundColor: undefined # "#00CC00"
         glassBackgroundImage: "fire-on-the-mountain.jpg"
-        glassOpacity: 1
+        glassOpacity: 0.25
         windowManagerOuterOffset: 32 # from document edge to window manager edge
         windowManagerMargin: 10 # from window manager edge to outer edge of managed windows
         windowManagerBackgroundColor: "white"

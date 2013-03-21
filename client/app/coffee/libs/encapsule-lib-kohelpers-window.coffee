@@ -39,12 +39,19 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
         @name = sourceDescriptor_.name
 
 
-        @offsetRectangle = new Encapsule.code.lib.kohelpers.OffsetRectangle()
+        @offsetRectangle = ko.observable new Encapsule.code.lib.kohelpers.OffsetRectangle()
+        @cssVisibility = ko.computed => @offsetRectangle().rectangle.visible
+        @cssWidth = ko.computed => @offsetRectangle().rectangle.width
+        @cssHeight = ko.computed => @offsetRectangle().rectangle.height
+        @cssMarginLeft = ko.computed => @offsetRectangle().offset.left
+        @cssMarginTop = ko.computed => @offsetRectangle().offset.top
+
+
 
         @setOffsetRectangle = (offsetRectangle_) =>
             # We will do some checking here to ensure that a change actually occurred.
             # If so, then we will update the Knockout.js observables contained by thie ObservableWindow instance
-            @offsetRectangle = offsetRectangle_
+            @offsetRectangle(offsetRectangle_)
 
 
             

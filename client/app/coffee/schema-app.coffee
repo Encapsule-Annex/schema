@@ -47,55 +47,11 @@ class namespaceEncapsule_code_app.Schema
             Console.message "Initializing local URI routing:"
             Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
 
-            Console.message "Inserting #{appName} view templates into DOM:"
-            Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates()
-
+            Console.message "Initializing Encapsule window manager on layout #{Encapsule.code.app.viewLayout.id}"
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager Encapsule.code.app.viewLayout
 
-
-
-
-            ### CUT THE CORD
-
-            Console.message "Initializing #{appName} model."
-            Encapsule.runtime.app.SchemaViewModel = new Encapsule.code.app.SchemaViewModel()
-
-            Console.message "Binding top-level #{appName} view model to to DOM:"
-
-            bodyElement.append("""
-                <div id="idSchemaViewModel" data-bind="template: { name: 'idKoTemplate_SchemaViewModel' }, style: { marginLeft: cssOffsetLeft(), marginTop: cssOffsetTop(), width: cssWidth(), height: cssHeight() }"></div>
-                """)
-
-            Console.message "Binding #{appName} data model to view model."
-            ko.applyBindings Encapsule.runtime.app.SchemaViewModel, document.getElementById("idSchemaViewModel")
-
-            ###
-          
-            Console.messageRaw  "<h3>APPLICATION RUNTIME</h3>"
-            Console.message "#{appName} v#{appVersion} is running..."
-
-            ###
-            # Instantiate the SCDL data catalogue
-            Encapsule.runtime.app.viewmodel = {}
-            Encapsule.runtime.app.viewmodel.scdl = new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
-            bodyElement.append("""<div data-bind="template: { name: 'idKoTemplate_ScdlCatalogueShimHost' }" id="idSchemaAppView"></div>""")
-            ko.applyBindings Encapsule.runtime.app.viewmodel.scdl, document.getElementById("idSchemaAppView")
-
-
-            # Instantate the SCDL catalogue editor
-            Encapsule.runtime.app.viewmodel.scdleditor = new Encapsule.code.app.scdl.editor.ObservableEditor()
-            bodyElement.append("""<div data-bind="template: { name: 'idKoTemplate_ScdlEditor' }" id="idSchemaEditorView"></div>""")
-            ko.applyBindings Encapsule.runtime.app.viewmodel.scdleditor, document.getElementById("idSchemaEditorView")
-
-
-            # Instantiate an initialize the boot page view model.
-            Encapsule.runtime.app.viewmodel.boot = new Encapsule.code.app.viewmodel.boot()
-            bodyElement.append Encapsule.runtime.app.viewmodel.boot.html
-            ko.applyBindings Encapsule.runtime.app.viewmodel.boot, document.getElementById("idAppBootView")
-            ###
-
             Encapsule.runtime.boot.phase0.spinner.cancel()
-            # Console.hide()
+
 
         catch exception
             Console.messageError(exception)

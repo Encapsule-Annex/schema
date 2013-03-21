@@ -24,25 +24,25 @@ namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 
-
+Encapsule.code.app.bootDelay = 500
 
 Encapsule.code.app.bootChromes = {
-    phase0 : { title: "#{appName} @", backgroundColor: "#0077AA" }
-    phase1 : { title: "#{appName} *", backgroundColor: "#0088BB" }
-    phase2 : { title: "#{appName} ?", backgroundColor: "#0099CC" }
-    phase2checking : { title: "#{appName} ~", backgroundColor: "#00AADD" }
-    phase2downloading: { title: "#{appName} 0%", backgroundColor: "#009900" }
+    phase0 : { title: "#{appName} .", backgroundColor: "#003366" }
+    phase1 : { title: "#{appName} -", backgroundColor: "#004477" }
+    phase2 : { title: "#{appName} $", backgroundColor: "#005588" }
+    phase2checking : { title: "#{appName} ^", backgroundColor: "#006699" }
+    phase2downloading: { title: "#{appName} 0%", backgroundColor: "#0099CC" }
     phase2progress: { title: "#{appName} ", backgroundColor: "#00CC00" }
-    phase2error: { title: "#{appName} !$ ERROR", backgroundColor: "#CC0000" }
-    phase2obsolete: { title: "#{appName} !$ LOCKED", backgroundColor: "#CC0000" }
-    phase2offline: { title: "#{appName} ~$ :)", backgroundColor: "#009900" }
-    phase2cached: { title: "#{appName} +$ :)", backgroundColor: "#00FF00" }
-    phase2noupdate: { title: "#{appName} ~$ :)", backgroundColor: "#00CCFF" }
-    phase2updateready: { title: "#{appName} +$ ~:)", backgroundColor: "#FFFF00" }
+    phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFCC00" }
+    phase2obsolete: { title: "#{appName} LOCKED", backgroundColor: "#FFCC00" }
+    phase2offline: { title: "#{appName} ~$", backgroundColor: "#009999" }
+    phase2cached: { title: "#{appName} >$", backgroundColor: "#0066CC" }
+    phase2noupdate: { title: "#{appName} -$", backgroundColor: "#00CC00" }
+    phase2updateready: { title: "#{appName} +$", backgroundColor: "#FFFF00" }
     phase2watchdog: { title: "#{appName} ?8|" }
     #phase2watchdogNoop: { title: "#{appName} v#{appVersion}" }
     phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00" }
-    phase3: { title: "#{appName} v#{appVersion}", backgroundColor: "#00FFFF" }
+    phase3: { title: "#{appName} v#{appVersion}", backgroundColor: "#CC9966" }
     }
 
 Encapsule.code.app.setBootChrome = (phase_, progress_) ->
@@ -133,7 +133,7 @@ phase1 = (bootstrapperOptions_) ->
     # pass through.
 
     bootstrapperOptions = bootstrapperOptions_
-    setTimeout( ( -> phase2(bootstrapperOptions_) ), 1)
+    setTimeout( ( -> phase2(bootstrapperOptions_) ), 150)
 
 phase2 = (bootstrapperOptions_) ->
     Console.messageRaw("<h3>BOOTSTRAP PHASE 2 : offline application cache</h3>")
@@ -176,7 +176,6 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageError "An error has occurred caching application files from the #{appPackagePublisher}'s servers."
             throw "Manually refresh your browser to resolve. See log messages above for additional information."
         , onObsolete: ->
-            Console.show()
             Encapsule.code.app.setBootChrome("phase2obsolete")
             phase2Out.appCacheMonitorState = "locked (obsolete)"
             phase2Out.appCacheTerminalState = "locked (obsolete)"
@@ -193,7 +192,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
             Console.messageRaw("<h2>#{appPackagePublisher} running offline from cache :)</h2>")
-            setTimeout( ( -> phase3(bootstrapperOptions_) ), 500)
+            setTimeout( ( -> phase3(bootstrapperOptions_) ), Encapsule.code.app.bootDelay)
         , onCached: (fileCount_) ->
             Encapsule.code.app.setBootChrome("phase2cached")
             phase2Out.appCacheMonitorState = "cached"
@@ -203,14 +202,14 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw("<h2>#{appName} v#{appVersion} is now fully cached for on/offline use :)</h2>")
             setTimeout ( ->
                 phase3(bootstrapperOptions_) )
-                , 500
+                , Encapsule.code.app.bootDelay
         , onNoUpdate: ->
             Encapsule.code.app.setBootChrome("phase2noupdate")
             phase2Out.appCacheMonitorState = "noupdate"
             phase2Out.appCacheTerminalState = "noupdate"
             Console.messageEnd("<strong>No update<strong>")
             Console.messageRaw("<h2>#{appName} v#{appVersion} is good to go :-)</h2>")
-            setTimeout( ( -> phase3(bootstrapperOptions_) ), 500)
+            setTimeout( ( -> phase3(bootstrapperOptions_) ), Encapsule.code.app.bootDelay)
         , onUpdateReady: (fileCount_) ->
             Encapsule.code.app.setBootChrome("phase2updateready")
             phase2Out.appCacheMonitorState = "updateready"
@@ -229,7 +228,7 @@ phase2 = (bootstrapperOptions_) ->
                     Console.messageRaw("<p>If you encounter this error under different circumstances please let me know.</p>")
                     Console.messageRaw("<p><strong>Note: you can typically recover from a DOM exception in this case by simply refreshing the page.</strong></p>")
                     Console.messageError(exception)
-                ) , 500
+                ) , Encapsule.code.app.bootDelay
         }
     try
         phase2Out.appCacheMonitor = new Encapsule.code.lib.appcachemonitor(appCacheCallbacks)
@@ -281,7 +280,7 @@ phase2 = (bootstrapperOptions_) ->
                      Encapsule.code.app.setBootChrome("phase2watchdogNoop")
                      break;
 
-            ), 1000)
+            ), Encapsule.code.app.bootDelay * 3)
     catch exception
         Console.messageError(exception)
 

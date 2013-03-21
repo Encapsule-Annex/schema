@@ -35,27 +35,30 @@ namespaceEncapsule_code_lib_kohelpers.RegisterKnockoutViewTemplate = (selectorId
     Encapsule.runtime.app.kotemplates.push koTemplate
 
 
-namespaceEncapsule_code_lib_kohelpers.InstallKnockoutViewTemplate = (descriptor_) ->
+namespaceEncapsule_code_lib_kohelpers.InstallKnockoutViewTemplate = (descriptor_, parentEl_) ->
+
+    if not parentEl_? or not parentEl_
+        throw "Invalid parent element."
+
     selector = "##{descriptor_.selectorId_}"
     koTemplateJN = $(selector);
 
     if koTemplateJN.length == 1
         throw "Duplicate Knockout.js HTML view template registration. id=\"#{descriptor_.selectorId_}\""
 
-    koTemplatesJN = $("#idKoTemplates")
 
-    if koTemplatesJN.length == 0
-        $("body").append("""<div id="idKoTemplates" style="display: none;"></div>""")
-        koTemplatesJN = $("#idKoTemplates")
-
-    koTemplatesJN.append("<script type=\"text/html\" id=\"#{descriptor_.selectorId_}\">" + descriptor_.fnHtml_() + "</script>")
+    parentEl_.append($("""<script type="text/html" id="#{descriptor_.selectorId_}">""" + descriptor_.fnHtml_() + """</script>"""))
     true
 
 
-namespaceEncapsule_code_lib_kohelpers.InstallKnockoutViewTemplates = ->
+namespaceEncapsule_code_lib_kohelpers.InstallKnockoutViewTemplates = (parentEl_) ->
+    parentEl_.append("""<span id="idKO"></span>""")
+    templatesEl = $("#idKO")
+
     for descriptor in Encapsule.runtime.app.kotemplates
         Console.message "#{appName} view template: #{descriptor.selectorId_}"
-        Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplate(descriptor)
+        Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplate(descriptor, templatesEl)
+
 
 
 

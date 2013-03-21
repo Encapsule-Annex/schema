@@ -104,11 +104,9 @@ class window.Console
             <h2 style="color: #990000;">#{appName} Runtime Exception</h2>
             <div class="classConsoleExceptionContainer">
                 <h3 style="color: #660000">#{appName} v#{appVersion} RUNTIME EXCEPTION:</h3>
-                <p>AppID: <span data-bind="text: appId"></span><br>
-                   ReleaseID: <span data-bind="text: appReleaseId"></span><br>
-                   AppBuildId: <span data-bind="text: appBuildId"></span>
+                <p>
+                    AppID: #{appId} &bull; ReleaseID: #{appReleaseId} &bull; AppBuildId: #{appBuildId}">
                 </p>
-
                 <div style="margin: 5px; margin-top-15px; padding: 10px; background-color: #FF9900; border: 1px solid black;">#{errorException}</div>
             </div>
             """

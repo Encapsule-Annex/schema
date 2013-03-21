@@ -47,52 +47,32 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             if not layout_.layout? and not layout_.layout
                 throw "Expecting a top-level object named layout."
 
-
-            # INSTANCE STATE
-
             # NON-OBSERVABLE INTERNAL INSTANCE STATE
 
             @layout = layout_.layout
-            @runtimeState = {}
-            @runtimeState.planes = []
-            @runtimeState.observableWindows = []
+            @planes = []
+            @observableWindows = ko.observableArray []
 
             # OBSERVABLES
 
             # This is the offset rectangle of the glass behind the window manager.
             @glassOffsetRect = ko.observable new Encapsule.code.lib.kohelpers.OffsetRectangle()
-
-            @cssGlassWidth = ko.computed =>
-                @glassOffsetRect().rectangle.width + "px"
-            @cssGlassHeight = ko.computed =>
-                @glassOffsetRect().rectangle.height + "px"
-            @cssGlassMarginLeft = ko.computed =>
-                @glassOffsetRect().offset.left + "px"
-            @cssGlassMarginTop = ko.computed =>
-                @glassOffsetRect().offset.top + "px"
-            @cssGlassOpacity = ko.computed =>
-                @layout.glassOpacity
-            @cssGlassBackgroundColor = ko.computed =>
-                result = @layout.glassBackgroundColor? and @layout.glassBackgroundColor or undefined
-                result
-            @cssGlassBackground = ko.computed =>
-                result = @layout.glassBackgroundImage? and @layout.glassBackgroundImage  and "url(img/#{@layout.glassBackgroundImage})" or undefined
+            @cssGlassWidth = ko.computed => @glassOffsetRect().rectangle.width + "px"
+            @cssGlassHeight = ko.computed => @glassOffsetRect().rectangle.height + "px"
+            @cssGlassMarginLeft = ko.computed => @glassOffsetRect().offset.left + "px"
+            @cssGlassMarginTop = ko.computed => @glassOffsetRect().offset.top + "px"
+            @cssGlassOpacity = ko.computed => @layout.glassOpacity
+            @cssGlassBackgroundColor = ko.computed => @layout.glassBackgroundColor? and @layout.glassBackgroundColor or undefined
+            @cssGlassBackground = ko.computed => @layout.glassBackgroundImage? and @layout.glassBackgroundImage  and "url(img/#{@layout.glassBackgroundImage})" or undefined
 
             # This is the offset rectangle of the window manager.
             @viewOffsetRect = ko.observable new Encapsule.code.lib.kohelpers.OffsetRectangle()
-
-            @cssWindowManagerBackgroundColor = ko.computed => 
-                @layout.windowManagerBackgroundColor
-            @cssWindowManagerOpacity = ko.computed =>
-                @layout.windowManagerOpacity
-            @cssWindowManagerWidth = ko.computed =>
-                @viewOffsetRect().rectangle.width + "px"
-            @cssWindowManagerHeight = ko.computed =>
-                @viewOffsetRect().rectangle.height + "px"
-            @cssWindowManagerMarginLeft = ko.computed =>
-                @viewOffsetRect().offset.left + "px"
-            @cssWindowManagerMarginTop = ko.computed =>
-                @viewOffsetRect().offset.top + "px"
+            @cssWindowManagerBackgroundColor = ko.computed => @layout.windowManagerBackgroundColor
+            @cssWindowManagerOpacity = ko.computed => @layout.windowManagerOpacity
+            @cssWindowManagerWidth = ko.computed => @viewOffsetRect().rectangle.width + "px"
+            @cssWindowManagerHeight = ko.computed => @viewOffsetRect().rectangle.height + "px"
+            @cssWindowManagerMarginLeft = ko.computed => @viewOffsetRect().offset.left + "px"
+            @cssWindowManagerMarginTop = ko.computed => @viewOffsetRect().offset.top + "px"
 
              
             # INTERNAL STATE INITIALIZATION
@@ -138,8 +118,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         newSplit = new Encapsule.code.lib.kohelpers.WindowSplitter( split, splitterObservableWindows )
                         planeRuntime.splitterStack.push newSplit
                         for observableWindow in splitterObservableWindows
-                            @runtimeState.observableWindows.push observableWindow
-                            htmlBindingBegin += """<div id="#{observableWindow.id}" class="classObservableWindow"></div>"""
+                            @observableWindows.push observableWindow
 
                         Console.message("... Layout #{planeIndex} #{splitIndex} processed.")
                         splitIndex++
@@ -147,10 +126,19 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         throw "Exception processing layout plane #{planeIndex}, split #{splitIndex} :: #{exception}"
                     # end split scope
                 # back at plane scope
-                @runtimeState.planes.push planeRuntime
+                @planes.push planeRuntime
                 Console.message("Layout plane #{planeIndex} processed.")
                 planeIndex++
             Console.message("Done transforming layout into view model :)")
+
+
+            # DOM STATE
+
+            bodyEl = $("body")
+            bodyEl.append($("""<span id="idEncapsuleWindowManager"></span>"""))
+            windowManagerEl = $("#idEncapsuleWindowManager")
+            Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(windowManagerEl)
+
 
             $("body").append( $(htmlBindingBegin + htmlBindingEnd) )
 
@@ -201,7 +189,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 runtimeState = @runtimeState
                 availableOffsetRect = newOffsetRectangle
 
-                for plane in @runtimeState.planes
+                for plane in @planes
                     splitters = plane.splitterStack
                     for split in splitters
                         Console.message("Window manager refresh on plane #{plane.id} split #{split.id}")

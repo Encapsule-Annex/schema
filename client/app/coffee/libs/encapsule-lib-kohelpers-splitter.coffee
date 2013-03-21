@@ -51,7 +51,7 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
         @q1Window = undefined
         @q2Window = undefined
 
-        @unallocatedOffsetRect = Encapsule.code.lib.kohelpers.OffsetRectangle()
+        @unallocatedOffsetRect = new Encapsule.code.lib.kohelpers.OffsetRectangle()
 
         if @q1Descriptor? and @q1Descriptor
             @q1Window  = new Encapsule.code.lib.kohelpers.ObservableWindow(@q1Descriptor)
@@ -74,13 +74,17 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
 
             # Return false iff no change and not forceEval_
 
-            if offsetRectangle_? and offsetRectangle_ and offsetRectangle_ == @offsetRectangle and not forceEval_
-                return false
-            
+            if not offsetRectangle_? or not offsetRectangle_
+                throw "You must specify an offset rectangle."
+
+            if (offsetRectangle_.rectangle.width == @offsetRectangle.rectangle.width) and
+                (offsetRectangle_.rectangle.height == @offsetRectangle.rectangle.height) and
+                (offsetRectangle_.offset.left == @offsetRectangle.offset.left) and
+                (offsetRectangle_.offset.top == @offsetRectangle.offset.top)
+                    return false;
+
             # The bounding rectangle has been changed.
-
             @offsetRectangle = offsetRectangle_
-
 
             @q1OffsetRectangle = offsetRectangle_
             @q2OffsetRectangle = offsetRectangle_
@@ -90,16 +94,19 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
             @q2OffsetRectangle.rectangle.width = halfWidth
             @q2OffsetRectangle.offset.left += halfWidth
 
-            if q1Window? and q1Window
+            if @q1Window?
                 @q1Window.setOffsetRectangle(@q1OffsetRectangle)
             else
                 @unallocatedOffsetRect = @q1OffsetRectangle
 
-            if q2Window? and q2Window
-                @q2Window.setOffsetRectangle(q2OffsetRectangle)
+            if @q2Window?
+                @q2Window.setOffsetRectangle(@q2OffsetRectangle)
             else
-                if @unallocatedOffsetRect? and @unallocatedOffsetRect
+                if  @unallocatedOffsetRect.rectangle.visible
+                    @unallocatedOffsetRect.rectangle.width += @q2OffsetRectangle.rectangle.width
+                else
                     @unallocatedOffsetRect = @q2OffsetRectangle
+
 
 
  
