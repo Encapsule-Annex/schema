@@ -53,12 +53,13 @@ class namespaceEncapsule_code_lib_view.spinner
    
     constructor: ->
         Console.message("Constructed a spinner wrapper object.")
+        @captionUpdateTimer = undefined
 
-    draw: (options_) ->
+    draw: (options_) =>
         if not @enabled
             options = options_? and options_ or @optionsDefault
             spinnerJN = $("#idSpinner")
-            spinnerJN.html($("""<div id="idSpinnerHostContainer"></div>"""))
+            spinnerJN.html($("""<div id="idSpinnerHostContainer"></div><div id="idSpinnerCaption"></div>"""))
             spinnerHostJN = $("#idSpinnerHostContainer")
             spinnerHostDN = document.getElementById("idSpinnerHostContainer")
             spinnerJN.hide().fadeIn(1000)
@@ -72,10 +73,24 @@ class namespaceEncapsule_code_lib_view.spinner
             """))
             @enabled = true
 
-    cancel: ->
+            @captionUpdateTimer = setInterval( ( ->
+
+                spinnerCaptionEl = $("#idSpinnerCaption")
+                spinnerCaptionEl.html document.title
+
+                spinnerRect = new Encapsule.code.lib.kohelpers.Rectangle( 300, 0 )
+                spinnerORect = new Encapsule.code.lib.kohelpers.OffsetRectangle( spinnerRect, undefined )
+                spinnerORect.offset.top += 70
+
+                spinnerCaptionEl.css({ marginLeft: spinnerORect.offset.left, marginTop: spinnerORect.offset.top, width: spinnerORect.rectangle.width, height: spinnerORect.rectangle.height })
+
+                ), 10)
+
+    cancel: =>
         if @enabled
             targetJN = $("#idSpinner")
             targetJN.fadeOut(2000)
+            clearInterval( @captionUpdateTimer )
             embeddedSpinnerObject = @embeddedSpinnerObject
             $("#idSpinnerCore").attr { src: "img/core-green-128x128.png" }   
             @enabled = false

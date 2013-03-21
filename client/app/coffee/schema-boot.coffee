@@ -27,21 +27,21 @@ namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Enc
 
 
 Encapsule.code.app.bootChromes = {
-    phase0 : { title: "#{appName} @", backgroundColor: "#000033" }
-    phase1 : { title: "#{appName} *", backgroundColor: "#001144" }
-    phase2 : { title: "#{appName} ?", backgroundColor: "#002255" }
-    phase2checking : { title: "#{appName} ~", backgroundColor: "#003366" }
-    phase2downloading: { title: "#{appName} 0%", backgroundColor: "#006600" }
-    phase2progress: { title: "#{appName} ", backgroundColor: "#FFFF00" }
+    phase0 : { title: "#{appName} @", backgroundColor: "#0077AA" }
+    phase1 : { title: "#{appName} *", backgroundColor: "#0088BB" }
+    phase2 : { title: "#{appName} ?", backgroundColor: "#0099CC" }
+    phase2checking : { title: "#{appName} ~", backgroundColor: "#00AADD" }
+    phase2downloading: { title: "#{appName} 0%", backgroundColor: "#009900" }
+    phase2progress: { title: "#{appName} ", backgroundColor: "#00CC00" }
     phase2error: { title: "#{appName} ! ERROR", backgroundColor: "#CC0000" }
     phase2obsolete: { title: "#{appName} ! LOCKED", backgroundColor: "#CC0000" }
-    phase2offline: { title: "#{appName} #", backgroundColor: "#009900" }
-    phase2cached: { title: "#{appName} $", backgroundColor: "#00CC00" }
-    phase2noupdate: { title: "#{appName} *", backgroundColor: "#66CC00" }
-    phase2updateready: { title: "#{appName} $", backgroundColor: "#99FF99" }
+    phase2offline: { title: "#{appName} ?$", backgroundColor: "#009900" }
+    phase2cached: { title: "#{appName} +$", backgroundColor: "#00FF00" }
+    phase2noupdate: { title: "#{appName} -$", backgroundColor: "#00CCFF" }
+    phase2updateready: { title: "#{appName} >$", backgroundColor: "#FFFF00" }
     phase2watchdog: { title: "#{appName} ?8|" }
     phase2watchdogNoop: { title: "#{appName} v#{appVersion}" }
-    phase2watchdogAction: { title: "#{appName} >8!", backgroundColor: "CC66CC" }
+    phase2watchdogAction: { title: "#{appName} >8!", backgroundColor: "#FFCC00" }
     phase3: { title: "#{appName} v#{appVersion}", backgroundColor: "white" }
     }
 
@@ -193,7 +193,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
             Console.messageRaw("<h2>#{appPackagePublisher} running offline from cache :)</h2>")
-            setTimeout( ( -> phase3(bootstrapperOptions_) ), 1)
+            setTimeout( ( -> phase3(bootstrapperOptions_) ), 500)
         , onCached: (fileCount_) ->
             Encapsule.code.app.setBootChrome("phase2cached")
             phase2Out.appCacheMonitorState = "cached"
@@ -203,14 +203,14 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw("<h2>#{appName} v#{appVersion} is now fully cached for on/offline use :)</h2>")
             setTimeout ( ->
                 phase3(bootstrapperOptions_) )
-                , 250
+                , 500
         , onNoUpdate: ->
             Encapsule.code.app.setBootChrome("phase2noupdate")
             phase2Out.appCacheMonitorState = "noupdate"
             phase2Out.appCacheTerminalState = "noupdate"
             Console.messageEnd("<strong>No update<strong>")
             Console.messageRaw("<h2>#{appName} v#{appVersion} is good to go :-)</h2>")
-            setTimeout( ( -> phase3(bootstrapperOptions_) ), 1)
+            setTimeout( ( -> phase3(bootstrapperOptions_) ), 500)
         , onUpdateReady: (fileCount_) ->
             Encapsule.code.app.setBootChrome("phase2updateready")
             phase2Out.appCacheMonitorState = "updateready"
@@ -229,7 +229,7 @@ phase2 = (bootstrapperOptions_) ->
                     Console.messageRaw("<p>If you encounter this error under different circumstances please let me know.</p>")
                     Console.messageRaw("<p><strong>Note: you can typically recover from a DOM exception in this case by simply refreshing the page.</strong></p>")
                     Console.messageError(exception)
-                ) , 350
+                ) , 500
         }
     try
         phase2Out.appCacheMonitor = new Encapsule.code.lib.appcachemonitor(appCacheCallbacks)
@@ -240,34 +240,48 @@ phase2 = (bootstrapperOptions_) ->
         # Let's say that if none of our monitoring callbacks are invoked within two seconds that AND the reported cache
         # status is IDLE that we missed the show and everything is set to go.
         setTimeout( ( ->
-            Encapsule.code.app.setBootChrome("phase2watchdog")
+
+            Encapsule.code.app.setBootChrome("phase2Watchdog")
             applicationCacheStatus = window.applicationCache.status
             applicationCacheMonitorState = phase2Out.appCacheMonitorState
             applicationCacheMonitorTerminalState = phase2Out.appCacheTerminalState
-            if not applicationCacheMonitorTerminalState and  applicationCacheStatus == window.applicationCache.IDLE
-                Encapsule.code.app.setBootChrome("phase2watchdogAction")
-                Console.message("App cache watchdog: Browser app cache reports status = #{applicationCacheStatus}")
-                Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorState}")
-                Console.message("App cache watchdog: Browser app cache monitor terminal status = #{applicationCacheMonitorTerminalState}")
-                phase2Out.appCacheRaceConditionBroken = true
-                appCacheCallbacks.onNoUpdate()
-            else
-                Encapsule.code.app.setBootChrome("phase2watchdogNoop")
-                phase2Out.appCacheRaceConditionBroken = false
-                if not applicationCacheMonitorTerminalState and  applicationCacheStatus == window.applicationCache.IDLE
+
+            switch applicationCacheStatus
+                when window.applicationCache.UNCACHED
                     Encapsule.code.app.setBootChrome("phase2watchdogAction")
-                    phase2Out.appCacheRaceConditionBroken = true
-                    alert("HUH?")
-                    appCacheCallbacks.onNoUpdate()
-                else
-                    setTimeout( ( ->
-                         Console.message("App cache watchdog: Browser app cache reports status = #{applicationCacheStatus}")
-                         Console.message("App cache watchdog: Browser app cache monitor status = #{applicationCacheMonitorState}")
-                         Console.message("App cache watchdog: Browser app cache monitor terminal status = #{applicationCacheMonitorTerminalState}")
-                         if not applicationCacheStatus == window.applicationCache.IDLE
-                                Console.messageError("The browser application cache status is still not IDLE.")
-                         ), 2000)
-            ), 2000)
+                    Console.messageError("Browser cache status is UNCACHED.")
+                    break;
+
+                when window.applicationCache.IDLE
+                    if not applicationCacheMonitorTerminalState? or not applicationCacheMonitorTerminalState
+                        Encapsule.code.app.setBootChrome("phase2watchdogAction")
+                        phase2Out.appCacheRaceConditionBroken = true
+                        appCacheCallbacks.onNoUpdate()
+                    else
+                        Encapsule.code.app.setBootChrome("phase2watchdogNoop")
+
+                     
+                when window.applicationCache.CHECKING
+                    Encapsule.code.app.setBootChrome("phase2watchdogNoop")
+                    break;
+
+                when window.applicationCache.DOWNLOADING
+                    Encapsule.code.app.setBootChrome("phase2watchdogNoop")
+                    break;
+
+                when window.applicationCache.UPDATEREADY
+                     if not applicationCacheMonitorTerminalState? or not applicationCacheMonitorTerminalState
+                        Encapsule.code.app.setBootChrome("phase2watchdogAction")
+                        phase2Out.appCacheRaceConditionBroken = true
+                        appCacheCallbacks.onUpdateReady()
+                     else
+                        Encapsule.code.app.setBootChrome("phase2watchdogNoop")
+                   
+                when window.applicationCache.OBSOLETE
+                     Encapsule.code.app.setBootChrome("phase2watchdogNoop")
+                     break;
+
+            ), 1000)
     catch exception
         Console.messageError(exception)
 

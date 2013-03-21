@@ -42,7 +42,6 @@ class namespaceEncapsule_code_app.Schema
             bodyElement = $("body")
 
 
-            Console.show()
             Console.messageRaw "<h3>STARTING APPLICATION</h3>"
 
             Console.message "Initializing local URI routing:"

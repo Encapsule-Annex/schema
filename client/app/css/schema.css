@@ -1,5 +1,5 @@
 
-body { margin: 0px; padding: 0px; }
+body { margin: 0px; padding: 0px; background-color: #006699; }
 
 table {border: 1px solid black; width: 100%;}
 th {border: 1px solid black; }
@@ -20,10 +20,8 @@ font-size: 8pt;
 spacing: 5px;
 padding: 10px;
 color: black;
-border-bottom: 1px solid #999999;
 background-color: #CCCCCC;
 display: none; /* displayed only as needed */
-opacity: 0.0;
 }
 
 #idConsole a { color: #0099CC; font-weight: bold; }
@@ -36,7 +34,9 @@ opacity: 0.0;
 .classConsoleExceptionContainer { border: 5px solid #FF0000; background-color: #FF7700; padding: 10px; }
 
 #idAppBootView { border: 1px solid black; margin: 10px; padding: 10px; font-family: Courier; font-size: 8pt; }
+
 #idSpinner { z-index: 200; }
+#idSpinnerCaption { z-index: 200; font-family: Courier; font-weight: bold; font-size: 14pt; color: #666666; text-align: center; vertical-align: center; position: fixed; top: 50%; left: 50%; }
 
 .classTitleSiteName { font-family: Courier; font-size: 16pt; font-weight: bold; fill: #CCCCCC; }
 
@@ -124,7 +124,7 @@ background-size: 100%; backgroundAttachment: fixed;
 }
 
 .classObservableWindowManager {
-position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; border: 1px solid black; z-index: -2
+position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; z-index: -2
 }
 
 

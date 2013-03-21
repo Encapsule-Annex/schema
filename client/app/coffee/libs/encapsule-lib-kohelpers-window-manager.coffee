@@ -108,7 +108,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             #
 
             htmlBindingBegin = """
-                <div id="idWindowManagerGlass" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), 
+                <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), 
                 marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(),
                 opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
                 <div id="#{@layout.id}" class="classObservableWindowManager"
