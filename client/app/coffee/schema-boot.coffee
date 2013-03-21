@@ -27,18 +27,18 @@ namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Enc
 Encapsule.code.app.bootDelay = 500
 
 Encapsule.code.app.bootChromes = {
-    phase0 : { title: "#{appName} .", backgroundColor: "#003366" }
-    phase1 : { title: "#{appName} -", backgroundColor: "#004477" }
-    phase2 : { title: "#{appName} $", backgroundColor: "#005588" }
-    phase2checking : { title: "#{appName} ^", backgroundColor: "#006699" }
+    phase0 : { title: "#{appName} init", backgroundColor: "#003366" }
+    phase1 : { title: "#{appName} boot", backgroundColor: "#004477" }
+    phase2 : { title: "#{appName} check", backgroundColor: "#005588" }
+    phase2checking : { title: "#{appName} ping", backgroundColor: "#006699" }
     phase2downloading: { title: "#{appName} 0%", backgroundColor: "#0099CC" }
-    phase2progress: { title: "#{appName} ", backgroundColor: "#00CC00" }
-    phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFCC00" }
+    phase2progress: { title: "#{appName} ", backgroundColor: "#FFCC00" }
+    phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFFF00" }
     phase2obsolete: { title: "#{appName} LOCKED", backgroundColor: "#FFCC00" }
-    phase2offline: { title: "#{appName} ~$", backgroundColor: "#009999" }
-    phase2cached: { title: "#{appName} >$", backgroundColor: "#0066CC" }
-    phase2noupdate: { title: "#{appName} -$", backgroundColor: "#00CC00" }
-    phase2updateready: { title: "#{appName} +$", backgroundColor: "#FFFF00" }
+    phase2offline: { title: "#{appName} offline", backgroundColor: "#009999" }
+    phase2cached: { title: "#{appName} installed", backgroundColor: "#0066CC" }
+    phase2noupdate: { title: "#{appName} cached", backgroundColor: "#00CC00" }
+    phase2updateready: { title: "#{appName} updated", backgroundColor: "#FFFF00" }
     phase2watchdog: { title: "#{appName} ?8|" }
     #phase2watchdogNoop: { title: "#{appName} v#{appVersion}" }
     phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00" }

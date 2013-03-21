@@ -74,30 +74,65 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             @cssWindowManagerMarginLeft = ko.computed => @viewOffsetRect().offset.left + "px"
             @cssWindowManagerMarginTop = ko.computed => @viewOffsetRect().offset.top + "px"
 
+            # \ BEGIN RUNTIME OBJECT CALLBACKS
+
+            @getOffsetRectangle = =>
+                documentEl = $(document)
+                # width =  @documentEl.width()
+                # height = @documentEl.height()
+                # innerWidth = @documentEl.innerWidth()
+                # innerHeight = @documentEl.innerHeight()
+                # outerWidth = @documentEl.outerWidth()
+                # outerHeight = @documentEl.outerHeight()
+                marginWidth = documentEl.outerWidth(true)
+                marginHeight = documentEl.outerHeight(true)
+
+                glassRectangle = new Encapsule.code.lib.kohelpers.Rectangle(marginWidth, marginHeight)
+                @glassOffsetRect(new Encapsule.code.lib.kohelpers.OffsetRectangle(glassRectangle, undefined))
+
+                viewRectangle = new Encapsule.code.lib.kohelpers.Rectangle (marginWidth - @layout.windowManagerOuterOffset), (marginHeight - @layout.windowManagerOuterOffset)
+                viewOffsetRectangle = new Encapsule.code.lib.kohelpers.OffsetRectangle viewRectangle, undefined
+                viewOffsetRectangle
+
+            #
+            # Given a new offset rectangle representing the "view", determine if we need to
+            # re-evaluate the split stack.
+            #
+            
+            @updateViewState = (forceEval_) =>
+
+                # Return false iff no change and not forceEval_
+
+                forceEval = forceEval_? and forceEval_ or false
+
+                oldOffsetRectangle = @viewOffsetRect()
+                newOffsetRectangle = @getOffsetRectangle()
+
+                if newOffsetRectangle == oldOffsetRectangle and not forceEval
+                    return false;
+
+                @viewOffsetRect(newOffsetRectangle)
+
+                runtimeState = @runtimeState
+                availableOffsetRect = newOffsetRectangle
+
+                for plane in @planes
+                    splitters = plane.splitterStack
+                    for split in splitters
+                        Console.message("Window manager refresh on plane #{plane.id} split #{split.id}")
+                        split.setOffsetRectangle(availableOffsetRect, forceEval)
+
+            # / END RUNTIME OBJECT CALLBACKS
              
-            # INTERNAL STATE INITIALIZATION
+            # \ BEGIN OBSERVABLE DATA MODEL INITIALIZATION
 
             $("body").css { backgroundColor: @layout.pageBackgroundColor }
 
+            #
             # The Window Manager takes as input a "layout" Javascript object.
             # The layout is declarative and is parsed here to produce this window manager's internal runtime
             # state model: a hierarchy of objects initialized using data from the layout. 
             #
-            # We intend to bind the internal state of the window manager to the DOM via Knockout.js.
-            # As we parse the layout declaration below, build the HTML binding string.
-            #
-
-            htmlBindingBegin = """
-                <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), 
-                marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(),
-                opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
-                <div id="#{@layout.id}" class="classObservableWindowManager"
-                data-bind="style: { backgroundColor: cssWindowManagerBackgroundColor(), width: cssWindowManagerWidth(),
-                height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(),
-                opacity: cssWindowManagerOpacity() }">#{@layout.id}::#{@layout.name}
-                """
-
-            htmlBindingEnd = """</div>"""
 
             planeIndex = 0
             for planeLayout in @layout.planes
@@ -131,86 +166,40 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 planeIndex++
             Console.message("Done transforming layout into view model :)")
 
+            # / END OBSERVABLE DATA MODEL INITIALIZATION
 
-            # DOM STATE
+            # REGISTER HTML VIEW TEMPLATES FOR THE WINDOW MANAGER ITSELF.
+            # Note that we define these in constructor scope of the window manager so that we can synthesize the outer
+            # binding structure of the window manager using information available in context here. 
 
-            bodyEl = $("body")
-            bodyEl.append($("""<span id="idEncapsuleWindowManager"></span>"""))
-            windowManagerEl = $("#idEncapsuleWindowManager")
-            Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(windowManagerEl)
+           
+            Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_EncapsuleWindowManager", ( => """
+                <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
+                <div id="#{@layout.id}" class="classObservableWindowManager" data-bind="style: {  width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">
+                    #{@layout.id}::#{@layout.name}
+                </div>
+                """))
 
-
-            $("body").append( $(htmlBindingBegin + htmlBindingEnd) )
-
-            bindingTargetEl = document.getElementById("#idWindowManagerGlass")
-            ko.applyBindings @, bindingTargetEl
-
-
-            @getOffsetRectangle = =>
-                documentEl = $(document)
-                # width =  @documentEl.width()
-                # height = @documentEl.height()
-                # innerWidth = @documentEl.innerWidth()
-                # innerHeight = @documentEl.innerHeight()
-                # outerWidth = @documentEl.outerWidth()
-                # outerHeight = @documentEl.outerHeight()
-                marginWidth = documentEl.outerWidth(true)
-                marginHeight = documentEl.outerHeight(true)
-
-                glassRectangle = new Encapsule.code.lib.kohelpers.Rectangle(marginWidth, marginHeight)
-                @glassOffsetRect(new Encapsule.code.lib.kohelpers.OffsetRectangle(glassRectangle, undefined))
-
-                viewRectangle = new Encapsule.code.lib.kohelpers.Rectangle (marginWidth - @layout.windowManagerOuterOffset), (marginHeight - @layout.windowManagerOuterOffset)
-                viewOffsetRectangle = new Encapsule.code.lib.kohelpers.OffsetRectangle viewRectangle, undefined
-                viewOffsetRectangle
-
-
-
-
+            # BIND THE HTML VIEW TO THE WINDOW MANAGER'S OBVSERVABLE DATA MODELS.
             #
-            # Given a new offset rectangle representing the "view", determine if we need to
-            # re-evaluate the split stack.
+            windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(@layout.id)
+            ko.applyBindings @, windowManagerHtmlViewRootDocumentElement
+
+            # PENULTIMATE STEP: Update the view state to power-on defaults.
             #
-            
-            @updateViewState = (forceEval_) =>
-
-                # Return false iff no change and not forceEval_
-
-                forceEval = forceEval_? and forceEval_ or false
-
-                oldOffsetRectangle = @viewOffsetRect()
-                newOffsetRectangle = @getOffsetRectangle()
-
-                if newOffsetRectangle == oldOffsetRectangle and not forceEval
-                    return false;
-
-                @viewOffsetRect(newOffsetRectangle)
-
-                runtimeState = @runtimeState
-                availableOffsetRect = newOffsetRectangle
-
-                for plane in @planes
-                    splitters = plane.splitterStack
-                    for split in splitters
-                        Console.message("Window manager refresh on plane #{plane.id} split #{split.id}")
-
-                        split.setOffsetRectangle(availableOffsetRect, forceEval)
-
-
-
-            # PENULTIMATE STEP:
-            # Update the view state to power-on defaults.
-
             @updateViewState(true)
 
             # LASTLY, GO LIVE WITH VIEW STATE UPDATES IN RESPONSE TO BROWSER RESIZE EVENTS
-
+            #
             # setInterval @updateViewState, 5000 # This catches everything (including browser restore) eventually
             window.addEventListener 'resize', @updateViewState
 
             Console.message("... Window manager initialization complete.")
+            # / END INITIALIZATION OF WINDOW MANAGER OBJECT INSTANCE
 
 
+
+            # / END RUNTIME CALLBACKS
 
         catch exception
             message = "In Encapsule.code.lib.kohelpers.WindowManager: #{exception}"
