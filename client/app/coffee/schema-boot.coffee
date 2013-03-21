@@ -33,16 +33,16 @@ Encapsule.code.app.bootChromes = {
     phase2checking : { title: "#{appName} ~", backgroundColor: "#00AADD" }
     phase2downloading: { title: "#{appName} 0%", backgroundColor: "#009900" }
     phase2progress: { title: "#{appName} ", backgroundColor: "#00CC00" }
-    phase2error: { title: "#{appName} ! ERROR", backgroundColor: "#CC0000" }
-    phase2obsolete: { title: "#{appName} ! LOCKED", backgroundColor: "#CC0000" }
-    phase2offline: { title: "#{appName} ?$", backgroundColor: "#009900" }
-    phase2cached: { title: "#{appName} +$", backgroundColor: "#00FF00" }
-    phase2noupdate: { title: "#{appName} -$", backgroundColor: "#00CCFF" }
-    phase2updateready: { title: "#{appName} >$", backgroundColor: "#FFFF00" }
+    phase2error: { title: "#{appName} !$ ERROR", backgroundColor: "#CC0000" }
+    phase2obsolete: { title: "#{appName} !$ LOCKED", backgroundColor: "#CC0000" }
+    phase2offline: { title: "#{appName} ~$ :)", backgroundColor: "#009900" }
+    phase2cached: { title: "#{appName} +$ :)", backgroundColor: "#00FF00" }
+    phase2noupdate: { title: "#{appName} ~$ :)", backgroundColor: "#00CCFF" }
+    phase2updateready: { title: "#{appName} +$ ~:)", backgroundColor: "#FFFF00" }
     phase2watchdog: { title: "#{appName} ?8|" }
-    phase2watchdogNoop: { title: "#{appName} v#{appVersion}" }
-    phase2watchdogAction: { title: "#{appName} >8!", backgroundColor: "#FFCC00" }
-    phase3: { title: "#{appName} v#{appVersion}", backgroundColor: "white" }
+    #phase2watchdogNoop: { title: "#{appName} v#{appVersion}" }
+    phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00" }
+    phase3: { title: "#{appName} v#{appVersion}", backgroundColor: "#00FFFF" }
     }
 
 Encapsule.code.app.setBootChrome = (phase_, progress_) ->

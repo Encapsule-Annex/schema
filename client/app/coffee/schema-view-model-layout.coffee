@@ -41,7 +41,7 @@ Encapsule.code.app.viewLayout = {
         windowManagerOuterOffset: 32 # from document edge to window manager edge
         windowManagerMargin: 10 # from window manager edge to outer edge of managed windows
         windowManagerBackgroundColor: "white"
-        windowManagerOpacity: .8
+        windowManagerOpacity: .6
         planes: [
             {
                 id: "idSchemaPlaneDefault"

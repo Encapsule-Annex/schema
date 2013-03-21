@@ -78,13 +78,13 @@ class namespaceEncapsule_code_lib_view.spinner
                 spinnerCaptionEl = $("#idSpinnerCaption")
                 spinnerCaptionEl.html document.title
 
-                spinnerRect = new Encapsule.code.lib.kohelpers.Rectangle( 300, 0 )
+                spinnerRect = new Encapsule.code.lib.kohelpers.Rectangle( 1024, 128 )
                 spinnerORect = new Encapsule.code.lib.kohelpers.OffsetRectangle( spinnerRect, undefined )
-                spinnerORect.offset.top += 70
+                spinnerORect.offset.top += 138
 
                 spinnerCaptionEl.css({ marginLeft: spinnerORect.offset.left, marginTop: spinnerORect.offset.top, width: spinnerORect.rectangle.width, height: spinnerORect.rectangle.height })
 
-                ), 10)
+                ), 500)
 
     cancel: =>
         if @enabled
