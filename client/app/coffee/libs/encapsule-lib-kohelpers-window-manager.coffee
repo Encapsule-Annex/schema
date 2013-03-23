@@ -137,7 +137,6 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     @glassOffsetRectangle(frameGlass.view)
 
                     marginsWindowManager = geo.margins.createUniform(@layout.windowManagerMargin)
-                    marginsWindowManager.right += 400
                     frameWindowManager = geo.frame.createFromOffsetRectangleWithMargins(frameGlass.view, marginsWindowManager)
                     @windowManagerOffsetRectangle(frameWindowManager.view)
 
@@ -274,7 +273,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
                         <div id="#{@layout.id}" class="classObservableWindowManager" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">#{@layout.id}::#{@layout.name}</div>
                         """
-                    Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , htmlView
+                    Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , => htmlView
                 catch exception
                     throw "Top-level HTML view synthesis failure: #{exception}"
     
@@ -326,10 +325,9 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
             # setInterval @refreshWindowManagerViewState, 5000 # This catches everything (including browser restore) eventually
 
-
             # ============================================================================
             Console.messageRaw("<h3>WINDOW MANAGER IS ONLINE</h3>")
-            Console.messageRaw("<h2>#{appName} v#{appVersion}: enterring interactive mode</h2>")
+            Console.messageRaw("<h2>#{appName} v#{appVersion}: entering interactive mode</h2>")
             # / END INITIALIZATION OF WINDOW MANAGER OBJECT INSTANCE
 
 

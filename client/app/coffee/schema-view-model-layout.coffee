@@ -32,16 +32,27 @@ Dig this >:)-~
 ###
 Encapsule.code.app.viewLayout = {
     layout: {
+        # Layout metadata
         id: "idSchemaWindowManager"
         name: "#{appName} v#{appVersion} Window Manager"
-        pageBackgroundColor: "white"
-        glassMargin: 4 # document edge to glass edge
+
+        # Attributes of whatever element we're hosted in. (Mostly the BODY)
+        pageBackgroundColor: undefined
         glassBackgroundColor: undefined
+        windowManagerBackgroundColor: "#99CCFF"
+
+        # Margin attributes
+        glassMargin: 10 # document edge to glass edge
+        windowManagerMargin: 10 # glass edge to window manager edge
+
+        # Background image attributes
         glassBackgroundImage: "fire-on-the-mountain.jpg"
-        glassOpacity: 1
-        windowManagerMargin: 4 # glass edge to window manager edge
-        windowManagerBackgroundColor: "white"
-        windowManagerOpacity: 0.3
+
+        # Opacity attributes
+        glassOpacity: 0.5
+        windowManagerOpacity: 0.95
+
+
         planes: [
             {
                 id: "idSchemaPlaneDefault"
