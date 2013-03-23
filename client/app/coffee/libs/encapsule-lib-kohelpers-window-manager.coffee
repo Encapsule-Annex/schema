@@ -107,13 +107,13 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
             @observableWindows = ko.observableArray []
 
-
-
             # ============================================================================
-            # \ BEGIN RUNTIME CALLBACKS
+            # \ BEGIN: RUNTIME CALLBACKS
 
             @refreshWindowManagerViewGeometriesFromDocument = =>
+                # \ BEGIN: function scope
                 try
+                    # \ BEGIN: try
                     documentEl = $(document)
 
                     # All extent properties one may obtain from the document object below.
@@ -141,14 +141,12 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     frameWindowManager = geo.frame.createFromOffsetRectangleWithMargins(frameGlass.view, marginsWindowManager)
                     @windowManagerOffsetRectangle(frameWindowManager.view)
 
-
+                    # / END: try
 
                 catch exception
-                    Console.messageError "refreshWindowManagerViewGeometriesFromDocument: #{exception}"
+                    Console.messageError "Window geometries refresh failed: #{exception}"
 
-
-
-
+                # / END: function scope
 
             #
             # Given a new offset rectangle representing the "view", determine if we need to
@@ -181,100 +179,147 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # / END RUNTIME CALLBACKS
             # ============================================================================
 
-
             Console.messageRaw("<h3>BUILDING DATA MODEL</h3>")
-             
-
-            ###
 
             # ============================================================================
             # \ BEGIN OBSERVABLE DATA MODEL INITIALIZATION
 
-            if @layout.pageBackgroundColor? and @layout.pageBackgroundColor
-                $("body").css { backgroundColor: @layout.pageBackgroundColor }
+            try
+    
+                if @layout.pageBackgroundColor? and @layout.pageBackgroundColor
+                    $("body").css { backgroundColor: @layout.pageBackgroundColor }
+    
+                #
+                # The Window Manager takes as input a "layout" Javascript object.
+                # The layout is declarative and is parsed here to produce this window manager's internal runtime
+                # state model: a hierarchy of objects initialized using data from the layout. 
+                #
+    
+                try
+                    # \ BEGIN: try scope (note extensive error checking to catch errors in the input layout declaration)
 
-            #
-            # The Window Manager takes as input a "layout" Javascript object.
-            # The layout is declarative and is parsed here to produce this window manager's internal runtime
-            # state model: a hierarchy of objects initialized using data from the layout. 
-            #
+                    planeIndex = 0
+                    for planeLayout in @layout.planes
+                        # begin
+                        planeRuntime = { id: planeLayout.id, name: planeLayout.name, splitterStack: [] }
+                        splitIndex = 0
+                        for split in planeLayout.splitterStack
+                            # begin split scope
+                            try
+                                Console.message("Window manager: Starting plane #{planeIndex} split #{splitIndex} ...")
+                                Console.message """... id = #{split.id} &bull; #{split.name} &bull; #{split.type} &bull; Q1 window descriptor = #{split.Q1WindowDescriptor} &bull; Q2 window descriptor = #{split.Q2WindowDescriptor}"""
+                                splitterObservableWindows = []
+                                newSplit = undefined
+                                try
+                                    newSplit = new Encapsule.code.lib.kohelpers.WindowSplitter( split, splitterObservableWindows )
+                                catch exception
+                                    throw "Failed to instantiate window splitter object: #{exception}"
+                                try
+                                    planeRuntime.splitterStack.push newSplit
+                                catch exception
+                                    throw "Failed to push new splitter into stack: #{exception}"
+                                try
+                                    for observableWindow in splitterObservableWindows
+                                        try
+                                            @observableWindows.push observableWindow
+                                        catch exception
+                                            throw "Failed to push new observable window into window manager's managed window pool: #{exception}"
+                                catch exception
+                                    throw "Failed to instantiate observable windows: #{exception}"
+                                Console.message("... Layout #{planeIndex} #{splitIndex} processed.")
+                                splitIndex++
+                            catch exception
+                                throw "Exception processing layout plane #{planeIndex}, split #{splitIndex} :: #{exception}"
+                            # end split scope
+                        # back at plane scope
+                        @planes.push planeRuntime
+                        Console.message("Layout plane #{planeIndex} processed.")
+                        planeIndex++
+                    # / END: try scope
+                catch exception
+                        throw "Failed to initialize layout planes: #{exception}"
 
-            planeIndex = 0
-            for planeLayout in @layout.planes
-                # begin
-                planeRuntime = { id: planeLayout.id, name: planeLayout.name, splitterStack: [] }
-                splitIndex = 0
-                for split in planeLayout.splitterStack
-                    # begin split scope
-                    try
-                        Console.message("Window manager: Starting plane #{planeIndex} split #{splitIndex} ...")
-                        Console.message("... id = #{split.id}")
-                        Console.message("... name = #{split.name}")
-                        Console.message("... type = #{split.type}")
-                        Console.message("... Q1 window descriptor = #{split.Q1WindowDescriptor}")
-                        Console.message("... Q2 window descriptor = #{split.Q2WindowDescriptor}")
+            catch exception
+                throw "Failed to initialize window manager internal data model: #{exception}"
 
-                        splitterObservableWindows = []
-                        newSplit = new Encapsule.code.lib.kohelpers.WindowSplitter( split, splitterObservableWindows )
-                        planeRuntime.splitterStack.push newSplit
-                        for observableWindow in splitterObservableWindows
-                            @observableWindows.push observableWindow
-
-                        Console.message("... Layout #{planeIndex} #{splitIndex} processed.")
-                        splitIndex++
-                    catch exception
-                        throw "Exception processing layout plane #{planeIndex}, split #{splitIndex} :: #{exception}"
-                    # end split scope
-                # back at plane scope
-                @planes.push planeRuntime
-                Console.message("Layout plane #{planeIndex} processed.")
-                planeIndex++
             Console.message("Done transforming layout into view model :)")
 
             # / END OBSERVABLE DATA MODEL INITIALIZATION
             # ============================================================================
 
-            ###
 
 
             # ============================================================================
-
-            Console.messageRaw("<h3>SYNTHESIZING HTML VIEW TEMPLATES</h3>")
-
-
-            Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_EncapsuleWindowManager", ( => """
-                <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
-                <div id="#{@layout.id}" class="classObservableWindowManager" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">#{@layout.id}::#{@layout.name}</div>
-                """))
-
-            windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(@layout.id)
-
-
+            try
+                Console.messageRaw("<h3>SYNTHESIZING HTML VIEW TEMPLATES</h3>")
+                try
+                    Console.message("Synthesizing window manager HTML view.")
+                    htmlView = """
+                        <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
+                        <div id="#{@layout.id}" class="classObservableWindowManager" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">#{@layout.id}::#{@layout.name}</div>
+                        """
+                    Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , htmlView
+                catch exception
+                    throw "Failed to synthesize window manager HTML view: #{exception}"
+    
+                Console.messageRaw("<h3>INITIALIZING VIEW TEMPLATE LIBRARY</h3>")
+                try
+                    Console.message("Initializing view template library.")
+                    windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(@layout.id)
+                catch exception
+                    throw "Failed to initialize view template library: #{exception}"
+                    
+            catch exception
+                throw "Failed to initialize window manager view: #{excpetion}"
+    
+    
 
             # ============================================================================
-            # BIND THE HTML VIEW TO THE WINDOW MANAGER'S OBVSERVABLE DATA MODELS.
+            # BIND THE HTML VIEW TO THE WINDOW MANAGER'S OBVSERVABLE DATA MODELS USING KNOCKOUT.JS
             #
-            ko.applyBindings @, windowManagerHtmlViewRootDocumentElement
+            Console.messageRaw "<h3>APPLY KNOCKOUT.JS BINDINGS</h3>"
+            try
+                ko.applyBindings @ , windowManagerHtmlViewRootDocumentElement #  THIS IS FUCKING AWESOME
+            catch exception
+                throw """>:( Knockout.js isn't happy with us: #{exception}"""
 
-            # ============================================================================
-            # PENULTIMATE STEP: Update the view state to power-on defaults.
+            #
+            # At this point the DOM is wired to the window manager's data model via Knockout.js.
+            #
+            # Window manager's "data model" is a set of "observable objects". An "observable object"
+            # is a Javascript object that contains one or more "observables".
+            #
+            # An "observable" is an instance of ko.observable or ko.observableArray provided by
+            # the Knockout.js library.
+            #
+            # The "binding" above builds the mapping between specific observable object
+            # types and specific HTML view templates that are used to "project" a view of an
+            # observable object's data into a "view" rendered in HTML5/CSS3.
             #
 
-
             # ============================================================================
-            # LASTLY, GO LIVE WITH VIEW STATE UPDATES IN RESPONSE TO BROWSER RESIZE EVENTS
-            #
-            # setInterval @refreshWindowManagerViewState, 5000 # This catches everything (including browser restore) eventually
+            # Obtain the current extent of document and update the offset rectangles used to determine
+            # the coordinates of the window manager glass and main windows.
+            try
+                @refreshWindowManagerViewGeometriesFromDocument()
+            catch exception
+                throw "Initial window manager geometries refresh failed: #{exception}"
+
+            # Automatically refresh the window manager's geometries when the the browser window resizes.
             window.addEventListener 'resize', @refreshWindowManagerViewGeometriesFromDocument
+
+            # setInterval @refreshWindowManagerViewState, 5000 # This catches everything (including browser restore) eventually
+
 
             # ============================================================================
             Console.messageRaw("<h3>WINDOW MANAGER IS ONLINE</h3>")
+            Console.messageRaw("<h2>#{appName} v#{appVersion}: enterring interactive mode</h2>")
             # / END INITIALIZATION OF WINDOW MANAGER OBJECT INSTANCE
 
 
         catch exception
-            message = "In Encapsule.code.lib.kohelpers.WindowManager: #{exception}"
-            throw message
+            throw """Encapsule Window Manager initialization failure on layout.id="#{@layout.id}" : #{exception}"""
+
 
 
         # / end of constructor
