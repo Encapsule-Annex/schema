@@ -35,13 +35,13 @@ Encapsule.code.app.viewLayout = {
         id: "idSchemaWindowManager"
         name: "#{appName} v#{appVersion} Window Manager"
         pageBackgroundColor: "white"
-        glassBackgroundColor: "black"
+        glassMargin: 4 # document edge to glass edge
+        glassBackgroundColor: undefined
         glassBackgroundImage: "fire-on-the-mountain.jpg"
-        glassOpacity: 0.5
-        windowManagerOuterOffset: 10 # from document edge to window manager edge
-        windowManagerMargin: 16 # from window manager edge to outer edge of managed windows
-        windowManagerBackgroundColor: undefined
-        windowManagerOpacity: 1
+        glassOpacity: 1
+        windowManagerMargin: 4 # glass edge to window manager edge
+        windowManagerBackgroundColor: "white"
+        windowManagerOpacity: 0.3
         planes: [
             {
                 id: "idSchemaPlaneDefault"

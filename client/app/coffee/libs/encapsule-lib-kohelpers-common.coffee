@@ -75,7 +75,7 @@ Encapsule.code.lib.geometry = {}
 Encapsule.code.lib.geometry.point = {}
 Encapsule.code.lib.geometry.point.createFromCoordinates = (x_, y_) ->
     try
-        if not x_? or not x_ or not y_? or not y_ then throw "Invalid x or y parameter(s)."
+        if not x_? or not y_? then throw "Invalid x or y parameter(s)."
         point = { x: x_, y: y_ }
         point
     catch exception
@@ -94,9 +94,7 @@ Encapsule.code.lib.geometry.extent.create = ->
 Encapsule.code.lib.geometry.extent.createFromDimensions = (width_, height_) ->
     try
         if not width_? then throw "Missing width parameter."
-        if not width_ then throw "Missing width value."
         if not height_? then throw "Missing height parameter."
-        if not height_ then throw "Missing height value."
         width = Math.max(0, width_)
         height = Math.max(0, height_)
         containedArea = Math.abs(width * height)
@@ -122,7 +120,7 @@ Encapsule.code.lib.geometry.offset.create = ->
 
 Encapsule.code.lib.geometry.offset.createFromCoordinates = (left_, top_) ->
     try
-        if not top_? or not top_ or not left_? or not left_ then throw "Invalid top or left parameter(s)."
+        if not top_? or not left_? then throw "Invalid top or left parameter(s)."
         offsetObject = {
             left: left_
             top: top_
@@ -171,9 +169,7 @@ Encapsule.code.lib.geometry.rectangle.create = ->
 Encapsule.code.lib.geometry.rectangle.createFromDimensions = (width_, height_) ->
     try
         if not width_? then throw "Missing width parameter."
-        if not width_ then throw "Missing width value."
         if not height_? then throw "Missing height parameter."
-        if not height_ then throw "Missing height value."
         extentObject = Encapsule.code.lib.geometry.extent.createFromDimensions(width_, height_)
         rectangleObject = {
             extent: extentObject
@@ -209,9 +205,7 @@ Encapsule.code.lib.geometry.offsetRectangle.create = ->
 Encapsule.code.lib.geometry.offsetRectangle.createFromDimensions = (width_, height_) ->
     try
         if not width_? then throw "Missing width parameter."
-        if not width_ then throw "Missing width value."
         if not height_? then throw "Missing height parameter."
-        if not height_ then throw "Missing height value."
         rectangleObject = Encapsule.code.lib.geometry.rectangle.createFromDimensions(width_, height_)
         offsetRectangleObject = {
             rectangle: rectangleObject
@@ -249,17 +243,16 @@ Encapsule.code.lib.geometry.margins.create = ->
 
 Encapsule.code.lib.geometry.margins.createForPixelDimensions = (top_, left_, bottom_, right_) ->
     marginsObject = {
-        top: Math.max(top_? and top_ or 0, 0)
-        left: Math.max(left_? and left_ or 0, 0)
-        bottom: Math.max(bottom_? and bottom_ or 0, 0)
-        right: Math.max(right_? and right_ or 0, 0)
+        top: Math.max(top_? and top_, 0)
+        left: Math.max(left_? and left_, 0)
+        bottom: Math.max(bottom_? and bottom_, 0)
+        right: Math.max(right_? and right_, 0)
         }
     marginsObject
 
 Encapsule.code.lib.geometry.margins.createUniform = (pixels_) ->
     try
-        if not pixels_ then throw "Missing pixel count parameter."
-        if not pixels_ then throw "Missing pixel count value."
+        if not pixels_? then throw "Missing pixel count parameter."
         marginsObject = Encapsule.code.lib.geometry.margins.createForPixelDimensions(pixels_, pixels_, pixels_, pixels_)
         marginsObject
     catch exception

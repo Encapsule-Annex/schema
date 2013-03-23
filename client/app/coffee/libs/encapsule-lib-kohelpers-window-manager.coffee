@@ -132,11 +132,12 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
                     @documentOffsetRectangle = geo.offsetRectangle.createFromDimensions(marginWidth, marginHeight)
 
-                    marginsGlass = geo.margins.createUniform(50)
+                    marginsGlass = geo.margins.createUniform(@layout.glassMargin)
                     frameGlass = geo.frame.createFromOffsetRectangleWithMargins(@documentOffsetRectangle, marginsGlass)
                     @glassOffsetRectangle(frameGlass.view)
 
-                    marginsWindowManager = geo.margins.createUniform(50)
+                    marginsWindowManager = geo.margins.createUniform(@layout.windowManagerMargin)
+                    marginsWindowManager.right += 400
                     frameWindowManager = geo.frame.createFromOffsetRectangleWithMargins(frameGlass.view, marginsWindowManager)
                     @windowManagerOffsetRectangle(frameWindowManager.view)
 
