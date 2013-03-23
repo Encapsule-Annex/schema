@@ -24,22 +24,23 @@ namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 
-Encapsule.code.app.bootDelay = 500
+Encapsule.code.app.bootDelay = 2000
+Encapsule.code.app.bootWatchdogTimeout = 500
 
 Encapsule.code.app.bootChromes = {
-    phase0 : { title: "power", backgroundColor: "white" }
-    phase1 : { title: "boot", backgroundColor: undefined }
-    phase2 : { title: "#{appPackagePublisher}", backgroundColor: undefined }
-    phase2checking : { title: "#{appName} ping", backgroundColor: undefined }
-    phase2downloading: { title: "#{appName} update", backgroundColor: undefined }
-    phase2progress: { title: "#{appName} update ", backgroundColor: "#DDFFEE" }
+    phase0 : { title: undefined, backgroundColor: "white" }
+    phase1 : { title: undefined, backgroundColor: undefined }
+    phase2 : { title: "updating", backgroundColor: undefined }
+    phase2checking : { title: "ping", backgroundColor: undefined }
+    phase2downloading: { title: "#updating", backgroundColor: undefined }
+    phase2progress: { title: "update ", backgroundColor: "#0099CC" }
     phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFFF00" }
     phase2obsolete: { title: "#{appName} LOCKED", backgroundColor: "#FFCC00" }
-    phase2offline: { title: "#{appName} v#{appVersion}", backgroundColor: "#E7E7E7" }
-    phase2cached: { title: "#{appName} installed", backgroundColor: "#FFFFCC" }
-    phase2noupdate: { title: "#{appName} v#{appVersion}", backgroundColor: "white" }
-    phase2updateready: { title: "#{appName} updated", backgroundColor: "#FFFFCC" }
-    phase2watchdog: { title: "#{appName} ?8|" }
+    phase2offline: { title: "ready", backgroundColor: "white" }
+    phase2cached: { title: "installed", backgroundColor: "#00CC00" }
+    phase2noupdate: { title: "ready", backgroundColor: "white" }
+    phase2updateready: { title: "updated", backgroundColor: "#FFFF00" }
+    #phase2watchdog: { title: "#{appName} ?8|" }
     #phase2watchdogNoop: { title: "#{appName} v#{appVersion}" }
     #phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00" }
     phase3: { title: "#{appName} v#{appVersion}", backgroundColor: "white" }
@@ -280,7 +281,7 @@ phase2 = (bootstrapperOptions_) ->
                      Encapsule.code.app.setBootChrome("phase2watchdogNoop")
                      break;
 
-            ), 500)
+            ), Encapsule.code.app.bootWatchdogTimeout)
     catch exception
         Console.messageError(exception)
 
