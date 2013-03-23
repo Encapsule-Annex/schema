@@ -25,7 +25,7 @@ app_uuid="56611225-be91-40cf-b9b8-5c7b8a6c6f3d"
 # be refreshed in order to provide meaning to server logfiles (please).
 #
 
-app_version="0.80"
+app_version="0.81"
 app_release_name="Gongga Shan"
 app_release_fun_url="http://www.geolocation.ws/v/P/34381835/gongga-shan-seen-from-hailuogou-glacier/en"
 app_version_uuid="42c28c61-da0d-4abd-9821-86e57c129239"
@@ -152,6 +152,9 @@ echo "var appGitHubRepoUrl = \"https://github.com/Encapsule/schema\";" >> $build
 echo "var appBlogName = \"Encapsule Project Blog\";" >> $build_id_js
 echo "var appBlogUrl = \"http://blog.encapsule.org\";" >> $build_id_js
 
+rebuild=1
+while [ $rebuild -eq 1 ]
+do
 echo =================================================================
 echo =================================================================
 echo =================================================================
@@ -169,7 +172,39 @@ echo === ^--- COFFEESCRIPT: EXPECT NO ERRORS =========================
 echo =================================================================
 echo =================================================================
 echo =================================================================
-sleep 1
+# sleep 5
+if [ "$1" != "loop"  ]
+then
+    echo ENTER=rebuild f=FINISH q=QUIT
+    echo -n Enter option :: ; read USERINPUT
+    if [ "$USERINPUT" = "f" ]
+    then
+        rebuild=0
+    fi
+    if [ "$USERINPUT" = "q" ]
+    then
+        exit 0
+    fi
+else
+    echo -n 0..
+    sleep 1
+    echo -n 1..
+    sleep 1
+    echo -n 2..
+    sleep 1
+    echo -n 3..
+    sleep 1
+    echo -n 4..
+    sleep 1
+    echo rebuild
+    sleep 1
+    clear
+fi
+
+done
+
+
+
 echo Deployed Javascripts:
 ls -lRat $schema_deploy_client
 

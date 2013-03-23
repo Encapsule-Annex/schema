@@ -105,7 +105,7 @@ class window.Console
             <div class="classConsoleExceptionContainer">
                 <h3 style="color: #660000">#{appName} v#{appVersion} RUNTIME EXCEPTION:</h3>
                 <p>
-                    AppID: #{appId} &bull; ReleaseID: #{appReleaseId} &bull; AppBuildId: #{appBuildId}">
+                    AppID: #{appId} &bull; ReleaseID: #{appReleaseId} &bull; AppBuildId: #{appBuildId}
                 </p>
                 <div style="margin: 5px; margin-top-15px; padding: 10px; background-color: #FF9900; border: 1px solid black;">#{errorException}</div>
             </div>

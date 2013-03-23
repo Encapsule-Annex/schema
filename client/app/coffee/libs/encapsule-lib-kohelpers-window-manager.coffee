@@ -29,77 +29,121 @@ namespaceEncapsule_runtime_app_kotemplates = Encapsule.runtime.app.kotemplates? 
 
 
 
-
-
-
-
-
 class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
     constructor: (layout_) ->
 
         try
+
+            # ============================================================================
+            # NAMESPACE ALIASES
+            geo = Encapsule.code.lib.geometry
+
+
+            # ============================================================================
             # PARAMETER VALIDATION
 
-            if not layout_? or not layout_
-                throw "You must specify a layout to construct an ObservableWindowManager instance."
+            if not layout_? or not layout_ then throw "You must specify a layout to construct an ObservableWindowManager instance."
+            if not layout_.layout? and not layout_.layout then throw "Expecting a top-level object named layout."
 
-            if not layout_.layout? and not layout_.layout
-                throw "Expecting a top-level object named layout."
 
+            # ============================================================================
             # NON-OBSERVABLE INTERNAL INSTANCE STATE
 
             @layout = layout_.layout
+
+            Console.messageRaw("<h2>#{@layout.name}</h2>")
+            Console.messageRaw("<h3>INITIALIZING</h3>")
+
+            # An array of plane objects that manager a layout splitter stack.
             @planes = []
-            @observableWindows = ko.observableArray []
 
+
+
+
+            # ============================================================================
             # OBSERVABLES
+            #
 
-            # This is the offset rectangle of the glass behind the window manager.
-            @glassOffsetRect = ko.observable new Encapsule.code.lib.kohelpers.OffsetRectangle()
-            @cssGlassWidth = ko.computed => @glassOffsetRect().rectangle.width + "px"
-            @cssGlassHeight = ko.computed => @glassOffsetRect().rectangle.height + "px"
-            @cssGlassMarginLeft = ko.computed => @glassOffsetRect().offset.left + "px"
-            @cssGlassMarginTop = ko.computed => @glassOffsetRect().offset.top + "px"
+            #
+            # ============================================================================
+            # OBSERVABLE WINDOW MANAGER WINDOW PROPERTIES
+            #
+
+            # Written by document resize event callback.
+            @documentOffsetRectangleObject = ko.observable geo.offsetRectangle.create()
+            
+
+            # ============================================================================
+            # OBSERVABLE WINDOW MANAGER GLASS PROPERTIES
+
+            # Written by the window manager's layout engine.
+            @frameGlass = ko.computed => geo.frame.create()
+
+            # Properties from layout (actually don't need to be computed unless we allow for dynamism later)
             @cssGlassOpacity = ko.computed => @layout.glassOpacity
             @cssGlassBackgroundColor = ko.computed => @layout.glassBackgroundColor? and @layout.glassBackgroundColor or undefined
             @cssGlassBackground = ko.computed => @layout.glassBackgroundImage? and @layout.glassBackgroundImage  and "url(img/#{@layout.glassBackgroundImage})" or undefined
 
-            # This is the offset rectangle of the window manager.
-            @viewOffsetRect = ko.observable new Encapsule.code.lib.kohelpers.OffsetRectangle()
+            # Properties from the window manager's layout engine
+            @cssGlassWidth = ko.computed => @frameGlass().view.rectangle.width + "px"
+            @cssGlassHeight = ko.computed => @frameGlass().view.rectangle.height + "px"
+            @cssGlassMarginLeft = ko.computed => @frameGlass().view.offset.left + "px"
+            @cssGlassMarginTop = ko.computed => @frameGlass().view.offset.top + "px"
+
+            # ============================================================================
+            # OBSERVABLE WINDOW MANAGER FRAME PROPERTIES
+
+            # Written by the window manager's layout engine.
+            @frameWindowManager = ko.observable geo.frame.create()
+
+            # Properties from layout (actually don't need to be computed unless we allow for dynamism later)
             @cssWindowManagerBackgroundColor = ko.computed => @layout.windowManagerBackgroundColor
             @cssWindowManagerOpacity = ko.computed => @layout.windowManagerOpacity
-            @cssWindowManagerWidth = ko.computed => @viewOffsetRect().rectangle.width + "px"
-            @cssWindowManagerHeight = ko.computed => @viewOffsetRect().rectangle.height + "px"
-            @cssWindowManagerMarginLeft = ko.computed => @viewOffsetRect().offset.left + "px"
-            @cssWindowManagerMarginTop = ko.computed => @viewOffsetRect().offset.top + "px"
 
-            # \ BEGIN RUNTIME OBJECT CALLBACKS
+            # Properties from the window manager's layout engine
+            @cssWindowManagerWidth = ko.computed => @frameWindowManager().view.rectangle.width + "px"
+            @cssWindowManagerHeight = ko.computed => @frameWindowManager().view.rectangle.height + "px"
+            @cssWindowManagerMarginLeft = ko.computed => @frameWindowManager().view.offset.left + "px"
+            @cssWindowManagerMarginTop = ko.computed => @frameWindowManager().view.offset.top + "px"
 
-            @getOffsetRectangle = =>
-                documentEl = $(document)
-                # width =  @documentEl.width()
-                # height = @documentEl.height()
-                # innerWidth = @documentEl.innerWidth()
-                # innerHeight = @documentEl.innerHeight()
-                # outerWidth = @documentEl.outerWidth()
-                # outerHeight = @documentEl.outerHeight()
-                marginWidth = documentEl.outerWidth(true)
-                marginHeight = documentEl.outerHeight(true)
+            @observableWindows = ko.observableArray []
 
-                glassRectangle = new Encapsule.code.lib.kohelpers.Rectangle(marginWidth, marginHeight)
-                @glassOffsetRect(new Encapsule.code.lib.kohelpers.OffsetRectangle(glassRectangle, undefined))
 
-                viewRectangle = new Encapsule.code.lib.kohelpers.Rectangle (marginWidth - @layout.windowManagerOuterOffset), (marginHeight - @layout.windowManagerOuterOffset)
-                viewOffsetRectangle = new Encapsule.code.lib.kohelpers.OffsetRectangle viewRectangle, undefined
-                viewOffsetRectangle
+
+            # ============================================================================
+            # \ BEGIN RUNTIME CALLBACKS
+
+            @refreshDocumentFrameObject = =>
+                try
+                    documentEl = $(document)
+
+                    # All extent properties one may obtain from the document object below.
+                    # We're actually only using the outerWidth/Height(true) (aka margin extents)
+                    # here. The others are left for experimentation and reference.
+                    #      
+                    # width =  @documentEl.width()
+                    # height = @documentEl.height()
+                    # innerWidth = @documentEl.innerWidth()
+                    # innerHeight = @documentEl.innerHeight()
+                    # outerWidth = @documentEl.outerWidth()
+                    # outerHeight = @documentEl.outerHeight()
+    
+                    marginWidth = documentEl.outerWidth(true)
+                    marginHeight = documentEl.outerHeight(true)
+    
+                    @documentOffsetRectangleObject(geo.offsetRectangle.createFromDimensions(marginWidth, marginHeight))
+
+                catch exception
+                    throw "ObservableWindowManager.getDocumentFrameObject: #{exception}"
+
 
             #
             # Given a new offset rectangle representing the "view", determine if we need to
             # re-evaluate the split stack.
             #
             
-            @updateViewState = (forceEval_) =>
+            @refreshWindowManagerViewState = (forceEval_) =>
 
                 # Return false iff no change and not forceEval_
 
@@ -122,11 +166,20 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         Console.message("Window manager refresh on plane #{plane.id} split #{split.id}")
                         split.setOffsetRectangle(availableOffsetRect, forceEval)
 
-            # / END RUNTIME OBJECT CALLBACKS
+            # / END RUNTIME CALLBACKS
+            # ============================================================================
+
+
+            Console.messageRaw("<h3>BUILDING DATA MODEL</h3>")
              
+
+            ###
+
+            # ============================================================================
             # \ BEGIN OBSERVABLE DATA MODEL INITIALIZATION
 
-            $("body").css { backgroundColor: @layout.pageBackgroundColor }
+            if @layout.pageBackgroundColor? and @layout.pageBackgroundColor
+                $("body").css { backgroundColor: @layout.pageBackgroundColor }
 
             #
             # The Window Manager takes as input a "layout" Javascript object.
@@ -167,44 +220,51 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             Console.message("Done transforming layout into view model :)")
 
             # / END OBSERVABLE DATA MODEL INITIALIZATION
+            # ============================================================================
 
-            # REGISTER HTML VIEW TEMPLATES FOR THE WINDOW MANAGER ITSELF.
-            # Note that we define these in constructor scope of the window manager so that we can synthesize the outer
-            # binding structure of the window manager using information available in context here. 
+            ###
 
-           
+
+            # ============================================================================
+
+            Console.messageRaw("<h3>SYNTHESIZING HTML VIEW TEMPLATES</h3>")
+
+
             Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_EncapsuleWindowManager", ( => """
                 <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
-                <div id="#{@layout.id}" class="classObservableWindowManager" data-bind="style: {  width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">
-                    #{@layout.id}::#{@layout.name}
-                </div>
+                <div id="#{@layout.id}" class="classObservableWindowManager" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">#{@layout.id}::#{@layout.name}</div>
                 """))
 
+            windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(@layout.id)
+
+
+
+            # ============================================================================
             # BIND THE HTML VIEW TO THE WINDOW MANAGER'S OBVSERVABLE DATA MODELS.
             #
-            windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(@layout.id)
             ko.applyBindings @, windowManagerHtmlViewRootDocumentElement
 
+            # ============================================================================
             # PENULTIMATE STEP: Update the view state to power-on defaults.
             #
-            @updateViewState(true)
 
+
+            # ============================================================================
             # LASTLY, GO LIVE WITH VIEW STATE UPDATES IN RESPONSE TO BROWSER RESIZE EVENTS
             #
-            # setInterval @updateViewState, 5000 # This catches everything (including browser restore) eventually
-            window.addEventListener 'resize', @updateViewState
+            # setInterval @refreshWindowManagerViewState, 5000 # This catches everything (including browser restore) eventually
+            window.addEventListener 'resize', @refreshDocumentFrameObject
 
-            Console.message("... Window manager initialization complete.")
+            # ============================================================================
+            Console.messageRaw("<h3>WINDOW MANAGER IS ONLINE</h3>")
             # / END INITIALIZATION OF WINDOW MANAGER OBJECT INSTANCE
 
-
-
-            # / END RUNTIME CALLBACKS
 
         catch exception
             message = "In Encapsule.code.lib.kohelpers.WindowManager: #{exception}"
             throw message
 
 
+        # / end of constructor
 
-
+    # / end of class
