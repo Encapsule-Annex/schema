@@ -54,6 +54,6 @@ class namespaceEncapsule_code_app.Schema
 
 
         catch exception
-            Console.messageError(exception)
+            Console.messageError """#{appPackagePublisher} #{appName} v#{appVersion} client app init fail: Details: #{exception}"""
 
 

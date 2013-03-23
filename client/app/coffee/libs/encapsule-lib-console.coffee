@@ -112,7 +112,7 @@ class window.Console
             """
 
         Console.messageRaw(errorMessage)
-        @log("#{appPackagePublisher}::#{appName}:: Runtime Exception :: #{errorException}")
+        @log("!!!! #{errorException}")
         consoleEl = $("#idConsole")
         consoleEl.show()
         consoleEl.css( { opacity: "1.0", backgroundColor: "#FFCC00" } )

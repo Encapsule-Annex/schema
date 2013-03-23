@@ -30,30 +30,45 @@ namespaceEncapsule_runtime_app_kotemplates = Encapsule.runtime.app.kotemplates? 
 
 
 
+# \ BEGIN: file scope
+
 class Encapsule.code.lib.kohelpers.ObservableWindow
     constructor: (sourceDescriptor_) ->
-        Console.message("... + WindowManager creating new window id=#{sourceDescriptor_.id} name=#{sourceDescriptor_.name}")
-        @sourceDescriptor = sourceDescriptor_
+        try
+            # \ BEGIN: constructor try scope
+            Console.message("... + WindowManager creating new window id=#{sourceDescriptor_.id} name=#{sourceDescriptor_.name}")
 
-        @id = sourceDescriptor_.id
-        @name = sourceDescriptor_.name
+            geo = Encapsule.code.lib.geometry
 
+            @sourceDescriptor = sourceDescriptor_
 
-        @offsetRectangle = ko.observable new Encapsule.code.lib.kohelpers.OffsetRectangle()
-        @cssVisibility = ko.computed => @offsetRectangle().rectangle.visible
-        @cssWidth = ko.computed => @offsetRectangle().rectangle.width
-        @cssHeight = ko.computed => @offsetRectangle().rectangle.height
-        @cssMarginLeft = ko.computed => @offsetRectangle().offset.left
-        @cssMarginTop = ko.computed => @offsetRectangle().offset.top
+            @id = sourceDescriptor_.id
+            @name = sourceDescriptor_.name
 
+            @offsetRectangle = ko.observable geo.offsetRectangle.create()
 
+            try
+                # \ BEGIN: try scope
+                @cssVisibility = ko.computed => @offsetRectangle().rectangle.visible
+                @cssWidth = ko.computed => @offsetRectangle().rectangle.width
+                @cssHeight = ko.computed => @offsetRectangle().rectangle.height
+                @cssMarginLeft = ko.computed => @offsetRectangle().offset.left
+                @cssMarginTop = ko.computed => @offsetRectangle().offset.top
+                # / END try scope
+            catch exception
+                throw "Failure executing computed obervable properties: #{exception}"
 
-        @setOffsetRectangle = (offsetRectangle_) =>
-            # We will do some checking here to ensure that a change actually occurred.
-            # If so, then we will update the Knockout.js observables contained by thie ObservableWindow instance
-            @offsetRectangle(offsetRectangle_)
+            @setOffsetRectangle = (offsetRectangle_) =>
+                # We will do some checking here to ensure that a change actually occurred.
+                # If so, then we will update the Knockout.js observables contained by thie ObservableWindow instance
+                @offsetRectangle(offsetRectangle_)
 
-
+            # / END: constructor try scope
+        catch exception
+            throw "ObservableWindow constructor fail: #{exception}"
+        # / END: constructor scope
+    # / END: class scope
+# / END: file scope
             
 
 

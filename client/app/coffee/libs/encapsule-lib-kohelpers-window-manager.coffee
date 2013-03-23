@@ -182,8 +182,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             Console.messageRaw("<h3>BUILDING DATA MODEL</h3>")
 
             # ============================================================================
-            # \ BEGIN OBSERVABLE DATA MODEL INITIALIZATION
-
+            # \ BEGIN: OBSERVABLE DATA MODEL INITIALIZATION
             try
     
                 if @layout.pageBackgroundColor? and @layout.pageBackgroundColor
@@ -196,51 +195,68 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 #
     
                 try
+                    # @@@
                     # \ BEGIN: try scope (note extensive error checking to catch errors in the input layout declaration)
-
                     planeIndex = 0
                     for planeLayout in @layout.planes
-                        # begin
-                        planeRuntime = { id: planeLayout.id, name: planeLayout.name, splitterStack: [] }
-                        splitIndex = 0
-                        for split in planeLayout.splitterStack
-                            # begin split scope
-                            try
-                                Console.message("Window manager: Starting plane #{planeIndex} split #{splitIndex} ...")
-                                Console.message """... id = #{split.id} &bull; #{split.name} &bull; #{split.type} &bull; Q1 window descriptor = #{split.Q1WindowDescriptor} &bull; Q2 window descriptor = #{split.Q2WindowDescriptor}"""
-                                splitterObservableWindows = []
-                                newSplit = undefined
+                        # \ BEGIN: planeLayout scope
+                        try
+                            # @@@
+                            # BEGIN: planeLayout try scope
+                            planeRuntime = { id: planeLayout.id, name: planeLayout.name, splitterStack: [] }
+                            splitIndex = 0
+                            for split in planeLayout.splitterStack
+                                # \ BEGIN: split scope
                                 try
-                                    newSplit = new Encapsule.code.lib.kohelpers.WindowSplitter( split, splitterObservableWindows )
+                                    # @@@
+                                    # \ BEGIN: split try scope
+                                    Console.message("Window manager: Starting plane #{planeIndex} split #{splitIndex} ...")
+                                    Console.message """... id = #{split.id} &bull; #{split.name} &bull; #{split.type} &bull; Q1 window descriptor = #{split.Q1WindowDescriptor} &bull; Q2 window descriptor = #{split.Q2WindowDescriptor}"""
+                                    splitterObservableWindows = []
+                                    newSplit = undefined
+                                    try
+                                        newSplit = new Encapsule.code.lib.kohelpers.WindowSplitter( split, splitterObservableWindows )
+                                    catch exception
+                                        throw "Splitter instantiation failure: #{exception}"
+                                    try
+                                        planeRuntime.splitterStack.push newSplit
+                                    catch exception
+                                        throw "Splitter push failure: #{exception}"
+                                    try
+                                        # \ BEGIN: try
+                                        for observableWindow in splitterObservableWindows
+                                            # \ BEGIN: observableWindow scope
+                                            try
+                                                @observableWindows.push observableWindow
+                                            catch exception
+                                                throw "Observable window pool push failure: #{exception}"
+                                            # / END: observableWindow scope
+                                        # / END: try
+                                    catch exception
+                                        throw "Observable window instantiation failure: #{exception}"
+                                    #
+                                    Console.message("... Layout #{planeIndex} #{splitIndex} processed.")
+                                    splitIndex++
+                                    # / END: split try scope
+                                    # @@@
                                 catch exception
-                                    throw "Failed to instantiate window splitter object: #{exception}"
-                                try
-                                    planeRuntime.splitterStack.push newSplit
-                                catch exception
-                                    throw "Failed to push new splitter into stack: #{exception}"
-                                try
-                                    for observableWindow in splitterObservableWindows
-                                        try
-                                            @observableWindows.push observableWindow
-                                        catch exception
-                                            throw "Failed to push new observable window into window manager's managed window pool: #{exception}"
-                                catch exception
-                                    throw "Failed to instantiate observable windows: #{exception}"
-                                Console.message("... Layout #{planeIndex} #{splitIndex} processed.")
-                                splitIndex++
-                            catch exception
-                                throw "Exception processing layout plane #{planeIndex}, split #{splitIndex} :: #{exception}"
-                            # end split scope
-                        # back at plane scope
+                                    throw """Splitter ##{splitIndex} id="#{split.id}" failure: #{exception}"""
+                                # / END: split scope
+                            # / END: planeLayout try scope
+                            # @@@
+                        catch exception
+                            throw """Layout plane ##{planeIndex} id="#{planeLayout.id}" failure: #{exception}"""
                         @planes.push planeRuntime
                         Console.message("Layout plane #{planeIndex} processed.")
                         planeIndex++
+                        # / END: planeLayout scope
                     # / END: try scope
+                    # @@@
                 catch exception
-                        throw "Failed to initialize layout planes: #{exception}"
+                        throw exception
 
             catch exception
-                throw "Failed to initialize window manager internal data model: #{exception}"
+                throw "Data model init failure: #{exception}"
 
             Console.message("Done transforming layout into view model :)")
 
@@ -260,17 +276,17 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         """
                     Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , htmlView
                 catch exception
-                    throw "Failed to synthesize window manager HTML view: #{exception}"
+                    throw "Top-level HTML view synthesis failure: #{exception}"
     
                 Console.messageRaw("<h3>INITIALIZING VIEW TEMPLATE LIBRARY</h3>")
                 try
                     Console.message("Initializing view template library.")
                     windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(@layout.id)
                 catch exception
-                    throw "Failed to initialize view template library: #{exception}"
+                    throw "View template librarian init failure: #{exception}"
                     
             catch exception
-                throw "Failed to initialize window manager view: #{excpetion}"
+                throw "Window manager view init failure: #{exception}"
     
     
 
@@ -318,7 +334,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
 
         catch exception
-            throw """Encapsule Window Manager initialization failure on layout.id="#{@layout.id}" : #{exception}"""
+            throw """Window manager initialization failed for layout.id="#{@layout.id}": #{exception}"""
 
 
 
