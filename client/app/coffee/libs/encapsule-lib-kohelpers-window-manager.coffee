@@ -59,6 +59,12 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             @planes = []
 
 
+            # Written by document resize event callback.
+            @documentOffsetRectangle = geo.offsetRectangle.create()
+            @windowManagerGlassOffsetRectangle = geo.offsetRectangle.create()
+            @windowManagerOffsetRectangle = geo.offsetRectangle.create()
+
+            
 
 
             # ============================================================================
@@ -70,9 +76,6 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # OBSERVABLE WINDOW MANAGER WINDOW PROPERTIES
             #
 
-            # Written by document resize event callback.
-            @documentOffsetRectangleObject = ko.observable geo.offsetRectangle.create()
-            
 
             # ============================================================================
             # OBSERVABLE WINDOW MANAGER GLASS PROPERTIES
@@ -114,7 +117,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # ============================================================================
             # \ BEGIN RUNTIME CALLBACKS
 
-            @refreshDocumentFrameObject = =>
+            @refreshWindowManagerViewGeometriesFromDocument = =>
                 try
                     documentEl = $(document)
 
@@ -131,11 +134,15 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
     
                     marginWidth = documentEl.outerWidth(true)
                     marginHeight = documentEl.outerHeight(true)
-    
+
                     @documentOffsetRectangleObject(geo.offsetRectangle.createFromDimensions(marginWidth, marginHeight))
+
 
                 catch exception
                     throw "ObservableWindowManager.getDocumentFrameObject: #{exception}"
+
+
+
 
 
             #
@@ -253,7 +260,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # LASTLY, GO LIVE WITH VIEW STATE UPDATES IN RESPONSE TO BROWSER RESIZE EVENTS
             #
             # setInterval @refreshWindowManagerViewState, 5000 # This catches everything (including browser restore) eventually
-            window.addEventListener 'resize', @refreshDocumentFrameObject
+            window.addEventListener 'resize', @refreshWindowManagerViewGeometriesFromDocument
 
             # ============================================================================
             Console.messageRaw("<h3>WINDOW MANAGER IS ONLINE</h3>")

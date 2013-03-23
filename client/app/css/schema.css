@@ -37,8 +37,7 @@ display: none; /* displayed only as needed */
 
 #idSpinner { z-index: 200; }
 #idSpinnerCaption { z-index: 200; font-family: Verdana, Arial; font-weight: bold; font-size: 14pt; 
-color: white; text-align: center; vertical-align: center; position: fixed; top: 50%; left: 50%;
-text-shadow: black 0.01em 0.01em 0.7em 
+color: white; position: fixed; top: 50%; left: 50%; text-align: center; text-shadow: black 0.01em 0.01em 0.7em ;
 }
 
 .classTitleSiteName { font-family: Courier; font-size: 16pt; font-weight: bold; fill: #CCCCCC; }

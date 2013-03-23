@@ -27,21 +27,21 @@ namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Enc
 Encapsule.code.app.bootDelay = 500
 
 Encapsule.code.app.bootChromes = {
-    phase0 : { title: "#{appName} initializing...", backgroundColor: "white" }
-    phase1 : { title: "#{appName} booting...", backgroundColor: "#EEEEEE" }
-    phase2 : { title: "#{appName} initializing...", backgroundColor: "#DDDDDD" }
-    phase2checking : { title: "#{appName} ping", backgroundColor: "#CCCCCC" }
-    phase2downloading: { title: "#{appName} 0%", backgroundColor: "#66CC66" }
-    phase2progress: { title: "#{appName} ", backgroundColor: "#33CC33" }
+    phase0 : { title: "power", backgroundColor: "white" }
+    phase1 : { title: "boot", backgroundColor: undefined }
+    phase2 : { title: "#{appPackagePublisher}", backgroundColor: undefined }
+    phase2checking : { title: "#{appName} ping", backgroundColor: undefined }
+    phase2downloading: { title: "#{appName} update", backgroundColor: undefined }
+    phase2progress: { title: "#{appName} update ", backgroundColor: "#DDFFEE" }
     phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFFF00" }
     phase2obsolete: { title: "#{appName} LOCKED", backgroundColor: "#FFCC00" }
-    phase2offline: { title: "#{appName} offline.", backgroundColor: "#006699" }
-    phase2cached: { title: "#{appName} installed :)", backgroundColor: "#FFFF00" }
-    phase2noupdate: { title: "#{appName} up-to-date.", backgroundColor: "#0099CC" }
-    phase2updateready: { title: "#{appName} updated!", backgroundColor: "#FFFF00" }
+    phase2offline: { title: "#{appName} v#{appVersion}", backgroundColor: "#E7E7E7" }
+    phase2cached: { title: "#{appName} installed", backgroundColor: "#FFFFCC" }
+    phase2noupdate: { title: "#{appName} v#{appVersion}", backgroundColor: "white" }
+    phase2updateready: { title: "#{appName} updated", backgroundColor: "#FFFFCC" }
     phase2watchdog: { title: "#{appName} ?8|" }
     #phase2watchdogNoop: { title: "#{appName} v#{appVersion}" }
-    phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00" }
+    #phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00" }
     phase3: { title: "#{appName} v#{appVersion}", backgroundColor: "white" }
     }
 
@@ -220,7 +220,7 @@ phase2 = (bootstrapperOptions_) ->
             setTimeout ( ->
                 try
                     window.applicationCache.swapCache()
-                    window.location.reload(true)
+                    window.location.reload(true) # --> in theory, we're bye bye at this point -->
                 catch exception
                     Encapsule.code.app.setBootChrome("phase2watchdog")
                     Console.message("Well that's interesting... While attempting to swap in the newly updated application cache we caught an unexpected exception.")
@@ -280,7 +280,7 @@ phase2 = (bootstrapperOptions_) ->
                      Encapsule.code.app.setBootChrome("phase2watchdogNoop")
                      break;
 
-            ), Encapsule.code.app.bootDelay * 3)
+            ), 500)
     catch exception
         Console.messageError(exception)
 

@@ -78,12 +78,16 @@ class namespaceEncapsule_code_lib_view.spinner
                 spinnerCaptionEl = $("#idSpinnerCaption")
                 spinnerCaptionEl.html document.title
 
-                spinnerCaptionFrame = Encapsule.code.lib.geometry.frame.createFromDimensions(1024,180)
+                captionOffsetRect = Encapsule.code.lib.geometry.offsetRectangle.createFromDimensions(400, 32)
 
                 spinnerCaptionEl.css(
                     {
-                        marginLeft: spinnerCaptionFrame.frame.offset.left, marginTop: spinnerCaptionFrame.frame.offset.top, width: spinnerCaptionFrame.frame.rectangle.width, height: spinnerCaptionFrame.frame.rectangle.height })
-
+                        marginLeft: captionOffsetRect.offset.left + "px"
+                        marginTop: captionOffsetRect.offset.top + 90 + "px"
+                        width: captionOffsetRect.rectangle.extent.width + "px"
+                        height: captionOffsetRect.rectangle.extent.height + "px"
+                        }
+                    )
                 ), 500)
 
     cancel: =>

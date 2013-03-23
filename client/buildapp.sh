@@ -172,20 +172,9 @@ echo === ^--- COFFEESCRIPT: EXPECT NO ERRORS =========================
 echo =================================================================
 echo =================================================================
 echo =================================================================
-# sleep 5
-if [ "$1" != "loop"  ]
+
+if [ "$1" = "loop" ]
 then
-    echo ENTER=rebuild f=FINISH q=QUIT
-    echo -n Enter option :: ; read USERINPUT
-    if [ "$USERINPUT" = "f" ]
-    then
-        rebuild=0
-    fi
-    if [ "$USERINPUT" = "q" ]
-    then
-        exit 0
-    fi
-else
     echo -n 0..
     sleep 1
     echo -n 1..
@@ -199,8 +188,13 @@ else
     echo rebuild
     sleep 1
     clear
+else
+    rebuild=0
+    if [ "$1" = "pause" ]
+    then
+        echo -n 'PAUSED. Hit ENTER to complete the build. > ' ; read USERINPUT
+    fi
 fi
-
 done
 
 
