@@ -61,10 +61,6 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
             # Written by document resize event callback.
             @documentOffsetRectangle = geo.offsetRectangle.create()
-            @windowManagerGlassOffsetRectangle = geo.offsetRectangle.create()
-            @windowManagerOffsetRectangle = geo.offsetRectangle.create()
-
-            
 
 
             # ============================================================================
@@ -80,8 +76,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # ============================================================================
             # OBSERVABLE WINDOW MANAGER GLASS PROPERTIES
 
-            # Written by the window manager's layout engine.
-            @frameGlass = ko.computed => geo.frame.create()
+            @glassOffsetRectangle = ko.observable geo.offsetRectangle.create()
+
 
             # Properties from layout (actually don't need to be computed unless we allow for dynamism later)
             @cssGlassOpacity = ko.computed => @layout.glassOpacity
@@ -89,26 +85,25 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             @cssGlassBackground = ko.computed => @layout.glassBackgroundImage? and @layout.glassBackgroundImage  and "url(img/#{@layout.glassBackgroundImage})" or undefined
 
             # Properties from the window manager's layout engine
-            @cssGlassWidth = ko.computed => @frameGlass().view.rectangle.width + "px"
-            @cssGlassHeight = ko.computed => @frameGlass().view.rectangle.height + "px"
-            @cssGlassMarginLeft = ko.computed => @frameGlass().view.offset.left + "px"
-            @cssGlassMarginTop = ko.computed => @frameGlass().view.offset.top + "px"
+            @cssGlassWidth = ko.computed =>  @glassOffsetRectangle().rectangle.extent.width + "px"
+            @cssGlassHeight = ko.computed => @glassOffsetRectangle().rectangle.extent.height + "px"
+            @cssGlassMarginLeft = ko.computed => @glassOffsetRectangle().offset.left + "px"
+            @cssGlassMarginTop = ko.computed => @glassOffsetRectangle().offset.top + "px"
 
             # ============================================================================
             # OBSERVABLE WINDOW MANAGER FRAME PROPERTIES
 
-            # Written by the window manager's layout engine.
-            @frameWindowManager = ko.observable geo.frame.create()
+            @windowManagerOffsetRectangle = ko.observable geo.offsetRectangle.create()
 
             # Properties from layout (actually don't need to be computed unless we allow for dynamism later)
             @cssWindowManagerBackgroundColor = ko.computed => @layout.windowManagerBackgroundColor
             @cssWindowManagerOpacity = ko.computed => @layout.windowManagerOpacity
 
             # Properties from the window manager's layout engine
-            @cssWindowManagerWidth = ko.computed => @frameWindowManager().view.rectangle.width + "px"
-            @cssWindowManagerHeight = ko.computed => @frameWindowManager().view.rectangle.height + "px"
-            @cssWindowManagerMarginLeft = ko.computed => @frameWindowManager().view.offset.left + "px"
-            @cssWindowManagerMarginTop = ko.computed => @frameWindowManager().view.offset.top + "px"
+            @cssWindowManagerWidth = ko.computed => @windowManagerOffsetRectangle().rectangle.extent.width + "px"
+            @cssWindowManagerHeight = ko.computed => @windowManagerOffsetRectangle().rectangle.extent.height + "px"
+            @cssWindowManagerMarginLeft = ko.computed => @windowManagerOffsetRectangle().offset.left + "px"
+            @cssWindowManagerMarginTop = ko.computed => @windowManagerOffsetRectangle().offset.top + "px"
 
             @observableWindows = ko.observableArray []
 
@@ -135,11 +130,20 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     marginWidth = documentEl.outerWidth(true)
                     marginHeight = documentEl.outerHeight(true)
 
-                    @documentOffsetRectangleObject(geo.offsetRectangle.createFromDimensions(marginWidth, marginHeight))
+                    @documentOffsetRectangle = geo.offsetRectangle.createFromDimensions(marginWidth, marginHeight)
+
+                    marginsGlass = geo.margins.createUniform(50)
+                    frameGlass = geo.frame.createFromOffsetRectangleWithMargins(@documentOffsetRectangle, marginsGlass)
+                    @glassOffsetRectangle(frameGlass.view)
+
+                    marginsWindowManager = geo.margins.createUniform(50)
+                    frameWindowManager = geo.frame.createFromOffsetRectangleWithMargins(frameGlass.view, marginsWindowManager)
+                    @windowManagerOffsetRectangle(frameWindowManager.view)
+
 
 
                 catch exception
-                    throw "ObservableWindowManager.getDocumentFrameObject: #{exception}"
+                    Console.messageError "refreshWindowManagerViewGeometriesFromDocument: #{exception}"
 
 
 

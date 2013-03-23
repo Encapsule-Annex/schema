@@ -256,11 +256,11 @@ Encapsule.code.lib.geometry.margins.createForPixelDimensions = (top_, left_, bot
         }
     marginsObject
 
-Encapsule.code.lib.geometry.margins.createUniform = (pixel_) ->
+Encapsule.code.lib.geometry.margins.createUniform = (pixels_) ->
     try
         if not pixels_ then throw "Missing pixel count parameter."
         if not pixels_ then throw "Missing pixel count value."
-        marginsObject = Encapsule.code.lib.margins.createForPixelDimensions(pixels_, pixels_, pixels_, pixels_)
+        marginsObject = Encapsule.code.lib.geometry.margins.createForPixelDimensions(pixels_, pixels_, pixels_, pixels_)
         marginsObject
     catch exception
         throw "Encapsule.code.lib.geometry.margins.createUniform: #{exception}"
@@ -282,51 +282,38 @@ Encapsule.code.lib.geometry.frame.create = ->
 
 
 
-Encapsule.code.lib.geometry.frame.createFromDimensions = (width_, height_) ->
+Encapsule.code.lib.geometry.frame.createFromOffsetRectangleWithMargins = (offsetRectangle_, margins_) ->
     try
-        rectangleObject = Encapsule.code.lib.geometry.rectangle.createFromDimensions(width_, height_)
-        frameObject = Encapsule.code.lib.geometry.frame.createFromRectangle(rectangleObject)
-        frameObject
-    catch exception
-        throw "Encapsule.code.lib.geometry.frame.createFromDimensions: #{exception}"     
-
-
-Encapsule.code.lib.geometry.frame.createFromRectangle = (rectangle_) ->
-    try
-        if not rectangle_? then throw "Missing rectangle parameter."
-        if not rectangle_ then throw "Missing rectangle value."
-
-        frameObject = {
-            frame: Encapsule.code.lib.geometry.offsetRectangle.createFromRectangle(retangle_)
-            view: Encapsule.code.lib.geometry.offsetRectangle.createFromRectangle(rectangle_)
-            margins: Encapsule.code.lib.geometry.margins.create()
-            }
-        frameObject
-    catch exception
-        throw "Encapsule.code.lib.geometry.frame.createFromRectangle: #{exception}"
-
-
-
-Encapsule.code.lib.geometry.frame.createFromRectangleWithMargins = (rectangle_, margins_) ->
-    try
-        if not rectangle_? then throw "Missing rectangle parameter."
-        if not rectangle_ then throw "Missing rectangle value."
+        if not offsetRectangle_? then throw "Missing offset rectangle parameter."
+        if not offsetRectangle_ then throw "Missing offset rectangle value."
         if not margins_? then throw "Missing margin set parameter."
         if not margins_ then throw "Missing margin set value."
 
         # Create a default frame object with the view coincident with the frame.
-        frameObject = Encapsule.code.lib.geometry.frame.createFromRectangle(rectangle_)
-
-        # We're going to modify the default frame object before returning it.
-        # Save a copy of the margins object we're going to use to modify the view relative to the frame.
-        frameObject.margins = margins_
+        frameObject = {
+            frame: offsetRectangle_
+            view: offsetRectangle_
+            margins: margins_
+            }
 
         # Take stock of the total extents requested by the margins_ object.
-        marginExtent = Encapsule.code.lib.geometry.extent.createFromDimensions( margins_.left + margins_.right, margins_.top + margins_.bottom)
+        horizontalMarginExtent = margins_.left + margins_.right
+        verticalMarginExtent = margins_.top + margins_.bottom
 
-        # Alias the view
-        view = frameObject.view
+        if (horizontalMarginExtent > frameObject.frame.rectangle.extent.width) or
+            (verticalMarginExtent > frameObject.frame.rectangle.extent.height)
+                # Reset the view offset rectangle to zero area
+                frameObject.view = Encapsule.code.lib.geometry.offsetRectangle.create()
+                return frameObject
 
+        frameObject.view.offset.left += margins_.left
+        frameObject.view.offset.top += margins_.top
+        frameObject.view.rectangle.extent.width -= horizontalMarginExtent
+        frameObject.view.rectangle.extent.height -= verticalMarginExtent
+        frameObject
+
+    catch exception
+        throw "Encapsule.code.lib.geometry.frame.createFromOffsetRectangleWithMargins: #{exception}"
 
 
 
