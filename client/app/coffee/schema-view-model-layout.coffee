@@ -38,7 +38,7 @@ Encapsule.code.app.viewLayout = {
 
         # Attributes of whatever element we're hosted in. (Mostly the BODY)
         pageBackgroundColor: undefined
-        glassBackgroundColor: undefined
+        glassBackgroundColor: "#6699CC"
         windowManagerBackgroundColor: "#99CCFF"
 
         # Margin attributes
@@ -46,11 +46,11 @@ Encapsule.code.app.viewLayout = {
         windowManagerMargin: 10 # glass edge to window manager edge
 
         # Background image attributes
-        glassBackgroundImage: "fire-on-the-mountain.jpg"
+        glassBackgroundImage: undefined # "fire-on-the-mountain.jpg"
 
         # Opacity attributes
-        glassOpacity: 0.5
-        windowManagerOpacity: 0.95
+        glassOpacity: 1
+        windowManagerOpacity: 1
 
 
         planes: [
