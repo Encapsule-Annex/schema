@@ -115,6 +115,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 try
                     # \ BEGIN: try
                     documentEl = $(document)
+                    geo = Encapsule.code.lib.geometry
 
                     # All extent properties one may obtain from the document object below.
                     # We're actually only using the outerWidth/Height(true) (aka margin extents)
@@ -140,6 +141,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     frameWindowManager = geo.frame.createFromOffsetRectangleWithMargins(frameGlass.view, marginsWindowManager)
                     @windowManagerOffsetRectangle(frameWindowManager.view)
 
+                    @refreshWindowManagerViewState { geometriesUpdated: true }
+
                     # / END: try
 
                 catch exception
@@ -151,29 +154,65 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # Given a new offset rectangle representing the "view", determine if we need to
             # re-evaluate the split stack.
             #
+            #
+            # request : {
+            #    forceEval: false                 # true or false (default if undefined)
+            #    geometriesUpdated: true              # true or false (default if undefined)
+            #
             
-            @refreshWindowManagerViewState = (forceEval_) =>
+            @refreshWindowManagerViewState = (request_) =>
 
-                # Return false iff no change and not forceEval_
+                # \ BEGIN: refreshWindowManagerViewState function scope
+                try
 
-                forceEval = forceEval_? and forceEval_ or false
+                    # \ BEGIN: refreshWindowManagerViewState try scope
 
-                oldOffsetRectangle = @viewOffsetRect()
-                newOffsetRectangle = @getOffsetRectangle()
+                    if not request_? then throw "Missing refresh request parameter."
+                    if not request_ then throw "Missing refresh request value."
 
-                if newOffsetRectangle == oldOffsetRectangle and not forceEval
-                    return false;
 
-                @viewOffsetRect(newOffsetRectangle)
+                    request = {
+                        forceEval: request_.forceEval? and request_.forceEval or false
+                        geometriesUpdated: request_.geometriesUpdated? and request_.geometriesUpdated or false
+                    }
 
-                runtimeState = @runtimeState
-                availableOffsetRect = newOffsetRectangle
+                    # \ BEGIN: geometries update section
+                    if request.forceEval or request.geometriesUpdated
+                        # \ BEGIN: geometries update scope
+                        try
+                            # \ BEGIN: geometries update try scope
 
-                for plane in @planes
-                    splitters = plane.splitterStack
-                    for split in splitters
-                        Console.message("Window manager refresh on plane #{plane.id} split #{split.id}")
-                        split.setOffsetRectangle(availableOffsetRect, forceEval)
+                            runtimeState = @runtimeState
+                            windowManagerOffsetRectangle = @windowManagerOffsetRectangle()
+
+                            windowManagerClientMargins = geo.margins.createUniform 10
+                            windowManagerClientFrame = geo.frame.createFromOffsetRectangleWithMargins(windowManagerOffsetRectangle, windowManagerClientMargins)
+                            windowManagerClientOffsetRectangle = windowManagerClientFrame.view
+
+                            for plane in @planes
+                                # \ BEGIN: plane scope
+                                splitters = plane.splitterStack
+                                availableOffsetRectangle = windowManagerClientOffsetRectangle
+                                for split in splitters
+                                    # \ BEGIN: split scope
+                                    Console.message ("Window manager refresh on plane #{plane.id} split #{split.id}")
+                                    split.setOffsetRectangle(availableOffsetRectangle, true)
+                                    # / END: split scope
+                                # / END: plane scope
+                            # / END: geometries update try scope
+
+                        catch exception
+                            throw "Base window manager geometries refresh fail: #{exception}"
+                        # / END: geometries update
+                    # / END: geometries update section
+                    # / END: refreshWindowManagerViewState try scope
+
+                catch exception
+                    Console.messageError "Failed to refresh window manager view state: #{exception}"
+                # / END: refreshWindowManagerViewState function scope
+
+
+
 
             # / END RUNTIME CALLBACKS
             # ============================================================================
@@ -332,7 +371,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
             # ============================================================================
             Console.messageRaw("<h3>WINDOW MANAGER IS ONLINE</h3>")
-            Console.messageRaw("<h2>#{appName} v#{appVersion}: entering interactive mode</h2>")
+            Console.messageRaw("<h2>#{appName} v#{appVersion} entering interactive mode :)</h2>")
             # / END INITIALIZATION OF WINDOW MANAGER OBJECT INSTANCE
 
 

@@ -44,21 +44,20 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
             @id = @splitDescriptor.id
             @type = @splitDescriptor.type
             @name = @splitDescriptor.name
-            @offsetRectangle = new geo.offsetRectangle.create()
-    
+
             @q1Descriptor = @splitDescriptor.Q1WindowDescriptor
             @q2Descriptor = @splitDescriptor.Q2WindowDescriptor
-    
             if not @q1Descriptor? and not @q1Descriptor and not @q2Descriptor? and not @q2Descriptor
-                throw "You need to attach at least one window to a splitter."
-    
-            @q1OffsetRect = geo.offsetRectangle.create()
-            @q2OffsetRect = geo.offsetRectangle.create()
+                throw "You need to specifiy at least one window to a splitter."
+
+            @offsetRectangle = new geo.offsetRectangle.create()
+            @q1OffsetRectangle = geo.offsetRectangle.create()
+            @q2OffsetRectangle = geo.offsetRectangle.create()
+            @unallocatedOffsetRectangle = geo.offsetRectangle.create()
     
             @q1Window = undefined
             @q2Window = undefined
     
-            @unallocatedOffsetRect = geo.offsetRectangle.create()
     
             try
                 # \ BEGIN: try to create new observable windows scope
@@ -86,35 +85,35 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                 if not offsetRectangle_? or not offsetRectangle_
                     throw "You must specify an offset rectangle."
     
-                if (offsetRectangle_.rectangle.width == @offsetRectangle.rectangle.width) and
-                    (offsetRectangle_.rectangle.height == @offsetRectangle.rectangle.height) and
+                if (offsetRectangle_.rectangle.extent.width == @offsetRectangle.rectangle.extent.width) and
+                    (offsetRectangle_.rectangle.extent.height == @offsetRectangle.rectangle.extent.height) and
                     (offsetRectangle_.offset.left == @offsetRectangle.offset.left) and
                     (offsetRectangle_.offset.top == @offsetRectangle.offset.top)
                         return false;
     
                 # The bounding rectangle has been changed.
                 @offsetRectangle = offsetRectangle_
+                @unallocatedOffsetRectangle = geo.offsetRectangle.create()
     
                 @q1OffsetRectangle = offsetRectangle_
                 @q2OffsetRectangle = offsetRectangle_
     
-                halfWidth = Math.round offsetRectangle_.rectangle.width / 2
-                @q1OffsetRectangle.rectangle.width = halfWidth
-                @q2OffsetRectangle.rectangle.width = halfWidth
+                halfWidth = offsetRectangle_.rectangle.extent.width / 2
+                @q1OffsetRectangle.rectangle.extent.width = halfWidth
+                @q2OffsetRectangle.rectangle.extent.width = halfWidth
                 @q2OffsetRectangle.offset.left += halfWidth
     
                 if @q1Window?
                     @q1Window.setOffsetRectangle(@q1OffsetRectangle)
                 else
-                    @unallocatedOffsetRect = @q1OffsetRectangle
+                    @unallocatedOffsetRectangle = @q1OffsetRectangle
     
                 if @q2Window?
                     @q2Window.setOffsetRectangle(@q2OffsetRectangle)
                 else
-                    if  @unallocatedOffsetRect.rectangle.visible
-                        @unallocatedOffsetRect.rectangle.width += @q2OffsetRectangle.rectangle.width
-                    else
-                        @unallocatedOffsetRect = @q2OffsetRectangle
+                    if not @unallocatedOffsetRectangle.rectangle.hasArea
+                        @unallocatedOffsetRectangle = @q2OffsetRectangle
+
                 # / END: setOffsetRectangle function scope
 
 

@@ -153,7 +153,9 @@ phase2 = (bootstrapperOptions_) ->
     Encapsule.code.app.setBootChrome("phase2")
 
     # Note to self: This entire subsystem will be completely redesigned using Schema v1.0.
-    Console.message("Checking #{appPackagePublisher} origin server for #{appName} vNext...")
+
+    Console.message("This Javacsript is executing in a #{appName} v#{appVersion} app host.")
+    Console.message("Checking #{appPackagePublisher} origin server for #{appName} updates...")
 
     appCacheCallbacks = {
         onChecking: ->
@@ -192,15 +194,14 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheTerminalState = "locked (obsolete)"
             Console.messageEnd("<strong>OFFLINE</strong>");
             Console.message("Origin server is unreachable. Please try again later.")
-            Console.messageRaw("<h2>#{appPackagePublisher} running offline from cache :)</h2>")
+            Console.messageRaw("<h2>Launching #{appName} v#{appVersion} from application cache in offline mode.</h2>")
             setTimeout( ( -> phase3(bootstrapperOptions_) ), Encapsule.code.app.bootDelay)
         , onCached: (fileCount_) ->
             Encapsule.code.app.setBootChrome("phase2cached")
             phase2Out.appCacheMonitorState = "cached"
             phase2Out.appCacheTerminalState = "cached"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
-            Console.message("<strong>The application has been installed!</strong>")
-            Console.messageRaw("<h2>#{appName} v#{appVersion} is now fully cached for on/offline use :)</h2>")
+            Console.messageRaw("<h2>#{appName} v#{appVersion} is now fully cached for on/offline use. Welcome :)</h2>")
             setTimeout ( ->
                 phase3(bootstrapperOptions_) )
                 , Encapsule.code.app.bootDelay
@@ -209,14 +210,14 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheMonitorState = "noupdate"
             phase2Out.appCacheTerminalState = "noupdate"
             Console.messageEnd("<strong>No update<strong>")
-            Console.messageRaw("<h2>#{appName} v#{appVersion} is good to go :-)</h2>")
+            Console.messageRaw("<h2>Launching #{appName} v#{appVersion} from application cache in online mode.</h2>")
             setTimeout( ( -> phase3(bootstrapperOptions_) ), Encapsule.code.app.bootDelay)
         , onUpdateReady: (fileCount_) ->
             Encapsule.code.app.setBootChrome("phase2updateready")
             phase2Out.appCacheMonitorState = "updateready"
             phase2Out.appCacheTerminalState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
-            Console.messageRaw("<h2>#{appName} has been updated :) Booting #{appName} vNext...</h2>")
+            Console.messageRaw("<h2> The #{appName} application has been updated :) Booting #{appName} vNext...</h2>")
             Console.message("What could go wrong?")
             setTimeout ( ->
                 try
