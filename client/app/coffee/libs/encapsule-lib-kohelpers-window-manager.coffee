@@ -325,6 +325,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
             # setInterval @refreshWindowManagerViewState, 5000 # This catches everything (including browser restore) eventually
 
+            $("#idEncapsuleWindowManagerHost").fadeIn()
+
             # ============================================================================
             Console.messageRaw("<h3>WINDOW MANAGER IS ONLINE</h3>")
             Console.messageRaw("<h2>#{appName} v#{appVersion}: entering interactive mode</h2>")
