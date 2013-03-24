@@ -42,7 +42,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
 
             @sourceDescriptor = sourceDescriptor_
 
-            @id = sourceDescriptor_.id
+            @idX = sourceDescriptor_.id
             @name = sourceDescriptor_.name
 
             @offsetRectangle = ko.observable geo.offsetRectangle.create()
@@ -54,6 +54,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
                 @cssHeight = ko.computed => @offsetRectangle().rectangle.height
                 @cssMarginLeft = ko.computed => @offsetRectangle().offset.left
                 @cssMarginTop = ko.computed => @offsetRectangle().offset.top
+                @cssOpacity = 1
                 # / END try scope
             catch exception
                 throw "Failure executing computed obervable properties: #{exception}"
@@ -70,5 +71,12 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
     # / END: class scope
 # / END: file scope
             
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_EncapsuleWindowManagerObservableWindow", ( -> """
+<div class="classObservableWindow">
+    ObservableWindow 
+    <span data-bind="text: $index"></span>:
+    Id <span data-bind="text: idX"></span> &bull; Name: <span data-bind="text: name"></span>
+</div>
+"""))
 
 

@@ -38,19 +38,23 @@ Encapsule.code.app.viewLayout = {
 
         # Attributes of whatever element we're hosted in. (Mostly the BODY)
         pageBackgroundColor: undefined
-        glassBackgroundColor: "#6699CC"
-        windowManagerBackgroundColor: "#99CCFF"
+        glassBackgroundColor: undefined
+        windowManagerBackgroundColor: "white"
 
         # Margin attributes
-        glassMargin: 10 # document edge to glass edge
+        glassMargin: 0 # document edge to glass edge
         windowManagerMargin: 10 # glass edge to window manager edge
 
         # Background image attributes
-        glassBackgroundImage: undefined # "fire-on-the-mountain.jpg"
+
+        #glassBackgroundImage: "fire-on-the-mountain.jpg"
+        glassBackgroundImage: "Aspen_trees_2.jpg"
 
         # Opacity attributes
-        glassOpacity: 1
-        windowManagerOpacity: 1
+        glassOpacity: 0.6
+        windowManagerOpacity: 0.5
+
+        windowManagerFadeInTimeout: 1500
 
 
         planes: [

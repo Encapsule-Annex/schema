@@ -271,7 +271,10 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     Console.message("Synthesizing window manager HTML view.")
                     htmlView = """
                         <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
-                        <div id="#{@layout.id}" class="classObservableWindowManager" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">#{@layout.id}::#{@layout.name}</div>
+                        <div id="#{@layout.id}" class="classObservableWindowManager" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">
+                            #{@layout.id}::#{@layout.name}
+                            <span class="classWindowManagerObservableWindows" data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManagerObservableWindow', foreach: observableWindows }"></span>
+                        </div>
                         """
                     Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , => htmlView
                 catch exception
@@ -325,7 +328,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
             # setInterval @refreshWindowManagerViewState, 5000 # This catches everything (including browser restore) eventually
 
-            $("#idEncapsuleWindowManagerHost").fadeIn()
+            $("#idEncapsuleWindowManagerHost").fadeIn @layout.windowManagerFadeInTimeout
 
             # ============================================================================
             Console.messageRaw("<h3>WINDOW MANAGER IS ONLINE</h3>")
