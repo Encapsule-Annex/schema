@@ -64,13 +64,11 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                 # \ BEGIN: try to create new observable windows scope
                 if @q1Descriptor? and @q1Descriptor
                     @q1Window  = new Encapsule.code.lib.kohelpers.ObservableWindow(@q1Descriptor)
-                    windowEntry = { id: @q1Window.id, window: @q1Window }
-                    windows_.push windowEntry
+                    windows_.push @q1Window
         
                 if @q2Descriptor? and @q2Descriptor
                     @q2Window = new Encapsule.code.lib.kohelpers.ObservableWindow(@q2Descriptor)
-                    windowEntry = { id: @q2Window.id, window: @q2Window }
-                    windows_.push windowEntry
+                    windows_.push @q2Window
         
                 if not @q1Window? and not @q1Window and not @q2Window? and @q2Window
                     throw "Expecting at least one window object to be created per splitter instantiation."

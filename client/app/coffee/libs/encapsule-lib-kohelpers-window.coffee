@@ -42,10 +42,9 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
 
             @sourceDescriptor = sourceDescriptor_
 
-            @idX = sourceDescriptor_.id
-            @name = sourceDescriptor_.name
-
             @offsetRectangle = ko.observable geo.offsetRectangle.create()
+            @id = sourceDescriptor_.id
+            @name = sourceDescriptor_.name
 
             try
                 # \ BEGIN: try scope
@@ -54,7 +53,9 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
                 @cssHeight = ko.computed => @offsetRectangle().rectangle.height
                 @cssMarginLeft = ko.computed => @offsetRectangle().offset.left
                 @cssMarginTop = ko.computed => @offsetRectangle().offset.top
-                @cssOpacity = 1
+                @cssOpacity = ko.observable 1
+                @cssBackgroundColor = ko.observable undefined
+                @cssBorder = ko.observable undefined
                 # / END try scope
             catch exception
                 throw "Failure executing computed obervable properties: #{exception}"
@@ -72,10 +73,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
 # / END: file scope
             
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_EncapsuleWindowManagerObservableWindow", ( -> """
-<div class="classObservableWindow">
-    ObservableWindow 
-    <span data-bind="text: $index"></span>:
-    Id <span data-bind="text: idX"></span> &bull; Name: <span data-bind="text: name"></span>
+<div class="classObservableWindow" data-bind="style: { width: cssWidth(), height: cssHeight(), marginLeft: cssMarginLeft(), marginTop: cssMarginTop(), opacity: cssOpacity(), backgroundColor: cssBackgroundColor() }">
+    ObservableWindow <span data-bind="text: $index"></span>: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
 </div>
 """))
 

@@ -32,30 +32,42 @@ Dig this >:)-~
 ###
 Encapsule.code.app.viewLayout = {
     layout: {
+
+        #
         # Layout metadata
+        #
         id: "idSchemaWindowManager"
         name: "#{appName} v#{appVersion} Window Manager"
 
-        # Attributes of whatever element we're hosted in. (Mostly the BODY)
+        #
+        # Parent element attributes
+        #
         pageBackgroundColor: undefined
-        glassBackgroundColor: undefined
-        windowManagerBackgroundColor: "white"
 
-        # Margin attributes
-        glassMargin: 0 # document edge to glass edge
-        windowManagerMargin: 10 # glass edge to window manager edge
-
-        # Background image attributes
-
-        #glassBackgroundImage: "fire-on-the-mountain.jpg"
-        glassBackgroundImage: "Aspen_trees_2.jpg"
-
-        # Opacity attributes
+        #
+        # Window manager glass plane attributes
+        #
         glassOpacity: 0.6
-        windowManagerOpacity: 0.5
+        glassBackgroundColor: undefined
+        glassMargin: 0 # document edge to glass edge
+        glassBackgroundImage: "Aspen_trees_2.jpg"
+        #glassBackgroundImage: "fire-on-the-mountain.jpg"
 
+        #
+        # Window manager base plane attributes
+        #
+        windowManagerBackgroundColor: "white"
+        windowManagerMargin: 10 # glass edge to window manager edge
+        windowManagerOpacity: 0.5
         windowManagerFadeInTimeout: 1500
 
+        #
+        # Managed window attributes
+        #
+        observableWindowHost: {
+            backgroundColor: "white"
+            border: "1px solid black"
+        }
 
         planes: [
             {
