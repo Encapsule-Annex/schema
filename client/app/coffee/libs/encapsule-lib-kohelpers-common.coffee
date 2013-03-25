@@ -185,7 +185,7 @@ Encapsule.code.lib.geometry.rectangle.createFromExtent = (extent_) ->
         if not extent_? then throw "Missing extent parameter."
         if not extent_ then throw "Missing extent value."
         rectangleObject = {
-            extent: extent_
+            extent: Encapsule.code.lib.js.clone(extent_)
             hasArea: extent_.area != 0
             }
         rectangleObject
@@ -218,17 +218,15 @@ Encapsule.code.lib.geometry.offsetRectangle.createFromDimensions = (width_, heig
 Encapsule.code.lib.geometry.offsetRectangle.createFromRectangle = (rectangle_) ->
     try
         if not rectangle_? then throw "Missing rectangle parameter."
-        if not rectanlge_ then throw "Missing rectangle value."
+        if not rectangle_ then throw "Missing rectangle value."
+        rectangle = Encapsule.code.lib.js.clone(rectangle_)
         offsetRectangleObject = {
-            rectangle: rectangle_
-            offset: Encapsule.code.lib.geometry.offset.createFromRectangle(rectangle_)
+            rectangle: rectangle
+            offset: Encapsule.code.lib.geometry.offset.createFromExtent(rectangle.extent)
         }
         offsetRectangleObject
     catch exception
         throw "Encapsule.code.lib.geometry.offsetRectangle.createFromRectangle: #{exception}"
-
-
-
 
 Encapsule.code.lib.geometry.margins = {}
 
@@ -275,6 +273,11 @@ Encapsule.code.lib.geometry.frame.create = ->
 
 
 
+Encapsule.code.lib.geometry.frame.createFromOffsetRectangle = (offsetRectangle_) ->
+    Encapsule.code.lib.geometry.frame.createFromOffsetRectangleWithMargins(offsetRectangle_, Encapsule.code.lib.geometry.margins.create())
+
+
+
 Encapsule.code.lib.geometry.frame.createFromOffsetRectangleWithMargins = (offsetRectangle_, margins_) ->
     try
         if not offsetRectangle_? then throw "Missing offset rectangle parameter."
@@ -284,9 +287,9 @@ Encapsule.code.lib.geometry.frame.createFromOffsetRectangleWithMargins = (offset
 
         # Create a default frame object with the view coincident with the frame.
         frameObject = {
-            frame: offsetRectangle_
-            view: offsetRectangle_
-            margins: margins_
+            frame: Encapsule.code.lib.js.clone(offsetRectangle_)
+            view: Encapsule.code.lib.js.clone(offsetRectangle_)
+            margins: Encapsule.code.lib.js.clone(margins_)
             }
 
         # Take stock of the total extents requested by the margins_ object.
@@ -303,6 +306,22 @@ Encapsule.code.lib.geometry.frame.createFromOffsetRectangleWithMargins = (offset
         frameObject.view.offset.top += margins_.top
         frameObject.view.rectangle.extent.width -= horizontalMarginExtent
         frameObject.view.rectangle.extent.height -= verticalMarginExtent
+
+        Console.message("""
+            <b>Frame:</b>
+            #{frameObject.frame.rectangle.extent.width} x #{frameObject.frame.rectangle.extent.height}
+            w/offset (#{frameObject.frame.offset.top}, #{frameObject.frame.offset.left})
+            &bull; <b>Margins:</b>
+            {#{margins_.top}, #{margins_.left}, #{margins_.bottom}, #{margins_.top}}
+            &bull; <b>View:</b>
+            #{frameObject.view.rectangle.extent.width} x #{frameObject.view.rectangle.extent.height}
+            w/offset (#{frameObject.view.offset.top}, #{frameObject.view.offset.left})
+            &bull; <b>Size delta:</b>
+            #{frameObject.frame.rectangle.extent.width - frameObject.view.rectangle.extent.width}
+            x
+            #{frameObject.frame.rectangle.extent.height - frameObject.view.rectangle.extent.height}
+            """)
+
         frameObject
 
     catch exception

@@ -45,9 +45,14 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
             @id = sourceDescriptor_.id
             @name = sourceDescriptor_.name
 
+            @offsetRectangle = ko.observable geo.offsetRectangle.create()
+
+            @windowEnabled = ko.observable sourceDescriptor_.initialEnable
+            @windowMode = ko.observable sourceDescriptor_.initialMode
+            
+
             try
                 # \ BEGIN: try scope
-                @offsetRectangle = ko.observable geo.offsetRectangle.create()
                 @cssVisibility = ko.computed =>
                    offsetRectangle = @offsetRectangle()
                    @offsetRectangle().rectangle.hasArea

@@ -41,6 +41,8 @@ class namespaceEncapsule_code_app.Schema
             document.title = "#{appName} v#{appVersion}"
             bodyElement = $("body")
 
+            # SIMPLE TEST
+            geo = Encapsule.code.lib.geometry
 
             Console.messageRaw "<h3>STARTING APPLICATION</h3>"
 

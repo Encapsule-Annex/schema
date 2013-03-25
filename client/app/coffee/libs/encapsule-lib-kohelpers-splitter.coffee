@@ -50,7 +50,7 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
             if not @q1Descriptor? and not @q1Descriptor and not @q2Descriptor? and not @q2Descriptor
                 throw "You need to specifiy at least one window to a splitter."
 
-            @offsetRectangle = new geo.offsetRectangle.create()
+            @offsetRectangle = geo.offsetRectangle.create()
             @q1OffsetRectangle = geo.offsetRectangle.create()
             @q2OffsetRectangle = geo.offsetRectangle.create()
             @unallocatedOffsetRectangle = geo.offsetRectangle.create()
@@ -90,29 +90,103 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                     (offsetRectangle_.offset.left == @offsetRectangle.offset.left) and
                     (offsetRectangle_.offset.top == @offsetRectangle.offset.top)
                         return false;
-    
-                # The bounding rectangle has been changed.
+
                 @offsetRectangle = offsetRectangle_
-                @unallocatedOffsetRectangle = geo.offsetRectangle.create()
     
-                @q1OffsetRectangle = offsetRectangle_
-                @q2OffsetRectangle = offsetRectangle_
-    
-                halfWidth = offsetRectangle_.rectangle.extent.width / 2
-                @q1OffsetRectangle.rectangle.extent.width = halfWidth
-                @q2OffsetRectangle.rectangle.extent.width = halfWidth
-                @q2OffsetRectangle.offset.left += halfWidth
-    
-                if @q1Window?
-                    @q1Window.setOffsetRectangle(@q1OffsetRectangle)
-                else
-                    @unallocatedOffsetRectangle = @q1OffsetRectangle
-    
-                if @q2Window?
-                    @q2Window.setOffsetRectangle(@q2OffsetRectangle)
-                else
-                    if not @unallocatedOffsetRectangle.rectangle.hasArea
-                        @unallocatedOffsetRectangle = @q2OffsetRectangle
+                # By convention splitters consider the entire extent of the offset rectangle passed by the caller
+                # to be their "client" area. The splitter may internally allocate an interior margin to offset
+                # two split windows. However, Q1 and Q2 outer edges are always co-incident with the extent of the
+                # splitter's bounding offset rectangle.
+
+                # The bounding rectangle has been changed.
+
+                boundingExtent = 0
+                switch @type
+                    when "horizontal"
+                        boundingExtent = offsetRectangle_.rectangle.extent.height
+                    when "vertical"
+                        boundingExtent = offsetRectangle_.rectangle.extent.width
+                    else
+                        throw "Unrecogized splitter type=#{@type}"
+
+                # Reserve = -1 => no reserve, 0 => greedy
+                q1Reserve = -1
+                q1Allocate = 0
+                q2Reserve = -1
+                q2Allocate = 0
+
+                if @q1Window and @q1Window.windowEnabled()
+                   q1Reserve = @q1Window.sourceDescriptor.modes[@q1Window.windowMode()].reserve
+
+                if @q2Window and @q2Window.windowEnabled()
+                   q2Reserve = @q2Window.sourceDescriptor.modes[@q2Window.windowMode()].reserve
+
+                if q1Reserve > 0
+                    if q1Reserve <= boundingExtent
+                        q1Allocate = q1Reserve
+                        boundingExtent -= q1Reserve
+                    else
+                        @q1Window.windowEnabled(false)
+
+                if q2Reserve > 0
+                    if q2Reserve <= boundingExtent
+                        q2Allocate = q2Reserve
+                        boundingExtent -= q2Reserve
+                    else
+                        @q2Window.windowEnabled(false)
+
+                q1q2ReserveTotal = q1Reserve + q2Reserve
+
+                if boundingExtent > 0 # there's unallocated space remaining in the splitter client
+
+                    if (q1Allocate + q2Allocate) == 0
+                        halfRemainingBoundingExtent = boundingExtent / 2
+                        q1Allocate += halfRemainingBoundingExtent
+                        q2Allocate += halfRemainingBoundingExtent
+                        boundingExtent = 0
+                    else
+                        if q1Reserve = 0
+                            q1Allocate += boundingExtent
+                            boundingExtent = 0
+                        if q2Reserve = 0
+                            q2Allocate += boundingExtent
+                            boundingExtent = 0
+
+                    if @q1Window and @q1Window.windowEnabled() and @q2Window and @q2Window.windowEnabled() and boundingExtent > 0
+                        throw "This looks wrong. We've got two enabled windows in this splitter but have #{boundingExtent} pixels remaining after split."
+                        boundingExtent = 0
+
+
+                q1SplitterFrameMargins = undefined
+                q2SplitterFrameMargins = undefined
+
+                boundingWidth = offsetRectangle_.rectangle.extent.width
+                boundingHeight = offsetRectangle_.rectangle.extent.height
+
+                switch @type
+                    when "horizontal"
+                       if q1Allocate
+                           q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, boundingHeight - q1Allocate, 0)
+                       else
+                           q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, q2Allocate, 0)
+                       if q2Allocate
+                           q2SplitterFrameMargins = geo.margins.createForPixelDimensions(boundingHeight - q2Allocate, 0, 0, 0)
+                       else
+                           q2SplitterFrameMargins = geo.margins.createForPixelDimensions(q1Allocate, 0, 0, 0)
+                    when "vertical"
+                        if q1Allocate
+                            q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, 0, boundingWidth - q1Allocate)
+                        else
+                            q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, 0, q2Allocate)
+                        if q2Allocate
+                            q2SplitterFrameMargins = geo.margins.createForPixelDimensions(0, boundingWidth - q2Allocate, 0, 0)
+                        else
+                            q2SplitterFrameMargins = geo.margins.createForPixelDimensions(0, q1Allocate, 0, 0)
+                    
+                q1SplitterFrame = geo.frame.createFromOffsetRectangleWithMargins(@offsetRectangle, q1SplitterFrameMargins)
+                q2SplitterFrame = geo.frame.createFromOffsetRectangleWithMargins(@offsetRectangle, q2SplitterFrameMargins)
+
+
 
                 # / END: setOffsetRectangle function scope
 
