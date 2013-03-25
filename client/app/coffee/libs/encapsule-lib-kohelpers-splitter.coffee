@@ -91,7 +91,7 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                     (offsetRectangle_.offset.top == @offsetRectangle.offset.top)
                         return false;
 
-                @offsetRectangle = offsetRectangle_
+                @offsetRectangle = Encapsule.code.lib.js.clone(offsetRectangle_)
     
                 # By convention splitters consider the entire extent of the offset rectangle passed by the caller
                 # to be their "client" area. The splitter may internally allocate an interior margin to offset
@@ -135,20 +135,18 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                     else
                         @q2Window.windowEnabled(false)
 
-                q1q2ReserveTotal = q1Reserve + q2Reserve
-
                 if boundingExtent > 0 # there's unallocated space remaining in the splitter client
 
-                    if (q1Allocate + q2Allocate) == 0
+                    if (q1Reserve == 0) and (q2Reserve == 0)
                         halfRemainingBoundingExtent = boundingExtent / 2
                         q1Allocate += halfRemainingBoundingExtent
                         q2Allocate += halfRemainingBoundingExtent
                         boundingExtent = 0
                     else
-                        if q1Reserve = 0
+                        if q1Reserve == 0
                             q1Allocate += boundingExtent
                             boundingExtent = 0
-                        if q2Reserve = 0
+                        if q2Reserve == 0
                             q2Allocate += boundingExtent
                             boundingExtent = 0
 
@@ -183,9 +181,27 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                         else
                             q2SplitterFrameMargins = geo.margins.createForPixelDimensions(0, q1Allocate, 0, 0)
                     
+                Console.messageStart("... q1SplitterFrame: ")
                 q1SplitterFrame = geo.frame.createFromOffsetRectangleWithMargins(@offsetRectangle, q1SplitterFrameMargins)
+                Console.messageStart("... q2SplitterFrame: ")
                 q2SplitterFrame = geo.frame.createFromOffsetRectangleWithMargins(@offsetRectangle, q2SplitterFrameMargins)
 
+                if q1Allocate
+                    Console.message("... ... Splitter id=#{@id} updating position of Q1 window id=#{@q1Window.id}")
+                    @q1Window.setOffsetRectangle(q1SplitterFrame.view)
+
+                if q2Allocate
+                    Console.message("... ... Splitter id=#{@id} updating position of Q2 window id=#{@q2Window.id}")
+                    @q2Window.setOffsetRectangle(q2SplitterFrame.view)
+
+                if q1Allocate and q2Allocate
+                    # The splitter has consumed its entire client area
+                    _offsetRectangle = geo.offsetRectangle.create()
+                else
+                    if q1Allocate
+                        _offsetRectangle = q2SplitterFrame.view
+                    if q2Allocate
+                        _offsetRectangle = q1SplitterFrame.view
 
 
                 # / END: setOffsetRectangle function scope

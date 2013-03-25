@@ -53,7 +53,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             @layout = layout_.layout
 
             Console.messageRaw("<h2>#{@layout.name}</h2>")
-            Console.messageRaw("<h3>INITIALIZING</h3>")
+            Console.message("#{appPackagePublisher} window manager boot for layout declaration id=#{@layout.id} name=\"#{@layout.name}\"")
 
             # An array of plane objects that manager a layout splitter stack.
             @planes = []
@@ -217,7 +217,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # / END RUNTIME CALLBACKS
             # ============================================================================
 
-            Console.messageRaw("<h3>BUILDING DATA MODEL</h3>")
+            Console.messageRaw("<h3>SYNTHESIZING MODEL-VIEW FROM LAYOUT DECLARATION</h3>")
+            Console.message("Building observable Javascript object hierarchy...")
 
             # ============================================================================
             # \ BEGIN: OBSERVABLE DATA MODEL INITIALIZATION
@@ -298,16 +299,15 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
             Console.message("Done transforming layout into view model :)")
 
-            # / END OBSERVABLE DATA MODEL INITIALIZATION
+            # / END OBSERVABLE DATA MODEL (VIEW-MODEL) INITIALIZATION
             # ============================================================================
 
 
 
             # ============================================================================
             try
-                Console.messageRaw("<h3>SYNTHESIZING HTML VIEW TEMPLATES</h3>")
+                Console.messageRaw("<h3>SYNTHESIZING VIEW-MODEL TEMPLATES</h3>")
                 try
-                    Console.message("Synthesizing window manager HTML view.")
                     htmlView = """
                         <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
                         <div id="#{@layout.id}" class="classObservableWindowManager" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">
@@ -316,13 +316,14 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         </div>
                         """
                     Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , => htmlView
+                    Console.message("Okay.")
                 catch exception
                     throw "Top-level HTML view synthesis failure: #{exception}"
     
-                Console.messageRaw("<h3>INITIALIZING VIEW TEMPLATE LIBRARY</h3>")
+                Console.messageRaw("<h3>INSTALLING VIEW-MODEL TEMPLATES</h3>")
                 try
-                    Console.message("Initializing view template library.")
                     windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(@layout.id)
+                    Console.message("Okay")
                 catch exception
                     throw "View template librarian init failure: #{exception}"
                     
@@ -334,11 +335,12 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # ============================================================================
             # BIND THE HTML VIEW TO THE WINDOW MANAGER'S OBVSERVABLE DATA MODELS USING KNOCKOUT.JS
             #
-            Console.messageRaw "<h3>APPLY KNOCKOUT.JS BINDINGS</h3>"
+            Console.messageRaw "<h3>BINDING MODEL-VIEW/VIEW-MODEL (MVVM) VIA KNOCKOUT.JS</h3>"
             try
-                ko.applyBindings @ , windowManagerHtmlViewRootDocumentElement #  THIS IS FUCKING AWESOME
+                ko.applyBindings @ , windowManagerHtmlViewRootDocumentElement # <- THIS IS FUCKING AWESOME
+                Console.message("#{@layout.id} #{@layout.name} Model-View/View-Model (MVVM) binding completed.")
             catch exception
-                throw """>:( Knockout.js isn't happy with us: #{exception}"""
+                throw """Failed MVVM binding. Knockout.js is upset: #{exception}"""
 
             #
             # At this point the DOM is wired to the window manager's data model via Knockout.js.
@@ -357,20 +359,24 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # ============================================================================
             # Obtain the current extent of document and update the offset rectangles used to determine
             # the coordinates of the window manager glass and main windows.
+            Console.messageRaw("<h3>INITIALIZING SCREEN LAYOUT</h3>")
             try
                 @refreshWindowManagerViewGeometriesFromDocument()
+                Console.message("Okay")
             catch exception
                 throw "Initial window manager geometries refresh failed: #{exception}"
 
+            Console.messageRaw("<h3>REGISTERING EVENT LISTENERS</h3>")
             # Automatically refresh the window manager's geometries when the the browser window resizes.
             window.addEventListener 'resize', @refreshWindowManagerViewGeometriesFromDocument
+            Console.message("Okay.")
 
             # setInterval @refreshWindowManagerViewState, 5000 # This catches everything (including browser restore) eventually
-
             $("#idEncapsuleWindowManagerHost").fadeIn @layout.windowManagerFadeInTimeout
 
+            Console.messageRaw("<p><strong>#{appPackagePublisher} window manager initialization complete.</strong></p>")
+
             # ============================================================================
-            Console.messageRaw("<h3>WINDOW MANAGER IS ONLINE</h3>")
             Console.messageRaw("<h2>#{appName} v#{appVersion} entering interactive mode :)</h2>")
             # / END INITIALIZATION OF WINDOW MANAGER OBJECT INSTANCE
 

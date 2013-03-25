@@ -95,7 +95,7 @@ Encapsule.code.app.viewLayout = {
                             id: "idToolbar"                                              
                             name: "Toolbar Window"                                       
                             initialMode: "full"
-                            initialEnable: true
+                            initialEnable: false
                             modes: { full: { reserve: 128 }, min: { reserve: 64 } }      
                             }                                                            
                         Q2WindowDescriptor: undefined                                    
@@ -121,7 +121,7 @@ Encapsule.code.app.viewLayout = {
                             id: "idSelect2"                                              
                             name: "Select 1 Window"                                      
                             initialMode: "full"
-                            initialEnable: true
+                            initialEnable: false
                             modes: { full: { reserve: 300 }, min: { reserve: 64 } }      
                             }                                                            
                         Q2WindowDescriptor: undefined                                    
@@ -134,14 +134,14 @@ Encapsule.code.app.viewLayout = {
                             id: "idSVGPlane"                                             
                             name: "SVG Plane"                                            
                             initialMode: "full"
-                            initialEnable: true
+                            initialEnable: false
                             modes: { full: { reserve: 0 }, min: { reserve: 0 } }         
                             }                                                            
                         Q2WindowDescriptor: {                                            
                             id: "idEdit1"                                                
                             name: "Edit 1 Window"                                        
                             initialMode: "full"
-                            initialEnable: true
+                            initialEnable: false
                             modes: { full: { reserve: 0 }, min: { reserve: 64 } }        
                             }                                                            
                         }                                                                
@@ -165,6 +165,8 @@ Encapsule.code.app.viewLayout = {
                         Q2WindowDescriptor: {
                             id: "idSettings2"
                             name: "Settings 2 Window"
+                            initialMode: "full"
+                            initialEnable: false
                             modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                             }
                         }
