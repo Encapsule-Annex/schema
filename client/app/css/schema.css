@@ -30,6 +30,7 @@ display: none; /* displayed only as needed */
 #idConsole h1 { color: white; font-size: 16pt; text-shadow: black 0.1em 0.1em 0.1em }
 #idConsole h2 { color: #0099CC; font-size: 14pt; font-weight: bold; text-shadow: white 0.1em 0.1em 0.1em; }
 #idConsole h3 { color: #003366; font-size: 10pt; text-shadow: white 0.1em 0.1em 0.1em }
+#idConsole h4 { color: #0099CC; font-size: 10pt; font-weight: bold; text-shadow: white 0.1em 0.1em 0.1em; }
 
 .classConsoleExceptionContainer { border: 5px solid #FF0000; background-color: #FF7700; padding: 10px; }
 
@@ -133,9 +134,12 @@ position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; z-index: -2;
 }
 
 .classObservableWindow {
-position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; z-index: -2; border: 1px solid black;
+position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; z-index: -2; -moz-border-radius: 8px; border-radius: 8px; overflow: hidden;
 }
 
+.classObservableWindowClientArea {
+margin: 4px; font-family: Verdana, Arial; font-size: 10pt; border: 1px solid #00FF00; overflow: hidden;
+}
 
 
 

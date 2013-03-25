@@ -53,16 +53,15 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
 
             try
                 # \ BEGIN: try scope
-                @cssVisibility = ko.computed =>
-                   offsetRectangle = @offsetRectangle()
-                   @offsetRectangle().rectangle.hasArea
+                @windowInDOM = ko.computed =>
+                   @offsetRectangle().rectangle.hasArea and @windowEnabled()
                 @cssWidth = ko.computed => @offsetRectangle().rectangle.extent.width + "px"
                 @cssHeight = ko.computed => @offsetRectangle().rectangle.extent.height + "px"
                 @cssMarginLeft = ko.computed => @offsetRectangle().offset.left + "px"
                 @cssMarginTop = ko.computed => @offsetRectangle().offset.top + "px"
                 @cssOpacity = ko.observable 1
-                @cssBackgroundColor = ko.observable "red"
-                @cssBorder = ko.observable "1px solid black"
+                @cssBackgroundColor = ko.observable "green"
+                @cssBorder = ko.observable "1px solid white"
                 # / END try scope
             catch exception
                 throw "Failure on first execution of computed obervable properties: #{exception}"
@@ -81,9 +80,14 @@ class Encapsule.code.lib.kohelpers.ObservableWindow
 # / END: file scope
             
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_EncapsuleWindowManagerObservableWindow", ( -> """
-<div class="classObservableWindow" data-bind="style: { width: cssWidth(), height: cssHeight(), marginLeft: cssMarginLeft(), marginTop: cssMarginTop(), opacity: cssOpacity(), backgroundColor: cssBackgroundColor() }">
-    ObservableWindow <span data-bind="text: $index"></span>: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
-</div>
+<span data-bind="if: windowInDOM">
+    <div class="classObservableWindow" 
+        data-bind="style: { width: cssWidth(), height: cssHeight(), marginLeft: cssMarginLeft(), marginTop: cssMarginTop(), opacity: cssOpacity(), backgroundColor: cssBackgroundColor(), border: cssBorder }">
+        <div class="classObservableWindowClientArea">
+            ObservableWindow <span data-bind="text: $index"></span>: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
+        </div>
+    </div>
+</span>
 """))
 
 

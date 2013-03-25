@@ -117,6 +117,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     documentEl = $(document)
                     geo = Encapsule.code.lib.geometry
 
+                    Console.messageRaw("<h4>BASE WINDOW EXTENT UPDATE</h4>")
+
                     # All extent properties one may obtain from the document object below.
                     # We're actually only using the outerWidth/Height(true) (aka margin extents)
                     # here. The others are left for experimentation and reference.
@@ -130,6 +132,10 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
     
                     marginWidth = documentEl.outerWidth(true)
                     marginHeight = documentEl.outerHeight(true)
+
+                    if (marginWidth == @documentOffsetRectangle.rectangle.extent.width) and (marginHeight == @documentOffsetRectangle.rectangle.extent.width)
+                        Console.message("Callback to document resize handler ignored: no change in base window dimensions.")
+                        return;
 
                     @documentOffsetRectangle = geo.offsetRectangle.createFromDimensions(marginWidth, marginHeight)
 
@@ -170,6 +176,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     if not request_? then throw "Missing refresh request parameter."
                     if not request_ then throw "Missing refresh request value."
 
+                    Console.messageRaw("<h4>WINDOW MANAGER VIEW STATE UPDATE</h4>")
 
                     request = {
                         forceEval: request_.forceEval? and request_.forceEval or false
@@ -191,13 +198,23 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
                             for plane in @planes
                                 # \ BEGIN: plane scope
-                                splitters = plane.splitterStack
-                                availableOffsetRectangle = windowManagerClientOffsetRectangle
-                                for split in splitters
-                                    # \ BEGIN: split scope
-                                    Console.message ("Window manager refresh on plane #{plane.id} split #{split.id}")
-                                    split.setOffsetRectangle(availableOffsetRectangle, true)
-                                    # / END: split scope
+                                try
+                                    # \ BEGIN: try plane scope
+                                    splitters = plane.splitterStack
+                                    for split in splitters
+                                        # \ BEGIN: split scope
+                                        try
+                                            # \ BEGIN: try split scope
+                                            Console.message("<strong>Window manager refresh on plane #{plane.id} split #{split.id}</b>")
+                                            Console.message("... Available client offset rectangle #{windowManagerClientOffsetRectangle.rectangle.extent.width} x #{windowManagerOffsetRectangle.rectangle.extent.width}")
+                                            windowManagerClientOffsetRectangle = split.setOffsetRectangle(windowManagerClientOffsetRectangle, true)
+                                            # / END: try split scope
+                                        catch exception
+                                            throw "Splitter #{split.id} fail: #{exception}"
+                                        # / END: split scope
+                                     # / END: try plane scope
+                                catch exception
+                                    throw "Plane #{plane.id} fail: #{exception}"
                                 # / END: plane scope
                             # / END: geometries update try scope
 

@@ -79,133 +79,203 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
     
             @setOffsetRectangle = (offsetRectangle_, forceEval_ ) =>
                 # \ BEGIN: setOffsetRectangle function scope
+                try
+                    # \ BEGIN: setOffsetRectangle function try scope
     
-                # Return false iff no change and not forceEval_
+                    # Return false iff no change and not forceEval_
     
-                if not offsetRectangle_? or not offsetRectangle_
-                    throw "You must specify an offset rectangle."
+                    if not offsetRectangle_? or not offsetRectangle_
+                        throw "You must specify an offset rectangle."
     
-                if (offsetRectangle_.rectangle.extent.width == @offsetRectangle.rectangle.extent.width) and
-                    (offsetRectangle_.rectangle.extent.height == @offsetRectangle.rectangle.extent.height) and
-                    (offsetRectangle_.offset.left == @offsetRectangle.offset.left) and
-                    (offsetRectangle_.offset.top == @offsetRectangle.offset.top)
-                        return false;
-
-                @offsetRectangle = Encapsule.code.lib.js.clone(offsetRectangle_)
+                    @offsetRectangle = Encapsule.code.lib.js.clone(offsetRectangle_)
     
-                # By convention splitters consider the entire extent of the offset rectangle passed by the caller
-                # to be their "client" area. The splitter may internally allocate an interior margin to offset
-                # two split windows. However, Q1 and Q2 outer edges are always co-incident with the extent of the
-                # splitter's bounding offset rectangle.
+                    # By convention splitters consider the entire extent of the offset rectangle passed by the caller
+                    # to be their "client" area. The splitter may internally allocate an interior margin to offset
+                    # two split windows. However, Q1 and Q2 outer edges are always co-incident with the extent of the
+                    # splitter's bounding offset rectangle.
 
-                # The bounding rectangle has been changed.
+                    # The bounding rectangle has been changed.
 
-                boundingExtent = 0
-                switch @type
-                    when "horizontal"
-                        boundingExtent = offsetRectangle_.rectangle.extent.height
-                    when "vertical"
-                        boundingExtent = offsetRectangle_.rectangle.extent.width
-                    else
-                        throw "Unrecogized splitter type=#{@type}"
+                    boundingExtent = 0
 
-                # Reserve = -1 => no reserve, 0 => greedy
-                q1Reserve = -1
-                q1Allocate = 0
-                q2Reserve = -1
-                q2Allocate = 0
-
-                if @q1Window and @q1Window.windowEnabled()
-                   q1Reserve = @q1Window.sourceDescriptor.modes[@q1Window.windowMode()].reserve
-
-                if @q2Window and @q2Window.windowEnabled()
-                   q2Reserve = @q2Window.sourceDescriptor.modes[@q2Window.windowMode()].reserve
-
-                if q1Reserve > 0
-                    if q1Reserve <= boundingExtent
-                        q1Allocate = q1Reserve
-                        boundingExtent -= q1Reserve
-                    else
-                        @q1Window.windowEnabled(false)
-
-                if q2Reserve > 0
-                    if q2Reserve <= boundingExtent
-                        q2Allocate = q2Reserve
-                        boundingExtent -= q2Reserve
-                    else
-                        @q2Window.windowEnabled(false)
-
-                if boundingExtent > 0 # there's unallocated space remaining in the splitter client
-
-                    if (q1Reserve == 0) and (q2Reserve == 0)
-                        halfRemainingBoundingExtent = boundingExtent / 2
-                        q1Allocate += halfRemainingBoundingExtent
-                        q2Allocate += halfRemainingBoundingExtent
-                        boundingExtent = 0
-                    else
-                        if q1Reserve == 0
-                            q1Allocate += boundingExtent
-                            boundingExtent = 0
-                        if q2Reserve == 0
-                            q2Allocate += boundingExtent
-                            boundingExtent = 0
-
-                    if @q1Window and @q1Window.windowEnabled() and @q2Window and @q2Window.windowEnabled() and boundingExtent > 0
-                        throw "This looks wrong. We've got two enabled windows in this splitter but have #{boundingExtent} pixels remaining after split."
-                        boundingExtent = 0
+                    # \ BEGIN: outer bound extent
+                    try
+                        # \ BEGIN: outer bound try scope
+                        switch @type
+                            when "horizontal"
+                                boundingExtent = offsetRectangle_.rectangle.extent.height
+                            when "vertical"
+                                boundingExtent = offsetRectangle_.rectangle.extent.width
+                            else
+                                throw "Unrecogized splitter type=#{@type}"
+                        # / END: outer bound try scope
+                    catch exception
+                        throw "While attempting to determine the outer binding extents of the splitter's client area: #{exception}"
+                    # / END: outer bound extents
 
 
-                q1SplitterFrameMargins = undefined
-                q2SplitterFrameMargins = undefined
+                    # Reserve = -1 => no reserve, 0 => greedy
+                    q1Reserve = -1
+                    q1Allocate = 0
+                    q2Reserve = -1
+                    q2Allocate = 0
 
-                boundingWidth = offsetRectangle_.rectangle.extent.width
-                boundingHeight = offsetRectangle_.rectangle.extent.height
+                    # \ BEGIN: set reserves
+                    try
+                        # \ BEGIN: set reserves try scope
+                        if @q1Window and @q1Window.windowEnabled()
+                            q1Reserve = @q1Window.sourceDescriptor.modes[@q1Window.windowMode()].reserve
 
-                switch @type
-                    when "horizontal"
-                       if q1Allocate
-                           q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, boundingHeight - q1Allocate, 0)
-                       else
-                           q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, q2Allocate, 0)
-                       if q2Allocate
-                           q2SplitterFrameMargins = geo.margins.createForPixelDimensions(boundingHeight - q2Allocate, 0, 0, 0)
-                       else
-                           q2SplitterFrameMargins = geo.margins.createForPixelDimensions(q1Allocate, 0, 0, 0)
-                    when "vertical"
+                        if @q2Window and @q2Window.windowEnabled()
+                            q2Reserve = @q2Window.sourceDescriptor.modes[@q2Window.windowMode()].reserve
+                        # / END: set reserves try scope
+                    catch exception
+                        throw "While attempting to set window pixel reservation dimensions: #{exception}"
+                    # / END: set reserves
+
+                    # \ BEGIN: set allocations
+                    try
+                        # \ BEGIN: set allocations try scope
+                        if q1Reserve > 0
+                            if q1Reserve <= boundingExtent
+                                q1Allocate = q1Reserve
+                                boundingExtent -= q1Reserve
+                            else
+                                @q1Window.windowEnabled(false)
+
+                        if q2Reserve > 0
+                            if q2Reserve <= boundingExtent
+                                q2Allocate = q2Reserve
+                                boundingExtent -= q2Reserve
+                            else
+                                @q2Window.windowEnabled(false)
+                        # / END: set allocations try scope
+                    catch exception
+                        throw "While attempting to set window pixel allocations: #{exception}"
+                    # / END: set allocations
+
+                    # \ BEGIN: balance allocations
+                    try
+                        # \ BEGIN: balance allocations try scope
+                        if boundingExtent > 0 # there's unallocated space remaining in the splitter client
+                            # \ BEGIN: if boundingExtent > 0
+                            if (q1Reserve == 0) and (q2Reserve == 0)
+                                halfRemainingBoundingExtent = boundingExtent / 2
+                                q1Allocate += halfRemainingBoundingExtent
+                                q2Allocate += halfRemainingBoundingExtent
+                                boundingExtent = 0
+                            else
+                                if q1Reserve == 0
+                                    q1Allocate += boundingExtent
+                                    boundingExtent = 0
+                                if q2Reserve == 0
+                                    q2Allocate += boundingExtent
+                                    boundingExtent = 0
+    
+                            if @q1Window and @q1Window.windowEnabled() and @q2Window and @q2Window.windowEnabled() and boundingExtent > 0
+                                throw "This looks wrong. We've got two enabled windows in this splitter but have #{boundingExtent} pixels remaining after split."
+                                boundingExtent = 0
+
+                            # / END: / if boundExtent > 0
+                        # / END: balance allocations try scope
+                    # / END: balance allocations
+
+                    q1SplitterFrameMargins = undefined
+                    q2SplitterFrameMargins = undefined
+
+                    boundingWidth = offsetRectangle_.rectangle.extent.width
+                    boundingHeight = offsetRectangle_.rectangle.extent.height
+
+                    # \ BEGIN: set frame margins
+                    try
+                        # \ BEGIN: set frame margins try scope
+                        switch @type
+                            # \ BEGIN: switch @type
+                            when "horizontal"
+                               if q1Allocate
+                                   q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, boundingHeight - q1Allocate, 0)
+                               else
+                                   q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, q2Allocate, 0)
+                               if q2Allocate
+                                   q2SplitterFrameMargins = geo.margins.createForPixelDimensions(boundingHeight - q2Allocate, 0, 0, 0)
+                               else
+                                   q2SplitterFrameMargins = geo.margins.createForPixelDimensions(q1Allocate, 0, 0, 0)
+                            when "vertical"
+                                if q1Allocate
+                                    q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, 0, boundingWidth - q1Allocate)
+                                else
+                                    q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, 0, q2Allocate)
+                                if q2Allocate
+                                    q2SplitterFrameMargins = geo.margins.createForPixelDimensions(0, boundingWidth - q2Allocate, 0, 0)
+                                else
+                                    q2SplitterFrameMargins = geo.margins.createForPixelDimensions(0, q1Allocate, 0, 0)
+                            # / END: switch @type scope
+                        # / END: set frame margins try scope
+                    catch exception
+                        throw "While attempting to set frame margins: #{exception}"
+                    # / END: set frame margins
+
+                    # \ BEGIN: create frames
+                    try
+                        # \ BEGIN: create frames try scope
+                        Console.messageStart("... q1SplitterFrame: ")
+                        q1SplitterFrame = geo.frame.createFromOffsetRectangleWithMargins(@offsetRectangle, q1SplitterFrameMargins)
+                        Console.messageStart("... q2SplitterFrame: ")
+                        q2SplitterFrame = geo.frame.createFromOffsetRectangleWithMargins(@offsetRectangle, q2SplitterFrameMargins)
+                        # / END: create frames try scope
+                    catch exception
+                        throw "While attempting to create splitter frames: #{exception}"
+                    # / END: create frames
+
+                    # \ BEGIN: update windows
+                    try
+                        # \ BEGIN: update windows try scope
                         if q1Allocate
-                            q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, 0, boundingWidth - q1Allocate)
-                        else
-                            q1SplitterFrameMargins = geo.margins.createForPixelDimensions(0, 0, 0, q2Allocate)
+                            Console.message("... ... Splitter id=#{@id} updating position of Q1 window id=#{@q1Window.id}")
+                            @q1Window.setOffsetRectangle(q1SplitterFrame.view)
                         if q2Allocate
-                            q2SplitterFrameMargins = geo.margins.createForPixelDimensions(0, boundingWidth - q2Allocate, 0, 0)
+                            Console.message("... ... Splitter id=#{@id} updating position of Q2 window id=#{@q2Window.id}")
+                            @q2Window.setOffsetRectangle(q2SplitterFrame.view)
+                        # / END: update windows try scope
+                    catch exception
+                        throw "While attempting to update splitter window geometries: #{exception}"
+                    # / END: update windows
+
+                    remainingClientOffsetRectangle = undefined
+
+                    # \ BEGIN: set unallocated space
+                    try
+                        # \ BEGIN: set unallocated space try scope
+                        if q1Allocate and q2Allocate
+                            # The splitter has consumed its entire client area
+                            Console.message("... ... #{@id} client area exhaused.")
+                            remainingClientOffsetRectangle = geo.offsetRectangle.create()
                         else
-                            q2SplitterFrameMargins = geo.margins.createForPixelDimensions(0, q1Allocate, 0, 0)
-                    
-                Console.messageStart("... q1SplitterFrame: ")
-                q1SplitterFrame = geo.frame.createFromOffsetRectangleWithMargins(@offsetRectangle, q1SplitterFrameMargins)
-                Console.messageStart("... q2SplitterFrame: ")
-                q2SplitterFrame = geo.frame.createFromOffsetRectangleWithMargins(@offsetRectangle, q2SplitterFrameMargins)
+                            # \ BEGIN: else
+                            if q1Allocate
+                                Console.message("... ... Assigning q2SplitterFrame.view to unallocated space for next split.")
+                                remainingClientOffsetRectangle = q2SplitterFrame.view
+                            else
+                                # \ BEGIN: else
+                                if q2Allocate
+                                    Console.message("... ... Assigning q1SplitterFrame.view to unallocated space for next split.")
+                                    remainingClientOffsetRectangle = q1SplitterFrame.view
+                                else
+                                    Console.message("... ... This splitter allocated no client space.")
+                                    remainingClientOffsetRectangle = offsetRectangle_
+                                # / END: else
+                            # / END: else
+                        # / END: set unallocated space try scope
+                    catch exception
+                        throw "While attempting to set unallocated space for next splitter: #{exception}"
+                    # / END: set unallocated space
 
-                if q1Allocate
-                    Console.message("... ... Splitter id=#{@id} updating position of Q1 window id=#{@q1Window.id}")
-                    @q1Window.setOffsetRectangle(q1SplitterFrame.view)
+                    remainingClientOffsetRectangle
 
-                if q2Allocate
-                    Console.message("... ... Splitter id=#{@id} updating position of Q2 window id=#{@q2Window.id}")
-                    @q2Window.setOffsetRectangle(q2SplitterFrame.view)
-
-                if q1Allocate and q2Allocate
-                    # The splitter has consumed its entire client area
-                    _offsetRectangle = geo.offsetRectangle.create()
-                else
-                    if q1Allocate
-                        _offsetRectangle = q2SplitterFrame.view
-                    if q2Allocate
-                        _offsetRectangle = q1SplitterFrame.view
-
-
+                    # / END: setOffsetRectangle function try scope
+                catch exception
+                    throw "Splitter #{@id} fail: #{exception}"
                 # / END: setOffsetRectangle function scope
-
 
             # / END: constructor try scope
         catch exception
