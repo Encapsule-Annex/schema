@@ -32,10 +32,6 @@ Dig this >:)-~
 ###
 Encapsule.code.app.viewLayout = {
 
-    #
-    # WINDOW MANAGER IS A SINGLETON
-    #
-
     # id: some unique string that will be assigned to the ID attibute of the window manager's main container.
     # name: whatever you want
     #
@@ -73,20 +69,22 @@ Encapsule.code.app.viewLayout = {
     # color with a low opacity to provide subtle transition effects or signalling.
     #
     windowManagerBackgroundColor: "white" # defaults to "white" if undefined
-    windowManagerMargin: 3 # glass edge to window manager edge (defaults to 10 if undefined)
-    windowManagerPadding: 3 # window manager edge to plane edge (defaults to 10 if undefined)
-    windowManagerOpacity: 0.5 # (defaults to 1 if undefined)
+    windowManagerMargin: 16 # glass edge to window manager edge (defaults to 10 if undefined)
+    windowManagerPadding: 16 # window manager edge to plane edge (defaults to 10 if undefined)
+    windowManagerOpacity: 0.3 # (defaults to 1 if undefined)
 
     #
     # Managed window attributes
     #
     globalWindowAttributes: {
-        hostWindowBackgroundColor: "#99CCFF"
-        hostWindowOpacity: 0.5
+        hostWindowBackgroundColor: "black"
+        hostWindowOpacity: 0.3
         hostWindowPadding: 5
         chromeWindowBackgroundColor: "#6699CC"
-        chromeWindowOpacity: 0.5
-        chroneWindowPadding: 5
+        chromeWindowOpacity: 0.8
+        chromeWindowPadding: 5
+        windowBorderWidth: 1
+        windowBorderColor: "black"
         }
 
     planes: [
@@ -102,8 +100,10 @@ Encapsule.code.app.viewLayout = {
                     Q2WindowDescriptor: {                                            
                         id: "idFrameStack"                                           
                         name: "Frame Stack Window"
-                        initialMode: "min"
+                        initialMode: "full"
                         initialEnable: true
+                        opacity: 0.8
+                        backgroundColor: "#FFFF00"
                         modes: { full: { reserve: 300 }, min: { reserve: 64 } }
                         }
                     },
@@ -116,6 +116,8 @@ Encapsule.code.app.viewLayout = {
                         name: "Toolbar Window"                                       
                         initialMode: "min"
                         initialEnable: true
+                        opacity: 0.8
+                        backgroundColor: "#CCCCCC"
                         modes: { full: { reserve: 128 }, min: { reserve: 64 } }      
                         }                                                            
                     Q2WindowDescriptor: undefined
@@ -130,6 +132,8 @@ Encapsule.code.app.viewLayout = {
                         name: "Select 1 Window"                                      
                         initialMode: "min"
                         initialEnable: true
+                        opacity: 0.8
+                        backgroundColor: "#99CCFF"
                         modes: { full: { reserve: 300 }, min: { reserve: 64 } }      
                         }                                                            
                     Q2WindowDescriptor: undefined                                    
@@ -143,6 +147,8 @@ Encapsule.code.app.viewLayout = {
                         name: "Select 1 Window"                                      
                         initialMode: "min"
                         initialEnable: true
+                        opacity: 0.8
+                        backgroundColor: "#CCCCFF"
                         modes: { full: { reserve: 300 }, min: { reserve: 64 } }      
                         }                                                            
                     Q2WindowDescriptor: undefined                                    
@@ -156,6 +162,8 @@ Encapsule.code.app.viewLayout = {
                         name: "SVG Plane"                                            
                         initialMode: "full"
                         initialEnable: true
+                        opacity: 0.8
+                        backgroundColor: "white"
                         modes: { full: { reserve: 0 }, min: { reserve: 0 } }         
                         }                                                            
                     Q2WindowDescriptor: {                                            
@@ -163,6 +171,8 @@ Encapsule.code.app.viewLayout = {
                         name: "Edit 1 Window"                                        
                         initialMode: "min"
                         initialEnable: true
+                        opacity: 0.8
+                        backgroundColor: "#00CC00"
                         modes: { full: { reserve: 0 }, min: { reserve: 64 } }        
                         }                                                            
                     }

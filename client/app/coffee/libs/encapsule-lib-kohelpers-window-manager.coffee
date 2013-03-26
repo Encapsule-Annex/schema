@@ -149,12 +149,6 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         Console.message("Callback to document resize handler ignored: no change in base window dimensions.")
                         return;
 
-                    ###
-                    if (marginWidth == @documentOffsetRectangle.rectangle.extent.width) and (marginHeight == @documentOffsetRectangle.rectangle.extent.width)
-                        Console.message("Callback to document resize handler ignored: no change in base window dimensions.")
-                        return;
-                    ###
-
                     @documentOffsetRectangle = geo.offsetRectangle.createFromDimensions(width, height)
 
                     marginsGlass = geo.margins.createUniform(@glassMargin())

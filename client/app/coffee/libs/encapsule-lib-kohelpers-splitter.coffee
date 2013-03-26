@@ -47,7 +47,8 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
             geo = Encapsule.code.lib.geometry
             
             @splitDescriptor = splitDescriptor_
-    
+            @globalWindowAttributes = globalWindowAttributes_
+
             @id = @splitDescriptor.id
             @type = @splitDescriptor.type
             @name = @splitDescriptor.name
@@ -61,7 +62,6 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
             if @q1Descriptor then @q1Descriptor.globalWindowAttributes = globalWindowAttributes_
             if @q2Descriptor then @q2Descriptor.globalWindowAttributes = globalWindowAttributes_
 
-
             @offsetRectangle = geo.offsetRectangle.create()
             @q1OffsetRectangle = geo.offsetRectangle.create()
             @q2OffsetRectangle = geo.offsetRectangle.create()
@@ -69,8 +69,7 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
     
             @q1Window = undefined
             @q2Window = undefined
-    
-    
+        
             try
                 # \ BEGIN: try to create new observable windows scope
                 if @q1Descriptor? and @q1Descriptor
@@ -127,9 +126,9 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
 
 
                     # Reserve = -1 => no reserve, 0 => greedy
-                    q1Reserve = -1
+                    q1Reserve = { windowReservation: -1, paddingReservation: observableWindowPadding }
                     q1Allocate = 0
-                    q2Reserve = -1
+                    q2Reserve =  { windowReservation: -1, paddingReservation: observableWindowPadding }
                     q2Allocate = 0
 
                     # \ BEGIN: set reserves
@@ -137,7 +136,6 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                         # \ BEGIN: set reserves try scope
                         if @q1Window and @q1Window.windowEnabled()
                             q1Reserve = @q1Window.sourceDescriptor.modes[@q1Window.windowMode()].reserve
-
                         if @q2Window and @q2Window.windowEnabled()
                             q2Reserve = @q2Window.sourceDescriptor.modes[@q2Window.windowMode()].reserve
                         # / END: set reserves try scope
@@ -148,19 +146,18 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                     # \ BEGIN: set allocations
                     try
                         # \ BEGIN: set allocations try scope
+                        observableWindowPadding = 2 * ( @globalWindowAttributes.hostWindowPadding + @globalWindowAttributes.chromeWindowPadding +
+                            @globalWindowAttributes.windowBorderWidth)
                         if q1Reserve > 0
                             if q1Reserve <= boundingExtent
-                                q1Allocate = q1Reserve
-                                boundingExtent -= q1Reserve
-                            else
-                                @q1Window.windowEnabled(false)
+                                q1Allocate = q1Reserve + observableWindowPadding
+                                boundingExtent -= q1Allocate
 
                         if q2Reserve > 0
                             if q2Reserve <= boundingExtent
-                                q2Allocate = q2Reserve
-                                boundingExtent -= q2Reserve
-                            else
-                                @q2Window.windowEnabled(false)
+                                q2Allocate = q2Reserve + observableWindowPadding
+                                boundingExtent -= q2Allocate
+
                         # / END: set allocations try scope
                     catch exception
                         throw "While attempting to set window pixel allocations: #{exception}"

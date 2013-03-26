@@ -66,24 +66,25 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                 @cssHostHeight = ko.computed => Math.round(@offsetRectangleHost().rectangle.extent.height) + "px"
                 @cssHostMarginLeft = ko.computed => Math.round(@offsetRectangleHost().offset.left) + "px"
                 @cssHostMarginTop = ko.computed => Math.round(@offsetRectangleHost().offset.top) + "px"
-                @cssHostOpacity = ko.observable 0.6
-                @cssHostBackgroundColor = ko.observable "green"
+                @cssHostOpacity = ko.observable @sourceDescriptor.globalWindowAttributes.hostWindowOpacity
+                @cssHostBackgroundColor = ko.observable @sourceDescriptor.globalWindowAttributes.hostWindowBackgroundColor
 
                 # Observable properties of the classObservableWindowChrome DIV
                 @cssChromeWidth = ko.computed => Math.round(@offsetRectangleChrome().rectangle.extent.width) + "px"
                 @cssChromeHeight = ko.computed => Math.round(@offsetRectangleChrome().rectangle.extent.height) + "px"
                 @cssChromeMarginLeft = ko.computed => Math.round(@offsetRectangleChrome().offset.left) + "px"
                 @cssChromeMarginTop = ko.computed => Math.round(@offsetRectangleChrome().offset.top) + "px"
-                @cssChromeOpacity = ko.observable 0.7
-                @cssChromeBackgroundColor = ko.observable "#99CCFF"
+                @cssChromeOpacity = ko.observable @sourceDescriptor.globalWindowAttributes.chromeWindowOpacity
+                @cssChromeBackgroundColor = ko.observable @sourceDescriptor.globalWindowAttributes.chromeWindowBackgroundColor
 
                 # Observable properties of the classObservableWindow DIV (this is the DIV that contains the actual client window)
                 @cssWindowWidth = ko.computed => Math.round(@offsetRectangleWindow().rectangle.extent.width) + "px"
                 @cssWindowHeight = ko.computed => Math.round(@offsetRectangleWindow().rectangle.extent.height) + "px"
                 @cssWindowMarginLeft = ko.computed => Math.round(@offsetRectangleWindow().offset.left) + "px"
                 @cssWindowMarginTop = ko.computed => Math.round(@offsetRectangleWindow().offset.top) + "px"
-                @cssWindowOpacity = ko.observable 0.7
-                @cssWindowBackgroundColor = ko.observable "white"
+                @cssWindowOpacity = ko.observable @sourceDescriptor.opacity
+                @cssWindowBackgroundColor = ko.observable @sourceDescriptor.backgroundColor
+                @cssWindowBorder = ko.observable "#{@sourceDescriptor.globalWindowAttributes.windowBorderWidth}px solid #{@sourceDescriptor.globalWindowAttributes.windowBorderColor}"
 
                 # / END try scope
             catch exception
@@ -113,11 +114,11 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                         Console.message("Observable window offset rectangle updated: #{offsetRectangle_.rectangle.extent.width} x #{offsetRectangle_.rectangle.extent.height} // #{offsetRectangle_.offset.left}, #{offsetRectangle_.offset.top}")
                         @offsetRectangleHost(offsetRectangle_)
 
-                        marginsChrome = geo.margins.createUniform(4)
+                        marginsChrome = geo.margins.createUniform(@sourceDescriptor.globalWindowAttributes.hostWindowPadding)
                         chromeFrame = geo.frame.createFromOffsetRectangleWithMargins(offsetRectangle_, marginsChrome)
                         @offsetRectangleChrome(chromeFrame.view)
 
-                        marginsWindow = geo.margins.createUniform(4)
+                        marginsWindow = geo.margins.createUniform(@sourceDescriptor.globalWindowAttributes.chromeWindowPadding + @sourceDescriptor.globalWindowAttributes.windowBorderWidth)
                         windowFrame = geo.frame.createFromOffsetRectangleWithMargins(chromeFrame.view, marginsWindow)
                         @offsetRectangleWindow(windowFrame.view)
 
@@ -146,7 +147,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Encapsul
 
     <div class="classObservableWindow"
     data-bind="attr: { id: id }, style: { width: cssWindowWidth(), height: cssWindowHeight(), marginLeft: cssWindowMarginLeft(),
-    marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor() }">
+    marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor(), border: cssWindowBorder() }">
         <b>Toggle [ <span data-bind="event: { click: toggleWindowMode }, text: windowMode" style="color: blue; font-weight: bold; text-decoration: underline;"></span> ]</b>
         ObservableWindow <span data-bind="text: $index"></span>: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
     </div>
