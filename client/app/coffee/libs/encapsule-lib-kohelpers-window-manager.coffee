@@ -34,6 +34,13 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
     constructor: (layout_) ->
 
         try
+            # ============================================================================
+            # PARAMETER VALIDATION
+
+            if not layout_? or not layout_ then throw "You must specify a layout to construct an ObservableWindowManager instance."
+
+            Console.messageRaw("<h2>#{layout_.name}</h2>")
+            Console.message("#{appPackagePublisher} window manager boot for layout declaration id=#{layout_.id} name=\"#{layout_.name}\"")
 
             # ============================================================================
             # NAMESPACE ALIASES
@@ -41,71 +48,76 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
 
             # ============================================================================
-            # PARAMETER VALIDATION
+            # GLOBAL WINDOW MANAGER OBSERVABLE CONTROL KNOBS
+            # Initialized from layout data. May be modified by application logic.
+            # \ BEGIN: control knobs
 
-            if not layout_? or not layout_ then throw "You must specify a layout to construct an ObservableWindowManager instance."
-            if not layout_.layout? and not layout_.layout then throw "Expecting a top-level object named layout."
-
+            try
+                # BEGIN: try scope
+                @pageBackgroundColor = ko.observable layout_.pageBackgroundColor? and layout_.pageBackgroundColor or "white"
+                @glassOpacity = ko.observable layout_.glassOpacity? and layout_.glassOpacity or undefined
+                @glassBackgroundColor = ko.observable layout_.glassBackgroundColor? and layout_.glassBackgroundColor or undefined
+                @glassBackgroundImage = ko.observable layout_.glassBackgroundImage? and layout_.glassBackgroundImage  and "url(img/#{layout_.glassBackgroundImage})" or undefined
+                @glassMargin = ko.observable undefined
+                if layout_.glassMargin? then @glassMargin(layout_.glassMargin) else @glassMargin(10)
+                @windowManagerBackgroundColor = ko.observable layout_.windowManagerBackgroundColor? and layout_.windowManagerBackgroundColor or "white"
+                @windowManagerMargin = ko.observable undefined
+                if layout_.windowManagerMargin? then @windowManagerMargin(layout_.windowManagerMargin) else @windowManagerMargin(10)
+                @windowManagerPadding = ko.observable undefined
+                if layout_.windowManagerPadding? then @windowManagerPadding(layout_.windowManagerPadding) else @windowManagerPadding(10)
+                @windowManagerOpacity = ko.observable layout_.windowManagerOpacity
+                # END: try scope
+            catch exception
+                throw "Check your control knob declaration(s): #{exception}"
+            # / END: control knobs
 
             # ============================================================================
             # NON-OBSERVABLE INTERNAL INSTANCE STATE
 
-            @layout = layout_.layout
-
-            Console.messageRaw("<h2>#{@layout.name}</h2>")
-            Console.message("#{appPackagePublisher} window manager boot for layout declaration id=#{@layout.id} name=\"#{@layout.name}\"")
+            # Deep copy the layout. Changes must be made by calling the CONTROL KNOBS above.
+            @layout = Encapsule.code.lib.js.clone(layout_)
 
             # An array of plane objects that manager a layout splitter stack.
             @planes = []
 
-
             # Written by document resize event callback.
             @documentOffsetRectangle = geo.offsetRectangle.create()
 
-
             # ============================================================================
-            # OBSERVABLES
-            #
+            # INTERNAL IMPLEMENTATION OBSERVABLE / COMPUTED
 
-            #
-            # ============================================================================
-            # OBSERVABLE WINDOW MANAGER WINDOW PROPERTIES
-            #
+            # \ BEGIN: implementation observable/computed
+            try
+                # \ BEGIN: observable/computed try scope
 
+                @setPageBackgroundColor = ko.computed => 
+                    backgroundColor = @pageBackgroundColor()
+                    if backgroundColor? and backgroundColor
+                        $("body").css { backgroundColor: backgroundColor }
 
-            # ============================================================================
-            # OBSERVABLE WINDOW MANAGER GLASS PROPERTIES
+                @glassOffsetRectangle = ko.observable geo.offsetRectangle.create()
+                @cssGlassWidth = ko.computed =>  Math.round(@glassOffsetRectangle().rectangle.extent.width) + "px"
+                @cssGlassHeight = ko.computed => Math.round(@glassOffsetRectangle().rectangle.extent.height) + "px"
+                @cssGlassMarginLeft = ko.computed => Math.round(@glassOffsetRectangle().offset.left) + "px"
+                @cssGlassMarginTop = ko.computed => Math.round(@glassOffsetRectangle().offset.top) + "px"
+                @cssGlassOpacity = ko.computed => @glassOpacity()
+                @cssGlassBackgroundColor = ko.computed => @glassBackgroundColor()
+                @cssGlassBackground = ko.computed => @glassBackgroundImage()
 
-            @glassOffsetRectangle = ko.observable geo.offsetRectangle.create()
+                @windowManagerOffsetRectangle = ko.observable geo.offsetRectangle.create()
+                @cssWindowManagerBackgroundColor = ko.computed => @windowManagerBackgroundColor()
+                @cssWindowManagerOpacity = ko.computed => @windowManagerOpacity()
+                @cssWindowManagerWidth = ko.computed => Math.round(@windowManagerOffsetRectangle().rectangle.extent.width) + "px"
+                @cssWindowManagerHeight = ko.computed => Math.round(@windowManagerOffsetRectangle().rectangle.extent.height) + "px"
+                @cssWindowManagerMarginLeft = ko.computed => Math.round(@windowManagerOffsetRectangle().offset.left) + "px"
+                @cssWindowManagerMarginTop = ko.computed => Math.round(@windowManagerOffsetRectangle().offset.top) + "px"
 
+                @observableWindows = ko.observableArray []
+                # / END: observable/computed try scope
 
-            # Properties from layout (actually don't need to be computed unless we allow for dynamism later)
-            @cssGlassOpacity = ko.computed => @layout.glassOpacity
-            @cssGlassBackgroundColor = ko.computed => @layout.glassBackgroundColor? and @layout.glassBackgroundColor or undefined
-            @cssGlassBackground = ko.computed => @layout.glassBackgroundImage? and @layout.glassBackgroundImage  and "url(img/#{@layout.glassBackgroundImage})" or undefined
-
-            # Properties from the window manager's layout engine
-            @cssGlassWidth = ko.computed =>  @glassOffsetRectangle().rectangle.extent.width + "px"
-            @cssGlassHeight = ko.computed => @glassOffsetRectangle().rectangle.extent.height + "px"
-            @cssGlassMarginLeft = ko.computed => @glassOffsetRectangle().offset.left + "px"
-            @cssGlassMarginTop = ko.computed => @glassOffsetRectangle().offset.top + "px"
-
-            # ============================================================================
-            # OBSERVABLE WINDOW MANAGER FRAME PROPERTIES
-
-            @windowManagerOffsetRectangle = ko.observable geo.offsetRectangle.create()
-
-            # Properties from layout (actually don't need to be computed unless we allow for dynamism later)
-            @cssWindowManagerBackgroundColor = ko.computed => @layout.windowManagerBackgroundColor
-            @cssWindowManagerOpacity = ko.computed => @layout.windowManagerOpacity
-
-            # Properties from the window manager's layout engine
-            @cssWindowManagerWidth = ko.computed => @windowManagerOffsetRectangle().rectangle.extent.width + "px"
-            @cssWindowManagerHeight = ko.computed => @windowManagerOffsetRectangle().rectangle.extent.height + "px"
-            @cssWindowManagerMarginLeft = ko.computed => @windowManagerOffsetRectangle().offset.left + "px"
-            @cssWindowManagerMarginTop = ko.computed => @windowManagerOffsetRectangle().offset.top + "px"
-
-            @observableWindows = ko.observableArray []
+            catch exception
+               throw "Failed evaluating implementation observable/computed declaration: #{exception}"
+            # / END: internal observable/computed
 
             # ============================================================================
             # \ BEGIN: RUNTIME CALLBACKS
@@ -123,27 +135,33 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     # We're actually only using the outerWidth/Height(true) (aka margin extents)
                     # here. The others are left for experimentation and reference.
                     #      
-                    # width =  @documentEl.width()
-                    # height = @documentEl.height()
-                    # innerWidth = @documentEl.innerWidth()
-                    # innerHeight = @documentEl.innerHeight()
-                    # outerWidth = @documentEl.outerWidth()
-                    # outerHeight = @documentEl.outerHeight()
+                    # width =  documentEl.width()
+                    # height = documentEl.height()
+                    width = documentEl.innerWidth()
+                    height = documentEl.innerHeight()
+                    # outerWidth = documentEl.outerWidth()
+                    # outerHeight = documentEl.outerHeight()
     
                     marginWidth = documentEl.outerWidth(true)
                     marginHeight = documentEl.outerHeight(true)
 
-                    if (marginWidth == @documentOffsetRectangle.rectangle.extent.width) and (marginHeight == @documentOffsetRectangle.rectangle.extent.width)
+                    if (width == @documentOffsetRectangle.rectangle.extent.width) and (height == @documentOffsetRectangle.rectangle.extent.width)
                         Console.message("Callback to document resize handler ignored: no change in base window dimensions.")
                         return;
 
-                    @documentOffsetRectangle = geo.offsetRectangle.createFromDimensions(marginWidth, marginHeight)
+                    ###
+                    if (marginWidth == @documentOffsetRectangle.rectangle.extent.width) and (marginHeight == @documentOffsetRectangle.rectangle.extent.width)
+                        Console.message("Callback to document resize handler ignored: no change in base window dimensions.")
+                        return;
+                    ###
 
-                    marginsGlass = geo.margins.createUniform(@layout.glassMargin)
+                    @documentOffsetRectangle = geo.offsetRectangle.createFromDimensions(width, height)
+
+                    marginsGlass = geo.margins.createUniform(@glassMargin())
                     frameGlass = geo.frame.createFromOffsetRectangleWithMargins(@documentOffsetRectangle, marginsGlass)
                     @glassOffsetRectangle(frameGlass.view)
 
-                    marginsWindowManager = geo.margins.createUniform(@layout.windowManagerMargin)
+                    marginsWindowManager = geo.margins.createUniform(@windowManagerMargin())
                     frameWindowManager = geo.frame.createFromOffsetRectangleWithMargins(frameGlass.view, marginsWindowManager)
                     @windowManagerOffsetRectangle(frameWindowManager.view)
 
@@ -192,7 +210,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                             runtimeState = @runtimeState
                             windowManagerOffsetRectangle = @windowManagerOffsetRectangle()
 
-                            windowManagerClientMargins = geo.margins.createUniform 10
+                            windowManagerClientMargins = geo.margins.createUniform(@windowManagerPadding())
                             windowManagerClientFrame = geo.frame.createFromOffsetRectangleWithMargins(windowManagerOffsetRectangle, windowManagerClientMargins)
                             windowManagerClientOffsetRectangle = windowManagerClientFrame.view
 
@@ -228,9 +246,6 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     Console.messageError "Failed to refresh window manager view state: #{exception}"
                 # / END: refreshWindowManagerViewState function scope
 
-
-
-
             # / END RUNTIME CALLBACKS
             # ============================================================================
 
@@ -240,9 +255,6 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # ============================================================================
             # \ BEGIN: OBSERVABLE DATA MODEL INITIALIZATION
             try
-    
-                if @layout.pageBackgroundColor? and @layout.pageBackgroundColor
-                    $("body").css { backgroundColor: @layout.pageBackgroundColor }
     
                 #
                 # The Window Manager takes as input a "layout" Javascript object.
@@ -254,7 +266,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     # @@@
                     # \ BEGIN: try scope (note extensive error checking to catch errors in the input layout declaration)
                     planeIndex = 0
-                    for planeLayout in @layout.planes
+                    for planeLayout in layout_.planes
                         # \ BEGIN: planeLayout scope
                         try
                             # @@@
@@ -271,7 +283,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                                     splitterObservableWindows = []
                                     newSplit = undefined
                                     try
-                                        newSplit = new Encapsule.code.lib.kohelpers.WindowSplitter( split, splitterObservableWindows )
+                                        newSplit = new Encapsule.code.lib.kohelpers.WindowSplitter( split,  @layout.globalWindowAttributes, splitterObservableWindows)
                                     catch exception
                                         throw "Splitter instantiation failure: #{exception}"
                                     try
@@ -327,10 +339,9 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 try
                     htmlView = """
                         <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
-                        <div id="#{@layout.id}" class="classObservableWindowManager" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">
-                            #{@layout.id}::#{@layout.name}
-                            <span class="classWindowManagerObservableWindowHosts" data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManagerObservableWindowHosts', foreach: observableWindows }"></span>
+                        <div id="#{layout_.id}" class="classObservableWindowManager" onclick="Console.show()" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">
                         </div>
+                        <span class="classWindowManagerObservableWindowHosts" data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManagerObservableWindowHosts', foreach: observableWindows }"></span>
                         """
                     Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , => htmlView
                     Console.message("Okay.")
@@ -339,7 +350,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
     
                 Console.messageRaw("<h3>INSTALLING VIEW-MODEL TEMPLATES</h3>")
                 try
-                    windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(@layout.id)
+                    windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(layout_.id)
                     Console.message("Okay")
                 catch exception
                     throw "View template librarian init failure: #{exception}"
@@ -355,7 +366,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             Console.messageRaw "<h3>BINDING MODEL-VIEW/VIEW-MODEL (MVVM) VIA KNOCKOUT.JS</h3>"
             try
                 ko.applyBindings @ , windowManagerHtmlViewRootDocumentElement # <- THIS IS FUCKING AWESOME
-                Console.message("#{@layout.id} #{@layout.name} Model-View/View-Model (MVVM) binding completed.")
+                Console.message("#{layout_.id} #{layout_.name} Model-View/View-Model (MVVM) binding completed.")
             catch exception
                 throw """Failed MVVM binding. Knockout.js is upset: #{exception}"""
 
@@ -379,6 +390,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             Console.messageRaw("<h3>INITIALIZING SCREEN LAYOUT</h3>")
             try
                 @refreshWindowManagerViewGeometriesFromDocument()
+                @setPageBackgroundColor()
                 Console.message("Okay")
             catch exception
                 throw "Initial window manager geometries refresh failed: #{exception}"
@@ -389,7 +401,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             Console.message("Okay.")
 
             # setInterval @refreshWindowManagerViewState, 5000 # This catches everything (including browser restore) eventually
-            $("#idEncapsuleWindowManagerHost").fadeIn @layout.windowManagerFadeInTimeout
+            $("#idEncapsuleWindowManagerHost").fadeIn layout_.fadeinTimeMs
 
             Console.messageRaw("<p><strong>#{appPackagePublisher} window manager initialization complete.</strong></p>")
 
@@ -399,9 +411,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
 
         catch exception
-            throw """Window manager initialization failed for layout.id="#{@layout.id}": #{exception}"""
-
-
+            throw """Window manager initialization failed for layout.id="#{layout_.id}": #{exception}"""
 
         # / end of constructor
 

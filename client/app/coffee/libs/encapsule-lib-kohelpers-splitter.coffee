@@ -32,10 +32,17 @@ namespaceEncapsule_runtime_app_kotemplates = Encapsule.runtime.app.kotemplates? 
 # \ BEGIN: file scope
 class Encapsule.code.lib.kohelpers.WindowSplitter
     # \ BEGIN: class scope
-    constructor: (splitDescriptor_, windows_) ->
+    constructor: (splitDescriptor_, globalWindowAttributes_, windows_ ) ->
         # \ BEGIN: constructor scope
         try
             # \ BEGIN: constructor try scope
+
+            if not splitDescriptor_? then throw "Missing split parameter."
+            if not splitDescriptor_ then throw "Missing split value."
+            if not windows_? then throw "Missing windows parameter."
+            if not windows_ then throw "Missing windows value."
+            if not globalWindowAttributes_? then throw "Missing global window attributes parameter."
+            if not globalWindowAttributes_ then throw "Missing global window attributes value."
 
             geo = Encapsule.code.lib.geometry
             
@@ -47,8 +54,13 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
 
             @q1Descriptor = @splitDescriptor.Q1WindowDescriptor
             @q2Descriptor = @splitDescriptor.Q2WindowDescriptor
+
             if not @q1Descriptor? and not @q1Descriptor and not @q2Descriptor? and not @q2Descriptor
                 throw "You need to specifiy at least one window to a splitter."
+
+            if @q1Descriptor then @q1Descriptor.globalWindowAttributes = globalWindowAttributes_
+            if @q2Descriptor then @q2Descriptor.globalWindowAttributes = globalWindowAttributes_
+
 
             @offsetRectangle = geo.offsetRectangle.create()
             @q1OffsetRectangle = geo.offsetRectangle.create()

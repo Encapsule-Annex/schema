@@ -31,149 +31,172 @@ namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.ap
 Dig this >:)-~
 ###
 Encapsule.code.app.viewLayout = {
-    layout: {
 
-        #
-        # Layout metadata
-        #
-        id: "idSchemaWindowManager"
-        name: "#{appName} v#{appVersion} Window Manager"
+    #
+    # WINDOW MANAGER IS A SINGLETON
+    #
 
-        #
-        # Parent element attributes
-        #
-        pageBackgroundColor: undefined
+    # id: some unique string that will be assigned to the ID attibute of the window manager's main container.
+    # name: whatever you want
+    #
+    id: "idSchemaWindowManager"
+    name: "#{appName} v#{appVersion} Window Manager"
+    fadeInTimeMs: 1500 # (defaults to 1500ms if undefined)
 
-        #
-        # Window manager glass plane attributes
-        #
-        glassOpacity: 0.2
-        glassBackgroundColor: undefined
-        glassMargin: 0 # document edge to glass edge
-        glassBackgroundImage: "Aspen_trees_2.jpg"
-        #glassBackgroundImage: "fire-on-the-mountain.jpg"
+    #
+    # BODY PAGE ATTRIBUTES
+    #
+    # bodyPageBackgroundColor: It is assumed the only visible elements drawn on the body page are created and managed by window manager.
+    # The color of the page background may optionally be set via bodyPageBackgroundColor and will be visible
+    # if glassMargin > 0 or glassOpacity < 1
+    #
+    pageBackgroundColor: "#00AA66" # (defaults to "white" if undefined)
 
-        #
-        # Window manager base plane attributes
-        #
-        windowManagerBackgroundColor: "white"
-        windowManagerMargin: 10 # glass edge to window manager edge
-        windowManagerOpacity: 0.5
-        windowManagerFadeInTimeout: 1500
+    #
+    # WINDOW MANAGER "GLASS" ATTRIBUTES
+    #
+    # Window manager "glass" is a page-centerred rectangular region that serves as a background for your application.
+    # Note that setting glassBackgroundImage will occlude glassBackgroundColor if specified. You can however
+    # acheive splendid blending effects by setting bodyPageBackgroundColor and glassOpacity.
+    #        
+    glassOpacity: 1 # defaults to 1 if undefined
+    glassBackgroundColor: undefined
+    glassMargin: 0 # document edge to glass edge (default is 10)
+    glassBackgroundImage: "Aspen_trees_2.jpg" # (default is undefined)
+    #glassBackgroundImage: "fire-on-the-mountain.jpg"
 
-        #
-        # Managed window attributes
-        #
-        observableWindowHost: {
-            backgroundColor: "white"
-            border: "1px solid black"
+    #
+    # WINDOW MANAGER BASE PLANE ATTRIBUTES
+    #
+    # Window manager base plane is a glass-centerred rectangular region that "floats" over the glass and behind
+    # the plane objects specified in the layout. Typically, the base plane is set to either black or white background
+    # color with a low opacity to provide subtle transition effects or signalling.
+    #
+    windowManagerBackgroundColor: "white" # defaults to "white" if undefined
+    windowManagerMargin: 3 # glass edge to window manager edge (defaults to 10 if undefined)
+    windowManagerPadding: 3 # window manager edge to plane edge (defaults to 10 if undefined)
+    windowManagerOpacity: 0.5 # (defaults to 1 if undefined)
+
+    #
+    # Managed window attributes
+    #
+    globalWindowAttributes: {
+        hostWindowBackgroundColor: "#99CCFF"
+        hostWindowOpacity: 0.5
+        hostWindowPadding: 5
+        chromeWindowBackgroundColor: "#6699CC"
+        chromeWindowOpacity: 0.5
+        chroneWindowPadding: 5
         }
 
-        planes: [
-            {
-                id: "idSchemaPlaneDefault"
-                name: "#{appName} v#{appVersion} Default View Plane"
-                splitterStack: [
-                    {
-                        id: "idFrameStackSplitter"                                                                
-                        name: "Frame Stack Split"                                        
-                        type: "vertical"                                                 
-                        Q1WindowDescriptor: undefined                                    
-                        Q2WindowDescriptor: {                                            
-                            id: "idFrameStack"                                           
-                            name: "Frame Stack Window"
-                            initialMode: "min"
-                            initialEnable: true
-                            modes: { full: { reserve: 300 }, min: { reserve: 64 } }
-                            }
-                        },
-                    {                                                                    
-                        id: "idToolbarSplitter"
-                        name: "Toolbar Split"                                            
-                        type: "horizontal"                                               
-                        Q1WindowDescriptor: {                                            
-                            id: "idToolbar"                                              
-                            name: "Toolbar Window"                                       
-                            initialMode: "min"
-                            initialEnable: true
-                            modes: { full: { reserve: 128 }, min: { reserve: 64 } }      
-                            }                                                            
-                        Q2WindowDescriptor: undefined                                    
-                        },
-                    {                                                                    
-                        id: "idSelect1Splitter"
-                        name: "Select 1 Split"                                           
-                        type: "vertical"                                                 
-                        Q1WindowDescriptor: {                                            
-                            id: "idSelect1"                                              
-                            name: "Select 1 Window"                                      
-                            initialMode: "min"
-                            initialEnable: true
-                            modes: { full: { reserve: 300 }, min: { reserve: 64 } }      
-                            }                                                            
-                        Q2WindowDescriptor: undefined                                    
-                        },
-                   {                                                                    
-                        id: "idSelect2Splitter"
-                        name: "Select 2 Split"                                           
-                        type: "vertical"                                                 
-                        Q1WindowDescriptor: {                                            
-                            id: "idSelect2"                                              
-                            name: "Select 1 Window"                                      
-                            initialMode: "min"
-                            initialEnable: true
-                            modes: { full: { reserve: 300 }, min: { reserve: 64 } }      
-                            }                                                            
-                        Q2WindowDescriptor: undefined                                    
-                        },
-                    {                                                                    
-                        id: "idSVGEditSplitter"
-                        name: "SVG/Edit Split"                                           
-                        type: "horizontal"                                               
-                        Q1WindowDescriptor: {                                            
-                            id: "idSVGPlane"                                             
-                            name: "SVG Plane"                                            
-                            initialMode: "full"
-                            initialEnable: true
-                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }         
-                            }                                                            
-                        Q2WindowDescriptor: {                                            
-                            id: "idEdit1"                                                
-                            name: "Edit 1 Window"                                        
-                            initialMode: "min"
-                            initialEnable: true
-                            modes: { full: { reserve: 0 }, min: { reserve: 64 } }        
-                            }                                                            
-                        }                                                                
-
-                    ]
-                },
-                # end plane / new plane
-            {
-                id: "idSchemaSettingsPlane"
-                name: "#{appName} Settings Plane"
-                splitterStack: [
-                    {
-                        id: "idSetttingsPLaneSplitter0"
-                        name: "what ever some descriptive text"
-                        type: "horizontal"
-                        Q1WindowDescriptor: {
-                            id: "idSettings1"
-                            name: "Settings 1 Window"
-                            initialMode: "full"
-                            initialEnable: false
-                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
-                            }
-                        Q2WindowDescriptor: {
-                            id: "idSettings2"
-                            name: "Settings 2 Window"
-                            initialMode: "full"
-                            initialEnable: false
-                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
-                            }
+    planes: [
+        {
+            id: "idSchemaPlaneDefault"
+            name: "#{appName} v#{appVersion} Default View Plane"
+            splitterStack: [
+                {
+                    id: "idFrameStackSplitter"                                                                
+                    name: "Frame Stack Split"                                        
+                    type: "vertical"                                                 
+                    Q1WindowDescriptor: undefined                                    
+                    Q2WindowDescriptor: {                                            
+                        id: "idFrameStack"                                           
+                        name: "Frame Stack Window"
+                        initialMode: "min"
+                        initialEnable: true
+                        modes: { full: { reserve: 300 }, min: { reserve: 64 } }
                         }
-                    ]
-                }
-            ] # end planes
-        } # end layout
-    } # end viewLayout
+                    },
+                {                                                                    
+                    id: "idToolbarSplitter"
+                    name: "Toolbar Split"                                            
+                    type: "horizontal"                                               
+                    Q1WindowDescriptor: {                                            
+                        id: "idToolbar"                                              
+                        name: "Toolbar Window"                                       
+                        initialMode: "min"
+                        initialEnable: true
+                        modes: { full: { reserve: 128 }, min: { reserve: 64 } }      
+                        }                                                            
+                    Q2WindowDescriptor: undefined
+                    },
+
+                {                                                                    
+                    id: "idSelect1Splitter"
+                    name: "Select 1 Split"                                           
+                    type: "vertical"                                                 
+                    Q1WindowDescriptor: {                                            
+                        id: "idSelect1"                                              
+                        name: "Select 1 Window"                                      
+                        initialMode: "min"
+                        initialEnable: true
+                        modes: { full: { reserve: 300 }, min: { reserve: 64 } }      
+                        }                                                            
+                    Q2WindowDescriptor: undefined                                    
+                    },
+                {                                                                    
+                    id: "idSelect2Splitter"
+                    name: "Select 2 Split"                                           
+                    type: "vertical"                                                 
+                    Q1WindowDescriptor: {                                            
+                        id: "idSelect2"                                              
+                        name: "Select 1 Window"                                      
+                        initialMode: "min"
+                        initialEnable: true
+                        modes: { full: { reserve: 300 }, min: { reserve: 64 } }      
+                        }                                                            
+                    Q2WindowDescriptor: undefined                                    
+                    },
+                {                                                                    
+                    id: "idSVGEditSplitter"
+                    name: "SVG/Edit Split"                                           
+                    type: "horizontal"                                               
+                    Q1WindowDescriptor: {                                            
+                        id: "idSVGPlane"                                             
+                        name: "SVG Plane"                                            
+                        initialMode: "full"
+                        initialEnable: true
+                        modes: { full: { reserve: 0 }, min: { reserve: 0 } }         
+                        }                                                            
+                    Q2WindowDescriptor: {                                            
+                        id: "idEdit1"                                                
+                        name: "Edit 1 Window"                                        
+                        initialMode: "min"
+                        initialEnable: true
+                        modes: { full: { reserve: 0 }, min: { reserve: 64 } }        
+                        }                                                            
+                    }
+                ] # / END: splitter stack
+            },
+            # / END: plan
+        {
+            id: "idSchemaSettingsPlane"
+            name: "#{appName} Settings Plane"
+            splitterStack: [
+                {
+                    id: "idSetttingsPLaneSplitter0"
+                    name: "what ever some descriptive text"
+                    type: "horizontal"
+                    Q1WindowDescriptor: {
+                        id: "idSettings1"
+                        name: "Settings 1 Window"
+                        initialMode: "full"
+                        initialEnable: false
+                        modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                        }
+                    Q2WindowDescriptor: {
+                        id: "idSettings2"
+                        name: "Settings 2 Window"
+                        initialMode: "full"
+                        initialEnable: false
+                        modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                        }
+                    }
+                ]
+                # / END: splitter stack
+            }
+            # / END: plane
+        ]
+        # END: / plane array
+    }
+    # / END: Encapsule.code.app.viewLayout
