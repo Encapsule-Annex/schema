@@ -47,7 +47,7 @@ Encapsule.code.app.viewLayout = {
         #
         # Window manager glass plane attributes
         #
-        glassOpacity: 0.6
+        glassOpacity: 0.2
         glassBackgroundColor: undefined
         glassMargin: 0 # document edge to glass edge
         glassBackgroundImage: "Aspen_trees_2.jpg"

@@ -45,31 +45,67 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
             @id = sourceDescriptor_.id
             @name = sourceDescriptor_.name
 
-            @offsetRectangle = ko.observable geo.offsetRectangle.create()
+            @offsetRectangleHost = ko.observable geo.offsetRectangle.create()
+            @offsetRectangleChrome = ko.observable geo.offsetRectangle.create()
+            @offsetRectangleWindow = ko.observable geo.offsetRectangle.create()
 
             @windowEnabled = ko.observable sourceDescriptor_.initialEnable
             @windowMode = ko.observable sourceDescriptor_.initialMode
 
             try
                 # \ BEGIN: try scope
-                @windowInDOM = ko.computed =>
-                   @offsetRectangle().rectangle.hasArea and @windowEnabled()
-                @cssWidth = ko.computed => @offsetRectangle().rectangle.extent.width + "px"
-                @cssHeight = ko.computed => @offsetRectangle().rectangle.extent.height + "px"
-                @cssMarginLeft = ko.computed => @offsetRectangle().offset.left + "px"
-                @cssMarginTop = ko.computed => @offsetRectangle().offset.top + "px"
-                @cssOpacity = ko.observable 1
-                @cssBackgroundColor = ko.observable "green"
+               
+                # Observable properties of the classObservableWindowHost DIV
+
+                @windowInDOM = ko.computed => @offsetRectangleHost().rectangle.hasArea and @windowEnabled()
+                @cssHostWidth = ko.computed => @offsetRectangleHost().rectangle.extent.width + "px"
+                @cssHostHeight = ko.computed => @offsetRectangleHost().rectangle.extent.height + "px"
+                @cssHostMarginLeft = ko.computed => @offsetRectangleHost().offset.left + "px"
+                @cssHostMarginTop = ko.computed => @offsetRectangleHost().offset.top + "px"
+                @cssHostOpacity = ko.observable 1
+                @cssHostBackgroundColor = ko.observable "green"
+
+                # Observable properties of the classObservableWindowChrome DIV
+                @cssChromeWidth = ko.computed => @offsetRectangleChrome().rectangle.extent.width + "px"
+                @cssChromeHeight = ko.computed => @offsetRectangleChrome().rectangle.extent.height + "px"
+                @cssChromeMarginLeft = ko.computed => @offsetRectangleChrome().offset.left + "px"
+                @cssChromeMarginTop = ko.computed => @offsetRectangleChrome().offset.top + "px"
+                @cssChromeOpacity = ko.observable 1
+                @cssChromeBackgroundColor = ko.observable "#99CCFF"
+
+                # Observable properties of the classObservableWindow DIV (this is the DIV that contains the actual client window)
+                @cssWindowWidth = ko.computed => @offsetRectangleWindow().rectangle.extent.width + "px"
+                @cssWindowHeight = ko.computed => @offsetRectangleWindow().rectangle.extent.height + "px"
+                @cssWindowMarginLeft = ko.computed => @offsetRectangleWindow().offset.left + "px"
+                @cssWindowMarginTop = ko.computed => @offsetRectangleWindow().offset.top + "px"
+                @cssWindowOpacity = ko.observable 1
+                @cssWindowBackgroundColor = ko.observable "white"
+
                 # / END try scope
             catch exception
-                throw "Failure on first execution of computed obervable properties: #{exception}"
+                throw "ObservableWindowHost failed first execution of observable properties: #{exception}"
 
             @setOffsetRectangle = (offsetRectangle_) =>
-                # We will do some checking here to ensure that a change actually occurred.
-                # If so, then we will update the Knockout.js observables contained by thie ObservableWindow instance
-                Console.message("Observable window offset rectangle updated: #{offsetRectangle_.rectangle.extent.width} x #{offsetRectangle_.rectangle.extent.height} // #{offsetRectangle_.offset.left}, #{offsetRectangle_.offset.top}")
-                @offsetRectangle(offsetRectangle_)
+                # \ BEGIN: setOffsetRectangle function scope
+                try
+                    # \BEGIN: try scope
+                        # We will do some checking here to ensure that a change actually occurred.
+                        # If so, then we will update the Knockout.js observables contained by thie ObservableWindow instance
+                        Console.message("Observable window offset rectangle updated: #{offsetRectangle_.rectangle.extent.width} x #{offsetRectangle_.rectangle.extent.height} // #{offsetRectangle_.offset.left}, #{offsetRectangle_.offset.top}")
+                        @offsetRectangleHost(offsetRectangle_)
 
+                        marginsChrome = geo.margins.createUniform(1)
+                        chromeFrame = geo.frame.createFromOffsetRectangleWithMargins(offsetRectangle_, marginsChrome)
+                        @offsetRectangleChrome(chromeFrame.view)
+
+                        marginsWindow = geo.margins.createUniform(4)
+                        windowFrame = geo.frame.createFromOffsetRectangleWithMargins(chromeFrame.view, marginsWindow)
+                        @offsetRectangleWindow(windowFrame.view)
+
+                    # / END: try scope
+                catch exception
+                    throw "Observable window host failed to set offset rectangle: #{exception}"
+                # / END: setOffsetRectangle function scope
             # / END: constructor try scope
         catch exception
             throw "ObservableWindow constructor fail: #{exception}"
@@ -78,11 +114,9 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
 # / END: file scope
             
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_EncapsuleWindowManagerObservableWindowHosts", ( -> """
-<span data-bind="if: windowInDOM">
-    <div class="classObservableWindowHost" 
-        data-bind="style: { width: cssWidth(), height: cssHeight(), marginLeft: cssMarginLeft(), marginTop: cssMarginTop(), opacity: cssOpacity(), backgroundColor: cssBackgroundColor() }">
-        <div class="classObservableWindowHostChrome">
-            <div class="classObservableWindow">
+    <div class="classObservableWindowHost" data-bind="style: { width: cssHostWidth(), height: cssHostHeight(), marginLeft: cssHostMarginLeft(), marginTop: cssHostMarginTop(), opacity: cssHostOpacity(), backgroundColor: cssHostBackgroundColor() }">
+        <div class="classObservableWindowChrome" data-bind="style: { width: cssChromeWidth(), height: cssChromeHeight(), marginLeft: cssChromeMarginLeft(), marginTop: cssChromeMarginTop(), opacity: cssChromeOpacity(), backgroundColor: cssChromeBackgroundColor() }">
+            <div class="classObservableWindow" data-bind="attr: { id: id }, style: { width: cssWindowWidth(), height: cssWindowHeight(), marginLeft: cssWindowMarginLeft(), marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor() }">
                 ObservableWindow <span data-bind="text: $index"></span>: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
             </div>
         </div>
