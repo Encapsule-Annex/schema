@@ -329,7 +329,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
                         <div id="#{@layout.id}" class="classObservableWindowManager" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">
                             #{@layout.id}::#{@layout.name}
-                            <span class="classWindowManagerObservableWindows" data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManagerObservableWindow', foreach: observableWindows }"></span>
+                            <span class="classWindowManagerObservableWindowHosts" data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManagerObservableWindowHosts', foreach: observableWindows }"></span>
                         </div>
                         """
                     Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , => htmlView

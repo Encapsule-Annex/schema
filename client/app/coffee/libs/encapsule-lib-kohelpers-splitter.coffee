@@ -62,11 +62,11 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
             try
                 # \ BEGIN: try to create new observable windows scope
                 if @q1Descriptor? and @q1Descriptor
-                    @q1Window  = new Encapsule.code.lib.kohelpers.ObservableWindow(@q1Descriptor)
+                    @q1Window  = new Encapsule.code.lib.kohelpers.ObservableWindowHost(@q1Descriptor)
                     windows_.push @q1Window
         
                 if @q2Descriptor? and @q2Descriptor
-                    @q2Window = new Encapsule.code.lib.kohelpers.ObservableWindow(@q2Descriptor)
+                    @q2Window = new Encapsule.code.lib.kohelpers.ObservableWindowHost(@q2Descriptor)
                     windows_.push @q2Window
         
                 if not @q1Window? and not @q1Window and not @q2Window? and @q2Window
