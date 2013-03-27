@@ -36,7 +36,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
     constructor: (sourceDescriptor_) ->
         try
             # \ BEGIN: constructor try scope
-            Console.message("... + WindowManager creating new window host id=#{sourceDescriptor_.id} name=#{sourceDescriptor_.name}")
+            Console.message("""... + WindowManager creating new window host id="#{sourceDescriptor_.id}" name="#{sourceDescriptor_.name}""")
 
             geo = Encapsule.code.lib.geometry
 
@@ -104,6 +104,23 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                 # / END: toggleWIndowMode scope
             # / END: toggleWindowMode
 
+            # \ BEGIN: onMouseOver
+            @onMouseOver = =>
+                Console.message("Mouse over #{@id}")
+                @cssHostOpacity(1)
+                @cssChromeOpacity(1)
+                @cssWindowOpacity(1)
+            # / END: onMouseOver
+
+            # \ BEGIN: onMouseOut
+            @onMouseOut = =>
+                Console.message("Mouse out #{@id}")
+                @cssHostOpacity(@sourceDescriptor.globalWindowAttributes.hostWindowOpacity)
+                @cssChromeOpacity( @sourceDescriptor.globalWindowAttributes.chromeWindowOpacity)
+                @cssWindowOpacity(@sourceDescriptor.opacity)
+            # / END: onMouseOut
+           
+
             # \ BEGIN: setOffsetRectangle scope
             @setOffsetRectangle = (offsetRectangle_) =>
                 # \ BEGIN: setOffsetRectangle function scope
@@ -134,7 +151,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
     # / END: class scope
 # / END: file scope
             
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_EncapsuleWindowManagerObservableWindowHosts", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_EncapsuleWindowManagerObservableWindowHost", ( -> """
     <div class="classObservableWindowHost"
     data-bind="attr: { id: idHost }, style: { width: cssHostWidth(), height: cssHostHeight(), marginLeft: cssHostMarginLeft(), marginTop: cssHostMarginTop(), 
     opacity: cssHostOpacity(), backgroundColor: cssHostBackgroundColor() }">
@@ -147,9 +164,11 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Encapsul
 
     <div class="classObservableWindow"
     data-bind="attr: { id: id }, style: { width: cssWindowWidth(), height: cssWindowHeight(), marginLeft: cssWindowMarginLeft(),
-    marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor(), border: cssWindowBorder() }">
+    marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor(), border: cssWindowBorder() },
+    event: { mouseover: onMouseOver, mouseout: onMouseOut }">
+
         <b>Toggle [ <span data-bind="event: { click: toggleWindowMode }, text: windowMode" style="color: blue; font-weight: bold; text-decoration: underline;"></span> ]</b>
-        ObservableWindow <span data-bind="text: $index"></span>: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
+        ObservableWindow: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
     </div>
 """))
 
