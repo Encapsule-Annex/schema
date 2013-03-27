@@ -85,7 +85,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                 @cssWindowOpacity = ko.observable @sourceDescriptor.opacity
                 @cssWindowBackgroundColor = ko.observable @sourceDescriptor.backgroundColor
                 @cssWindowBorder = ko.observable "#{@sourceDescriptor.globalWindowAttributes.windowBorderWidth}px solid #{@sourceDescriptor.globalWindowAttributes.windowBorderColor}"
-                @cssWindowPadding = ko.observable @sourceDescriptor.globalWindowAttributes.windowPadding
+                @cssWindowPadding = ko.observable @sourceDescriptor.globalWindowAttributes.windowPadding + "px"
 
                 # / END try scope
             catch exception
@@ -136,10 +136,11 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                         chromeFrame = geo.frame.createFromOffsetRectangleWithMargins(offsetRectangle_, marginsChrome)
                         @offsetRectangleChrome(chromeFrame.view)
 
-                        #marginsWindow = geo.margins.createUniform(@sourceDescriptor.globalWindowAttributes.chromeWindowPadding)
                         chromePadding = @sourceDescriptor.globalWindowAttributes.chromeWindowPadding
                         windowBorderWidth = @sourceDescriptor.globalWindowAttributes.windowBorderWidth
-                        marginsWindow = geo.margins.createForPixelDimensions(chromePadding, chromePadding, chromePadding + windowBorderWidth, chromePadding + windowBorderWidth)
+                        windowPadding = @sourceDescriptor.globalWindowAttributes.windowPadding * 2
+
+                        marginsWindow = geo.margins.createForPixelDimensions(chromePadding, chromePadding, chromePadding + windowBorderWidth + windowPadding, chromePadding + windowBorderWidth + windowPadding)
 
                         windowFrame = geo.frame.createFromOffsetRectangleWithMargins(chromeFrame.view, marginsWindow)
                         @offsetRectangleWindow(windowFrame.view)
@@ -157,17 +158,19 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
 # / END: file scope
             
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_EncapsuleWindowManagerObservableWindowHost", ( -> """
+    <! -- OBSERVABLE WINDOW HOST CONTAINER -->
     <span data-bind="if: windowInDOM">
+    <! -- OBSERVABLE WINDOW HOST LAYER -->
     <div class="classObservableWindowHost"
     data-bind="attr: { id: idHost }, style: { width: cssHostWidth(), height: cssHostHeight(), marginLeft: cssHostMarginLeft(), marginTop: cssHostMarginTop(), 
     opacity: cssHostOpacity(), backgroundColor: cssHostBackgroundColor() }">
     </div>
-
+    <! -- OBSERVABLE WINDOW CHROME LAYER -->
     <div class="classObservableWindowChrome"
     data-bind="attr: { id: idChrome }, style: { width: cssChromeWidth(), height: cssChromeHeight(), marginLeft: cssChromeMarginLeft(),  marginTop: cssChromeMarginTop(),
     opacity: cssChromeOpacity(), backgroundColor: cssChromeBackgroundColor() }">
     </div>
-
+    <!-- OBSERVABLE WINDOW LAYER -->
     <div class="classObservableWindow"
     data-bind="attr: { id: id }, style: { width: cssWindowWidth(), height: cssWindowHeight(), marginLeft: cssWindowMarginLeft(),
     marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor(), border: cssWindowBorder(), padding: cssWindowPadding() },

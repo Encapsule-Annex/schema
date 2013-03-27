@@ -356,22 +356,21 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 Console.messageRaw("<h3>SYNTHESIZING VIEW-MODEL TEMPLATES</h3>")
                 try
                     htmlView = """
+                        <!-- WINDOW MANAGER GLASS BACKGROUND LAYER -->
                         <div id="idWindowManagerGlass" onclick="Console.show()"
                         data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(),
                          marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }">
                         </div>
-
+                        <!-- WINDOW MANAGER BACKGROUND LAYER -->
                         <div id="#{layout_.id}" class="classObservableWindowManager" onclick="Console.show()"
                         data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(),
                         marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">
                         </div>
-
+                        <!-- WINDOW MANAGER CONTROL PANEL WINDOW -->
                         <span class="classObservableWindowManagerControlPanelHost" data-bind="with: controlPanelWindow">
                             <span data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManagerObservableWindowHost' }"></span>
                         </span>
-
-
-
+                        <!-- WINDOW MANAGER OBSERVABLE WINDOW HOSTS CONTAINER -->
                         <span class="classWindowManagerObservableWindowHosts" data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManagerObservableWindowHost', foreach: observableWindows }"></span>
                         """
                     Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , => htmlView

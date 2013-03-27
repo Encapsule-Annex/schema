@@ -147,7 +147,7 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                     try
                         # \ BEGIN: set allocations try scope
                         observableWindowPadding = 2 * ( @globalWindowAttributes.hostWindowPadding + @globalWindowAttributes.chromeWindowPadding +
-                            (1 * @globalWindowAttributes.windowBorderWidth) + @globalWindowAttributes.windowPadding)
+                            @globalWindowAttributes.windowBorderWidth + @globalWindowAttributes.windowPadding)
                         q1ReserveTotal = q1Reserve + observableWindowPadding
                         q2ReserveTotal = q2Reserve + observableWindowPadding
 

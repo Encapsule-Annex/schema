@@ -68,8 +68,11 @@ Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates = (windowManagerId_) -
     try
         # Root HTML view binding for window manager.
         windowManagerHtmlViewBinding = """
+            <!-- ENCAPSULE PROJECT WINDOW MANAGER -->
             <span id="idEncapsuleWindowManagerHost">
+                <!-- WINDOW MANAGER MODEL VIEW TEMPLATES -->
                 <span id="idEncapsuleWindowManagerViewTemplateCache"></span>
+                <!-- WINDOW MANAGER MODEL VIEW -->
                 <span id="idEncapsuleWindowManager" data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManager' }"></span>
             </span>"""
 
