@@ -26,12 +26,14 @@ namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Enc
 namespaceEncapsule_runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runtime = {}
 namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
 
+# Some constants used in the layout declaration below
+
+observableWindowDefaultOpacity = 0.8
+
 
 ###
 Dig this >:)-~
 ###
-
-observableWindowDefaultOpacity = 0.8
 
 Encapsule.code.app.viewLayout = {
 
@@ -72,21 +74,22 @@ Encapsule.code.app.viewLayout = {
     # color with a low opacity to provide subtle transition effects or signalling.
     #
     windowManagerBackgroundColor: "white" # defaults to "white" if undefined
-    windowManagerMargin: 8 # glass edge to window manager edge (defaults to 10 if undefined)
-    windowManagerPadding: 8 # window manager edge to plane edge (defaults to 10 if undefined)
-    windowManagerOpacity: 0.3 # (defaults to 1 if undefined)
+    windowManagerMargin: 20  # glass edge to window manager edge (defaults to 10 if undefined)
+    windowManagerPadding: 20  # window manager edge to plane edge (defaults to 10 if undefined)
+    windowManagerOpacity: 0.5 # (defaults to 1 if undefined)
 
     #
     # Managed window attributes
     #
     globalWindowAttributes: {
         hostWindowBackgroundColor: "white"
-        hostWindowOpacity: 0.2
-        hostWindowPadding: 3
-        chromeWindowBackgroundColor: "black"
+        hostWindowOpacity: 0.4
+        hostWindowPadding: 1
+        chromeWindowBackgroundColor: "#999999"
         chromeWindowOpacity: 0.4
         chromeWindowPadding: 3
-        windowBorderWidth: 0
+        windowBorderWidth: 1
+        windowPadding: 5
         windowBorderColor: "black"
         }
 
@@ -160,15 +163,7 @@ Encapsule.code.app.viewLayout = {
                     id: "idSVGEditSplitter"
                     name: "SVG/Edit Split"                                           
                     type: "horizontal"                                               
-                    Q1WindowDescriptor: {                                            
-                        id: "idSVGPlane"                                             
-                        name: "SVG Plane"                                            
-                        initialMode: "full"
-                        initialEnable: true
-                        opacity: observableWindowDefaultOpacity
-                        backgroundColor: "white"
-                        modes: { full: { reserve: 0 }, min: { reserve: 0 } }         
-                        }                                                            
+                    Q1WindowDescriptor: undefined                                                           
                     Q2WindowDescriptor: {                                            
                         id: "idEdit1"                                                
                         name: "Edit 1 Window"                                        
@@ -176,9 +171,33 @@ Encapsule.code.app.viewLayout = {
                         initialEnable: true
                         opacity: observableWindowDefaultOpacity
                         backgroundColor: "#00CC00"
-                        modes: { full: { reserve: 0 }, min: { reserve: 64 } }        
+                        modes: { full: { reserve: 128 }, min: { reserve: 64 } }        
                         }                                                            
                     }
+                {
+                    id: "idWHATEVER"
+                    name: "Whatever"
+                    type: "vertical"
+                    Q1WindowDescriptor : {
+                        id: "idWhatever1"                                                
+                        name: "Edit 1 Window"                                        
+                        initialMode: "min"
+                        initialEnable: true
+                        opacity: observableWindowDefaultOpacity
+                        backgroundColor: "#00CC00"
+                        modes: { full: { reserve: 0 }, min: { reserve: 0 } }        
+                        }
+                    Q2WindowDescriptor: {
+                        id: "idWhatrrever2"                                                
+                        name: "Edit 1 Window"                                        
+                        initialMode: "min"
+                        initialEnable: true
+                        opacity: observableWindowDefaultOpacity
+                        backgroundColor: "#00CC00"
+                        modes: { full: { reserve: 0 }, min: { reserve: 0 } }        
+                        }
+                    }
+
                 ] # / END: splitter stack
             },
             # / END: plan

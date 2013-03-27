@@ -126,9 +126,9 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
 
 
                     # Reserve = -1 => no reserve, 0 => greedy
-                    q1Reserve = { windowReservation: -1, paddingReservation: observableWindowPadding }
+                    q1Reserve = -1
                     q1Allocate = 0
-                    q2Reserve =  { windowReservation: -1, paddingReservation: observableWindowPadding }
+                    q2Reserve = -1
                     q2Allocate = 0
 
                     # \ BEGIN: set reserves
@@ -147,15 +147,18 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                     try
                         # \ BEGIN: set allocations try scope
                         observableWindowPadding = 2 * ( @globalWindowAttributes.hostWindowPadding + @globalWindowAttributes.chromeWindowPadding +
-                            @globalWindowAttributes.windowBorderWidth)
+                            (1 * @globalWindowAttributes.windowBorderWidth) + @globalWindowAttributes.windowPadding)
+                        q1ReserveTotal = q1Reserve + observableWindowPadding
+                        q2ReserveTotal = q2Reserve + observableWindowPadding
+
                         if q1Reserve > 0
-                            if q1Reserve <= boundingExtent
-                                q1Allocate = q1Reserve + observableWindowPadding
+                            if q1ReserveTotal <= boundingExtent
+                                q1Allocate = q1ReserveTotal
                                 boundingExtent -= q1Allocate
 
                         if q2Reserve > 0
-                            if q2Reserve <= boundingExtent
-                                q2Allocate = q2Reserve + observableWindowPadding
+                            if q2ReserveTotal <= boundingExtent
+                                q2Allocate = q2ReserveTotal
                                 boundingExtent -= q2Allocate
 
                         # / END: set allocations try scope
