@@ -75,11 +75,15 @@ Encapsule.code.app.viewLayout = {
     #
     windowManagerBackgroundColor: "black" # defaults to "white" if undefined
     windowManagerMargin: 3  # glass edge to window manager edge (defaults to 10 if undefined)
-    windowManagerPadding: 8  # window manager edge to plane edge (defaults to 10 if undefined)
+    windowManagerPadding: 3  # window manager edge to plane edge (defaults to 10 if undefined)
     windowManagerOpacity: 0.2 # (defaults to 1 if undefined)
 
     #
     # Managed window attributes
+    #
+    # Note to self: implement a preprocessing step in the window manager
+    # to clone attributes into window descriptors missing these attributes
+    # (sort of poor man's attribute inheritence to reduce typing/error)
     #
     globalWindowAttributes: {
         hostWindowBackgroundColor: "white"
@@ -124,7 +128,7 @@ Encapsule.code.app.viewLayout = {
                         initialEnable: true
                         opacity: observableWindowDefaultOpacity
                         backgroundColor: "#DDEEFF"
-                        modes: { full: { reserve: 128 }, min: { reserve: 64 } }      
+                        modes: { full: { reserve: 128 }, min: { reserve: 32 } }      
                         }                                                            
                     Q2WindowDescriptor: undefined
                     },
@@ -140,7 +144,11 @@ Encapsule.code.app.viewLayout = {
                         initialEnable: true
                         opacity: observableWindowDefaultOpacity
                         backgroundColor: "#00CCFF"
-                        modes: { full: { reserve: 300 }, min: { reserve: 32 } }      
+                        modes: { full: { reserve: 300 }, min: { reserve: 32 } }
+                        MVVM: {
+                            modelView: Encapsule.code.app.SchemaViewModelNavigator
+                            viewModelTemplate: "idKoTemplate_SchemaViewModelNavigator"
+                            }
                         }                                                            
                     Q2WindowDescriptor: undefined                                    
                     },
@@ -154,7 +162,7 @@ Encapsule.code.app.viewLayout = {
                         initialMode: "min"
                         initialEnable: true
                         opacity: observableWindowDefaultOpacity
-                        backgroundColor: "#00AADD"
+                        backgroundColor: "#00DDFF"
                         modes: { full: { reserve: 300 }, min: { reserve: 32 } }      
                         }                                                            
                     Q2WindowDescriptor: undefined                                    

@@ -48,13 +48,19 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
 
             @name = sourceDescriptor_.name
 
+            @windowEnabled = ko.observable sourceDescriptor_.initialEnable
+            @windowMode = ko.observable sourceDescriptor_.initialMode
+
             @offsetRectangleHost = ko.observable geo.offsetRectangle.create()
             @offsetRectangleChrome = ko.observable geo.offsetRectangle.create()
             @offsetRectangleWindow = ko.observable geo.offsetRectangle.create()
 
-            @windowEnabled = ko.observable sourceDescriptor_.initialEnable
-            @windowMode = ko.observable sourceDescriptor_.initialMode
-
+            @hostedModelView = ko.observable undefined
+            @hostedModelViewTemplate = ko.observable """<!-- Missing MVVM binding information for id="#{@id}" -->"""
+            if sourceDescriptor_.MVVM?
+                hostedModelView = new sourceDescriptor_.MVVM.modelView()
+                @hostedModelView(hostedModelView)
+                @hostedModelViewTemplate = """<span data-bind="template: { name: '#{sourceDescriptor_.MVVM.viewModelTemplate}' }"></span>"""
 
             try
                 # \ BEGIN: try scope
@@ -70,6 +76,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                 @cssHostBackgroundColor = ko.observable @sourceDescriptor.globalWindowAttributes.hostWindowBackgroundColor
 
                 # Observable properties of the classObservableWindowChrome DIV
+
                 @cssChromeWidth = ko.computed => Math.round(@offsetRectangleChrome().rectangle.extent.width) + "px"
                 @cssChromeHeight = ko.computed => Math.round(@offsetRectangleChrome().rectangle.extent.height) + "px"
                 @cssChromeMarginLeft = ko.computed => Math.round(@offsetRectangleChrome().offset.left) + "px"
@@ -78,6 +85,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                 @cssChromeBackgroundColor = ko.observable @sourceDescriptor.globalWindowAttributes.chromeWindowBackgroundColor
 
                 # Observable properties of the classObservableWindow DIV (this is the DIV that contains the actual client window)
+
                 @cssWindowWidth = ko.computed => Math.round(@offsetRectangleWindow().rectangle.extent.width) + "px"
                 @cssWindowHeight = ko.computed => Math.round(@offsetRectangleWindow().rectangle.extent.height) + "px"
                 @cssWindowMarginLeft = ko.computed => Math.round(@offsetRectangleWindow().offset.left) + "px"
@@ -86,6 +94,9 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                 @cssWindowBackgroundColor = ko.observable @sourceDescriptor.backgroundColor
                 @cssWindowBorder = ko.observable "#{@sourceDescriptor.globalWindowAttributes.windowBorderWidth}px solid #{@sourceDescriptor.globalWindowAttributes.windowBorderColor}"
                 @cssWindowPadding = ko.observable @sourceDescriptor.globalWindowAttributes.windowPadding + "px"
+
+
+
 
                 # / END try scope
             catch exception
@@ -175,9 +186,9 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Encapsul
     data-bind="attr: { id: id }, style: { width: cssWindowWidth(), height: cssWindowHeight(), marginLeft: cssWindowMarginLeft(),
     marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor(), border: cssWindowBorder(), padding: cssWindowPadding() },
     event: { mouseover: onMouseOver, mouseout: onMouseOut }">
-
         <b>Toggle [ <span data-bind="event: { click: toggleWindowMode }, text: windowMode" style="color: blue; font-weight: bold; text-decoration: underline;"></span> ]</b>
         ObservableWindow: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
+
     </div>
     </span>
 """))

@@ -19,14 +19,15 @@
 # encapsule-lib-kohelpers-window-manager.coffee
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
-namespaceEncapsule_code_lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
-namespaceEncapsule_code_lib_kohelpers = Encapsule.code.lib.kohelpers? and Encapsule.code.lib.kohelpers or @Encapsule.code.lib.kohelpers = {}
+Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
+Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
+Encapsule.code.lib.kohelpers = Encapsule.code.lib.kohelpers? and Encapsule.code.lib.kohelpers or @Encapsule.code.lib.kohelpers = {}
+Encapsule.code.lib.kohelpers.implementation = Encapsule.code.lib.kohelpers.implementation? and Encapsule.code.lib.kohelpers.implementation or @Encapsule.code.lib.kohelpers.implementation = {}
 
-namespaceEncapsule_runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runtime = {}
-namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
-namespaceEncapsule_runtime_app_kotemplates = Encapsule.runtime.app.kotemplates? and Encapsule.runtime.app.kotemplates or @Encapsule.runtime.app.kotemplates = []
 
+Encapsule.runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runtime = {}
+Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
+Encapsule.runtime.app.kotemplates = Encapsule.runtime.app.kotemplates? and Encapsule.runtime.app.kotemplates or @Encapsule.runtime.app.kotemplates = []
 
 
 class Encapsule.code.lib.kohelpers.ObservableWindowManager
@@ -112,7 +113,6 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 @cssWindowManagerMarginLeft = ko.computed => Math.round(@windowManagerOffsetRectangle().offset.left) + "px"
                 @cssWindowManagerMarginTop = ko.computed => Math.round(@windowManagerOffsetRectangle().offset.top) + "px"
 
-
                 @controlPanelWindowDescriptor = {
                     id: "#{layout_.id}ControlPanel"
                     name: "#{layout_.name} Control Panel"
@@ -123,13 +123,12 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     modes: { min: {reserve: 20 } }
                     globalWindowAttributes: Encapsule.code.lib.js.clone(layout_.globalWindowAttributes)
                     }
-                @controlPanelWindowDescriptor.globalWindowAttributes.hostWindowPadding = 3
+
+                @controlPanelWindowDescriptor.globalWindowAttributes.hostWindowPadding = 1
                 @controlPanelWindowDescriptor.globalWindowAttributes.hostWindowOpacity = 0.3
-                @controlPanelWindowDescriptor.globalWindowAttributes.chromeWindowPadding = 3
+                @controlPanelWindowDescriptor.globalWindowAttributes.chromeWindowPadding = 1
                 @controlPanelWindowDescriptor.globalWindowAttributes.chromeWindowOpacity = 0.1
                 @controlPanelWindow = ko.observable new Encapsule.code.lib.kohelpers.ObservableWindowHost(@controlPanelWindowDescriptor)
-
-
 
                 @observableWindows = ko.observableArray []
                 # / END: observable/computed try scope
@@ -355,6 +354,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             try
                 Console.messageRaw("<h3>SYNTHESIZING VIEW-MODEL TEMPLATES</h3>")
                 try
+                    x = Encapsule.code.lib.kohelpers.implementation.synthesizeWindowManagerViewModelFromLayoutDeclaration(layout_)
                     htmlView = """
                         <!-- WINDOW MANAGER GLASS BACKGROUND LAYER -->
                         <div id="idWindowManagerGlass" onclick="Console.show()"
@@ -373,7 +373,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         <!-- WINDOW MANAGER OBSERVABLE WINDOW HOSTS CONTAINER -->
                         <span class="classWindowManagerObservableWindowHosts" data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManagerObservableWindowHost', foreach: observableWindows }"></span>
                         """
-                    Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , => htmlView
+                    Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , => x # htmlView
                     Console.message("Okay.")
                 catch exception
                     throw "Top-level HTML view synthesis failure: #{exception}"
@@ -446,3 +446,92 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
         # / end of constructor
 
     # / end of class
+
+
+
+# Called from the constructor of ObservableWindowManager to synthesize the entire static view model template
+# string from the specified layout JS object.
+
+Encapsule.code.lib.kohelpers.implementation.synthesizeWindowManagerViewModelFromLayoutDeclaration = (layout_) =>
+
+    htmlHead = """
+<!-- BEGIN: \ ENCAPSULE PROJECT WINDOW MANAGER HOST VIEW MODEL -->
+<!-- BEGIN: \ WINDOW MANAGER GLASS BACKGROUND LAYER -->
+<div id="idWindowManagerGlass" onclick="Console.show()"
+data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(),
+marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }">
+</div>
+<!-- END: / WINDOW MANAGER GLASS BACKGROUND LAYER -->
+<!-- BEGIN: \ WINDOW MANAGER BACKGROUND LAYER -->
+<div id="#{layout_.id}" class="classObservableWindowManager" onclick="Console.show()"
+data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(),
+marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }">
+</div>
+<!-- END: / WINDOW MANAGER BACKGROUND LAYER -->
+<!-- BEGIN: \ WINDOW MANAGER CONTROL PANEL WINDOW -->
+<span class="classObservableWindowManagerControlPanelHost" data-bind="with: controlPanelWindow">
+   <span data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManagerObservableWindowHost' }"></span>
+</span>
+<!-- END: / WINDOW MANAGER CONTROL PANEL WINDOW -->
+"""
+
+    htmlTail = """
+<!-- END: / ENCAPSULE PROJECT WINDOW MANAGER HOST VIEW MODEL -->
+"""
+    # Enumerate the plane objects defined in the layout.
+    for plane in layout_.planes
+
+        htmlHead += """
+<!-- BEGIN: \ LAYOUT PLANE id=#{plane.id} -->
+"""
+        htmlTail += """
+<!-- END: / LAYOUT PLANE id=#{plane.id} -->
+"""
+        windowNumber = 0
+        # Enumerate the splitter objects defined in the plane.
+        for splitter in plane.splitterStack
+
+            # A splitter may contain one or two observable window declarations.
+            # All we care about here is enumerating the windows so that we can
+            # generate the appropriate view model template for each of them.
+
+            for splitHalf in [ "Q1WindowDescriptor", "Q2WindowDescriptor" ]
+                windowDescriptor = splitter[splitHalf]
+                if windowDescriptor?
+                    htmlHead += """
+<!-- BEGIN: \ OBSERVABLE WINDOW HOST id=#{windowDescriptor.id} -->
+<span data-bind="with: observableWindows()[#{windowNumber}]">
+<! -- BEGIN: OBSERVABLE WINDOW HOST CONTAINER -->
+<span data-bind="if: windowInDOM">
+<! -- BEGIN: \OBSERVABLE WINDOW HOST LAYER -->
+<div class="classObservableWindowHost"
+data-bind="attr: { id: idHost }, style: { width: cssHostWidth(), height: cssHostHeight(), marginLeft: cssHostMarginLeft(), marginTop: cssHostMarginTop(), 
+opacity: cssHostOpacity(), backgroundColor: cssHostBackgroundColor() }">
+</div>
+<!-- END: / OBSERVABLE WINDOW HOST LAYER -->
+<! -- BEGIN: \OBSERVABLE WINDOW CHROME LAYER -->
+<div class="classObservableWindowChrome"
+data-bind="attr: { id: idChrome }, style: { width: cssChromeWidth(), height: cssChromeHeight(), marginLeft: cssChromeMarginLeft(),  marginTop: cssChromeMarginTop(),
+opacity: cssChromeOpacity(), backgroundColor: cssChromeBackgroundColor() }">
+</div>
+<!-- END: / OBSERVABLE WINDOW CHROME LAYER -->
+<!-- BEGIN: \ OBSERVABLE WINDOW LAYER -->
+<div class="classObservableWindow"
+data-bind="attr: { id: id }, style: { width: cssWindowWidth(), height: cssWindowHeight(), marginLeft: cssWindowMarginLeft(),
+marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor(), border: cssWindowBorder(), padding: cssWindowPadding() },
+event: { mouseover: onMouseOver, mouseout: onMouseOut }">
+<b>Toggle [ <span data-bind="event: { click: toggleWindowMode }, text: windowMode" style="color: blue; font-weight: bold; text-decoration: underline;"></span> ]</b>
+ObservableWindow: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
+</div>
+<!-- END: / OBSERVABLE WINDOW LAYER -->
+</span>
+<!-- END: / OBSERVABLE WINDOW HOST CONTAINER -->
+</span>
+<! -- END: / OBSERVABLE WINDOW HOST id=#{windowDescriptor.id} -->
+"""
+                    windowNumber++
+
+    return htmlHead + htmlTail
+
+
+
