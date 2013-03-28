@@ -28,7 +28,7 @@ namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.ap
 
 # Some constants used in the layout declaration below
 
-observableWindowDefaultOpacity = 0.8
+observableWindowDefaultOpacity = 0.65
 
 
 ###
@@ -110,7 +110,7 @@ Encapsule.code.app.viewLayout = {
                     Q2WindowDescriptor: {                                            
                         id: "idFrameStack"                                           
                         name: "Frame Stack Window"
-                        initialMode: "min"
+                        initialMode: "full"
                         initialEnable: true
                         opacity: observableWindowDefaultOpacity
                         backgroundColor: "#FFFF00"
@@ -124,7 +124,7 @@ Encapsule.code.app.viewLayout = {
                     Q1WindowDescriptor: {                                            
                         id: "idToolbar"                                              
                         name: "Toolbar Window"                                       
-                        initialMode: "min"
+                        initialMode: "full"
                         initialEnable: true
                         opacity: observableWindowDefaultOpacity
                         backgroundColor: "#DDEEFF"
@@ -140,14 +140,14 @@ Encapsule.code.app.viewLayout = {
                     Q1WindowDescriptor: {                                            
                         id: "idSelect1"                                              
                         name: "Select 1 Window"                                      
-                        initialMode: "min"
+                        initialMode: "full"
                         initialEnable: true
                         opacity: observableWindowDefaultOpacity
                         backgroundColor: "#00CCFF"
-                        modes: { full: { reserve: 300 }, min: { reserve: 32 } }
+                        modes: { full: { reserve: 150 }, min: { reserve: 32 } }
                         MVVM: {
                             modelView: Encapsule.code.app.SchemaViewModelNavigator
-                            viewModelTemplate: "idKoTemplate_SchemaViewModelNavigator"
+                            viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
                             }
                         }                                                            
                     Q2WindowDescriptor: undefined                                    
@@ -159,7 +159,7 @@ Encapsule.code.app.viewLayout = {
                     Q1WindowDescriptor: {                                            
                         id: "idSelect2"                                              
                         name: "Select 1 Window"                                      
-                        initialMode: "min"
+                        initialMode: "full"
                         initialEnable: true
                         opacity: observableWindowDefaultOpacity
                         backgroundColor: "#00DDFF"
@@ -175,7 +175,7 @@ Encapsule.code.app.viewLayout = {
                     Q2WindowDescriptor: {                                            
                         id: "idEdit1"                                                
                         name: "Edit 1 Window"                                        
-                        initialMode: "min"
+                        initialMode: "full"
                         initialEnable: true
                         opacity: observableWindowDefaultOpacity
                         backgroundColor: "#99CC66"
@@ -189,7 +189,7 @@ Encapsule.code.app.viewLayout = {
                     Q1WindowDescriptor : {
                         id: "idSVG1"                                                
                         name: "SVG 1 Window"                                        
-                        initialMode: "min"
+                        initialMode: "full"
                         initialEnable: true
                         opacity: observableWindowDefaultOpacity
                         backgroundColor: "white"
@@ -198,7 +198,7 @@ Encapsule.code.app.viewLayout = {
                     Q2WindowDescriptor: {
                         id: "idSVG2"                                                
                         name: "SVG 2 Window"                                        
-                        initialMode: "min"
+                        initialMode: "full"
                         initialEnable: true
                         opacity: observableWindowDefaultOpacity
                         backgroundColor: "white"

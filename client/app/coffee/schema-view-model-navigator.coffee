@@ -66,7 +66,7 @@ class Encapsule.code.app.SchemaViewModelNavigatorMenuLevel
             newMenuItem
 
         @getCssFontSize = =>
-            fontSize = 17 - (@level())
+            fontSize = 16 - (@level())
             "#{fontSize}pt"
 
         @getCssBackgroundColor = =>
@@ -98,7 +98,7 @@ class Encapsule.code.app.SchemaViewModelNavigator
 
         @viewHeight = ko.observable initialHeight_
 
-        menuViewModel = new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel( { label: "SCDL Catalogue" } )
+        menuViewModel = new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel( { label: "Catalogue" } )
         
         scdlSpecs =     menuViewModel.addSubMenu( { label: "Specs" } )
         scdlSpec =      scdlSpecs.addSubMenu( { label: "Spec" } )

@@ -56,11 +56,10 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
             @offsetRectangleWindow = ko.observable geo.offsetRectangle.create()
 
             @hostedModelView = ko.observable undefined
-            @hostedModelViewTemplate = ko.observable """<!-- Missing MVVM binding information for id="#{@id}" -->"""
-            if sourceDescriptor_.MVVM?
+            if sourceDescriptor_.MVVM? and sourceDescriptor_.MVVM.modelView? and sourceDescriptor_.MVVM.viewModelTemplateId?
                 hostedModelView = new sourceDescriptor_.MVVM.modelView()
                 @hostedModelView(hostedModelView)
-                @hostedModelViewTemplate = """<span data-bind="template: { name: '#{sourceDescriptor_.MVVM.viewModelTemplate}' }"></span>"""
+
 
             try
                 # \ BEGIN: try scope
@@ -94,9 +93,6 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                 @cssWindowBackgroundColor = ko.observable @sourceDescriptor.backgroundColor
                 @cssWindowBorder = ko.observable "#{@sourceDescriptor.globalWindowAttributes.windowBorderWidth}px solid #{@sourceDescriptor.globalWindowAttributes.windowBorderColor}"
                 @cssWindowPadding = ko.observable @sourceDescriptor.globalWindowAttributes.windowPadding + "px"
-
-
-
 
                 # / END try scope
             catch exception
@@ -168,29 +164,5 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
     # / END: class scope
 # / END: file scope
             
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_EncapsuleWindowManagerObservableWindowHost", ( -> """
-    <! -- OBSERVABLE WINDOW HOST CONTAINER -->
-    <span data-bind="if: windowInDOM">
-    <! -- OBSERVABLE WINDOW HOST LAYER -->
-    <div class="classObservableWindowHost"
-    data-bind="attr: { id: idHost }, style: { width: cssHostWidth(), height: cssHostHeight(), marginLeft: cssHostMarginLeft(), marginTop: cssHostMarginTop(), 
-    opacity: cssHostOpacity(), backgroundColor: cssHostBackgroundColor() }">
-    </div>
-    <! -- OBSERVABLE WINDOW CHROME LAYER -->
-    <div class="classObservableWindowChrome"
-    data-bind="attr: { id: idChrome }, style: { width: cssChromeWidth(), height: cssChromeHeight(), marginLeft: cssChromeMarginLeft(),  marginTop: cssChromeMarginTop(),
-    opacity: cssChromeOpacity(), backgroundColor: cssChromeBackgroundColor() }">
-    </div>
-    <!-- OBSERVABLE WINDOW LAYER -->
-    <div class="classObservableWindow"
-    data-bind="attr: { id: id }, style: { width: cssWindowWidth(), height: cssWindowHeight(), marginLeft: cssWindowMarginLeft(),
-    marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor(), border: cssWindowBorder(), padding: cssWindowPadding() },
-    event: { mouseover: onMouseOver, mouseout: onMouseOut }">
-        <b>Toggle [ <span data-bind="event: { click: toggleWindowMode }, text: windowMode" style="color: blue; font-weight: bold; text-decoration: underline;"></span> ]</b>
-        ObservableWindow: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
-
-    </div>
-    </span>
-"""))
 
 

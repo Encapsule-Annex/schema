@@ -52,7 +52,7 @@ Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplate = (descriptor_, parentE
         try
             htmlViewTemplate = descriptor_.fnHtml_()
         catch exception
-            throw "While evaluating the #{descriptor_.selectorId_} HTML callback."
+            throw "While evaluating the #{descriptor_.selectorId_} HTML callback: #{exception}"
 
         parentEl_.append($("""<script type="text/html" id="#{descriptor_.selectorId_}">#{htmlViewTemplate}</script>"""))
         return true
@@ -68,13 +68,17 @@ Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates = (windowManagerId_) -
     try
         # Root HTML view binding for window manager.
         windowManagerHtmlViewBinding = """
-            <!-- ENCAPSULE PROJECT WINDOW MANAGER -->
+            <!-- BEGIN: \\ ENCAPSULE PROJECT WINDOW MANAGER HOST -->
             <span id="idEncapsuleWindowManagerHost">
-                <!-- WINDOW MANAGER MODEL VIEW TEMPLATES -->
+                <!-- BEGIN: \\ WINDOW MANAGER MODEL VIEW TEMPLATES -->
                 <span id="idEncapsuleWindowManagerViewTemplateCache"></span>
-                <!-- WINDOW MANAGER MODEL VIEW -->
+                <!-- END: / WINDOW MANAGER MODEL VIEW TEMPLATES -->
+                <!-- BEGIN: \\ ENCAPSULE PROJECT WINDOW MANAGER HOST VIEW MODEL -->
                 <span id="idEncapsuleWindowManager" data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManager' }"></span>
-            </span>"""
+                <!-- END: / ENCAPSULE PROJECT WINDOW MANAGER HOST VIEW MODEL -->
+            </span>
+            <!-- END: / ENCAPSULE PROJECT WINDOW MANAGER HOST -->
+            """
 
         # Install the view. Binding occurs separately, later, at a higher context.
         $("body").append($(windowManagerHtmlViewBinding))
