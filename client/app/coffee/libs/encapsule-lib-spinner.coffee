@@ -86,20 +86,18 @@ class namespaceEncapsule_code_lib_view.spinner
             spinnerCaptionEl.css(
                 {
                     marginLeft: captionOffsetRect.offset.left + "px"
-
                     marginTop: captionOffsetRect.offset.top + 123 + "px"
                     width: captionOffsetRect.rectangle.extent.width + "px"
                     height: captionOffsetRect.rectangle.extent.height + "px"
                     }
                 )
+
             @enabled = true
 
-            @captionUpdateTimer = setInterval( ( ->
-
-                spinnerCaptionEl = $("#idSpinnerCaption")
-                spinnerCaptionEl.html Encapsule.code.app.spinnerText? and Encapsule.code.app.spinnerText or ""
-
-                ), 500)
+            @updateCaptionText = (captionText_) ->
+                if captionText_? and captionText_
+                    spinnerCaptionEl = $("#idSpinnerCaption")
+                    spinnerCaptionEl.html captionText_
 
     cancel: =>
         if @enabled

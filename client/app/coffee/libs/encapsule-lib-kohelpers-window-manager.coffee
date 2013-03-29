@@ -35,6 +35,9 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
     constructor: (layout_) ->
 
         try
+            Encapsule.code.app.setBootChrome("schemaStart")
+
+
             # ============================================================================
             # PARAMETER VALIDATION
 
@@ -272,7 +275,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # ============================================================================
             # \ BEGIN: OBSERVABLE DATA MODEL INITIALIZATION
             try
-    
+                Encapsule.code.app.setBootChrome("schemaModelView")    
                 #
                 # The Window Manager takes as input a "layout" Javascript object.
                 # The layout is declarative and is parsed here to produce this window manager's internal runtime
@@ -353,6 +356,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # ============================================================================
             try
                 Console.messageRaw("<h3>SYNTHESIZING VIEW-MODEL TEMPLATES</h3>")
+                Encapsule.code.app.setBootChrome("schemaViewModel")
                 try
                     Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , =>
                         Encapsule.code.lib.kohelpers.implementation.synthesizeWindowManagerViewModelFromLayoutDeclaration(layout_)
@@ -370,6 +374,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # BIND THE HTML VIEW TO THE WINDOW MANAGER'S OBVSERVABLE DATA MODELS USING KNOCKOUT.JS
             #
             Console.messageRaw "<h3>BINDING MODEL-VIEW/VIEW-MODEL (MVVM) VIA KNOCKOUT.JS</h3>"
+            Encapsule.code.app.setBootChrome("schemaBind")
             try
                 ko.applyBindings @ , windowManagerHtmlViewRootDocumentElement # <- THIS IS FUCKING AWESOME
                 Console.message("#{layout_.id} #{layout_.name} Model-View/View-Model (MVVM) binding completed.")
@@ -394,6 +399,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # Obtain the current extent of document and update the offset rectangles used to determine
             # the coordinates of the window manager glass and main windows.
             Console.messageRaw("<h3>INITIALIZING SCREEN LAYOUT</h3>")
+            Encapsule.code.app.setBootChrome("schemaRender")
             try
                 @refreshWindowManagerViewGeometriesFromDocument()
                 @setPageBackgroundColor()
@@ -412,6 +418,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             Console.messageRaw("<p><strong>#{appPackagePublisher} window manager initialization complete.</strong></p>")
 
             # ============================================================================
+            Encapsule.code.app.setBootChrome("schemaWelcome")
             Console.messageRaw("<h2>#{appName} v#{appVersion} entering interactive mode :)</h2>")
             # / END INITIALIZATION OF WINDOW MANAGER OBJECT INSTANCE
 

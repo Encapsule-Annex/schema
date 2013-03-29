@@ -44,6 +44,12 @@ Encapsule.code.app.bootChromes = {
     #phase2watchdogNoop: { title: "#{appName} v#{appVersion}", spinnerText: "hello"  }
     #phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00", spinnerText: "hello"  }
     phase3: { title: "#{appName} v#{appVersion}", backgroundColor: undefined, spinnerText: "{appName} initializing..."  }
+    schemaStart : {title: undefined, backgroundColor: undefined, spinnerText: "Starting window manager..." }
+    schemaModelView : {title: undefined, backgroundColor: undefined, spinnerText: "Building model view..." }
+    schemaViewModel : {title: undefined, backgroundColor: undefined, spinnerText: "Building model view..." }
+    schemaBind : {title: undefined, backgroundColor: undefined, spinnerText: "Starting window manager..." }
+    schemaRender : {title: undefined, backgroundColor: undefined, spinnerText: "Rendering layout..." }
+    schemaWelcome : {title: undefined, backgroundColor: undefined, spinnerText: "Welcome to #{appName}!" }
     }
 
 Encapsule.code.app.setBootChrome = (phase_, progress_) ->
@@ -63,7 +69,8 @@ Encapsule.code.app.setBootChrome = (phase_, progress_) ->
         $("body").css( { backgroundColor: bootChrome.backgroundColor } )
 
     if spinnerText? and spinnerText
-        Encapsule.code.app.spinnerText = spinnerText
+        Encapsule.runtime.boot.phase0.spinner.updateCaptionText(spinnerText)
+            
         
 
 
