@@ -64,6 +64,12 @@ class namespaceEncapsule_code_app_scdl.ObservableCatalogueShim
 
 
 
+# This is the outer-most observable model view of the SCDL catalogue.
+# Note on naming: this class hosts a 'shim' (an extra observable level
+# in the hierarchy used to separate the actual serializable catalogue
+# data from higher-level observable aspects of the catalogue that we do
+# not need or want to serialize to SCDL JSON format.
+#
 class namespaceEncapsule_code_app_scdl.ObservableCatalogueShimHost
     constructor: ->
         @catalogueShim = ko.observable new namespaceEncapsule_code_app_scdl.ObservableCatalogueShim()
