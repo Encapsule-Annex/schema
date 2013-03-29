@@ -97,7 +97,7 @@ class namespaceEncapsule_code_lib_view.spinner
     cancel: =>
         if @enabled
             targetJN = $("#idSpinner")
-            targetJN.fadeOut(2000)
+            targetJN.fadeOut(3000)
             clearInterval( @captionUpdateTimer )
             embeddedSpinnerObject = @embeddedSpinnerObject
             $("#idSpinnerCore").attr { src: "img/core-green-128x128.png" }   
@@ -106,6 +106,6 @@ class namespaceEncapsule_code_lib_view.spinner
                 embeddedSpinnerObject.stop()
                 $("#idSpinner").html("")
                 )
-                , 2000)
+                , 3000)
 
 

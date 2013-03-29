@@ -94,7 +94,7 @@ try
             chromeWindowOpacity: 0.4
             chromeWindowPadding: 1
             windowBorderWidth: 1
-            windowPadding: 5
+            windowPadding: 0
             windowBorderColor: "black"
             }
 
@@ -111,8 +111,8 @@ try
                         Q2WindowDescriptor: {                                            
                             id: "idFrameStack"                                           
                             name: "Frame Stack Window"
-                            initialMode: "full"
-                            initialEnable: true
+                            initialMode: "min"
+                            initialEnable: false
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#FFFF00"
                             modes: { full: { reserve: 300 }, min: { reserve: 32 } }
@@ -128,7 +128,7 @@ try
                             initialMode: "min"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#DDEEFF"
+                            backgroundColor: "white"
                             modes: { full: { reserve: 64 }, min: { reserve: 32 } }      
                             MVVM: {
                                 modelView: Encapsule.code.app.viewmodels.SchemaTitleBarWindow
@@ -184,7 +184,7 @@ try
                         Q2WindowDescriptor: {                                            
                             id: "idEdit1"                                                
                             name: "Edit 1 Window"                                        
-                            initialMode: "full"
+                            initialMode: "min"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#99CC66"
@@ -199,7 +199,7 @@ try
                             id: "idSVG1"                                                
                             name: "SVG 1 Window"                                        
                             initialMode: "full"
-                            initialEnable: true
+                            initialEnable: false
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "white"
                             modes: { full: { reserve: 0 }, min: { reserve: 0 } }        
@@ -208,7 +208,7 @@ try
                             id: "idSVG2"                                                
                             name: "SVG 2 Window"                                        
                             initialMode: "full"
-                            initialEnable: true
+                            initialEnable: false
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "white"
                             modes: { full: { reserve: 0 }, min: { reserve: 0 } }        

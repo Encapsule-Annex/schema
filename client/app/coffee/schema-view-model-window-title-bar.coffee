@@ -48,5 +48,14 @@ class Encapsule.code.app.viewmodels.SchemaTitleBarWindow
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaTitleBarWindow", ( -> """
-#{appPackagePublisher} #{appName} v#{appVersion}
+<a href="#{appPackagePublisherUrl}" target="_blank" title="#{appPackagePublisher} Homepage">
+    <img src="img/core-seablue-32x32.png" style="width: 32px; height: 32px; margin-right: 5px; border: none; float: left;">
+</a>
+<span style="float: left; margin-top: 10px;">
+    <span id="idTitlebarAppPublisher">
+        <a href="#{appPackagePublisherUrl}" target="_blank" title="#{appPackagePublisher} Homepage">#{appPackagePublisher}</a>
+    </span>
+    <span id="idTitlebarAppName">#{appName} v#{appVersion}</span>
+</span>
+<br clear="all">
 """))

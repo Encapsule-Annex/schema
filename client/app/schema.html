@@ -17,7 +17,13 @@
   Visit http://www.encapsule.org for more information and happy hacking.
 
   -->
+         
   <head>
+    <!-- NOTE: For development purposes CSS3 and Javascript files are
+         deliberately granular. Once the application is stabilized,
+         the build will be modified to combine these resources for better
+         load-time performance in release builds.
+    -->
     <!-- PAGE META -->
     <meta charset="UTF-8">
     <meta name="description" content="Schema.encapsule.org is a visualization and editing tool for working with Soft Circuit Description Languge (SCDL) models written in HTML5.">
@@ -29,6 +35,10 @@
     <link rel="stylesheet" type="text/css" href="css/encapsule-window-manager.css" />
 
     <link rel="stylesheet" type="text/css" href="css/schema.css" />
+    <link rel="stylesheet" type="text/css" href="css/schema-titlebar-window.css" />
+    <link rel="stylesheet" type="text/css" href="css/schema-navigator-window.css" />
+
+
     <link rel="stylesheet" type="text/css" href="css/schema-scdl.css" />
     <link rel="stylesheet" type="text/css" href="css/schema-svg.css" />
     <link rel="stylesheet" type="text/css" href="css/buttons.css" />
