@@ -35,212 +35,223 @@ observableWindowDefaultOpacity = 0.65
 Dig this >:)-~
 ###
 
-Encapsule.code.app.viewLayout = {
+try
+    Encapsule.code.app.viewLayout = {
 
-    # id: some unique string that will be assigned to the ID attibute of the window manager's main container.
-    # name: whatever you want
-    #
-    id: "idSchemaWindowManager"
-    name: "#{appName} v#{appVersion} Window Manager"
-    fadeInTimeMs: 1500 # (defaults to 1500ms if undefined)
+        # id: some unique string that will be assigned to the ID attibute of the window manager's main container.
+        # name: whatever you want
+        #
+        id: "idSchemaWindowManager"
+        name: "#{appName} v#{appVersion} Window Manager"
+        fadeInTimeMs: 1500 # (defaults to 1500ms if undefined)
 
-    #
-    # BODY PAGE ATTRIBUTES
-    #
-    # bodyPageBackgroundColor: It is assumed the only visible elements drawn on the body page are created and managed by window manager.
-    # The color of the page background may optionally be set via bodyPageBackgroundColor and will be visible
-    # if glassMargin > 0 or glassOpacity < 1
-    #
-    pageBackgroundColor: "#00AA66" # (defaults to "white" if undefined)
+        #
+        # BODY PAGE ATTRIBUTES
+        #
+        # bodyPageBackgroundColor: It is assumed the only visible elements drawn on the body page are created and managed by window manager.
+        # The color of the page background may optionally be set via bodyPageBackgroundColor and will be visible
+        # if glassMargin > 0 or glassOpacity < 1
+        #
+        pageBackgroundColor: "#00AA66" # (defaults to "white" if undefined)
 
-    #
-    # WINDOW MANAGER "GLASS" ATTRIBUTES
-    #
-    # Window manager "glass" is a page-centerred rectangular region that serves as a background for your application.
-    # Note that setting glassBackgroundImage will occlude glassBackgroundColor if specified. You can however
-    # acheive splendid blending effects by setting bodyPageBackgroundColor and glassOpacity.
-    #        
-    glassOpacity: 0.5 # defaults to 1 if undefined
-    glassBackgroundColor: undefined
-    glassMargin: 0 # document edge to glass edge (default is 10)
-    glassBackgroundImage: "Aspen_trees_2.jpg" # (default is undefined)
-    #glassBackgroundImage: "fire-on-the-mountain.jpg"
+        #
+        # WINDOW MANAGER "GLASS" ATTRIBUTES
+        #
+        # Window manager "glass" is a page-centerred rectangular region that serves as a background for your application.
+        # Note that setting glassBackgroundImage will occlude glassBackgroundColor if specified. You can however
+        # acheive splendid blending effects by setting bodyPageBackgroundColor and glassOpacity.
+        #        
+        glassOpacity: 0.5 # defaults to 1 if undefined
+        glassBackgroundColor: undefined
+        glassMargin: 0 # document edge to glass edge (default is 10)
+        glassBackgroundImage: "Aspen_trees_2.jpg" # (default is undefined)
+        #glassBackgroundImage: "fire-on-the-mountain.jpg"
+    
+        #
+        # WINDOW MANAGER BASE PLANE ATTRIBUTES
+        #
+        # Window manager base plane is a glass-centerred rectangular region that "floats" over the glass and behind
+        # the plane objects specified in the layout. Typically, the base plane is set to either black or white background
+        # color with a low opacity to provide subtle transition effects or signalling.
+        #
+        windowManagerBackgroundColor: "black" # defaults to "white" if undefined
+        windowManagerMargin: 3  # glass edge to window manager edge (defaults to 10 if undefined)
+        windowManagerPadding: 3  # window manager edge to plane edge (defaults to 10 if undefined)
+        windowManagerOpacity: 0.2 # (defaults to 1 if undefined)
 
-    #
-    # WINDOW MANAGER BASE PLANE ATTRIBUTES
-    #
-    # Window manager base plane is a glass-centerred rectangular region that "floats" over the glass and behind
-    # the plane objects specified in the layout. Typically, the base plane is set to either black or white background
-    # color with a low opacity to provide subtle transition effects or signalling.
-    #
-    windowManagerBackgroundColor: "black" # defaults to "white" if undefined
-    windowManagerMargin: 3  # glass edge to window manager edge (defaults to 10 if undefined)
-    windowManagerPadding: 3  # window manager edge to plane edge (defaults to 10 if undefined)
-    windowManagerOpacity: 0.2 # (defaults to 1 if undefined)
-
-    #
-    # Managed window attributes
-    #
-    # Note to self: implement a preprocessing step in the window manager
-    # to clone attributes into window descriptors missing these attributes
-    # (sort of poor man's attribute inheritence to reduce typing/error)
-    #
-    globalWindowAttributes: {
-        hostWindowBackgroundColor: "white"
-        hostWindowOpacity: 0.4
-        hostWindowPadding: 1
-        chromeWindowBackgroundColor: "#666666"
-        chromeWindowOpacity: 0.4
-        chromeWindowPadding: 1
-        windowBorderWidth: 1
-        windowPadding: 5
-        windowBorderColor: "black"
-        }
-
-    planes: [
-        {
-            id: "idSchemaPlaneDefault"
-            name: "#{appName} v#{appVersion} Default View Plane"
-            splitterStack: [
-                {
-                    id: "idFrameStackSplitter"                                                                
-                    name: "Frame Stack Split"                                        
-                    type: "vertical"                                                 
-                    Q1WindowDescriptor: undefined                                    
-                    Q2WindowDescriptor: {                                            
-                        id: "idFrameStack"                                           
-                        name: "Frame Stack Window"
-                        initialMode: "full"
-                        initialEnable: true
-                        opacity: observableWindowDefaultOpacity
-                        backgroundColor: "#FFFF00"
-                        modes: { full: { reserve: 300 }, min: { reserve: 32 } }
-                        }
-                    },
-                {                                                                    
-                    id: "idToolbarSplitter"
-                    name: "Toolbar Split"                                            
-                    type: "horizontal"                                               
-                    Q1WindowDescriptor: {                                            
-                        id: "idToolbar"                                              
-                        name: "Toolbar Window"                                       
-                        initialMode: "full"
-                        initialEnable: true
-                        opacity: observableWindowDefaultOpacity
-                        backgroundColor: "#DDEEFF"
-                        modes: { full: { reserve: 128 }, min: { reserve: 32 } }      
-                        }                                                            
-                    Q2WindowDescriptor: undefined
-                    },
-
-                {                                                                    
-                    id: "idSelect1Splitter"
-                    name: "Select 1 Split"                                           
-                    type: "vertical"                                                 
-                    Q1WindowDescriptor: {                                            
-                        id: "idSelect1"                                              
-                        name: "Select 1 Window"                                      
-                        initialMode: "full"
-                        initialEnable: true
-                        opacity: observableWindowDefaultOpacity
-                        backgroundColor: "#00CCFF"
-                        modes: { full: { reserve: 150 }, min: { reserve: 32 } }
-                        MVVM: {
-                            modelView: Encapsule.code.app.SchemaViewModelNavigator
-                            viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
-                            }
-                        }                                                            
-                    Q2WindowDescriptor: undefined                                    
-                    },
-                {                                                                    
-                    id: "idSelect2Splitter"
-                    name: "Select 2 Split"                                           
-                    type: "vertical"                                                 
-                    Q1WindowDescriptor: {                                            
-                        id: "idSelect2"                                              
-                        name: "Select 1 Window"                                      
-                        initialMode: "full"
-                        initialEnable: true
-                        opacity: observableWindowDefaultOpacity
-                        backgroundColor: "#00DDFF"
-                        modes: { full: { reserve: 300 }, min: { reserve: 32 } }      
-                        }                                                            
-                    Q2WindowDescriptor: undefined                                    
-                    },
-                {                                                                    
-                    id: "idEditSplitter"
-                    name: "Edit Split"                                           
-                    type: "horizontal"                                               
-                    Q1WindowDescriptor: undefined                                                           
-                    Q2WindowDescriptor: {                                            
-                        id: "idEdit1"                                                
-                        name: "Edit 1 Window"                                        
-                        initialMode: "full"
-                        initialEnable: true
-                        opacity: observableWindowDefaultOpacity
-                        backgroundColor: "#99CC66"
-                        modes: { full: { reserve: 128 }, min: { reserve: 32 } }        
-                        }                                                            
-                    }
-                {
-                    id: "idSVGSplitter"
-                    name: "SVG Split"
-                    type: "vertical"
-                    Q1WindowDescriptor : {
-                        id: "idSVG1"                                                
-                        name: "SVG 1 Window"                                        
-                        initialMode: "full"
-                        initialEnable: true
-                        opacity: observableWindowDefaultOpacity
-                        backgroundColor: "white"
-                        modes: { full: { reserve: 0 }, min: { reserve: 0 } }        
-                        }
-                    Q2WindowDescriptor: {
-                        id: "idSVG2"                                                
-                        name: "SVG 2 Window"                                        
-                        initialMode: "full"
-                        initialEnable: true
-                        opacity: observableWindowDefaultOpacity
-                        backgroundColor: "white"
-                        modes: { full: { reserve: 0 }, min: { reserve: 0 } }        
-                        }
-                    }
-
-                ] # / END: splitter stack
-            },
-            # / END: plan
-        {
-            id: "idSchemaSettingsPlane"
-            name: "#{appName} Settings Plane"
-            splitterStack: [
-                {
-                    id: "idSetttingsPLaneSplitter0"
-                    name: "what ever some descriptive text"
-                    type: "horizontal"
-                    Q1WindowDescriptor: {
-                        id: "idSettings1"
-                        name: "Settings 1 Window"
-                        initialMode: "full"
-                        initialEnable: false
-                        opacity: observableWindowDefaultOpacity
-                        backgroundColor: "white"
-                        modes: { full: { reserve: 0 }, min: { reserve: 0 } }
-                        }
-                    Q2WindowDescriptor: {
-                        id: "idSettings2"
-                        name: "Settings 2 Window"
-                        initialMode: "full"
-                        initialEnable: false
-                        opacity: observableWindowDefaultOpacity
-                        backgroundColor: "white"
-                        modes: { full: { reserve: 0 }, min: { reserve: 0 } }
-                        }
-                    }
-                ]
-                # / END: splitter stack
+        #
+        # Managed window attributes
+        #
+        # Note to self: implement a preprocessing step in the window manager
+        # to clone attributes into window descriptors missing these attributes
+        # (sort of poor man's attribute inheritence to reduce typing/error)
+        #
+        globalWindowAttributes: {
+            hostWindowBackgroundColor: "white"
+            hostWindowOpacity: 0.4
+            hostWindowPadding: 1
+            chromeWindowBackgroundColor: "#666666"
+            chromeWindowOpacity: 0.4
+            chromeWindowPadding: 1
+            windowBorderWidth: 1
+            windowPadding: 5
+            windowBorderColor: "black"
             }
-            # / END: plane
-        ]
-        # END: / plane array
-    }
-    # / END: Encapsule.code.app.viewLayout
+
+        planes: [
+            {
+                id: "idSchemaPlaneDefault"
+                name: "#{appName} v#{appVersion} Default View Plane"
+                splitterStack: [
+                    {
+                        id: "idFrameStackSplitter"                                                                
+                        name: "Frame Stack Split"                                        
+                        type: "vertical"                                                 
+                        Q1WindowDescriptor: undefined                                    
+                        Q2WindowDescriptor: {                                            
+                            id: "idFrameStack"                                           
+                            name: "Frame Stack Window"
+                            initialMode: "full"
+                            initialEnable: true
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "#FFFF00"
+                            modes: { full: { reserve: 300 }, min: { reserve: 32 } }
+                            }
+                        },
+                    {                                                                    
+                        id: "idTitleBarSplitter"
+                        name: "Title Bar Split"                                            
+                        type: "horizontal"                                               
+                        Q1WindowDescriptor: {                                            
+                            id: "idTitleBar"                                              
+                            name: "#{appName} Title Bar"                                       
+                            initialMode: "min"
+                            initialEnable: true
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "#DDEEFF"
+                            modes: { full: { reserve: 64 }, min: { reserve: 32 } }      
+                            MVVM: {
+                                modelView: Encapsule.code.app.viewmodels.SchemaTitleBarWindow
+                                viewModelTemplateId: "idKoTemplate_SchemaTitleBarWindow"
+                                }
+                            }                                                            
+                        Q2WindowDescriptor: undefined
+                        },
+    
+                    {                                                                    
+                        id: "idSelect1Splitter"
+                        name: "Select 1 Split"                                           
+                        type: "vertical"                                                 
+                        Q1WindowDescriptor: {                                            
+                            id: "idSelect1"                                              
+                            name: "Select 1 Window"                                      
+                            initialMode: "full"
+                            initialEnable: true
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "#00CCFF"
+                            modes: { full: { reserve: 150 }, min: { reserve: 32 } }
+                            MVVM: {
+                                modelView: Encapsule.code.app.SchemaViewModelNavigator
+                                viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
+                                }
+                            }                                                            
+                        Q2WindowDescriptor: undefined                                    
+                        },
+                    {                                                                    
+                        id: "idSelect2Splitter"
+                        name: "Select 2 Split"                                           
+                        type: "vertical"                                                 
+                        Q1WindowDescriptor: {                                            
+                            id: "idSelect2"                                              
+                            name: "Select 1 Window"                                      
+                            initialMode: "full"
+                            initialEnable: true
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "#00DDFF"
+                            modes: { full: { reserve: 800 }, min: { reserve: 200 } }
+                            MVVM: {
+                                modelView: Encapsule.code.app.scdl.ObservableCatalogueShimHost
+                                viewModelTemplateId: "idKoTemplate_ScdlCatalogueShimHost"
+                                }
+                            }                                                            
+                        Q2WindowDescriptor: undefined                                    
+                        },
+                    {                                                                    
+                        id: "idEditSplitter"
+                        name: "Edit Split"                                           
+                        type: "horizontal"                                               
+                        Q1WindowDescriptor: undefined                                                           
+                        Q2WindowDescriptor: {                                            
+                            id: "idEdit1"                                                
+                            name: "Edit 1 Window"                                        
+                            initialMode: "full"
+                            initialEnable: true
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "#99CC66"
+                            modes: { full: { reserve: 128 }, min: { reserve: 32 } }        
+                            }                                                            
+                        }
+                    {
+                        id: "idSVGSplitter"
+                        name: "SVG Split"
+                        type: "vertical"
+                        Q1WindowDescriptor : {
+                            id: "idSVG1"                                                
+                            name: "SVG 1 Window"                                        
+                            initialMode: "full"
+                            initialEnable: true
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "white"
+                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }        
+                            }
+                        Q2WindowDescriptor: {
+                            id: "idSVG2"                                                
+                            name: "SVG 2 Window"                                        
+                            initialMode: "full"
+                            initialEnable: true
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "white"
+                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }        
+                            }
+                        }
+    
+                    ] # / END: splitter stack
+                },
+                # / END: plan
+            {
+                id: "idSchemaSettingsPlane"
+                name: "#{appName} Settings Plane"
+                splitterStack: [
+                    {
+                        id: "idSetttingsPLaneSplitter0"
+                        name: "what ever some descriptive text"
+                        type: "horizontal"
+                        Q1WindowDescriptor: {
+                            id: "idSettings1"
+                            name: "Settings 1 Window"
+                            initialMode: "full"
+                            initialEnable: false
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "white"
+                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                            }
+                        Q2WindowDescriptor: {
+                            id: "idSettings2"
+                            name: "Settings 2 Window"
+                            initialMode: "full"
+                            initialEnable: false
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "white"
+                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                            }
+                        }
+                    ]
+                    # / END: splitter stack
+                }
+                # / END: plane
+            ]
+            # END: / plane array
+        }
+        # / END: Encapsule.code.app.viewLayout
+catch exception
+    alert("Load-time parse error in window manager layout declaration: #{exception}")

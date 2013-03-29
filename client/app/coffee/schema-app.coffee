@@ -38,21 +38,13 @@ class namespaceEncapsule_code_app.Schema
 
     constructor: ->
         try
-            document.title = "#{appName} v#{appVersion}"
-            bodyElement = $("body")
-
-            # SIMPLE TEST
-            geo = Encapsule.code.lib.geometry
-
-            Console.messageRaw "<h3>STARTING APPLICATION</h3>"
-
+            Console.messageRaw("<h3>#{appName} v#{appVersion} APPLICATION STARTING</h3>")
             Console.message "Initializing local URI routing:"
             Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
-
+            Console.message("Initializing the window manager:")            
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager Encapsule.code.app.viewLayout
-
             Encapsule.runtime.boot.phase0.spinner.cancel()
-
+            Console.message("#{appName} main application document.onLoad event handler exit error.")
 
         catch exception
             Console.messageError """#{appPackagePublisher} #{appName} v#{appVersion} APP INIT FAIL:: #{exception}"""

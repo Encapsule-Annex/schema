@@ -20,12 +20,12 @@
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
-namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.app.scdl or @Encapsule.code.app.scdl = {}
+Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
+Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
+Encapsule.code.app.scdl = Encapsule.code.app.scdl? and Encapsule.code.app.scdl or @Encapsule.code.app.scdl = {}
 
 
-class namespaceEncapsule_code_app_scdl.ObservableModelCatalogue
+class Encapsule.code.app.scdl.ObservableModelCatalogue
     constructor: ->
 
         @meta = ko.observable new Encapsule.code.app.scdl.ObservableCommonMeta()
