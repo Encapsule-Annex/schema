@@ -1,5 +1,5 @@
 
-body { margin: 0px; padding: 0px; background-color: white; }
+body { margin: 0px; padding: 0px; background-color: #003366; }
 
 table {border: 1px solid black; width: 100%;}
 th {border: 1px solid black; }
@@ -37,9 +37,14 @@ display: none; /* displayed only as needed */
 #idAppBootView { border: 1px solid black; margin: 10px; padding: 10px; font-family: Courier; font-size: 8pt; }
 
 #idSpinner { z-index: 200; }
-#idSpinnerCaption { z-index: 200; font-family: Verdana, Arial; font-weight: bold; font-size: 14pt; 
-color: white; position: fixed; top: 50%; left: 50%; text-align: center; text-shadow: black 0.01em 0.01em 0.7em ;
+
+#idSpinnerTitle { z-index: 200; font-family: Verdana, Arial; font-weight: bold; font-size: 14pt; 
+color: #00CCFF; position: fixed; top: 50%; left: 50%; text-align: center; text-shadow: black 0.1em 0.1em 0.3em ;
 }
+#idSpinnerCaption { z-index: 200; font-family: Verdana, Arial; font-weight: bold; font-size: 20pt; 
+color: #00CC00; position: fixed; top: 50%; left: 50%; text-align: center; text-shadow: black 0.1em 0.1em 0.3em ;
+}
+
 
 .classTitleSiteName { font-family: Courier; font-size: 16pt; font-weight: bold; fill: #CCCCCC; }
 

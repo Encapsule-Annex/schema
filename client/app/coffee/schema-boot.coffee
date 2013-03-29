@@ -28,22 +28,22 @@ Encapsule.code.app.bootDelay = 2000
 Encapsule.code.app.bootWatchdogTimeout = 500
 
 Encapsule.code.app.bootChromes = {
-    phase0 : { title: "#{appName} initializing...", backgroundColor: "white" }
-    phase1 : { title: undefined, backgroundColor: undefined }
-    phase2 : { title: undefined, backgroundColor: undefined }
-    phase2checking : { title: "#{appName} checking", backgroundColor: undefined }
-    phase2downloading: { title: "#{appName} updating", backgroundColor: undefined }
-    phase2progress: { title: "#{appName} update ", backgroundColor: "#0099CC" }
-    phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFFF00" }
-    phase2obsolete: { title: "#{appName} LOCKED", backgroundColor: "#FFCC00" }
-    phase2offline: { title: "#{appName} starting offline...", backgroundColor: "white" }
-    phase2cached: { title: "#{appName} installed! starting...", backgroundColor: "#00CC00" }
-    phase2noupdate: { title: "#{appName} starting... ", backgroundColor: "white" }
-    phase2updateready: { title: "#{appName} updated. rebooting...", backgroundColor: "#FFFF00" }
-    #phase2watchdog: { title: "#{appName} ?8|" }
-    #phase2watchdogNoop: { title: "#{appName} v#{appVersion}" }
-    #phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00" }
-    phase3: { title: "#{appName} v#{appVersion}", backgroundColor: "white" }
+    phase0 : { title: "#{appName} initializing...", backgroundColor: undefined, spinnerText: "Hello!" }
+    phase1 : { title: undefined, backgroundColor: undefined, spinnerText: "Booting..."  }
+    phase2 : { title: undefined, backgroundColor: undefined, spinnerText: "Checking for update..."  }
+    phase2checking : { title: "#{appName} checking", backgroundColor: undefined, spinnerText: undefined  }
+    phase2downloading: { title: "#{appName} updating", backgroundColor: "#004477", spinnerText: "Update..."  }
+    phase2progress: { title: "#{appName} update ", backgroundColor: "#004477", spinnerText: "Update "  }
+    phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFFF00", spinnerText: "Error!"  }
+    phase2obsolete: { title: "#{appName} LOCKED", backgroundColor: "#FFCC00", spinnerText: "LOCKED!"  }
+    phase2offline: { title: "#{appName} starting offline...", backgroundColor: "#005588", spinnerText: "#{appName} starting..."  }
+    phase2cached: { title: "#{appName} installed! starting...", backgroundColor: "#005588", spinnerText: "#{appName} installed!"  }
+    phase2noupdate: { title: "#{appName} starting... ", backgroundColor: "#005588", spinnerText: "#{appName} starting..."  }
+    phase2updateready: { title: "#{appName} updated. rebooting...", backgroundColor: "#005588", spinnerText: "#{appName} updated. Rebooting..."  }
+    #phase2watchdog: { title: "#{appName} ?8|", spinnerText: "hello"  }
+    #phase2watchdogNoop: { title: "#{appName} v#{appVersion}", spinnerText: "hello"  }
+    #phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00", spinnerText: "hello"  }
+    phase3: { title: "#{appName} v#{appVersion}", backgroundColor: undefined, spinnerText: "{appName} initializing..."  }
     }
 
 Encapsule.code.app.setBootChrome = (phase_, progress_) ->
@@ -55,8 +55,16 @@ Encapsule.code.app.setBootChrome = (phase_, progress_) ->
         if progress_? and progress_
             pageTitle += progress_
         document.title = pageTitle
+    
+    spinnerText = bootChrome.spinnerText? and bootChrome.spinnerText or undefined
+    if spinnerText and progress_? and progress_ then spinnerText += progress_
+
     if bootChrome.backgroundColor? and bootChrome.backgroundColor
         $("body").css( { backgroundColor: bootChrome.backgroundColor } )
+
+    if spinnerText? and spinnerText
+        Encapsule.code.app.spinnerText = spinnerText
+        
 
 
 phase0 = (bootstrapperOptions_) ->

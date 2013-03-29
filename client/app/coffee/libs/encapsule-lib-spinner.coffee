@@ -59,7 +59,7 @@ class namespaceEncapsule_code_lib_view.spinner
         if not @enabled
             options = options_? and options_ or @optionsDefault
             spinnerJN = $("#idSpinner")
-            spinnerJN.html($("""<div id="idSpinnerHostContainer"></div><div id="idSpinnerCaption"></div>"""))
+            spinnerJN.html($("""<div id="idSpinnerHostContainer"></div><div id="idSpinnerTitle">#{appPackagePublisher} #{appName} v#{appVersion}</div><div id="idSpinnerCaption"></div>"""))
             spinnerHostJN = $("#idSpinnerHostContainer")
             spinnerHostDN = document.getElementById("idSpinnerHostContainer")
             spinnerJN.hide().fadeIn(1000)
@@ -71,23 +71,34 @@ class namespaceEncapsule_code_lib_view.spinner
             border: 1px solid #006699;
             ">
             """))
+            spinnerTitleEl = $("#idSpinnerTitle")
+            titleOffsetRect = Encapsule.code.lib.geometry.offsetRectangle.createFromDimensions(600, 64)
+            spinnerTitleEl.css(
+                {
+                    marginLeft: titleOffsetRect.offset.left + "px"
+                    marginTop: titleOffsetRect.offset.top + 110 + "px"
+                    width: titleOffsetRect.rectangle.extent.width + "px"
+                    height: titleOffsetRect.rectangle.extent.height + "px"
+                    }
+                )
+            spinnerCaptionEl = $("#idSpinnerCaption")
+            captionOffsetRect = Encapsule.code.lib.geometry.offsetRectangle.createFromDimensions(600, 32)
+            spinnerCaptionEl.css(
+                {
+                    marginLeft: captionOffsetRect.offset.left + "px"
+
+                    marginTop: captionOffsetRect.offset.top + 123 + "px"
+                    width: captionOffsetRect.rectangle.extent.width + "px"
+                    height: captionOffsetRect.rectangle.extent.height + "px"
+                    }
+                )
             @enabled = true
 
             @captionUpdateTimer = setInterval( ( ->
 
                 spinnerCaptionEl = $("#idSpinnerCaption")
-                spinnerCaptionEl.html document.title
+                spinnerCaptionEl.html Encapsule.code.app.spinnerText? and Encapsule.code.app.spinnerText or ""
 
-                captionOffsetRect = Encapsule.code.lib.geometry.offsetRectangle.createFromDimensions(400, 32)
-
-                spinnerCaptionEl.css(
-                    {
-                        marginLeft: captionOffsetRect.offset.left + "px"
-                        marginTop: captionOffsetRect.offset.top + 90 + "px"
-                        width: captionOffsetRect.rectangle.extent.width + "px"
-                        height: captionOffsetRect.rectangle.extent.height + "px"
-                        }
-                    )
                 ), 500)
 
     cancel: =>
