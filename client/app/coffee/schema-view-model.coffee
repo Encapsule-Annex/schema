@@ -18,7 +18,10 @@
 #
 # schema-view-model.coffee
 #
-# This is the top-level Knockout.js view model for the Schema SCDL editor application.
+# class Encapsule.code.app.SchemaViewModel is a singleton object instantiated by
+# class Encapsule.code.app.SchemaApp's constructor. SchemaViewModel encapsulates
+# the overall model view of the Schema application and is itself a nested hiearchy
+# of ko.observable/observableArrays. Specific branches/leafs of this hierachy
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
@@ -31,84 +34,18 @@ namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.ap
 
 class Encapsule.code.app.SchemaViewModel
     constructor: ->
-        Console.message("Initializing #{appName} data model.")
+        # BEGIN: \ constructor scope
+        try
+            # BEGIN: \ constructor try scope
+            Console.message("Initializing #{appName} model view.")
 
-        @viewNavigator = ko.observable new Encapsule.code.app.SchemaViewModelNavigator()
-        @viewNavigatorMode = ko.observable "min"
-        @viewNavigatorEnable = ko.observable true
-
-        #
-        # These are the top-level data models for each of Schema's main application windows.
-        #      
-
-        @viewToolbar = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewToolbarMode = ko.observable "full" # == "full" | "min"
-        @viewToolbarEnable = ko.observable true
-
-        @viewFrameStack = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewFrameStackMode = ko.observable "full" # == "full | "min"
-        @viewFrameStackEnable = ko.observable true
-
-        @viewSvgPlane = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewSvgPlaneMode = ko.observable "full" # == "full | "min"
-        @viewSvgPlaneEnable = ko.observable true
-
-        @viewEdit1 = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewEdit1Mode = ko.observable "full" # == "full | "min"
-        @viewEdit1Enable = ko.observable true
-
-        @viewSelect1 = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewSelect1Mode = ko.observable "full" # == "full | "min"
-        @viewSelect1Enable = ko.observable true
-
-        @viewSelect2 = ko.observable new Encapsule.code.app.SchemaViewModelSvgPlane()
-        @viewSelect2Mode = ko.observable "full" # == "full | "min"
-        @viewSelect2Enable = ko.observable true
+            # The currently selected SCDL catalogue.
+            @currentScdlCatalogue = ko.observable new Encapsule.code.app.ObservableCatalogueShimHost
 
 
+            # END: / constructor try scope
+        catch exception
+            throw "SchemaViewModel constructor fail: #{exception}"
+        # END: / constructor scope
 
 
-        @windowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager( Encapsule.code.app.viewLayout )
-        
-
-
-
-
-
-
-
-
-
-###
-
-    """
-
-    <div id="idSchemaViewToolbar" class="classSchemaLayerWindow classLayerWindowBorder classRoundedCorners15" data-bind="visible: viewToolbarEnable, style: { width: cssToolbarWidth(), height: cssToolbarHeight(), marginLeft: cssToolbarOffsetLeft(), marginTop: cssToolbarOffsetTop() }">
-        Toolbar
-    </div>
-
-    <div  id="idSchemaViewSelect1" class="classSchemaLayerWindow classRoundedCorners15" data-bind="visible: viewSelect1Enable, style: { width: cssSelect1Width(), height: cssSelect1Height(), marginLeft: cssSelect1OffsetLeft(), marginTop: cssSelect1OffsetTop() }">
-        Select 1
-    </div>
-
-    <div id="idSchemaViewSelect2" class="classSchemaLayerWindow classRoundedCorners15" data-bind="visible: viewSelect2Enable, style: { width: cssSelect2Width(), height: cssSelect2Height(), marginLeft: cssSelect2OffsetLeft(), marginTop: cssSelect2OffsetTop() }">
-        Select 2
-    </div>
-
-    <div id="idSchemaViewFrameStack" class="classSchemaLayerWindow classRoundedCorners15"  data-bind="visible: viewFrameStackEnable, style: { width: cssFrameStackWidth(), height: cssFrameStackHeight(), marginLeft: cssFrameStackOffsetLeft(), marginTop: cssFrameStackOffsetTop() }">
-        Frame Stack
-    </div>
-
-    <div id="idSchemaViewSvgPlane" class="classSchemaLayerWindow classRoundedCorners15"  data-bind="visible: viewSvgPlaneEnable, style: { width: cssSvgPlaneWidth(), height: cssSvgPlaneHeight(), marginLeft: cssSvgPlaneOffsetLeft(), marginTop: cssSvgPlaneOffsetTop() }">
-        SVG Plane
-    </div>
-
-    <div  id="idSchemaViewEdit" class="classSchemaLayerWindow classRoundedCorners15" data-bind="visible: viewEdit1Enable, style: { width: cssEdit1Width(), height: cssEdit1Height(), marginLeft: cssEdit1OffsetLeft(), marginTop: cssEdit1OffsetTop() }">
-        Edit 1
-    </div>
-
-    """))
-
-###
-
-       

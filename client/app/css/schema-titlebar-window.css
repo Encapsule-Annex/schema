@@ -1,0 +1,21 @@
+/*
+    CSS3 for Schema titlebar window.
+*/
+
+#idTitlebarAppPublisher {
+font-size: 12pt;
+font-weight: normal;
+color: #666666;
+}
+#idTitlebarAppPublisher A {
+text-decoration: none;
+}
+#idTitlebarAppPublisher A:hover {
+text-decoration: underline;
+}
+
+#idTitlebarAppName {
+font-size: 12pt;
+font-weight: bold;
+color: #0099CC;
+}
