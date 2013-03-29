@@ -64,12 +64,7 @@ class namespaceEncapsule_code_lib_view.spinner
             spinnerHostDN = document.getElementById("idSpinnerHostContainer")
             spinnerJN.hide().fadeIn(1000)
             @embeddedSpinnerObject = new Spinner(options).spin(spinnerHostDN)
-            spinnerJN.append($("""<img id="idSpinnerCore" src="img/core-yellow-128x128.png"
-            style="margin-left: -66px; margin-top: -65px; 
-            opacity: 0.7; background-color: #0099CC;
-            -webkit-border-radius: 0.75em; -moz-border-radius: 0.75em; border-radius: 0.75em;
-            border: 1px solid #006699;
-            ">
+            spinnerJN.append($("""<img id="idSpinnerCore" src="img/core-yellow-128x128.png">
             """))
             spinnerTitleEl = $("#idSpinnerTitle")
             titleOffsetRect = Encapsule.code.lib.geometry.offsetRectangle.createFromDimensions(600, 64)
