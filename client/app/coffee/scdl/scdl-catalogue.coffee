@@ -108,19 +108,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCata
         <pre data-bind="text: toJSON"></pre>
     </div>
 
-    <h1>#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} (#{appReleasePhase})</h1>
-    <p>
-        [ Main: <a href="#{appPackagePublisherUrl}" title="Visit #{appPackagePublisher}">#{appPackagePublisher}</a> ]
-        [ Blog: <a href="#{appBlogUrl}" title="Visit the #{appBlogName}">#{appBlogName}</a> ]
-        [ GitHub: <a href="#{appGitHubRepoUrl}" title="#{appPackagePublisher} #{appName} Git Repo">#{appGitHubRepoName}</a> ]
-    </p>
-
-    <p><strong>Hello! This application is very much still under development and is not usable or understandable by anyone at this point.
-        If you're really curious check out the <a href="#{appBlogUrl}">#{appBlogName}</a> and follow
-        <a href="http://twitter.com/encapsule" title="@Encapsule">Encapsule Project on Twitter</a> for updates.
-        Thanks for your interest! - <a href="http://blog.encapsule.org/author/chrisrus/">ChrisRus</a>
-    </strong></p>
-
     <div class="classScdlCatalogueShimHost">
         <h1>SCDL Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></h1>
         <div data-bind="with: catalogueShim" class="classScdlCatalogueShim">

@@ -490,7 +490,7 @@ Encapsule.code.lib.kohelpers.implementation.synthesizeWindowManagerViewModelFrom
                                 <div class="classObservableWindowChrome" data-bind="attr: { id: idChrome }, style: { width: cssChromeWidth(), height: cssChromeHeight(), marginLeft: cssChromeMarginLeft(),  marginTop: cssChromeMarginTop(), opacity: cssChromeOpacity(), backgroundColor: cssChromeBackgroundColor() }"></div>
                                 <!-- END: / OBSERVABLE WINDOW CHROME LAYER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
                                 <!-- BEGIN: \\ OBSERVABLE WINDOW LAYER planeId=#{plane.id} windowId=#{windowDescriptor.id}  -->
-                                <div class="classObservableWindow" data-bind="attr: { id: id }, style: { width: cssWindowWidth(), height: cssWindowHeight(), marginLeft: cssWindowMarginLeft(), marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor(), border: cssWindowBorder(), padding: cssWindowPadding() }, event: { mouseover: onMouseOver, mouseout: onMouseOut }">
+                                <div class="classObservableWindow" data-bind="attr: { id: id }, style: { width: cssWindowWidth(), height: cssWindowHeight(), marginLeft: cssWindowMarginLeft(), marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor(), border: cssWindowBorder(), padding: cssWindowPadding(), overflow: cssWindowOverflow() }, event: { mouseover: onMouseOver, mouseout: onMouseOut }">
                           """
 
                     if windowDescriptor.MVVM? and windowDescriptor.MVVM.modelView? and windowDescriptor.MVVM.viewModelTemplateId?

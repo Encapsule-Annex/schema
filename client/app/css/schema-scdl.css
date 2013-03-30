@@ -11,7 +11,7 @@ CSS3 styles for SCDL object Knockout.js view models.
   margin: 0px; padding: 5px; font-family: Verdana, Arial; font-size: 10pt; background-color: white;  }
 
 
-.classScdlCatalogueShimHost { background-color: #FFFF00; border: 1px solid black; overflow: scroll;}
+.classScdlCatalogueShimHost { background-color: #FFFF00; border: 1px solid black;}
 .classScdlCatalogueShimHost DIV { margin: 2px; padding: 2px;  box-shadow: 1px 1px 1px #666666 inset; }
 
 .classScdlCatalogueShim {}

@@ -41,6 +41,9 @@ class namespaceEncapsule_code_app.Schema
             Console.messageRaw("<h3>#{appName} v#{appVersion} APPLICATION STARTING</h3>")
             Console.message "Initializing local URI routing:"
             Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
+
+            Console.messageRaw("<h3>INITIALIZING #{appName} MODEL VIEW</h3>")
+
             Console.message("Initializing the window manager:")            
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager Encapsule.code.app.viewLayout
             Encapsule.runtime.boot.phase0.spinner.cancel()

@@ -38,8 +38,6 @@ class Encapsule.code.app.viewmodels.SchemaTitleBarWindow
 
             @windowManagerCallbacks = windowManagerCallbacks_
 
-
-
             # END: / constructor try scope
         catch exception
             throw """SchemaTitleBarWindow construction fail: #{exception}"""
@@ -56,6 +54,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaTi
         <a href="#{appPackagePublisherUrl}" target="_blank" title="#{appPackagePublisher} Homepage">#{appPackagePublisher}</a>
     </span>
     <span id="idTitlebarAppName">#{appName} v#{appVersion}</span>
+    (#{appReleasePhase}) build: {#{appBuildId}} #{appBuildTime}
 </span>
 <br clear="all">
 """))

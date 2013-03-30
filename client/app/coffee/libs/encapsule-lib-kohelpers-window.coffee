@@ -93,6 +93,9 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                 @cssWindowBackgroundColor = ko.observable @sourceDescriptor.backgroundColor
                 @cssWindowBorder = ko.observable "#{@sourceDescriptor.globalWindowAttributes.windowBorderWidth}px solid #{@sourceDescriptor.globalWindowAttributes.windowBorderColor}"
                 @cssWindowPadding = ko.observable @sourceDescriptor.globalWindowAttributes.windowPadding + "px"
+                @cssWindowOverflow = ko.observable "hidden"
+                if @sourceDescriptor.overflow? and @sourceDescriptor.overflow
+                    @cssWindowOverflow(@sourceDescriptor.overflow)
 
                 # / END try scope
             catch exception

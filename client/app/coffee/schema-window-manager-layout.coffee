@@ -111,8 +111,8 @@ try
                         Q2WindowDescriptor: {                                            
                             id: "idFrameStack"                                           
                             name: "Frame Stack Window"
-                            initialMode: "min"
-                            initialEnable: false
+                            initialMode: "full"
+                            initialEnable: true
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#FFFF00"
                             modes: { full: { reserve: 300 }, min: { reserve: 32 } }
@@ -168,6 +168,7 @@ try
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#00DDFF"
+                            overflow: "auto"
                             modes: { full: { reserve: 800 }, min: { reserve: 200 } }
                             MVVM: {
                                 modelView: Encapsule.code.app.scdl.ObservableCatalogueShimHost
@@ -184,7 +185,7 @@ try
                         Q2WindowDescriptor: {                                            
                             id: "idEdit1"                                                
                             name: "Edit 1 Window"                                        
-                            initialMode: "min"
+                            initialMode: "full"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#99CC66"
@@ -199,7 +200,7 @@ try
                             id: "idSVG1"                                                
                             name: "SVG 1 Window"                                        
                             initialMode: "full"
-                            initialEnable: false
+                            initialEnable: true
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "white"
                             modes: { full: { reserve: 0 }, min: { reserve: 0 } }        
@@ -208,7 +209,7 @@ try
                             id: "idSVG2"                                                
                             name: "SVG 2 Window"                                        
                             initialMode: "full"
-                            initialEnable: false
+                            initialEnable: true
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "white"
                             modes: { full: { reserve: 0 }, min: { reserve: 0 } }        
@@ -217,7 +218,7 @@ try
     
                     ] # / END: splitter stack
                 },
-                # / END: plan
+                # / END: plane
             {
                 id: "idSchemaSettingsPlane"
                 name: "#{appName} Settings Plane"
