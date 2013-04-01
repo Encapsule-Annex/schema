@@ -25,6 +25,8 @@ namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Enc
 namespaceEncapsule_code_app_scdl = Encapsule.code.app.scdl? and Encapsule.code.app.scdl or @Encapsule.code.app.scdl = {}
 
 
+# Currently innermost observable container. This is what we serialize to JSON
+#
 class namespaceEncapsule_code_app_scdl.ObservableCatalogue
     constructor: ->
 
@@ -103,11 +105,6 @@ class namespaceEncapsule_code_app_scdl.ObservableCatalogueShimHost
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCatalogueShimHost", ( ->
     """
-    <div id="idJSONSourceViewer">
-        <strong>SCDL Catalogue <span id="idJSONSourceDownload" data-bind="html: saveJSONAsLinkHtml"></span></strong>
-        <pre data-bind="text: toJSON"></pre>
-    </div>
-
     <div class="classScdlCatalogueShimHost">
         <h1>SCDL Catalogue <button data-bind="click: reinitializeCatalogue" class="button small red">Re-initialize Catalogue</button></h1>
         <div data-bind="with: catalogueShim" class="classScdlCatalogueShim">
@@ -128,4 +125,13 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCata
         </div><!-- with: catalogueShim .classScdlCatalogueShim-->
     </div><!-- classScdlCatalogueShimHost -->
     """))
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ScdlCatalogueJSONSourceView", ( ->
+    """
+    <div id="idJSONSourceViewer">
+        <strong>SCDL Catalogue <span id="idJSONSourceDownload" data-bind="html: saveJSONAsLinkHtml"></span></strong>
+        <pre data-bind="text: toJSON"></pre>
+    </div>
+    """))
+
 

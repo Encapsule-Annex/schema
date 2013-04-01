@@ -56,8 +56,29 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
             @offsetRectangleWindow = ko.observable geo.offsetRectangle.create()
 
             @hostedModelView = ko.observable undefined
-            if sourceDescriptor_.MVVM? and sourceDescriptor_.MVVM.modelView? and sourceDescriptor_.MVVM.viewModelTemplateId?
-                hostedModelView = new sourceDescriptor_.MVVM.modelView()
+            if sourceDescriptor_.MVVM? and sourceDescriptor_.MVVM
+
+                MVVM = sourceDescriptor_.MVVM
+                if not MVVM.viewModelTemplateId? or not MVVM.viewModelTemplateId
+                    throw "Missing viewModelTemplateId specifiction in window layout declaration."
+
+                if not MVVM.modelView? and not MVVM.fnModelView?
+                    throw "You must specify either the class of the observable model view to instantiate, or a function to be called to retrieve the object instance."
+
+                if MVVM.modelView? and MVVM.fnModelView?
+                    throw "modelView and fnModel view are mutually exclusive and you specified both. Please specify one or the other."
+
+                hostedModelView = undefined
+
+                if MVVM.modelView
+                    hostedModelView = new sourceDescriptor_.MVVM.modelView
+
+                if MVVM.fnModelView
+                    hostedModelView = MVVM.fnModelView()
+
+                if not hostedModelView? or not hostedModelView
+                    throw "Unable to obtain object instance of the specified observable class to host in this window."
+
                 @hostedModelView(hostedModelView)
 
 

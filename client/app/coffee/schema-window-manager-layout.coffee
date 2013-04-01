@@ -28,7 +28,7 @@ namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.ap
 
 # Some constants used in the layout declaration below
 
-observableWindowDefaultOpacity = 0.65
+observableWindowDefaultOpacity = 0.85
 
 
 ###
@@ -171,8 +171,16 @@ try
                             overflow: "auto"
                             modes: { full: { reserve: 800 }, min: { reserve: 200 } }
                             MVVM: {
-                                modelView: Encapsule.code.app.scdl.ObservableCatalogueShimHost
-                                viewModelTemplateId: "idKoTemplate_ScdlCatalogueShimHost"
+                                # fnModelView and modelView are mutually exclusive. You may only specify one. Specifying both is an error.
+                                # if fnModelView is specified, window manager will call the specified function to obtain the observable object instance to host
+                                # if modelView is specified, window manager assumes it's the name of a class and calls new to create a new objet instance which it then hosts
+                                #
+                                fnModelView: -> Encapsule.runtime.app.SchemaScdlCatalogue
+                                # modelView: Encapsule.code.app.scdl.ObservableCatalogueShimHost
+
+                                # if either fnModelView or modelView are specified, viewModelTemplateId must be specified.
+                                #
+                                viewModelTemplateId: "idKoTemplate_ScdlCatalogueJSONSourceView"       # undefined #"idKoTemplate_ScdlCatalogueShimHost"
                                 }
                             }                                                            
                         Q2WindowDescriptor: undefined                                    

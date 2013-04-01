@@ -493,7 +493,7 @@ Encapsule.code.lib.kohelpers.implementation.synthesizeWindowManagerViewModelFrom
                                 <div class="classObservableWindow" data-bind="attr: { id: id }, style: { width: cssWindowWidth(), height: cssWindowHeight(), marginLeft: cssWindowMarginLeft(), marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor(), border: cssWindowBorder(), padding: cssWindowPadding(), overflow: cssWindowOverflow() }, event: { mouseover: onMouseOver, mouseout: onMouseOut }">
                           """
 
-                    if windowDescriptor.MVVM? and windowDescriptor.MVVM.modelView? and windowDescriptor.MVVM.viewModelTemplateId?
+                    if windowDescriptor.MVVM? and windowDescriptor.MVVM.viewModelTemplateId? and (windowDescriptor.MVVM.modelView? or windowDescriptor.MVVM.fnModelView?)
                         htmlHead += """
                                     <!-- BEGIN: \\ HOSTED OBSERVABLE WINDOW planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
                                     <span data-bind="with: hostedModelView">

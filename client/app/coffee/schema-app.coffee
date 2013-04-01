@@ -44,8 +44,12 @@ class namespaceEncapsule_code_app.Schema
 
             Console.messageRaw("<h3>INITIALIZING #{appName} MODEL VIEW</h3>")
 
+            Console.message("Initializing default empty SCDL catalogue:");
+            Encapsule.runtime.app.SchemaScdlCatalogue = new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
+
             Console.message("Initializing the window manager:")            
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager Encapsule.code.app.viewLayout
+
             Encapsule.runtime.boot.phase0.spinner.cancel()
             Console.message("#{appName} main application document.onLoad event handler exit error.")
 
