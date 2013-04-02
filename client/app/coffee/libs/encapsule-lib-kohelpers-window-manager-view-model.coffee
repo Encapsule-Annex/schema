@@ -45,11 +45,6 @@ Encapsule.code.lib.kohelpers.implementation.SynthesizeWindowManagerViewModelFrom
         <div id="#{layout_.id}" class="classObservableWindowManager" onclick="Console.show()" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }"></div>
         <!-- END: / WINDOW MANAGER BACKGROUND LAYER -->
         <!-- BEGIN: \\ WINDOW MANAGER CONTROL PANEL WINDOW -->
-        <!--
-        <span class="classObservableWindowManagerControlPanelHost" data-bind="with: controlPanelWindow">
-            <span data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManagerObservableWindowHost' }"></span>
-        </span>
-        -->
         <!-- END: / WINDOW MANAGER CONTROL PANEL WINDOW -->
         """
 
