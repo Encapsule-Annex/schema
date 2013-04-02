@@ -232,12 +232,13 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
                             windowManagerClientMargins = geo.margins.createUniform(@windowManagerPadding())
                             windowManagerClientFrame = geo.frame.createFromOffsetRectangleWithMargins(windowManagerOffsetRectangle, windowManagerClientMargins)
-                            windowManagerClientOffsetRectangle = windowManagerClientFrame.view
+                            windowManagerClientOffsetRectangleMinusReserve = Encapsule.code.lib.js.clone windowManagerClientFrame.view
 
                             for plane in @planes
                                 # \ BEGIN: plane scope
                                 try
                                     # \ BEGIN: try plane scope
+                                    windowManagerClientOffsetRectangle = windowManagerClientOffsetRectangleMinusReserve
                                     splitters = plane.splitterStack
                                     for split in splitters
                                         # \ BEGIN: split scope
@@ -250,6 +251,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                                         catch exception
                                             throw "Splitter #{split.id} fail: #{exception}"
                                         # / END: split scope
+                                     if plane.windowManagerReservePlane? and (plane.windowManagerReservePlane == true)
+                                         windowManagerClientOffsetRectangleMinusReserve = windowManagerClientOffsetRectangle
                                      # / END: try plane scope
                                 catch exception
                                     throw "Plane #{plane.id} fail: #{exception}"
@@ -283,15 +286,21 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 #
     
                 try
+                    # Add the special windowManagerReservePlane: true window manager control panel plane to the top
+                    # of the plane array.
+                    
+                    @layout.planes.unshift Encapsule.code.lib.kohelpers.implementation.WindowManagerControlPanelPlane
+ 
+
                     # @@@
                     # \ BEGIN: try scope (note extensive error checking to catch errors in the input layout declaration)
                     planeIndex = 0
-                    for planeLayout in layout_.planes
+                    for planeLayout in @layout.planes
                         # \ BEGIN: planeLayout scope
                         try
                             # @@@
                             # BEGIN: planeLayout try scope
-                            planeRuntime = { id: planeLayout.id, name: planeLayout.name, splitterStack: [] }
+                            planeRuntime = { id: planeLayout.id, name: planeLayout.name, splitterStack: [], windowManagerReservePlane: planeLayout.windowManagerReservePlane }
                             splitIndex = 0
                             for split in planeLayout.splitterStack
                                 # \ BEGIN: split scope
@@ -359,8 +368,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 Encapsule.code.app.setBootChrome("schemaViewModel")
                 try
                     Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , =>
-                        Encapsule.code.lib.kohelpers.implementation.synthesizeWindowManagerViewModelFromLayoutDeclaration(layout_)
-                    windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(layout_.id)
+                        Encapsule.code.lib.kohelpers.implementation.SynthesizeWindowManagerViewModelFromLayoutDeclaration(@layout)
+                    windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(@layout.id)
                     Console.message("Okay")
                 catch exception
                     throw "View template librarian init failure: #{exception}"
@@ -376,10 +385,10 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             Console.messageRaw "<h3>BINDING MODEL-VIEW/VIEW-MODEL (MVVM) VIA KNOCKOUT.JS</h3>"
             Encapsule.code.app.setBootChrome("schemaBind")
             try
-                ko.applyBindings @ , windowManagerHtmlViewRootDocumentElement # <- THIS IS FUCKING AWESOME
+                ko.applyBindings @ , windowManagerHtmlViewRootDocumentElement
                 Console.message("#{layout_.id} #{layout_.name} Model-View/View-Model (MVVM) binding completed.")
             catch exception
-                throw """Failed MVVM binding. Knockout.js is upset: #{exception}"""
+                throw """MVVM binding operation failed. Knockout.js reports: #{exception}"""
 
             #
             # At this point the DOM is wired to the window manager's data model via Knockout.js.
@@ -430,99 +439,5 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
     # / end of class
 
-
-
-# Called from the constructor of ObservableWindowManager to synthesize the entire static view model template
-# string from the specified layout JS object.
-
-Encapsule.code.lib.kohelpers.implementation.synthesizeWindowManagerViewModelFromLayoutDeclaration = (layout_) =>
-
-    htmlHead = """
-        <!-- BEGIN: \\ WINDOW MANAGER GLASS BACKGROUND LAYER -->
-        <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
-        <!-- END: / WINDOW MANAGER GLASS BACKGROUND LAYER -->
-        <!-- BEGIN: \\ WINDOW MANAGER BACKGROUND LAYER -->
-        <div id="#{layout_.id}" class="classObservableWindowManager" onclick="Console.show()" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }"></div>
-        <!-- END: / WINDOW MANAGER BACKGROUND LAYER -->
-        <!-- BEGIN: \\ WINDOW MANAGER CONTROL PANEL WINDOW -->
-        <!-- 
-        <span class="classObservableWindowManagerControlPanelHost" data-bind="with: controlPanelWindow">
-            <span data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManagerObservableWindowHost' }"></span>
-       </span>
-       -->
-       <!-- END: / WINDOW MANAGER CONTROL PANEL WINDOW -->
-       """
-
-    htmlTail = """
-        """
-
-    # Enumerate the plane objects defined in the layout.
-    windowNumber = 0
-    for plane in layout_.planes
-
-        htmlHead += """
-             <!-- BEGIN: \\ LAYOUT PLANE id=#{plane.id} -->
-             """
-
-        htmlTail += """
-            <!-- END: / LAYOUT PLANE id=#{plane.id} -->
-            """
-
-        # Enumerate the splitter objects defined in the plane.
-        for splitter in plane.splitterStack
-
-            # A splitter may contain one or two observable window declarations.
-            # All we care about here is enumerating the windows so that we can
-            # generate the appropriate view model template for each of them.
-
-            for splitHalf in [ "Q1WindowDescriptor", "Q2WindowDescriptor" ]
-                windowDescriptor = splitter[splitHalf]
-                if windowDescriptor?
-                    htmlHead += """
-                        <!-- BEGIN: \\ OBSERVABLE WINDOW HOST planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                        <span data-bind="with: observableWindows()[#{windowNumber}]">
-                            <! -- BEGIN: OBSERVABLE WINDOW HOST CONTAINER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                            <span data-bind="if: windowInDOM">
-                                <! -- BEGIN: \\ OBSERVABLE WINDOW HOST LAYER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                                <div class="classObservableWindowHost" data-bind="attr: { id: idHost }, style: { width: cssHostWidth(), height: cssHostHeight(), marginLeft: cssHostMarginLeft(), marginTop: cssHostMarginTop(), opacity: cssHostOpacity(), backgroundColor: cssHostBackgroundColor() }"></div>
-                                <!-- END: / OBSERVABLE WINDOW HOST LAYER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                                <! -- BEGIN: \\ OBSERVABLE WINDOW CHROME LAYER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                                <div class="classObservableWindowChrome" data-bind="attr: { id: idChrome }, style: { width: cssChromeWidth(), height: cssChromeHeight(), marginLeft: cssChromeMarginLeft(),  marginTop: cssChromeMarginTop(), opacity: cssChromeOpacity(), backgroundColor: cssChromeBackgroundColor() }"></div>
-                                <!-- END: / OBSERVABLE WINDOW CHROME LAYER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                                <!-- BEGIN: \\ OBSERVABLE WINDOW LAYER planeId=#{plane.id} windowId=#{windowDescriptor.id}  -->
-                                <div class="classObservableWindow" data-bind="attr: { id: id }, style: { width: cssWindowWidth(), height: cssWindowHeight(), marginLeft: cssWindowMarginLeft(), marginTop: cssWindowMarginTop(), opacity: cssWindowOpacity(), backgroundColor: cssWindowBackgroundColor(), border: cssWindowBorder(), padding: cssWindowPadding(), overflow: cssWindowOverflow() }, event: { mouseover: onMouseOver, mouseout: onMouseOut }">
-                          """
-
-                    if windowDescriptor.MVVM? and windowDescriptor.MVVM.viewModelTemplateId? and (windowDescriptor.MVVM.modelView? or windowDescriptor.MVVM.fnModelView?)
-                        htmlHead += """
-                                    <!-- BEGIN: \\ HOSTED OBSERVABLE WINDOW planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                                    <span data-bind="with: hostedModelView">
-                                        <span data-bind="template: { name: '#{windowDescriptor.MVVM.viewModelTemplateId}' }"></span>
-                                    </span>
-                                    <!-- END: / HOSTED OBSERVABLE WINDOW planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                            """
-                        # END: / if
-
-                    htmlHead += """
-                                    <b>Toggle [ <span data-bind="event: { click: toggleWindowMode }, text: windowMode" style="color: blue; font-weight: bold; text-decoration: underline;"></span> ]</b>
-                                    ObservableWindow: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
-                         """
-
-                    htmlHead += """
-                                </div>
-                                <!-- END: / OBSERVABLE WINDOW LAYER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                            </span>
-                            <!-- END: / OBSERVABLE WINDOW HOST CONTAINER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                        </span>
-                        <! -- END: / OBSERVABLE WINDOW HOST planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                        """
-                    windowNumber++
-                    # END : / if windowDescriptor_?
-                # END: / for splitHalf
-            # END: / for splitter
-        # END: / for plane
-
-    return htmlHead + htmlTail
-    # / END: function scope
 
 

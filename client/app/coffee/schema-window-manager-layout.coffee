@@ -232,7 +232,7 @@ try
                 name: "#{appName} Settings Plane"
                 splitterStack: [
                     {
-                        id: "idSetttingsPLaneSplitter0"
+                        id: "idSetttingsPlaneSplitter0"
                         name: "what ever some descriptive text"
                         type: "horizontal"
                         Q1WindowDescriptor: {
@@ -241,23 +241,16 @@ try
                             initialMode: "full"
                             initialEnable: false
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "white"
-                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                            backgroundColor: undefined
+                            modes: { full: { reserve: 128 }, min: { reserve: 64 } }
                             }
-                        Q2WindowDescriptor: {
-                            id: "idSettings2"
-                            name: "Settings 2 Window"
-                            initialMode: "full"
-                            initialEnable: false
-                            opacity: observableWindowDefaultOpacity
-                            backgroundColor: "white"
-                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
-                            }
+                        Q2WindowDescriptor: undefined
                         }
                     ]
                     # / END: splitter stack
                 }
                 # / END: plane
+
             ]
             # END: / plane array
         }

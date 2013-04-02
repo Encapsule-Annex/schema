@@ -28,12 +28,12 @@ Encapsule.code.app.bootDelay = 2000
 Encapsule.code.app.bootWatchdogTimeout = 500
 
 Encapsule.code.app.bootChromes = {
-    phase0 : { title: "#{appName} initializing...", backgroundColor: undefined, spinnerText: "hello!" }
-    phase1 : { title: undefined, backgroundColor: undefined, spinnerText: "booting"  }
+    phase0 : { title: "#{appName} initializing...", backgroundColor: undefined, spinnerText: "Hello!" }
+    phase1 : { title: undefined, backgroundColor: undefined, spinnerText: "Booting"  }
     phase2 : { title: undefined, backgroundColor: undefined, spinnerText: "Checking for update"  }
     phase2checking : { title: "#{appName} checking", backgroundColor: undefined, spinnerText: undefined  }
-    phase2downloading: { title: "#{appName} updating", backgroundColor: "#004477", spinnerText: "updating"  }
-    phase2progress: { title: "#{appName} update ", backgroundColor: "#004477", spinnerText: "update "  }
+    phase2downloading: { title: "#{appName} updating", backgroundColor: "#004477", spinnerText: "Updating"  }
+    phase2progress: { title: "#{appName} update ", backgroundColor: "#004477", spinnerText: "Update "  }
     phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFFF00", spinnerText: "Error!"  }
     phase2obsolete: { title: "#{appName} LOCKED", backgroundColor: "#FFCC00", spinnerText: "LOCKED!"  }
     phase2offline: { title: "#{appName} starting offline...", backgroundColor: "#005588", spinnerText: "#{appName} starting"  }
@@ -44,11 +44,11 @@ Encapsule.code.app.bootChromes = {
     #phase2watchdogNoop: { title: "#{appName} v#{appVersion}", spinnerText: "hello"  }
     #phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00", spinnerText: "hello"  }
     phase3: { title: "#{appName} v#{appVersion}", backgroundColor: undefined, spinnerText: "#{appName} starting"  }
-    schemaStart : {title: undefined, backgroundColor: undefined, spinnerText: "starting window manager" }
-    schemaModelView : {title: undefined, backgroundColor: undefined, spinnerText: "building model view" }
-    schemaViewModel : {title: undefined, backgroundColor: undefined, spinnerText: "building view model" }
-    schemaBind : {title: undefined, backgroundColor: undefined, spinnerText: "binding data model" }
-    schemaRender : {title: undefined, backgroundColor: undefined, spinnerText: "rending layout" }
+    schemaStart : {title: undefined, backgroundColor: undefined, spinnerText: "Starting window manager" }
+    schemaModelView : {title: undefined, backgroundColor: undefined, spinnerText: "Building model view" }
+    schemaViewModel : {title: undefined, backgroundColor: undefined, spinnerText: "Building view model" }
+    schemaBind : {title: undefined, backgroundColor: undefined, spinnerText: "Binding data model" }
+    schemaRender : {title: undefined, backgroundColor: undefined, spinnerText: "Rendering layout" }
     schemaWelcome : {title: undefined, backgroundColor: undefined, spinnerText: "Welcome to #{appName}!" }
     }
 
