@@ -116,23 +116,6 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 @cssWindowManagerMarginLeft = ko.computed => Math.round(@windowManagerOffsetRectangle().offset.left) + "px"
                 @cssWindowManagerMarginTop = ko.computed => Math.round(@windowManagerOffsetRectangle().offset.top) + "px"
 
-                @controlPanelWindowDescriptor = {
-                    id: "#{layout_.id}ControlPanel"
-                    name: "#{layout_.name} Control Panel"
-                    initialMode: "min"
-                    initialEnable: true
-                    opacity: 0.1
-                    backgroundColor: "#FFFF00"
-                    modes: { min: {reserve: 20 } }
-                    globalWindowAttributes: Encapsule.code.lib.js.clone(layout_.globalWindowAttributes)
-                    }
-
-                @controlPanelWindowDescriptor.globalWindowAttributes.hostWindowPadding = 1
-                @controlPanelWindowDescriptor.globalWindowAttributes.hostWindowOpacity = 0.3
-                @controlPanelWindowDescriptor.globalWindowAttributes.chromeWindowPadding = 1
-                @controlPanelWindowDescriptor.globalWindowAttributes.chromeWindowOpacity = 0.1
-                @controlPanelWindow = ko.observable new Encapsule.code.lib.kohelpers.ObservableWindowHost(@controlPanelWindowDescriptor)
-
                 @observableWindows = ko.observableArray []
                 # / END: observable/computed try scope
 
@@ -171,11 +154,6 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         return;
 
                     @documentOffsetRectangle = geo.offsetRectangle.createFromDimensions(width, height)
-
-                    horizontalCenter = (width / 2) - 250
-                    marginsControlPanel = geo.margins.createForPixelDimensions(0, horizontalCenter, height - 32, horizontalCenter)
-                    frameControlPanel = geo.frame.createFromOffsetRectangleWithMargins(@documentOffsetRectangle, marginsControlPanel)
-                    @controlPanelWindow().setOffsetRectangle(frameControlPanel.view)
 
                     marginsGlass = geo.margins.createUniform(@glassMargin())
                     frameGlass = geo.frame.createFromOffsetRectangleWithMargins(@documentOffsetRectangle, marginsGlass)

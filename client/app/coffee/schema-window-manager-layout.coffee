@@ -88,13 +88,13 @@ try
         #
         globalWindowAttributes: {
             hostWindowBackgroundColor: "white"
-            hostWindowOpacity: 0.4
-            hostWindowPadding: 1
+            hostWindowOpacity: 0.1
+            hostWindowPadding: 2
             chromeWindowBackgroundColor: "#666666"
             chromeWindowOpacity: 0.4
             chromeWindowPadding: 1
+            windowPadding: 1
             windowBorderWidth: 1
-            windowPadding: 0
             windowBorderColor: "black"
             }
 
@@ -111,7 +111,7 @@ try
                         Q2WindowDescriptor: {                                            
                             id: "idFrameStack"                                           
                             name: "Frame Stack Window"
-                            initialMode: "full"
+                            initialMode: "min"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#FFFF00"
@@ -129,7 +129,7 @@ try
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "white"
-                            modes: { full: { reserve: 64 }, min: { reserve: 32 } }      
+                            modes: { full: { reserve: 32 }, min: { reserve: 26 } }      
                             MVVM: {
                                 modelView: Encapsule.code.app.viewmodels.SchemaTitleBarWindow
                                 viewModelTemplateId: "idKoTemplate_SchemaTitleBarWindow"
@@ -193,7 +193,7 @@ try
                         Q2WindowDescriptor: {                                            
                             id: "idEdit1"                                                
                             name: "Edit 1 Window"                                        
-                            initialMode: "full"
+                            initialMode: "min"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#99CC66"

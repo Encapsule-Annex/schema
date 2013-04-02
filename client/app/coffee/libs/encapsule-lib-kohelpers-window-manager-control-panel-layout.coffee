@@ -46,10 +46,10 @@ Encapsule.code.lib.kohelpers.implementation.WindowManagerControlPanelPlane = {
             Q1WindowDescriptor: {
                 id: "idWindowManagerControlPanel"
                 name: "#{appName} Window Manager Control Panel"
-                initialMode: "min"
+                initialMode: "full"
                 initialEnable: true
                 opacity: 0.6
-                backgroundColor: "#FFCC00"
+                backgroundColor: "#00CC99"
                 modes: { full: { reserve: 16 }, min: { reserve: 4 } }
                 }
             Q2WindowDescriptor: undefined
