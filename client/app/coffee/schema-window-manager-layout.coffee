@@ -131,6 +131,7 @@ try
                             name: "#{appName} Title Bar"                                       
                             initialMode: "min"
                             initialEnable: true
+                            overflow: "hidden"
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#66CC00"
                             modes: { full: { reserve: 32 }, min: { reserve: 32 } }      

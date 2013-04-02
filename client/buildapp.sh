@@ -25,11 +25,11 @@ app_uuid="56611225-be91-40cf-b9b8-5c7b8a6c6f3d"
 # be refreshed in order to provide meaning to server logfiles (please).
 #
 
-app_version="0.841"
+app_version="0.842"
 app_release_name="Gongga Shan"
 app_release_fun_url="http://www.geolocation.ws/v/P/34381835/gongga-shan-seen-from-hailuogou-glacier/en"
 app_version_uuid="42c28c61-da0d-4abd-9821-86e57c129239"
-app_release_phase="unreleased work in progress"
+app_release_phase="unreleased"
 
 app_builder_email=$*
 app_build_host=`hostname`

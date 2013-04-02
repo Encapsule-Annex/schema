@@ -4,11 +4,11 @@
 
 #idTitlebarAppPublisher {
 font-size: 12pt;
-font-weight: normal;
-color: #666666;
+font-weight: bold;
 }
 #idTitlebarAppPublisher A {
 text-decoration: none;
+color: #0099CC;
 }
 #idTitlebarAppPublisher A:hover {
 text-decoration: underline;
@@ -17,5 +17,5 @@ text-decoration: underline;
 #idTitlebarAppName {
 font-size: 12pt;
 font-weight: bold;
-color: #0099CC;
+color: #006699;
 }
