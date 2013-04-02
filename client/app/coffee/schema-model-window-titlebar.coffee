@@ -49,7 +49,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaTi
 <a href="#{appPackagePublisherUrl}" target="_blank" title="#{appPackagePublisher} Homepage">
     <img src="img/core-seablue-32x32.png" style="width: 32px; height: 32px; margin-right: 5px; border: none; float: left;">
 </a>
-<span style="float: left; margin-top: 10px;">
+<span style="float: left; margin-top: 8px;">
     <span id="idTitlebarAppPublisher">
         <a href="#{appPackagePublisherUrl}" target="_blank" title="#{appPackagePublisher} Homepage">#{appPackagePublisher}</a>
     </span>

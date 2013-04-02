@@ -28,7 +28,7 @@ namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.ap
 
 # Some constants used in the layout declaration below
 
-observableWindowDefaultOpacity = 0.85
+observableWindowDefaultOpacity = 0.75
 
 
 ###
@@ -52,7 +52,7 @@ try
         # The color of the page background may optionally be set via bodyPageBackgroundColor and will be visible
         # if glassMargin > 0 or glassOpacity < 1
         #
-        pageBackgroundColor: "#00AA66" # (defaults to "white" if undefined)
+        pageBackgroundColor: "white" # (defaults to "white" if undefined)
 
         #
         # WINDOW MANAGER "GLASS" ATTRIBUTES
@@ -64,8 +64,7 @@ try
         glassOpacity: 0.5 # defaults to 1 if undefined
         glassBackgroundColor: undefined
         glassMargin: 0 # document edge to glass edge (default is 10)
-        glassBackgroundImage: "Aspen_trees_2.jpg" # (default is undefined)
-        #glassBackgroundImage: "fire-on-the-mountain.jpg"
+        glassBackgroundImage: "brushed-metal-1920x1080.jpg" # (default is undefined)
     
         #
         # WINDOW MANAGER BASE PLANE ATTRIBUTES
@@ -76,7 +75,7 @@ try
         #
         windowManagerBackgroundColor: "black" # defaults to "white" if undefined
         windowManagerMargin: 3  # glass edge to window manager edge (defaults to 10 if undefined)
-        windowManagerPadding: 3  # window manager edge to plane edge (defaults to 10 if undefined)
+        windowManagerPadding: 6  # window manager edge to plane edge (defaults to 10 if undefined)
         windowManagerOpacity: 0.2 # (defaults to 1 if undefined)
 
         #
@@ -104,18 +103,23 @@ try
                 name: "#{appName} v#{appVersion} Default View Plane"
                 splitterStack: [
                     {
-                        id: "idFrameStackSplitter"                                                                
-                        name: "Frame Stack Split"                                        
+                        id: "idCatlogueJSONSplitter"                                                                
+                        name: "Catlogue JSON Split"                                        
                         type: "vertical"                                                 
                         Q1WindowDescriptor: undefined                                    
                         Q2WindowDescriptor: {                                            
-                            id: "idFrameStack"                                           
-                            name: "Frame Stack Window"
-                            initialMode: "min"
+                            id: "idCatalogueJSON"                                           
+                            name: "SCDL Catalogue JSON"
+                            initialMode: "full"
                             initialEnable: true
+                            overflow: "auto"
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#FFFF00"
-                            modes: { full: { reserve: 300 }, min: { reserve: 32 } }
+                            backgroundColor: "#00CCFF"
+                            modes: { full: { reserve: 400 }, min: { reserve: 128 } }
+                            MVVM: {
+                                fnModelView: -> Encapsule.runtime.app.SchemaScdlCatalogue
+                                viewModelTemplateId: "idKoTemplate_ScdlCatalogueJSONSourceView"
+                                }
                             }
                         },
                     {                                                                    
@@ -128,8 +132,8 @@ try
                             initialMode: "min"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "white"
-                            modes: { full: { reserve: 32 }, min: { reserve: 26 } }      
+                            backgroundColor: "#66CC00"
+                            modes: { full: { reserve: 32 }, min: { reserve: 32 } }      
                             MVVM: {
                                 modelView: Encapsule.code.app.viewmodels.SchemaTitleBarWindow
                                 viewModelTemplateId: "idKoTemplate_SchemaTitleBarWindow"
@@ -169,7 +173,7 @@ try
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#00DDFF"
                             overflow: "auto"
-                            modes: { full: { reserve: 800 }, min: { reserve: 200 } }
+                            modes: { full: { reserve: 600 }, min: { reserve: 200 } }
                             MVVM: {
                                 # fnModelView and modelView are mutually exclusive. You may only specify one. Specifying both is an error.
                                 # if fnModelView is specified, window manager will call the specified function to obtain the observable object instance to host
@@ -177,10 +181,7 @@ try
                                 #
                                 fnModelView: -> Encapsule.runtime.app.SchemaScdlCatalogue
                                 # modelView: Encapsule.code.app.scdl.ObservableCatalogueShimHost
-
-                                # if either fnModelView or modelView are specified, viewModelTemplateId must be specified.
-                                #
-                                viewModelTemplateId: "idKoTemplate_ScdlCatalogueJSONSourceView"       # undefined #"idKoTemplate_ScdlCatalogueShimHost"
+                                viewModelTemplateId: "idKoTemplate_ScdlCatalogueShimHost"
                                 }
                             }                                                            
                         Q2WindowDescriptor: undefined                                    
@@ -193,35 +194,12 @@ try
                         Q2WindowDescriptor: {                                            
                             id: "idEdit1"                                                
                             name: "Edit 1 Window"                                        
-                            initialMode: "min"
+                            initialMode: "full"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#99CC66"
-                            modes: { full: { reserve: 128 }, min: { reserve: 32 } }        
+                            modes: { full: { reserve: 0 }, min: { reserve: 32 } }        
                             }                                                            
-                        }
-                    {
-                        id: "idSVGSplitter"
-                        name: "SVG Split"
-                        type: "vertical"
-                        Q1WindowDescriptor : {
-                            id: "idSVG1"                                                
-                            name: "SVG 1 Window"                                        
-                            initialMode: "full"
-                            initialEnable: true
-                            opacity: observableWindowDefaultOpacity
-                            backgroundColor: "white"
-                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }        
-                            }
-                        Q2WindowDescriptor: {
-                            id: "idSVG2"                                                
-                            name: "SVG 2 Window"                                        
-                            initialMode: "full"
-                            initialEnable: true
-                            opacity: observableWindowDefaultOpacity
-                            backgroundColor: "white"
-                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }        
-                            }
                         }
     
                     ] # / END: splitter stack

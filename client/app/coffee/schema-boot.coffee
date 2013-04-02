@@ -25,7 +25,7 @@ namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code 
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 
 Encapsule.code.app.bootDelay = 2000
-Encapsule.code.app.bootWatchdogTimeout = 500
+Encapsule.code.app.bootWatchdogTimeout = 1500
 
 Encapsule.code.app.bootChromes = {
     phase0 : { title: "#{appName} initializing...", backgroundColor: undefined, spinnerText: "Hello!" }
