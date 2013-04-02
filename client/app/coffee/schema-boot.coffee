@@ -25,7 +25,7 @@ namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code 
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 
 Encapsule.code.app.bootDelay = 2000
-Encapsule.code.app.bootWatchdogTimeout = 1500
+Encapsule.code.app.bootWatchdogTimeout = 5000
 
 Encapsule.code.app.bootChromes = {
     phase0 : { title: "#{appName} initializing...", backgroundColor: undefined, spinnerText: "Hello!" }
@@ -95,6 +95,7 @@ phase0 = (bootstrapperOptions_) ->
     phase0Out.spinner.draw()
 
     Encapsule.code.app.setBootChrome("phase0")
+    Console.log("#{appName} v#{appVersion} starting boot phase 0")
 
     Console.init()
     Console.messageRaw("""
@@ -132,6 +133,7 @@ phase1 = (bootstrapperOptions_) ->
     phase1Out.browserVersion = browserVersion = browser? and browser and browser.version? and browser.version or "unknown"
 
     Encapsule.code.app.setBootChrome("phase1")
+    Console.log("#{appName} v#{appVersion} starting boot phase 1")
 
     Console.messageRaw("<h3>BOOTSTRAP PHASE 1 : browser check</h3>")
 
@@ -166,6 +168,8 @@ phase2 = (bootstrapperOptions_) ->
     phase2Out.appCacheTerminalState = undefined
 
     Encapsule.code.app.setBootChrome("phase2")
+    Console.log("#{appName} v#{appVersion} starting boot phase 2 (application cache)")
+
 
     # Note to self: This entire subsystem will be completely redesigned using Schema v1.0.
 
@@ -175,8 +179,10 @@ phase2 = (bootstrapperOptions_) ->
     appCacheCallbacks = {
         onChecking: ->
             Encapsule.code.app.setBootChrome("phase2checking")
+            Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache CHECKING")
         , onDownloading: ->
             Encapsule.code.app.setBootChrome("phase2downloading")
+            Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache DOWNLOADING")
             Console.messageEnd("<strong>Updating</strong>")
             Console.messageStart("files ")
         , onProgress: (fileCount_) ->
@@ -185,6 +191,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageRaw(".")
         , onError: ->
             Encapsule.code.app.setBootChrome("phase2error")
+            Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache ERROR")
             phase2Out.appCacheMonitorState = "error"
             phase2Out.appCacheTerminalState = "error"
             Console.messageEnd(" <strong>OH SNAP!</strong>")
@@ -195,6 +202,7 @@ phase2 = (bootstrapperOptions_) ->
             throw "Manually refresh your browser to resolve. See log messages above for additional information."
         , onObsolete: ->
             Encapsule.code.app.setBootChrome("phase2obsolete")
+            Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache OBSOLETE")
             phase2Out.appCacheMonitorState = "locked (obsolete)"
             phase2Out.appCacheTerminalState = "locked (obsolete)"
             Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
@@ -205,6 +213,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.messageError "#{appName} has been locked by Encpausle Project."
         , onOffline: ->
             Encapsule.code.app.setBootChrome("phase2offline")
+            Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache OFFLINE")
             phase2Out.appCacheMonitorState = "offline"
             phase2Out.appCacheTerminalState = "locked (obsolete)"
             Console.messageEnd("<strong>OFFLINE</strong>");
@@ -213,6 +222,7 @@ phase2 = (bootstrapperOptions_) ->
             setTimeout( ( -> phase3(bootstrapperOptions_) ), Encapsule.code.app.bootDelay)
         , onCached: (fileCount_) ->
             Encapsule.code.app.setBootChrome("phase2cached")
+            Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache CACHED")
             phase2Out.appCacheMonitorState = "cached"
             phase2Out.appCacheTerminalState = "cached"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
@@ -222,6 +232,7 @@ phase2 = (bootstrapperOptions_) ->
                 , Encapsule.code.app.bootDelay
         , onNoUpdate: ->
             Encapsule.code.app.setBootChrome("phase2noupdate")
+            Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache NOUPDATE")
             phase2Out.appCacheMonitorState = "noupdate"
             phase2Out.appCacheTerminalState = "noupdate"
             Console.messageEnd("<strong>No update<strong>")
@@ -229,6 +240,7 @@ phase2 = (bootstrapperOptions_) ->
             setTimeout( ( -> phase3(bootstrapperOptions_) ), Encapsule.code.app.bootDelay)
         , onUpdateReady: (fileCount_) ->
             Encapsule.code.app.setBootChrome("phase2updateready")
+            Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache UPDATEREADY")
             phase2Out.appCacheMonitorState = "updateready"
             phase2Out.appCacheTerminalState = "updateready"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
@@ -250,52 +262,64 @@ phase2 = (bootstrapperOptions_) ->
     try
         phase2Out.appCacheMonitor = new Encapsule.code.lib.appcachemonitor(appCacheCallbacks)
 
-        # I don't any way to actually detect if the cache has been updated before the event listeners are registered.
+        # I don't kno any way to actually detect if the cache has been updated before the event listeners are registered.
         # There simply isn't enough information available from the applicationCache object to determine what's happened
-        # already.
-        # Let's say that if none of our monitoring callbacks are invoked within two seconds that AND the reported cache
-        # status is IDLE that we missed the show and everything is set to go.
+        # already. This routine assumes that if none of our monitoring callbacks are invoked within two seconds that AND            
+        # the reported cache status is IDLE that we missed the show and everything is set to go.
         setTimeout( ( ->
 
             Encapsule.code.app.setBootChrome("phase2Watchdog")
+            Console.log("#{appName} v#{appVersion} starting boot app cache watchdog")
+
             applicationCacheStatus = window.applicationCache.status
             applicationCacheMonitorState = phase2Out.appCacheMonitorState
             applicationCacheMonitorTerminalState = phase2Out.appCacheTerminalState
+
+            Console.log("#{appName} v#{appVersion} app cache watchdog: cacheState=#{applicationCacheStatus} monitorState=#{applicationCacheMonitorState} terminateState=#{applicationCacheMonitorTerminalState}")
 
             switch applicationCacheStatus
                 when window.applicationCache.UNCACHED
                     Encapsule.code.app.setBootChrome("phase2watchdogAction")
                     Console.messageError("Browser cache status is UNCACHED.")
-                    break;
+                    break
 
                 when window.applicationCache.IDLE
                     if not applicationCacheMonitorTerminalState? or not applicationCacheMonitorTerminalState
                         Encapsule.code.app.setBootChrome("phase2watchdogAction")
+                        Console.log("#{appName} v#{appVersion} app cache watchdog: forcing NOUPDATE handling.")
                         phase2Out.appCacheRaceConditionBroken = true
                         appCacheCallbacks.onNoUpdate()
                     else
                         Encapsule.code.app.setBootChrome("phase2watchdogNoop")
+                        Console.log("#{appName} v#{appVersion} app cache watchdog: NOOP")
+                    break
 
                      
                 when window.applicationCache.CHECKING
                     Encapsule.code.app.setBootChrome("phase2watchdogNoop")
-                    break;
+                    Console.log("#{appName} v#{appVersion} app cache watchdog: NOOP")
+                    break
 
                 when window.applicationCache.DOWNLOADING
                     Encapsule.code.app.setBootChrome("phase2watchdogNoop")
-                    break;
+                    break
 
                 when window.applicationCache.UPDATEREADY
                      if not applicationCacheMonitorTerminalState? or not applicationCacheMonitorTerminalState
                         Encapsule.code.app.setBootChrome("phase2watchdogAction")
+                        Console.log("#{appName} v#{appVersion} app cache watchdog: forcing UPDATEREADY handling.")
                         phase2Out.appCacheRaceConditionBroken = true
                         appCacheCallbacks.onUpdateReady()
                      else
                         Encapsule.code.app.setBootChrome("phase2watchdogNoop")
+                        Console.log("#{appName} v#{appVersion} app cache watchdog: forcing UPDATEREADY handling.")
+                     break
+
                    
                 when window.applicationCache.OBSOLETE
                      Encapsule.code.app.setBootChrome("phase2watchdogNoop")
-                     break;
+                     Console.log("#{appName} v#{appVersion} app cache watchdog: forcing UPDATEREADY handling.")
+                     break
 
             ), Encapsule.code.app.bootWatchdogTimeout)
     catch exception
