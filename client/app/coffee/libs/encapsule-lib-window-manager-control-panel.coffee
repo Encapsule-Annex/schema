@@ -57,9 +57,9 @@ Encapsule.code.lib.kohelpers.implementation.WindowManagerControlPanelPlane = {
                 name: "#{appName} Window Manager Control Panel"
                 initialMode: "full"
                 initialEnable: true
-                opacity: 0.4
+                opacity: 0.8
                 backgroundColor: "#999999"
-                modes: { full: { reserve: 17 }, min: { reserve: 17 } }
+                modes: { full: { reserve: 18 }, min: { reserve: 18 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.windowmanager.WindowManagerControlPanel
                     viewModelTemplateId: "idKoTemplate_WindowManagerControlPanel"
@@ -75,10 +75,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_WindowMa
     <span data-bind="foreach: planes">
         <span data-bind="if: windowManagerReservePlane == undefined">
             <span data-bind="if: enabled">
-                <button disabled type="button" class="button small orange"><span data-bind="text: name"></span></button>
+                <button disabled type="button" class="button small orange">&gt;&gt; <span data-bind="text: name"></span> &lt;&lt;</button>
             </span>
             <span data-bind="ifnot: enabled">
-                <button type="button" data-bind="click: $parent.showPlane" class="button small gray"><span data-bind="text: name"></button>
+                <button type="button" data-bind="click: $parent.showPlane" class="button small gray">&lt;<span data-bind="text: name"></span>&gt;</button>
             </span>
         </span>
     </span>

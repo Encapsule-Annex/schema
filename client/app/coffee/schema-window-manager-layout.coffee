@@ -101,7 +101,7 @@ try
             {
                 id: "idSchemaPlaneDefault"
                 name: "SCDL Catalogue"
-                initialEnable: false
+                initialEnable: true
                 splitterStack: [
                     {
                         id: "idCatlogueJSONSplitter"                                                                
@@ -209,7 +209,7 @@ try
                 # / END: plane
             {
                 id: "idSchemaSettingsPlane"
-                name: "#{appName} Settings"
+                name: "Settings"
                 initialEnable: false
                 splitterStack: [
                     {
@@ -222,10 +222,42 @@ try
                             initialMode: "full"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#99CC99"
+                            backgroundColor: "#CCCCCC"
                             modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                             }
                         Q2WindowDescriptor: undefined
+                        }
+                    ]
+                    # / END: splitter stack
+                }
+                # / END: plane
+            {
+                id: "idSchemaDiagnosticsPlane"
+                name: "Diagnostics"
+                initialEnable: false
+                splitterStack: [
+                    {
+                        id: "idDiagnosticsPlaneSplitter0"
+                        name: "Diagnostics plane splitter"
+                        type: "vertical"
+                        Q1WindowDescriptor: {
+                            id: "idSchemaConsole"
+                            name: "#{appName} Debug Console"
+                            initialMode: "full"
+                            initialEnable: true
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "#CCCCCC"
+                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                            }
+                        Q2WindowDescriptor: {
+                            id: "idSchemaBootStats"
+                            name: "#{appName} App Boot Info"
+                            initialMode: "full"
+                            initialEnable: true
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "#CCCCCC"
+                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                            }
                         }
                     ]
                     # / END: splitter stack
