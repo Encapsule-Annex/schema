@@ -279,6 +279,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                             # @@@
                             # BEGIN: planeLayout try scope
                             planeRuntime = { id: planeLayout.id, name: planeLayout.name, splitterStack: [], windowManagerReservePlane: planeLayout.windowManagerReservePlane }
+                            planeRuntime.enabled = ko.observable planeLayout.windowManagerReservePlane or planeLayout.initialEnable
                             splitIndex = 0
                             for split in planeLayout.splitterStack
                                 # \ BEGIN: split scope

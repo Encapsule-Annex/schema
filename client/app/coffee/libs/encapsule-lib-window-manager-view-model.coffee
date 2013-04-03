@@ -54,15 +54,10 @@ Encapsule.code.lib.kohelpers.implementation.SynthesizeWindowManagerViewModelFrom
 
     # Enumerate the plane objects defined in the layout.
     windowNumber = 0
+    planeNumber = 0
     for plane in layout_.planes
 
-        result.htmlHead += """
-             <!-- BEGIN: \\ LAYOUT PLANE id=#{plane.id} -->
-             """
-
-        result.htmlTail += """
-            <!-- END: / LAYOUT PLANE id=#{plane.id} -->
-            """
+        result.htmlHead += """<!-- BEGIN: \\ LAYOUT PLANE id=#{plane.id} --><div id="#{plane.id}" data-bind="if: planes[#{planeNumber}].enabled">"""
 
         # Enumerate the splitter objects defined in the plane.
         for splitter in plane.splitterStack
@@ -99,23 +94,24 @@ Encapsule.code.lib.kohelpers.implementation.SynthesizeWindowManagerViewModelFrom
                             """
                         # END: / if
 
+                    ### Disable but keep for reference
                     result.htmlHead += """
                                     <b>Toggle [ <span data-bind="event: { click: toggleWindowMode }, text: windowMode" style="color: blue; font-weight: bold; text-decoration: underline;"></span> ]</b>
                                     ObservableWindow: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
                          """
+                    ###
 
                     result.htmlHead += """
-                                </div>
-                                <!-- END: / OBSERVABLE WINDOW LAYER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                            </span>
-                            <!-- END: / OBSERVABLE WINDOW HOST CONTAINER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
-                        </span>
-                        <! -- END: / OBSERVABLE WINDOW HOST planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
+                                </div><!-- END: / OBSERVABLE WINDOW LAYER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
+                            </span><!-- END: / OBSERVABLE WINDOW HOST CONTAINER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
+                        </span><! -- END: / OBSERVABLE WINDOW HOST planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
                         """
                     windowNumber++
                     # END : / if windowDescriptor_?
                 # END: / for splitHalf
             # END: / for splitter
+        result.htmlHead += """</div><!-- END: / LAYOUT PLANE id=#{plane.id} -->"""
+        planeNumber++
         # END: / for plane
 
     return result.htmlHead + result.htmlTail

@@ -52,5 +52,4 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaTi
 <span id="idTitlebarAppPublisher"><a href="#{appPackagePublisherUrl}" target="_blank" title="#{appPackagePublisher} Homepage">#{appPackagePublisher}</a></span>
 <span id="idTitlebarAppName">#{appName} v#{appVersion}</span>
 (#{appReleasePhase} build #{appBuildTime})
-<br>
 """))

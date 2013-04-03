@@ -101,6 +101,7 @@ try
             {
                 id: "idSchemaPlaneDefault"
                 name: "#{appName} v#{appVersion} Default View Plane"
+                #initialEnable: true
                 splitterStack: [
                     {
                         id: "idCatlogueJSONSplitter"                                                                
@@ -111,7 +112,7 @@ try
                             id: "idCatalogueJSON"                                           
                             name: "SCDL Catalogue JSON"
                             initialMode: "full"
-                            initialEnable: true
+                            initialEnable: false
                             overflow: "auto"
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#00CCFF"
@@ -209,6 +210,7 @@ try
             {
                 id: "idSchemaSettingsPlane"
                 name: "#{appName} Settings Plane"
+                initialEnable: true                
                 splitterStack: [
                     {
                         id: "idSetttingsPlaneSplitter0"
@@ -218,10 +220,10 @@ try
                             id: "idSettings1"
                             name: "Settings 1 Window"
                             initialMode: "full"
-                            initialEnable: false
+                            initialEnable: true
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: undefined
-                            modes: { full: { reserve: 128 }, min: { reserve: 64 } }
+                            backgroundColor: "#99CC99"
+                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                             }
                         Q2WindowDescriptor: undefined
                         }
