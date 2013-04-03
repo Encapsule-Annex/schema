@@ -57,7 +57,7 @@ Encapsule.code.lib.kohelpers.implementation.SynthesizeWindowManagerViewModelFrom
     planeNumber = 0
     for plane in layout_.planes
 
-        result.htmlHead += """<!-- BEGIN: \\ LAYOUT PLANE id=#{plane.id} --><div id="#{plane.id}" data-bind="if: planes[#{planeNumber}].enabled">"""
+        result.htmlHead += """<!-- BEGIN: \\ LAYOUT PLANE id=#{plane.id} --><div id="#{plane.id}" class="classWindowManagerPlane" data-bind="if: planes[#{planeNumber}].enabled">"""
 
         # Enumerate the splitter objects defined in the plane.
         for splitter in plane.splitterStack

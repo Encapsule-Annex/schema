@@ -34,6 +34,15 @@ Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Enc
 Encapsule.runtime.app.kotemplates = Encapsule.runtime.app.kotemplates? and Encapsule.runtime.app.kotemplates or @Encapsule.runtime.app.kotemplates = []
 
 
+class Encapsule.code.lib.kohelpers.implementation.ObservableWindowManagerControlPanel
+    constructor: (windowManagerObject_) ->
+        @windowManagerObject = windowManagerObject_
+        @planes = windowManagerObject_.planes
+
+        @showPlane = (planeObject_) =>
+            Encapsule.runtime.app.SchemaWindowManager.displayPlane(planeObject_.id)
+
+
 Encapsule.code.lib.kohelpers.implementation.WindowManagerControlPanelPlane = {
     id: "idWindowManagerControlPanelPlane"
     name: "Window Manager Control Panel Plane"
@@ -48,12 +57,29 @@ Encapsule.code.lib.kohelpers.implementation.WindowManagerControlPanelPlane = {
                 name: "#{appName} Window Manager Control Panel"
                 initialMode: "full"
                 initialEnable: true
-                opacity: 0.6
-                backgroundColor: "#00CC99"
-                modes: { full: { reserve: 16 }, min: { reserve: 4 } }
+                opacity: 0.4
+                backgroundColor: "#999999"
+                modes: { full: { reserve: 17 }, min: { reserve: 17 } }
+                MVVM: {
+                    fnModelView: -> Encapsule.runtime.app.windowmanager.WindowManagerControlPanel
+                    viewModelTemplateId: "idKoTemplate_WindowManagerControlPanel"
+                    }
                 }
             Q2WindowDescriptor: undefined
             }
         ]
     }
 
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_WindowManagerControlPanel", ( ->
+    """
+    <span data-bind="foreach: planes">
+        <span data-bind="if: windowManagerReservePlane == undefined">
+            <span data-bind="if: enabled">
+                <button disabled type="button" class="button small green"><span data-bind="text: name"></span></button>
+            </span>
+            <span data-bind="ifnot: enabled">
+                <button type="button" data-bind="click: $parent.showPlane" class="button small blue"><span data-bind="text: name"></button>
+            </span>
+        </span>
+    </span>
+    """))

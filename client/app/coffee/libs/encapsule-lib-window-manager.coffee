@@ -27,6 +27,9 @@ Encapsule.code.lib.kohelpers.implementation = Encapsule.code.lib.kohelpers.imple
 
 Encapsule.runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runtime = {}
 Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
+
+Encapsule.runtime.app.windowmanager = Encapsule.runtime.app.windowmanager? and Encapsule.runtime.app.windowmanager or @Encapsule.runtime.app.windowmanager = {}
+
 Encapsule.runtime.app.kotemplates = Encapsule.runtime.app.kotemplates? and Encapsule.runtime.app.kotemplates or @Encapsule.runtime.app.kotemplates = []
 
 
@@ -266,6 +269,9 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 # The layout is declarative and is parsed here to produce this window manager's internal runtime
                 # state model: a hierarchy of objects initialized using data from the layout. 
                 #
+
+                # Create the control panel object.
+                Encapsule.runtime.app.windowmanager.WindowManagerControlPanel = new Encapsule.code.lib.kohelpers.implementation.ObservableWindowManagerControlPanel(@)
     
                 try
                     # Add the special windowManagerReservePlane: true window manager control panel plane to the top
@@ -340,6 +346,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             catch exception
                 throw "Data model init failure: #{exception}"
 
+
             Console.message("Done transforming layout into view model :)")
 
             # / END OBSERVABLE DATA MODEL (VIEW-MODEL) INITIALIZATION
@@ -412,8 +419,32 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             Console.messageRaw("<p><strong>#{appPackagePublisher} window manager initialization complete.</strong></p>")
 
             # ============================================================================
+            # ENTER INTERACTIVE MODE
             Encapsule.code.app.setBootChrome("schemaWelcome")
             Console.messageRaw("<h2>#{appName} v#{appVersion} entering interactive mode :)</h2>")
+
+            # ============================================================================
+            # Window manager methods
+
+            @displayPlane = (planeId_) =>
+                try
+                    targetPlane = @planesDictionary[planeId_]
+                    if not targetPlane? or not targetPlane
+                        throw """Unknown plane ID "#{planeId} specified."""
+
+                    if @currentDisplayPlaneId? and @currentDisplayPlaneId
+                        if @curreuntDisplayPlaneId == planeId_
+                            return false
+                        @planesDictionary[@currentDisplayPlaneId].enabled(false)
+
+                    targetPlane.enabled(true)
+
+                    @currentDisplayPlaneId = planeId_
+
+                catch exception
+                    Console.messageError("""ObservableWindowManger.displayPlane("#{planeId_}") fail: #{exception}""")
+
+
             # / END INITIALIZATION OF WINDOW MANAGER OBJECT INSTANCE
 
 

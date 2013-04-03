@@ -100,8 +100,8 @@ try
         planes: [
             {
                 id: "idSchemaPlaneDefault"
-                name: "#{appName} v#{appVersion} Default View Plane"
-                initialEnable: true
+                name: "SCDL Catalogue"
+                initialEnable: false
                 splitterStack: [
                     {
                         id: "idCatlogueJSONSplitter"                                                                
@@ -209,7 +209,7 @@ try
                 # / END: plane
             {
                 id: "idSchemaSettingsPlane"
-                name: "#{appName} Settings Plane"
+                name: "#{appName} Settings"
                 initialEnable: false
                 splitterStack: [
                     {

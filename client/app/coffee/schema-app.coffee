@@ -50,6 +50,10 @@ class namespaceEncapsule_code_app.Schema
             Console.message("Initializing the window manager:")            
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager Encapsule.code.app.viewLayout
 
+            setTimeout( ( ->
+                Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneDefault")
+                ), 5000)
+
             Encapsule.runtime.boot.phase0.spinner.cancel()
             Console.message("#{appName} main application document.onLoad event handler exit error.")
 
