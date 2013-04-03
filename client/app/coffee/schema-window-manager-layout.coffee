@@ -101,7 +101,7 @@ try
             {
                 id: "idSchemaPlaneDefault"
                 name: "#{appName} v#{appVersion} Default View Plane"
-                #initialEnable: true
+                initialEnable: true
                 splitterStack: [
                     {
                         id: "idCatlogueJSONSplitter"                                                                
@@ -112,7 +112,7 @@ try
                             id: "idCatalogueJSON"                                           
                             name: "SCDL Catalogue JSON"
                             initialMode: "full"
-                            initialEnable: false
+                            initialEnable: true
                             overflow: "auto"
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#00CCFF"
@@ -210,7 +210,7 @@ try
             {
                 id: "idSchemaSettingsPlane"
                 name: "#{appName} Settings Plane"
-                initialEnable: true                
+                initialEnable: false
                 splitterStack: [
                     {
                         id: "idSetttingsPlaneSplitter0"

@@ -84,6 +84,10 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # An array of plane objects that manager a layout splitter stack.
             @planes = []
 
+            @currentDisplayPlaneId = undefined
+            @planesDictionary = {}
+            @windowsDictionary = {} 
+
             # Written by document resize event callback.
             @documentOffsetRectangle = geo.offsetRectangle.create()
 
@@ -304,6 +308,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                                             # \ BEGIN: observableWindow scope
                                             try
                                                 @observableWindows.push observableWindow
+                                                @windowsDictionary[observableWindow.id] = { window: observableWindow, plane: planeRuntime }
                                             catch exception
                                                 throw "Observable window pool push failure: #{exception}"
                                             # / END: observableWindow scope
@@ -323,8 +328,9 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         catch exception
                             throw """Layout plane ##{planeIndex} id="#{planeLayout.id}" failure: #{exception}"""
                         @planes.push planeRuntime
-                        Console.message("Layout plane #{planeIndex} processed.")
+                        @planesDictionary[planeRuntime.id] = planeRuntime
                         planeIndex++
+                        Console.message("Layout plane #{planeIndex} processed.")
                         # / END: planeLayout scope
                     # / END: try scope
                     # @@@
