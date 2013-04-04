@@ -61,6 +61,9 @@ class window.Console
             Console.hide()
             )
 
+        if Encapsule.runtime.app.SchemaWindowManager? and Encapsule.runtime.app.SchemaWindowManager
+            Encapsule.runtime.app.SchemaWindowManager.refreshWindowManagerViewState { forceEval: true }
+
     @opacity: (opacity_) =>
         consoleEl = $("#idConsole")
         consoleEl.css( { opacity: "#{opacity_}" } )
@@ -79,7 +82,7 @@ class window.Console
             consoleEl.hide 500, ->
                 Console.opacity(0.0)
                 if Encapsule.runtime.app.SchemaWindowManager? and Encapsule.runtime.app.SchemaWindowManager
-                    Encapsule.runtime.app.SchemaWindowManager.refreshWindowManagerViewState { geometriesUpdated: true }
+                    Encapsule.runtime.app.SchemaWindowManager.refreshWindowManagerViewState { forceEval: true }
 
     @log: (trace) =>
         if console? and console and console.log? and console.log

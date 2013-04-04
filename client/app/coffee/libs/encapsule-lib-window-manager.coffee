@@ -206,8 +206,12 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         geometriesUpdated: request_.geometriesUpdated? and request_.geometriesUpdated or false
                     }
 
+                    if request.forceEval
+                        @refreshWindowManagerViewGeometriesFromDocument()
+                        return true
+
                     # \ BEGIN: geometries update section
-                    if request.forceEval or request.geometriesUpdated
+                    if request.geometriesUpdated
                         # \ BEGIN: geometries update scope
                         try
                             # \ BEGIN: geometries update try scope
