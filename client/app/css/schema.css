@@ -4,10 +4,13 @@
 
 body { margin: 0px; padding: 0px; background-color: #003366; }
 
+/* ====================================================================== */
+/* Schema built-in console styles */
 table {border: 1px solid black; width: 100%;}
 th {border: 1px solid black; }
 td {border: 1px solid black; }
 
+/* Schema built-in debug console styles */
 #idConsole
 {
 position: absolute;
@@ -33,40 +36,12 @@ display: none; /* displayed only as needed */
 #idConsole h4 { color: #0099CC; font-size: 10pt; font-weight: bold; text-shadow: white 0.1em 0.1em 0.1em; }
 
 .classConsoleExceptionContainer { border: 5px solid #FF0000; background-color: #FF7700; padding: 10px; }
+/* ====================================================================== */
 
+
+/* ====================================================================== */
+/* schema-model-window-boot.coffee styles */
 #idAppBootView { border: 1px solid black; margin: 10px; padding: 10px; font-family: Courier; font-size: 8pt; }
+/* ====================================================================== */
 
-
-
-.classTitleSiteName { font-family: Courier; font-size: 16pt; font-weight: bold; fill: #CCCCCC; }
-
-.classBodySection { border: 1px solid #CCCCCC; margin-bottom: 10px; }
-
-/* ============================================================== */
-
-
-
-
-#idSchemaAppView {
-background-color: yellow;
-border: 1px solid black;
-}
-
-.classSchemaLayerWindow {
-position: fixed; top: 50%; left: 50%;
-overflow: hidden;
-z-index: 0;
-margin: 0px; padding 0px;
-background-color: #FFFFFF;
-}
-
-
-
-
-
-
-/* outer-most level zero container for the Schema view model */
-#idSchemaViewModel { position: fixed; top: 50%; left: 50%; padding: 0px; margin: 0px; z-index: 0; 
-background-color: #00CC00;
-}
 
