@@ -137,7 +137,7 @@ try
                             backgroundColor: "#66CC00"
                             modes: { full: { reserve: 32 }, min: { reserve: 32 } }      
                             MVVM: {
-                                modelView: Encapsule.code.app.viewmodels.SchemaTitleBarWindow
+                                modelView: Encapsule.code.app.modelview.SchemaTitleBarWindow
                                 viewModelTemplateId: "idKoTemplate_SchemaTitleBarWindow"
                                 }
                             }                                                            
@@ -255,8 +255,13 @@ try
                             initialMode: "full"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#CCCCCC"
+                            backgroundColor: "#FF9966"
                             modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                            MVVM: {
+                                fnModelView: -> Encapsule.runtime.app.SchemaBootInfoWindow
+                                viewModelTemplateId: "idKoTemplate_SchemaBootInfoWindow"
+                                }
+
                             }
                         }
                     ]

@@ -24,9 +24,9 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.viewmodels = Encapsule.code.app.viewmodels? and Encapsule.code.app.viewmodels or Encapsule.code.app.viewmodels = {}
+Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
-class Encapsule.code.app.viewmodels.SchemaTitleBarWindow
+class Encapsule.code.app.modelview.SchemaTitleBarWindow
     # BEGIN: \ ObservableTitleBarWindow class
     constructor: (windowManagerCallbacks_) ->
         # BEGIN: \ constructor

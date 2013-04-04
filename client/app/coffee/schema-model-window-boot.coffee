@@ -19,44 +19,50 @@
 
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
-namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-namespaceEncapsule_code_app_viewmodel = Encapsule.code.app.viewmodel? and Encapsule.code.app.viewmodel or @Encapsule.code.app.viewmodel = {}
+Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
+Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
+Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or @Encapsule.code.app.modelview = {}
 
-class namespaceEncapsule_code_app_viewmodel.boot
-
+class Encapsule.code.app.modelview.SchemaBootInfoWindow
     constructor: ->
-        @visible = ko.observable true
 
-        @html = """
-            <div id="idAppBootView">
-            <div data-bind="style: { display : visible() ? 'inline' : 'none' }">
-            <strong>Application Build Information</strong><br>
-            Application Package Publisher: <span data-bind="text: appPackagePublisher"></span> (<span data-bind="text: appPackagePublisherUrl"></span>)<br>
-            Application Package ID: <span data-bind="text: appPackageId"></span><br>
-            Application Name: <span data-bind="text: appName"></span><br>
-            Application Version: <span data-bind="text: appVersion"></span><br>
-            Application Release Phase: <span data-bind="text: appReleasePhase"></span><br>
-            Application Release: <span data-bind="text: appReleaseName"></span> (fun: <span data-bind="text: appReleaseNameFunUrl"></span>)<br>
-            Application Build Date: <span data-bind="text: appBuildTime"></span><br>
-            Application Build Cached File Count: <span data-bind="text: appBuildCacheFileCount"></span><br>
-            Application Builder: <span data-bind="text: appBuilder"></span><br>
-            Application Copyright: <span data-bind="text: appCopyright"></span><br>
-            Application License: <span data-bind="text: appLicense"></span> (<span data-bind="text: appLicenseUrl"></span>)<br>
-            Application ID: <span data-bind="text: appId"></span><br>
-            Application Release ID: <span data-bind="text: appReleaseId"></span><br>
-            Application Build ID: <span data-bind="text: appBuildId"></span><br>
-            Application Source Code: <span data-bind="text: appGitHubRepoUrl"></span> (<span data-bind="text: appGitHubRepoName"></span> Git repository)<br>
-            <br>
-            <strong>Application Boot Information</strong><br>
-            Bootstrapper exit status: <span data-bind="text: Encapsule.runtime.boot.exitStatus"></span><br>
-            Page Entry URI: <span data-bind="text: Encapsule.runtime.boot.phase0.router.initialLocation"></span><br>
-            User Agent: <span data-bind="text: Encapsule.runtime.boot.phase1.userAgent"></span><br>
-            Chrome Browser: <span data-bind="text: Encapsule.runtime.boot.phase1.isChrome"></span><br>
-            WebKit Browser: <span data-bind="text: Encapsule.runtime.boot.phase1.isWebKit"></span><br>
-            Browser Version: <span data-bind="text: Encapsule.runtime.boot.phase1.browserVersion"></span><br>
-            Application cache status: <span data-bind="text: Encapsule.runtime.boot.phase2.appCacheMonitorState"></span><br>
-            Application cache race condition handled: <span data-bind="text: Encapsule.runtime.boot.phase2.appCacheRaceConditionBroken"></span><br>
-            </div>
-            </div><!-- idAppBoot -->
-            """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaBootInfoWindow", ( -> """
+<h1>App Boot Info</h1>
+<p>
+Bootstrapper exit status: <strong><span data-bind="text: Encapsule.runtime.boot.exitStatus"></span></strong><br>
+Page Entry URI: <strong><span data-bind="text: Encapsule.runtime.boot.phase0.router.initialLocation()"></span></strong><br>
+User Agent: <strong><span data-bind="text: Encapsule.runtime.boot.phase1.userAgent"></span></strong><br>
+Chrome Browser: <strong><span data-bind="text: Encapsule.runtime.boot.phase1.isChrome"></span></strong><br>
+WebKit Browser: <strong><span data-bind="text: Encapsule.runtime.boot.phase1.isWebKit"></span></strong><br>
+Browser Version: <strong><span data-bind="text: Encapsule.runtime.boot.phase1.browserVersion"></span></strong><br>
+Application cache status: <strong><span data-bind="text: Encapsule.runtime.boot.phase2.appCacheMonitorState"></span></strong><br>
+Application cache race condition handled: <strong><span data-bind="text: Encapsule.runtime.boot.phase2.appCacheRaceConditionBroken"></span></strong><br>
+</p>
+<h1>App Build Info</h1>
+<p>
+Application Package Publisher: <strong><a href="#{appPackagePublisherUrl}" target="_blank"><span data-bind="text: appPackagePublisher"></span></a></strong><br>
+Application Name: <strong><span data-bind="text: appName"></span></strong><br>
+Application Version: <strong><span data-bind="text: appVersion"></span></strong></strong><br>
+Application Release Phase: <strong><span data-bind="text: appReleasePhase"></span></strong><br>
+Application Release: <strong><a href="#{appReleaseNameFunUrl}" target="_blank"><span data-bind="text: appReleaseName"></span></a></strong><br>
+Application Build Date: <strong><span data-bind="text: appBuildTime"></span></strong><br>
+Application Build Cached File Count: <strong><span data-bind="text: appBuildCacheFileCount"></span></strong><br>
+Application Builder: <strong><span data-bind="text: appBuilder"></span></strong><br>
+Application Copyright: <strong><span data-bind="text: appCopyright"></span></strong><br>
+Application License: <strong><a href="#{appLicenseUrl}" target="_blank"><span data-bind="text: appLicense"></span></a></strong><br>
+Application ID: <strong><span data-bind="text: appId"></span></strong><br>
+Application Release ID: <strong><span data-bind="text: appReleaseId"></span></strong><br>
+Application Build ID: <strong><span data-bind="text: appBuildId"></span></strong><br>
+Application Source Code: <strong><a href="#{appGitHubRepoUrl}" target="_blank"><span data-bind="text: appGitHubRepoName"></span></a> (GitHub repo)</strong><br>
+</p>
+<h1>App Files</h1>
+<p>Use the following links to explore the deployed implementation of #{appName} v#{appVersion}:</p>
+<ul>
+<li><a href="./audio" target="sources">./audio/</a></li>
+<li><a href="./css" target="sources">./css/</a></li>
+<li><a href="./img" target="sources">./img/</a></li>
+<li><a href="./js" target="sources">./js/</a></li>
+<li><a href="./no-cache" target="sources">./no-cache/</a></li>
+<li><a href="./scdl" target="sources">./scdl/</a></li>
+</ul>
+"""))
