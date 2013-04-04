@@ -26,8 +26,13 @@ Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.
 class Encapsule.code.app.modelview.SchemaBootInfoWindow
     constructor: ->
 
+        @showDebugConsole = =>
+            Console.show()
+
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaBootInfoWindow", ( -> """
-<h1>App Boot Info</h1>
+<h1>#{appName} v#{appVersion} Diagnostic Window</h1>
+<button data-bind="click: showDebugConsole" class="button small blue">#{appName} Debug Console</button>
+<h2>App Boot Info</h2>
 <p>
 Bootstrapper exit status: <strong><span data-bind="text: Encapsule.runtime.boot.exitStatus"></span></strong><br>
 Page Entry URI: <strong><span data-bind="text: Encapsule.runtime.boot.phase0.router.initialLocation()"></span></strong><br>
@@ -38,7 +43,7 @@ Browser Version: <strong><span data-bind="text: Encapsule.runtime.boot.phase1.br
 Application cache status: <strong><span data-bind="text: Encapsule.runtime.boot.phase2.appCacheMonitorState"></span></strong><br>
 Application cache race condition handled: <strong><span data-bind="text: Encapsule.runtime.boot.phase2.appCacheRaceConditionBroken"></span></strong><br>
 </p>
-<h1>App Build Info</h1>
+<h2>App Build Info</h2>
 <p>
 Application Package Publisher: <strong><a href="#{appPackagePublisherUrl}" target="_blank"><span data-bind="text: appPackagePublisher"></span></a></strong><br>
 Application Name: <strong><span data-bind="text: appName"></span></strong><br>
@@ -55,7 +60,7 @@ Application Release ID: <strong><span data-bind="text: appReleaseId"></span></st
 Application Build ID: <strong><span data-bind="text: appBuildId"></span></strong><br>
 Application Source Code: <strong><a href="#{appGitHubRepoUrl}" target="_blank"><span data-bind="text: appGitHubRepoName"></span></a> (GitHub repo)</strong><br>
 </p>
-<h1>App Files</h1>
+<h2>App Files</h2>
 <p>Use the following links to explore the deployed implementation of #{appName} v#{appVersion}:</p>
 <ul>
 <li><a href="./audio" target="sources">./audio/</a></li>

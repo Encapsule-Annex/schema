@@ -39,10 +39,10 @@ Encapsule.code.lib.kohelpers.implementation.SynthesizeWindowManagerViewModelFrom
     result = {}
     result.htmlHead = """
         <!-- BEGIN: \\ WINDOW MANAGER GLASS BACKGROUND LAYER -->
-        <div id="idWindowManagerGlass" onclick="Console.show()" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
+        <div id="idWindowManagerGlass" data-bind="style: { width: cssGlassWidth(), height: cssGlassHeight(), marginLeft: cssGlassMarginLeft(), marginTop: cssGlassMarginTop(), background: cssGlassBackground(), opacity: cssGlassOpacity(), backgroundColor: cssGlassBackgroundColor() }"></div>
         <!-- END: / WINDOW MANAGER GLASS BACKGROUND LAYER -->
         <!-- BEGIN: \\ WINDOW MANAGER BACKGROUND LAYER -->
-        <div id="#{layout_.id}" class="classObservableWindowManager" onclick="Console.show()" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }"></div>
+        <div id="#{layout_.id}" class="classObservableWindowManager" data-bind="style: { width: cssWindowManagerWidth(), height: cssWindowManagerHeight(), marginLeft: cssWindowManagerMarginLeft(), marginTop: cssWindowManagerMarginTop(), backgroundColor: cssWindowManagerBackgroundColor(), opacity: cssWindowManagerOpacity() }"></div>
         <!-- END: / WINDOW MANAGER BACKGROUND LAYER -->
         <!-- BEGIN: \\ WINDOW MANAGER CONTROL PANEL WINDOW -->
         <!-- END: / WINDOW MANAGER CONTROL PANEL WINDOW -->

@@ -138,7 +138,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
 
             # \ BEGIN: onMouseOver
             @onMouseOver = =>
-                Console.message("Mouse over #{@id}")
+                #Console.message("Mouse over #{@id}")
                 @cssHostOpacity(1)
                 @cssChromeOpacity(1)
                 @cssWindowOpacity(1)
@@ -146,7 +146,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
 
             # \ BEGIN: onMouseOut
             @onMouseOut = =>
-                Console.message("Mouse out #{@id}")
+                #Console.message("Mouse out #{@id}")
                 @cssHostOpacity(@sourceDescriptor.globalWindowAttributes.hostWindowOpacity)
                 @cssChromeOpacity( @sourceDescriptor.globalWindowAttributes.chromeWindowOpacity)
                 @cssWindowOpacity(@sourceDescriptor.opacity)

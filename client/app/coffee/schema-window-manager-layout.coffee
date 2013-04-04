@@ -241,21 +241,13 @@ try
                         name: "Diagnostics plane splitter"
                         type: "vertical"
                         Q1WindowDescriptor: {
-                            id: "idSchemaConsole"
-                            name: "#{appName} Debug Console"
-                            initialMode: "full"
-                            initialEnable: true
-                            opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#CCCCCC"
-                            modes: { full: { reserve: 0 }, min: { reserve: 0 } }
-                            }
-                        Q2WindowDescriptor: {
                             id: "idSchemaBootStats"
                             name: "#{appName} App Boot Info"
                             initialMode: "full"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#FF9966"
+                            backgroundColor: "#992667"
+                            overflow: "auto"
                             modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                             MVVM: {
                                 fnModelView: -> Encapsule.runtime.app.SchemaBootInfoWindow
@@ -263,6 +255,7 @@ try
                                 }
 
                             }
+                        Q2WindowDescriptor: undefined
                         }
                     ]
                     # / END: splitter stack

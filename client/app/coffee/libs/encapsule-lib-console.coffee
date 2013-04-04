@@ -23,6 +23,9 @@ class window.Console
     constructor: ->
 
     @init: =>
+
+        
+
         consoleEl = $("#idConsole")
         if not consoleEl? or not consoleEl
             throw "Unable to resolve the #{appName} console!"
@@ -70,14 +73,13 @@ class window.Console
                 Console.opacity(1.0)
                 consoleEl.show 500
 
-
-
     @hide: () =>
         consoleEl = $("#idConsole")
         if consoleEl? and consoleEl
             consoleEl.hide 500, ->
                 Console.opacity(0.0)
-
+                if Encapsule.runtime.app.SchemaWindowManager? and Encapsule.runtime.app.SchemaWindowManager
+                    Encapsule.runtime.app.SchemaWindowManager.refreshWindowManagerViewState { geometriesUpdated: true }
 
     @log: (trace) =>
         if console? and console and console.log? and console.log
@@ -90,8 +92,7 @@ class window.Console
 
     @messageRaw: (trace) => 
         consoleEl = $("#idConsole")
-        consoleEl.append("#{trace}")
-
+        consoleEl.append(trace)
 
     @messageStart: (trace) => Console.messageRaw("> #{trace}")
 
@@ -122,10 +123,5 @@ class window.Console
             blipper.blip "beep2"
             blipper.blip "regen"
 
-        ###
-        setTimeout ( ->
-            alert """Unexpected exception "#{errorException}". Scroll console for detail or Hide console to continue."""
-            ), 1776
-        ###
 
 

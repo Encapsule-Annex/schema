@@ -50,7 +50,6 @@ class namespaceEncapsule_code_app.Schema
             Console.message("Initializing boot diagnostic window:")
             Encapsule.runtime.app.SchemaBootInfoWindow = new Encapsule.code.app.modelview.SchemaBootInfoWindow()
 
-
             Console.message("Initializing the window manager:")            
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager Encapsule.code.app.viewLayout
 
