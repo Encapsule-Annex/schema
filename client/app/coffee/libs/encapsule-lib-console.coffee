@@ -30,6 +30,10 @@ class window.Console
         if not consoleEl? or not consoleEl
             throw "Unable to resolve the #{appName} console!"
 
+        if Encapsule.runtime.app.SchemaWindowManager? and Encapsule.runtime.app.SchemaWindowManager
+            consoleEl.html("reset")
+            Encapsule.runtime.app.SchemaWindowManager.refreshWindowManagerViewState { forceEval: true }
+
         consoleEl.html(
             """
             <div id="idClearConsole" style="float: right;">
@@ -61,8 +65,6 @@ class window.Console
             Console.hide()
             )
 
-        if Encapsule.runtime.app.SchemaWindowManager? and Encapsule.runtime.app.SchemaWindowManager
-            Encapsule.runtime.app.SchemaWindowManager.refreshWindowManagerViewState { forceEval: true }
 
     @opacity: (opacity_) =>
         consoleEl = $("#idConsole")

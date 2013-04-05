@@ -180,15 +180,20 @@ phase2 = (bootstrapperOptions_) ->
         onChecking: ->
             Encapsule.code.app.setBootChrome("phase2checking")
             Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache CHECKING")
+            phase2Out.appCacheMonitorState = "checking"
+
         , onDownloading: ->
             Encapsule.code.app.setBootChrome("phase2downloading")
             Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache DOWNLOADING")
             Console.messageEnd("<strong>Updating</strong>")
             Console.messageStart("files ")
+            phase2Out.appCacheMonitorState = "downloading"
         , onProgress: (fileCount_) ->
             completionPercent = Math.min( Math.floor( (fileCount_ / appBuildCacheFileCount) * 100), 100)
             Encapsule.code.app.setBootChrome("phase2progress", "#{completionPercent}%")
             Console.messageRaw(".")
+            phase2Out.appCacheMonitorState = "progress"
+
         , onError: ->
             Encapsule.code.app.setBootChrome("phase2error")
             Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache ERROR")
@@ -298,11 +303,15 @@ phase2 = (bootstrapperOptions_) ->
                 when window.applicationCache.CHECKING
                     Encapsule.code.app.setBootChrome("phase2watchdogNoop")
                     Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in CHECKING state. This seems okay. NOOP.")
+                    if applicationCacheMonitorState != "checking"
+                        Console.messageError("#{appName} application cache watchdog has detected an unexpected inconsistency between the actual state of the application cache and the status callbacks received from your browser. Please try a browser refresh and report this problem if you encounter this error frequently. Thanks!")
                     break
 
                 when window.applicationCache.DOWNLOADING
                     Encapsule.code.app.setBootChrome("phase2watchdogNoop")
                     Console.log("#{appName} v#{appVersion} app cache watchdog: App cahce is currently in DOWNLOADING state. This seems okay. NOOP.")
+                    if applicationCacheMonitorState != "downloading"
+                        Console.messageError("#{appName} application cache watchdog has detected an unexpected inconsistency between the actual state of the application cache and the status callbacks received from your browser. Please try a browser refresh and report this problem if you encounter this error frequently. Thanks!")
                     break
 
                 when window.applicationCache.UPDATEREADY
@@ -320,7 +329,7 @@ phase2 = (bootstrapperOptions_) ->
                 when window.applicationCache.OBSOLETE
                      Encapsule.code.app.setBootChrome("phase2watchdogNoop")
                      Console.log("#{appName} v#{appVersion} app cache watchdog: App cahce is currently in OBSOLETE state. Throwing exception as there's no way to proceed from this state.")
-                     Console.messageError("#{appName} app cache watchdog: current cache status is OBSOLETE. There's no way to proceed from this state. A browser refresh might work? If you encounter this error frequently please drop me a note.")
+                     appCacheCallbacks.onObsolete()
                      break
 
             ), Encapsule.code.app.bootWatchdogTimeout)
