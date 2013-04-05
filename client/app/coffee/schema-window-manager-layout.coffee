@@ -86,15 +86,15 @@ try
         # (sort of poor man's attribute inheritence to reduce typing/error)
         #
         globalWindowAttributes: {
-            hostWindowBackgroundColor: "white"
-            hostWindowOpacity: 0.1
+            hostWindowBackgroundColor: "#EEEEEE"
+            hostWindowOpacity: 0.6
             hostWindowPadding: 2
             chromeWindowBackgroundColor: "#666666"
             chromeWindowOpacity: 0.4
             chromeWindowPadding: 1
-            windowPadding: 1
+            windowPadding: 3
             windowBorderWidth: 1
-            windowBorderColor: "black"
+            windowBorderColor: "#333333"
             }
 
         planes: [
@@ -132,7 +132,7 @@ try
                             name: "#{appName} Title Bar"                                       
                             initialMode: "min"
                             initialEnable: true
-                            overflow: "hidden"
+                            overflow: "auto"
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#66CC00"
                             modes: { full: { reserve: 32 }, min: { reserve: 32 } }      

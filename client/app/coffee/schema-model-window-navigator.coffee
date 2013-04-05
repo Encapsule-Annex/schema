@@ -98,7 +98,7 @@ class Encapsule.code.app.SchemaViewModelNavigator
 
         @viewHeight = ko.observable initialHeight_
 
-        menuViewModel = new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel( { label: "Catalogue" } )
+        menuViewModel = new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel( { label: "Catalogues" } )
         
         scdlSpecs =     menuViewModel.addSubMenu( { label: "Specs" } )
         scdlSpec =      scdlSpecs.addSubMenu( { label: "Spec" } )
@@ -114,8 +114,6 @@ class Encapsule.code.app.SchemaViewModelNavigator
         scdlSystemInput = scdlSystemInputs.addSubMenu( { label: "Input" } )
         scdlSystemOutputs = scdlSystemIo.addSubMenu( { label: "Outputs" } )
         scdlSystemOutput = scdlSystemOutputs.addSubMenu( { label: "Output" } )
-
-
 
         scdlMachines =  scdlModels.addSubMenu( { label: "Machines" } )
         scdlMachine =   scdlMachines.addSubMenu( { label: "Machine" } )

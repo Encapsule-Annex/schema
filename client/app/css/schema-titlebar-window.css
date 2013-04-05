@@ -3,7 +3,7 @@
 */
 
 #idTitlebarAppPublisher {
-font-size: 12pt;
+font-size: 18pt;
 font-weight: bold;
 }
 #idTitlebarAppPublisher A {
@@ -15,7 +15,19 @@ text-decoration: underline;
 }
 
 #idTitlebarAppName {
-font-size: 12pt;
+font-size: 18pt;
 font-weight: bold;
 color: #006699;
+}
+
+.classTitlebarAppDetailName {
+font size: 10pt;
+font-weight: normal;
+color: #339900;
+}
+
+.classTitlebarAppDetailValue {
+font size: 10pt;
+font-weight: bold;
+color: #007700;
 }
