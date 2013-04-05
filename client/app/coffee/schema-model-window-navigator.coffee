@@ -50,6 +50,9 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
             @label =    ko.observable(params_.label? and params_.label or "No label!")
             @subMenus = ko.observableArray []
 
+            @mouseOverHighlight = ko.observable false
+            @selectedItem = ko.observable false
+
             Console.message "New menu item: level #{@level()} #{@label()}"
 
             self = @
@@ -70,16 +73,40 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
                 newMenuItem
 
             @getCssFontSize = =>
-                fontSize = 16 - (@level())
+                fontSize = Math.max( (14 - @level()), 8)
                 "#{fontSize}pt"
 
             @getCssBackgroundColor = =>
-                base = net.brehaut.Color("#0099CC")
-                ratio = @level() / 7
-                base.desaturateByRatio(ratio).toString()
+                if not @mouseOverHighlight()
+                    if not @selectedItem()
+                        base = net.brehaut.Color("#0099CC")
+                        ratio = @level() / 7
+                        base.desaturateByRatio(ratio).toString()
+                    else
+                        "#00FF00"
+                else
+                    if not @selectedItem()
+                        "#FFFF00"
+                    else
+                        "#00CC00"
 
             @getCssMarginLeft = =>
                 "#{@level() * 10}px"
+
+            @onMouseOver = => 
+                @mouseOverHighlight(true)
+
+            @onMouseOut = =>
+                @mouseOverHighlight(false)
+
+            @onMouseClick = =>
+                if not Encapsule.runtime.app.SchemaScdlNavigatorWindow?
+                    throw "Unable to obtain reference to navigator window object."
+                @selectedItem( not @selectedItem() )
+                if @selectedItem() == true
+                    Encapsule.runtime.app.SchemaScdlNavigatorWindow.updateSelectedMenuItem(@)
+                else
+                    Encapsule.runtime.app.SchemaScdlNavigatorWindow.updateSelectedMenuItem(undefined)
 
             # / END: constructor try scope
         catch exception
@@ -89,10 +116,12 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
     """
-    <div class="classSchemaViewModelNavigatorMenuLevel" data-bind="style: { fontSize: getCssFontSize(), paddingLeft: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()}" >
-    <span data-bind="text: label"></span>
+    <div class="classSchemaViewModelNavigatorMenuLevel"
+    data-bind="style: { fontSize: getCssFontSize(), paddingLeft: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()},
+    event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }">
+        <span data-bind="text: level"></span>: <span data-bind="text: label"></span>
     </div>
-    <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div></span>
+    <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
     """))
 
 
@@ -105,9 +134,12 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorWindow
             # \ BEGIN: constructor try scope
             Console.message "Initializing #{appName} navigator data model."
 
+            if not Encapsule.runtime.app.SchemaScdlCatalogue? or not Encapsule.runtime.app.SchemaScdlCatalogue
+                throw "Failed to obtain reference to SCDL catalogue."
+
             @navigatorEl = $("#idSchemaViewModelNavigator")
 
-            menuViewModel = new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel( { label: "Catalogues" } )
+            menuViewModel = new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel( { label: "Catalogue" } )
         
             scdlSpecs =     menuViewModel.addSubMenu( { label: "Specs" } )
             scdlSpec =      scdlSpecs.addSubMenu( { label: "Spec" } )
@@ -136,12 +168,13 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorWindow
 
             @menuViewModel = ko.observable menuViewModel
 
+            @currentlySelectedMenuItem = undefined
 
-            # For 'show console button click'
-            @showConsole = =>
-                consoleEl = $("#idConsole")
-                if consoleEl? and console
-                    Console.show()
+            @updateSelectedMenuItem = (newSelectedMenuItemObject_) =>
+                if @currentlySelectedMenuItem? and @currentlySelectedMenuItem
+                    @currentlySelectedMenuItem.selectedItem(false)
+                @currentlySelectedMenuItem = newSelectedMenuItemObject_
+
 
             # / END: constructor try scope
         catch exception
