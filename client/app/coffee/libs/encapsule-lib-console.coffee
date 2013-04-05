@@ -87,6 +87,7 @@ class window.Console
                     Encapsule.runtime.app.SchemaWindowManager.refreshWindowManagerViewState { forceEval: true }
 
     @log: (trace) =>
+        @message(trace)
         if console? and console and console.log? and console.log
            console.log trace
 

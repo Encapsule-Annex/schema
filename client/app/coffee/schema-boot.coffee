@@ -291,9 +291,14 @@ phase2 = (bootstrapperOptions_) ->
                 when window.applicationCache.IDLE
                     if not applicationCacheMonitorTerminalState? or not applicationCacheMonitorTerminalState
                         Encapsule.code.app.setBootChrome("phase2watchdogAction")
-                        Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in IDLE state. Forcing NOUPDATE handling.")
-                        phase2Out.appCacheRaceConditionBroken = true
-                        appCacheCallbacks.onNoUpdate()
+                        if applicationCacheMonitorState == "downloading" or applicationCacheMonitorState == "progress"
+                            Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in IDLE state. Forcing UPDATEREADY handling.")
+                            appCacheCallbacks.onUpdateReady()
+                            phase2Out.appCacheRaceConditionBroken = true
+                        else
+                            Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in IDLE state. Forcing NOUPDATE handling.")
+                            phase2Out.appCacheRaceConditionBroken = true
+                            appCacheCallbacks.onNoUpdate()
                     else
                         Encapsule.code.app.setBootChrome("phase2watchdogNoop")
                         Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in IDLE state but it seems we're on top of it. NOOP.")
