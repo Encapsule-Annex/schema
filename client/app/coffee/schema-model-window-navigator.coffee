@@ -22,14 +22,15 @@
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
-namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
+Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
+Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
+Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
-namespaceEncapsule_runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runtime = {}
-namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
+Encapsule.runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runtime = {}
+Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
 
 
-class Encapsule.code.app.SchemaViewModelNavigatorMenuLevel
+class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
 
     # options = {
     #     parent: {}
@@ -38,46 +39,52 @@ class Encapsule.code.app.SchemaViewModelNavigatorMenuLevel
     #     }
 
     constructor: (params_) ->
-        if not params_? or not params_
-            throw "You must specify a parameter object as the first argument to SchemaViewModelNavigatorMenuLevel instance constructor."
-
-        @parent =   ko.observable(params_.parent? and params_.parent or undefined)
-        @level =    ko.observable(params_.parentLevel? and params_.parentLevel and params_.parentLevel + 1 or 0)
-        @label =    ko.observable(params_.label? and params_.label or "No label!")
-        @subMenus = ko.observableArray []
-
-        Console.message "New menu item: level #{@level()} #{@label()}"
-
-        self = @
-
-        @addSubMenu = (params_, callback_) =>
+        # \ BEGIN: constructor scope
+        try
+            # \ BEGIN: constructor try scope
             if not params_? or not params_
-                throw "You must specify a params object as the first argument to addSubMenu"
+                throw "You must specify a parameter object as the first argument to SchemaViewModelNavigatorMenuLevel instance constructor."
 
-            params = params_
-            params.parent = self
-            params.parentLevel = self.level()
+            @parent =   ko.observable(params_.parent? and params_.parent or undefined)
+            @level =    ko.observable(params_.parentLevel? and params_.parentLevel and params_.parentLevel + 1 or 0)
+            @label =    ko.observable(params_.label? and params_.label or "No label!")
+            @subMenus = ko.observableArray []
 
-            Console.message("adding submenu #{params.label}")
-            newMenuItem =  new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel(params_)
-            newMenuItem.parent(self)
-            newMenuItem.level(@level() + 1)
-            @subMenus.push newMenuItem
-            newMenuItem
+            Console.message "New menu item: level #{@level()} #{@label()}"
 
-        @getCssFontSize = =>
-            fontSize = 16 - (@level())
-            "#{fontSize}pt"
+            self = @
 
-        @getCssBackgroundColor = =>
-            base = net.brehaut.Color("#0099CC")
-            ratio = @level() / 7
-            base.desaturateByRatio(ratio).toString()
+            @addSubMenu = (params_, callback_) =>
+                if not params_? or not params_
+                    throw "You must specify a params object as the first argument to addSubMenu"
 
-        @getCssMarginLeft = =>
-            "#{@level() * 10}px"
+                params = params_
+                params.parent = self
+                params.parentLevel = self.level()
 
+                Console.message("adding submenu #{params.label}")
+                newMenuItem =  new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel(params_)
+                newMenuItem.parent(self)
+                newMenuItem.level(@level() + 1)
+                @subMenus.push newMenuItem
+                newMenuItem
 
+            @getCssFontSize = =>
+                fontSize = 16 - (@level())
+                "#{fontSize}pt"
+
+            @getCssBackgroundColor = =>
+                base = net.brehaut.Color("#0099CC")
+                ratio = @level() / 7
+                base.desaturateByRatio(ratio).toString()
+
+            @getCssMarginLeft = =>
+                "#{@level() * 10}px"
+
+            # / END: constructor try scope
+        catch exception
+            throw "SchemaScdlNavigatorMenuLevel fail: #{exception}"
+        # / END: constructor
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
@@ -91,52 +98,55 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 
 
 
-class Encapsule.code.app.SchemaViewModelNavigator
-    constructor: (initialHeight_) ->
-        Console.message "Initializing #{appName} navigator data model."
-        @navigatorEl = $("#idSchemaViewModelNavigator")
+class Encapsule.code.app.modelview.SchemaScdlNavigatorWindow
+    constructor: ->
+        # \ BEGIN: constructor
+        try
+            # \ BEGIN: constructor try scope
+            Console.message "Initializing #{appName} navigator data model."
 
-        @viewHeight = ko.observable initialHeight_
+            @navigatorEl = $("#idSchemaViewModelNavigator")
 
-        menuViewModel = new Encapsule.code.app.SchemaViewModelNavigatorMenuLevel( { label: "Catalogues" } )
+            menuViewModel = new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel( { label: "Catalogues" } )
         
-        scdlSpecs =     menuViewModel.addSubMenu( { label: "Specs" } )
-        scdlSpec =      scdlSpecs.addSubMenu( { label: "Spec" } )
-        scdlSpecSystems = scdlSpec.addSubMenu( { label: "Systems" } )
+            scdlSpecs =     menuViewModel.addSubMenu( { label: "Specs" } )
+            scdlSpec =      scdlSpecs.addSubMenu( { label: "Spec" } )
+            scdlSpecSystems = scdlSpec.addSubMenu( { label: "Systems" } )
 
-        scdlModels =    menuViewModel.addSubMenu( { label: "Models" } )
+            scdlModels =    menuViewModel.addSubMenu( { label: "Models" } )
 
-        scdlSystems =   scdlModels.addSubMenu( { label: "Systems" } )
-        scdlSystem =    scdlSystems.addSubMenu( { label: "System" } )
-        scdlSystemIo =  scdlSystem.addSubMenu( { label: "I/O" } )
+            scdlSystems =   scdlModels.addSubMenu( { label: "Systems" } )
+            scdlSystem =    scdlSystems.addSubMenu( { label: "System" } )
+            scdlSystemIo =  scdlSystem.addSubMenu( { label: "I/O" } )
 
-        scdlSystemInputs = scdlSystemIo.addSubMenu( { label: "Inputs" } )
-        scdlSystemInput = scdlSystemInputs.addSubMenu( { label: "Input" } )
-        scdlSystemOutputs = scdlSystemIo.addSubMenu( { label: "Outputs" } )
-        scdlSystemOutput = scdlSystemOutputs.addSubMenu( { label: "Output" } )
+            scdlSystemInputs = scdlSystemIo.addSubMenu( { label: "Inputs" } )
+            scdlSystemInput = scdlSystemInputs.addSubMenu( { label: "Input" } )
+            scdlSystemOutputs = scdlSystemIo.addSubMenu( { label: "Outputs" } )
+            scdlSystemOutput = scdlSystemOutputs.addSubMenu( { label: "Output" } )
 
-        scdlMachines =  scdlModels.addSubMenu( { label: "Machines" } )
-        scdlMachine =   scdlMachines.addSubMenu( { label: "Machine" } )
+            scdlMachines =  scdlModels.addSubMenu( { label: "Machines" } )
+            scdlMachine =   scdlMachines.addSubMenu( { label: "Machine" } )
 
-        scdlSockets =   scdlModels.addSubMenu( { label: "Sockets" } )
-        scdlSocket =    scdlSockets.addSubMenu( { label: "Socket" } )
+            scdlSockets =   scdlModels.addSubMenu( { label: "Sockets" } )
+            scdlSocket =    scdlSockets.addSubMenu( { label: "Socket" } )
 
-        scdlContracts = scdlModels.addSubMenu( { label: "Contracts" } )
-        scdlContract =  scdlContracts.addSubMenu( { label: "Contract" } )
-
-
-        @menuViewModel = ko.observable menuViewModel
+            scdlContracts = scdlModels.addSubMenu( { label: "Contracts" } )
+            scdlContract =  scdlContracts.addSubMenu( { label: "Contract" } )
 
 
-        # For 'show console button click'
-        @showConsole = =>
-            consoleEl = $("#idConsole")
-            if consoleEl? and console
-                Console.show()
+            @menuViewModel = ko.observable menuViewModel
 
 
+            # For 'show console button click'
+            @showConsole = =>
+                consoleEl = $("#idConsole")
+                if consoleEl? and console
+                    Console.show()
 
-
+            # / END: constructor try scope
+        catch exception
+            throw "SchemaScdlNavigatorWindow fail: #{exception}"
+        # / END: constructor
 
 
 
@@ -144,5 +154,4 @@ class Encapsule.code.app.SchemaViewModelNavigator
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigator", ( ->
     """
     <span data-bind="with: menuViewModel"><div data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel' }"></div></span>
-    <p style="text-align: center;"><button data-bind="click: showConsole" class="button small blue">Show Console</button></p>
     """))

@@ -137,7 +137,7 @@ try
                             backgroundColor: "#66CC00"
                             modes: { full: { reserve: 32 }, min: { reserve: 32 } }      
                             MVVM: {
-                                modelView: Encapsule.code.app.modelview.SchemaTitleBarWindow
+                                modelView: -> Encapsule.runtime.app.SchemaTitleBarWindow
                                 viewModelTemplateId: "idKoTemplate_SchemaTitleBarWindow"
                                 }
                             }                                                            
@@ -157,7 +157,7 @@ try
                             backgroundColor: "#00CCFF"
                             modes: { full: { reserve: 150 }, min: { reserve: 32 } }
                             MVVM: {
-                                modelView: Encapsule.code.app.SchemaViewModelNavigator
+                                modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                                 viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
                                 }
                             }                                                            
