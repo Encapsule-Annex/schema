@@ -33,7 +33,7 @@ Encapsule.code.app.bootChromes = {
     phase2 : { title: undefined, backgroundColor: undefined, spinnerText: "Checking for update"  }
     phase2checking : { title: "#{appName} checking", backgroundColor: undefined, spinnerText: undefined  }
     phase2downloading: { title: "#{appName} updating", backgroundColor: "#004477", spinnerText: "Updating"  }
-    phase2progress: { title: "#{appName} update ", backgroundColor: "#004477", spinnerText: "Update "  }
+    phase2progress: { title: "#{appName} update ", backgroundColor: "#004477", spinnerText: "Updating offline cache "  }
     phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFFF00", spinnerText: "Error!"  }
     phase2obsolete: { title: "#{appName} LOCKED", backgroundColor: "#FFCC00", spinnerText: "LOCKED!"  }
     phase2offline: { title: "#{appName} starting offline...", backgroundColor: "#005588", spinnerText: "#{appName} starting"  }
@@ -284,8 +284,12 @@ phase2 = (bootstrapperOptions_) ->
 
             switch applicationCacheStatus
                 when window.applicationCache.UNCACHED
-                    Encapsule.code.app.setBootChrome("phase2watchdogAction")
-                    Console.messageError("Browser cache status is UNCACHED.")
+                    if not applicationCacheMonitorTerminalState? or not applicationCacheMonitorTerminalState
+                        Encapsule.code.app.setBootChrome("phase2watchdogAction")
+                        Console.messageError("Browser cache status is UNCACHED but the browser hasn't given us enough information to determine why this is. Please try a browser refresh and report this problem if it persists. Thanks!.")
+                    else
+                        Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in UNCACHED state. But it looks like we're handling this.")
+
                     break
 
                 when window.applicationCache.IDLE
@@ -309,14 +313,14 @@ phase2 = (bootstrapperOptions_) ->
                     Encapsule.code.app.setBootChrome("phase2watchdogNoop")
                     Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in CHECKING state. This seems okay. NOOP.")
                     if applicationCacheMonitorState != "checking"
-                        Console.messageError("#{appName} application cache watchdog has detected an unexpected inconsistency between the actual state of the application cache and the status callbacks received from your browser. Please try a browser refresh and report this problem if you encounter this error frequently. Thanks!")
+                        Console.messageError("#{appName} application cache watchdog has detected an unexpected inconsistency between the actual state of the application cache and the status callbacks received from your browser. Please try a browser refresh and report this problem if it persists. Thanks!")
                     break
 
                 when window.applicationCache.DOWNLOADING
                     Encapsule.code.app.setBootChrome("phase2watchdogNoop")
-                    Console.log("#{appName} v#{appVersion} app cache watchdog: App cahce is currently in DOWNLOADING state. This seems okay. NOOP.")
-                    if applicationCacheMonitorState != "downloading"
-                        Console.messageError("#{appName} application cache watchdog has detected an unexpected inconsistency between the actual state of the application cache and the status callbacks received from your browser. Please try a browser refresh and report this problem if you encounter this error frequently. Thanks!")
+                    if applicationCacheMonitorState != "downloading" and applicationCacheMonitorState != "progress"
+                        Console.messageError("#{appName} application cache watchdog has detected an unexpected inconsistency between the actual state of the application cache and the status callbacks received from your browser. Please try a browser refresh and report this problem if it persists. Thanks!")
+                    Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in DOWNLOADING state. This seems okay. NOOP.")
                     break
 
                 when window.applicationCache.UPDATEREADY
@@ -333,8 +337,11 @@ phase2 = (bootstrapperOptions_) ->
                    
                 when window.applicationCache.OBSOLETE
                      Encapsule.code.app.setBootChrome("phase2watchdogNoop")
-                     Console.log("#{appName} v#{appVersion} app cache watchdog: App cahce is currently in OBSOLETE state. Throwing exception as there's no way to proceed from this state.")
-                     appCacheCallbacks.onObsolete()
+                     if not applicationCacheMonitorTerminalState? or not applicationCacheMonitorTerminalState
+                         Console.log("#{appName} v#{appVersion} app cache watchdog: App cahce is currently in OBSOLETE state. Throwing exception as there's no way to proceed from this state.")
+                         appCacheCallbacks.onObsolete()
+                     else
+                         Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in OBSOLETE state. But it looks like we handled it already.")                        
                      break
 
             ), Encapsule.code.app.bootWatchdogTimeout)
