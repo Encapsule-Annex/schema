@@ -22,5 +22,6 @@ opacity: 1.0; z-index: 1;}
 margin: 0px;
 padding: 2px;
 padding-right: 0px;
-cursor: pointer;
 }
+
+.classMouseCursorPointer { cursor: pointer; }

@@ -32,21 +32,27 @@ Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Enc
 
 class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
 
-    # options = {
-    #     parent: {}
-    #     label: ""
-    #     
+    # params = {
+    #     label: "Display label"
     #     }
 
-    constructor: (params_) ->
+    constructor: (navigatorContainerObject_, params_) ->
         # \ BEGIN: constructor scope
         try
             # \ BEGIN: constructor try scope
-            if not params_? or not params_
-                throw "You must specify a parameter object as the first argument to SchemaViewModelNavigatorMenuLevel instance constructor."
 
-            @parent =   ko.observable(params_.parent? and params_.parent or undefined)
-            @level =    ko.observable(params_.parentLevel? and params_.parentLevel and params_.parentLevel + 1 or 0)
+            if not navigatorContainerObject_? or not navigatorContainerObject_
+                throw "You must specifiy the containing navigator object as the first parameter."
+
+            if not params_? or not params_
+                throw "You must specify a parameter object as the second parameter."
+
+            @navigatorContainer = navigatorContainerObject_
+
+            @selectActionCallback = params_.selectActionCallback? and params_.selectActionCallback or undefined
+            @unselectActionCallback = params_.unselectActionCallback? and params_.unselectActionCallback or undefined
+ 
+            @level =    ko.observable(params_.level? and params_.level or 0)
             @label =    ko.observable(params_.label? and params_.label or "No label!")
             @subMenus = ko.observableArray []
 
@@ -55,20 +61,14 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
 
             Console.message "New menu item: level #{@level()} #{@label()}"
 
-            self = @
-
-            @addSubMenu = (params_, callback_) =>
+            @addSubMenu = (params_) =>
                 if not params_? or not params_
                     throw "You must specify a params object as the first argument to addSubMenu"
 
-                params = params_
-                params.parent = self
-                params.parentLevel = self.level()
+                params_.level = @level() + 1
 
-                Console.message("adding submenu #{params.label}")
-                newMenuItem =  new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel(params_)
-                newMenuItem.parent(self)
-                newMenuItem.level(@level() + 1)
+                Console.message("adding submenu #{params_.label}")
+                newMenuItem =  new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel(@navigatorContainer, params_)
                 @subMenus.push newMenuItem
                 newMenuItem
 
@@ -77,19 +77,26 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
                 "#{fontSize}pt"
 
             @getCssBackgroundColor = =>
-                if not @mouseOverHighlight()
-                    if not @selectedItem()
-                        base = net.brehaut.Color("#0099CC")
-                        ratio = @level() / 7
-                        base.desaturateByRatio(ratio).toString()
-                    else
-                        "#00FF00"
-                else
-                    if not @selectedItem()
-                        "#FFFF00"
-                    else
-                        "#00CC00"
+                if @selectedItem()
+                    if @mouseOverHighlight()
+                        # Currently selected item and currently under the mouse cursor: Selected highlight
+                        "#FFFF99"
 
+                    else
+                        # Currently selected item and not currently under the mouse cursor: Selected color
+                        "#00FF00"
+
+                else
+                    if @mouseOverHighlight()
+                        # Not currently selected and currently under the mouse cursor: Highlight in bright color
+                        "#FFFF00"
+
+                    else
+                        # Not currently selected and not currently under the mouse cursor: Default color based on level)
+                        base = net.brehaut.Color("#0099CC")
+                        ratio = @level() / 10
+                        base.desaturateByRatio(ratio).toString()
+    
             @getCssMarginLeft = =>
                 "#{@level() * 10}px"
 
@@ -100,13 +107,15 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
                 @mouseOverHighlight(false)
 
             @onMouseClick = =>
-                if not Encapsule.runtime.app.SchemaScdlNavigatorWindow?
-                    throw "Unable to obtain reference to navigator window object."
                 @selectedItem( not @selectedItem() )
                 if @selectedItem() == true
-                    Encapsule.runtime.app.SchemaScdlNavigatorWindow.updateSelectedMenuItem(@)
+                    @navigatorContainer.updateSelectedMenuItem(@)
+                    if @selectActionCallback? and @selectActionCallback
+                        @selectActionCallback()
                 else
-                    Encapsule.runtime.app.SchemaScdlNavigatorWindow.updateSelectedMenuItem(undefined)
+                    @navigatorContainer.updateSelectedMenuItem(undefined)
+                    if @unselectActionCallback? and @unselectActionCallback
+                        @unselectActionCallback()
 
             # / END: constructor try scope
         catch exception
@@ -116,10 +125,10 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
     """
-    <div class="classSchemaViewModelNavigatorMenuLevel"
+    <div class="classSchemaViewModelNavigatorMenuLevel classMouseCursorPointer"
     data-bind="style: { fontSize: getCssFontSize(), paddingLeft: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()},
     event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }">
-        <span data-bind="text: level"></span>: <span data-bind="text: label"></span>
+        <span data-bind="text: label"></span>
     </div>
     <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
     """))
@@ -134,18 +143,13 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorWindow
             # \ BEGIN: constructor try scope
             Console.message "Initializing #{appName} navigator data model."
 
-            if not Encapsule.runtime.app.SchemaScdlCatalogue? or not Encapsule.runtime.app.SchemaScdlCatalogue
-                throw "Failed to obtain reference to SCDL catalogue."
-
-            @navigatorEl = $("#idSchemaViewModelNavigator")
-
-            menuViewModel = new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel( { label: "Catalogue" } )
+            menuModelView = new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel(@, { label: "Catalogue" } )
         
-            scdlSpecs =     menuViewModel.addSubMenu( { label: "Specs" } )
+            scdlSpecs =     menuModelView.addSubMenu( { label: "Specs" } )
             scdlSpec =      scdlSpecs.addSubMenu( { label: "Spec" } )
             scdlSpecSystems = scdlSpec.addSubMenu( { label: "Systems" } )
 
-            scdlModels =    menuViewModel.addSubMenu( { label: "Models" } )
+            scdlModels =    menuModelView.addSubMenu( { label: "Models" } )
 
             scdlSystems =   scdlModels.addSubMenu( { label: "Systems" } )
             scdlSystem =    scdlSystems.addSubMenu( { label: "System" } )
@@ -165,8 +169,7 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorWindow
             scdlContracts = scdlModels.addSubMenu( { label: "Contracts" } )
             scdlContract =  scdlContracts.addSubMenu( { label: "Contract" } )
 
-
-            @menuViewModel = ko.observable menuViewModel
+            @menuViewModel = ko.observable menuModelView
 
             @currentlySelectedMenuItem = undefined
 
