@@ -273,15 +273,14 @@ class namespaceEncapsule_code_lib.appcachemonitor
                             Console.messageError("Encapsule application cache monitor unable to reconcile current cache status. Giving up.")
                     break
                 when window.applicationCache.CHECKING
-                    Console.message("... browser app cache status is currently CHECKING.")
+                    Console.message("... browser app cache status is currently CHECKING. Continue to watch...")
                     break
                 when window.applicationCache.DOWNLOADING
-                    Console.message("... browser app cache status is currently DOWNLOADING.")
-                    @appCallbacks.onError()
+                    Console.message("... browser app cache status is currently DOWNLOADING. Continue to watch...")
                     break
                 when window.applicationCache.UPDATEREADY
                     Console.message("... browser app cache status is currently UPDATEREADY.")
-                    stop()
+                    @stop()
                     @appCallbacks.onUpdateReady()
                     break
                 when window.applicationCache.OBSOLETE
@@ -294,10 +293,11 @@ class namespaceEncapsule_code_lib.appcachemonitor
 
 
             if @watchDogTimerElapsedTime >= @watchDogTimerDropDeadTimeout
-                @stop()
                 currentAppCacheStatus = @cache.status
                 switch currentAppCacheStatus
                     when window.applicationCache.IDLE
+
+                        @stop()
 
                         # We can allow the application to proceed because the cache status is IDLE.
                         # However, we are not clear based solely on the current cache status if we're
@@ -308,12 +308,29 @@ class namespaceEncapsule_code_lib.appcachemonitor
                                 Console.message("... the monitor detected DOWNLOADING activity but the browser hasn't fired events to signal completion. Assuming we took an update.")
                                 @appCallbacks.onUpdateReady()
                                 break
+
                             when "checking"
                                 Console.message("... the monitor notes entry into CHECKING handler but the browser hasn't fired events to signal completion. Assuming no update.")
                                 @appCallbacks.onNoUpdate()
-                            
-                     else
-                         Console.messageError("Application cache watchdog timer total elapsed time has exceeded drop-dead threshold! Giving up. Please try a manual page refresh.")
+                                break
+
+                            else
+                                Console.messageError("Application cache watchdog timer total elapsed time has exceeded drop-dead threshold! Giving up. Please try a manual page refresh.")
+                                break;
+
+                        break
+
+                    when window.applicationCache.DOWNLOADING
+
+                        switch @status
+                            when "downloading"
+                                Console.message("... the monitor detected DOWNLOADING activitity but it doesn't look like we've finished yet. Extending drop-dead time for another click.")
+                                @watchDogTimerElapsedTime -= @watchDogTimerInterval
+                                break
+                            else
+                                @stop()
+                                Console.messageError("Application cache watchdog timer total elapsed time has exceeded drop-dead threshold! Giving up. Please try a manual page refresh.")
+                                break;
 
             ), @watchDogTimerInterval)
 

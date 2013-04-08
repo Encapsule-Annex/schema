@@ -24,8 +24,6 @@ class window.Console
 
     @init: =>
 
-        
-
         consoleEl = $("#idConsole")
         if not consoleEl? or not consoleEl
             throw "Unable to resolve the #{appName} console!"
