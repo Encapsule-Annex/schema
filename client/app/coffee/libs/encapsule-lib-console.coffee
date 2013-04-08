@@ -123,8 +123,8 @@ class window.Console
         consoleEl.css( { opacity: "1.0", backgroundColor: "#FFCC00" } )
         Encapsule.runtime.boot.phase0.spinner.cancel()
 
-        blipper = Encapsule.runtime.boot.phase3.blipper
-        if blipper? and blipper
+        if Encapsule? and Encapsule.runtime? and Encapsule.runtime.boot? and Encapsule.runtime.boot.phase3? and Encapsule.runtime.boot.phase3.blipper?
+            blipper = Encapsule.runtime.boot.phase3.blipper
             blipper.blip "beep4"
             blipper.blip "beep2"
             blipper.blip "regen"

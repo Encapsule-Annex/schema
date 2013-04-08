@@ -25,7 +25,7 @@ namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code 
 namespaceEncapsule_code_app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 
 Encapsule.code.app.bootDelay = 2000
-Encapsule.code.app.bootWatchdogTimeout = 2500
+Encapsule.code.app.bootWatchdogTimeout = 10000
 
 Encapsule.code.app.bootChromes = {
     phase0 : { title: "#{appName} initializing...", backgroundColor: undefined, spinnerText: "Hello!" }
@@ -254,7 +254,7 @@ phase2 = (bootstrapperOptions_) ->
             setTimeout ( ->
                 try
                     window.applicationCache.swapCache()
-                    window.location.reload(true) # --> in theory, we're bye bye at this point -->
+                    window.location.reload(true) # --> in theory, execution of the current version stops here.
                 catch exception
                     Encapsule.code.app.setBootChrome("phase2watchdog")
                     Console.message("Well that's interesting... While attempting to swap in the newly updated application cache we caught an unexpected exception.")
@@ -267,84 +267,6 @@ phase2 = (bootstrapperOptions_) ->
     try
         phase2Out.appCacheMonitor = new Encapsule.code.lib.appcachemonitor(appCacheCallbacks)
 
-        # I don't kno any way to actually detect if the cache has been updated before the event listeners are registered.
-        # There simply isn't enough information available from the applicationCache object to determine what's happened
-        # already. This routine assumes that if none of our monitoring callbacks are invoked within two seconds that AND            
-        # the reported cache status is IDLE that we missed the show and everything is set to go.
-        setTimeout( ( ->
-
-            Encapsule.code.app.setBootChrome("phase2Watchdog")
-            Console.log("#{appName} v#{appVersion} starting boot app cache watchdog")
-
-            applicationCacheStatus = window.applicationCache.status
-            applicationCacheMonitorState = phase2Out.appCacheMonitorState
-            applicationCacheMonitorTerminalState = phase2Out.appCacheTerminalState
-
-            Console.log("#{appName} v#{appVersion} app cache watchdog: cacheState=#{applicationCacheStatus} monitorState=#{applicationCacheMonitorState} terminateState=#{applicationCacheMonitorTerminalState}")
-
-            switch applicationCacheStatus
-                when window.applicationCache.UNCACHED
-                    if not applicationCacheMonitorTerminalState? or not applicationCacheMonitorTerminalState
-                        Encapsule.code.app.setBootChrome("phase2watchdogAction")
-                        Console.messageError("Browser cache status is UNCACHED but the browser hasn't given us enough information to determine why this is. Please try a browser refresh and report this problem if it persists. Thanks!.")
-                    else
-                        Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in UNCACHED state. But it looks like we're handling this.")
-
-                    break
-
-                when window.applicationCache.IDLE
-                    if not applicationCacheMonitorTerminalState? or not applicationCacheMonitorTerminalState
-                        Encapsule.code.app.setBootChrome("phase2watchdogAction")
-                        if applicationCacheMonitorState == "downloading" or applicationCacheMonitorState == "progress"
-                            Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in IDLE state. Forcing UPDATEREADY handling.")
-                            appCacheCallbacks.onUpdateReady()
-                            phase2Out.appCacheRaceConditionBroken = true
-                        else
-                            Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in IDLE state. Forcing NOUPDATE handling.")
-                            phase2Out.appCacheRaceConditionBroken = true
-                            appCacheCallbacks.onNoUpdate()
-                    else
-                        Encapsule.code.app.setBootChrome("phase2watchdogNoop")
-                        Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in IDLE state but it seems we're on top of it. NOOP.")
-                    break
-
-                     
-                when window.applicationCache.CHECKING
-                    Encapsule.code.app.setBootChrome("phase2watchdogNoop")
-                    Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in CHECKING state. This seems okay. NOOP.")
-                    if applicationCacheMonitorState != "checking"
-                        Console.messageError("#{appName} application cache watchdog has detected an unexpected inconsistency between the actual state of the application cache and the status callbacks received from your browser. Please try a browser refresh and report this problem if it persists. Thanks!")
-                    break
-
-                when window.applicationCache.DOWNLOADING
-                    Encapsule.code.app.setBootChrome("phase2watchdogNoop")
-                    if applicationCacheMonitorState != "downloading" and applicationCacheMonitorState != "progress"
-                        Console.messageError("#{appName} application cache watchdog has detected an unexpected inconsistency between the actual state of the application cache and the status callbacks received from your browser. Please try a browser refresh and report this problem if it persists. Thanks!")
-                    Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in DOWNLOADING state. This seems okay. NOOP.")
-                    break
-
-                when window.applicationCache.UPDATEREADY
-                     if not applicationCacheMonitorTerminalState? or not applicationCacheMonitorTerminalState
-                        Encapsule.code.app.setBootChrome("phase2watchdogAction")
-                        Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currentiny in UPDATEREADY state. Forcing UPDATEREADY handling.")
-                        phase2Out.appCacheRaceConditionBroken = true
-                        appCacheCallbacks.onUpdateReady()
-                     else
-                        Encapsule.code.app.setBootChrome("phase2watchdogNoop")
-                        Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in UPDATEREADY state. This seems okay. NOOP.")
-                     break
-
-                   
-                when window.applicationCache.OBSOLETE
-                     Encapsule.code.app.setBootChrome("phase2watchdogNoop")
-                     if not applicationCacheMonitorTerminalState? or not applicationCacheMonitorTerminalState
-                         Console.log("#{appName} v#{appVersion} app cache watchdog: App cahce is currently in OBSOLETE state. Throwing exception as there's no way to proceed from this state.")
-                         appCacheCallbacks.onObsolete()
-                     else
-                         Console.log("#{appName} v#{appVersion} app cache watchdog: App cache is currently in OBSOLETE state. But it looks like we handled it already.")                        
-                     break
-
-            ), Encapsule.code.app.bootWatchdogTimeout)
     catch exception
         Console.messageError(exception)
 
