@@ -265,7 +265,7 @@ phase2 = (bootstrapperOptions_) ->
                 ) , Encapsule.code.app.bootDelay
         }
     try
-        phase2Out.appCacheMonitor = new Encapsule.code.lib.appcachemonitor(appCacheCallbacks)
+        phase2Out.appCacheMonitor = new Encapsule.code.lib.ApplicationCacheMonitor(appCacheCallbacks)
 
     catch exception
         Console.messageError(exception)
