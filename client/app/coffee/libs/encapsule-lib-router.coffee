@@ -26,11 +26,11 @@
 
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
-namespaceEncapsule_code_lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
+Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
+Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 
 
-class namespaceEncapsule_code_lib.router
+class Encapsule.code.lib.InPageURIRouter
 
     #
     # class instance state
@@ -44,7 +44,7 @@ class namespaceEncapsule_code_lib.router
     lastTriggeredLocation = undefined
     applicationRouteCallback = undefined
 
-    allRoutes = ->
+    allRoutes = =>
         if document.location.hash == ""
             # It's possible for the user to manipulate the URI, hit enter, and affect a route dispatch to
             # a malformed route. For exmple, foobar.com/index.html# vs. foobar.com/index.html#/
@@ -59,11 +59,11 @@ class namespaceEncapsule_code_lib.router
         lastTriggeredRoute = clientRouter.getRoute()
         lastTriggeredLocation = document.location
         if applicationRouteCallback? and applicationRouteCallback
-            Console.message("#{appName} router: dispatching #{routerSequenceNumber} : #{document.location.hash}")
+            Console.message("InPageURIRouter dispatching #{routerSequenceNumber} : #{document.location.hash}")
             routerSequenceNumber++
-            applicationRouteCallback(@)
+            applicationRouteCallback(routerSequenceNumber, lastTriggeredRoute, lastTriggeredLocation)
         else
-            Console.message("#{appName} router: caching #{routerSequenceNumber} : #{document.location.hash}")
+            Console.message("InPaageURIRouter caching #{routerSequenceNumber} : #{document.location.hash}")
 
     clientRoutes = {}
 

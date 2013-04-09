@@ -33,14 +33,14 @@ Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Enc
 
 class Encapsule.code.app.Schema
 
-    applicationRouteCallback = ->
-        Console.message "#{appName} local URI routing hooked."
-
     constructor: ->
         try
             Console.messageRaw("<h3>#{appName} v#{appVersion} APPLICATION STARTING</h3>")
             Console.message "Initializing local URI routing:"
-            Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(applicationRouteCallback)
+
+            Encapsule.runtime.app.SchemaRouter = new Encapsule.code.app.SchemaRouter()
+
+            Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(Encapsule.runtime.app.SchemaRouter.routeChangedCallback)
 
             Console.messageRaw("<h3>INITIALIZING #{appName} MODEL VIEW</h3>")
 

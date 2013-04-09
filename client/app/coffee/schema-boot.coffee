@@ -114,7 +114,7 @@ phase0 = (bootstrapperOptions_) ->
     Console.log "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
     Console.log "#{appName}: #{appBuildTime} by #{appBuilder} :: Thanks for using #{appName}. #{appPackagePublisherUrl}"
 
-    phase0Out.router = new Encapsule.code.lib.router()
+    phase0Out.router = new Encapsule.code.lib.InPageURIRouter()
     bootstrapperOptions = bootstrapperOptions_
 
     phase0Out.router.setApplicationRouteCallback( (router_) ->
