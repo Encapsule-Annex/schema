@@ -35,7 +35,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaBo
 <h2>App Boot Info</h2>
 <p>
 Bootstrapper exit status: <strong><span data-bind="text: Encapsule.runtime.boot.exitStatus"></span></strong><br>
-Page Entry URI: <strong><span data-bind="text: Encapsule.runtime.boot.phase0.router.initialLocation()"></span></strong><br>
+Page Entry URI: <strong><span data-bind="text: Encapsule.runtime.boot.phase0.router.initialLocation"></span></strong><br>
 User Agent: <strong><span data-bind="text: Encapsule.runtime.boot.phase1.userAgent"></span></strong><br>
 Chrome Browser: <strong><span data-bind="text: Encapsule.runtime.boot.phase1.isChrome"></span></strong><br>
 WebKit Browser: <strong><span data-bind="text: Encapsule.runtime.boot.phase1.isWebKit"></span></strong><br>

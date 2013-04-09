@@ -32,40 +32,6 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 
 class Encapsule.code.lib.InPageURIRouter
 
-    #
-    # class instance state
-
-    clientRouter = undefined
-    internalAllRoutesCallbackCount = 0
-    routerSequenceNumber = 0
-    initialRoute = undefined;
-    initialLocation = undefined;
-    lastTriggeredRoute = undefined
-    lastTriggeredLocation = undefined
-    applicationRouteCallback = undefined
-
-    allRoutes = =>
-        if document.location.hash == ""
-            # It's possible for the user to manipulate the URI, hit enter, and affect a route dispatch to
-            # a malformed route. For exmple, foobar.com/index.html# vs. foobar.com/index.html#/
-            # We consider this 'no route' and redirect back to #/
-            clientRouter.setRoute("")
-            return
-
-        internalAllRoutesCallbackCount++
-        if not initialRoute
-            initialRoute = clientRouter.getRoute()
-            initialLocation = document.location
-        lastTriggeredRoute = clientRouter.getRoute()
-        lastTriggeredLocation = document.location
-        if applicationRouteCallback? and applicationRouteCallback
-            Console.message("InPageURIRouter dispatching #{routerSequenceNumber} : #{document.location.hash}")
-            routerSequenceNumber++
-            applicationRouteCallback(routerSequenceNumber, lastTriggeredRoute, lastTriggeredLocation)
-        else
-            Console.message("InPaageURIRouter caching #{routerSequenceNumber} : #{document.location.hash}")
-
-    clientRoutes = {}
 
     # This is perhaps one of the simplest possible configurations of client-side Director.js.
     # Essentially all we're doing is handling a single generic 'notfound' route and forwarding
@@ -87,50 +53,83 @@ class Encapsule.code.lib.InPageURIRouter
     # observed route changes. In the case of listener re-registration, an actual route change has
     # not occurred. Rather, the newly registered listener is informed of the _last_ set route.
     #
-    clientOptions = {
-        #before: onBefore,
-        #on: allRoutes,
-        #after: onAfter,
-        #once: onOnce,
-        notfound: allRoutes,
-        async: false, # true or false (see re-director: async feature in Director.js isn't 100%)
-        strict: true, # true or false (we take 'strict' to limit noise)
-        recurse: false # "forward", "backward", or "false" (we take 'false' as 
-        html5history: false, # true/false (enabled use of HTML5 pushstate)
-        run_handler_in_init: false # true/false (we handle this case ourselves)
-        }
-
     constructor: ->
 
         Console.message("#{appName} router: initialize.")
 
-        clientRouter = Router() 
-        clientRouter.configure(clientOptions)
+        #
+        # class instance state
+
+        @clientRouter = undefined
+        @internalAllRoutesCallbackCount = 0
+        @routerSequenceNumber = 0
+        @initialRoute = undefined;
+        @initialLocation = undefined;
+        @lastTriggeredRoute = undefined
+        @lastTriggeredLocation = undefined
+        @applicationRouteCallback = undefined
+
+        @allRoutes = =>
+            if document.location.hash == ""
+                # It's possible for the user to manipulate the URI, hit enter, and affect a route dispatch to
+                # a malformed route. For exmple, foobar.com/index.html# vs. foobar.com/index.html#/
+                # We consider this 'no route' and redirect back to #/
+                @clientRouter.setRoute("")
+                return
+
+            @internalAllRoutesCallbackCount++
+            if not @initialRoute
+                @initialRoute = @clientRouter.getRoute()
+                @initialLocation = document.location
+            @lastTriggeredRoute = @clientRouter.getRoute()
+            @lastTriggeredLocation = document.location
+            if @applicationRouteCallback? and @applicationRouteCallback
+                Console.message("InPageURIRouter dispatching #{@routerSequenceNumber} : #{document.location.hash}")
+                @routerSequenceNumber++
+                @applicationRouteCallback(@routerSequenceNumber, @lastTriggeredRoute, @lastTriggeredLocation)
+            else
+                Console.message("InPaageURIRouter caching #{@routerSequenceNumber} : #{document.location.hash}")
+
+        clientOptions = {
+            #before: onBefore,
+            #on: allRoutes,
+            #after: onAfter,
+            #once: onOnce,
+            notfound: @allRoutes,
+            async: false, # true or false (see re-director: async feature in Director.js isn't 100%)
+            strict: true, # true or false (we take 'strict' to limit noise)
+            recurse: false # "forward", "backward", or "false" (we take 'false' as 
+            html5history: false, # true/false (enabled use of HTML5 pushstate)
+            run_handler_in_init: false # true/false (we handle this case ourselves)
+            }
+
+
+        @clientRoutes = {}
+        @clientRouter = Router() 
+        @clientRouter.configure(clientOptions)
 
         Console.message("#{appName} router: starting.")
-        clientRouter.init()
+        @clientRouter.init()
         Console.message("#{appName} router: started.")
 
-        if internalAllRoutesCallbackCount == 0
+        if @internalAllRoutesCallbackCount == 0
             Console.message("#{appName} router: redirecting to default route.")
-            clientRouter.setRoute("")
+            @clientRouter.setRoute("")
 
-    setApplicationRouteCallback: (applicationRouteCallback_) ->
+        @setApplicationRouteCallback = (applicationRouteCallback_) =>
 
-        if not applicationRouteCallback_ or not applicationRouteCallback_
-            throw "You need to specify a callback function."
+            if not applicationRouteCallback_ or not applicationRouteCallback_
+                throw "You need to specify a callback function."
 
-        if applicationRouteCallback? or applicationRouteCallback
-            Console.message("#{appName} router: re-registering application route callback.")
-            if routerSequenceNumber > 0
-                routerSequenceNumber--
-        else
-            Console.message("#{appName} router: registering application route callback.")
+            if @applicationRouteCallback? or @applicationRouteCallback
+                Console.message("#{appName} router: re-registering application route callback.")
+                if @routerSequenceNumber > 0
+                    @routerSequenceNumber--
+            else
+                Console.message("#{appName} router: registering application route callback.")
 
-        applicationRouteCallback = applicationRouteCallback_
+            @applicationRouteCallback = applicationRouteCallback_
 
-        if internalAllRoutesCallbackCount > 0
-            allRoutes()
+            if @internalAllRoutesCallbackCount > 0
+                @allRoutes()
 
-    routerSequenceNumber: -> routerSequenceNumber - 1
-    initialLocation:  -> initialLocation
