@@ -153,6 +153,7 @@ try
                             name: "Select 1 Window"                                      
                             initialMode: "full"
                             initialEnable: true
+                            overflow: "auto"
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#00CCFF"
                             modes: { full: { reserve: 150 }, min: { reserve: 32 } }

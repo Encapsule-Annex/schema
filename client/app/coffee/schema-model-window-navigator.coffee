@@ -30,13 +30,135 @@ Encapsule.runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runti
 Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
 
 
+Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
+    title: "SCDL Navigator"
+    menuHierarchy: [
+        {
+            menu: "Catalogues"
+            subMenus: [
+                {
+                    menu: "Catalogue"
+                    subMenus: [
+                        {
+                            menu: "Specifications"
+                            subMenus: [
+                                {
+                                    menu: "Specification"
+                                    subMenus: [
+                                        {
+                                            menu: "Systems"
+                                            subMenus: [
+                                                {
+                                                    menu: "System"
+                                                    subMenus: [
+                                                        {
+                                                            menu: "Sockets"
+                                                            subMenus: [
+                                                                {
+                                                                    menu: "Socket"
+                                                                }
+                                                            ] # Sockets submenus
+                                                        } # 
+                                                    ] # System submenus
+                                                } # System
+                                            ] # Systems submenus
+                                        } # Systems
+                                    ] # Specification submenus
+                                } # Specification
+                            ] # Specifications submenu
+                        } # Specifications
+                        {
+                            menu: "Models"
+                            subMenus: [
+                                {
+                                    menu: "Types"
+                                    subMenus: [
+                                        {
+                                            menu: "Type"
+                                        } # Type
+                                    ] # Types submenus
+                                } # Types
+                                {
+                                    menu: "Machines"
+                                    subMenus: [
+                                        {
+                                            menu: "Machine"
+                                            subMenus: [
+                                                {
+                                                    menu: "Pins"
+                                                    subMenus: [
+                                                        {
+                                                            menu: "Inputs"
+                                                            subMenus: [
+                                                                {
+                                                                    menu: "Input"
+                                                                } # Inputs submenus
+                                                            ] # Inputs submenus
+                                                        } # Inputs
+                                                        {
+                                                            menu: "Outputs"
+                                                            subMenus: [
+                                                                {
+                                                                    menu: "Output"
+                                                                } # Output
+                                                            ] # Outputs submenus
+                                                        } # Outputs
+                                                    ] # Pins submenus
+                                                } # Pins
+                                                {
+                                                    menu: "States"
+                                                    subMenus: [
+                                                        {
+                                                            menu: "State"
+                                                            subMenus: [
+                                                                {
+                                                                    menu: "Actions"
+                                                                    subMenus: [
+                                                                        {
+                                                                            menu: "Entry"
+                                                                        } # Entry
+                                                                        {
+                                                                            menu: "Exit"
+                                                                        } # Exit
+                                                                    ] # Actions submenus
+                                                                } # Actions
+                                                                {
+                                                                    menu: "Transitions"
+                                                                    subMenus: [
+                                                                        {
+                                                                            menu: "Transition"
+                                                                        } # Transition
+                                                                    ] # Transitions submenus
+                                                                } # Transitions
+                                                            ] # State submenus
+                                                        } # State
+                                                    ] # States submenus
+                                                } # States
+                                            ] # Machine submenus
+                                        } # Machine
+                                    ] # Machines submenus
+                                } # Machines
+                            ] # Models submenus
+                        } # Models
+                    ] # Catalogue submenu
+                } # Catalogue
+            ] # Catalogues submenu
+        } # Catalogues
+    ] # ScdlNavigatorWindowLayout
+} # layout object    
+    
+
+
+
+
+
 class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
 
     # params = {
     #     label: "Display label"
     #     }
 
-    constructor: (navigatorContainerObject_, params_) ->
+    constructor: (navigatorContainerObject_, menuObject_, level_) ->
         # \ BEGIN: constructor scope
         try
             # \ BEGIN: constructor try scope
@@ -44,33 +166,27 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
             if not navigatorContainerObject_? or not navigatorContainerObject_
                 throw "You must specifiy the containing navigator object as the first parameter."
 
-            if not params_? or not params_
+            if not menuObject_? or not menuObject_
                 throw "You must specify a parameter object as the second parameter."
 
             @navigatorContainer = navigatorContainerObject_
 
-            @selectActionCallback = params_.selectActionCallback? and params_.selectActionCallback or undefined
-            @unselectActionCallback = params_.unselectActionCallback? and params_.unselectActionCallback or undefined
+            # Not imlemented yet
+            # @selectActionCallback = menuObject_.selectActionCallback? and menuObject_.selectActionCallback or undefined
+            # @unselectActionCallback = menuObject_.unselectActionCallback? and menuObject_.unselectActionCallback or undefined
  
-            @level =    ko.observable(params_.level? and params_.level or 0)
-            @label =    ko.observable(params_.label? and params_.label or "No label!")
+            @level =    ko.observable(level_? and level_ or 0)
+            @label =    ko.observable(menuObject_.menu? and menuObject_.menu or "Missing menu name!")
             @subMenus = ko.observableArray []
 
-            @mouseOverHighlight = ko.observable false
-            @selectedItem = ko.observable false
+            @mouseOverHighlight = ko.observable(false)
+            @selectedItem = ko.observable(false)
 
             Console.message "New menu item: level #{@level()} #{@label()}"
 
-            @addSubMenu = (params_) =>
-                if not params_? or not params_
-                    throw "You must specify a params object as the first argument to addSubMenu"
-
-                params_.level = @level() + 1
-
-                Console.message("adding submenu #{params_.label}")
-                newMenuItem =  new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel(@navigatorContainer, params_)
-                @subMenus.push newMenuItem
-                newMenuItem
+            if menuObject_.subMenus? and menuObject_.subMenus
+                for subMenuObject in menuObject_.subMenus
+                    @subMenus.push new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel(@navigatorContainer, subMenuObject, @level() + 1)
 
             @getCssFontSize = =>
                 fontSize = Math.max( (14 - @level()), 8)
@@ -134,42 +250,23 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     """))
 
 
-
-
 class Encapsule.code.app.modelview.SchemaScdlNavigatorWindow
-    constructor: ->
+    constructor: (layout_) ->
         # \ BEGIN: constructor
         try
             # \ BEGIN: constructor try scope
             Console.message "Initializing #{appName} navigator data model."
 
-            menuModelView = new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel(@, { label: "Catalogue" } )
-        
-            scdlSpecs =     menuModelView.addSubMenu( { label: "Specs" } )
-            scdlSpec =      scdlSpecs.addSubMenu( { label: "Spec" } )
-            scdlSpecSystems = scdlSpec.addSubMenu( { label: "Systems" } )
+            if not layout_? then throw "Missing layout parameter."
+            if not layout_ then throw "Missing layout parameter value."
 
-            scdlModels =    menuModelView.addSubMenu( { label: "Models" } )
+            @title = layout_.title
 
-            scdlSystems =   scdlModels.addSubMenu( { label: "Systems" } )
-            scdlSystem =    scdlSystems.addSubMenu( { label: "System" } )
-            scdlSystemIo =  scdlSystem.addSubMenu( { label: "I/O" } )
+            @topLevelMenus = ko.observableArray []
 
-            scdlSystemInputs = scdlSystemIo.addSubMenu( { label: "Inputs" } )
-            scdlSystemInput = scdlSystemInputs.addSubMenu( { label: "Input" } )
-            scdlSystemOutputs = scdlSystemIo.addSubMenu( { label: "Outputs" } )
-            scdlSystemOutput = scdlSystemOutputs.addSubMenu( { label: "Output" } )
+            for menuObject in layout_.menuHierarchy
+                @topLevelMenus.push new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel(@, menuObject, 0)
 
-            scdlMachines =  scdlModels.addSubMenu( { label: "Machines" } )
-            scdlMachine =   scdlMachines.addSubMenu( { label: "Machine" } )
-
-            scdlSockets =   scdlModels.addSubMenu( { label: "Sockets" } )
-            scdlSocket =    scdlSockets.addSubMenu( { label: "Socket" } )
-
-            scdlContracts = scdlModels.addSubMenu( { label: "Contracts" } )
-            scdlContract =  scdlContracts.addSubMenu( { label: "Contract" } )
-
-            @menuViewModel = ko.observable menuModelView
 
             @currentlySelectedMenuItem = undefined
 
@@ -189,5 +286,5 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorWindow
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigator", ( ->
     """
-    <span data-bind="with: menuViewModel"><div data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel' }"></div></span>
+    <span data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: topLevelMenus }"></span>
     """))

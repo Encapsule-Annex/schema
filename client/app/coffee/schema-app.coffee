@@ -46,7 +46,8 @@ class Encapsule.code.app.Schema
             Console.messageRaw("<h3>INITIALIZING #{appName} MODEL VIEW</h3>")
 
             Encapsule.runtime.app.SchemaScdlCatalogue = new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
-            Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.app.modelview.SchemaScdlNavigatorWindow()
+
+            Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.app.modelview.SchemaScdlNavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
 
             Encapsule.runtime.app.SchemaTitlebarWindow = new Encapsule.code.app.modelview.SchemaTitleBarWindow()
 
