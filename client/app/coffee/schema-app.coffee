@@ -39,8 +39,9 @@ class Encapsule.code.app.Schema
             Console.message "Initializing local URI routing:"
 
             Encapsule.runtime.app.SchemaRouter = new Encapsule.code.app.SchemaRouter()
-
             Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(Encapsule.runtime.app.SchemaRouter.routeChangedCallback)
+
+            Encapsule.runtime.app.SchemaSession = new Encapsule.code.app.SchemaSession()
 
             Console.messageRaw("<h3>INITIALIZING #{appName} MODEL VIEW</h3>")
 
