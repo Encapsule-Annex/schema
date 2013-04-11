@@ -56,6 +56,16 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             subMenus: [
                                                                 {
                                                                     menu: "Socket"
+                                                                    subMenus: [
+                                                                        {
+                                                                            menu: "Bindings"
+                                                                            subMenus: [
+                                                                                {
+                                                                                    menu: "Binding"
+                                                                                }
+                                                                            ] # Bindings submenus
+                                                                        } # Bindings
+                                                                    ] # Socket submenus
                                                                 }
                                                             ] # Sockets submenus
                                                         } # 
@@ -71,13 +81,102 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             menu: "Models"
                             subMenus: [
                                 {
-                                    menu: "Types"
+                                    menu: "Systems"
                                     subMenus: [
                                         {
-                                            menu: "Type"
-                                        } # Type
-                                    ] # Types submenus
-                                } # Types
+                                            menu: "System"
+                                            subMenus: [
+                                                {
+                                                    menu: "Pins"
+                                                    subMenus: [
+                                                        {
+                                                            menu: "Inputs"
+                                                            subMenus: [
+                                                                {
+                                                                    menu: "Input"
+                                                                } # Inputs submenus
+                                                            ] # Inputs submenus
+                                                        } # Inputs
+                                                        {
+                                                            menu: "Outputs"
+                                                            subMenus: [
+                                                                {
+                                                                    menu: "Output"
+                                                                } # Output
+                                                            ] # Outputs submenus
+                                                        } # Outputs
+                                                    ] # Pins submenus
+                                                } # Pins
+                                                {
+                                                    menu: "Models"
+                                                    subMenus: [
+                                                        {
+                                                            menu: "Model"
+                                                        } #  Models submenus
+                                                    ] # Models submenus
+                                                } # Models
+                                                {
+                                                    menu: "Nodes"
+                                                    subMenus: [
+                                                        {
+                                                            menu: "Node"
+                                                        } # Node
+                                                    ] # Nodes submenus
+                                                } # Nodes
+                                            ] # System submenus
+                                        } # Systems submenus
+                                    ] # Systems submenus
+                                } # Systems
+                                {
+                                    menu: "Sockets"
+                                    subMenus: [
+                                        {
+                                            menu: "Socket"
+                                            subMenus: [
+                                                {
+                                                    menu: "Pins"
+                                                    subMenus: [
+                                                        {
+                                                            menu: "Inputs"
+                                                            subMenus: [
+                                                                {
+                                                                    menu: "Input"
+                                                                } # Inputs submenus
+                                                            ] # Inputs submenus
+                                                        } # Inputs
+                                                        {
+                                                            menu: "Outputs"
+                                                            subMenus: [
+                                                                {
+                                                                    menu: "Output"
+                                                                } # Output
+                                                            ] # Outputs submenus
+                                                        } # Outputs
+                                                    ] # Pins submenus
+                                                } # Pins
+                                            ] # Socket submenus
+                                        } # Socket
+                                    ] # Sockets submenus
+                                } # Sockets
+                                {
+                                    menu: "Socket Contracts"
+                                    subMenus: [
+                                        {
+                                            menu: "Socket Contract"
+                                            subMenus: [
+                                                {
+                                                    menu: "Nodes"
+                                                    subMenus: [
+                                                        {
+                                                            menu: "Node"
+                                                        } # Node
+                                                    ] # Nodes submenus
+                                                } # Nodes
+                                            ] # Socket Contract submenus
+                                        } # Socket Contract
+                                    ] # Socket Contracts submenus
+                                } # Socket Contracts
+
                                 {
                                     menu: "Machines"
                                     subMenus: [
@@ -138,8 +237,54 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                         } # Machine
                                     ] # Machines submenus
                                 } # Machines
+                                {
+                                    menu: "Types"
+                                    subMenus: [
+                                        {
+                                            menu: "Type"
+                                        } # Type
+                                    ] # Types submenus
+                                } # Types
+
                             ] # Models submenus
                         } # Models
+                        {
+                            menu: "Assets"
+                            subMenus: [
+                                {
+                                    menu: "People"
+                                    subMenus: [
+                                        {
+                                            menu: "Person"
+                                        } # Person
+                                    ] # People submenus
+                                } # People
+                                {
+                                    menu: "Organizations"
+                                    subMenus: [
+                                        {
+                                            menu: "Organization"
+                                        }
+                                    ] # Organizations submenus
+                                } # Organizations
+                                {
+                                    menu: "Licenses"
+                                    subMenus: [
+                                        {
+                                            menu: "License"
+                                        } # Licesne
+                                    ] # Licesnes submenus
+                                } # Licenses
+                                {
+                                    menu: "Copyrights"
+                                    subMenus: [
+                                        {
+                                            menu: "Copyright"
+                                        } # Copyright
+                                    ] # Copyrights submenus
+                                } # Copyrights
+                            ] # Assets submenu
+                        } # Assets
                     ] # Catalogue submenu
                 } # Catalogue
             ] # Catalogues submenu
@@ -180,6 +325,7 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
             @subMenus = ko.observableArray []
 
             @mouseOverHighlight = ko.observable(false)
+            @showAsSelectedUntilMouseOut = ko.observable(false)
             @selectedItem = ko.observable(false)
 
             Console.message "New menu item: level #{@level()} #{@label()}"
@@ -189,14 +335,14 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
                     @subMenus.push new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel(@navigatorContainer, subMenuObject, @level() + 1)
 
             @getCssFontSize = =>
-                fontSize = Math.max( (14 - @level()), 8)
+                fontSize = Math.max( (16 - @level()), 8)
                 "#{fontSize}pt"
 
             @getCssBackgroundColor = =>
                 if @selectedItem()
-                    if @mouseOverHighlight()
+                    if @mouseOverHighlight() and not @showAsSelectedUntilMouseOut()
                         # Currently selected item and currently under the mouse cursor: Selected highlight
-                        "#FFFF99"
+                        "#00CC00"
 
                     else
                         # Currently selected item and not currently under the mouse cursor: Selected color
@@ -210,21 +356,24 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
                     else
                         # Not currently selected and not currently under the mouse cursor: Default color based on level)
                         base = net.brehaut.Color("#0099CC")
-                        ratio = @level() / 10
-                        base.desaturateByRatio(ratio).toString()
+                        ratio = @level() / 8
+                        #base.desaturateByRatio(ratio).toString()
+                        base.lightenByRatio(ratio)
     
             @getCssMarginLeft = =>
-                "#{@level() * 10}px"
+                "#{@level() * 5}px"
 
             @onMouseOver = => 
                 @mouseOverHighlight(true)
 
             @onMouseOut = =>
                 @mouseOverHighlight(false)
+                @showAsSelectedUntilMouseOut(false)
 
             @onMouseClick = =>
                 @selectedItem( not @selectedItem() )
                 if @selectedItem() == true
+                    @showAsSelectedUntilMouseOut(true)
                     @navigatorContainer.updateSelectedMenuItem(@)
                     if @selectActionCallback? and @selectActionCallback
                         @selectActionCallback()

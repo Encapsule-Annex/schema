@@ -156,7 +156,7 @@ try
                             overflow: "auto"
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#00CCFF"
-                            modes: { full: { reserve: 150 }, min: { reserve: 32 } }
+                            modes: { full: { reserve: 200 }, min: { reserve: 32 } }
                             MVVM: {
                                 modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                                 viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"

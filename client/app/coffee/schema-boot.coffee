@@ -28,28 +28,28 @@ Encapsule.code.app.bootDelay = 2000
 Encapsule.code.app.bootWatchdogTimeout = 10000
 
 Encapsule.code.app.bootChromes = {
-    phase0 : { title: "#{appName} initializing...", backgroundColor: undefined, spinnerText: "Hello!" }
+    phase0 : { title: "#{appName} Hello!", backgroundColor: undefined, spinnerText: "Hello!" }
     phase1 : { title: undefined, backgroundColor: undefined, spinnerText: "Booting"  }
-    phase2 : { title: undefined, backgroundColor: undefined, spinnerText: "Checking for update"  }
-    phase2checking : { title: "#{appName} checking", backgroundColor: undefined, spinnerText: undefined  }
+    phase2 : { title: "#{appName} checking", backgroundColor: undefined, spinnerText: "Checking for update"  }
+    phase2checking : { title: undefined, backgroundColor: undefined, spinnerText: undefined  }
     phase2downloading: { title: "#{appName} updating", backgroundColor: "#004477", spinnerText: "Updating"  }
-    phase2progress: { title: "#{appName} update ", backgroundColor: "#004477", spinnerText: "Updating offline cache "  }
+    phase2progress: { title: "#{appName} caching", backgroundColor: "#004477", spinnerText: "Updating offline cache "  }
     phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFFF00", spinnerText: "Error!"  }
     phase2obsolete: { title: "#{appName} LOCKED", backgroundColor: "#FFCC00", spinnerText: "LOCKED!"  }
-    phase2offline: { title: "#{appName} starting offline...", backgroundColor: "#005588", spinnerText: "#{appName} starting"  }
+    phase2offline: { title: "#{appName} launch", backgroundColor: "#005588", spinnerText: "#{appName} launching (offline)"  }
     phase2cached: { title: "#{appName} installed! starting...", backgroundColor: "#005588", spinnerText: "#{appName} installed!"  }
-    phase2noupdate: { title: "#{appName} starting... ", backgroundColor: "#005588", spinnerText: "#{appName} starting"  }
+    phase2noupdate: { title: "#{appName} launch", backgroundColor: "#005588", spinnerText: "#{appName} launching (online)"  }
     phase2updateready: { title: "#{appName} updated. rebooting...", backgroundColor: "#005588", spinnerText: "#{appName} updated. Rebooting..."  }
     #phase2watchdog: { title: "#{appName} ?8|", spinnerText: "hello"  }
     #phase2watchdogNoop: { title: "#{appName} v#{appVersion}", spinnerText: "hello"  }
     #phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00", spinnerText: "hello"  }
-    phase3: { title: "#{appName} v#{appVersion}", backgroundColor: undefined, spinnerText: "#{appName} starting"  }
+    phase3: { title: "#{appName} starting", backgroundColor: undefined, spinnerText: "#{appName} starting"  }
     schemaStart : {title: undefined, backgroundColor: undefined, spinnerText: "Starting window manager" }
     schemaModelView : {title: undefined, backgroundColor: undefined, spinnerText: "Building model view" }
     schemaViewModel : {title: undefined, backgroundColor: undefined, spinnerText: "Building view model" }
     schemaBind : {title: undefined, backgroundColor: undefined, spinnerText: "Binding data model" }
     schemaRender : {title: undefined, backgroundColor: undefined, spinnerText: "Rendering layout" }
-    schemaWelcome : {title: undefined, backgroundColor: undefined, spinnerText: "Welcome to #{appName}!" }
+    schemaWelcome : {title: "#{appName} v#{appVersion}", backgroundColor: undefined, spinnerText: "Welcome to #{appName}!" }
     }
 
 Encapsule.code.app.setBootChrome = (phase_, progress_) ->
