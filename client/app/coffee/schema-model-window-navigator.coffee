@@ -334,34 +334,38 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
                 for subMenuObject in menuObject_.subMenus
                     @subMenus.push new Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel(@navigatorContainer, subMenuObject, @level() + 1)
 
-            @getCssFontSize = =>
+            @getCssFontSize = ko.computed =>
                 fontSize = Math.max( (16 - @level()), 8)
                 "#{fontSize}pt"
 
-            @getCssBackgroundColor = =>
+            @getCssBackgroundColor = ko.computed =>
+                backgroundColor = undefined
                 if @selectedItem()
                     if @mouseOverHighlight() and not @showAsSelectedUntilMouseOut()
                         # Currently selected item and currently under the mouse cursor: Selected highlight
-                        "#00CC00"
+                        backgroundColor = "#00CC00"
 
                     else
                         # Currently selected item and not currently under the mouse cursor: Selected color
-                        "#00FF00"
+                        backgroundColor = "#00FF00"
 
                 else
                     if @mouseOverHighlight()
                         # Not currently selected and currently under the mouse cursor: Highlight in bright color
-                        "#FFFF00"
+                        backgroundColor = "#FFFF00"
 
                     else
                         # Not currently selected and not currently under the mouse cursor: Default color based on level)
                         base = net.brehaut.Color("#0099CC")
                         ratio = @level() / 8
                         #base.desaturateByRatio(ratio).toString()
-                        base.lightenByRatio(ratio)
+                        backgroundColor = base.lightenByRatio(ratio)
+
+                # (enable to research IE 10 failures) Console.message("Setting navigator menu \"#{@label()}\" background color to #{backgroundColor}")
+                return backgroundColor
     
-            @getCssMarginLeft = =>
-                "#{@level() * 5}px"
+            @getCssMarginLeft = ko.computed =>
+                return "#{@level() * 5}px"
 
             @onMouseOver = => 
                 @mouseOverHighlight(true)
@@ -379,6 +383,7 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
                         @selectActionCallback()
                 else
                     @navigatorContainer.updateSelectedMenuItem(undefined)
+                    @showAsSelectedUntilMouseOut(false)
                     if @unselectActionCallback? and @unselectActionCallback
                         @unselectActionCallback()
 
