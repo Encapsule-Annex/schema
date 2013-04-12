@@ -443,11 +443,11 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         if @currentDisplayPlaneId == planeId_
                             return false
                         planeIdToDisable = @currentDisplayPlaneId
-                        $("##{@currentDisplayPlaneId}").hide(250, ( =>  @planesDictionary[planeIdToDisable].enabled(false) ))
+                        $("##{@currentDisplayPlaneId}").hide(657, ( =>  @planesDictionary[planeIdToDisable].enabled(false) ))
 
                     targetPlaneJN = $("##{planeId_}")
                     targetPlane.enabled(true)
-                    targetPlaneJN.hide(0, => targetPlaneJN.show(500))
+                    targetPlaneJN.hide(0, => targetPlaneJN.show(657))
 
                     @currentDisplayPlaneId = planeId_
 
