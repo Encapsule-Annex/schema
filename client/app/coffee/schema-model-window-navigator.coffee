@@ -294,19 +294,13 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     
 
 
-
-
-
 class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
-
-    # params = {
-    #     label: "Display label"
-    #     }
-
     constructor: (navigatorContainerObject_, menuObject_, level_) ->
         # \ BEGIN: constructor scope
         try
             # \ BEGIN: constructor try scope
+
+            # Cursory validation of the incoming parameters.
 
             if not navigatorContainerObject_? or not navigatorContainerObject_
                 throw "You must specifiy the containing navigator object as the first parameter."
@@ -314,7 +308,10 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
             if not menuObject_? or not menuObject_
                 throw "You must specify a parameter object as the second parameter."
 
+            # Per-class instance references to construction parameters.
+
             @navigatorContainer = navigatorContainerObject_
+            @menuObjectReference = menuObject_
 
             # Not imlemented yet
             # @selectActionCallback = menuObject_.selectActionCallback? and menuObject_.selectActionCallback or undefined
@@ -322,11 +319,17 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
  
             @level =    ko.observable(level_? and level_ or 0)
             @label =    ko.observable(menuObject_.menu? and menuObject_.menu or "Missing menu name!")
+
             @subMenus = ko.observableArray []
 
             @mouseOverHighlight = ko.observable(false)
             @showAsSelectedUntilMouseOut = ko.observable(false)
             @selectedItem = ko.observable(false)
+
+            @currentlySelectedLevel = ko.observable(-1)
+            @setCurrentlySelectedLevel = (level_) =>
+                @currentlySelectedLevel(level_)
+                
 
             Console.message "New menu item: level #{@level()} #{@label()}"
 
@@ -338,12 +341,25 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
                 fontSize = Math.max( (16 - @level()), 8)
                 "#{fontSize}pt"
 
+            @getBorder = ko.computed =>
+                if @selectedItem()
+                    return "1px solid black"
+                else
+                    return "0px solid black"
+
             @getCssBackgroundColor = ko.computed =>
                 backgroundColor = undefined
+                #@navigatorContainer.currentlySelectedMenuItemLevel()
+
+                currentlySelectedLevel = 
                 if @selectedItem()
                     if @mouseOverHighlight() and not @showAsSelectedUntilMouseOut()
                         # Currently selected item and currently under the mouse cursor: Selected highlight
-                        backgroundColor = "#00CC00"
+                        if currentlySelectedLevel == @level()
+                            backgroundColor = "#FFFFFF"
+                        else
+                            backgroundColor = "#CCCCCC"
+
 
                     else
                         # Currently selected item and not currently under the mouse cursor: Selected color
@@ -365,10 +381,13 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
                 return backgroundColor
     
             @getCssMarginLeft = ko.computed =>
-                return "#{@level() * 5}px"
+                # return "#{@level() * 2}px"
+                return "2px"
+
 
             @onMouseOver = => 
                 @mouseOverHighlight(true)
+                return false
 
             @onMouseOut = =>
                 @mouseOverHighlight(false)
@@ -393,15 +412,6 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
         # / END: constructor
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
-    """
-    <div class="classSchemaViewModelNavigatorMenuLevel classMouseCursorPointer"
-    data-bind="style: { fontSize: getCssFontSize(), paddingLeft: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()},
-    event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }">
-        <span data-bind="text: label"></span>
-    </div>
-    <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
-    """))
 
 
 class Encapsule.code.app.modelview.SchemaScdlNavigatorWindow
@@ -442,3 +452,14 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     """
     <span data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: topLevelMenus }"></span>
     """))
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
+    """
+    <div class="classSchemaViewModelNavigatorMenuLevel classMouseCursorPointer"
+    data-bind="style: { fontSize: getCssFontSize(), paddingLeft: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()},
+    event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }">
+        <span data-bind="text: label"></span>
+    <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
+    </div>
+    """))
+
