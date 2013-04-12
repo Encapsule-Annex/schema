@@ -42,6 +42,17 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 @topLevelMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, menuObject, 0)
 
 
+            @currentSelectionLevel = ko.observable -1
+
+            @setCurrentSelectionLevel = (selectionLevel_) =>
+                if (selectionLevel_ == -1)
+                    # Reset selection level
+                    @currentSelectionLevel(-1)
+                else
+                    if selectionLevel_ > @currentSelectionLevel()
+                        @currentSelectionLevel(selectionLevel_)
+
+
             # Reference to the currently selected menu item (aka a menu level class instance).
             @currentlySelectedMenuItem = undefined
 
@@ -51,12 +62,24 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             # that the user has moved on to another selection. 
             #
             @updateSelectedMenuItem = (newSelectedMenuItemObject_) =>
+
                 # If there's a currently selected menu item...
+
                 if @currentlySelectedMenuItem? and @currentlySelectedMenuItem
+
                     # ... inform the item that it is no longer selected.
                     @currentlySelectedMenuItem.selectedItem(false)
+
                 # Update reference to currently selected item.
                 @currentlySelectedMenuItem = newSelectedMenuItemObject_
+
+                if @currentlySelectedMenuItem? and @currentlySelectedMenuItem
+                    @setCurrentSelectionLevel(@currentlySelectedMenuItem.level())
+                else
+                    @setCurrentSelectionLevel(-1)
+
+
+                
 
 
             @currentMouseOverLevel = ko.observable(-1)
@@ -78,7 +101,11 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigator", ( ->
     """
-    <div data-bind="text: currentMouseOverLevel"></div>
+    <div>
+        <span data-bind="text: currentMouseOverLevel"></span>
+        <span data-bind="text: currentSelectionLevel"></span>
+        <!-- <span data-bind="text: currentSelectionPath"></span> -->
+    </div>
     <span data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: topLevelMenus }"></span>
     """))
 
