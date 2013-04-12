@@ -107,7 +107,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorPathWindow", ( ->
     """
-    <div style="font-size: 10pt; font-weight: bold;">
+    <div style="font-size: 8pt; font-weight: bold;">
         <span data-bind="text: title"></span> Path:
         <span data-bind="text: currentSelectionPath"></span> (
         <span data-bind="text: currentSelectionLevel"></span>
