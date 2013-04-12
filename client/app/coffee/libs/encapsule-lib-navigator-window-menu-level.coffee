@@ -26,7 +26,7 @@ Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.
 
 
 class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
-    constructor: (navigatorContainerObject_, menuObject_, level_) ->
+    constructor: (navigatorContainerObject_, menuObject_, level_, parentPath_) ->
         # \ BEGIN: constructor scope
         try
             # \ BEGIN: constructor try scope
@@ -50,6 +50,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
  
             @level =    ko.observable(level_? and level_ or 0)
             @label =    ko.observable(menuObject_.menu? and menuObject_.menu or "Missing menu name!")
+            @path =     """#{parentPath_? and parentPath_ or ""}#{@label()}/"""
 
             @subMenus = ko.observableArray []
 
@@ -61,12 +62,11 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @setCurrentlySelectedLevel = (level_) =>
                 @currentlySelectedLevel(level_)
                 
-
             Console.message "New menu item: level #{@level()} #{@label()}"
 
             if menuObject_.subMenus? and menuObject_.subMenus
                 for subMenuObject in menuObject_.subMenus
-                    @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, subMenuObject, @level() + 1)
+                    @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, subMenuObject, (@level() + 1), @path)
 
             @getCssFontSize = ko.computed =>
                 fontSize = Math.max( (16 - @level()), 8)
@@ -147,7 +147,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     """
     <div class="classSchemaViewModelNavigatorMenuLevel classMouseCursorPointer"
     data-bind="style: { fontSize: getCssFontSize(), paddingLeft: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()},
-    event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }">
+    event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }, mouseoverBubble: false, mouseoutBubble: false, clickBubble: false">
         <span data-bind="text: label"></span>
     <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
     </div>

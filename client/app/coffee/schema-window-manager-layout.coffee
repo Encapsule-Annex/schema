@@ -131,7 +131,7 @@ try
                             id: "idTitleBar"                                              
                             name: "#{appName} Title Bar"                                       
                             initialMode: "min"
-                            initialEnable: true
+                            initialEnable: false
                             overflow: "auto"
                             opacity: observableWindowDefaultOpacity
                             backgroundColor: "#66CC00"
@@ -164,6 +164,35 @@ try
                             }                                                            
                         Q2WindowDescriptor: undefined                                    
                         },
+                    
+                    {                                                                    
+                        id: "idSelect1PathSplitter"
+                        name: "Select 1 Path Split"                                           
+                        type: "horizontal"                                                 
+                        Q1WindowDescriptor: {                                            
+                            id: "idSelect1Path"                                              
+                            name: "Select 1 Path Window"                                      
+                            initialMode: "full"
+                            initialEnable: true
+                            overflow: "auto"
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "#99CC00"
+                            modes: { full: { reserve: 14 }, min: { reserve: 14 } }
+                            MVVM: {
+                                modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
+                                viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorPathWindow"
+                                }
+                            }                                                            
+                        Q2WindowDescriptor: undefined                                    
+                        },
+
+
+
+
+
+
+
+
                     {                                                                    
                         id: "idSelect2Splitter"
                         name: "Select 2 Split"                                           
