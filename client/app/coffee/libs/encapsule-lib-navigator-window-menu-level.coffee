@@ -90,8 +90,6 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                             backgroundColor = "#FFFFFF"
                         else
                             backgroundColor = "#CCCCCC"
-
-
                     else
                         # Currently selected item and not currently under the mouse cursor: Selected color
                         backgroundColor = "#00FF00"
@@ -118,10 +116,12 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             @onMouseOver = => 
                 @mouseOverHighlight(true)
+                @navigatorContainer.setCurrentMouseOverLevel(@level())
                 return false
 
             @onMouseOut = =>
                 @mouseOverHighlight(false)
+                @navigatorContainer.setCurrentMouseOverLevel(-1)
                 @showAsSelectedUntilMouseOut(false)
 
             @onMouseClick = =>
