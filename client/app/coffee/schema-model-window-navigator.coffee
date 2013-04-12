@@ -359,7 +359,7 @@ class Encapsule.code.app.modelview.SchemaScdlNavigatorMenuLevel
                         base = net.brehaut.Color("#0099CC")
                         ratio = @level() / 8
                         #base.desaturateByRatio(ratio).toString()
-                        backgroundColor = base.lightenByRatio(ratio)
+                        backgroundColor = base.lightenByRatio(ratio).toString()
 
                 # (enable to research IE 10 failures) Console.message("Setting navigator menu \"#{@label()}\" background color to #{backgroundColor}")
                 return backgroundColor
