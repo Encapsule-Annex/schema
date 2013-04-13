@@ -69,7 +69,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, subMenuObject, (@level() + 1), @path)
 
             @getCssFontSize = ko.computed =>
-                fontSize = Math.max( (16 - @level()), 8)
+                fontSize = Math.max( (16 - @level()), 10)
                 "#{fontSize}pt"
 
             @getBorder = ko.computed =>
@@ -80,29 +80,28 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             @getCssBackgroundColor = ko.computed =>
                 backgroundColor = undefined
-                #@navigatorContainer.currentlySelectedMenuItemLevel()
 
                 currentlySelectedLevel = 
                 if @selectedItem()
                     if @mouseOverHighlight() and not @showAsSelectedUntilMouseOut()
                         # Currently selected item and currently under the mouse cursor: Selected highlight
                         if currentlySelectedLevel == @level()
-                            backgroundColor = "#FFFFFF"
+                            backgroundColor = "#FF0000"
                         else
-                            backgroundColor = "#CCCCCC"
+                            backgroundColor = @navigatorContainer.layout.mouseOverSelectedBackgroundColor
                     else
                         # Currently selected item and not currently under the mouse cursor: Selected color
-                        backgroundColor = "#00FF00"
+                        backgroundColor = @navigatorContainer.layout.currentlySelectedBackgroundColor
 
                 else
                     if @mouseOverHighlight()
                         # Not currently selected and currently under the mouse cursor: Highlight in bright color
-                        backgroundColor = "#FFFF00"
+                        backgroundColor = @navigatorContainer.layout.mouseOverHighlightBackgroundColor
 
                     else
                         # Not currently selected and not currently under the mouse cursor: Default color based on level)
-                        base = net.brehaut.Color("#0099CC")
-                        ratio = @level() / 8
+                        base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor)
+                        ratio = @level() /  10
                         #base.desaturateByRatio(ratio).toString()
                         backgroundColor = base.lightenByRatio(ratio).toString()
 
@@ -111,8 +110,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
     
             @getCssMarginLeft = ko.computed =>
                 # return "#{@level() * 2}px"
-                return "2px"
-
+                return @navigatorContainer.layout.menuLevelMargin
 
             @onMouseOver = => 
                 @mouseOverHighlight(true)
@@ -146,7 +144,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
     """
     <div class="classSchemaViewModelNavigatorMenuLevel classMouseCursorPointer"
-    data-bind="style: { fontSize: getCssFontSize(), paddingLeft: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()},
+    data-bind="style: { fontSize: getCssFontSize(), padding: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()},
     event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }, mouseoverBubble: false, mouseoutBubble: false, clickBubble: false">
         <span data-bind="text: label"></span>
     <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>

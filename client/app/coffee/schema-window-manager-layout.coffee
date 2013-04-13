@@ -28,7 +28,7 @@ namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.ap
 
 # Some constants used in the layout declaration below
 
-observableWindowDefaultOpacity = 0.75
+observableWindowDefaultOpacity = 0.8
 
 
 ###
@@ -74,8 +74,8 @@ try
         # color with a low opacity to provide subtle transition effects or signalling.
         #
         windowManagerBackgroundColor: "white" # defaults to "white" if undefined
-        windowManagerMargin: 5  # glass edge to window manager edge (defaults to 10 if undefined)
-        windowManagerPadding: 15  # window manager edge to plane edge (defaults to 10 if undefined)
+        windowManagerMargin: 2  # glass edge to window manager edge (defaults to 10 if undefined)
+        windowManagerPadding: 2  # window manager edge to plane edge (defaults to 10 if undefined)
         windowManagerOpacity: 0.4 # (defaults to 1 if undefined)
 
         #
@@ -87,21 +87,21 @@ try
         #
         globalWindowAttributes: {
             hostWindowBackgroundColor: "#EEEEEE"
-            hostWindowOpacity: 0.6
+            hostWindowOpacity: 0.7
             hostWindowPadding: 2
-            chromeWindowBackgroundColor: "#666666"
-            chromeWindowOpacity: 0.4
+            chromeWindowBackgroundColor: "#FFFFFF"
+            chromeWindowOpacity: 0.9
             chromeWindowPadding: 1
-            windowPadding: 3
+            windowPadding: 2
             windowBorderWidth: 1
-            windowBorderColor: "#333333"
+            windowBorderColor: "#AAAAAA"
             }
 
         planes: [
             {
                 id: "idSchemaPlaneDefault"
                 name: "SCDL Catalogue"
-                initialEnable: true
+                initialEnable: false
                 splitterStack: [
                     {
                         id: "idCatlogueJSONSplitter"                                                                
@@ -115,7 +115,7 @@ try
                             initialEnable: true
                             overflow: "auto"
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#00CCFF"
+                            backgroundColor: "#99CC00"
                             modes: { full: { reserve: 400 }, min: { reserve: 128 } }
                             MVVM: {
                                 fnModelView: -> Encapsule.runtime.app.SchemaScdlCatalogue
@@ -123,27 +123,6 @@ try
                                 }
                             }
                         },
-                    {                                                                    
-                        id: "idTitleBarSplitter"
-                        name: "Title Bar Split"                                            
-                        type: "horizontal"                                               
-                        Q1WindowDescriptor: {                                            
-                            id: "idTitleBar"                                              
-                            name: "#{appName} Title Bar"                                       
-                            initialMode: "min"
-                            initialEnable: false
-                            overflow: "auto"
-                            opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#66CC00"
-                            modes: { full: { reserve: 32 }, min: { reserve: 32 } }      
-                            MVVM: {
-                                modelView: -> Encapsule.runtime.app.SchemaTitleBarWindow
-                                viewModelTemplateId: "idKoTemplate_SchemaTitleBarWindow"
-                                }
-                            }                                                            
-                        Q2WindowDescriptor: undefined
-                        },
-    
                     {                                                                    
                         id: "idSelect1Splitter"
                         name: "Select 1 Split"                                           
@@ -155,7 +134,7 @@ try
                             initialEnable: true
                             overflow: "auto"
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#00CCFF"
+                            backgroundColor: "white"
                             modes: { full: { reserve: 200 }, min: { reserve: 32 } }
                             MVVM: {
                                 modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
@@ -176,7 +155,7 @@ try
                             initialEnable: true
                             overflow: "auto"
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#99CC00"
+                            backgroundColor: "#FFFF00"
                             modes: { full: { reserve: 14 }, min: { reserve: 14 } }
                             MVVM: {
                                 modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
@@ -185,14 +164,6 @@ try
                             }                                                            
                         Q2WindowDescriptor: undefined                                    
                         },
-
-
-
-
-
-
-
-
                     {                                                                    
                         id: "idSelect2Splitter"
                         name: "Select 2 Split"                                           
@@ -202,8 +173,8 @@ try
                             name: "Select 1 Window"                                      
                             initialMode: "full"
                             initialEnable: true
-                            opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#00DDFF"
+                            opacity: 0.6
+                            backgroundColor: "#CCFFCC"
                             overflow: "auto"
                             modes: { full: { reserve: 600 }, min: { reserve: 200 } }
                             MVVM: {
@@ -228,8 +199,8 @@ try
                             name: "Edit 1 Window"                                        
                             initialMode: "full"
                             initialEnable: true
-                            opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#99CC66"
+                            opacity: 0.6
+                            backgroundColor: "#CCFFCC"
                             modes: { full: { reserve: 0 }, min: { reserve: 32 } }        
                             }                                                            
                         }
@@ -242,6 +213,26 @@ try
                 name: "Settings"
                 initialEnable: false
                 splitterStack: [
+                    {                                                                    
+                        id: "idTitleBarSplitter"
+                        name: "Title Bar Split"                                            
+                        type: "horizontal"                                               
+                        Q1WindowDescriptor: {                                            
+                            id: "idTitleBar"                                              
+                            name: "#{appName} Title Bar"                                       
+                            initialMode: "min"
+                            initialEnable: true
+                            overflow: "auto"
+                            opacity: observableWindowDefaultOpacity
+                            backgroundColor: "#99CC00"
+                            modes: { full: { reserve: 32 }, min: { reserve: 32 } }      
+                            MVVM: {
+                                modelView: -> Encapsule.runtime.app.SchemaTitleBarWindow
+                                viewModelTemplateId: "idKoTemplate_SchemaTitleBarWindow"
+                                }
+                            }                                                            
+                        Q2WindowDescriptor: undefined
+                        },
                     {
                         id: "idSetttingsPlaneSplitter0"
                         name: "what ever some descriptive text"
@@ -252,7 +243,7 @@ try
                             initialMode: "full"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#CCCCCC"
+                            backgroundColor: "#99CC99"
                             modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                             }
                         Q2WindowDescriptor: undefined
@@ -264,7 +255,7 @@ try
             {
                 id: "idSchemaDiagnosticsPlane"
                 name: "Diagnostics"
-                initialEnable: false
+                initialEnable: true
                 splitterStack: [
                     {
                         id: "idDiagnosticsPlaneSplitter0"
@@ -276,7 +267,7 @@ try
                             initialMode: "full"
                             initialEnable: true
                             opacity: observableWindowDefaultOpacity
-                            backgroundColor: "#992667"
+                            backgroundColor: "#99CC99"
                             overflow: "auto"
                             modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                             MVVM: {

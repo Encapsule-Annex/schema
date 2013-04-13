@@ -49,7 +49,7 @@ Encapsule.code.app.bootChromes = {
     schemaViewModel : {title: undefined, backgroundColor: undefined, spinnerText: "Building view model..." }
     schemaBind : {title: undefined, backgroundColor: undefined, spinnerText: "Binding data model..." }
     schemaRender : {title: undefined, backgroundColor: undefined, spinnerText: "Rendering layout.." }
-    schemaWelcome : {title: "#{appName} v#{appVersion}", backgroundColor: undefined, spinnerText: "#{appName} v#{appVersion} READY" }
+    schemaWelcome : {title: "#{appPackagePublisher} #{appName} v#{appVersion}", backgroundColor: undefined, spinnerText: "#{appName} v#{appVersion} READY" }
     }
 
 Encapsule.code.app.setBootChrome = (phase_, progress_) ->

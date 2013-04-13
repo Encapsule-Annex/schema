@@ -34,6 +34,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             if not layout_? then throw "Missing layout parameter."
             if not layout_ then throw "Missing layout parameter value."
 
+            @layout = layout_
+
             @title = layout_.title
 
             @topLevelMenus = ko.observableArray []
@@ -41,16 +43,12 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             for menuObject in layout_.menuHierarchy
                 @topLevelMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, menuObject, 0)
 
-
             @currentSelectionLevel = ko.observable -1
-
 
             @setCurrentSelectionLevel = (selectionLevel_) =>
                 @currentSelectionLevel(selectionLevel_)
 
-
-            @currentSelectionPath = ko.observable ""
-
+            @currentSelectionPath = ko.observable "<no selection>"
 
             # Reference to the currently selected menu item (aka a menu level class instance).
             @currentlySelectedMenuItem = undefined
@@ -78,7 +76,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
          
                 else
                     @setCurrentSelectionLevel(-1)
-                    @currentSelectionPath("")
+                    @currentSelectionPath("<no selection>")
 
 
 
@@ -105,13 +103,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     <span data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: topLevelMenus }"></span>
     """))
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorPathWindow", ( ->
-    """
-    <div style="font-size: 8pt; font-weight: bold;">
-        <span data-bind="text: title"></span> Path:
-        <span data-bind="text: currentSelectionPath"></span> (
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorPathWindow", ( ->  """<div><span data-bind="text: title"></span> ::
+        <span data-bind="text: currentSelectionPath"></span>
         <span data-bind="text: currentSelectionLevel"></span>
-        <span data-bind="text: currentMouseOverLevel"></span>
-        )
-    </div>
-    """))
+        <span data-bind="text: currentMouseOverLevel"></span></div>"""))
