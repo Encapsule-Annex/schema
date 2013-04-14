@@ -57,8 +57,8 @@ Encapsule.code.lib.kohelpers.implementation.WindowManagerControlPanelPlane = {
                 name: "#{appName} Window Manager Control Panel"
                 initialMode: "full"
                 initialEnable: true
-                opacity: 0.8
-                backgroundColor: "#CCCCCC"
+                opacity: 0.95
+                backgroundColor: "#DDDDDD"
                 modes: { full: { reserve: 18 }, min: { reserve: 18 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.windowmanager.WindowManagerControlPanel
