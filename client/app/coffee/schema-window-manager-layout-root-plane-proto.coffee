@@ -61,7 +61,7 @@ Encapsule.code.app.winmgr.layout.root.PlanePrototype = {
                 initialMode: "full"
                 initialEnable: true
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#0099FF"
+                backgroundColor: "#0066CC"
                 modes: { full: { reserve: 256 }, min: { reserve: 128 } }
             }
             Q2WindowDescriptor: {
@@ -70,7 +70,7 @@ Encapsule.code.app.winmgr.layout.root.PlanePrototype = {
                 initialMode: "full"
                 initialEnable: true
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#99CC99"
+                backgroundColor: "#DDDDDD"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
             }
         }

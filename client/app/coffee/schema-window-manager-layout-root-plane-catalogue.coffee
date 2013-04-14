@@ -44,7 +44,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneCatalogue = {
                 initialMode: "full"
                 initialEnable: true
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#0099FF"
+                backgroundColor: "#BBBBBB"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
             }
         }
