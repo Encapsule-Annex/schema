@@ -37,20 +37,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneCatalogue = {
             id: "idTitleBarSplitter"
             name: "Title Bar Split"                                            
             type: "horizontal"                                               
-            Q1WindowDescriptor: {                                            
-                id: "idTitleBar"                                              
-                name: "#{appName} Title Bar"                                       
-                initialMode: "min"
-                initialEnable: true
-                overflow: "auto"
-                opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#99CC00"
-                modes: { full: { reserve: 32 }, min: { reserve: 32 } }      
-                MVVM: {
-                    modelView: -> Encapsule.runtime.app.SchemaTitleBarWindow
-                    viewModelTemplateId: "idKoTemplate_SchemaTitleBarWindow"
-                }
-            }                                                            
+            Q1WindowDescriptor: undefined                                    
             Q2WindowDescriptor: {
                 id: "idContent"
                 name: "Catalogue Setup"

@@ -435,21 +435,25 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
             @displayPlane = (planeId_) =>
                 try
+                    currentDisplayPlane = @currentDisplayPlaneId? and @currentDisplayPlaneId and @planesDictionary[@currentDisplayPlane] or undefined
                     targetPlane = @planesDictionary[planeId_]
+
                     if not targetPlane? or not targetPlane
                         throw """Unknown plane ID "#{planeId} specified."""
 
+                    enableTargetPlane = true
+
                     if @currentDisplayPlaneId? and @currentDisplayPlaneId
                         if @currentDisplayPlaneId == planeId_
-                            return false
+                            enableTargetPlane = false
                         planeIdToDisable = @currentDisplayPlaneId
-                        $("##{@currentDisplayPlaneId}").fadeOut(5, ( =>  @planesDictionary[planeIdToDisable].enabled(false) ))
+                        @planesDictionary[planeIdToDisable].enabled(false)
+                        @currentDisplayPlaneId = undefined
 
-                    targetPlaneJN = $("##{planeId_}")
-                    targetPlane.enabled(true)
-                    targetPlaneJN.hide(0, => targetPlaneJN.fadeIn(10))
-
-                    @currentDisplayPlaneId = planeId_
+                    if enableTargetPlane
+                        targetPlaneJN = $("##{planeId_}")
+                        targetPlane.enabled(true)
+                        @currentDisplayPlaneId = planeId_
 
                 catch exception
                     Console.messageError("""ObservableWindowManger.displayPlane("#{planeId_}") fail: #{exception}""")

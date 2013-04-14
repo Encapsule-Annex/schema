@@ -75,7 +75,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_WindowMa
     <span data-bind="foreach: planes">
         <span data-bind="if: windowManagerReservePlane == undefined">
             <span data-bind="if: enabled">
-                <button disabled type="button" class="button small green"><span data-bind="text: name"></span></button>
+                <button type="button"  data-bind="click: $parent.showPlane" class="button small green"><span data-bind="text: name"></span></button>
             </span>
             <span data-bind="ifnot: enabled">
                 <button type="button" data-bind="click: $parent.showPlane" class="button small black"><span data-bind="text: name"></span></button>

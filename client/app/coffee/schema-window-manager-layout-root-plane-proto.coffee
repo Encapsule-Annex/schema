@@ -33,24 +33,37 @@ Encapsule.code.app.winmgr.layout.root.PlanePrototype = {
     name: "Prototype"
     initialEnable: false
     splitterStack: [
-        {                                                                    
-            id: "idTitleBarSplitter"
-            name: "Title Bar Split"                                            
-            type: "horizontal"                                               
-            Q1WindowDescriptor: {                                            
-                id: "idTitleBar"                                              
-                name: "#{appName} Title Bar"                                       
-                initialMode: "min"
+        {
+            id: "idProtoAddressSplitter"
+            name: "Proto Address Splitter"
+            type: "horizontal"
+            Q1WindowDescriptor: {
+                id: "idProtoAddressWindow"
+                name: "Proto Address"
+                initialMode: "full"
                 initialEnable: true
-                overflow: "auto"
+                overflow: "hidden"
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#99CC00"
-                modes: { full: { reserve: 32 }, min: { reserve: 32 } }      
-                MVVM: {
-                    modelView: -> Encapsule.runtime.app.SchemaTitleBarWindow
-                    viewModelTemplateId: "idKoTemplate_SchemaTitleBarWindow"
-                }
-            }                                                            
+                modes: { full: { reserve: 14 }, min: { reserve: 14 } }      
+                backgroundColor: "#0099FF"
+            }
+            Q2WindowDescriptor: undefined
+        }
+
+        {
+            id: "idProtoEditAreaOuterSplitter"
+            name: "Proto Edit Outer Splitter"
+            type: "vertical"
+
+            Q1WindowDescriptor: {
+                id: "idProtoEditOuterOptions"
+                name: "Options"
+                initialMode: "full"
+                initialEnable: true
+                opacity: CommonSettings.windowOpacityDefault
+                backgroundColor: "#0099FF"
+                modes: { full: { reserve: 256 }, min: { reserve: 128 } }
+            }
             Q2WindowDescriptor: {
                 id: "idSettings1"
                 name: "Settings 1 Window"
@@ -62,4 +75,5 @@ Encapsule.code.app.winmgr.layout.root.PlanePrototype = {
             }
         }
     ]
-} # PlaneDebug
+} # PlanePrototype
+

@@ -31,7 +31,7 @@ CommonSettings = Encapsule.code.app.winmgr.layout.CommonSettings
 Encapsule.code.app.winmgr.layout.root.PlaneHome = {
     id: "idRootPlaneHome"
     name: "Home"
-    initialEnable: true
+    initialEnable: false
     splitterStack: [
         {                                                                    
             id: "idTitleBarSplitter"
@@ -44,7 +44,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneHome = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#99CC00"
+                backgroundColor: "#99CC33"
                 modes: { full: { reserve: 32 }, min: { reserve: 32 } }      
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaTitleBarWindow
@@ -57,7 +57,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneHome = {
                 initialMode: "full"
                 initialEnable: true
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#99CC99"
+                backgroundColor: "#CCCCCC"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
             }
         }
