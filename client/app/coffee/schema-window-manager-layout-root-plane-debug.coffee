@@ -43,7 +43,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneDebug = {
                 initialMode: "full"
                 initialEnable: true
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#993366"
+                backgroundColor: "#999999"
                 overflow: "auto"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                 MVVM: {

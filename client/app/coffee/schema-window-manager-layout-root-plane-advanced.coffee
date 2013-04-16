@@ -49,7 +49,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             initialEnable: true
             overflow: "auto"
             opacity: CommonSettings.windowOpacityDefault
-            backgroundColor: "#99CC00"
+            backgroundColor: undefined
             modes: { full: { reserve: 400 }, min: { reserve: 128 } }
             MVVM: {
                 fnModelView: -> Encapsule.runtime.app.SchemaScdlCatalogue
@@ -70,7 +70,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "white"
+                backgroundColor: "#003399"
                 modes: { full: { reserve: 200 }, min: { reserve: 32 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
@@ -93,7 +93,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#FFFF00"
+                backgroundColor: undefined
                 modes: { full: { reserve: 14 }, min: { reserve: 14 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
@@ -113,8 +113,8 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 name: "Select 1 Window"                                      
                 initialMode: "full"
                 initialEnable: true
-                opacity: 0.6
-                backgroundColor: "#CCFFCC"
+                opacity: CommonSettings.windowOpacityDefault
+                backgroundColor: undefined
                 overflow: "auto"
                 modes: { full: { reserve: 600 }, min: { reserve: 200 } }
                 MVVM: {
@@ -137,14 +137,22 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             id: "idEditSplitter"
             name: "Edit Split"                                           
             type: "horizontal"                                               
-            Q1WindowDescriptor: undefined                                                           
+            Q1WindowDescriptor: {
+                id: "idView1"
+                name: "View 1 Window"
+                initialEnable: true
+                initialMode: "full"
+                opacity: CommonSettings.windowOpacityDefault
+                backgroundColor: "white"
+                modes: { full: { reserve: 0}, min: { reserve: 0 } }
+            }
             Q2WindowDescriptor: {                                            
                 id: "idEdit1"                                                
                 name: "Edit 1 Window"                                        
-                initialMode: "full"
+                initialMode: "min"
                 initialEnable: true
-                opacity: 0.6
-                backgroundColor: "#CCFFCC"
+                opacity: CommonSettings.windowOpacityDefault
+                backgroundColor: "#00CCFF"
                 modes: { full: { reserve: 0 }, min: { reserve: 32 } }        
             }                                                            
         }

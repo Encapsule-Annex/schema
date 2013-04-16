@@ -46,7 +46,7 @@ try
         # The color of the page background may optionally be set via bodyPageBackgroundColor and will be visible
         # if glassMargin > 0 or glassOpacity < 1
         #
-        pageBackgroundColor: "black" # (defaults to "white" if undefined)
+        pageBackgroundColor: "#7F7F7F" # (defaults to "white" if undefined)
 
         #
         # WINDOW MANAGER "GLASS" ATTRIBUTES
@@ -55,7 +55,7 @@ try
         # Note that setting glassBackgroundImage will occlude glassBackgroundColor if specified. You can however
         # acheive splendid blending effects by setting bodyPageBackgroundColor and glassOpacity.
         #        
-        glassOpacity: 0.8 # defaults to 1 if undefined
+        glassOpacity: 1.0 # defaults to 1 if undefined
         glassBackgroundColor: undefined
         glassMargin: 0 # document edge to glass edge (default is 10)
         glassBackgroundImage: "brushed-metal-1920x1080.jpg" # (default is undefined)
@@ -68,9 +68,9 @@ try
         # color with a low opacity to provide subtle transition effects or signalling.
         #
         windowManagerBackgroundColor: "black" # defaults to "white" if undefined
-        windowManagerMargin: 2  # glass edge to window manager edge (defaults to 10 if undefined)
-        windowManagerPadding: 2  # window manager edge to plane edge (defaults to 10 if undefined)
-        windowManagerOpacity: 0.2 # (defaults to 1 if undefined)
+        windowManagerMargin: 1  # glass edge to window manager edge (defaults to 10 if undefined)
+        windowManagerPadding: 1  # window manager edge to plane edge (defaults to 10 if undefined)
+        windowManagerOpacity: 0.1 # (defaults to 1 if undefined)
 
         #
         # Managed window attributes
@@ -80,15 +80,15 @@ try
         # (sort of poor man's attribute inheritence to reduce typing/error)
         #
         globalWindowAttributes: {
-            hostWindowBackgroundColor: "#EEEEEE"
-            hostWindowOpacity: 0.7
+            hostWindowBackgroundColor: undefined
+            hostWindowOpacity: 0.001
             hostWindowPadding: 2
-            chromeWindowBackgroundColor: "#FFFFFF"
-            chromeWindowOpacity: 0.9
+            chromeWindowBackgroundColor: "#999999"
+            chromeWindowOpacity: 0.8
             chromeWindowPadding: 1
-            windowPadding: 2
-            windowBorderWidth: 1
-            windowBorderColor: "#AAAAAA"
+            windowPadding: 3
+            windowBorderWidth: 0
+            windowBorderColor: "#666666"
             }
 
         planes: [

@@ -3,8 +3,8 @@
 */
 
 #idTitlebarAppPublisher {
-font-size: 18pt;
-font-weight: bold;
+font-size: 14pt;
+font-weight: normal;
 }
 #idTitlebarAppPublisher A {
 text-decoration: none;
@@ -15,19 +15,19 @@ text-decoration: underline;
 }
 
 #idTitlebarAppName {
-font-size: 18pt;
+font-size: 14pt;
 font-weight: bold;
 color: #000066;
 }
 
 .classTitlebarAppDetailName {
-font size: 10pt;
+font size: 8pt;
 font-weight: normal;
 color: #000033;
 }
 
 .classTitlebarAppDetailValue {
-font size: 10pt;
+font size: 8pt;
 font-weight: bold;
 color: #000055;
 }
