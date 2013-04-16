@@ -212,7 +212,7 @@ phase2 = (bootstrapperOptions_) ->
             phase2Out.appCacheTerminalState = "locked (obsolete)"
             Console.messageEnd(" <strong>APP CACHE OBSOLETED</strong>")
             Console.messageRaw("<h2>OH SNAP!</h2>")
-            Console.messageRaw("<p>We're sorry to inconvience you!</p>")
+            Console.messageRaw("<p>We're sorry to inconvenience you!</p>")
             Console.messageRaw("<p>Encapsule Project has issued a service advisory for #{appName} v#{appVersion} build ID #{appBuildId} and temporarily suspended service.</p>")
             Console.messageRaw("<p>Please visit <a href=\"#{appBlogUrl}\" title=\"#{appBlogName}\">#{appBlogName}</a> for the news and advisories.</p>")
             Console.messageError "#{appName} has been locked by Encpausle Project."

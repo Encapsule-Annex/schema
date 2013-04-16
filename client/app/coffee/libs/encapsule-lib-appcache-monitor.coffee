@@ -238,9 +238,13 @@ class Encapsule.code.lib.ApplicationCacheMonitor
             switch currentAppCacheStatus
                 when window.applicationCache.UNCACHED
                     if @initialAppCacheStatus == window.applicationCache.UNCACHED
-                        Console.message("... both initial and current browser app cache status is UNCACHED. The application is LOCKED.")
-                        @stop()
-                        @appCallbacks.onObsolete()
+                        Console.message("... both initial and current browser app cache status is UNCACHED. Potentially, the application is LOCKED.")
+                        if @status != "downloading"
+                            @stop()
+                            Console.message("""... the app cache monitor is not "downloading" so we're calling it LOCKED.""")
+                            @appCallbacks.onObsolete()
+                        else
+                            Console.message("""... the app cache monitor is "downloading" so we'll continue to watch this.""")
                     else
                         Console.message("... browser app cache status has tranitioned to UNCACHED. This looks like a connection error.")
                         @stop()

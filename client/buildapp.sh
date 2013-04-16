@@ -29,7 +29,7 @@ app_version="0.861"
 app_release_name="Gongga Shan"
 app_release_fun_url="http://www.geolocation.ws/v/P/34381835/gongga-shan-seen-from-hailuogou-glacier/en"
 app_version_uuid="42c28c61-da0d-4abd-9821-86e57c129239"
-app_release_phase="unreleased"
+app_release_phase="unreleased test build"
 
 app_builder_email=$*
 app_build_host=`hostname`
