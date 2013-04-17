@@ -169,8 +169,26 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 return backgroundColor
     
             @getCssMarginLeft = ko.computed =>
-                # return "#{@level() * 2}px"
+                # return "#{@level() * 5}px"
                 return @navigatorContainer.layout.menuLevelMargin
+
+            @getCssPaddingTop = ko.computed =>
+                return "#{@navigatorContainer.layout.menuLevelPaddingTop}px"
+
+            @getCssPaddingBottom = ko.computed =>
+                paddingBottom = 0
+                subMenus = @subMenus()
+                if subMenus? and subMenus and subMenus.length
+                    paddingBottom = @navigatorContainer.layout.menuLevelPaddingBottom
+                return "#{paddingBottom}px"
+                
+
+            @getCssPaddingLeft = ko.computed =>
+                return "#{@navigatorContainer.layout.menuLevelPaddingLeft}px"
+         
+            @getCssPaddingRight = ko.computed =>
+                return "#{@navigatorContainer.layout.menuLevelPaddingRight}px"
+
 
             @updateMouseOverChild = (flag_) =>
                 @mouseOverChild(flag_)
@@ -237,7 +255,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
     """
     <div class="classSchemaViewModelNavigatorMenuLevel classMouseCursorPointer"
-    data-bind="style: { fontSize: getCssFontSize(), paddingLeft: getCssMarginLeft(), paddingBottom: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()},
+    data-bind="style: { fontSize: getCssFontSize(), backgroundColor: getCssBackgroundColor(), paddingBottom: getCssPaddingBottom(), paddingTop: getCssPaddingTop(), paddingLeft: getCssPaddingLeft(), paddingRight: getCssPaddingRight() },
     event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }, mouseoverBubble: false, mouseoutBubble: false, clickBubble: false">
         <span data-bind="text: label"></span>
     <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
