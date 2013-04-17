@@ -33,6 +33,7 @@ Encapsule.code.app.winmgr.layout.root.PlanePrototype = {
     name: "Prototype"
     initialEnable: false
     splitterStack: [
+        Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
         {
             id: "idProtoAddressSplitter"
             name: "Proto Address Splitter"

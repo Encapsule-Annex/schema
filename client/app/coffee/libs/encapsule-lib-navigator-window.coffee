@@ -40,9 +40,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             @topLevelMenus = ko.observableArray []
 
-            for menuObject in layout_.menuHierarchy
-                @topLevelMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, menuObject, 0)
-
             @currentSelectionLevel = ko.observable -1
 
             @setCurrentSelectionLevel = (selectionLevel_) =>
@@ -52,6 +49,15 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             # Reference to the currently selected menu item (aka a menu level class instance).
             @currentlySelectedMenuItem = undefined
+
+            for menuObject in layout_.menuHierarchy
+                # parameters:
+                # 1st: reference to this, the navigator root object.
+                # 2nd: reference to menu item's parent. Top-level objects have no parent and are set to undefined.
+                # 3rd: menu item level. Top-level objects are set to level=0 by convention.
+                # 4th: the parent menu item's expanded path string. Top-level objects that have no parent are set to undefined by convention.
+                @topLevelMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, undefined, 0, menuObject, undefined)
+
 
             # This function is called by a menu level instance (i.e. menu item) in response
             # to a mouse click. In effect we're proxying for the menu levels here maintaining
@@ -66,6 +72,9 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
                     # ... inform the item that it is no longer selected.
                     @currentlySelectedMenuItem.selectedItem(false)
+                    if @currentlySelectedMenuItem.parentMenuLevel? and @currentlySelectedMenuItem.parentMenuLevel
+                        @currentlySelectedMenuItem.parentMenuLevel.updateSelectedChild(false)
+                    @currentlySelectedMenuItem.updateSelectedParent(false)
 
                 # Update reference to currently selected item (which may be undefined)
                 @currentlySelectedMenuItem = newSelectedMenuItemObject_

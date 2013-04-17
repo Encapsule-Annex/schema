@@ -33,6 +33,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneHome = {
     name: "Home"
     initialEnable: false
     splitterStack: [
+        Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
         {                                                                    
             id: "idTitleBarSplitter"
             name: "Title Bar Split"                                            

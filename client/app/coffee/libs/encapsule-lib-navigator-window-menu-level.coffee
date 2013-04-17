@@ -26,7 +26,7 @@ Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.
 
 
 class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
-    constructor: (navigatorContainerObject_, menuObject_, level_, parentPath_) ->
+    constructor: (navigatorContainerObject_, parentMenuLevel_, level_, menuObject_, parentPath_) ->
         # \ BEGIN: constructor scope
         try
             # \ BEGIN: constructor try scope
@@ -42,6 +42,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             # Per-class instance references to construction parameters.
 
             @navigatorContainer = navigatorContainerObject_
+            @parentMenuLevel = parentMenuLevel_
             @menuObjectReference = menuObject_
 
             # Not imlemented yet
@@ -54,11 +55,17 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             @subMenus = ko.observableArray []
 
+            @mouseOverChild = ko.observable(false)
+            @mouseOverParent = ko.observable(false)
             @mouseOverHighlight = ko.observable(false)
+
             @showAsSelectedUntilMouseOut = ko.observable(false)
             @selectedItem = ko.observable(false)
+            @selectedChild = ko.observable(false)
+            @selectedParent = ko.observable(false)
 
             @currentlySelectedLevel = ko.observable(-1)
+
             @setCurrentlySelectedLevel = (level_) =>
                 @currentlySelectedLevel(level_)
                 
@@ -66,7 +73,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             if menuObject_.subMenus? and menuObject_.subMenus
                 for subMenuObject in menuObject_.subMenus
-                    @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, subMenuObject, (@level() + 1), @path)
+                    @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @, (@level() + 1), subMenuObject, @path)
 
             @getCssFontSize = ko.computed =>
                 fontSize = Math.max( (16 - @level()), 10)
@@ -78,20 +85,59 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 else
                     return "0px solid black"
 
+
             @getCssBackgroundColor = ko.computed =>
                 backgroundColor = undefined
 
-                currentlySelectedLevel = 
-                if @selectedItem()
-                    if @mouseOverHighlight() and not @showAsSelectedUntilMouseOut()
-                        # Currently selected item and currently under the mouse cursor: Selected highlight
-                        if currentlySelectedLevel == @level()
-                            backgroundColor = "#FF0000"
+                # Selection takes precedence over highlighting.
+                currentlySelectedLevel = @navigatorContainer.currentSelectionLevel()
+
+                if @selectedItem() or @selectedChild() or @selectedParent()
+
+                    if @selectedItem()
+                        if @showAsSelectedUntilMouseOut() or not @mouseOverHighlight()
+                            backgroundColor = @navigatorContainer.layout.currentlySelectedBackgroundColor
                         else
                             backgroundColor = @navigatorContainer.layout.mouseOverSelectedBackgroundColor
+
+                    else if @selectedChild()
+
+                        base = undefined
+                        levelDiff = 0
+                        if @showAsSelectedUntilMouseOut() or not @mouseOverHighlight()
+                            levelDiff = @navigatorContainer.currentSelectionLevel() - @level()
+                            base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedProximityBackgroundColor)
+                            ratio = (levelDiff * 0.05)
+                            backgroundColor = base.darkenByRatio(ratio).toString()
+                        else
+                            backgroundColor = @navigatorContainer.layout.mouseOverSelectedBackgroundColor
+
+
+                    else if @selectedParent()
+                        base = undefined
+                        levelDiff = 0
+
+                        if @mouseOverHighlight()
+                            backgroundColor = @navigatorContainer.layout.mouseOverHighlightBackgroundColor
+
+                        else if @mouseOverChild()
+                            base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedParentProximityBackgroundColor)
+                            levelDiff = @level() - @navigatorContainer.currentSelectionLevel()
+
+                        else if @mouseOverParent()
+                            base = net.brehaut.Color(@navigatorContainer.layout.mouseOverHighlightProximityBackgroundColor)
+                            levelDiff = @level() - @navigatorContainer.currentMouseOverLevel()
+                        else
+                            base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedParentProximityBackgroundColor)
+                            levelDiff = @level() - @navigatorContainer.currentSelectionLevel()
+                        
+                        if not backgroundColor
+                            ratio = (levelDiff * 0.075)
+                            backgroundColor = base.darkenByRatio(ratio).toString()
+
                     else
-                        # Currently selected item and not currently under the mouse cursor: Selected color
-                        backgroundColor = @navigatorContainer.layout.currentlySelectedBackgroundColor
+                         throw "Unhandled"
+
 
                 else
                     if @mouseOverHighlight()
@@ -99,11 +145,25 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                         backgroundColor = @navigatorContainer.layout.mouseOverHighlightBackgroundColor
 
                     else
-                        # Not currently selected and not currently under the mouse cursor: Default color based on level)
-                        base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor)
-                        ratio = @level() /  10
-                        #base.desaturateByRatio(ratio).toString()
-                        backgroundColor = base.lightenByRatio(ratio).toString()
+
+                        if @mouseOverChild() or @mouseOverParent()
+                            base=net.brehaut.Color(@navigatorContainer.layout.mouseOverHighlightProximityBackgroundColor)
+                            if @mouseOverChild()
+                                levelDiff = @navigatorContainer.currentMouseOverLevel() - @level()
+                                ratio = (levelDiff * 0.075)
+                                backgroundColor = base.darkenByRatio(ratio).toString()
+
+                            if @mouseOverParent()
+                                levelDiff = @level() - @navigatorContainer.currentMouseOverLevel()
+                                ratio = (levelDiff * 0.075)
+                                backgroundColor = base.darkenByRatio(ratio).toString()
+
+                        else
+
+                            # Not currently selected and not currently under the mouse cursor: Default color based on level)
+                            base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor) 
+                            ratio = @level() * 0.075
+                            backgroundColor = base.darkenByRatio(ratio).toString()
 
                 # (enable to research IE 10 failures) Console.message("Setting navigator menu \"#{@label()}\" background color to #{backgroundColor}")
                 return backgroundColor
@@ -112,26 +172,59 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 # return "#{@level() * 2}px"
                 return @navigatorContainer.layout.menuLevelMargin
 
+            @updateMouseOverChild = (flag_) =>
+                @mouseOverChild(flag_)
+                if @parentMenuLevel? and @parentMenuLevel
+                    @parentMenuLevel.updateMouseOverChild(flag_)
+                
+            @updateMouseOverParent = (flag_) =>
+                @mouseOverParent(flag_)
+                for subMenuObject in @subMenus()
+                    subMenuObject.updateMouseOverParent(flag_)
+
             @onMouseOver = => 
                 @mouseOverHighlight(true)
                 @navigatorContainer.setCurrentMouseOverLevel(@level())
+                if @parentMenuLevel? and @parentMenuLevel
+                    @parentMenuLevel.updateMouseOverChild(true)
+                @updateMouseOverParent(true)
                 return false
 
             @onMouseOut = =>
                 @mouseOverHighlight(false)
                 @navigatorContainer.setCurrentMouseOverLevel(-1)
+                if @parentMenuLevel? and @parentMenuLevel
+                    @parentMenuLevel.updateMouseOverChild(false)
+                @updateMouseOverParent(false)
                 @showAsSelectedUntilMouseOut(false)
+
+            @updateSelectedChild = (flag_) =>
+                @selectedChild(flag_)
+                if @parentMenuLevel? and @parentMenuLevel
+                    @parentMenuLevel.updateSelectedChild(flag_)
+
+            @updateSelectedParent = (flag_) =>
+                @selectedParent(flag_)
+                for subMenuObject in @subMenus()
+                    subMenuObject.updateSelectedParent(flag_)
 
             @onMouseClick = =>
                 @selectedItem( not @selectedItem() )
                 if @selectedItem() == true
                     @showAsSelectedUntilMouseOut(true)
                     @navigatorContainer.updateSelectedMenuItem(@)
+                    if @parentMenuLevel? and @parentMenuLevel
+                        @parentMenuLevel.updateSelectedChild(true)
+                    @updateSelectedParent(true)
+                    @updateMouseOverParent(false)
                     if @selectActionCallback? and @selectActionCallback
                         @selectActionCallback()
                 else
                     @navigatorContainer.updateSelectedMenuItem(undefined)
                     @showAsSelectedUntilMouseOut(false)
+                    if @parentMenuLevel? and @parentMenuLevel
+                        @parentMenuLevel.updateSelectedChild(false)
+                    @updateSelectedParent(false)
                     if @unselectActionCallback? and @unselectActionCallback
                         @unselectActionCallback()
 
@@ -144,7 +237,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
     """
     <div class="classSchemaViewModelNavigatorMenuLevel classMouseCursorPointer"
-    data-bind="style: { fontSize: getCssFontSize(), padding: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()},
+    data-bind="style: { fontSize: getCssFontSize(), paddingLeft: getCssMarginLeft(), paddingBottom: getCssMarginLeft(), backgroundColor: getCssBackgroundColor()},
     event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }, mouseoverBubble: false, mouseoutBubble: false, clickBubble: false">
         <span data-bind="text: label"></span>
     <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>

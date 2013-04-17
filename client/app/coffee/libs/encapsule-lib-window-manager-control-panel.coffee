@@ -46,7 +46,8 @@ class Encapsule.code.lib.kohelpers.implementation.ObservableWindowManagerControl
 Encapsule.code.lib.kohelpers.implementation.WindowManagerControlPanelPlane = {
     id: "idWindowManagerControlPanelPlane"
     name: "Window Manager Control Panel Plane"
-    windowManagerReservePlane: true
+    windowManagerReservePlane: false
+    InitialEnable: true
     splitterStack: [
         {
             id: "idWindowManagerControlPanelSplitter"

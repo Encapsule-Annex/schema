@@ -34,8 +34,32 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
 
     id: "idSchemaPlaneDefault"
     name: "Advanced"
-    initialEnable: false
+    initialEnable: true
     splitterStack: [
+
+        Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
+
+
+        {                                                                    
+            id: "idSelect1PathSplitter"
+            name: "Select 1 Path Split"                                           
+            type: "horizontal"                                                 
+            Q1WindowDescriptor: {                                            
+                id: "idSelect1Path"                                              
+                name: "Select 1 Path Window"                                      
+                initialMode: "full"
+                initialEnable: true
+                overflow: "auto"
+                opacity: CommonSettings.windowOpacityDefault
+                backgroundColor: undefined
+                modes: { full: { reserve: 14 }, min: { reserve: 14 } }
+                MVVM: {
+                    modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
+                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorPathWindow"
+                }
+            }                                                            
+            Q2WindowDescriptor: undefined                                    
+        }
 
         {
             id: "idCatlogueJSONSplitter"
@@ -82,26 +106,6 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
 
 
 
-        {                                                                    
-            id: "idSelect1PathSplitter"
-            name: "Select 1 Path Split"                                           
-            type: "horizontal"                                                 
-            Q1WindowDescriptor: {                                            
-                id: "idSelect1Path"                                              
-                name: "Select 1 Path Window"                                      
-                initialMode: "full"
-                initialEnable: true
-                overflow: "auto"
-                opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: undefined
-                modes: { full: { reserve: 14 }, min: { reserve: 14 } }
-                MVVM: {
-                    modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
-                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorPathWindow"
-                }
-            }                                                            
-            Q2WindowDescriptor: undefined                                    
-        }
 
 
         {                                                                    

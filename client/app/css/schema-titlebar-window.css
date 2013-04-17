@@ -3,31 +3,34 @@
 */
 
 #idTitlebarAppPublisher {
-font-size: 14pt;
+font-size: 16pt;
+font-family: Courier;
 font-weight: normal;
 }
 #idTitlebarAppPublisher A {
 text-decoration: none;
-color: #000099;
+color: #0000FF;
 }
 #idTitlebarAppPublisher A:hover {
 text-decoration: underline;
+color: #0066FF;
 }
 
 #idTitlebarAppName {
-font-size: 14pt;
-font-weight: bold;
+font-size: 16pt;
+font-family: Courier;
+font-weight: normal;
 color: #000066;
 }
 
 .classTitlebarAppDetailName {
 font size: 8pt;
-font-weight: normal;
+font-weight: bold
 color: #000033;
 }
 
 .classTitlebarAppDetailValue {
 font size: 8pt;
-font-weight: bold;
+font-weight: normal;
 color: #000055;
 }
