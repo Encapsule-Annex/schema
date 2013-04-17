@@ -87,6 +87,9 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     @setCurrentSelectionLevel(-1)
                     @currentSelectionPath("<no selection>")
 
+                    for topLevelMenu in @topLevelMenus()
+                        topLevelMenu.showAllChildren()
+
 
 
 

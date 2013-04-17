@@ -53,6 +53,8 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @label =    ko.observable(menuObject_.menu? and menuObject_.menu or "Missing menu name!")
             @path =     """#{parentPath_? and parentPath_ or ""}#{@label()}/"""
 
+            @itemVisible = ko.observable true
+
             @subMenus = ko.observableArray []
 
             @mouseOverChild = ko.observable(false)
@@ -162,7 +164,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                             # Not currently selected and not currently under the mouse cursor: Default color based on level)
                             base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor) 
-                            ratio = @level() * 0.075
+                            ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
                             backgroundColor = base.darkenByRatio(ratio).toString()
 
                 # (enable to research IE 10 failures) Console.message("Setting navigator menu \"#{@label()}\" background color to #{backgroundColor}")
@@ -179,10 +181,15 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 paddingBottom = 0
                 subMenus = @subMenus()
                 if subMenus? and subMenus and subMenus.length
-                    paddingBottom = @navigatorContainer.layout.menuLevelPaddingBottom
+                    oneOrMoreVisibleChildren = false
+                    for subMenu in subMenus
+                        if subMenu.itemVisible()
+                            oneOrMoreVisibleChildren = true
+
+                    paddingBottom = oneOrMoreVisibleChildren and @navigatorContainer.layout.menuLevelPaddingBottom or 0
+
                 return "#{paddingBottom}px"
                 
-
             @getCssPaddingLeft = ko.computed =>
                 return "#{@navigatorContainer.layout.menuLevelPaddingLeft}px"
          
@@ -216,15 +223,35 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 @updateMouseOverParent(false)
                 @showAsSelectedUntilMouseOut(false)
 
-            @updateSelectedChild = (flag_) =>
+            @updateSelectedChild = (flag_, childPath_) =>
                 @selectedChild(flag_)
-                if @parentMenuLevel? and @parentMenuLevel
-                    @parentMenuLevel.updateSelectedChild(flag_)
+                @itemVisible(true)
+                for subMenu in @subMenus()
+                     subMenuPath = subMenu.path
+                     if (subMenuPath != childPath_)
+                         subMenu.itemVisible(false)
 
-            @updateSelectedParent = (flag_) =>
-                @selectedParent(flag_)
+                if @parentMenuLevel? and @parentMenuLevel
+                    @parentMenuLevel.updateSelectedChild(flag_, @path)
+
+            @showAllChildren = =>
+                for subMenu in @subMenus()
+                    subMenu.itemVisible(true)
+                    subMenu.showAllChildren()
+
+            @updateSelectedParent = (flag_, showYourselfOnly_) =>
+                
                 for subMenuObject in @subMenus()
+                    subMenuObject.selectedParent(flag_)
+                    if flag_
+                        if showYourselfOnly_? and showYourselfOnly_
+                            subMenuObject.itemVisible(true)
+                            @mouseOverHighlight(false)
+                        else
+                            subMenuObject.itemVisible(false)
+
                     subMenuObject.updateSelectedParent(flag_)
+
 
             @onMouseClick = =>
                 @selectedItem( not @selectedItem() )
@@ -232,8 +259,8 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     @showAsSelectedUntilMouseOut(true)
                     @navigatorContainer.updateSelectedMenuItem(@)
                     if @parentMenuLevel? and @parentMenuLevel
-                        @parentMenuLevel.updateSelectedChild(true)
-                    @updateSelectedParent(true)
+                        @parentMenuLevel.updateSelectedChild(true, @path)
+                    @updateSelectedParent(true, true)
                     @updateMouseOverParent(false)
                     if @selectActionCallback? and @selectActionCallback
                         @selectActionCallback()
@@ -245,6 +272,8 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     @updateSelectedParent(false)
                     if @unselectActionCallback? and @unselectActionCallback
                         @unselectActionCallback()
+                    if @parentMenuLevel? and @parentMenuLevel
+                        @parentMenuLevel.onMouseClick()
 
             # / END: constructor try scope
         catch exception
@@ -254,11 +283,13 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorMenuLevel", ( ->
     """
+    <span data-bind="if: itemVisible">
     <div class="classSchemaViewModelNavigatorMenuLevel classMouseCursorPointer"
     data-bind="style: { fontSize: getCssFontSize(), backgroundColor: getCssBackgroundColor(), paddingBottom: getCssPaddingBottom(), paddingTop: getCssPaddingTop(), paddingLeft: getCssPaddingLeft(), paddingRight: getCssPaddingRight() },
     event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }, mouseoverBubble: false, mouseoutBubble: false, clickBubble: false">
         <span data-bind="text: label"></span>
     <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
     </div>
+    </span>
     """))
 

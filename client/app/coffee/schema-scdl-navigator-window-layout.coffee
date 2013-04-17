@@ -29,21 +29,21 @@ Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     title: "SCDL Navigator"
     baseBackgroundColor: "#0099FF"
+    baseBackgroundRatioPercentPerLevel: 0.05
     
     currentlySelectedBackgroundColor: "#FFFF00"
-    currentlySelectedProximityBackgroundColor: "#00FF00"
+    currentlySelectedProximityBackgroundColor: "#00FFFF"
 
     currentlySelectedParentProximityBackgroundColor: "#00CCFF"
 
-    mouseOverSelectedBackgroundColor: "#FFFF00"
-
-    mouseOverHighlightBackgroundColor: "#FFFF00"
-    mouseOverHighlightProximityBackgroundColor: "#00FFFF"
+    mouseOverHighlightBackgroundColor: "#00FF00"
+    mouseOverSelectedBackgroundColor: "#00FF00"
+    mouseOverHighlightProximityBackgroundColor: "#00CCFF"
 
     menuLevelPaddingTop: 0
     menuLevelPaddingBottom: 5
-    menuLevelPaddingLeft: 5
-    menuLevelPaddingRight: 5
+    menuLevelPaddingLeft: 2
+    menuLevelPaddingRight: 0
 
     menuLevelMargin: "2px"
     menuHierarchy: [
