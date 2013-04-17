@@ -90,9 +90,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     for topLevelMenu in @topLevelMenus()
                         topLevelMenu.showAllChildren()
 
-
-
-
             @currentMouseOverLevel = ko.observable(-1)
             @setCurrentMouseOverLevel = (currentLevel_) =>
                 if (currentLevel_ == -1)
@@ -101,6 +98,9 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 else
                     if currentLevel_ > @currentMouseOverLevel()
                         @currentMouseOverLevel(currentLevel_)
+
+            for topLevelMenu in @topLevelMenus()
+                topLevelMenu.showYourselfHideYourChildren()
 
             # / END: constructor try scope
         catch exception

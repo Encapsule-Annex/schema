@@ -107,7 +107,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                         base = undefined
                         levelDiff = 0
                         if @showAsSelectedUntilMouseOut() or not @mouseOverHighlight()
-                            levelDiff = @navigatorContainer.currentSelectionLevel() - @level()
+                            levelDiff = @navigatorContainer.currentSelectionLevel() - @level() - 1
                             base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedProximityBackgroundColor)
                             ratio = (levelDiff * 0.05)
                             backgroundColor = base.darkenByRatio(ratio).toString()
@@ -124,14 +124,14 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                         else if @mouseOverChild()
                             base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedParentProximityBackgroundColor)
-                            levelDiff = @level() - @navigatorContainer.currentSelectionLevel()
+                            levelDiff = @level() - @navigatorContainer.currentSelectionLevel() - 1
 
                         else if @mouseOverParent()
                             base = net.brehaut.Color(@navigatorContainer.layout.mouseOverHighlightProximityBackgroundColor)
-                            levelDiff = @level() - @navigatorContainer.currentMouseOverLevel()
+                            levelDiff = @level() - @navigatorContainer.currentMouseOverLevel() - 1
                         else
                             base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedParentProximityBackgroundColor)
-                            levelDiff = @level() - @navigatorContainer.currentSelectionLevel()
+                            levelDiff = @level() - @navigatorContainer.currentSelectionLevel() - 1
                         
                         if not backgroundColor
                             ratio = (levelDiff * 0.075)
@@ -238,6 +238,11 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 for subMenu in @subMenus()
                     subMenu.itemVisible(true)
                     subMenu.showAllChildren()
+
+            @showYourselfHideYourChildren = =>
+                @itemVisible(true)
+                for subMenu in @subMenus()
+                    subMenu.itemVisible(false)
 
             @updateSelectedParent = (flag_, showYourselfOnly_) =>
                 

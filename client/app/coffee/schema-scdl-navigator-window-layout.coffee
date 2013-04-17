@@ -31,8 +31,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     baseBackgroundColor: "#0099FF"
     baseBackgroundRatioPercentPerLevel: 0.05
     
-    currentlySelectedBackgroundColor: "#FFFF00"
-    currentlySelectedProximityBackgroundColor: "#00FFFF"
+    currentlySelectedBackgroundColor: "white"
+    currentlySelectedProximityBackgroundColor: "#0099FF"
 
     currentlySelectedParentProximityBackgroundColor: "#00CCFF"
 
@@ -173,16 +173,30 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     ] # Sockets submenus
                                 } # Sockets
                                 {
-                                    menu: "Socket Contracts"
+                                    menu: "Contracts"
                                     subMenus: [
                                         {
-                                            menu: "Socket Contract"
+                                            menu: "Contract"
                                             subMenus: [
                                                 {
+                                                    menu: "Socket Identity"
+                                                }
+                                                {
+                                                    menu: "Model Identity"
+                                                }
+                                                {   
                                                     menu: "Nodes"
                                                     subMenus: [
                                                         {
                                                             menu: "Node"
+                                                            subMenus: [
+                                                                {
+                                                                    menu: "Source Pin"
+                                                                }
+                                                                {
+                                                                    menu: "Sink Pins"
+                                                                }
+                                                            ]
                                                         } # Node
                                                     ] # Nodes submenus
                                                 } # Nodes
