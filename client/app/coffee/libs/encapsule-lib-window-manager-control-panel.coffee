@@ -16,11 +16,9 @@
 
 ###
 #
-# encapsule-lib-kohelpers-window-manager-control-panel-layout.coffee
+# encapsule-lib-window-manager-control-panel.coffee
 #
-# Here we specify just a single plane (not an entire layout) that is used
-# for the window manager's "control panel".
-#
+
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
@@ -34,6 +32,11 @@ Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Enc
 Encapsule.runtime.app.kotemplates = Encapsule.runtime.app.kotemplates? and Encapsule.runtime.app.kotemplates or @Encapsule.runtime.app.kotemplates = []
 
 
+# Data facet is an observable model view object that holds a reference to a more
+# complex model view. It's purpose is to provide a simpler surface upon which to
+# base different domain-specific view models.
+
+
 class Encapsule.code.lib.kohelpers.implementation.ObservableWindowManagerControlPanel
     constructor: (windowManagerObject_) ->
         @windowManagerObject = windowManagerObject_
@@ -42,34 +45,6 @@ class Encapsule.code.lib.kohelpers.implementation.ObservableWindowManagerControl
         @showPlane = (planeObject_) =>
             Encapsule.runtime.app.SchemaWindowManager.displayPlane(planeObject_.id)
 
-
-Encapsule.code.lib.kohelpers.implementation.WindowManagerControlPanelPlane = {
-    id: "idWindowManagerControlPanelPlane"
-    name: "Window Manager Control Panel Plane"
-    windowManagerReservePlane: false
-    InitialEnable: true
-    splitterStack: [
-        {
-            id: "idWindowManagerControlPanelSplitter"
-            name: "Window Manager Control Panel Splitter"
-            type: "horizontal"
-            Q1WindowDescriptor: {
-                id: "idWindowManagerControlPanel"
-                name: "#{appName} Window Manager Control Panel"
-                initialMode: "full"
-                initialEnable: true
-                opacity: 0.95
-                backgroundColor: undefined
-                modes: { full: { reserve: 18 }, min: { reserve: 18 } }
-                MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.windowmanager.WindowManagerControlPanel
-                    viewModelTemplateId: "idKoTemplate_WindowManagerControlPanel"
-                    }
-                }
-            Q2WindowDescriptor: undefined
-            }
-        ]
-    }
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_WindowManagerControlPanel", ( ->
     """

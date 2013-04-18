@@ -42,7 +42,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     menuLevelPaddingTop: 0
     menuLevelPaddingBottom: 5
-    menuLevelPaddingLeft: 2
+    menuLevelPaddingLeft: 5
     menuLevelPaddingRight: 0
 
     menuLevelMargin: "2px"

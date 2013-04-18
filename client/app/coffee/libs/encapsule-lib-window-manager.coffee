@@ -281,7 +281,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     # Add the special windowManagerReservePlane: true window manager control panel plane to the top
                     # of the plane array.
                     
-                    @layout.planes.unshift Encapsule.code.lib.kohelpers.implementation.WindowManagerControlPanelPlane
+                    # @layout.planes.unshift Encapsule.code.lib.kohelpers.implementation.WindowManagerControlPanelPlane
  
 
                     # @@@
