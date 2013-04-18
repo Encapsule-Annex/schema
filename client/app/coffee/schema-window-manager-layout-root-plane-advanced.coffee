@@ -49,9 +49,9 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 name: "Select 1 Path Window"                                      
                 initialMode: "full"
                 initialEnable: true
-                overflow: "auto"
+                overflow: "hidden"
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: undefined
+                backgroundColor: "#00DD00"
                 modes: { full: { reserve: 14 }, min: { reserve: 14 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
@@ -70,7 +70,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             id: "idCatalogueJSON"                                           
             name: "SCDL Catalogue JSON"
             initialMode: "full"
-            initialEnable: true
+            initialEnable: false
             overflow: "auto"
             opacity: CommonSettings.windowOpacityDefault
             backgroundColor: undefined
@@ -94,8 +94,8 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#003399"
-                modes: { full: { reserve: 200 }, min: { reserve: 32 } }
+                backgroundColor: "#0099CC"
+                modes: { full: { reserve: 350 }, min: { reserve: 32 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
@@ -116,7 +116,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 id: "idSelect2"                                              
                 name: "Select 1 Window"                                      
                 initialMode: "full"
-                initialEnable: true
+                initialEnable: false
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: undefined
                 overflow: "auto"
@@ -149,12 +149,16 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "white"
                 modes: { full: { reserve: 0}, min: { reserve: 0 } }
+                MVVM: {
+                    fnModelView: -> Encapsule.runtime.app.SchemaEditorContext
+                    viewModelTemplateId: "idKoTemplate_SchemaViewModelScdlBrowserCatalogues"
+                }
             }
             Q2WindowDescriptor: {                                            
                 id: "idEdit1"                                                
                 name: "Edit 1 Window"                                        
                 initialMode: "min"
-                initialEnable: true
+                initialEnable: false
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "#00CCFF"
                 modes: { full: { reserve: 0 }, min: { reserve: 32 } }        

@@ -20,6 +20,13 @@ opacity: 1.0; z-index: 1;}
 
 .classSchemaViewModelNavigatorMenuLevel {
 margin: 0px;
+font-family: Courier;
+}
+
+.classNavigatorPathWindow {
+font-family: Courier;
+font-size: 10pt;
+font-weight: normal;
 }
 
 .classMouseCursorPointer { cursor: pointer; }

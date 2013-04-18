@@ -115,7 +115,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     <span data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: topLevelMenus }"></span>
     """))
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorPathWindow", ( ->  """<div><span data-bind="text: title"></span> ::
-        <span data-bind="text: currentSelectionPath"></span>
-        <span data-bind="text: currentSelectionLevel"></span>
-        <span data-bind="text: currentMouseOverLevel"></span></div>"""))
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorPathWindow", ( -> """<div class="classNavigatorPathWindow"><span data-bind="text: title"></span> ::
+<span data-bind="text: currentSelectionPath"></span>
+<span data-bind="text: currentSelectionLevel"></span>
+<span data-bind="text: currentMouseOverLevel"></span>
+</div>"""))

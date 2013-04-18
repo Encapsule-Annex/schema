@@ -45,16 +45,17 @@ class Encapsule.code.app.Schema
 
             Console.messageRaw("<h3>INITIALIZING #{appName} MODEL VIEW</h3>")
 
+            Encapsule.runtime.app.SchemaEditorContext = new Encapsule.code.app.SchemaEditorContext()
+
             Encapsule.runtime.app.SchemaScdlCatalogue = new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
 
-            # Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.app.modelview.SchemaScdlNavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
             Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.lib.modelview.NavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
 
             Encapsule.runtime.app.SchemaTitlebarWindow = new Encapsule.code.app.modelview.SchemaTitleBarWindow()
 
             Encapsule.runtime.app.SchemaBootInfoWindow = new Encapsule.code.app.modelview.SchemaBootInfoWindow()
 
-            Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager Encapsule.code.app.winmgr.layout.root.Layout
+            Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager(Encapsule.code.app.winmgr.layout.root.Layout)
 
             Encapsule.runtime.boot.phase0.spinner.cancel()
 
