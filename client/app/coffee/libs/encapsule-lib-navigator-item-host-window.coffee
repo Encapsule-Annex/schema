@@ -58,9 +58,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 <span data-bind="if: currentlySelectedItemHost">
     <span data-bind="with: currentlySelectedItemHost">
         <div>
-            <span data-bind="text: menuLevelObject.label"></span> (<span data-bind="text: itemObjectType"></span>) ::
-            <span data-bind="text: itemObjectDescription"></span><br>
-            Path: <span data-bind="text: menuLevelObject.path"></span>
+            <strong><span data-bind="text: itemObjectType"></span> :: <span data-bind="text: menuLevelObject.path"></span></strong><br>
+            <span data-bind="text: menuLevelObject.label"></span> :: <span data-bind="text: itemObjectDescription"></span><br>
         </div>
     </span>
 </span>

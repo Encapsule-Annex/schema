@@ -37,8 +37,30 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
     initialEnable: true
     splitterStack: [
 
-        Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
 
+
+        {                                                                    
+            id: "idSelect1Splitter"
+            name: "Select 1 Split"                                           
+            type: "vertical"                                                 
+            Q1WindowDescriptor: {                                            
+                id: "idSelect1"                                              
+                name: "Select 1 Window"                                      
+                initialMode: "full"
+                initialEnable: true
+                overflow: "auto"
+                opacity: CommonSettings.windowOpacityDefault
+                backgroundColor: "#0099CC"
+                modes: { full: { reserve: 180 }, min: { reserve: 32 } }
+                MVVM: {
+                    modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
+                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
+                }
+            }                                                            
+            Q2WindowDescriptor: undefined                                    
+        }
+
+        Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
 
         {                                                                    
             id: "idSelect1PathSplitter"
@@ -51,7 +73,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 initialEnable: true
                 overflow: "hidden"
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#00DD00"
+                backgroundColor: "#99FFFF"
                 modes: { full: { reserve: 14 }, min: { reserve: 14 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
@@ -80,28 +102,6 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 viewModelTemplateId: "idKoTemplate_ScdlCatalogueJSONSourceView"
                 }
             }
-        }
-
-
-        {                                                                    
-            id: "idSelect1Splitter"
-            name: "Select 1 Split"                                           
-            type: "vertical"                                                 
-            Q1WindowDescriptor: {                                            
-                id: "idSelect1"                                              
-                name: "Select 1 Window"                                      
-                initialMode: "full"
-                initialEnable: true
-                overflow: "auto"
-                opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#0099CC"
-                modes: { full: { reserve: 180 }, min: { reserve: 32 } }
-                MVVM: {
-                    modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
-                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
-                }
-            }                                                            
-            Q2WindowDescriptor: undefined                                    
         }
 
 

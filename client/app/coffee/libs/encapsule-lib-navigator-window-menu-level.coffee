@@ -133,7 +133,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 # Not currently selected and not currently under the mouse cursor: Default color based on level)
                 base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor) 
                 ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
-                return base.darkenByRatio(ratio).toString()
+                return base.lightenByRatio(ratio).toString()
     
             @getCssMarginLeft = ko.computed =>
                 # return "#{@level() * 5}px"
@@ -191,6 +191,11 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @updateSelectedChild = (flag_, childPath_) =>
                 @selectedChild(flag_)
                 @itemVisible(true)
+                @mouseOverHighlight(false)
+                @mouseOverParent(false)
+                @mouseOverChild(false)
+                @showAsSelectedUntilMouseOut(false)
+
                 for subMenu in @subMenus()
                      subMenuPath = subMenu.path
                      if (subMenuPath != childPath_)
@@ -199,10 +204,13 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 if @parentMenuLevel? and @parentMenuLevel
                     @parentMenuLevel.updateSelectedChild(flag_, @path)
 
-            @showAllChildren = =>
+
+            @showAllChildren = (flag_) =>
+                flag = flag_? and flag_ or true
                 for subMenu in @subMenus()
-                    subMenu.itemVisible(true)
-                    subMenu.showAllChildren()
+                    subMenu.itemVisible(flag)
+                    subMenu.showAllChildren(flag)
+
 
             @showYourselfHideYourChildren = =>
                 @itemVisible(true)
@@ -210,9 +218,13 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     subMenu.itemVisible(false)
 
             @updateSelectedParent = (flag_, showYourselfOnly_) =>
-                
+                @mouseOverHighlight(false)
+                @mouseOverParent(false)
+                @mouseOverChild(false)
+                @showAsSelectedUntilMouseOut(false)
                 for subMenuObject in @subMenus()
                     subMenuObject.selectedParent(flag_)
+
                     if flag_
                         if showYourselfOnly_? and showYourselfOnly_
                             subMenuObject.itemVisible(true)

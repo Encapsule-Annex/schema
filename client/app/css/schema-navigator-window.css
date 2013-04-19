@@ -8,25 +8,19 @@ border-right: 1px solid black; border-top: 1px solid white; background-color: #0
 font-family: Verdana, Arial, Courier; 
 opacity: 1.0; z-index: 1;}
 
-.classSchemaViewModelNavigatorHeading1 { font: Lucida Console, Courier; font-size: 18pt; font-weight: bold; background-color: #99CCFF; }
-.classSchemaViewModelNavigatorHeading2 { padding-left: 5px; font: Lucida Console, Courier; font-size: 16pt; font-weight: bold; background-color: #88BBEE; }
-.classSchemaViewModelNavigatorHeading3 { padding-left: 10px; font: Lucida Console, Courier; font-size: 14pt; font-weight: bold; background-color: #77AADD; }
-.classSchemaViewModelNavigatorHeading4 { padding-left: 15px;font: Lucida Console, Courier; font-size: 12pt; font-weight: bold; background-color: #6699CC; }
-.classSchemaViewModelNavigatorHeading5 { padding-left: 20px;font: Lucida Console, Courier; font-size: 10pt; font-weight: bold; background-color: #5588BB; }
-.classSchemaViewModelNavigatorHeading6 { padding-left: 25px;font: Lucida Console, Courier; font-size: 9pt; font-weight: bold;  background-color: #4477AA; }
-.classSchemaViewModelNavigatorHeading7 { padding-left: 30px;font: Lucida Console, Courier; font-size: 8pt; font-weight: bold;  background-color: #336699; }
-.classSchemaViewModelNavigatorHeading8 { padding-left: 35px;font: Lucida Console, Courier; font-size: 7pt; font-weight: bold;  background-color: #225588; }
-.classSchemaViewModelNavigatorHeading9 { padding-left: 40px;font: Lucida Console, Courier; font-size: 6pt; font-weight: bold;  background-color: #114477;  }
 
 .classSchemaViewModelNavigatorMenuLevel {
 margin: 0px;
-font-family: Courier;
+font-family: Arial;
+box-shadow: 1px 1px 3px #003366;
+
 }
 
 .classNavigatorPathWindow {
 font-family: Courier;
 font-size: 10pt;
-font-weight: normal;
+font-weight: bold;
+color: #003366;
 }
 
 .classMouseCursorPointer { cursor: pointer; }

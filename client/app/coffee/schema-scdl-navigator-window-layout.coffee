@@ -28,27 +28,27 @@ Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     title: "SCDL Catalogue"
-    baseBackgroundColor: "#00CCFF"
-    baseBackgroundRatioPercentPerLevel: 0.03
+    baseBackgroundColor: "#0099CC"
+    baseBackgroundRatioPercentPerLevel: 0.05
     
     currentlySelectedBackgroundColor: "#00FFFF"
-    currentlySelectedProximityBackgroundColor: "#00DDFF"
-    currentlySelectedProximityRatioPerecentPerLevel: 0.07
+    currentlySelectedProximityBackgroundColor: "#00CCFF"
+    currentlySelectedProximityRatioPerecentPerLevel: 0.06
 
-    currentlySelectedParentProximityBackgroundColor: "#00EEFF"
+    currentlySelectedParentProximityBackgroundColor: "#00DDFF"
 
     mouseOverHighlightBackgroundColor: "white"
-    mouseOverSelectedBackgroundColor: "#0099CC"
-    mouseOverHighlightProximityBackgroundColor: "#00EEFF"
-    mouseOverHighlightProximityRatioPercentPerLevel: 0.1
+    mouseOverSelectedBackgroundColor: "white"
+    mouseOverHighlightProximityBackgroundColor: "#00DDFF"
+    mouseOverHighlightProximityRatioPercentPerLevel: 0.05
 
-    menuLevelPaddingTop: 3
-    menuLevelPaddingBottom: 3
-    menuLevelPaddingLeft: 9
-    menuLevelPaddingRight: 0
+    menuLevelPaddingTop: 0
+    menuLevelPaddingBottom: 7
+    menuLevelPaddingLeft: 4
+    menuLevelPaddingRight: 4
 
     menuLevelFontSizeMax: 14
-    menuLevelFontSizeMin: 10
+    menuLevelFontSizeMin: 12
 
 
 
