@@ -12,8 +12,7 @@ opacity: 1.0; z-index: 1;}
 .classSchemaViewModelNavigatorMenuLevel {
 margin: 0px;
 font-family: Arial;
-box-shadow: 1px 1px 3px #003366;
-
+box-shadow: 1px 1px 6px #006699;
 }
 
 .classNavigatorPathWindow {
@@ -21,6 +20,32 @@ font-family: Courier;
 font-size: 10pt;
 font-weight: bold;
 color: #003366;
+}
+
+.classNavigatorItemHostWindow {
+font-family: Courier;
+font-size: 10pt;
+}
+
+.classNavigatorItemHostWindow table {
+border: none;
+margin: 0px;
+padding: 0px;
+}
+
+.classNavigatorItemHostWindow thead {
+background-color: #DDEEFF;
+}
+
+.classNavigatorItemHostWindow thead td {
+background-color: #00FFFF;
+}
+
+.classNavigatorItemHostWindow td {
+border: none;
+padding: 2px;
+margin: 0px;
+background-color: #00AADD;
 }
 
 .classMouseCursorPointer { cursor: pointer; }

@@ -61,7 +61,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         origin: "external"
                         classification: "structure"
                         role: "namespace"
-                        description: "SCDL Catalogue"
+                        description: "SCDL catalogue."
                     }
                     subMenus: [
                         {
@@ -71,7 +71,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 origin: "parent"
                                 classification: "structure"
                                 role: "extension"
-                                description: "SCDL specification contained in this catalogue."
+                                description: "SCDL specification."
                             }
                             subMenus: [
                                 {
@@ -81,7 +81,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                         origin: "user"
                                         classification: "mutable"
                                         role: "namespace"
-                                        description: "SCDL specification model."
+                                        description: "SCDL specification."
                                     }
                                     subMenus: [
                                         {
@@ -165,35 +165,80 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 origin: "parent"
                                 classification: "structure"
                                 role: "namespace"
-                                description: "Models is a collection of SCDL model objects segretated by model type."
+                                description: "SCDL models by type."
                             }
                             subMenus: [
                                 {
                                     menu: "Systems"
                                     objectDescriptor: {
                                         type: "array"
-                                        description: "Systems is an array of SCDL system model objects."
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "extension"
+                                        description: "SCDL system models."
                                     }
                                     subMenus: [
                                         {
                                             menu: "System"
+                                            objectDescriptor: {
+                                                type: "object"
+                                                origin: "user"
+                                                classification: "mutable"
+                                                role: "namespace"
+                                                description: "SCDL system model."
+                                            }
                                             subMenus: [
                                                 {
-                                                    menu: "Pins"
+                                                    menu: "I/O Pins"
+                                                    objectDescriptor: {
+                                                        type: "array"
+                                                        origin: "parent"
+                                                        classification: "structure"
+                                                        role: "extension"
+                                                        description: "SCDL pin models by function."
+                                                    }
                                                     subMenus: [
                                                         {
-                                                            menu: "Inputs"
+                                                            menu: "Input Pins"
+                                                            objectDescriptor: {
+                                                                type: "array"
+                                                                origin: "parent"
+                                                                classification: "structure"
+                                                                role: "extension"
+                                                                description: "SCDL input pin models."
+                                                            }
                                                             subMenus: [
                                                                 {
-                                                                    menu: "Input"
+                                                                    menu: "Input Pin"
+                                                                    objectDescriptor: {
+                                                                        type: "object"
+                                                                        origin: "user"
+                                                                        classification: "mutable"
+                                                                        role: "namespace"
+                                                                        description: "SCDL input pin model."
+                                                                    }
                                                                 } # Inputs submenus
                                                             ] # Inputs submenus
                                                         } # Inputs
                                                         {
-                                                            menu: "Outputs"
+                                                            menu: "Output Pins"
+                                                            objectDescriptor: {
+                                                                type: "array"
+                                                                origin: "parent"
+                                                                classification: "structure"
+                                                                role: "extension"
+                                                                description: "SCDL output pin models."
+                                                            }
                                                             subMenus: [
                                                                 {
-                                                                    menu: "Output"
+                                                                    menu: "Output Pin"
+                                                                    objectDescriptor: {
+                                                                        type: "object"
+                                                                        origin: "user"
+                                                                        classification: "mutable"
+                                                                        role: "namespace"
+                                                                        description: "SCDL output pin model."
+                                                                    }
                                                                 } # Output
                                                             ] # Outputs submenus
                                                         } # Outputs
@@ -201,9 +246,23 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                 } # Pins
                                                 {
                                                     menu: "Models"
+                                                    objectDescriptor: {
+                                                        type: "array"
+                                                        origin: "parent"
+                                                        classification: "structure"
+                                                        role: "extension"
+                                                        description: "SCDL model instances."
+                                                    }
                                                     subMenus: [
                                                         {
                                                             menu: "Model"
+                                                            objectDescriptor: {
+                                                                type: "object"
+                                                                origin: "user"
+                                                                classification: "mutable"
+                                                                role: "namespace"
+                                                                description: "SCDL model instance."
+                                                            }
                                                         } #  Models submenus
                                                     ] # Models submenus
                                                 } # Models
@@ -223,28 +282,73 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     menu: "Sockets"
                                     objectDescriptor: {
                                         type: "array"
-                                        description: "Sockets is an array of SCDL socket model objects."
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "extension"
+                                        description: "SCDL socket models."
                                     }
                                     subMenus: [
                                         {
                                             menu: "Socket"
+                                            objectDescriptor: {
+                                                type: "object"
+                                                origin: "user"
+                                                classification: "mutable"
+                                                role: "namespace"
+                                                description: "SCDL socket model."
+                                            }
                                             subMenus: [
                                                 {
-                                                    menu: "Pins"
+                                                    menu: "I/O Pins"
+                                                    objectDescriptor: {
+                                                        type: "object"
+                                                        origin: "parent"
+                                                        classification: "structure"
+                                                        role: "namespace"
+                                                        description: "SCDL pin models by function."
+                                                    }
                                                     subMenus: [
                                                         {
-                                                            menu: "Inputs"
+                                                            menu: "Input Pins"
+                                                            objectDescriptor: {
+                                                                type: "array"
+                                                                origin: "parent"
+                                                                classification: "structure"
+                                                                role: "extension"
+                                                                description: "SCDL input pin models."
+                                                            }
                                                             subMenus: [
                                                                 {
-                                                                    menu: "Input"
+                                                                    menu: "Input Pin"
+                                                                    objectDescriptor: {
+                                                                        type: "object"
+                                                                        origin: "user"
+                                                                        classification: "mutable"
+                                                                        role: "namespace"
+                                                                        description: "SCDL input pin model."
+                                                                    }
                                                                 } # Inputs submenus
                                                             ] # Inputs submenus
                                                         } # Inputs
                                                         {
-                                                            menu: "Outputs"
+                                                            menu: "Output Pins"
+                                                            objectDescriptor: {
+                                                                type: "array"
+                                                                origin: "parent"
+                                                                classification: "structure"
+                                                                role: "extension"
+                                                                description: "SCDL output pin models."
+                                                            }
                                                             subMenus: [
                                                                 {
-                                                                    menu: "Output"
+                                                                    menu: "Output Pin"
+                                                                    objectDescriptor: {
+                                                                        type: "object"
+                                                                        origin: "user"
+                                                                        classification: "mutable"
+                                                                        role: "namespace"
+                                                                        description: "SCDL output pin model."
+                                                                    }
                                                                 } # Output
                                                             ] # Outputs submenus
                                                         } # Outputs
@@ -258,29 +362,93 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     menu: "Contracts"
                                     objectDescriptor: {
                                         type: "array"
-                                        description: "Contracts is an array of SCDL socket contract model objects."
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "extension"
+                                        description: "SCDL contract models."
                                     }
                                     subMenus: [
                                         {
                                             menu: "Contract"
+                                            objectDescriptor: {
+                                                type: "object"
+                                                origin: "user"
+                                                classification: "mutable"
+                                                role: "namespace"
+                                                description: "SCDL contract model."
+                                            }
                                             subMenus: [
                                                 {
-                                                    menu: "Socket Identity"
+                                                    menu: "Socket Reference"
+                                                    objectDescriptor: {
+                                                        type: "object"
+                                                        origin: "parent"
+                                                        classification: "structure"
+                                                        role: "namespace"
+                                                        description: "SCDL socket reference."
+                                                    }
                                                 }
                                                 {
-                                                    menu: "Model Identity"
+                                                    menu: "Model Reference"
+                                                    objectDescriptor: {
+                                                        type: "object"
+                                                        origin: "parent"
+                                                        classification: "structure"
+                                                        role: "namespace"
+                                                        description: "SCDL model reference."
+                                                    }
                                                 }
                                                 {   
                                                     menu: "Nodes"
+                                                    objectDescriptor: {
+                                                        type: "array"
+                                                        origin: "parent"
+                                                        classification: "structure"
+                                                        role: "extension"
+                                                        description: "SCDL node instances."
+                                                    }
                                                     subMenus: [
                                                         {
                                                             menu: "Node"
+                                                            objectDescriptor: {
+                                                                type: "object"
+                                                                origin: "user"
+                                                                classification: "mutable"
+                                                                role: "namespace"
+                                                                description: "SCDL node instance."
+                                                            }
                                                             subMenus: [
                                                                 {
                                                                     menu: "Source Pin"
+                                                                    objectDescriptor: {
+                                                                        type: "object"
+                                                                        origin: "parent"
+                                                                        classification: "structure"
+                                                                        role: "namespace"
+                                                                        description: "SCDL source (i.e. output) pin model reference."
+                                                                    }
                                                                 }
                                                                 {
                                                                     menu: "Sink Pins"
+                                                                    objectDescriptor: {
+                                                                        type: "array"
+                                                                        origin: "parent"
+                                                                        classification: "structure"
+                                                                        role: "extension"
+                                                                        description: "SCDL sink (i.e. input) pin models."
+                                                                    }
+                                                                    subMenus: [
+                                                                        {
+                                                                            menu: "Sink Pin"
+                                                                            objectDescriptor: {
+                                                                                type: "object"
+                                                                                origin: "user"
+                                                                                classification: "mutable"
+                                                                                role: "namespace"
+                                                                                description: "SCDL sink (i.e. input) pin model reference."
+                                                                            }
+                                                                        }
+                                                                    ]
                                                                 }
                                                             ]
                                                         } # Node
@@ -295,62 +463,166 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     menu: "Machines"
                                     objectDescriptor: {
                                         type: "array"
-                                        description: "Machines is an array of SCDL machine model objects."
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "extension"
+                                        description: "SCDL machine models."
                                     }
                                     subMenus: [
                                         {
                                             menu: "Machine"
+                                            objectDescriptor: {
+                                                type: "object"
+                                                origin: "user"
+                                                classification: "mutable"
+                                                role: "namespace"
+                                                description: "SCDL machine model."
+                                            }
                                             subMenus: [
                                                 {
-                                                    menu: "Pins"
+                                                    menu: "I/O Pins"
+                                                    objectDescriptor: {
+                                                        type: "object"
+                                                        origin: "parent"
+                                                        classification: "structure"
+                                                        role: "namespace"
+                                                        description: "SCDL pins by function."
+                                                    }
                                                     subMenus: [
                                                         {
-                                                            menu: "Inputs"
+                                                            menu: "Input Pins"
+                                                            objectDescriptor: {
+                                                                type: "array"
+                                                                origin: "parent"
+                                                                classification: "structure"
+                                                                role: "extension"
+                                                                description: "SCDL input pin models."
+                                                            }
                                                             subMenus: [
                                                                 {
-                                                                    menu: "Input"
+                                                                    menu: "Input Pin"
+                                                                    objectDescriptor: {
+                                                                        type: "object"
+                                                                        origin: "user"
+                                                                        classification: "mutable"
+                                                                        role: "namespace"
+                                                                        description: "SCDL input pin model."
+                                                                    }
                                                                 } # Inputs submenus
                                                             ] # Inputs submenus
                                                         } # Inputs
                                                         {
-                                                            menu: "Outputs"
+                                                            menu: "Output Pins"
+                                                            objectDescriptor: {
+                                                                type: "array"
+                                                                origin: "parent"
+                                                                classification: "structure"
+                                                                role: "extension"
+                                                                description: "SCDL output pin models."
+                                                            }
                                                             subMenus: [
                                                                 {
-                                                                    menu: "Output"
+                                                                    menu: "Output Pin"
+                                                                    objectDescriptor: {
+                                                                        type: "object"
+                                                                        origin: "user"
+                                                                        classification: "mutable"
+                                                                        role: "namespace"
+                                                                        description: "SCDL output pin model."
+                                                                    }
                                                                 } # Output
                                                             ] # Outputs submenus
                                                         } # Outputs
                                                     ] # Pins submenus
-                                                } # Pins
+                                                } # I/O Pins
                                                 {
                                                     menu: "States"
+                                                    objectDescriptor: {
+                                                        type: "array"
+                                                        origin: "parent"
+                                                        classification: "structure"
+                                                        role: "extension"
+                                                        description: "SCDL state descriptors."
+                                                    }
                                                     subMenus: [
                                                         {
                                                             menu: "State"
-                                                            subMenus: [
-                                                                {
-                                                                    menu: "Actions"
-                                                                    subMenus: [
-                                                                        {
-                                                                            menu: "Entry"
-                                                                        } # Entry
-                                                                        {
-                                                                            menu: "Exit"
-                                                                        } # Exit
-                                                                    ] # Actions submenus
-                                                                } # Actions
-                                                                {
-                                                                    menu: "Transitions"
-                                                                    subMenus: [
-                                                                        {
-                                                                            menu: "Transition"
-                                                                        } # Transition
-                                                                    ] # Transitions submenus
-                                                                } # Transitions
-                                                            ] # State submenus
+                                                            objectDescriptor: {
+                                                                type: "object"
+                                                                origin: "user"
+                                                                classification: "mutable"
+                                                                role: "namespace"
+                                                                description: "SCDL state descriptor."
+                                                            }
                                                         } # State
                                                     ] # States submenus
                                                 } # States
+                                                {
+                                                    menu: "Transitions"
+                                                    objectDescriptor: {
+                                                        type: "array"
+                                                        origin: "parent"
+                                                        classification: "structure"
+                                                        role: "extension"
+                                                        description: "SCDL state transition descriptors."
+                                                    }
+                                                    subMenus: [
+                                                        {
+                                                            menu: "Transition"
+                                                            objectDescriptor: {
+                                                                type: "object"
+                                                                origin: "user"
+                                                                classification: "mutable"
+                                                                role: "namespace"
+                                                                description: "SCDL state transition descriptor."
+                                                            }
+                                                        } # Transition
+                                                    ] # Transitions submenus
+                                                } # Transitions
+                                                {
+                                                    menu: "Actions"
+                                                    objectDescriptor: {
+                                                        type: "array"
+                                                        origin: "parent"
+                                                        classification: "structure"
+                                                        role: "extension"
+                                                        description: "SCDL state transition action descriptors."
+                                                    }
+                                                    subMenus: [
+                                                        {
+                                                            menu: "Action"
+                                                            objectDescriptor: {
+                                                                type: "object"
+                                                                origin: "user"
+                                                                classification: "mutable"
+                                                                role: "namespace"
+                                                                description: "SCDL state transition action descriptor."
+                                                            }
+                                                            subMenus: [
+                                                                {
+                                                                    menu: "Entry Action"
+                                                                    objectDescriptor: {
+                                                                        type: "object"
+                                                                        origin: "parent"
+                                                                        classification: "structure"
+                                                                        role: "namespace"
+                                                                        description: "SCDL state transition entry action descriptor."
+                                                                    }
+                                                                }
+                                                                {
+                                                                    menu: "Exit Action"
+                                                                    objectDescriptor: {
+                                                                        type: "object"
+                                                                        origin: "parent"
+                                                                        classification: "structure"
+                                                                        role: "namespace"
+                                                                        description: "SCDL state transition exit action descriptor."
+                                                                    }
+                                                                }
+                                                            ] # Action submenus
+                                                        } # Action
+                                                    ] # Actions submenus
+                                                } # Actions
                                             ] # Machine submenus
                                         } # Machine
                                     ] # Machines submenus
@@ -359,11 +631,21 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     menu: "Types"
                                     objectDescriptor: {
                                         type: "array"
-                                        description: "Types is an array of SCDL type model objects."
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "extension"
+                                        description: "SCDL type models."
                                     }
                                     subMenus: [
                                         {
                                             menu: "Type"
+                                            objectDescriptor: {
+                                                type: "object"
+                                                origin: "user"
+                                                classification: "mutable"
+                                                role: "namespace"
+                                                description: "SCDL type model."
+                                            }
                                         } # Type
                                     ] # Types submenus
                                 } # Types
