@@ -40,18 +40,18 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
 
 
         {                                                                    
-            id: "idSelect1Splitter"
-            name: "Select 1 Split"                                           
+            id: "idCatalogueNavigatorSplitter"
+            name: "SCDL Catalogue Navigator Splitter"                                           
             type: "vertical"                                                 
             Q1WindowDescriptor: {                                            
-                id: "idSelect1"                                              
-                name: "Select 1 Window"                                      
+                id: "idScdlCatalogueNavigator"                                              
+                name: "SCDL Catalogue Navigator"                                      
                 initialMode: "full"
                 initialEnable: true
                 overflow: "auto"
-                opacity: CommonSettings.windowOpacityDefault
+                opacity: 1.0
                 backgroundColor: "#0099CC"
-                modes: { full: { reserve: 180 }, min: { reserve: 32 } }
+                modes: { full: { reserve: 212 }, min: { reserve: 32 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
@@ -63,16 +63,16 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
         Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
 
         {                                                                    
-            id: "idSelect1PathSplitter"
-            name: "Select 1 Path Split"                                           
+            id: "idCatalogueNavigatorPathSplitter"
+            name: "SCDL Catalogue Navigator Path Split"                                           
             type: "horizontal"                                                 
             Q1WindowDescriptor: {                                            
-                id: "idSelect1Path"                                              
-                name: "Select 1 Path Window"                                      
+                id: "idScdlCatalogueNavigatorPath"                                              
+                name: "SCDL Catalogue Navigator Path"                                      
                 initialMode: "full"
                 initialEnable: true
                 overflow: "hidden"
-                opacity: CommonSettings.windowOpacityDefault
+                opacity: 1.0
                 backgroundColor: "#99FFFF"
                 modes: { full: { reserve: 14 }, min: { reserve: 14 } }
                 MVVM: {

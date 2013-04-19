@@ -39,7 +39,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     mouseOverHighlightBackgroundColor: "white"
     mouseOverSelectedBackgroundColor: "white"
-    mouseOverHighlightProximityBackgroundColor: "#00DDFF"
+    mouseOverHighlightProximityBackgroundColor: "#00E0FF"
     mouseOverHighlightProximityRatioPercentPerLevel: 0.05
 
     menuLevelPaddingTop: 0
@@ -57,37 +57,92 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
         {
                     menu: "Catalogue"
                     objectDescriptor: {
-                        type: "Object"
-                        description: "SCDL Catalogue objects aggregate SCDL Specifications, Models, and Assets."
+                        type: "object"
+                        origin: "external"
+                        classification: "structure"
+                        role: "namespace"
+                        description: "SCDL Catalogue"
                     }
                     subMenus: [
                         {
                             menu: "Specifications"
                             objectDescriptor: {
-                                type: "Array"
-                                description: "Specifications is an array of SCDL specification objects."
+                                type: "array"
+                                origin: "parent"
+                                classification: "structure"
+                                role: "extension"
+                                description: "SCDL specification contained in this catalogue."
                             }
                             subMenus: [
                                 {
                                     menu: "Specification"
+                                    objectDescriptor: {
+                                        type: "object"
+                                        origin: "user"
+                                        classification: "mutable"
+                                        role: "namespace"
+                                        description: "SCDL specification model."
+                                    }
                                     subMenus: [
                                         {
                                             menu: "Systems"
+                                            objectDescriptor: {
+                                                type: "array"
+                                                origin: "parent"
+                                                classification: "structure"
+                                                role: "extension"
+                                                description: "SCDL system model instances."
+                                            }
                                             subMenus: [
                                                 {
                                                     menu: "System"
+                                                    objectDescriptor: {
+                                                        type: "object"
+                                                        origin: "user"
+                                                        classification: "mutable"
+                                                        role: "namespace"
+                                                        description: "SCDL system model instance."
+                                                    }
                                                     subMenus: [
                                                         {
                                                             menu: "Sockets"
+                                                            objectDescriptor: {
+                                                                type: "array"
+                                                                origin: "parent"
+                                                                classification: "structure"
+                                                                role: "extension"
+                                                                description: "SCDL socket model instances."
+                                                            }
                                                             subMenus: [
                                                                 {
                                                                     menu: "Socket"
+                                                                    objectDescriptor: {
+                                                                        type: "object"
+                                                                        origin: "user"
+                                                                        classification: "mutable"
+                                                                        role: "namespace"
+                                                                        description: "SCDL socket model instance." 
+                                                                    }
                                                                     subMenus: [
                                                                         {
                                                                             menu: "Bindings"
+                                                                            objectDescriptor: {
+                                                                                type: "array"
+                                                                                origin: "parent"
+                                                                                classification: "structure"
+                                                                                role: "extension"
+                                                                                description: "SCDL socket model instance bindings."
+                                                                            }
                                                                             subMenus: [
                                                                                 {
                                                                                     menu: "Binding"
+                                                                                    objectDescriptor: {
+                                                                                        type: "object"
+                                                                                        origin: "user"
+                                                                                        classification: "mutable"
+                                                                                        role: "namespace"
+                                                                                        description: "SCDL socket model instance binding."
+                                                                                    }
                                                                                 }
                                                                             ] # Bindings submenus
                                                                         } # Bindings
@@ -106,14 +161,17 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         {
                             menu: "Models"
                             objectDescriptor: {
-                                type: "Object"
+                                type: "object"
+                                origin: "parent"
+                                classification: "structure"
+                                role: "namespace"
                                 description: "Models is a collection of SCDL model objects segretated by model type."
                             }
                             subMenus: [
                                 {
                                     menu: "Systems"
                                     objectDescriptor: {
-                                        type: "Array"
+                                        type: "array"
                                         description: "Systems is an array of SCDL system model objects."
                                     }
                                     subMenus: [
@@ -164,7 +222,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 {
                                     menu: "Sockets"
                                     objectDescriptor: {
-                                        type: "Array"
+                                        type: "array"
                                         description: "Sockets is an array of SCDL socket model objects."
                                     }
                                     subMenus: [
@@ -199,7 +257,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 {
                                     menu: "Contracts"
                                     objectDescriptor: {
-                                        type: "Array"
+                                        type: "array"
                                         description: "Contracts is an array of SCDL socket contract model objects."
                                     }
                                     subMenus: [
@@ -236,7 +294,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 {
                                     menu: "Machines"
                                     objectDescriptor: {
-                                        type: "Array"
+                                        type: "array"
                                         description: "Machines is an array of SCDL machine model objects."
                                     }
                                     subMenus: [
@@ -300,7 +358,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 {
                                     menu: "Types"
                                     objectDescriptor: {
-                                        type: "Array"
+                                        type: "array"
                                         description: "Types is an array of SCDL type model objects."
                                     }
                                     subMenus: [
@@ -315,39 +373,98 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         {
                             menu: "Assets"
                             objectDescriptor: {
-                                type: "Object"
-                                description: "Assets is a container object."
+                                type: "object"
+                                origin: "parent"
+                                classification: "structure"
+                                role: "namespace"
+                                description: "SCDL asset models by namespace."
                             }
                             subMenus: [
                                 {
                                     menu: "People"
+                                    objectDescriptor: {
+                                        type: "array"
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "extension"
+                                        description: "SCDL person models."
+                                    }
                                     subMenus: [
                                         {
                                             menu: "Person"
+                                            objectDescriptor: {
+                                                type: "object"
+                                                origin: "user"
+                                                classification: "mutable"
+                                                role: "namespace"
+                                                description: "SCDL person model."
+                                            }
                                         } # Person
                                     ] # People submenus
                                 } # People
                                 {
                                     menu: "Organizations"
+                                    objectDescriptor: {
+                                        type: "array"
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "extension"
+                                        description: "SCDL organization models."
+                                    }
                                     subMenus: [
                                         {
                                             menu: "Organization"
+                                            objectDescriptor: {
+                                                type: "object"
+                                                origin: "user"
+                                                classification: "mutable"
+                                                role: "namespace"
+                                                description: "SCDL organization model."
+                                            }
                                         }
                                     ] # Organizations submenus
                                 } # Organizations
                                 {
                                     menu: "Licenses"
+                                    objectDescriptor: {
+                                        type: "array"
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "extension"
+                                        description: "SCDL license models."
+                                    }
                                     subMenus: [
                                         {
                                             menu: "License"
+                                            objectDescriptor: {
+                                                type: "object"
+                                                origin: "user"
+                                                classification: "mutable"
+                                                role: "namespace"
+                                                description: "SCDL license model."
+                                            }
                                         } # Licesne
                                     ] # Licesnes submenus
                                 } # Licenses
                                 {
                                     menu: "Copyrights"
+                                    objectDescriptor: {
+                                        type: "array"
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "extension"
+                                        description: "SCDL copyright models."
+                                    }
                                     subMenus: [
                                         {
                                             menu: "Copyright"
+                                            objectDescriptor: {
+                                                type: "object"
+                                                origin: "user"
+                                                classification: "mutable"
+                                                role: "namespace"
+                                                description: "SCDL copyright model."
+                                            }
                                         } # Copyright
                                     ] # Copyrights submenus
                                 } # Copyrights

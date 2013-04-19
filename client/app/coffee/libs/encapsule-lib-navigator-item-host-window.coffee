@@ -31,7 +31,10 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
         @navigatorContainer = navigatorContainerObject_
         @menuLevelObject = menuLevelObject_
 
-        @itemObjectType = "unspecified"
+        @itemObjectType = "undefined"
+        @itemObjectClassification = "unknown"
+        @itemObjectOrigin = "unknown"
+        @itemObjectRole = "unknown"
         @itemObjectDescription = "unspecified"
         @menuItemModelViewObject = ko.observable undefined
 
@@ -40,6 +43,15 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             if objectDescriptor.type? and objectDescriptor.type
                 @itemObjectType = objectDescriptor.type
+
+            if objectDescriptor.classification? and objectDescriptor.classification
+                @itemObjectClassification = objectDescriptor.classification
+
+            if objectDescriptor.role? and objectDescriptor.role
+                @itemObjectRole = objectDescriptor.role
+
+            if objectDescriptor.origin? and objectDescriptor.origin
+                @itemObjectOrigin = objectDescriptor.origin
 
             if objectDescriptor.description? and objectDescriptor.description
                 @itemObjectDescription = objectDescriptor.description
@@ -56,12 +68,42 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 </span>
 
 <span data-bind="if: currentlySelectedItemHost">
-    <span data-bind="with: currentlySelectedItemHost">
-        <div>
-            <strong><span data-bind="text: itemObjectType"></span> :: <span data-bind="text: menuLevelObject.path"></span></strong><br>
-            <span data-bind="text: menuLevelObject.label"></span> :: <span data-bind="text: itemObjectDescription"></span><br>
-        </div>
-    </span>
+    <table>
+
+    <thead style="font-weight: bold; background-color: #0099FF;">
+        <td style="width: 200px">Attribute</td>
+        <td>Value</td>
+    </thead>
+
+    <tr><td>Label</td><td><span data-bind="with: currentlySelectedItemHost">
+        <span data-bind="text: menuLevelObject.label"></span>
+    </span></td></tr>
+
+    <tr><td>Path</td><td><span data-bind="with: currentlySelectedItemHost">
+        <span data-bind="text: menuLevelObject.path"></span>
+    </span></td></tr>
+
+    <tr><td>Description</td><td><span data-bind="with: currentlySelectedItemHost">
+        <span data-bind="text: itemObjectDescription"></span>
+    </span></td></tr>
+
+    <tr><td>Type</td><td><span data-bind="with: currentlySelectedItemHost">
+        <span data-bind="text: itemObjectType"></span>
+    </span></td></tr>
+
+    <tr><td>Classification</td><td><span data-bind="with: currentlySelectedItemHost">
+        <span data-bind="text: itemObjectClassification"></span>
+    </span></td></tr>
+
+    <tr><td>Role</td><td><span data-bind="with: currentlySelectedItemHost">
+        <span data-bind="text: itemObjectRole"></span>
+    </span></td></tr>
+
+    <tr><td>Origin</td><td><span data-bind="with: currentlySelectedItemHost">
+        <span data-bind="text: itemObjectOrigin"></span>
+    </span></td></tr>
+
+    </table>
 </span>
 """))
 

@@ -36,7 +36,7 @@ Encapsule.code.app.winmgr.layout = Encapsule.code.app.winmgr.layout? and Encapsu
 # \ BEGIN: CommonSettings
 Encapsule.code.app.winmgr.layout.CommonSettings = {
 
-    windowOpacityDefault: 0.98
+    windowOpacityDefault: 0.85
 
 }
 # / END: CommonSettings
