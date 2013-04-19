@@ -27,31 +27,46 @@ Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.
 
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
-    title: "SCDL Navigator"
+    title: "SCDL Catalogue"
     baseBackgroundColor: "#00CCFF"
-    baseBackgroundRatioPercentPerLevel: 0.05
+    baseBackgroundRatioPercentPerLevel: 0.03
     
-    currentlySelectedBackgroundColor: "#00FF00"
-    currentlySelectedProximityBackgroundColor: "#00CCFF"
+    currentlySelectedBackgroundColor: "#00FFFF"
+    currentlySelectedProximityBackgroundColor: "#00DDFF"
+    currentlySelectedProximityRatioPerecentPerLevel: 0.07
 
-    currentlySelectedParentProximityBackgroundColor: "#00CCFF"
+    currentlySelectedParentProximityBackgroundColor: "#00EEFF"
 
     mouseOverHighlightBackgroundColor: "white"
-    mouseOverSelectedBackgroundColor: "white"
-    mouseOverHighlightProximityBackgroundColor: "#00CCFF"
+    mouseOverSelectedBackgroundColor: "#0099CC"
+    mouseOverHighlightProximityBackgroundColor: "#00EEFF"
+    mouseOverHighlightProximityRatioPercentPerLevel: 0.1
 
-    menuLevelPaddingTop: 0
-    menuLevelPaddingBottom: 5
-    menuLevelPaddingLeft: 5
+    menuLevelPaddingTop: 3
+    menuLevelPaddingBottom: 3
+    menuLevelPaddingLeft: 9
     menuLevelPaddingRight: 0
+
+    menuLevelFontSizeMax: 14
+    menuLevelFontSizeMin: 10
+
+
 
     menuLevelMargin: "2px"
     menuHierarchy: [
         {
                     menu: "Catalogue"
+                    objectDescriptor: {
+                        type: "Object"
+                        description: "SCDL Catalogue objects aggregate SCDL Specifications, Models, and Assets."
+                    }
                     subMenus: [
                         {
                             menu: "Specifications"
+                            objectDescriptor: {
+                                type: "Array"
+                                description: "Specifications is an array of SCDL specification objects."
+                            }
                             subMenus: [
                                 {
                                     menu: "Specification"
@@ -90,9 +105,17 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         } # Specifications
                         {
                             menu: "Models"
+                            objectDescriptor: {
+                                type: "Object"
+                                description: "Models is a collection of SCDL model objects segretated by model type."
+                            }
                             subMenus: [
                                 {
                                     menu: "Systems"
+                                    objectDescriptor: {
+                                        type: "Array"
+                                        description: "Systems is an array of SCDL system model objects."
+                                    }
                                     subMenus: [
                                         {
                                             menu: "System"
@@ -140,6 +163,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 } # Systems
                                 {
                                     menu: "Sockets"
+                                    objectDescriptor: {
+                                        type: "Array"
+                                        description: "Sockets is an array of SCDL socket model objects."
+                                    }
                                     subMenus: [
                                         {
                                             menu: "Socket"
@@ -171,6 +198,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 } # Sockets
                                 {
                                     menu: "Contracts"
+                                    objectDescriptor: {
+                                        type: "Array"
+                                        description: "Contracts is an array of SCDL socket contract model objects."
+                                    }
                                     subMenus: [
                                         {
                                             menu: "Contract"
@@ -204,6 +235,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
                                 {
                                     menu: "Machines"
+                                    objectDescriptor: {
+                                        type: "Array"
+                                        description: "Machines is an array of SCDL machine model objects."
+                                    }
                                     subMenus: [
                                         {
                                             menu: "Machine"
@@ -264,6 +299,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 } # Machines
                                 {
                                     menu: "Types"
+                                    objectDescriptor: {
+                                        type: "Array"
+                                        description: "Types is an array of SCDL type model objects."
+                                    }
                                     subMenus: [
                                         {
                                             menu: "Type"
@@ -275,6 +314,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         } # Models
                         {
                             menu: "Assets"
+                            objectDescriptor: {
+                                type: "Object"
+                                description: "Assets is a container object."
+                            }
                             subMenus: [
                                 {
                                     menu: "People"

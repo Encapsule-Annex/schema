@@ -78,7 +78,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @, (@level() + 1), subMenuObject, @path)
 
             @getCssFontSize = ko.computed =>
-                fontSize = Math.max( (16 - @level()), 10)
+                fontSize = Math.max( (@navigatorContainer.layout.menuLevelFontSizeMax - @level()), @navigatorContainer.layout.menuLevelFontSizeMin)
                 "#{fontSize}pt"
 
             @getBorder = ko.computed =>
@@ -89,86 +89,51 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
 
             @getCssBackgroundColor = ko.computed =>
-                backgroundColor = undefined
 
-                # Selection takes precedence over highlighting.
+
+                # Mouse over proximity highlighting takes precedent over selection proximity highlighting.
+
                 currentlySelectedLevel = @navigatorContainer.currentSelectionLevel()
 
-                if @selectedItem() or @selectedChild() or @selectedParent()
+                if @selectedItem() or @showAsSelectedUntilMouseOut()
 
-                    if @selectedItem()
-                        if @showAsSelectedUntilMouseOut() or not @mouseOverHighlight()
-                            backgroundColor = @navigatorContainer.layout.currentlySelectedBackgroundColor
-                        else
-                            backgroundColor = @navigatorContainer.layout.mouseOverSelectedBackgroundColor
-
-                    else if @selectedChild()
-
-                        base = undefined
-                        levelDiff = 0
-                        if @showAsSelectedUntilMouseOut() or not @mouseOverHighlight()
-                            levelDiff = @navigatorContainer.currentSelectionLevel() - @level() - 1
-                            base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedProximityBackgroundColor)
-                            ratio = (levelDiff * 0.05)
-                            backgroundColor = base.darkenByRatio(ratio).toString()
-                        else
-                            backgroundColor = @navigatorContainer.layout.mouseOverSelectedBackgroundColor
-
-
-                    else if @selectedParent()
-                        base = undefined
-                        levelDiff = 0
-
-                        if @mouseOverHighlight()
-                            backgroundColor = @navigatorContainer.layout.mouseOverHighlightBackgroundColor
-
-                        else if @mouseOverChild()
-                            base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedParentProximityBackgroundColor)
-                            levelDiff = @level() - @navigatorContainer.currentSelectionLevel() - 1
-
-                        else if @mouseOverParent()
-                            base = net.brehaut.Color(@navigatorContainer.layout.mouseOverHighlightProximityBackgroundColor)
-                            levelDiff = @level() - @navigatorContainer.currentMouseOverLevel() - 1
-                        else
-                            base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedParentProximityBackgroundColor)
-                            levelDiff = @level() - @navigatorContainer.currentSelectionLevel() - 1
-                        
-                        if not backgroundColor
-                            ratio = (levelDiff * 0.075)
-                            backgroundColor = base.darkenByRatio(ratio).toString()
-
+                    if not @mouseOverHighlight()
+                        return @navigatorContainer.layout.currentlySelectedBackgroundColor
                     else
-                         throw "Unhandled"
-
-
+                        return @navigatorContainer.layout.mouseOverSelectedBackgroundColor
                 else
                     if @mouseOverHighlight()
-                        # Not currently selected and currently under the mouse cursor: Highlight in bright color
-                        backgroundColor = @navigatorContainer.layout.mouseOverHighlightBackgroundColor
+                        return @navigatorContainer.layout.mouseOverHighlightBackgroundColor
 
-                    else
+                if @mouseOverChild() or @mouseOverParent()
 
-                        if @mouseOverChild() or @mouseOverParent()
-                            base=net.brehaut.Color(@navigatorContainer.layout.mouseOverHighlightProximityBackgroundColor)
-                            if @mouseOverChild()
-                                levelDiff = @navigatorContainer.currentMouseOverLevel() - @level()
-                                ratio = (levelDiff * 0.075)
-                                backgroundColor = base.darkenByRatio(ratio).toString()
+                    base=net.brehaut.Color(@navigatorContainer.layout.mouseOverHighlightProximityBackgroundColor)
 
-                            if @mouseOverParent()
-                                levelDiff = @level() - @navigatorContainer.currentMouseOverLevel()
-                                ratio = (levelDiff * 0.075)
-                                backgroundColor = base.darkenByRatio(ratio).toString()
+                    if @mouseOverChild()
+                        levelDiff = @navigatorContainer.currentMouseOverLevel() - @level()
 
-                        else
+                    if @mouseOverParent()
+                        levelDiff = @level() - @navigatorContainer.currentMouseOverLevel()
 
-                            # Not currently selected and not currently under the mouse cursor: Default color based on level)
-                            base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor) 
-                            ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
-                            backgroundColor = base.darkenByRatio(ratio).toString()
+                    ratio = (levelDiff * @navigatorContainer.layout.mouseOverHighlightProximityRatioPercentPerLevel)
+                    return base.darkenByRatio(ratio).toString()
 
-                # (enable to research IE 10 failures) Console.message("Setting navigator menu \"#{@label()}\" background color to #{backgroundColor}")
-                return backgroundColor
+                if @selectedChild()
+                    levelDiff = @navigatorContainer.currentSelectionLevel() - @level()
+                    base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedProximityBackgroundColor)
+                    ratio = (levelDiff * @navigatorContainer.layout.currentlySelectedProximityRatioPerecentPerLevel)
+                    return base.darkenByRatio(ratio).toString()
+
+                if @selectedParent()
+                    levelDiff = @level() - @navigatorContainer.currentSelectionLevel()
+                    base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedParentProximityBackgroundColor)
+                    ratio = (levelDiff * @navigatorContainer.layout.currentlySelectedProximityRatioPerecentPerLevel)
+                    return base.darkenByRatio(ratio).toString()
+
+                # Not currently selected and not currently under the mouse cursor: Default color based on level)
+                base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor) 
+                ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
+                return base.darkenByRatio(ratio).toString()
     
             @getCssMarginLeft = ko.computed =>
                 # return "#{@level() * 5}px"
@@ -279,6 +244,11 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                         @unselectActionCallback()
                     if @parentMenuLevel? and @parentMenuLevel
                         @parentMenuLevel.onMouseClick()
+
+            itemNamespaceObject = {}
+            itemNamespaceObject.menuLevelObject = @
+            itemNamespaceObject.menuLevelHostObject = new Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow(@navigatorContainer, @)
+            @navigatorContainer.menuItemPathNamespace[@path] = itemNamespaceObject
 
             # / END: constructor try scope
         catch exception

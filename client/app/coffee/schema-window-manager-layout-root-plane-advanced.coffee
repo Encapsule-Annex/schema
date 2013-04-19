@@ -54,7 +54,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 backgroundColor: "#00DD00"
                 modes: { full: { reserve: 14 }, min: { reserve: 14 } }
                 MVVM: {
-                    modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
+                    fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorPathWindow"
                 }
             }                                                            
@@ -95,7 +95,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "#0099CC"
-                modes: { full: { reserve: 350 }, min: { reserve: 32 } }
+                modes: { full: { reserve: 180 }, min: { reserve: 32 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
@@ -144,7 +144,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             Q1WindowDescriptor: {
                 id: "idView1"
                 name: "View 1 Window"
-                initialEnable: true
+                initialEnable: false
                 initialMode: "full"
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "white"
@@ -157,11 +157,16 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             Q2WindowDescriptor: {                                            
                 id: "idEdit1"                                                
                 name: "Edit 1 Window"                                        
-                initialMode: "min"
-                initialEnable: false
+                initialMode: "full"
+                initialEnable: true
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "#00CCFF"
-                modes: { full: { reserve: 0 }, min: { reserve: 32 } }        
+                modes: { full: { reserve: 0 }, min: { reserve: 32 } }
+                MVVM: {
+                    fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
+                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorBrowserWindow"
+
+                }
             }                                                            
         }
 

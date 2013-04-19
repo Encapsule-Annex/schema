@@ -38,7 +38,10 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             @title = layout_.title
 
+            # Instances of NavigatorWindowMenuLevel objects created by this contructor.  
             @topLevelMenus = ko.observableArray []
+
+            @menuItemPathNamespace = {}
 
             @currentSelectionLevel = ko.observable -1
 
@@ -46,6 +49,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 @currentSelectionLevel(selectionLevel_)
 
             @currentSelectionPath = ko.observable "<no selection>"
+
+            @currentlySelectedItemHost = ko.observable undefined
 
             # Reference to the currently selected menu item (aka a menu level class instance).
             @currentlySelectedMenuItem = undefined
@@ -80,12 +85,15 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 @currentlySelectedMenuItem = newSelectedMenuItemObject_
 
                 if @currentlySelectedMenuItem? and @currentlySelectedMenuItem
+
                    @setCurrentSelectionLevel( @currentlySelectedMenuItem.level() )
                    @currentSelectionPath(@currentlySelectedMenuItem.path)
+                   @currentlySelectedItemHost( @menuItemPathNamespace[@currentlySelectedMenuItem.path].menuLevelHostObject )
          
                 else
                     @setCurrentSelectionLevel(-1)
                     @currentSelectionPath("<no selection>")
+                    @currentlySelectedItemHost( undefined )
 
                     for topLevelMenu in @topLevelMenus()
                         topLevelMenu.showAllChildren()

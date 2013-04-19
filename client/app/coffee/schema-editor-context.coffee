@@ -33,7 +33,8 @@ class Encapsule.code.app.SchemaEditorContext
 
 
 
+
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelScdlBrowserCatalogues", ( -> """
 <div>Local repository SCDL catalogues: <span data-bind="text: catalogues().length"></span></div>
-
 """))
+
