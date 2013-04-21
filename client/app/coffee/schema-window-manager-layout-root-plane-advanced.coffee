@@ -51,7 +51,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "#0099CC"
-                modes: { full: { reserve: 212 }, min: { reserve: 32 } }
+                modes: { full: { reserve: 256 }, min: { reserve: 32 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
@@ -73,7 +73,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 initialEnable: true
                 overflow: "hidden"
                 opacity: 1.0
-                backgroundColor: "#00FFFF"
+                backgroundColor: "#FFFFCC"
                 modes: { full: { reserve: 14 }, min: { reserve: 14 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
@@ -95,7 +95,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             initialEnable: true
             overflow: "auto"
             opacity: CommonSettings.windowOpacityDefault
-            backgroundColor: undefined
+            backgroundColor: "white"
             modes: { full: { reserve: 400 }, min: { reserve: 128 } }
             MVVM: {
                 fnModelView: -> Encapsule.runtime.app.SchemaScdlCatalogue

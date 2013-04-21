@@ -80,13 +80,13 @@ try
         # (sort of poor man's attribute inheritence to reduce typing/error)
         #
         globalWindowAttributes: {
-            hostWindowBackgroundColor: undefined
-            hostWindowOpacity: 0.001
-            hostWindowPadding: 2
+            hostWindowBackgroundColor: "white"
+            hostWindowOpacity: 0.2
+            hostWindowPadding: 1
             chromeWindowBackgroundColor: "#999999"
             chromeWindowOpacity: 0.8
             chromeWindowPadding: 1
-            windowPadding: 3
+            windowPadding: 1
             windowBorderWidth: 0
             windowBorderColor: "#666666"
             }

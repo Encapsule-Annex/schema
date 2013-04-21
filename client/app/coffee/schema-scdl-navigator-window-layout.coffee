@@ -28,28 +28,27 @@ Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     title: "SCDL Catalogue"
-    baseBackgroundColor: "#0099CC"
-    baseBackgroundRatioPercentPerLevel: 0.05
+    baseBackgroundColor: "#00CCFF"
+    baseBackgroundRatioPercentPerLevel: 0.06
     
-    currentlySelectedBackgroundColor: "#00FFFF"
-    currentlySelectedProximityBackgroundColor: "#00CCFF"
-    currentlySelectedProximityRatioPerecentPerLevel: 0.06
+    currentlySelectedBackgroundColor: "white"
+    currentlySelectedProximityBackgroundColor: "#00FFFF"
+    currentlySelectedProximityRatioPerecentPerLevel: 0.05
 
-    currentlySelectedParentProximityBackgroundColor: "#00DDFF"
+    currentlySelectedParentProximityBackgroundColor: "#00CCFF"
 
     mouseOverHighlightBackgroundColor: "white"
-    mouseOverSelectedBackgroundColor: "white"
-    mouseOverHighlightProximityBackgroundColor: "#00E0FF"
-    mouseOverHighlightProximityRatioPercentPerLevel: 0.05
+    mouseOverSelectedBackgroundColor: "#77FFFF"
+    mouseOverHighlightProximityBackgroundColor: "#00FFCC"
+    mouseOverHighlightProximityRatioPercentPerLevel: 0.06
 
-    menuLevelPaddingTop: 0
-    menuLevelPaddingBottom: 7
-    menuLevelPaddingLeft: 4
-    menuLevelPaddingRight: 4
+    menuLevelPaddingTop: 2
+    menuLevelPaddingBottom: 6
+    menuLevelPaddingLeft: 6
+    menuLevelPaddingRight: 6
 
-    menuLevelFontSizeMax: 14
-    menuLevelFontSizeMin: 12
-
+    menuLevelFontSizeMax: 12
+    menuLevelFontSizeMin: 10
 
 
     menuLevelMargin: "2px"
@@ -85,7 +84,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     }
                                     subMenus: [
                                         {
-                                            menu: "Systems"
+                                            menu: "System Instances"
                                             objectDescriptor: {
                                                 type: "array"
                                                 origin: "parent"
@@ -95,7 +94,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             }
                                             subMenus: [
                                                 {
-                                                    menu: "System"
+                                                    menu: "System Instance"
                                                     objectDescriptor: {
                                                         type: "object"
                                                         origin: "user"
@@ -105,7 +104,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     }
                                                     subMenus: [
                                                         {
-                                                            menu: "Sockets"
+                                                            menu: "Socket Instances"
                                                             objectDescriptor: {
                                                                 type: "array"
                                                                 origin: "parent"
@@ -115,7 +114,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             }
                                                             subMenus: [
                                                                 {
-                                                                    menu: "Socket"
+                                                                    menu: "Socket Instance"
                                                                     objectDescriptor: {
                                                                         type: "object"
                                                                         origin: "user"
@@ -125,7 +124,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     }
                                                                     subMenus: [
                                                                         {
-                                                                            menu: "Bindings"
+                                                                            menu: "Instance Bindings"
                                                                             objectDescriptor: {
                                                                                 type: "array"
                                                                                 origin: "parent"
@@ -135,7 +134,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             }
                                                                             subMenus: [
                                                                                 {
-                                                                                    menu: "Binding"
+                                                                                    menu: "Instance Binding"
                                                                                     objectDescriptor: {
                                                                                         type: "object"
                                                                                         origin: "user"
@@ -191,10 +190,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                 {
                                                     menu: "I/O Pins"
                                                     objectDescriptor: {
-                                                        type: "array"
+                                                        type: "object"
                                                         origin: "parent"
                                                         classification: "structure"
-                                                        role: "extension"
+                                                        role: "namepspace"
                                                         description: "SCDL pin models by function."
                                                     }
                                                     subMenus: [
@@ -268,9 +267,23 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                 } # Models
                                                 {
                                                     menu: "Nodes"
+                                                    objectDescriptor: {
+                                                        type: "array"
+                                                        origin: "parent"
+                                                        classification: "structure"
+                                                        role: "extension"
+                                                        description: "SCDL node descriptor instances."
+                                                    }
                                                     subMenus: [
                                                         {
                                                             menu: "Node"
+                                                            objectDescriptor: {
+                                                                type: "object"
+                                                                origin: "user"
+                                                                classification: "mutable"
+                                                                role: "namespace"
+                                                                detail: "SCDL node descriptor instance."
+                                                            }
                                                         } # Node
                                                     ] # Nodes submenus
                                                 } # Nodes

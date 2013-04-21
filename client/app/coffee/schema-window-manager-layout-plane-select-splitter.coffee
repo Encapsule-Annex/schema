@@ -28,6 +28,7 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.winmgr = Encapsule.code.app.winmgr? and Encapsule.code.app.winmgr or @Encapsule.code.app.winmgr = {}
 Encapsule.code.app.winmgr.layout = Encapsule.code.app.winmgr.layout? and Encapsule.code.app.winmgr.layout or @Encapsule.code.app.winmgr.layout = {}
 
+CommonSettings = Encapsule.code.app.winmgr.layout.CommonSettings
 
 Encapsule.code.app.winmgr.layout.PlaneSelectSplitter = {
     id: "idWindowManagerControlPanelSplitter"
@@ -38,8 +39,8 @@ Encapsule.code.app.winmgr.layout.PlaneSelectSplitter = {
         name: "#{appName} Window Manager Control Panel"
         initialMode: "full"
         initialEnable: true
-        opacity: 0.95
-        backgroundColor: undefined
+        opacity: CommonSettings.windowOpacityDefault
+        backgroundColor: "#CCCCCC"
         modes: { full: { reserve: 18 }, min: { reserve: 18 } }
         MVVM: {
             fnModelView: -> Encapsule.runtime.app.windowmanager.WindowManagerControlPanel

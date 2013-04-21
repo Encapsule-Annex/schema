@@ -97,7 +97,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 if @selectedItem() or @showAsSelectedUntilMouseOut()
 
-                    if not @mouseOverHighlight()
+                    if not (@mouseOverHighlight() or @mouseOverChild() or @mouseOverParent())
                         return @navigatorContainer.layout.currentlySelectedBackgroundColor
                     else
                         return @navigatorContainer.layout.mouseOverSelectedBackgroundColor
@@ -199,7 +199,11 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 for subMenu in @subMenus()
                      subMenuPath = subMenu.path
                      if (subMenuPath != childPath_)
-                         subMenu.itemVisible(false)
+                         # subMenu.itemVisible(false) 
+                         subMenu.showYourselfHideYourChildren()
+                     else
+                         subMenu.itemVisible(true)
+
 
                 if @parentMenuLevel? and @parentMenuLevel
                     @parentMenuLevel.updateSelectedChild(flag_, @path)

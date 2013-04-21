@@ -33,11 +33,11 @@ Encapsule.code.app.winmgr.layout = Encapsule.code.app.winmgr.layout? and Encapsu
 
 # Some constants used in the layout declaration below
 
-# \ BEGIN: CommonSettings
+
 Encapsule.code.app.winmgr.layout.CommonSettings = {
 
-    windowOpacityDefault: 0.85
+    windowOpacityDefault: 0.9
 
 }
-# / END: CommonSettings
+
 
