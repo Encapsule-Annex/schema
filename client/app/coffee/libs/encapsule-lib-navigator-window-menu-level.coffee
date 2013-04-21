@@ -172,6 +172,8 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 for subMenuObject in @subMenus()
                     subMenuObject.updateMouseOverParent(flag_)
 
+            @onMouseEventNoAction = =>
+
             @onMouseOver = => 
                 @mouseOverHighlight(true)
                 @navigatorContainer.setCurrentMouseOverLevel(@level())
