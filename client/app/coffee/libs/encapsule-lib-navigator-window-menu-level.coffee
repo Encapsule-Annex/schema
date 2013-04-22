@@ -50,8 +50,8 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             # @unselectActionCallback = menuObject_.unselectActionCallback? and menuObject_.unselectActionCallback or undefined
  
             @level =    ko.observable(level_? and level_ or 0)
-            @label =    ko.observable(menuObject_.menu? and menuObject_.menu or "Missing menu name!")
-            @path =     """#{parentPath_? and parentPath_ or ""}#{@label()}/"""
+            @label =    ko.observable(menuObject_.jsonTag? and menuObject_.jsonTag or "Missing menu name!")
+            @path =     parentPath_? and parentPath_ and "#{parentPath_}.#{@menuObjectReference.jsonTag}" or "#{@menuObjectReference.jsonTag}"
 
             @itemVisible = ko.observable true
 
@@ -121,10 +121,10 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 ###
 
                 if @selectedChild()
-                    levelDiff = @level() # @navigatorContainer.currentSelectionLevel() - @level()
+                    levelDiff = @navigatorContainer.currentSelectionLevel() - @level()
                     base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedProximityBackgroundColor)
-                    ratio = @level() * @navigatorContainer.layout.currentlySelectedProximityRatioPerecentPerLevel
-                    return base.lightenByRatio(ratio).toString()
+                    ratio = levelDiff * @navigatorContainer.layout.currentlySelectedProximityRatioPerecentPerLevel
+                    return base.darkenByRatio(ratio).toString()
                 
                 ###
                 if @selectedParent()
@@ -267,10 +267,12 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     if @parentMenuLevel? and @parentMenuLevel
                         @parentMenuLevel.onMouseClick()
 
-            itemNamespaceObject = {}
-            itemNamespaceObject.menuLevelObject = @
-            itemNamespaceObject.menuLevelHostObject = new Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow(@navigatorContainer, @)
-            @navigatorContainer.menuItemPathNamespace[@path] = itemNamespaceObject
+            itemPathNamespaceObject = {}
+            itemPathNamespaceObject.menuLevelModelView = @
+            itemPathNamespaceObject.itemHostModelView = new Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow(@navigatorContainer, @)
+
+            @navigatorContainer.menuItemPathNamespace[ @path ] = itemPathNamespaceObject
+
 
             # / END: constructor try scope
         catch exception

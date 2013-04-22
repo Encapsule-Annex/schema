@@ -26,17 +26,19 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or Encapsule.code.lib.modelview = {}
 
 class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
-    constructor: (navigatorContainerObject_, menuLevelObject_) ->
+    constructor: (navigatorContainerObject_, menuLevelObject_, parentItemHostWindow_) ->
 
         @navigatorContainer = navigatorContainerObject_
         @menuLevelObject = menuLevelObject_
+        @parentItemHostWindow = parentItemHostWindow_
 
         @itemObjectType = "undefined"
         @itemObjectClassification = "unknown"
         @itemObjectOrigin = "unknown"
         @itemObjectRole = "unknown"
         @itemObjectDescription = "unspecified"
-        @menuItemModelViewObject = ko.observable undefined
+
+        @menuItemModelViewObject = ko.observable {}
 
         if @menuLevelObject.menuObjectReference.objectDescriptor? and @menuLevelObject.menuObjectReference.objectDescriptor
             objectDescriptor = @menuLevelObject.menuObjectReference.objectDescriptor
@@ -96,6 +98,28 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     </span></td></tr>
 
     </table>
+
+    <span data-bind="with: currentlySelectedItemHost">
+        <h1 data-bind="text: menuLevelObject.label"></h1>
+
+        <span data-bind="if: itemObjectType == 'object'">
+            <span data-bind="if: itemObjectRole == 'namespace'">
+            namspace object
+            </span>
+            <span data-bind="if: itemObjectRole == 'data'">
+            data object
+            </span>
+        </span>
+
+        <span data-bind="if: itemObjectType == 'array'">
+            <span data-bind="if: itemObjectRole == 'extension'">
+            extension array
+            </span>
+        </span>
+
+
+    </span>
+
 </span>
 </div>
 """))

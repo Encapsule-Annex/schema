@@ -88,7 +88,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
                    @setCurrentSelectionLevel( @currentlySelectedMenuItem.level() )
                    @currentSelectionPath(@currentlySelectedMenuItem.path)
-                   @currentlySelectedItemHost( @menuItemPathNamespace[@currentlySelectedMenuItem.path].menuLevelHostObject )
+                   @currentlySelectedItemHost( @menuItemPathNamespace[@currentlySelectedMenuItem.path].itemHostModelView )
          
                 else
                     @setCurrentSelectionLevel(-1)
@@ -125,7 +125,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorTitleWindow", ( -> """"""))
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorPathWindow", ( -> """
-<span data-bind="text: title"></span> Path::<span data-bind="text: currentSelectionPath"></span>
+<span data-bind="text: title"></span>.<strong><span data-bind="text: currentSelectionPath"></span></strong>
 <span style="float: right;"><span data-bind="text: currentSelectionLevel"></span> <span data-bind="text: currentMouseOverLevel"></span></span>
 """))
 
