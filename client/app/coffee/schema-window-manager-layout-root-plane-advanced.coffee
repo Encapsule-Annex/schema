@@ -60,6 +60,27 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             Q2WindowDescriptor: undefined                                    
         }
 
+        {
+            id: "idCatalogueNavigatorJsonSplitter"
+            name: "SCDL Catalogue Navigator JSON Splitter"
+            type: "vertical"
+            Q1WindowDescriptor: undefined
+            Q2WindowDescriptor: {                                            
+                id: "idScdlNavigatorMenuItemJSONWindow"                                                
+                name: "SCDL Catalogue Item JSON View"                                        
+                initialMode: "full"
+                initialEnable: true
+                opacity: CommonSettings.windowOpacityDefault
+                backgroundColor: "#CCFF99"
+                modes: { full: { reserve: 400 }, min: { reserve: 32 } }
+                MVVM: {
+                    fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
+                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorJSONWindow"
+
+                }
+            }
+        }   
+
         Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
 
         {                                                                    

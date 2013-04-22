@@ -26,7 +26,7 @@ Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.
 
 
 class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
-    constructor: (navigatorContainerObject_, parentMenuLevel_, level_, menuObject_, parentPath_) ->
+    constructor: (navigatorContainerObject_, parentMenuLevel_, yourNewLayoutObject_, yourNewLevel_) ->
         # \ BEGIN: constructor scope
         try
             # \ BEGIN: constructor try scope
@@ -36,22 +36,23 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             if not navigatorContainerObject_? or not navigatorContainerObject_
                 throw "You must specifiy the containing navigator object as the first parameter."
 
-            if not menuObject_? or not menuObject_
-                throw "You must specify a parameter object as the second parameter."
+            if not yourNewLayoutObject_? or not yourNewLayoutObject_
+                throw "You must specify a layout object as the third parameter."
 
             # Per-class instance references to construction parameters.
 
             @navigatorContainer = navigatorContainerObject_
             @parentMenuLevel = parentMenuLevel_
-            @menuObjectReference = menuObject_
+            @layoutObject = yourNewLayoutObject_
 
             # Not imlemented yet
-            # @selectActionCallback = menuObject_.selectActionCallback? and menuObject_.selectActionCallback or undefined
-            # @unselectActionCallback = menuObject_.unselectActionCallback? and menuObject_.unselectActionCallback or undefined
+            # @selectActionCallback = layoutObject_.selectActionCallback? and layoutObject_.selectActionCallback or undefined
+            # @unselectActionCallback = layoutObject_.unselectActionCallback? and layoutObject_.unselectActionCallback or undefined
  
-            @level =    ko.observable(level_? and level_ or 0)
-            @label =    ko.observable(menuObject_.jsonTag? and menuObject_.jsonTag or "Missing menu name!")
-            @path =     parentPath_? and parentPath_ and "#{parentPath_}.#{@menuObjectReference.jsonTag}" or "#{@menuObjectReference.jsonTag}"
+            @level =    ko.observable(yourNewLevel_? and yourNewLevel_ or 0)
+            @label =    ko.observable(yourNewLayoutObject_.jsonTag? and yourNewLayoutObject_.jsonTag or "Missing menu name!")
+            @jsonTag =  yourNewLayoutObject_.jsonTag
+            @path =     parentMenuLevel_? and parentMenuLevel_ and parentMenuLevel_.path? and "#{parentMenuLevel_.path}.#{@jsonTag}" or "#{@jsonTag}"
 
             @itemVisible = ko.observable true
 
@@ -73,9 +74,19 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 
             Console.message "New menu item: level #{@level()} #{@label()}"
 
-            if menuObject_.subMenus? and menuObject_.subMenus
-                for subMenuObject in menuObject_.subMenus
-                    @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @, (@level() + 1), subMenuObject, @path)
+            itemPathNamespaceObject = {}
+            itemPathNamespaceObject.menuLevelModelView = @
+            itemPathNamespaceObject.itemHostModelView = new Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow(@navigatorContainer, @)
+            @navigatorContainer.menuItemPathNamespace[ @path ] = itemPathNamespaceObject
+
+
+
+            if yourNewLayoutObject_.subMenus? and yourNewLayoutObject_.subMenus
+
+                for subMenuLayout in yourNewLayoutObject_.subMenus
+                    # navigatorContainer, parentMenuLevel, layout, level
+                    @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @, subMenuLayout, (@level() + 1) )
+                    parentItemPath = @path
 
             @getCssFontSize = ko.computed =>
                 fontSize = Math.max( (@navigatorContainer.layout.menuLevelFontSizeMax - @level()), @navigatorContainer.layout.menuLevelFontSizeMin)
@@ -105,35 +116,12 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     if @mouseOverHighlight()
                         return @navigatorContainer.layout.mouseOverHighlightBackgroundColor
 
-                ###
-                if @mouseOverChild() or @mouseOverParent()
-
-                    base=net.brehaut.Color(@navigatorContainer.layout.mouseOverHighlightProximityBackgroundColor)
-
-                    if @mouseOverChild()
-                        levelDiff = @level() # @navigatorContainer.currentMouseOverLevel() - @level()
-
-                    if @mouseOverParent()
-                        levelDiff = @level() # @level() - @navigatorContainer.currentMouseOverLevel()
-
-                    ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
-                    return base.lightenByRatio(ratio).toString()
-                ###
-
                 if @selectedChild()
                     levelDiff = @navigatorContainer.currentSelectionLevel() - @level()
                     base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedProximityBackgroundColor)
                     ratio = levelDiff * @navigatorContainer.layout.currentlySelectedProximityRatioPerecentPerLevel
                     return base.darkenByRatio(ratio).toString()
                 
-                ###
-                if @selectedParent()
-                    levelDiff = @level() #  @level() - @navigatorContainer.currentSelectionLevel()
-                    base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedParentProximityBackgroundColor)
-                    ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
-                    return base.lightenByRatio(ratio).toString()
-                ###
-
                 # Not currently selected and not currently under the mouse cursor: Default color based on level)
                 base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor) 
                 ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
@@ -267,16 +255,10 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     if @parentMenuLevel? and @parentMenuLevel
                         @parentMenuLevel.onMouseClick()
 
-            itemPathNamespaceObject = {}
-            itemPathNamespaceObject.menuLevelModelView = @
-            itemPathNamespaceObject.itemHostModelView = new Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow(@navigatorContainer, @)
-
-            @navigatorContainer.menuItemPathNamespace[ @path ] = itemPathNamespaceObject
-
 
             # / END: constructor try scope
         catch exception
-            throw "SchemaScdlNavigatorMenuLevel fail: #{exception}"
+            throw "SchemaScdlNavigatorMenuLevel fail \"#{@jsonTag}\" : #{exception}"
         # / END: constructor
 
 

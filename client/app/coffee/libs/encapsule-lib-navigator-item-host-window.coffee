@@ -26,40 +26,96 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or Encapsule.code.lib.modelview = {}
 
 class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
-    constructor: (navigatorContainerObject_, menuLevelObject_, parentItemHostWindow_) ->
+    constructor: (navigatorContainerObject_, menuLevelObject_) ->
 
-        @navigatorContainer = navigatorContainerObject_
-        @menuLevelObject = menuLevelObject_
-        @parentItemHostWindow = parentItemHostWindow_
+        # BEGIN: \ NavigatorMenuItemHostWindow constructor
+        try
+            # BEGIN: \ NavigatorMenuItemHostWindow constructor try scope
 
-        @itemObjectType = "undefined"
-        @itemObjectClassification = "unknown"
-        @itemObjectOrigin = "unknown"
-        @itemObjectRole = "unknown"
-        @itemObjectDescription = "unspecified"
+            if not navigatorContainerObject_? then throw "Missing navigatorContainerObject parameter."
+            if not navigatorContainerObject_ then throw "Missing navigatorContainerObject parameter value."
+            if not menuLevelObject_? then throw "Missing menuLevelObject parameter."
+            if not menuLevelObject_ then throw "Missing menuLevelObject parameter value."
 
-        @menuItemModelViewObject = ko.observable {}
+            @navigatorContainer = navigatorContainerObject_
+            @menuLevelObject = menuLevelObject_
+            @path = @menuLevelObject.path
+            @jsonTag = @menuLevelObject.jsonTag
 
-        if @menuLevelObject.menuObjectReference.objectDescriptor? and @menuLevelObject.menuObjectReference.objectDescriptor
-            objectDescriptor = @menuLevelObject.menuObjectReference.objectDescriptor
+            @parentItemHostWindow = undefined
 
-            if objectDescriptor.type? and objectDescriptor.type
-                @itemObjectType = objectDescriptor.type
+            @itemObjectType = "undefined"
+            @itemObjectClassification = "unknown"
+            @itemObjectOrigin = "unknown"
+            @itemObjectRole = "unknown"
+            @itemObjectDescription = "unspecified"
 
-            if objectDescriptor.classification? and objectDescriptor.classification
-                @itemObjectClassification = objectDescriptor.classification
+            @itemOuterJsonObject = {}
+            @itemObservableModelView = undefined
+            
+            if @menuLevelObject.layoutObject.objectDescriptor? and @menuLevelObject.layoutObject.objectDescriptor
 
-            if objectDescriptor.role? and objectDescriptor.role
-                @itemObjectRole = objectDescriptor.role
+                objectDescriptor = @menuLevelObject.layoutObject.objectDescriptor
 
-            if objectDescriptor.origin? and objectDescriptor.origin
-                @itemObjectOrigin = objectDescriptor.origin
+                if objectDescriptor.type? and objectDescriptor.type
+                    @itemObjectType = objectDescriptor.type
 
-            if objectDescriptor.description? and objectDescriptor.description
-                @itemObjectDescription = objectDescriptor.description
+                if objectDescriptor.classification? and objectDescriptor.classification
+                    @itemObjectClassification = objectDescriptor.classification
 
+                if objectDescriptor.role? and objectDescriptor.role
+                    @itemObjectRole = objectDescriptor.role
 
+                if objectDescriptor.origin? and objectDescriptor.origin
+                    @itemObjectOrigin = objectDescriptor.origin
 
+                if objectDescriptor.description? and objectDescriptor.description
+                    @itemObjectDescription = objectDescriptor.description
+
+                if @itemObjectOrigin == "new"
+
+                    if @itemObjectType == "object"
+
+                        @itemObservableModelView = ko.observable {}
+
+                if @itemObjectOrigin == "parent"
+
+                    if not (@menuLevelObject.parentMenuLevel? and @menuLevelObject.parentMenuLevel)
+                        throw "Can't resolve parent menu level reference."
+
+                    parentPath = @menuLevelObject.parentMenuLevel.path
+                    @parentItemHostWindow = @navigatorContainer.menuItemPathNamespace[parentPath].itemHostModelView
+
+                    if not (@parentItemHostWindow? and @parentItemHostWindow)
+                        throw "Can't resolve parent item host window."
+
+                    if @itemObjectType == "object"
+
+                        @itemObservableModelView = ko.observable {}
+
+                        if @parentItemHostWindow.itemObjectType == "object"
+
+                            if @parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView
+                                parentModelView = @parentItemHostWindow.itemObservableModelView()
+                                parentModelView[@jsonTag] = @itemObservableModelView
+                                @parentItemHostWindow.itemObservableModelView(parentModelView)
+
+                @toJSON = ko.computed =>
+                    jsonWrapper = {}
+                    jsonWrapper[@jsonTag] = @itemObservableModelView
+                    ko.toJSON jsonWrapper, undefined, 1
+
+                @saveJSONAsLinkHtml = ko.computed =>
+                    # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
+                    html = "<a href=\"data:text/json;base64,#{window.btoa(@toJSON())}\" target=\"_blank\">JSON</a>"
+
+                             
+
+            # END: / NavigatorMenuItemHostWindow constructor try scope
+
+        catch exception
+
+            throw "NavigatorMenuItemHostWindow constructor fail: #{exception}"
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorBrowserWindow", ( -> """
@@ -125,3 +181,18 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 """))
 
     
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorJSONWindow", ( ->
+    """
+    <div class="classEncapsuleNavigatorMenuItemJSONWindow">
+        <span data-bind="if: currentlySelectedItemHost">
+            <span data-bind="with: currentlySelectedItemHost">
+                <!-- <strong>SCDL Catalogue <span id="idJSONSourceDownload" data-bind="html: saveJSONAsLinkHtml"></span></strong> -->
+                <pre data-bind="text: toJSON"></pre>
+            </span>
+        </span>
+        <span data-bind="ifnot: currentlySelectedItemHost">
+            There is no active navigator selection.
+        </span>
+    </div>
+    """))
+

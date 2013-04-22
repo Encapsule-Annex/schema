@@ -37,10 +37,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     currentlySelectedParentProximityBackgroundColor: "#CCCCCC"
 
-    mouseOverHighlightBackgroundColor: "#FFFFCC"
-    mouseOverSelectedBackgroundColor: "#FFFF99"
-    mouseOverHighlightProximityBackgroundColor: "white"
-    mouseOverHighlightProximityRatioPercentPerLevel: 0.1
+    mouseOverHighlightBackgroundColor: "#FFFF00"
+    mouseOverSelectedBackgroundColor: "#FFFF77"
 
     menuLevelPaddingTop: 0
     menuLevelPaddingBottom: 5
@@ -58,7 +56,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     menu: "Catalogue"
                     objectDescriptor: {
                         type: "object"
-                        origin: "external"
+                        origin: "new"
                         classification: "structure"
                         role: "namespace"
                         description: "SCDL catalogue."
