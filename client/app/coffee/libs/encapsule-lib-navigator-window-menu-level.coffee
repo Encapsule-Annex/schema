@@ -97,7 +97,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 if @selectedItem() or @showAsSelectedUntilMouseOut()
 
-                    if not (@mouseOverHighlight() or @mouseOverChild() or @mouseOverParent())
+                    if not @mouseOverHighlight()      # or @mouseOverChild() or @mouseOverParent()
                         return @navigatorContainer.layout.currentlySelectedBackgroundColor
                     else
                         return @navigatorContainer.layout.mouseOverSelectedBackgroundColor
@@ -105,30 +105,34 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     if @mouseOverHighlight()
                         return @navigatorContainer.layout.mouseOverHighlightBackgroundColor
 
+                ###
                 if @mouseOverChild() or @mouseOverParent()
 
                     base=net.brehaut.Color(@navigatorContainer.layout.mouseOverHighlightProximityBackgroundColor)
 
                     if @mouseOverChild()
-                        levelDiff = @navigatorContainer.currentMouseOverLevel() - @level()
+                        levelDiff = @level() # @navigatorContainer.currentMouseOverLevel() - @level()
 
                     if @mouseOverParent()
-                        levelDiff = @level() - @navigatorContainer.currentMouseOverLevel()
+                        levelDiff = @level() # @level() - @navigatorContainer.currentMouseOverLevel()
 
-                    ratio = (levelDiff * @navigatorContainer.layout.mouseOverHighlightProximityRatioPercentPerLevel)
-                    return base.darkenByRatio(ratio).toString()
+                    ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
+                    return base.lightenByRatio(ratio).toString()
+                ###
 
                 if @selectedChild()
-                    levelDiff = @navigatorContainer.currentSelectionLevel() - @level()
+                    levelDiff = @level() # @navigatorContainer.currentSelectionLevel() - @level()
                     base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedProximityBackgroundColor)
-                    ratio = (levelDiff * @navigatorContainer.layout.currentlySelectedProximityRatioPerecentPerLevel)
-                    return base.darkenByRatio(ratio).toString()
-
+                    ratio = @level() * @navigatorContainer.layout.currentlySelectedProximityRatioPerecentPerLevel
+                    return base.lightenByRatio(ratio).toString()
+                
+                ###
                 if @selectedParent()
-                    levelDiff = @level() - @navigatorContainer.currentSelectionLevel()
+                    levelDiff = @level() #  @level() - @navigatorContainer.currentSelectionLevel()
                     base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedParentProximityBackgroundColor)
-                    ratio = (levelDiff * @navigatorContainer.layout.currentlySelectedProximityRatioPerecentPerLevel)
-                    return base.darkenByRatio(ratio).toString()
+                    ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
+                    return base.lightenByRatio(ratio).toString()
+                ###
 
                 # Not currently selected and not currently under the mouse cursor: Default color based on level)
                 base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor) 
