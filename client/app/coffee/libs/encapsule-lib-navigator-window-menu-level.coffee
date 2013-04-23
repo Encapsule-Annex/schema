@@ -79,8 +79,6 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             itemPathNamespaceObject.itemHostModelView = new Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow(@navigatorContainer, @)
             @navigatorContainer.menuItemPathNamespace[ @path ] = itemPathNamespaceObject
 
-
-
             if yourNewLayoutObject_.subMenus? and yourNewLayoutObject_.subMenus
 
                 for subMenuLayout in yourNewLayoutObject_.subMenus
@@ -88,48 +86,89 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @, subMenuLayout, (@level() + 1) )
                     parentItemPath = @path
 
+            @getCssBackgroundColor = ko.computed =>
+
+                # Set the default background color.
+                base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor) 
+                ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
+                backgroundColorObject = base.lightenByRatio(ratio)
+
+                if @selectedItem() or @showAsSelectedUntilMouseOut()
+                    if @mouseOverHighlight()
+                        backgroundColorObject = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedMouseOverHighlightBackgroundColor)
+                    else
+                        backgroundColorObject = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedBackgroundColor)
+                else
+                    if @mouseOverHighlight()
+                        backgroundColorObject = net.brehaut.Color(@navigatorContainer.layout.mouseOverHighlightBackgroundColor)
+                    else
+                        if @selectedChild()
+                            levelDiff = @navigatorContainer.currentSelectionLevel() - @level()
+                            base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedProximityBackgroundColor)
+                            ratio = levelDiff * @navigatorContainer.layout.currentlySelectedProximityRatioPerecentPerLevel
+                            backgroundColorObject = base.darkenByRatio(ratio)
+                
+                return backgroundColorObject.toString()
+    
             @getCssFontSize = ko.computed =>
                 fontSize = Math.max( (@navigatorContainer.layout.menuLevelFontSizeMax - @level()), @navigatorContainer.layout.menuLevelFontSizeMin)
                 "#{fontSize}pt"
 
-            @getBorder = ko.computed =>
+            @getBorderColorLight = ko.computed =>
+                net.brehaut.Color(@getCssBackgroundColor()).lightenByRatio(@navigatorContainer.layout.borderLightRatio).toString()
+
+            @getBorderColorDark = ko.computed =>
+                net.brehaut.Color(@getCssBackgroundColor()).darkenByRatio(@navigatorContainer.layout.borderDarkRatio).toString()
+
+            @getBorderColorFlat = ko.computed =>
+                net.brehaut.Color(@getCssBackgroundColor()).darkenByRatio(@navigatorContainer.layout.borderFlatRatio).toString()
+       
+            @getBorderTopLeft = ko.computed =>
+
+                borderColor = @getBorderColorLight()
+                borderWidth = @navigatorContainer.layout.borderWidth
+                selected = false
+
                 if @selectedItem()
-                    return "1px solid black"
-                else
-                    return "0px solid black"
-
-
-            @getCssBackgroundColor = ko.computed =>
-
-
-                # Mouse over proximity highlighting takes precedent over selection proximity highlighting.
-
-                currentlySelectedLevel = @navigatorContainer.currentSelectionLevel()
-
-                if @selectedItem() or @showAsSelectedUntilMouseOut()
-
-                    if not @mouseOverHighlight()      # or @mouseOverChild() or @mouseOverParent()
-                        return @navigatorContainer.layout.currentlySelectedBackgroundColor
-                    else
-                        return @navigatorContainer.layout.mouseOverSelectedBackgroundColor
-                else
-                    if @mouseOverHighlight()
-                        return @navigatorContainer.layout.mouseOverHighlightBackgroundColor
-
+                    selected = true
+                    borderColor = @getBorderColorFlat()
+                if @selectedParent()
+                    borderColor = @getBorderColorLight()
                 if @selectedChild()
-                    levelDiff = @navigatorContainer.currentSelectionLevel() - @level()
-                    base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedProximityBackgroundColor)
-                    ratio = levelDiff * @navigatorContainer.layout.currentlySelectedProximityRatioPerecentPerLevel
-                    return base.darkenByRatio(ratio).toString()
-                
-                # Not currently selected and not currently under the mouse cursor: Default color based on level)
-                base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor) 
-                ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
-                return base.lightenByRatio(ratio).toString()
-    
-            @getCssMarginLeft = ko.computed =>
-                # return "#{@level() * 5}px"
-                return @navigatorContainer.layout.menuLevelMargin
+                    selected = true
+                    borderColor = @getBorderColorDark()
+
+                if @mouseOverHighlight()
+                    borderColor = (@selectedItem() and @getBorderColorLight()) or (not selected and @getBorderColorDark()) or @getBorderColorDark()
+
+                if not (borderColor? and borderColor) then return "5px solid pink"
+
+                result = "#{borderWidth}px solid #{borderColor}"
+                return result
+
+                    
+            @getBorderBottomRight = ko.computed =>
+                borderColor = @getBorderColorDark()
+                borderWidth = @navigatorContainer.layout.borderWidth
+                selected = false
+
+                if @selectedItem()
+                    selected = true
+                    borderColor = @getBorderColorFlat()
+                if @selectedParent()
+                    borderColor = @getBorderColorDark()
+                if @selectedChild()
+                    selected = true
+                    borderColor = @getBorderColorLight()
+
+                if @mouseOverHighlight()
+                    borderColor = (@selectedItem() and @getBorderColorDark()) or (not selected and @getBorderColorLight()) or @getBorderColorLight()
+
+                if not (borderColor? and borderColor) then return "5px solid pink"
+
+                result = "#{borderWidth}px solid #{borderColor}"
+                return result
+                    
 
             @getCssPaddingTop = ko.computed =>
                 return "#{@navigatorContainer.layout.menuLevelPaddingTop}px"
@@ -266,7 +305,9 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     """
     <span data-bind="if: itemVisible">
     <div class="classSchemaViewModelNavigatorMenuLevel classMouseCursorPointer"
-    data-bind="style: { fontSize: getCssFontSize(), backgroundColor: getCssBackgroundColor(), paddingBottom: getCssPaddingBottom(), paddingTop: getCssPaddingTop(), paddingLeft: getCssPaddingLeft(), paddingRight: getCssPaddingRight() },
+    data-bind="style: { fontSize: getCssFontSize(), backgroundColor: getCssBackgroundColor(), paddingBottom: getCssPaddingBottom(),
+    paddingTop: getCssPaddingTop(), paddingLeft: getCssPaddingLeft(), paddingRight: getCssPaddingRight(), borderTop: getBorderTopLeft(), borderLeft: getBorderTopLeft(),
+    borderBottom: getBorderBottomRight(), borderRight: getBorderBottomRight() },
     event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }, mouseoverBubble: false, mouseoutBubble: false, clickBubble: false">
         <span data-bind="text: label"></span>
     <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>

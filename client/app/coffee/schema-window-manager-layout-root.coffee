@@ -37,7 +37,7 @@ try
         #
         id: "idSchemaWindowManager"
         name: "#{appName} v#{appVersion} Window Manager"
-        fadeInTimeMs: 500 # (defaults to 1500ms if undefined)
+        fadeInTimeMs: 750 # (defaults to 1500ms if undefined)
 
         #
         # BODY PAGE ATTRIBUTES
@@ -71,7 +71,7 @@ try
         windowManagerBackgroundColor: "white" # defaults to "white" if undefined
         windowManagerMargin: 5  # glass edge to window manager edge (defaults to 10 if undefined)
         windowManagerPadding: 5  # window manager edge to plane edge (defaults to 10 if undefined)
-        windowManagerOpacity: 0.4 # (defaults to 1 if undefined)
+        windowManagerOpacity: 0.2 # (defaults to 1 if undefined)
 
         #
         # Managed window attributes
@@ -81,11 +81,11 @@ try
         # (sort of poor man's attribute inheritence to reduce typing/error)
         #
         globalWindowAttributes: {
-            hostWindowBackgroundColor: "white"
-            hostWindowOpacity: 0.4
-            hostWindowPadding: 3
-            chromeWindowBackgroundColor: "#CCCCCC"
-            chromeWindowOpacity: 0.3
+            hostWindowBackgroundColor: "#CCCCCC"
+            hostWindowOpacity: 0.8
+            hostWindowPadding: 1
+            chromeWindowBackgroundColor: "#666666"
+            chromeWindowOpacity: 0.8
             chromeWindowPadding: 1
             windowPadding: 3
             windowBorderWidth: 0

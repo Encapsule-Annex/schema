@@ -15,11 +15,7 @@ margin-bottom: 0x;
 margin-left: 0px;
 margin-right: 0px;
 font-family: Arial;
-border-top: 1px solid #999999;
-border-left: 1px solid #999999;
-border-bottom: 1px solid #333333;
-border-right: 1px solid #333333;
--moz-border-radius: 8px; border-radius: 8px;
+-moz-border-radius: 3px; border-radius: 3px;
 }
 
 .classNavigatorPathWindow {
