@@ -71,7 +71,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 initialMode: "full"
                 initialEnable: true
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#CCFF99"
+                backgroundColor: "#CCEEDD"
                 modes: { full: { reserve: 400 }, min: { reserve: 32 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
@@ -113,7 +113,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             id: "idCatalogueJSON"                                           
             name: "SCDL Catalogue JSON"
             initialMode: "full"
-            initialEnable: true
+            initialEnable: false
             overflow: "auto"
             opacity: CommonSettings.windowOpacityDefault
             backgroundColor: "white"

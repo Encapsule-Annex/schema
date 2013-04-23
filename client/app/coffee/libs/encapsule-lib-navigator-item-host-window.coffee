@@ -52,6 +52,10 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             @itemOuterJsonObject = {}
             @itemObservableModelView = undefined
+
+            if @menuLevelObject.parentMenuLevel? and @menuLevelObject.parentMenuLevel
+                parentPath = @menuLevelObject.parentMenuLevel.path
+                @parentItemHostWindow = @navigatorContainer.menuItemPathNamespace[parentPath].itemHostModelView
             
             if @menuLevelObject.layoutObject.objectDescriptor? and @menuLevelObject.layoutObject.objectDescriptor
 
@@ -72,38 +76,77 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 if objectDescriptor.description? and objectDescriptor.description
                     @itemObjectDescription = objectDescriptor.description
 
-                if @itemObjectOrigin == "new"
+                switch @itemObjectType
 
-                    if @itemObjectType == "object"
+                    when "object"
 
-                        @itemObservableModelView = ko.observable {}
+                        # Figure out how to register this model view (if it's to be registered)
+                        switch @itemObjectOrigin
 
-                if @itemObjectOrigin == "parent"
+                            when "new"
+                                # No registration necessary.
+                                @itemObservableModelView = ko.observable {}
+                                break
 
-                    if not (@menuLevelObject.parentMenuLevel? and @menuLevelObject.parentMenuLevel)
-                        throw "Can't resolve parent menu level reference."
+                            when "parent"
+                                if not (@parentItemHostWindow? and @parentItemHostWindow)
+                                    throw "Can't resolve parent menu item host window reference."
 
-                    parentPath = @menuLevelObject.parentMenuLevel.path
-                    @parentItemHostWindow = @navigatorContainer.menuItemPathNamespace[parentPath].itemHostModelView
+                                switch @parentItemHostWindow.itemObjectType
+                                    when "object"
 
-                    if not (@parentItemHostWindow? and @parentItemHostWindow)
-                        throw "Can't resolve parent item host window."
+                                        if not (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
+                                            break
 
-                    if @itemObjectType == "object"
+                                        @itemObservableModelView = ko.observable {}
+                                        currentModelView = @parentItemHostWindow.itemObservableModelView()
+                                        currentModelView[@jsonTag] = @itemObservableModelView
+                                        @parentItemHostWindow.itemObservableModelView(currentModelView)
+                                        break
+                                break
 
-                        @itemObservableModelView = ko.observable {}
+                            when "user"
+                                @itemObservableModelView = ko.observable {}
+                                @itemObservableModelViewFree = ko.observable true
+                                break
 
-                        if @parentItemHostWindow.itemObjectType == "object"
+                        break
 
-                            if @parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView
-                                parentModelView = @parentItemHostWindow.itemObservableModelView()
-                                parentModelView[@jsonTag] = @itemObservableModelView
-                                @parentItemHostWindow.itemObservableModelView(parentModelView)
+                    when "array"
+
+                        # Figure out how to register this model view (if it's to be registered)
+                        switch @itemObjectOrigin
+
+                            when "parent"
+
+                                if not (@parentItemHostWindow? and @parentItemHostWindow)
+                                    throw "Can't resolve parent menu item host window reference."
+
+                                switch @parentItemHostWindow.itemObjectType
+                                    when "object"
+
+                                        if not (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
+                                            break
+
+                                        @itemObservableModelView = ko.observableArray []
+                                        currentModelView = @parentItemHostWindow.itemObservableModelView()
+                                        currentModelView[@jsonTag] = @itemObservableModelView
+                                        @parentItemHostWindow.itemObservableModelView(currentModelView)
+                                        break
+
+                                break
+
+
 
                 @toJSON = ko.computed =>
                     jsonWrapper = {}
-                    jsonWrapper[@jsonTag] = @itemObservableModelView
-                    ko.toJSON jsonWrapper, undefined, 1
+                    if @itemObjectOrigin == "user" and @itemObservableModelViewFree? and @itemObservableModelViewFree and @itemObservableModelViewFree()
+                        jsonWrapper.archetype = {}
+                        jsonWrapper.archetype[@jsonTag] = @itemObservableModelView
+
+                    else
+                        jsonWrapper[@jsonTag] = @itemObservableModelView
+                    ko.toJSON jsonWrapper, undefined, 4
 
                 @saveJSONAsLinkHtml = ko.computed =>
                     # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
@@ -156,7 +199,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     </table>
 
     <span data-bind="with: currentlySelectedItemHost">
-        <h1 data-bind="text: menuLevelObject.label"></h1>
+        <div data-bind="text: menuLevelObject.label"></div>
 
         <span data-bind="if: itemObjectType == 'object'">
             <span data-bind="if: itemObjectRole == 'namespace'">
@@ -186,7 +229,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     <div class="classEncapsuleNavigatorMenuItemJSONWindow">
         <span data-bind="if: currentlySelectedItemHost">
             <span data-bind="with: currentlySelectedItemHost">
-                <!-- <strong>SCDL Catalogue <span id="idJSONSourceDownload" data-bind="html: saveJSONAsLinkHtml"></span></strong> -->
+                <strong>SCDL Catalogue <span id="idJSONSourceDownload" data-bind="html: saveJSONAsLinkHtml"></span></strong>
                 <pre data-bind="text: toJSON"></pre>
             </span>
         </span>

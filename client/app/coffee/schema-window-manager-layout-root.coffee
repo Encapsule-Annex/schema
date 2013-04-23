@@ -68,10 +68,10 @@ try
         # the plane objects specified in the layout. Typically, the base plane is set to either black or white background
         # color with a low opacity to provide subtle transition effects or signalling.
         #
-        windowManagerBackgroundColor: "black" # defaults to "white" if undefined
+        windowManagerBackgroundColor: "white" # defaults to "white" if undefined
         windowManagerMargin: 5  # glass edge to window manager edge (defaults to 10 if undefined)
         windowManagerPadding: 5  # window manager edge to plane edge (defaults to 10 if undefined)
-        windowManagerOpacity: 0.1 # (defaults to 1 if undefined)
+        windowManagerOpacity: 0.4 # (defaults to 1 if undefined)
 
         #
         # Managed window attributes
@@ -82,10 +82,10 @@ try
         #
         globalWindowAttributes: {
             hostWindowBackgroundColor: "white"
-            hostWindowOpacity: 0.2
+            hostWindowOpacity: 0.4
             hostWindowPadding: 3
             chromeWindowBackgroundColor: "#CCCCCC"
-            chromeWindowOpacity: 0.2
+            chromeWindowOpacity: 0.3
             chromeWindowPadding: 1
             windowPadding: 3
             windowBorderWidth: 0
