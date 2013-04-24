@@ -108,6 +108,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             when "user"
                                 @itemObservableModelView = ko.observable {}
                                 @itemObservableModelViewFree = ko.observable true
+                                colorObject = net.brehaut.Color("#77DD77")
+                                @menuLevelObject.baseBackgroundColorObject = colorObject
                                 break
 
                         break

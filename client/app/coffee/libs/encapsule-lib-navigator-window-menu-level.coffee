@@ -74,6 +74,10 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 
             Console.message "New menu item: level #{@level()} #{@label()}"
 
+            ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
+            @baseBackgroundColorObject = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor).lightenByRatio(ratio)
+
+
             itemPathNamespaceObject = {}
             itemPathNamespaceObject.menuLevelModelView = @
             itemPathNamespaceObject.itemHostModelView = new Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow(@navigatorContainer, @)
@@ -86,28 +90,20 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @, subMenuLayout, (@level() + 1) )
                     parentItemPath = @path
 
+
+
             @getCssBackgroundColor = ko.computed =>
 
-                # Set the default background color.
-                base = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor) 
-                ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
-                backgroundColorObject = base.lightenByRatio(ratio)
+                backgroundColorObject = Encapsule.code.lib.js.clone(@baseBackgroundColorObject)
 
                 if @selectedItem() or @showAsSelectedUntilMouseOut()
-                    if @mouseOverHighlight()
-                        backgroundColorObject = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedMouseOverHighlightBackgroundColor)
-                    else
-                        backgroundColorObject = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedBackgroundColor)
-                else
-                    if @mouseOverHighlight()
-                        backgroundColorObject = net.brehaut.Color(@navigatorContainer.layout.mouseOverHighlightBackgroundColor)
-                    else
-                        if @selectedChild()
-                            levelDiff = @navigatorContainer.currentSelectionLevel() - @level()
-                            base = net.brehaut.Color(@navigatorContainer.layout.currentlySelectedProximityBackgroundColor)
-                            ratio = levelDiff * @navigatorContainer.layout.currentlySelectedProximityRatioPerecentPerLevel
-                            backgroundColorObject = base.darkenByRatio(ratio)
-                
+                    backgroundColorObject = backgroundColorObject.shiftHue(@navigatorContainer.layout.selectedItemBackgroundShiftHue).lightenByRatio(@navigatorContainer.layout.selectedItemBackgroundLightenRatio)
+                else if @selectedChild()
+                    backgroundColorObject = backgroundColorObject.shiftHue(@navigatorContainer.layout.selectedChildItemBackgroundShiftHue).lightenByRatio(@navigatorContainer.layout.selectedChildItemBackgroundLightenRatio)
+
+                if @mouseOverHighlight()
+                    backgroundColorObject = backgroundColorObject.shiftHue(@navigatorContainer.layout.mouseOverItemBackgroundShiftHue).lightenByRatio(@navigatorContainer.layout.mouseOverItemBackgroundLightenRatio)
+
                 return backgroundColorObject.toString()
     
             @getCssFontSize = ko.computed =>
@@ -139,9 +135,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     borderColor = @getBorderColorDark()
 
                 if @mouseOverHighlight()
-                    borderColor = (@selectedItem() and @getBorderColorLight()) or (not selected and @getBorderColorDark()) or @getBorderColorDark()
-
-                if not (borderColor? and borderColor) then return "5px solid pink"
+                    borderColor = (@selectedItem() and @getBorderColorFlat()) or @getBorderColorDark()
 
                 result = "#{borderWidth}px solid #{borderColor}"
                 return result
@@ -162,9 +156,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     borderColor = @getBorderColorLight()
 
                 if @mouseOverHighlight()
-                    borderColor = (@selectedItem() and @getBorderColorDark()) or (not selected and @getBorderColorLight()) or @getBorderColorLight()
-
-                if not (borderColor? and borderColor) then return "5px solid pink"
+                    borderColor = (@selectedItem() and @getBorderColorFlat()) or @getBorderColorLight()
 
                 result = "#{borderWidth}px solid #{borderColor}"
                 return result
