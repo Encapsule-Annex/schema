@@ -120,22 +120,24 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 net.brehaut.Color(@getCssBackgroundColor()).darkenByRatio(@navigatorContainer.layout.borderFlatRatio).toString()
        
             @getBorderTopLeft = ko.computed =>
-
                 borderColor = @getBorderColorLight()
                 borderWidth = @navigatorContainer.layout.borderWidth
                 selected = false
 
                 if @selectedItem()
                     selected = true
-                    borderColor = @getBorderColorFlat()
+                    borderColor = (@mouseOverHighlight() and @getBorderColorLight()) or @getBorderColorFlat()
+                    borderWidth = @navigatorContainer.layout.borderWidthFlat
                 if @selectedParent()
                     borderColor = @getBorderColorLight()
+                    borderWidth = @navigatorContainer.layout.borderWidthOutset
                 if @selectedChild()
                     selected = true
                     borderColor = @getBorderColorDark()
+                    borderWidth = @navigatorContainer.layout.borderWidthInset
 
                 if @mouseOverHighlight()
-                    borderColor = (@selectedItem() and @getBorderColorFlat()) or @getBorderColorDark()
+                    borderColor = (@selectedItem() and @getBorderColorLight()) or @getBorderColorDark()
 
                 result = "#{borderWidth}px solid #{borderColor}"
                 return result
@@ -148,19 +150,51 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 if @selectedItem()
                     selected = true
-                    borderColor = @getBorderColorFlat()
+                    borderColor = (@mouseOverHighlight() and @getBorderColorDark()) or @getBorderColorFlat()
+                    borderWidth = @navigatorContainer.layout.borderWidthFlat
                 if @selectedParent()
                     borderColor = @getBorderColorDark()
+                    borderWidth = @navigatorContainer.layout.borderWidthOutset
                 if @selectedChild()
                     selected = true
                     borderColor = @getBorderColorLight()
+                    borderWidth = @navigatorContainer.layout.borderWidthInset
 
                 if @mouseOverHighlight()
-                    borderColor = (@selectedItem() and @getBorderColorFlat()) or @getBorderColorLight()
+                    borderColor = (@selectedItem() and @getBorderColorDark()) or @getBorderColorLight()
 
                 result = "#{borderWidth}px solid #{borderColor}"
                 return result
                     
+            @getCssFontWeight = ko.computed =>
+                selectedItem = @selectedItem()
+                selectedChild = @selectedChild()
+                mouseOverHighlight = @mouseOverHighlight()
+             
+                if ((not (selectedItem or selectedChild or mouseOverHighlight)) or (selectedItem and mouseOverHighlight))
+                    return "normal"
+                return "bold"
+
+            @getCssColor = ko.computed =>
+                selectedItem = @selectedItem()
+                mouseOverHighlight = @mouseOverHighlight()
+                selectedChild = @selectedChild()
+
+                fontColorObject = net.brehaut.Color(@getCssBackgroundColor())
+
+                if (not (selectedItem or mouseOverHighlight or selectedChild))
+                    return fontColorObject.darkenByRatio(@navigatorContainer.layout.fontColorRatioDefault).toString()
+
+                if mouseOverHighlight
+                    return fontColorObject.darkenByRatio(@navigatorContainer.layout.fontColorRatioMouseOver).toString()
+
+                if selectedItem
+                    return fontColorObject.darkenByRatio(@navigatorContainer.layout.fontColorRatioSelected).toString()
+
+                if selectedChild
+                    return fontColorObject.darkenByRatio(@navigatorContainer.layout.fontColorRatioSelectedChild).toString()
+
+                alert("what?")
 
             @getCssPaddingTop = ko.computed =>
                 return "#{@navigatorContainer.layout.menuLevelPaddingTop}px"
@@ -301,8 +335,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     paddingTop: getCssPaddingTop(), paddingLeft: getCssPaddingLeft(), paddingRight: getCssPaddingRight(), borderTop: getBorderTopLeft(), borderLeft: getBorderTopLeft(),
     borderBottom: getBorderBottomRight(), borderRight: getBorderBottomRight() },
     event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }, mouseoverBubble: false, mouseoutBubble: false, clickBubble: false">
-        <span data-bind="text: label"></span>
-    <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
+        <span data-bind="html: label, style: { fontWeight: getCssFontWeight(), color: getCssColor() }"></span>
+        <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
     </div>
     </span>
     """))

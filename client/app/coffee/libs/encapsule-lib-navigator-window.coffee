@@ -59,6 +59,20 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 # navigatorContainer, parentMenuLevel, layout, level
                 @topLevelMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, undefined, menuLayout, 0)
 
+            # External API function
+            @selectItemByPath = (path_) =>
+                try
+                    if not path_ then throw "Missing path parameter."
+                    if not path_ then throw "Missing path parameter value."
+
+                    itemHostWindow = @menuItemPathNamespace[path_]
+                    if not (itemHostWindow? and itemHostWindow)
+                        throw "No menu item for path: #{path_}"
+
+                    itemHostWindow.menuLevelModelView.onMouseClick()
+
+
+
 
             # This function is called by a menu level instance (i.e. menu item) in response
             # to a mouse click. In effect we're proxying for the menu levels here maintaining
