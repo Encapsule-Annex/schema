@@ -88,8 +88,8 @@ try
             chromeWindowOpacity: 0.5
             chromeWindowPadding: 2
             windowBorderWidth: 1
-            windowBorderColor: "black"
-            windowPadding: 4
+            windowBorderColor: "#777777"
+            windowPadding: 10
             }
 
         planes: [

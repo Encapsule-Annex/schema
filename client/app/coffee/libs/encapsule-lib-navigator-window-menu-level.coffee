@@ -55,7 +55,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @path =     parentMenuLevel_? and parentMenuLevel_ and parentMenuLevel_.path? and "#{parentMenuLevel_.path}.#{@jsonTag}" or "#{@jsonTag}"
 
             @itemVisible = ko.observable true
-            @explodedMode = undefined
+            @explodedMode = ko.observable false
 
             @subMenus = ko.observableArray []
 
@@ -165,6 +165,37 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 result = "#{borderWidth}px solid #{borderColor}"
                 return result
+
+            @getCssBoxShadow = ko.computed =>
+                selectedItem = @selectedItem()
+                selectedChild = @selectedChild()
+                mouseOverHighlight = @mouseOverHighlight()
+                explodedMode = @explodedMode()
+                colorObject = net.brehaut.Color(@getCssBackgroundColor()).darkenByRatio(0.4)
+                mouseOverSelected = selectedItem and mouseOverHighlight
+                inSelectionPath = selectedItem or selectedChild
+
+                if mouseOverSelected
+                    return @explodedMode() and "inset 0px 0px 30px #666666" or "inset 0px 0px 15px #FF9900"
+
+                if mouseOverHighlight
+                    if not inSelectionPath
+                        return "inset 0px 0px 5px #{colorObject.toCSS()}"
+
+                if inSelectionPath
+                    level = @level()
+                    return "inset #{level}px #{level}px #{5 + @level()}px #{colorObject.toCSS()}"
+
+                return "inset 0px 0px 15px #{net.brehaut.Color(@getCssBackgroundColor()).lightenByRatio(0.4).toCSS()}"
+
+            @getCssTextShadow = ko.computed =>
+                selectedItem = @selectedItem()
+                selectedChild = @selectedChild()
+                mouseOverHighlight = @mouseOverHighlight()
+                inSelectionPath = selectedItem or selectedChild
+                if inSelectionPath
+                    return (not mouseOverHighlight and "0px 0px 5px black") or "0px 0px 5px white"
+
                     
             @getCssFontWeight = ko.computed =>
                 selectedItem = @selectedItem()
@@ -254,7 +285,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 #@mouseOverParent(false)
                 #@mouseOverChild(false)
                 @showAsSelectedUntilMouseOut(false)
-                @explodedMode = undefined
+                @explodedMode(false)
 
                 for subMenu in @subMenus()
                      subMenuPath = subMenu.path
@@ -286,7 +317,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 #@mouseOverParent(false)
                 #@mouseOverChild(false)
                 @showAsSelectedUntilMouseOut(false)
-                @explodedMode = undefined
+                @explodedMode(false)
                 for subMenuObject in @subMenus()
                     subMenuObject.selectedParent(flag_)
 
@@ -301,15 +332,21 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
 
             @onMouseClick = =>
-                if (@selectedItem() and @mouseOverHighlight())
-                    if (not (@explodedMode? and @explodedMode)) and @subMenus().length
-                        @explodedMode = "enabled"
+                initialSelectState = @selectedItem()
+                explodedMode = @explodedMode()
+
+                if initialSelectState
+                    if explodedMode
+                        @explodedMode(false)
+
+                    else if @subMenus().length
+                        @explodedMode(true)
                         @showAllChildren(true)
+                        @onMouseOver()
                         return false
-                    else
-                        @explodedMode = undefined
-                    
-                    
+
+                    # / END: if initialSelectState
+
                 @selectedItem( not @selectedItem() )
                 if @selectedItem() == true
                     @showAsSelectedUntilMouseOut(true)
@@ -334,7 +371,6 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                         @navigatorContainer.updateSelectedMenuItem(undefined)
                         @showYourselfHideYourChildren()
 
-
             # / END: constructor try scope
         catch exception
             throw "SchemaScdlNavigatorMenuLevel fail \"#{@jsonTag}\" : #{exception}"
@@ -347,9 +383,9 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     <div class="classSchemaViewModelNavigatorMenuLevel classMouseCursorPointer"
     data-bind="style: { fontSize: getCssFontSize(), backgroundColor: getCssBackgroundColor(), paddingBottom: getCssPaddingBottom(),
     paddingTop: getCssPaddingTop(), paddingLeft: getCssPaddingLeft(), paddingRight: getCssPaddingRight(), borderTop: getBorderTopLeft(), borderLeft: getBorderTopLeft(),
-    borderBottom: getBorderBottomRight(), borderRight: getBorderBottomRight() },
+    borderBottom: getBorderBottomRight(), borderRight: getBorderBottomRight(), boxShadow: getCssBoxShadow() },
     event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }, mouseoverBubble: false, mouseoutBubble: false, clickBubble: false">
-        <span data-bind="html: label, style: { fontWeight: getCssFontWeight(), color: getCssColor() }"></span>
+        <span data-bind="html: label, style: { fontWeight: getCssFontWeight(), color: getCssColor(), textShadow: getCssTextShadow() }"></span>
         <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
     </div>
     </span>
