@@ -33,10 +33,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     baseBackgroundColor: "#0088EE"
     baseBackgroundRatioPercentPerLevel: 0.0 
 
-    borderLightRatio: 0.2
-    borderDarkRatio: 0.2
-    borderFlatRatio: -0.5
-    borderWidth: 1 # default
+    borderLightRatio: 0.4
+    borderDarkRatio: 0.4
+    borderFlatRatio: -1
+    borderWidth: 2 # default
     borderWidthOutset: 2
     borderWidthInset: 2
     borderWidthFlat: 2
@@ -67,7 +67,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelMargin: "2px"
 
     structureArrayShiftHue: 0
-    structureArrayLightenRatio: -0.1
+    structureArrayLightenRatio: -0.2
 
     userObjectShiftHue: 310
     userObjectDarkenRatio: 0.2
