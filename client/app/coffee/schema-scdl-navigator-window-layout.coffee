@@ -30,30 +30,30 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     title: "SCDL Catalogue"
 
-    baseBackgroundColor: "#0099FF"
-    baseBackgroundRatioPercentPerLevel: 0
+    baseBackgroundColor: "#0088EE"
+    baseBackgroundRatioPercentPerLevel: 0.0 
 
     borderLightRatio: 0.2
     borderDarkRatio: 0.2
-    borderFlatRatio: -2
+    borderFlatRatio: -0.5
     borderWidth: 1 # default
-    borderWidthOutset: 1
-    borderWidthInset: 1
-    borderWidthFlat: 1
+    borderWidthOutset: 2
+    borderWidthInset: 2
+    borderWidthFlat: 2
 
-    fontColorRatioDefault: -0.4
-    fontColorRatioSelected: 2
-    fontColorRatioSelectedChild: 0.5
+    fontColorRatioDefault: -0.5
+    fontColorRatioSelected: 5
+    fontColorRatioSelectedChild: 5
     fontColorRatioMouseOver: 2
     
-    selectedItemBackgroundShiftHue: 0
-    selectedItemBackgroundLightenRatio: -0.05
+    selectedItemBackgroundShiftHue: -5
+    selectedItemBackgroundLightenRatio: 0.1
 
-    selectedChildItemBackgroundShiftHue: 0
-    selectedChildItemBackgroundLightenRatio: -0.05
+    selectedChildItemBackgroundShiftHue: -5
+    selectedChildItemBackgroundLightenRatio: 0.1
 
-    mouseOverItemBackgroundShiftHue: 350
-    mouseOverItemBackgroundLightenRatio: 0.25
+    mouseOverItemBackgroundShiftHue: -80
+    mouseOverItemBackgroundLightenRatio: 0.20
 
 
     menuLevelPaddingTop: 1
@@ -61,16 +61,16 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelPaddingLeft: 4
     menuLevelPaddingRight: 4
 
-    menuLevelFontSizeMax: 16
+    menuLevelFontSizeMax: 12
     menuLevelFontSizeMin: 12
 
     menuLevelMargin: "2px"
 
-    structureArrayShiftHue: 10
-    structureArrayLightenRatio: 0.0
+    structureArrayShiftHue: 0
+    structureArrayLightenRatio: -0.1
 
     userObjectShiftHue: 310
-    userObjectDarkenRatio: 0.3
+    userObjectDarkenRatio: 0.2
 
 
 

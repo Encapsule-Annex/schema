@@ -91,7 +91,6 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     parentItemPath = @path
 
 
-
             @getCssBackgroundColor = ko.computed =>
 
                 backgroundColorObject = Encapsule.code.lib.js.clone(@baseBackgroundColorObject)
