@@ -34,7 +34,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
 
     id: "idSchemaPlaneDefault"
     name: "Advanced"
-    initialEnable: true
+    initialEnable: false
     splitterStack: [
 
 

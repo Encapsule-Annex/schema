@@ -148,13 +148,11 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     #      
                     # width =  documentEl.width()
                     # height = documentEl.height()
+
                     width = documentEl.innerWidth()
                     height = documentEl.innerHeight()
-                    # outerWidth = documentEl.outerWidth()
-                    # outerHeight = documentEl.outerHeight()
-    
-                    marginWidth = documentEl.outerWidth(true)
-                    marginHeight = documentEl.outerHeight(true)
+                    width = width - (width % 2)
+                    height = height - (height % 2)    
 
                     if (width == @documentOffsetRectangle.rectangle.extent.width) and (height == @documentOffsetRectangle.rectangle.extent.width)
                         Console.message("Callback to document resize handler ignored: no change in base window dimensions.")
