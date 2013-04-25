@@ -55,6 +55,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @path =     parentMenuLevel_? and parentMenuLevel_ and parentMenuLevel_.path? and "#{parentMenuLevel_.path}.#{@jsonTag}" or "#{@jsonTag}"
 
             @itemVisible = ko.observable true
+            @explodedMode = undefined
 
             @subMenus = ko.observableArray []
 
@@ -249,10 +250,11 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @updateSelectedChild = (flag_, childPath_) =>
                 @selectedChild(flag_)
                 @itemVisible(true)
-                @mouseOverHighlight(false)
-                @mouseOverParent(false)
-                @mouseOverChild(false)
+                #@mouseOverHighlight(false)
+                #@mouseOverParent(false)
+                #@mouseOverChild(false)
                 @showAsSelectedUntilMouseOut(false)
+                @explodedMode = undefined
 
                 for subMenu in @subMenus()
                      subMenuPath = subMenu.path
@@ -280,10 +282,11 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     subMenu.itemVisible(false)
 
             @updateSelectedParent = (flag_, showYourselfOnly_) =>
-                @mouseOverHighlight(false)
-                @mouseOverParent(false)
-                @mouseOverChild(false)
+                #@mouseOverHighlight(false)
+                #@mouseOverParent(false)
+                #@mouseOverChild(false)
                 @showAsSelectedUntilMouseOut(false)
+                @explodedMode = undefined
                 for subMenuObject in @subMenus()
                     subMenuObject.selectedParent(flag_)
 
@@ -298,6 +301,15 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
 
             @onMouseClick = =>
+                if (@selectedItem() and @mouseOverHighlight())
+                    if (not (@explodedMode? and @explodedMode)) and @subMenus().length
+                        @explodedMode = "enabled"
+                        @showAllChildren(true)
+                        return false
+                    else
+                        @explodedMode = undefined
+                    
+                    
                 @selectedItem( not @selectedItem() )
                 if @selectedItem() == true
                     @showAsSelectedUntilMouseOut(true)
@@ -318,6 +330,9 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                         @unselectActionCallback()
                     if @parentMenuLevel? and @parentMenuLevel
                         @parentMenuLevel.onMouseClick()
+                    else
+                        @navigatorContainer.updateSelectedMenuItem(undefined)
+                        @showYourselfHideYourChildren()
 
 
             # / END: constructor try scope

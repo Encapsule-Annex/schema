@@ -37,7 +37,7 @@ try
         #
         id: "idSchemaWindowManager"
         name: "#{appName} v#{appVersion} Window Manager"
-        fadeInTimeMs: 750 # (defaults to 1500ms if undefined)
+        fadeInTimeMs: 250 # (defaults to 1500ms if undefined)
 
         #
         # BODY PAGE ATTRIBUTES
@@ -46,7 +46,7 @@ try
         # The color of the page background may optionally be set via bodyPageBackgroundColor and will be visible
         # if glassMargin > 0 or glassOpacity < 1
         #
-        pageBackgroundColor: "white" # (defaults to "white" if undefined)
+        pageBackgroundColor: "black" # (defaults to "white" if undefined)
 
         #
         # WINDOW MANAGER "GLASS" ATTRIBUTES
@@ -55,7 +55,7 @@ try
         # Note that setting glassBackgroundImage will occlude glassBackgroundColor if specified. You can however
         # acheive splendid blending effects by setting bodyPageBackgroundColor and glassOpacity.
         #        
-        glassOpacity: 1.0 # defaults to 1 if undefined
+        glassOpacity: 1 # defaults to 1 if undefined
         glassBackgroundColor: undefined
         glassMargin: 0 # document edge to glass edge (default is 10)
         glassBackgroundImage: "brushed-metal-1920x1080.jpg" # (default is undefined)
@@ -69,9 +69,9 @@ try
         # color with a low opacity to provide subtle transition effects or signalling.
         #
         windowManagerBackgroundColor: "white" # defaults to "white" if undefined
-        windowManagerMargin: 5  # glass edge to window manager edge (defaults to 10 if undefined)
-        windowManagerPadding: 5  # window manager edge to plane edge (defaults to 10 if undefined)
-        windowManagerOpacity: 0.2 # (defaults to 1 if undefined)
+        windowManagerMargin: 0  # glass edge to window manager edge (defaults to 10 if undefined)
+        windowManagerPadding: 0  # window manager edge to plane edge (defaults to 10 if undefined)
+        windowManagerOpacity: 0.4 # (defaults to 1 if undefined)
 
         #
         # Managed window attributes
@@ -82,14 +82,14 @@ try
         #
         globalWindowAttributes: {
             hostWindowBackgroundColor: "#CCCCCC"
-            hostWindowOpacity: 0.8
-            hostWindowPadding: 1
-            chromeWindowBackgroundColor: "#666666"
-            chromeWindowOpacity: 0.8
-            chromeWindowPadding: 1
-            windowPadding: 3
-            windowBorderWidth: 0
-            windowBorderColor: "#666666"
+            hostWindowOpacity: 0.7
+            hostWindowPadding: 3
+            chromeWindowBackgroundColor: "#999999"
+            chromeWindowOpacity: 0.5
+            chromeWindowPadding: 2
+            windowBorderWidth: 1
+            windowBorderColor: "black"
+            windowPadding: 4
             }
 
         planes: [

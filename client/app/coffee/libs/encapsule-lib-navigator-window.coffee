@@ -60,17 +60,39 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 @topLevelMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, undefined, menuLayout, 0)
 
             # External API function
-            @selectItemByPath = (path_) =>
+
+            @validatePath = (path_) =>
                 try
                     if not path_ then throw "Missing path parameter."
                     if not path_ then throw "Missing path parameter value."
-
+                    return true
+                catch exception
+                    throw "validatePath fail: #{exception}"
+                 
+            @getItemHostWindowForPath = (path_) =>
+                try
+                    @validatePath(path_)
                     itemHostWindow = @menuItemPathNamespace[path_]
                     if not (itemHostWindow? and itemHostWindow)
                         throw "No menu item for path: #{path_}"
+                    return itemHostWindow
+                catch exception
+                    throw "getItemHostWindowForPath fail: #{exception}"
 
-                    itemHostWindow.menuLevelModelView.onMouseClick()
+            @selectItemByPath = (path_) =>
+                try
+                    # Currently we reach all the way inside and emulate the user.
+                    # This should be refactored. Really, the mouse routine should delegate
+                    # to this routine so it's exactly backwards currently. :/
+                    @getItemHostWindowForPath(path_).menuLevelModelView.onMouseClick()
+                catch exception
+                    throw "selectItemByPath fail: #{exception}"
 
+            @insertArchetype = (path_) =>
+                try
+                    archetypeItemHostWindow = @getItemHostWindowForPath(path_)
+                catch exception
+                    throw "insertArchetype fail: #{exception}"
 
 
 
