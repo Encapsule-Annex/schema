@@ -108,13 +108,16 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             when "user"
                                 @itemObservableModelView = ko.observable {}
                                 @itemObservableModelViewFree = ko.observable true
-                                colorObject = net.brehaut.Color("#77DD77")
-                                @menuLevelObject.baseBackgroundColorObject = colorObject
+                                colorObject = @menuLevelObject.baseBackgroundColorObject
+                                @menuLevelObject.baseBackgroundColorObject = colorObject.darkenByRatio(@navigatorContainer.layout.userObjectDarkenRatio).shiftHue(@navigatorContainer.layout.userObjectShiftHue)
                                 break
 
                         break
 
                     when "array"
+
+                        colorObject = @menuLevelObject.baseBackgroundColorObject.lightenByRatio(@navigatorContainer.layout.structureArrayLightenRatio).shiftHue(@navigatorContainer.layout.structureArrayShiftHue)
+                        @menuLevelObject.baseBackgroundColorObject = colorObject
 
                         # Figure out how to register this model view (if it's to be registered)
                         switch @itemObjectOrigin
