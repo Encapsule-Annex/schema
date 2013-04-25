@@ -55,7 +55,7 @@ try
         # Note that setting glassBackgroundImage will occlude glassBackgroundColor if specified. You can however
         # acheive splendid blending effects by setting bodyPageBackgroundColor and glassOpacity.
         #        
-        glassOpacity: 0.3 # defaults to 1 if undefined
+        glassOpacity: 0.9 # defaults to 1 if undefined
         glassBackgroundColor: undefined
         glassMargin: 1 # document edge to glass edge (default is 10)
         glassBackgroundImage: "brushed-metal-1920x1080.jpg" # (default is undefined)
@@ -70,8 +70,8 @@ try
         #
         windowManagerBackgroundColor: "white" # defaults to "white" if undefined
         windowManagerMargin: 0  # glass edge to window manager edge (defaults to 10 if undefined)
-        windowManagerPadding: 4  # window manager edge to plane edge (defaults to 10 if undefined)
-        windowManagerOpacity: 0.4 # (defaults to 1 if undefined)
+        windowManagerPadding: 5  # window manager edge to plane edge (defaults to 10 if undefined)
+        windowManagerOpacity: 0.2 # (defaults to 1 if undefined)
 
         #
         # Managed window attributes
@@ -82,11 +82,11 @@ try
         #
         globalWindowAttributes: {
             hostWindowBackgroundColor: undefined
-            hostWindowOpacity: 0.7
-            hostWindowPadding: 4
+            hostWindowOpacity: 1
+            hostWindowPadding: 1
             chromeWindowBackgroundColor: undefined
-            chromeWindowOpacity: 0.5
-            chromeWindowPadding: 0
+            chromeWindowOpacity: 1
+            chromeWindowPadding: 5
             windowBorderWidth: 1
             windowBorderColor: "#777777"
             windowPadding: 5
