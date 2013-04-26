@@ -171,12 +171,12 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 selectedChild = @selectedChild()
                 mouseOverHighlight = @mouseOverHighlight()
                 explodedMode = @explodedMode()
-                colorObject = net.brehaut.Color(@getCssBackgroundColor()).darkenByRatio(0.4)
+                colorObject = net.brehaut.Color(@getCssBackgroundColor()).darkenByRatio(0.5)
                 mouseOverSelected = selectedItem and mouseOverHighlight
                 inSelectionPath = selectedItem or selectedChild
 
                 if mouseOverSelected
-                    return @explodedMode() and "inset 0px 0px 30px #666666" or "inset 0px 0px 15px #FF9900"
+                    return @explodedMode() and "inset 0px 0px 15px #666666" or "inset 0px 0px 15px #FF9900"
 
                 if mouseOverHighlight
                     if not inSelectionPath
@@ -184,9 +184,9 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 if inSelectionPath
                     level = @level()
-                    return "inset #{level}px #{level}px #{5 + @level()}px #{colorObject.toCSS()}"
+                    return "inset 0px 0px #{1 + @level()}px #{colorObject.toCSS()}"
 
-                return "inset 0px 0px 15px #{net.brehaut.Color(@getCssBackgroundColor()).lightenByRatio(0.4).toCSS()}"
+                return "inset 0px 0px 5px #{net.brehaut.Color(@getCssBackgroundColor()).lightenByRatio(0.4).toCSS()}"
 
             @getCssTextShadow = ko.computed =>
                 selectedItem = @selectedItem()
@@ -337,11 +337,13 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 if initialSelectState
                     if explodedMode
+                        @showAsSelectedUntilMouseOut(false)
                         @explodedMode(false)
 
                     else if @subMenus().length
                         @explodedMode(true)
                         @showAllChildren(true)
+                        @showAsSelectedUntilMouseOut(true)
                         @onMouseOver()
                         return false
 

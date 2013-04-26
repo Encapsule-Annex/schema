@@ -37,7 +37,7 @@ try
         #
         id: "idSchemaWindowManager"
         name: "#{appName} v#{appVersion} Window Manager"
-        fadeInTimeMs: 250 # (defaults to 1500ms if undefined)
+        fadeInTimeMs: 1000 # (defaults to 1500ms if undefined)
 
         #
         # BODY PAGE ATTRIBUTES
@@ -55,7 +55,7 @@ try
         # Note that setting glassBackgroundImage will occlude glassBackgroundColor if specified. You can however
         # acheive splendid blending effects by setting bodyPageBackgroundColor and glassOpacity.
         #        
-        glassOpacity: 0.9 # defaults to 1 if undefined
+        glassOpacity: 0.70 # defaults to 1 if undefined
         glassBackgroundColor: undefined
         glassMargin: 1 # document edge to glass edge (default is 10)
         glassBackgroundImage: "brushed-metal-1920x1080.jpg" # (default is undefined)

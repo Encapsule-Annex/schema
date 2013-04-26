@@ -33,7 +33,9 @@ Encapsule.code.app.winmgr.layout.root.PlaneCatalogue = {
     name: "Catalogue"
     initialEnable: false
     splitterStack: [
+
         Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
+
         {                                                                    
             id: "idTitleBarSplitter"
             name: "Title Bar Split"                                            
@@ -46,8 +48,65 @@ Encapsule.code.app.winmgr.layout.root.PlaneCatalogue = {
                 initialEnable: true
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "#999999"
-                modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                modes: { full: { reserve: 100 }, min: { reserve: 0 } }
             }
         }
+
+
+
+
+        {                                                                    
+            id: "idSelect2Splitter"
+            name: "Select 2 Split"                                           
+            type: "vertical"                                                 
+            Q1WindowDescriptor: {                                            
+                id: "idSelect2"                                              
+                name: "Select 1 Window"                                      
+                initialMode: "full"
+                initialEnable: true
+                opacity: CommonSettings.windowOpacityDefault
+                backgroundColor: undefined
+                overflow: "auto"
+                modes: { full: { reserve: 1024 }, min: { reserve: 200 } }
+                MVVM: {
+                    # fnModelView and modelView are mutually exclusive. You may only specify one. Specifying both is an error.
+                    # if fnModelView is specified, window manager will call the specified function to obtain the observable object instance to host
+                    # if modelView is specified, window manager assumes it's the name of a class and calls new to create a new objet instance which it then hosts
+                    #
+                    fnModelView: -> Encapsule.runtime.app.SchemaScdlCatalogue
+                    # modelView: Encapsule.code.app.scdl.ObservableCatalogueShimHost
+                    viewModelTemplateId: "idKoTemplate_ScdlCatalogueShimHost"
+                }
+            }                                                            
+            Q2WindowDescriptor: undefined                                    
+        }
+
+        {
+            id: "idCatlogueJSONSplitter"
+            name: "Catlogue JSON Split"                                        
+            type: "vertical"                                                 
+            Q1WindowDescriptor: undefined                                    
+            Q2WindowDescriptor: {                                            
+            id: "idCatalogueJSON"                                           
+            name: "SCDL Catalogue JSON"
+            initialMode: "full"
+            initialEnable: true
+            overflow: "auto"
+            opacity: CommonSettings.windowOpacityDefault
+            backgroundColor: "white"
+            modes: { full: { reserve: 0 }, min: { reserve: 128 } }
+            MVVM: {
+                fnModelView: -> Encapsule.runtime.app.SchemaScdlCatalogue
+                viewModelTemplateId: "idKoTemplate_ScdlCatalogueJSONSourceView"
+                }
+            }
+        }
+
+
+
+
+
+
+
     ]
 } # PlaneCatalogue

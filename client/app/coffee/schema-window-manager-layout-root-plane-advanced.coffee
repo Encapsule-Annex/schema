@@ -104,57 +104,6 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             Q2WindowDescriptor: undefined                                    
         }
 
-        {
-            id: "idCatlogueJSONSplitter"
-            name: "Catlogue JSON Split"                                        
-            type: "vertical"                                                 
-            Q1WindowDescriptor: undefined                                    
-            Q2WindowDescriptor: {                                            
-            id: "idCatalogueJSON"                                           
-            name: "SCDL Catalogue JSON"
-            initialMode: "full"
-            initialEnable: false
-            overflow: "auto"
-            opacity: CommonSettings.windowOpacityDefault
-            backgroundColor: "white"
-            modes: { full: { reserve: 400 }, min: { reserve: 128 } }
-            MVVM: {
-                fnModelView: -> Encapsule.runtime.app.SchemaScdlCatalogue
-                viewModelTemplateId: "idKoTemplate_ScdlCatalogueJSONSourceView"
-                }
-            }
-        }
-
-
-
-
-
-        {                                                                    
-            id: "idSelect2Splitter"
-            name: "Select 2 Split"                                           
-            type: "vertical"                                                 
-            Q1WindowDescriptor: {                                            
-                id: "idSelect2"                                              
-                name: "Select 1 Window"                                      
-                initialMode: "full"
-                initialEnable: false
-                opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: undefined
-                overflow: "auto"
-                modes: { full: { reserve: 600 }, min: { reserve: 200 } }
-                MVVM: {
-                    # fnModelView and modelView are mutually exclusive. You may only specify one. Specifying both is an error.
-                    # if fnModelView is specified, window manager will call the specified function to obtain the observable object instance to host
-                    # if modelView is specified, window manager assumes it's the name of a class and calls new to create a new objet instance which it then hosts
-                    #
-                    fnModelView: -> Encapsule.runtime.app.SchemaScdlCatalogue
-                    # modelView: Encapsule.code.app.scdl.ObservableCatalogueShimHost
-                    viewModelTemplateId: "idKoTemplate_ScdlCatalogueShimHost"
-                }
-            }                                                            
-            Q2WindowDescriptor: undefined                                    
-        }
-
 
 
 
@@ -165,7 +114,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             Q1WindowDescriptor: {
                 id: "idView1"
                 name: "View 1 Window"
-                initialEnable: false
+                initialEnable: true
                 initialMode: "full"
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "white"

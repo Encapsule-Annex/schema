@@ -62,7 +62,7 @@ class Encapsule.code.app.Schema
 
             setTimeout(( =>
                 Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootPlaneHome")
-                ), 3000)
+                ), 280)
 
             Console.message("#{appName} main application document.onLoad event handler exit error.")
 
