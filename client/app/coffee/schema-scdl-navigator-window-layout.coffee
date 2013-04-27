@@ -36,10 +36,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     borderLightRatio: 0.2
     borderDarkRatio: 0.5
     borderFlatRatio: -1
-    borderWidth: 1 # default
-    borderWidthOutset: 1
-    borderWidthInset: 1
-    borderWidthFlat: 1
+    borderWidth: 2 # default
+    borderWidthOutset: 2
+    borderWidthInset: 2
+    borderWidthFlat: 2
 
     fontColorRatioDefault: 0.4
     fontColorRatioSelected: -1
@@ -47,7 +47,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     fontColorRatioMouseOver: 1
     
     selectedItemBackgroundShiftHue: 0
-    selectedItemBackgroundLightenRatio: 0.2
+    selectedItemBackgroundLightenRatio: 0.4
 
     selectedChildItemBackgroundShiftHue: 0
     selectedChildItemBackgroundLightenRatio: 0.2
@@ -61,19 +61,19 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelPaddingLeft: 4
     menuLevelPaddingRight: 4
 
-    menuLevelFontSizeMax: 16
-    menuLevelFontSizeMin: 14
+    menuLevelFontSizeMax: 12
+    menuLevelFontSizeMin: 12
 
     structureArrayShiftHue: 0
     structureArrayLightenRatio: -0.2
 
-    userObjectShiftHue: 310
-    userObjectDarkenRatio: 0.3
+    userObjectShiftHue: 300
+    userObjectDarkenRatio: 0.2
 
     
 
-    menuLevelBoxShadowColorDarkenRatio: 0.5 # Used as shadow color if mouse over or selection path
-    menuLevelBoxShadowColorLightenRatio: 0.5
+    menuLevelBoxShadowColorDarkenRatio: 0.3 # Used as shadow color if mouse over or selection path
+    menuLevelBoxShadowColorLightenRatio: 0.3
 
     menuLevelBoxShadowInSelectionPath: { type: "inset", x: 5, y: 5, blurBase: 10, blurPerLevel: 5 }
     menuLevelBoxShadowNotSelected: { type: "inset", x: 0, y: 10, blur: 25 }
@@ -85,11 +85,22 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     menuHierarchy: [
         {
+            jsonTag: "schema"
+            menu: appName
+            objectDescriptor: {
+                type: "object"
+                origin: "new"
+                classification: "structure"
+                role: "namespace"
+                description: "#{appName} root namespace object."
+            }
+            subMenus: [
+                {
                     jsonTag: "scdlCatalogue"
                     menu: "Catalogue"
                     objectDescriptor: {
                         type: "object"
-                        origin: "new"
+                        origin: "parent"
                         classification: "structure"
                         role: "namespace"
                         description: "SCDL catalogue."
@@ -861,6 +872,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         } # Assets
                     ] # Catalogue submenu
                 } # Catalogue
+            ] # Schema submenus
+        } # Schema
 
     ] # ScdlNavigatorWindowLayout
 } # layout object    
