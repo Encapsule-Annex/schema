@@ -50,7 +50,6 @@ class Encapsule.code.app.Schema
             Encapsule.runtime.app.SchemaScdlCatalogue = new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
 
             Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.lib.modelview.NavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
-            Encapsule.runtime.app.SchemaScdlNavigatorWindow.selectItemByPath("schema.scdlCatalogue")
 
             Encapsule.runtime.app.SchemaTitlebarWindow = new Encapsule.code.app.modelview.SchemaTitleBarWindow()
 
@@ -60,7 +59,8 @@ class Encapsule.code.app.Schema
 
             Encapsule.runtime.boot.phase0.spinner.cancel()
 
-            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootPlaneHome")
+            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
+            Encapsule.runtime.app.SchemaScdlNavigatorWindow.selectItemByPath("schema.scdlCatalogue")
 
             Console.message("#{appName} main application document.onLoad event handler exit error.")
 

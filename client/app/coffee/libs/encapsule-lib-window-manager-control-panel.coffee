@@ -48,6 +48,7 @@ class Encapsule.code.lib.kohelpers.implementation.ObservableWindowManagerControl
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_WindowManagerControlPanel", ( ->
     """
+    <div>
     <span data-bind="foreach: planes">
         <span data-bind="if: windowManagerReservePlane == undefined">
             <span data-bind="if: enabled">
@@ -58,4 +59,5 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_WindowMa
             </span>
         </span>
     </span>
+    </div>
     """))

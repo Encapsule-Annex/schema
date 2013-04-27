@@ -22,7 +22,28 @@
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorPathWindow", ( -> """
-<span data-bind="text: currentSelectionPath"></span>
-<span style="float: right;"><span data-bind="text: currentSelectionLevel"></span> <span data-bind="text: currentMouseOverLevel"></span></span>
+
+<div class="classSchemaViewModelNavigatorPathWindow">
+
+    <div class="path">
+        <span data-bind="text: currentSelectionPath"></span>
+        <span style="float: right;"><span data-bind="text: currentSelectionLevel"></span> <span data-bind="text: currentMouseOverLevel"></span></span>
+    </div>
+
+
+
+    <table>
+    <thead><td style="width: 200px">Attribute</td><td>Value</td></thead>
+    <tr><td>Label</td><td><span data-bind="with: currentlySelectedItemHost"><span data-bind="text: menuLevelObject.label"></span></span></td></tr>
+    <tr><td>Description</td><td><span data-bind="with: currentlySelectedItemHost"><span data-bind="text: itemObjectDescription"></span></span></td></tr>
+    <tr><td>Type</td><td><span data-bind="with: currentlySelectedItemHost"><span data-bind="text: itemObjectOrigin"></span> &bull; <span data-bind="text: itemObjectClassification"></span> bull; <span data-bind="text: itemObjectRole"></span> bull; <span data-bind="text: itemObjectType"></span></span></td></tr>
+    <tr><td>Path</td><td><span data-bind="with: currentlySelectedItemHost"><span data-bind="text: menuLevelObject.path"></span></span></td></tr>
+    </table>
+
+
+
+
+</div>
+
 """))
 

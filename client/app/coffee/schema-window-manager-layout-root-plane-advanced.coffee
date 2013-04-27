@@ -51,7 +51,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "#00CCFF"
-                modes: { full: { reserve: 256 }, min: { reserve: 32 } }
+                modes: { full: { reserve: 256 }, min: { reserve: 180 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
@@ -70,9 +70,10 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 name: "SCDL Catalogue Item JSON View"                                        
                 initialMode: "full"
                 initialEnable: true
+                overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "#CCEEDD"
-                modes: { full: { reserve: 400 }, min: { reserve: 32 } }
+                modes: { full: { reserve: 400 }, min: { reserve: 200 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorJSONWindow"
@@ -92,10 +93,10 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 name: "SCDL Catalogue Navigator Path"                                      
                 initialMode: "full"
                 initialEnable: true
-                overflow: "hidden"
+                overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "#FFFFCC"
-                modes: { full: { reserve: 14 }, min: { reserve: 14 } }
+                modes: { full: { reserve: 132 }, min: { reserve: 18 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorPathWindow"
@@ -114,11 +115,11 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             Q1WindowDescriptor: {
                 id: "idView1"
                 name: "View 1 Window"
-                initialEnable: true
-                initialMode: "full"
+                initialEnable: false
+                initialMode: "min"
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "white"
-                modes: { full: { reserve: 0}, min: { reserve: 0 } }
+                modes: { full: { reserve: 0}, min: { reserve: 40 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaEditorContext
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelScdlBrowserCatalogues"
@@ -131,7 +132,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 initialEnable: true
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "#FFFFEE"
-                modes: { full: { reserve: 0 }, min: { reserve: 32 } }
+                modes: { full: { reserve: 0 }, min: { reserve: 40 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorBrowserWindow"

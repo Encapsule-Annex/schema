@@ -33,8 +33,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     baseBackgroundColor: "#00CCFF"
     baseBackgroundRatioPercentPerLevel: -0.02
 
-    borderLightRatio: 0.2
-    borderDarkRatio: 0.5
+    borderLightRatio: 0.5
+    borderDarkRatio: 0.1
     borderFlatRatio: -1
     borderWidth: 2 # default
     borderWidthOutset: 2
@@ -72,8 +72,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     
 
-    menuLevelBoxShadowColorDarkenRatio: 0.3 # Used as shadow color if mouse over or selection path
-    menuLevelBoxShadowColorLightenRatio: 0.3
+    menuLevelBoxShadowColorDarkenRatio: 0.4 # Used as shadow color if mouse over or selection path
+    menuLevelBoxShadowColorLightenRatio: 0.4
 
     menuLevelBoxShadowInSelectionPath: { type: "inset", x: 5, y: 5, blurBase: 10, blurPerLevel: 5 }
     menuLevelBoxShadowNotSelected: { type: "inset", x: 0, y: 10, blur: 25 }
@@ -86,7 +86,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuHierarchy: [
         {
             jsonTag: "schema"
-            menu: appName
+            label: appName
             objectDescriptor: {
                 type: "object"
                 origin: "new"
@@ -97,7 +97,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
             subMenus: [
                 {
                     jsonTag: "scdlCatalogue"
-                    menu: "Catalogue"
+                    label: "SCDL Catalogue"
                     objectDescriptor: {
                         type: "object"
                         origin: "parent"
@@ -108,7 +108,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     subMenus: [
                         {
                             jsonTag: "specifications"
-                            menu: "Specifications"
+                            label: "Specifications"
                             objectDescriptor: {
                                 type: "array"
                                 origin: "parent"
@@ -119,7 +119,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             subMenus: [
                                 {
                                     jsonTag: "specification"
-                                    menu: "Specification"
+                                    label: "Specification"
                                     objectDescriptor: {
                                         type: "object"
                                         origin: "user"
@@ -130,7 +130,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     subMenus: [
                                         {
                                             jsonTag: "systemInstances"
-                                            menu: "System Instances"
+                                            label: "System Instances"
                                             objectDescriptor: {
                                                 type: "array"
                                                 origin: "parent"
@@ -141,7 +141,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             subMenus: [
                                                 {
                                                     jsonTag: "systemInstance"
-                                                    menu: "System Instance"
+                                                    label: "System Instance"
                                                     objectDescriptor: {
                                                         type: "object"
                                                         origin: "user"
@@ -152,7 +152,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     subMenus: [
                                                         {
                                                             jsonTag: "socketInstances"
-                                                            menu: "Socket Instances"
+                                                            label: "Socket Instances"
                                                             objectDescriptor: {
                                                                 type: "array"
                                                                 origin: "parent"
@@ -163,7 +163,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             subMenus: [
                                                                 {
                                                                     jsonTag: "socketInstance"
-                                                                    menu: "Socket Instance"
+                                                                    label: "Socket Instance"
                                                                     objectDescriptor: {
                                                                         type: "object"
                                                                         origin: "user"
@@ -174,7 +174,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     subMenus: [
                                                                         {
                                                                             jsonTag: "instanceBindings"
-                                                                            menu: "Instance Bindings"
+                                                                            label: "Instance Bindings"
                                                                             objectDescriptor: {
                                                                                 type: "array"
                                                                                 origin: "parent"
@@ -185,7 +185,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             subMenus: [
                                                                                 {
                                                                                     jsonTag: "instanceBinding"
-                                                                                    menu: "Instance Binding"
+                                                                                    label: "Instance Binding"
                                                                                     objectDescriptor: {
                                                                                         type: "object"
                                                                                         origin: "user"
@@ -210,7 +210,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         } # Specifications
                         {
                             jsonTag: "models"
-                            menu: "Models"
+                            label: "Models"
                             objectDescriptor: {
                                 type: "object"
                                 origin: "parent"
@@ -221,7 +221,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             subMenus: [
                                 {
                                     jsonTag: "systems"
-                                    menu: "Systems"
+                                    label: "Systems"
                                     objectDescriptor: {
                                         type: "array"
                                         origin: "parent"
@@ -232,7 +232,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     subMenus: [
                                         {
                                             jsonTag: "system"
-                                            menu: "System"
+                                            label: "System"
                                             objectDescriptor: {
                                                 type: "object"
                                                 origin: "user"
@@ -243,7 +243,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             subMenus: [
                                                 {
                                                     jsonTag: "pins"
-                                                    menu: "I/O Pins"
+                                                    label: "I/O Pins"
                                                     objectDescriptor: {
                                                         type: "object"
                                                         origin: "parent"
@@ -254,7 +254,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     subMenus: [
                                                         {
                                                             jsonTag: "inputPins"
-                                                            menu: "Input Pins"
+                                                            label: "Input Pins"
                                                             objectDescriptor: {
                                                                 type: "array"
                                                                 origin: "parent"
@@ -265,7 +265,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             subMenus: [
                                                                 {
                                                                     jsonTag: "inputPin"
-                                                                    menu: "Input Pin"
+                                                                    label: "Input Pin"
                                                                     objectDescriptor: {
                                                                         type: "object"
                                                                         origin: "user"
@@ -278,7 +278,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                         } # Inputs
                                                         {
                                                             jsonTag: "outputPins"
-                                                            menu: "Output Pins"
+                                                            label: "Output Pins"
                                                             objectDescriptor: {
                                                                 type: "array"
                                                                 origin: "parent"
@@ -289,7 +289,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             subMenus: [
                                                                 {
                                                                     jsonTag: "outputPin"
-                                                                    menu: "Output Pin"
+                                                                    label: "Output Pin"
                                                                     objectDescriptor: {
                                                                         type: "object"
                                                                         origin: "user"
@@ -304,7 +304,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                 } # Pins
                                                 {
                                                     jsonTag: "models"
-                                                    menu: "Models"
+                                                    label: "Models"
                                                     objectDescriptor: {
                                                         type: "array"
                                                         origin: "parent"
@@ -315,7 +315,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     subMenus: [
                                                         {
                                                             jsonTag: "model"
-                                                            menu: "Model"
+                                                            label: "Model"
                                                             objectDescriptor: {
                                                                 type: "object"
                                                                 origin: "user"
@@ -328,7 +328,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                 } # Models
                                                 {
                                                     jsonTag: "nodes"
-                                                    menu: "Nodes"
+                                                    label: "Nodes"
                                                     objectDescriptor: {
                                                         type: "array"
                                                         origin: "parent"
@@ -339,7 +339,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     subMenus: [
                                                         {
                                                             jsonTag: "node"
-                                                            menu: "Node"
+                                                            label: "Node"
                                                             objectDescriptor: {
                                                                 type: "object"
                                                                 origin: "user"
@@ -356,7 +356,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 } # Systems
                                 {
                                     jsonTag: "sockets"
-                                    menu: "Sockets"
+                                    label: "Sockets"
                                     objectDescriptor: {
                                         type: "array"
                                         origin: "parent"
@@ -367,7 +367,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     subMenus: [
                                         {
                                             jsonTag: "socket"
-                                            menu: "Socket"
+                                            label: "Socket"
                                             objectDescriptor: {
                                                 type: "object"
                                                 origin: "user"
@@ -378,7 +378,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             subMenus: [
                                                 {
                                                     jsonTag: "pins"
-                                                    menu: "I/O Pins"
+                                                    label: "I/O Pins"
                                                     objectDescriptor: {
                                                         type: "object"
                                                         origin: "parent"
@@ -389,7 +389,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     subMenus: [
                                                         {
                                                             jsonTag: "inputPins"
-                                                            menu: "Input Pins"
+                                                            label: "Input Pins"
                                                             objectDescriptor: {
                                                                 type: "array"
                                                                 origin: "parent"
@@ -400,7 +400,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             subMenus: [
                                                                 {
                                                                     jsonTag: "inputPin"
-                                                                    menu: "Input Pin"
+                                                                    label: "Input Pin"
                                                                     objectDescriptor: {
                                                                         type: "object"
                                                                         origin: "user"
@@ -413,7 +413,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                         } # Inputs
                                                         {
                                                             jsonTag: "outputPins"
-                                                            menu: "Output Pins"
+                                                            label: "Output Pins"
                                                             objectDescriptor: {
                                                                 type: "array"
                                                                 origin: "parent"
@@ -424,7 +424,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             subMenus: [
                                                                 {
                                                                     jsonTag: "outputPin"
-                                                                    menu: "Output Pin"
+                                                                    label: "Output Pin"
                                                                     objectDescriptor: {
                                                                         type: "object"
                                                                         origin: "user"
@@ -443,7 +443,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 } # Sockets
                                 {
                                     jsonTag: "contracts"
-                                    menu: "Contracts"
+                                    label: "Contracts"
                                     objectDescriptor: {
                                         type: "array"
                                         origin: "parent"
@@ -454,7 +454,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     subMenus: [
                                         {
                                             jsonTag: "contract"
-                                            menu: "Contract"
+                                            label: "Contract"
                                             objectDescriptor: {
                                                 type: "object"
                                                 origin: "user"
@@ -465,7 +465,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             subMenus: [
                                                 {
                                                     jsonTag: "socketReference"
-                                                    menu: "Socket Reference"
+                                                    label: "Socket Reference"
                                                     objectDescriptor: {
                                                         type: "object"
                                                         origin: "parent"
@@ -476,7 +476,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                 }
                                                 {
                                                     jsonTag: "modelReference"
-                                                    menu: "Model Reference"
+                                                    label: "Model Reference"
                                                     objectDescriptor: {
                                                         type: "object"
                                                         origin: "parent"
@@ -487,7 +487,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                 }
                                                 {   
                                                     jsonTag: "nodes"
-                                                    menu: "Nodes"
+                                                    label: "Nodes"
                                                     objectDescriptor: {
                                                         type: "array"
                                                         origin: "parent"
@@ -498,7 +498,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     subMenus: [
                                                         {
                                                             jsonTag: "node"
-                                                            menu: "Node"
+                                                            label: "Node"
                                                             objectDescriptor: {
                                                                 type: "object"
                                                                 origin: "user"
@@ -509,7 +509,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             subMenus: [
                                                                 {
                                                                     jsonTag: "sourcePin"
-                                                                    menu: "Source Pin"
+                                                                    label: "Source Pin"
                                                                     objectDescriptor: {
                                                                         type: "object"
                                                                         origin: "parent"
@@ -520,7 +520,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                 }
                                                                 {
                                                                     jsonTag: "sinkPins"
-                                                                    menu: "Sink Pins"
+                                                                    label: "Sink Pins"
                                                                     objectDescriptor: {
                                                                         type: "array"
                                                                         origin: "parent"
@@ -531,7 +531,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     subMenus: [
                                                                         {
                                                                             jsonTag: "sinkPin"
-                                                                            menu: "Sink Pin"
+                                                                            label: "Sink Pin"
                                                                             objectDescriptor: {
                                                                                 type: "object"
                                                                                 origin: "user"
@@ -553,7 +553,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
                                 {
                                     jsonTag: "machines"
-                                    menu: "Machines"
+                                    label: "Machines"
                                     objectDescriptor: {
                                         type: "array"
                                         origin: "parent"
@@ -564,7 +564,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     subMenus: [
                                         {
                                             jsonTag: "machine"
-                                            menu: "Machine"
+                                            label: "Machine"
                                             objectDescriptor: {
                                                 type: "object"
                                                 origin: "user"
@@ -575,7 +575,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             subMenus: [
                                                 {
                                                     jsonTag: "pins"
-                                                    menu: "I/O Pins"
+                                                    label: "I/O Pins"
                                                     objectDescriptor: {
                                                         type: "object"
                                                         origin: "parent"
@@ -586,7 +586,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     subMenus: [
                                                         {
                                                             jsonTag: "inputPins"
-                                                            menu: "Input Pins"
+                                                            label: "Input Pins"
                                                             objectDescriptor: {
                                                                 type: "array"
                                                                 origin: "parent"
@@ -597,7 +597,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             subMenus: [
                                                                 {
                                                                     jsonTag: "inputPin"
-                                                                    menu: "Input Pin"
+                                                                    label: "Input Pin"
                                                                     objectDescriptor: {
                                                                         type: "object"
                                                                         origin: "user"
@@ -610,7 +610,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                         } # Inputs
                                                         {
                                                             jsonTag: "outputPins"
-                                                            menu: "Output Pins"
+                                                            label: "Output Pins"
                                                             objectDescriptor: {
                                                                 type: "array"
                                                                 origin: "parent"
@@ -621,7 +621,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             subMenus: [
                                                                 {
                                                                     jsonTag: "outputPin"
-                                                                    menu: "Output Pin"
+                                                                    label: "Output Pin"
                                                                     objectDescriptor: {
                                                                         type: "object"
                                                                         origin: "user"
@@ -636,7 +636,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                 } # I/O Pins
                                                 {
                                                     jsonTag: "states"
-                                                    menu: "States"
+                                                    label: "States"
                                                     objectDescriptor: {
                                                         type: "array"
                                                         origin: "parent"
@@ -647,7 +647,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     subMenus: [
                                                         {
                                                             jsonTag: "state"
-                                                            menu: "State"
+                                                            label: "State"
                                                             objectDescriptor: {
                                                                 type: "object"
                                                                 origin: "user"
@@ -660,7 +660,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                 } # States
                                                 {
                                                     jsonTag: "transitions"
-                                                    menu: "Transitions"
+                                                    label: "Transitions"
                                                     objectDescriptor: {
                                                         type: "array"
                                                         origin: "parent"
@@ -671,7 +671,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     subMenus: [
                                                         {
                                                             jsonTag: "transition"
-                                                            menu: "Transition"
+                                                            label: "Transition"
                                                             objectDescriptor: {
                                                                 type: "object"
                                                                 origin: "user"
@@ -684,7 +684,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                 } # Transitions
                                                 {
                                                     jsonTag: "actions"
-                                                    menu: "Actions"
+                                                    label: "Actions"
                                                     objectDescriptor: {
                                                         type: "array"
                                                         origin: "parent"
@@ -695,7 +695,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     subMenus: [
                                                         {
                                                             jsonTag: "action"
-                                                            menu: "Action"
+                                                            label: "Action"
                                                             objectDescriptor: {
                                                                 type: "object"
                                                                 origin: "user"
@@ -706,7 +706,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             subMenus: [
                                                                 {
                                                                     jsonTag: "entryAction"
-                                                                    menu: "Entry Action"
+                                                                    label: "Entry Action"
                                                                     objectDescriptor: {
                                                                         type: "object"
                                                                         origin: "parent"
@@ -717,7 +717,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                 }
                                                                 {
                                                                     jsonTag: "exitAction"
-                                                                    menu: "Exit Action"
+                                                                    label: "Exit Action"
                                                                     objectDescriptor: {
                                                                         type: "object"
                                                                         origin: "parent"
@@ -736,7 +736,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 } # Machines
                                 {
                                     jsonTag: "types"
-                                    menu: "Types"
+                                    label: "Types"
                                     objectDescriptor: {
                                         type: "array"
                                         origin: "parent"
@@ -747,7 +747,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     subMenus: [
                                         {
                                             jsonTag: "type"
-                                            menu: "Type"
+                                            label: "Type"
                                             objectDescriptor: {
                                                 type: "object"
                                                 origin: "user"
@@ -763,7 +763,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         } # Models
                         {
                             jsonTag: "assets"
-                            menu: "Assets"
+                            label: "Assets"
                             objectDescriptor: {
                                 type: "object"
                                 origin: "parent"
@@ -774,7 +774,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             subMenus: [
                                 {
                                     jsonTag: "people"
-                                    menu: "People"
+                                    label: "People"
                                     objectDescriptor: {
                                         type: "array"
                                         origin: "parent"
@@ -785,7 +785,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     subMenus: [
                                         {
                                             jsonTag: "person"
-                                            menu: "Person"
+                                            label: "Person"
                                             objectDescriptor: {
                                                 type: "object"
                                                 origin: "user"
@@ -798,7 +798,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 } # People
                                 {
                                     jsonTag: "organizations"
-                                    menu: "Organizations"
+                                    label: "Organizations"
                                     objectDescriptor: {
                                         type: "array"
                                         origin: "parent"
@@ -809,7 +809,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     subMenus: [
                                         {
                                             jsonTag: "organization"
-                                            menu: "Organization"
+                                            label: "Organization"
                                             objectDescriptor: {
                                                 type: "object"
                                                 origin: "user"
@@ -822,7 +822,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 } # Organizations
                                 {
                                     jsonTag: "licenses"
-                                    menu: "Licenses"
+                                    label: "Licenses"
                                     objectDescriptor: {
                                         type: "array"
                                         origin: "parent"
@@ -833,7 +833,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     subMenus: [
                                         {
                                             jsonTag: "license"
-                                            menu: "License"
+                                            label: "License"
                                             objectDescriptor: {
                                                 type: "object"
                                                 origin: "user"
@@ -846,7 +846,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 } # Licenses
                                 {
                                     jsonTag: "copyrights"
-                                    menu: "Copyrights"
+                                    label: "Copyrights"
                                     objectDescriptor: {
                                         type: "array"
                                         origin: "parent"
@@ -857,7 +857,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     subMenus: [
                                         {
                                             jsonTag: "copyright"
-                                            menu: "Copyright"
+                                            label: "Copyright"
                                             objectDescriptor: {
                                                 type: "object"
                                                 origin: "user"

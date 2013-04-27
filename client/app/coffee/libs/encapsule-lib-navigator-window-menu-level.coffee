@@ -50,7 +50,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             # @unselectActionCallback = layoutObject_.unselectActionCallback? and layoutObject_.unselectActionCallback or undefined
  
             @level =    ko.observable(yourNewLevel_? and yourNewLevel_ or 0)
-            @label =    ko.observable(yourNewLayoutObject_.jsonTag? and yourNewLayoutObject_.jsonTag or "Missing menu name!")
+            @label =    ko.observable(yourNewLayoutObject_.label? and yourNewLayoutObject_.label or "no label")
             @jsonTag =  yourNewLayoutObject_.jsonTag
             @path =     parentMenuLevel_? and parentMenuLevel_ and parentMenuLevel_.path? and "#{parentMenuLevel_.path}.#{@jsonTag}" or "#{@jsonTag}"
 
