@@ -30,7 +30,7 @@ CommonSettings = Encapsule.code.app.winmgr.layout.CommonSettings
 
 Encapsule.code.app.winmgr.layout.root.PlaneDebug = {
     id: "idRootLayoutDebugPlane"
-    name: "App Debug"
+    name: "About"
     initialEnable: false
     splitterStack: [
         Encapsule.code.app.winmgr.layout.PlaneSelectSplitter

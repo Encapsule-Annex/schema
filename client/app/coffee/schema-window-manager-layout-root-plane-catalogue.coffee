@@ -30,30 +30,11 @@ CommonSettings = Encapsule.code.app.winmgr.layout.CommonSettings
 
 Encapsule.code.app.winmgr.layout.root.PlaneCatalogue = {
     id: "idRootPlaneCatalogue"
-    name: "Catalogue"
+    name: "Catalogue (pass 1)"
     initialEnable: false
     splitterStack: [
 
         Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
-
-        {                                                                    
-            id: "idTitleBarSplitter"
-            name: "Title Bar Split"                                            
-            type: "horizontal"                                               
-            Q1WindowDescriptor: undefined                                    
-            Q2WindowDescriptor: {
-                id: "idContent"
-                name: "Catalogue Setup"
-                initialMode: "full"
-                initialEnable: true
-                opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#999999"
-                modes: { full: { reserve: 100 }, min: { reserve: 0 } }
-            }
-        }
-
-
-
 
         {                                                                    
             id: "idSelect2Splitter"

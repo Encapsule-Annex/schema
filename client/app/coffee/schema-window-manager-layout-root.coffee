@@ -94,10 +94,10 @@ try
 
         planes: [
             Encapsule.code.app.winmgr.layout.root.PlaneHome
-            Encapsule.code.app.winmgr.layout.root.PlaneCatalogue
-            Encapsule.code.app.winmgr.layout.root.PlanePrototype
-            Encapsule.code.app.winmgr.layout.root.PlaneAdvanced
-            Encapsule.code.app.winmgr.layout.root.PlaneDebug
+            # Encapsule.code.app.winmgr.layout.root.PlanePrototype # Keep in source as reference. We may want this layout for something?
+            Encapsule.code.app.winmgr.layout.root.PlaneAdvanced # Now "Catalogue"
+            Encapsule.code.app.winmgr.layout.root.PlaneCatalogue # Now "Catalogue (pass 1)"
+            Encapsule.code.app.winmgr.layout.root.PlaneDebug # Now "About"
             ]
         }
         # / END: Encapsule.code.app.viewLayout
