@@ -60,9 +60,7 @@ class Encapsule.code.app.Schema
 
             Encapsule.runtime.boot.phase0.spinner.cancel()
 
-            setTimeout(( =>
-                Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootPlaneHome")
-                ), 280)
+            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootPlaneHome")
 
             Console.message("#{appName} main application document.onLoad event handler exit error.")
 

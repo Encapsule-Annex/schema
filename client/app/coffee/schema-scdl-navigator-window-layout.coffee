@@ -31,28 +31,28 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     title: "SCDL Catalogue"
 
     baseBackgroundColor: "#00CCFF"
-    baseBackgroundRatioPercentPerLevel: 0.0 
+    baseBackgroundRatioPercentPerLevel: -0.02
 
     borderLightRatio: 0.2
     borderDarkRatio: 0.5
-    borderFlatRatio: -2
+    borderFlatRatio: -1
     borderWidth: 1 # default
     borderWidthOutset: 1
     borderWidthInset: 1
-    borderWidthFlat: 2
+    borderWidthFlat: 1
 
-    fontColorRatioDefault: 5
-    fontColorRatioSelected: -2
-    fontColorRatioSelectedChild: -2
-    fontColorRatioMouseOver: 5
+    fontColorRatioDefault: 0.4
+    fontColorRatioSelected: -1
+    fontColorRatioSelectedChild: -1
+    fontColorRatioMouseOver: 1
     
     selectedItemBackgroundShiftHue: 0
-    selectedItemBackgroundLightenRatio: 0.3
+    selectedItemBackgroundLightenRatio: 0.2
 
     selectedChildItemBackgroundShiftHue: 0
-    selectedChildItemBackgroundLightenRatio: 0
+    selectedChildItemBackgroundLightenRatio: 0.2
 
-    mouseOverItemBackgroundShiftHue: -10
+    mouseOverItemBackgroundShiftHue: 0
     mouseOverItemBackgroundLightenRatio: 0.3
 
 
@@ -61,8 +61,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelPaddingLeft: 4
     menuLevelPaddingRight: 4
 
-    menuLevelFontSizeMax: 12
-    menuLevelFontSizeMin: 12
+    menuLevelFontSizeMax: 16
+    menuLevelFontSizeMin: 14
 
     structureArrayShiftHue: 0
     structureArrayLightenRatio: -0.2
@@ -70,7 +70,17 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     userObjectShiftHue: 310
     userObjectDarkenRatio: 0.3
 
+    
 
+    menuLevelBoxShadowColorDarkenRatio: 0.5 # Used as shadow color if mouse over or selection path
+    menuLevelBoxShadowColorLightenRatio: 0.5
+
+    menuLevelBoxShadowInSelectionPath: { type: "inset", x: 5, y: 5, blurBase: 10, blurPerLevel: 5 }
+    menuLevelBoxShadowNotSelected: { type: "inset", x: 0, y: 10, blur: 25 }
+
+    menuLevelBoxShadowMouseOverHighlight: { type: "inset", x: 5,  y: 5, blur:  10 }
+
+    menuLevelBoxShadowMouseOverSelected: { normal: { type: "inset", x: 0, y: 10, blur: 25 }, explode: { type: "inset", x: 0, y: 10, blur: 25 } }
 
 
     menuHierarchy: [

@@ -126,7 +126,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 if @selectedItem()
                     selected = true
-                    borderColor = (@mouseOverHighlight() and @getBorderColorLight()) or @getBorderColorFlat()
+                    borderColor = @getBorderColorFlat()
                     borderWidth = @navigatorContainer.layout.borderWidthFlat
                 if @selectedParent()
                     borderColor = @getBorderColorLight()
@@ -136,9 +136,12 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     borderColor = @getBorderColorDark()
                     borderWidth = @navigatorContainer.layout.borderWidthInset
 
-                if @mouseOverHighlight()
-                    borderColor = (@selectedItem() and @getBorderColorLight()) or @getBorderColorDark()
+                # item is outside of selection path
 
+                if @mouseOverHighlight() and (not selected or @selectedChild())
+                    borderColor = @getBorderColorFlat()
+                    borderWidth = @navigatorContainer.layout.borderWidthFlat
+                    
                 result = "#{borderWidth}px solid #{borderColor}"
                 return result
 
@@ -160,8 +163,10 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     borderColor = @getBorderColorLight()
                     borderWidth = @navigatorContainer.layout.borderWidthInset
 
-                if @mouseOverHighlight()
-                    borderColor = (@selectedItem() and @getBorderColorDark()) or @getBorderColorLight()
+                if @mouseOverHighlight() and (not selected or @selectedChild())
+                    borderColor = @getBorderColorFlat()
+                    borderWidth = @navigatorContainer.layout.borderWidthFlat
+
 
                 result = "#{borderWidth}px solid #{borderColor}"
                 return result
@@ -171,22 +176,43 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 selectedChild = @selectedChild()
                 mouseOverHighlight = @mouseOverHighlight()
                 explodedMode = @explodedMode()
-                colorObject = net.brehaut.Color(@getCssBackgroundColor()).darkenByRatio(0.5)
                 mouseOverSelected = selectedItem and mouseOverHighlight
                 inSelectionPath = selectedItem or selectedChild
+                backgroundColorObject = net.brehaut.Color(@getCssBackgroundColor())
+                colorObjectDark = backgroundColorObject.darkenByRatio(@navigatorContainer.layout.menuLevelBoxShadowColorDarkenRatio)
+                colorObjectLight = backgroundColorObject.lightenByRatio(@navigatorContainer.layout.menuLevelBoxShadowColorLightenRatio)
 
-                if mouseOverSelected
-                    return @explodedMode() and "inset 0px 0px 15px #666666" or "inset 0px 0px 15px #FF9900"
+                colorObject = undefined
+                options = undefined
 
-                if mouseOverHighlight
+                if not options and mouseOverSelected
+                    optionsContainer = @navigatorContainer.layout.menuLevelBoxShadowMouseOverSelected
+
+                    if not @explodedMode()
+                        options = optionsContainer.explode
+                        colorObject = colorObjectDark
+                    else
+                        options = optionsContainer.normal
+                        colorObject = colorObjectLight
+
+                if not options and mouseOverHighlight
                     if not inSelectionPath
-                        return "inset 0px 0px 5px #{colorObject.toCSS()}"
+                        options = @navigatorContainer.layout.menuLevelBoxShadowMouseOverHighlight
+                        colorObject = colorObjectDark
 
-                if inSelectionPath
+                if not options and inSelectionPath
                     level = @level()
-                    return "inset 0px 0px #{1 + @level()}px #{colorObject.toCSS()}"
+                    options = @navigatorContainer.layout.menuLevelBoxShadowInSelectionPath
+                    options.blur = options.blurBase + (level * options.blurPerLevel)
+                    colorObject = colorObjectDark
 
-                return "inset 0px 0px 5px #{net.brehaut.Color(@getCssBackgroundColor()).lightenByRatio(0.4).toCSS()}"
+                if not options
+                    options = @navigatorContainer.layout.menuLevelBoxShadowNotSelected
+                    colorObject = colorObjectLight
+
+                cssBoxShadow = "#{options.type} #{options.x}px #{options.y}px #{options.blur}px #{colorObject.toCSS()}"
+                return cssBoxShadow
+
 
             @getCssTextShadow = ko.computed =>
                 selectedItem = @selectedItem()
@@ -198,13 +224,8 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                     
             @getCssFontWeight = ko.computed =>
-                selectedItem = @selectedItem()
-                selectedChild = @selectedChild()
-                mouseOverHighlight = @mouseOverHighlight()
-             
-                if ((not (selectedItem or selectedChild or mouseOverHighlight)) or (selectedItem and mouseOverHighlight))
-                    return "normal"
-                return "bold"
+                selectedPathItem = @selectedItem() or @selectedChild()
+                return selectedPathItem and "bold" or "normal"
 
             @getCssColor = ko.computed =>
                 selectedItem = @selectedItem()
