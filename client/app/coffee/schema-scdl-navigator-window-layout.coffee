@@ -34,7 +34,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     label: "#{appName} Root"
     description: "#{appName} Root State Namespace"
 
-    detailBelowSelectDefault: 0
+    detailBelowSelectDefault: 1
     detailAboveSelectDefault: 1
 
     initialSelectionPath: "app.schema"
@@ -194,10 +194,11 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             }
                         }
                         {
-                            jsonTag: "scdlCatalogue"
+                            jsonTag: "scdlCatalogueArchetype"
                             label: "Catalogue"
                             objectDescriptor: {
                                 mvvmType: "archetype"
+                                mvvmJsonTag: "scdlCatalogue"
                                 description: "SCDL catalogue object archetype."
                             }
                             subMenus: [

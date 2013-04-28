@@ -186,8 +186,12 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     sourceMenuLevelObject = itemHostObject_.menuLevelObject
                     targetMenuLevelObject = sourceMenuLevelObject.parentMenuLevel
 
+                    newMenuLevelLayout = Encapsule.code.lib.js.clone(sourceMenuLevelObject.layoutObject)
+                    newMenuLevelLayout.jsonTag = newMenuLevelLayout.objectDescriptor.mvvmJsonTag
+                    newMenuLevelLayout.objectDescriptor.mvvmType = "element"
+
                     newMenuLevelObject =
-                        new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, targetMenuLevelObject, sourceMenuLevelObject.layoutObject, targetMenuLevelObject.level() + 1)
+                        new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, targetMenuLevelObject, newMenuLevelLayout, targetMenuLevelObject.level() + 1)
 
                     targetMenuLevelObject.subMenus.push(newMenuLevelObject)
 
