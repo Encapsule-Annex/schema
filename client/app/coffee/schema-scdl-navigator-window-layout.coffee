@@ -24,22 +24,24 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
-
+if not (net? and net and net.brehaut? and net.brehaut)
+   throw "Missing color.js library."
+Color = net.brehaut.Color
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     title: "SCDL Catalogue"
 
-    baseBackgroundColor: "#00CCFF"
-    baseBackgroundRatioPercentPerLevel: -0.02
+    baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.7}).toCSS()
+    baseBackgroundRatioPercentPerLevel: 0
 
-    borderLightRatio: 0.5
-    borderDarkRatio: 0.1
+    borderLightRatio: 0.6
+    borderDarkRatio: 0.2
     borderFlatRatio: -1
-    borderWidth: 2 # default
-    borderWidthOutset: 2
-    borderWidthInset: 2
-    borderWidthFlat: 2
+    borderWidth: 1 # default
+    borderWidthOutset: 1
+    borderWidthInset: 1
+    borderWidthFlat: 1
 
     fontColorRatioDefault: 0.4
     fontColorRatioSelected: -1
@@ -47,40 +49,40 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     fontColorRatioMouseOver: 1
     
     selectedItemBackgroundShiftHue: 0
-    selectedItemBackgroundLightenRatio: 0.4
+    selectedItemBackgroundLightenRatio: 0
 
     selectedChildItemBackgroundShiftHue: 0
-    selectedChildItemBackgroundLightenRatio: 0.2
+    selectedChildItemBackgroundLightenRatio: -0.2
 
     mouseOverItemBackgroundShiftHue: 0
-    mouseOverItemBackgroundLightenRatio: 0.3
+    mouseOverItemBackgroundLightenRatio: 0
 
 
     menuLevelPaddingTop: 1
-    menuLevelPaddingBottom: 6
-    menuLevelPaddingLeft: 4
-    menuLevelPaddingRight: 4
+    menuLevelPaddingBottom: 2
+    menuLevelPaddingLeft: 2
+    menuLevelPaddingRight: 2
 
     menuLevelFontSizeMax: 12
     menuLevelFontSizeMin: 12
 
     structureArrayShiftHue: 0
-    structureArrayLightenRatio: -0.2
+    structureArrayLightenRatio: 0.1
 
-    userObjectShiftHue: 300
-    userObjectDarkenRatio: 0.2
+    userObjectShiftHue: -100
+    userObjectDarkenRatio: 0.1
 
     
 
-    menuLevelBoxShadowColorDarkenRatio: 0.4 # Used as shadow color if mouse over or selection path
+    menuLevelBoxShadowColorDarkenRatio: 0.5 # Used as shadow color if mouse over or selection path
     menuLevelBoxShadowColorLightenRatio: 0.4
 
-    menuLevelBoxShadowInSelectionPath: { type: "inset", x: 5, y: 5, blurBase: 10, blurPerLevel: 5 }
-    menuLevelBoxShadowNotSelected: { type: "inset", x: 0, y: 10, blur: 25 }
+    menuLevelBoxShadowInSelectionPath: { type: "inset", xBase: 1, xPerLevel: 1, yBase: 1, yPerLevel: 1, blurBase: 5, blurPerLevel: 1 }
+    menuLevelBoxShadowNotSelected: { type: "inset", x: 0, y: 2, blur: 4 }
 
-    menuLevelBoxShadowMouseOverHighlight: { type: "inset", x: 5,  y: 5, blur:  10 }
+    menuLevelBoxShadowMouseOverHighlight: { type: "inset", x: 3,  y: 3, blur:  3 }
 
-    menuLevelBoxShadowMouseOverSelected: { normal: { type: "inset", x: 0, y: 10, blur: 25 }, explode: { type: "inset", x: 0, y: 10, blur: 25 } }
+    menuLevelBoxShadowMouseOverSelected: { normal: { type: "inset", x: 0, y: 0, blur: 0 }, explode: { type: "inset", x: 0, y: 10, blur: 25 } }
 
 
     menuHierarchy: [

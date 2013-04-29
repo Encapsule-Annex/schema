@@ -27,10 +27,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 
     <div class="path">
         <span data-bind="text: currentSelectionPath"></span>
-        <span style="float: right;"><span data-bind="text: currentSelectionLevel"></span> <span data-bind="text: currentMouseOverLevel"></span></span>
     </div>
-
-
 
     <table>
     <thead><td style="width: 200px">Attribute</td><td>Value</td></thead>

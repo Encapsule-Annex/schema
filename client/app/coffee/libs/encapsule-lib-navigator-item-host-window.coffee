@@ -177,7 +177,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 <span data-bind="if: currentlySelectedItemHost">
     <span data-bind="with: currentlySelectedItemHost">
         <div data-bind="text: menuLevelObject.label"></div>
-
         <span data-bind="if: itemObjectType == 'object'">
             <span data-bind="if: itemObjectRole == 'namespace'">
             namspace object
@@ -186,16 +185,12 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
             data object
             </span>
         </span>
-
         <span data-bind="if: itemObjectType == 'array'">
             <span data-bind="if: itemObjectRole == 'extension'">
             extension array
             </span>
         </span>
-
-
     </span>
-
 </span>
 </div>
 """))

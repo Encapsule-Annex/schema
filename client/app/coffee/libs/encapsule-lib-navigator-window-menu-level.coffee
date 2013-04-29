@@ -55,7 +55,6 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @path =     parentMenuLevel_? and parentMenuLevel_ and parentMenuLevel_.path? and "#{parentMenuLevel_.path}.#{@jsonTag}" or "#{@jsonTag}"
 
             @itemVisible = ko.observable true
-            @explodedMode = ko.observable false
 
             @subMenus = ko.observableArray []
 
@@ -68,16 +67,10 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @selectedChild = ko.observable(false)
             @selectedParent = ko.observable(false)
 
-            @currentlySelectedLevel = ko.observable(-1)
-
-            @setCurrentlySelectedLevel = (level_) =>
-                @currentlySelectedLevel(level_)
-                
             Console.message "New menu item: level #{@level()} #{@label()}"
 
             ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
             @baseBackgroundColorObject = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor).lightenByRatio(ratio)
-
 
             itemPathNamespaceObject = {}
             itemPathNamespaceObject.menuLevelModelView = @
@@ -175,7 +168,6 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 selectedItem = @selectedItem()
                 selectedChild = @selectedChild()
                 mouseOverHighlight = @mouseOverHighlight()
-                explodedMode = @explodedMode()
                 mouseOverSelected = selectedItem and mouseOverHighlight
                 inSelectionPath = selectedItem or selectedChild
                 backgroundColorObject = net.brehaut.Color(@getCssBackgroundColor())
@@ -187,13 +179,8 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 if not options and mouseOverSelected
                     optionsContainer = @navigatorContainer.layout.menuLevelBoxShadowMouseOverSelected
-
-                    if not @explodedMode()
-                        options = optionsContainer.explode
-                        colorObject = colorObjectDark
-                    else
-                        options = optionsContainer.normal
-                        colorObject = colorObjectLight
+                    options = optionsContainer.normal
+                    colorObject = colorObjectDark
 
                 if not options and mouseOverHighlight
                     if not inSelectionPath
@@ -204,6 +191,8 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     level = @level()
                     options = @navigatorContainer.layout.menuLevelBoxShadowInSelectionPath
                     options.blur = options.blurBase + (level * options.blurPerLevel)
+                    options.x = options.xBase + (level * options.xPerLevel)
+                    options.y = options.yBase + (level * options.yPerLevel)
                     colorObject = colorObjectDark
 
                 if not options
@@ -271,128 +260,15 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 return "#{@navigatorContainer.layout.menuLevelPaddingRight}px"
 
 
-            @updateMouseOverChild = (flag_) =>
-                @mouseOverChild(flag_)
-                if @parentMenuLevel? and @parentMenuLevel
-                    @parentMenuLevel.updateMouseOverChild(flag_)
-                
-            @updateMouseOverParent = (flag_) =>
-                @mouseOverParent(flag_)
-                for subMenuObject in @subMenus()
-                    subMenuObject.updateMouseOverParent(flag_)
-
-            @onMouseEventNoAction = =>
-
-            @onMouseOver = => 
-                @mouseOverHighlight(true)
-                @navigatorContainer.setCurrentMouseOverLevel(@level())
-                if @parentMenuLevel? and @parentMenuLevel
-                    @parentMenuLevel.updateMouseOverChild(true)
-                @updateMouseOverParent(true)
-                return false
+            @onMouseOver = =>
+                @navigatorContainer.updateMouseOverState(@, true)
 
             @onMouseOut = =>
-                @mouseOverHighlight(false)
-                @navigatorContainer.setCurrentMouseOverLevel(-1)
-                if @parentMenuLevel? and @parentMenuLevel
-                    @parentMenuLevel.updateMouseOverChild(false)
-                @updateMouseOverParent(false)
-                @showAsSelectedUntilMouseOut(false)
-
-            @updateSelectedChild = (flag_, childPath_) =>
-                @selectedChild(flag_)
-                @itemVisible(true)
-                #@mouseOverHighlight(false)
-                #@mouseOverParent(false)
-                #@mouseOverChild(false)
-                @showAsSelectedUntilMouseOut(false)
-                @explodedMode(false)
-
-                for subMenu in @subMenus()
-                     subMenuPath = subMenu.path
-                     if (subMenuPath != childPath_)
-                         # subMenu.itemVisible(false) 
-                         subMenu.showYourselfHideYourChildren()
-                     else
-                         subMenu.itemVisible(true)
-
-
-                if @parentMenuLevel? and @parentMenuLevel
-                    @parentMenuLevel.updateSelectedChild(flag_, @path)
-
-
-            @showAllChildren = (flag_) =>
-                flag = flag_? and flag_ or true
-                for subMenu in @subMenus()
-                    subMenu.itemVisible(flag)
-                    subMenu.showAllChildren(flag)
-
-
-            @showYourselfHideYourChildren = =>
-                @itemVisible(true)
-                for subMenu in @subMenus()
-                    subMenu.itemVisible(false)
-
-            @updateSelectedParent = (flag_, showYourselfOnly_) =>
-                #@mouseOverHighlight(false)
-                #@mouseOverParent(false)
-                #@mouseOverChild(false)
-                @showAsSelectedUntilMouseOut(false)
-                @explodedMode(false)
-                for subMenuObject in @subMenus()
-                    subMenuObject.selectedParent(flag_)
-
-                    if flag_
-                        if showYourselfOnly_? and showYourselfOnly_
-                            subMenuObject.itemVisible(true)
-                            @mouseOverHighlight(false)
-                        else
-                            subMenuObject.itemVisible(false)
-
-                    subMenuObject.updateSelectedParent(flag_)
-
+                @navigatorContainer.updateMouseOverState(@, false)
 
             @onMouseClick = =>
-                initialSelectState = @selectedItem()
-                explodedMode = @explodedMode()
+                return @navigatorContainer.toggleSelectionState(@)
 
-                if initialSelectState
-                    if explodedMode
-                        @showAsSelectedUntilMouseOut(false)
-                        @explodedMode(false)
-
-                    else if @subMenus().length
-                        @explodedMode(true)
-                        @showAllChildren(true)
-                        @showAsSelectedUntilMouseOut(true)
-                        @onMouseOver()
-                        return false
-
-                    # / END: if initialSelectState
-
-                @selectedItem( not @selectedItem() )
-                if @selectedItem() == true
-                    @showAsSelectedUntilMouseOut(true)
-                    @navigatorContainer.updateSelectedMenuItem(@)
-                    if @parentMenuLevel? and @parentMenuLevel
-                        @parentMenuLevel.updateSelectedChild(true, @path)
-                    @updateSelectedParent(true, true)
-                    @updateMouseOverParent(false)
-                    if @selectActionCallback? and @selectActionCallback
-                        @selectActionCallback()
-                else
-                    @navigatorContainer.updateSelectedMenuItem(undefined)
-                    @showAsSelectedUntilMouseOut(false)
-                    if @parentMenuLevel? and @parentMenuLevel
-                        @parentMenuLevel.updateSelectedChild(false)
-                    @updateSelectedParent(false)
-                    if @unselectActionCallback? and @unselectActionCallback
-                        @unselectActionCallback()
-                    if @parentMenuLevel? and @parentMenuLevel
-                        @parentMenuLevel.onMouseClick()
-                    else
-                        @navigatorContainer.updateSelectedMenuItem(undefined)
-                        @showYourselfHideYourChildren()
 
             # / END: constructor try scope
         catch exception

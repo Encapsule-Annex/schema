@@ -43,17 +43,10 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             @menuItemPathNamespace = {}
 
-            @currentSelectionLevel = ko.observable -1
-
-            @setCurrentSelectionLevel = (selectionLevel_) =>
-                @currentSelectionLevel(selectionLevel_)
-
+            @currentlySelectedMenuLevel = undefined
             @currentSelectionPath = ko.observable "<no selection>"
-
             @currentlySelectedItemHost = ko.observable undefined
 
-            # Reference to the currently selected menu item (aka a menu level class instance).
-            @currentlySelectedMenuItem = undefined
 
             for menuLayout in layout_.menuHierarchy
                 # navigatorContainer, parentMenuLevel, layout, level
@@ -69,7 +62,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 catch exception
                     throw "validatePath fail: #{exception}"
                  
-            @getItemHostWindowForPath = (path_) =>
+            @getItemPathNamespaceObject = (path_) =>
                 try
                     @validatePath(path_)
                     itemHostWindow = @menuItemPathNamespace[path_]
@@ -79,14 +72,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 catch exception
                     throw "getItemHostWindowForPath fail: #{exception}"
 
-            @selectItemByPath = (path_) =>
-                try
-                    # Currently we reach all the way inside and emulate the user.
-                    # This should be refactored. Really, the mouse routine should delegate
-                    # to this routine so it's exactly backwards currently. :/
-                    @getItemHostWindowForPath(path_).menuLevelModelView.onMouseClick()
-                catch exception
-                    throw "selectItemByPath fail: #{exception}"
 
             @insertArchetype = (path_) =>
                 try
@@ -95,52 +80,83 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     throw "insertArchetype fail: #{exception}"
 
 
+            # Internal menu level traversal helper functions.
 
-            # This function is called by a menu level instance (i.e. menu item) in response
-            # to a mouse click. In effect we're proxying for the menu levels here maintaining
-            # a reference to the last selected menu item in order that we may inform it later
-            # that the user has moved on to another selection. 
+            @internalVisitParents = (menuLevel_, action_) =>
+                if not (menuLevel_ and menuLevel_) then return
+                if not (action_? and action_) then return
+                if not (menuLevel_.parentLevel? and menuLevel_.parentLevel_) then return
+                parentLevel = menuLevel_.parentLevel
+                while parentLevel? and parentLevel
+                    action_(parentLevel)
+                    parentLevel = parentLevel.parentLevel
+
+            @internalVisitChildren = (menuLevel_, action_) =>
+                if not (menuLevel_ and menuLevel_) then return
+                if not (action_? and action_) then return
+                currentSubLevels = menuLevel_.subMenus()
+                subLevelsFifo = []
+                if currentSubLevels.length then subLevelsFifo.push(currentSubLevels)
+                while subLevelsFifo.length
+                    currentSubLevels = subLevelsFifo.pop()
+                    for subLevel in currentSubLevels
+                        action_(subLevel)
+                        subLevelSubLevels = subLevel.subMenus()
+                        if subLevelSubLevels.length then subLevelsFifo.push(subLevelSubLevels)
+
             #
-            @updateSelectedMenuItem = (newSelectedMenuItemObject_) =>
+            # Internal methods called by the menu items in response to various events.
+            # These methods should not be called by other methods defined by this class
+            # or by consumers of this class for risk of breaking the fragile CSS state
+            # model of the menu level class instances.
 
-                # If there's a currently selected menu item...
+            @onMenuLevelMouseDoubleClick = (menuLevel_) =>
 
-                if @currentlySelectedMenuItem? and @currentlySelectedMenuItem
 
-                    # ... inform the item that it is no longer selected.
-                    @currentlySelectedMenuItem.selectedItem(false)
-                    if @currentlySelectedMenuItem.parentMenuLevel? and @currentlySelectedMenuItem.parentMenuLevel
-                        @currentlySelectedMenuItem.parentMenuLevel.updateSelectedChild(false)
-                    @currentlySelectedMenuItem.updateSelectedParent(false)
+            # Responsible for updating all required menu level objects' selectedItem, selectedChild, and selectedParent observable flags.
+            @internalUpdateLevelsSelectionState = (menuLevel_, flag_) =>
+                if not (menuLevel_? and menuLevel_) then throw "You must specify a valid menu level reference."
+                menuLevel_.selectedItem(flag_)
+                @internalVisitParents(menuLevel_, ((level_) -> level_.selectedChild(flag_)))
+                @internalVisitChildren(menuLevel_, ((level_) -> level_.selectedParent(flag_)))
 
-                # Update reference to currently selected item (which may be undefined)
-                @currentlySelectedMenuItem = newSelectedMenuItemObject_
+            @updateSelectionState = (menuLevel_, flag_) =>
 
-                if @currentlySelectedMenuItem? and @currentlySelectedMenuItem
+                if flag_ 
+                    # Set the navigator container's selection to the specified menu level.
 
-                   @setCurrentSelectionLevel( @currentlySelectedMenuItem.level() )
-                   @currentSelectionPath(@currentlySelectedMenuItem.path)
-                   @currentlySelectedItemHost( @menuItemPathNamespace[@currentlySelectedMenuItem.path].itemHostModelView )
-         
+                    # If the navigator container already as a selection, clear it.
+                    if @currentlySelectedMenuLevel
+                        @updateSelectionState(@currentlySelectedMenuLevel, false)
+
+                    @internalUpdateLevelsSelectionState(menuLevel_, true)
+                    @currentlySelectedMenuLevel = menuLevel_
+                    @currentSelectionPath(menuLevel_.path)
+                    currentlySelectedItemHostWindow = @getItemPathNamespaceObject(menuLevel_.path).itemHostModelView
+                    @currentlySelectedItemHost(currentlySelectedItemHostWindow)
+
                 else
-                    @setCurrentSelectionLevel(-1)
+                    # Unselect the specified menu level and set the navigator container's selection to undefined.
+
+                    @internalUpdateLevelsSelectionState(menuLevel_, false)
+                    @currentlySelectedMenuLevel = undefined
                     @currentSelectionPath("<no selection>")
-                    @currentlySelectedItemHost( undefined )
+                    @currentlySelectedItemHost(undefined)
 
-                    for topLevelMenu in @topLevelMenus()
-                        topLevelMenu.showAllChildren()
 
-            @currentMouseOverLevel = ko.observable(-1)
-            @setCurrentMouseOverLevel = (currentLevel_) =>
-                if (currentLevel_ == -1)
-                    # Reset.
-                    @currentMouseOverLevel(-1)
-                else
-                    if currentLevel_ > @currentMouseOverLevel()
-                        @currentMouseOverLevel(currentLevel_)
+            @toggleSelectionState = (menuLevel_) =>
+                @updateSelectionState(menuLevel_, not menuLevel_.selectedItem())
+                
+                
+            # Responsible for updating all required menu level objects' mouseOverHighlight, mouseOverChild, and mouseOverParent observable flags.
+            @internalUpdateLevelsMouseOverState = (menuLevel_, flag_) =>
+                menuLevel_.mouseOverHighlight(flag_)
+                @internalVisitParents(menuLevel_, ((level_) -> level_.mouseOverChild(flag_)))
+                @internalVisitChildren(menuLevel_, ((level_) -> level_.mouseOverParent(flag_)))
 
-            for topLevelMenu in @topLevelMenus()
-                topLevelMenu.showYourselfHideYourChildren()
+            @updateMouseOverState = (menuLevel_, flag_) =>
+                @internalUpdateLevelsMouseOverState(menuLevel_, flag_)
+
 
             # / END: constructor try scope
         catch exception

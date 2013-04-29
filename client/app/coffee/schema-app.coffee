@@ -60,7 +60,7 @@ class Encapsule.code.app.Schema
             Encapsule.runtime.boot.phase0.spinner.cancel()
 
             Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
-            Encapsule.runtime.app.SchemaScdlNavigatorWindow.selectItemByPath("schema.scdlCatalogue")
+            #Encapsule.runtime.app.SchemaScdlNavigatorWindow.selectItemByPath("schema.scdlCatalogue")
 
             Console.message("#{appName} main application document.onLoad event handler exit error.")
 
