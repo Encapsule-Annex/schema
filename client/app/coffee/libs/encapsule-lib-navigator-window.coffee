@@ -80,16 +80,18 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     throw "insertArchetype fail: #{exception}"
 
 
-            # Internal menu level traversal helper functions.
+
+
+            # Internal menu level traversal helper methods.
 
             @internalVisitParents = (menuLevel_, action_) =>
                 if not (menuLevel_ and menuLevel_) then return
                 if not (action_? and action_) then return
-                if not (menuLevel_.parentLevel? and menuLevel_.parentLevel_) then return
-                parentLevel = menuLevel_.parentLevel
+                if not (menuLevel_.parentMenuLevel? and menuLevel_.parentMenuLevel) then return
+                parentLevel = menuLevel_.parentMenuLevel
                 while parentLevel? and parentLevel
                     action_(parentLevel)
-                    parentLevel = parentLevel.parentLevel
+                    parentLevel = parentLevel.parentMenuLevel
 
             @internalVisitChildren = (menuLevel_, action_) =>
                 if not (menuLevel_ and menuLevel_) then return
@@ -104,6 +106,39 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                         subLevelSubLevels = subLevel.subMenus()
                         if subLevelSubLevels.length then subLevelsFifo.push(subLevelSubLevels)
 
+
+
+
+
+
+
+
+
+            #
+            # Internal menu level visibility helper methods.
+
+            @internalExplodeImplodeMenuLevel = (menuLevel_, flag_) =>
+                @internalVisitChildren(menuLevel_, ( (level_) => level_.itemVisible(flag_) ))
+
+
+            # if flag_ and showChildDepth_ == -1 implies show just this menu level
+            # if flag_ and showChildDepth_ == 0 implies show this menu level and explode children
+            # if flag_ and showChildDepth_ > 0 implies show this menu level and explode to specified depth
+            @internalShowMenuLevel = (menuLevel_, flag_, showChildDepth_) =>
+                if flag_
+                    menuLevel_.itemVisible(true)
+                    if showChildDepth_ != 0
+                        return
+                    if showChildDepth_ == 0
+                        @internalExplodeImplodeMenuLevel(menuLevel_, true)
+                        return
+                else
+                    menuLevel_.itemVisible(false)
+                    @internalExplodeImplodeMenuLevel(menuLevel_, false)
+                    
+
+
+
             #
             # Internal methods called by the menu items in response to various events.
             # These methods should not be called by other methods defined by this class
@@ -117,17 +152,18 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             @internalUpdateLevelsSelectionState = (menuLevel_, flag_) =>
                 if not (menuLevel_? and menuLevel_) then throw "You must specify a valid menu level reference."
                 menuLevel_.selectedItem(flag_)
+                menuLevel_.showAsSelectedUntilMouseOut(flag_)
                 @internalVisitParents(menuLevel_, ((level_) -> level_.selectedChild(flag_)))
                 @internalVisitChildren(menuLevel_, ((level_) -> level_.selectedParent(flag_)))
 
-            @updateSelectionState = (menuLevel_, flag_) =>
+            @internalUpdateSelectionState = (menuLevel_, flag_) =>
 
                 if flag_ 
                     # Set the navigator container's selection to the specified menu level.
 
                     # If the navigator container already as a selection, clear it.
                     if @currentlySelectedMenuLevel
-                        @updateSelectionState(@currentlySelectedMenuLevel, false)
+                        @internalUpdateSelectionState(@currentlySelectedMenuLevel, false)
 
                     @internalUpdateLevelsSelectionState(menuLevel_, true)
                     @currentlySelectedMenuLevel = menuLevel_
@@ -143,7 +179,15 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     @currentSelectionPath("<no selection>")
                     @currentlySelectedItemHost(undefined)
 
+            @updateSelectionState = (menuLevel_, flag_) =>
+                unselectedSelected = menuLevel_.selectedItem() and not flag_
+                @internalUpdateSelectionState(menuLevel_, flag_)
+                if unselectedSelected and menuLevel_.parentMenuLevel
+                    @internalUpdateSelectionState(menuLevel_.parentMenuLevel, true)
+                @updateMouseOverState(menuLevel_, false)
 
+
+            # Helper method
             @toggleSelectionState = (menuLevel_) =>
                 @updateSelectionState(menuLevel_, not menuLevel_.selectedItem())
                 

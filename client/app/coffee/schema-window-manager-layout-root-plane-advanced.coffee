@@ -46,12 +46,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             Q1WindowDescriptor: {                                            
                 id: "idScdlCatalogueNavigator"                                              
                 name: "SCDL Catalogue Navigator"                                      
-                initialMode: "full"
+                initialMode: "min"
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "#00CCFF"
-                modes: { full: { reserve: 256 }, min: { reserve: 180 } }
+                modes: { full: { reserve: 600 }, min: { reserve: 300 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"

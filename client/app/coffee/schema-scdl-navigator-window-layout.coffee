@@ -35,7 +35,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.7}).toCSS()
     baseBackgroundRatioPercentPerLevel: 0
 
-    borderLightRatio: 0.6
+    borderLightRatio: 0.2
     borderDarkRatio: 0.2
     borderFlatRatio: -1
     borderWidth: 1 # default
@@ -43,25 +43,25 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     borderWidthInset: 1
     borderWidthFlat: 1
 
-    fontColorRatioDefault: 0.4
+    fontColorRatioDefault: 1
     fontColorRatioSelected: -1
     fontColorRatioSelectedChild: -1
     fontColorRatioMouseOver: 1
     
     selectedItemBackgroundShiftHue: 0
-    selectedItemBackgroundLightenRatio: 0
+    selectedItemBackgroundLightenRatio: -0.2
 
     selectedChildItemBackgroundShiftHue: 0
     selectedChildItemBackgroundLightenRatio: -0.2
 
     mouseOverItemBackgroundShiftHue: 0
-    mouseOverItemBackgroundLightenRatio: 0
+    mouseOverItemBackgroundLightenRatio: -0.2
 
 
     menuLevelPaddingTop: 1
-    menuLevelPaddingBottom: 2
-    menuLevelPaddingLeft: 2
-    menuLevelPaddingRight: 2
+    menuLevelPaddingBottom: 5
+    menuLevelPaddingLeft: 5
+    menuLevelPaddingRight: 5
 
     menuLevelFontSizeMax: 12
     menuLevelFontSizeMin: 12
@@ -74,11 +74,11 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     
 
-    menuLevelBoxShadowColorDarkenRatio: 0.5 # Used as shadow color if mouse over or selection path
-    menuLevelBoxShadowColorLightenRatio: 0.4
+    menuLevelBoxShadowColorDarkenRatio: 0.2 # Used as shadow color if mouse over or selection path
+    menuLevelBoxShadowColorLightenRatio: 0.2
 
     menuLevelBoxShadowInSelectionPath: { type: "inset", xBase: 1, xPerLevel: 1, yBase: 1, yPerLevel: 1, blurBase: 5, blurPerLevel: 1 }
-    menuLevelBoxShadowNotSelected: { type: "inset", x: 0, y: 2, blur: 4 }
+    menuLevelBoxShadowNotSelected: { type: "inset", x: 0, y: 2, blur: 10 }
 
     menuLevelBoxShadowMouseOverHighlight: { type: "inset", x: 3,  y: 3, blur:  3 }
 
