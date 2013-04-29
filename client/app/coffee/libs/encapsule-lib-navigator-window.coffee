@@ -93,14 +93,19 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     action_(parentLevel)
                     parentLevel = parentLevel.parentMenuLevel
 
-            @internalVisitChildren = (menuLevel_, action_) =>
+            @internalVisitChildren = (menuLevel_, action_, traverseLevelsLimitCount_) =>
                 if not (menuLevel_ and menuLevel_) then return
                 if not (action_? and action_) then return
+                traverseLevelsLimitCount = traverseLevelsLimitCount_? and traverseLevelsLimitCount_ or -1
+                traversedLevels = 0
                 currentSubLevels = menuLevel_.subMenus()
                 subLevelsFifo = []
-                if currentSubLevels.length then subLevelsFifo.push(currentSubLevels)
-                while subLevelsFifo.length
+                if currentSubLevels.length
+                    subLevelsFifo.push(currentSubLevels)
+                while subLevelsFifo.length and ( (traverseLevelsLimitCount != -1) or ( traversedLevels < traverseLevelsLimitCount ) )
                     currentSubLevels = subLevelsFifo.pop()
+                    traversedLevels++
+
                     for subLevel in currentSubLevels
                         action_(subLevel)
                         subLevelSubLevels = subLevel.subMenus()
@@ -153,6 +158,10 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 if not (menuLevel_? and menuLevel_) then throw "You must specify a valid menu level reference."
                 menuLevel_.selectedItem(flag_)
                 menuLevel_.showAsSelectedUntilMouseOut(flag_)
+
+
+
+
                 @internalVisitParents(menuLevel_, ((level_) -> level_.selectedChild(flag_)))
                 @internalVisitChildren(menuLevel_, ((level_) -> level_.selectedParent(flag_)))
 
@@ -166,15 +175,17 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                         @internalUpdateSelectionState(@currentlySelectedMenuLevel, false)
 
                     @internalUpdateLevelsSelectionState(menuLevel_, true)
+
                     @currentlySelectedMenuLevel = menuLevel_
                     @currentSelectionPath(menuLevel_.path)
-                    currentlySelectedItemHostWindow = @getItemPathNamespaceObject(menuLevel_.path).itemHostModelView
-                    @currentlySelectedItemHost(currentlySelectedItemHostWindow)
+                    @currentlySelectedItemHost(@getItemPathNamespaceObject(menuLevel_.path).itemHostModelView)
+
 
                 else
                     # Unselect the specified menu level and set the navigator container's selection to undefined.
 
                     @internalUpdateLevelsSelectionState(menuLevel_, false)
+
                     @currentlySelectedMenuLevel = undefined
                     @currentSelectionPath("<no selection>")
                     @currentlySelectedItemHost(undefined)

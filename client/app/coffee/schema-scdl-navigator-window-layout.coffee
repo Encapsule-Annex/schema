@@ -69,8 +69,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     structureArrayShiftHue: 0
     structureArrayLightenRatio: 0.1
 
-    userObjectShiftHue: -100
-    userObjectDarkenRatio: 0.1
+    userObjectShiftHue: -20
+    userObjectDarkenRatio: 0
 
     
 
