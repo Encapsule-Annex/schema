@@ -93,54 +93,68 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     action_(parentLevel)
                     parentLevel = parentLevel.parentMenuLevel
 
-            @internalVisitChildren = (menuLevel_, action_, traverseLevelsLimitCount_) =>
-                if not (menuLevel_ and menuLevel_) then return
-                if not (action_? and action_) then return
-                traverseLevelsLimitCount = traverseLevelsLimitCount_? and traverseLevelsLimitCount_ or -1
-                traversedLevels = 0
-                currentSubLevels = menuLevel_.subMenus()
-                subLevelsFifo = []
-                if currentSubLevels.length
-                    subLevelsFifo.push(currentSubLevels)
-                while subLevelsFifo.length and ( (traverseLevelsLimitCount != -1) or ( traversedLevels < traverseLevelsLimitCount ) )
-                    currentSubLevels = subLevelsFifo.pop()
-                    traversedLevels++
-
-                    for subLevel in currentSubLevels
-                        action_(subLevel)
-                        subLevelSubLevels = subLevel.subMenus()
-                        if subLevelSubLevels.length then subLevelsFifo.push(subLevelSubLevels)
-
-
-
-
-
-
-
-
-
+            # This is a breath-first visitor with callback dispatching based on a rank filter.
             #
-            # Internal menu level visibility helper methods.
+            @internalVisitChildren = (menuLevel_, visitorCallbackUnderLimit_, generationsLimit_, visitorCallbackOverLimit_) =>
+                if not (menuLevel_ and menuLevel_) then throw "Missing menu level object parameter."
+                if not (visitorCallbackUnderLimit_? and visitorCallbackUnderLimit_) then throw "Missing required action under limit visitor callback parameter."
+                generationsLimit = generationsLimit_? and generationsLimit_ or -1
+                visitorCallbackUnderLimit = visitorCallbackUnderLimit_? and visitorCallbackUnderLimit_ or undefined
+                visitorCallbackOverLimit = visitorCallbackOverLimit_? and visitorCallbackOverLimit_ or undefined
 
-            @internalExplodeImplodeMenuLevel = (menuLevel_, flag_) =>
-                @internalVisitChildren(menuLevel_, ( (level_) => level_.itemVisible(flag_) ))
+                currentSubLevels = menuLevel_.subMenus()
+                if not currentSubLevels.length
+                    return false
+
+                # If generationsLimit is negative all visited levels will be called w/the action_ callback.
+                # If generationsLimit is zero, all visited levels will be called w/the actionOverLimit_
+                # callback. If generationsLimit is positive N, then the first N generations of children
+                # are called with the action_ callback, and N+1... with the actionOverLimit_ callback.
+                #
+                levelBase = menuLevel_.level()
+                levelBoundary = levelBase + generationsLimit
+
+                subLevelsFifo = [ { subLevels: currentSubLevels, level: levelBase + 1 } ]
+
+                while subLevelsFifo.length
+                    fifoEntry = subLevelsFifo.pop()
+
+                    visitorCallback = undefined
+                    if (generationsLimit_ == -1)
+                        visitorCallback = visitorCallbackUnderLimit
+                    else if (fifoEntry.level <= levelBoundary)
+                        visitorCallback = visitorCallbackUnderLimit
+                    else
+                        visitorCallback = visitorCallbackOverLimit
+
+                    for subLevel in fifoEntry.subLevels
+                        if visitorCallback
+                            visitorCallback(subLevel)
+                        subLevelSubLevels = subLevel.subMenus()
+                        if subLevelSubLevels.length then subLevelsFifo.push( { subLevels: subLevelSubLevels, level: subLevel.level() + 1 } )
 
 
-            # if flag_ and showChildDepth_ == -1 implies show just this menu level
-            # if flag_ and showChildDepth_ == 0 implies show this menu level and explode children
-            # if flag_ and showChildDepth_ > 0 implies show this menu level and explode to specified depth
-            @internalShowMenuLevel = (menuLevel_, flag_, showChildDepth_) =>
-                if flag_
-                    menuLevel_.itemVisible(true)
-                    if showChildDepth_ != 0
-                        return
-                    if showChildDepth_ == 0
-                        @internalExplodeImplodeMenuLevel(menuLevel_, true)
-                        return
-                else
-                    menuLevel_.itemVisible(false)
-                    @internalExplodeImplodeMenuLevel(menuLevel_, false)
-                    
+
+
+
+            @internalSetMenuLevelVisibility = (menuLevel_, explodeDepth_) =>
+
+                 # The subject of the call, menuLevel_, is always marked visible.
+                 menuLevel_.itemVisible(true)
+
+                 # Now adjust the visibility of the the subject's children.
+
+                 @internalVisitChildren(
+                     menuLevel_
+                     ( (levelObject_) => levelObject_.itemVisible(true) )
+                     explodeDepth_
+                     ( (levelObject_) => 
+                         if not (levelObject_.selectedItem() or levelObject_.selectedChild())
+                             levelObject_.itemVisible(false)
+                     )
+                     )
+                         
+
 
 
 
@@ -158,12 +172,19 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 if not (menuLevel_? and menuLevel_) then throw "You must specify a valid menu level reference."
                 menuLevel_.selectedItem(flag_)
                 menuLevel_.showAsSelectedUntilMouseOut(flag_)
+                @internalVisitParents(
+                    menuLevel_
+                    ( (level_) =>
+                        level_.selectedChild(flag_)
+                        if flag_
+                            @internalSetMenuLevelVisibility(level_, 1)
+                        )
+                    )
 
+                @internalVisitChildren(menuLevel_, ((level_) -> level_.selectedParent(flag_)), -1, undefined)
 
-
-
-                @internalVisitParents(menuLevel_, ((level_) -> level_.selectedChild(flag_)))
-                @internalVisitChildren(menuLevel_, ((level_) -> level_.selectedParent(flag_)))
+                if flag_
+                    @internalSetMenuLevelVisibility(menuLevel_, -1)
 
             @internalUpdateSelectionState = (menuLevel_, flag_) =>
 
@@ -196,7 +217,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 if unselectedSelected and menuLevel_.parentMenuLevel
                     @internalUpdateSelectionState(menuLevel_.parentMenuLevel, true)
                 @updateMouseOverState(menuLevel_, false)
-
+               
 
             # Helper method
             @toggleSelectionState = (menuLevel_) =>
@@ -207,7 +228,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             @internalUpdateLevelsMouseOverState = (menuLevel_, flag_) =>
                 menuLevel_.mouseOverHighlight(flag_)
                 @internalVisitParents(menuLevel_, ((level_) -> level_.mouseOverChild(flag_)))
-                @internalVisitChildren(menuLevel_, ((level_) -> level_.mouseOverParent(flag_)))
+                @internalVisitChildren(menuLevel_, ((level_) -> level_.mouseOverParent(flag_)), -1, undefined)
 
             @updateMouseOverState = (menuLevel_, flag_) =>
                 @internalUpdateLevelsMouseOverState(menuLevel_, flag_)

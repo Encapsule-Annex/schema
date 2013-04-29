@@ -37,7 +37,7 @@ try
         #
         id: "idSchemaWindowManager"
         name: "#{appName} v#{appVersion} Window Manager"
-        fadeInTimeMs: 500 # (defaults to 1500ms if undefined)
+        fadeInTimeMs: 1500 # (defaults to 1500ms if undefined)
 
         #
         # BODY PAGE ATTRIBUTES
@@ -57,7 +57,7 @@ try
         #        
         glassOpacity: 1 # defaults to 1 if undefined
         glassBackgroundColor: undefined
-        glassMargin: 1 # document edge to glass edge (default is 10)
+        glassMargin: 0 # document edge to glass edge (default is 10)
         glassBackgroundImage: "brushed-metal-1920x1080.jpg" # (default is undefined)
 
     
@@ -70,7 +70,7 @@ try
         #
         windowManagerBackgroundColor: "black" # defaults to "white" if undefined
         windowManagerMargin: 0  # glass edge to window manager edge (defaults to 10 if undefined)
-        windowManagerPadding: 5  # window manager edge to plane edge (defaults to 10 if undefined)
+        windowManagerPadding: 1  # window manager edge to plane edge (defaults to 10 if undefined)
         windowManagerOpacity: 0.5 # (defaults to 1 if undefined)
 
         #
@@ -86,10 +86,10 @@ try
             hostWindowPadding: 1
             chromeWindowBackgroundColor: undefined
             chromeWindowOpacity: 1
-            chromeWindowPadding: 5
+            chromeWindowPadding: 1
             windowBorderWidth: 1
-            windowBorderColor: "#777777"
-            windowPadding: 5
+            windowBorderColor: "#444444"
+            windowPadding: 2
             }
 
         planes: [
