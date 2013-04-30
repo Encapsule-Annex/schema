@@ -212,9 +212,31 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 @internalVisitChildren(
                     @rootMenuLevel,
                     (levelObject_, bfsContext_) =>
-                        Console.message("NavigatorWindow.updateMenuLevelVisibilities BFS visitor callback for \"#{levelObject_.label()}\"")
+                        selectedItem = levelObject_.selectedItem()
+                        selectedChild = levelObject_.selectedChild() # i.e. above the selection
+                        selectedParent = levelObject_.selectedParent() # i.e. below the selection
+                        inSelectionPath = selectedItem or selectedChild # i.e. the selection and above
+                        generationsFromSelectionPath = undefined
+                        if (not inSelectionPath) or selectedParent
+                            generationsFromSelectionPath = levelObject_.parentMenuLevel.generationsFromSelectionPath + 1
+                        else
+                            generationsFromSelectionPath = 0
+                        levelObject_.generationsFromSelectionPath = generationsFromSelectionPath
+                        generationsThreshold = undefined
+                        if not selectedParent
+                             generationsThreshold = parseInt(@outerDetailLevel())
+                        else
+                             generationsThreshold = parseInt(@innerDetailLevel())
+                        visible = undefined
+                        if inSelectionPath
+                            visible = true
+                        else
+                            visible = generationsFromSelectionPath <= generationsThreshold
+                        levelObject_.itemVisible(visible)
+                        return visible
                     bfsVisitorContext
                     )
+                return true
 
 
             #
@@ -227,6 +249,15 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 
                 @updateMouseOverState(menuLevel_, false)
                 @updateMenuLevelVisibilities()
+
+
+            #
+            # ============================================================================
+            @detailWorker = ko.computed =>
+                outerDetailLevel = @outerDetailLevel()
+                innerDetailLevel = @innerDetailLevel()
+                @updateMenuLevelVisibilities()
+                return "#{outerDetailLevel} #{innerDetailLevel}"
 
 
             # Helper method
@@ -263,9 +294,11 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigator", ( -> """
-detail //
-inner: <input type="number" min="1" max="5" data-bind="value: innerDetailLevel" />
-outer: <input type="number" min="0" max="5" data-bind="value: outerDetailLevel" /><br>
+<div style="font-family: Arial; font-size: 8pt; font-weight: normal; text-align: center; margin-bottom: 10px; ">
+    view select detail
+    above <input type="number" min="0" max="15" data-bind="value: outerDetailLevel" />
+    below <input type="number" min="1" max="15" data-bind="value: innerDetailLevel" />
+</div>
 <span data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: rootMenuLevel.subMenus }"></span>
 """))
 
