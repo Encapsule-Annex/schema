@@ -36,7 +36,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     baseBackgroundRatioPercentPerLevel: 0
 
     borderLightRatio: 0.2
-    borderDarkRatio: 0.2
+    borderDarkRatio: 0.4
     borderFlatRatio: -1
     borderWidth: 1 # default
     borderWidthOutset: 1
@@ -49,13 +49,13 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     fontColorRatioMouseOver: 1
     
     selectedItemBackgroundShiftHue: 0
-    selectedItemBackgroundLightenRatio: -0.2
+    selectedItemBackgroundLightenRatio: -0.3
 
     selectedChildItemBackgroundShiftHue: 0
-    selectedChildItemBackgroundLightenRatio: -0.2
+    selectedChildItemBackgroundLightenRatio: -0.3
 
     mouseOverItemBackgroundShiftHue: 0
-    mouseOverItemBackgroundLightenRatio: -0.2
+    mouseOverItemBackgroundLightenRatio: -0.3
 
 
     menuLevelPaddingTop: 1
@@ -67,7 +67,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelFontSizeMin: 10
 
     structureArrayShiftHue: 0
-    structureArrayLightenRatio: 0.1
+    structureArrayLightenRatio: 0.2
 
     userObjectShiftHue: -20
     userObjectDarkenRatio: 0
@@ -86,6 +86,16 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
 
     menuHierarchy: [
+        {
+            jsonTag: "test"
+            label: "Test Level"
+            objectDescriptor: {
+                type: "object"
+                origin: "new"
+                classification: "structure"
+                description: "top-level menu item for testing collapsable menus."
+            }
+        }
         {
             jsonTag: "schema"
             label: appName
