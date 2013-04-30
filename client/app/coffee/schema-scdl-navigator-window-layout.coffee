@@ -30,7 +30,9 @@ Color = net.brehaut.Color
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
-    title: "SCDL Catalogue"
+    jsonTag: "scdlCatalogueNavigatorHost"
+    label: "SCDL Catalogue Host"
+    title: "SCDL Catalogue Host"
 
     baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.7}).toCSS()
     baseBackgroundRatioPercentPerLevel: 0

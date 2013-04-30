@@ -39,7 +39,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             @title = layout_.title
 
             # Instances of NavigatorWindowMenuLevel objects created by this contructor.  
-            @topLevelMenus = ko.observableArray []
 
             @menuItemPathNamespace = {}
 
@@ -50,9 +49,29 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             @outerDetailLevel = ko.observable(0)
             @innerDetailLevel = ko.observable(1)
 
-            for menuLayout in layout_.menuHierarchy
+            newMenuHierarchy = [
+                {
+                    jsonTag: layout_.jsonTag
+                    label: layout_.label
+                    objectDescriptor: {
+                        type: "object"
+                        origin: "root"
+                        classification: "structure"
+                        role: "namespace"
+                    }
+                    subMenus: layout_.menuHierarchy
+                }
+            ]
+            # Patch the incoming layout
+            @layout.menuHierarchy = newMenuHierarchy
+
+            @rootMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, undefined, @layout.menuHierarchy[0], -1)
+
+            ###
+            for menuLayout in @layout.menuHierarchy
                 # navigatorContainer, parentMenuLevel, layout, level
                 @topLevelMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, undefined, menuLayout, 0)
+            ###
 
             # External API function
 
@@ -103,56 +122,33 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     action_(parentLevel)
                     parentLevel = parentLevel.parentMenuLevel
 
-            # This is a breadth-first visitor with callback dispatching based on a rank filter.
+            # BFS visitor.
             #
             #
             # ============================================================================
-            @internalVisitChildrenFromChildArray = (childMenuLevelArray_, level_, visitorCallbackUnderLimit_, generationsLimit_, visitorCallbackOverLimit_) =>
+            @internalVisitChildrenFromChildArray = (childMenuLevelArray_, level_, visitorCallback_, visitorCallbackContext_) =>
+
                 if not (childMenuLevelArray_? and childMenuLevelArray_) then throw "Missing child menu level array."
-                if not (visitorCallbackUnderLimit_? and visitorCallbackUnderLimit_) then throw "Missing required action under limit visitor callback parameter."
-                visitorCallbackUnderLimit = visitorCallbackUnderLimit_? and visitorCallbackUnderLimit_ or undefined
-                visitorCallbackOverLimit = visitorCallbackOverLimit_? and visitorCallbackOverLimit_ or undefined
-
-                # If generationsLimit is negative all visited levels will be called w/the action_ callback.
-                # If generationsLimit is zero, all visited levels will be called w/the actionOverLimit_
-                # callback. If generationsLimit is positive N, then the first N generations of children
-                # are called with the action_ callback, and N+1... with the actionOverLimit_ callback.
-                #
-
-                generationsLimit = generationsLimit_? and generationsLimit_ or 0
-                levelBoundary = level_ + generationsLimit
-
-                subLevelsFifo = [ { subLevels: childMenuLevelArray_, level: level_ + 1 } ]
-
-                while subLevelsFifo.length
-                    fifoEntry = subLevelsFifo.pop()
-
-                    visitorCallback = undefined
-                    if (generationsLimit_ == -1)
-                        visitorCallback = visitorCallbackUnderLimit
-                    else if (fifoEntry.level <= levelBoundary)
-                        visitorCallback = visitorCallbackUnderLimit
-                    else
-                        visitorCallback = visitorCallbackOverLimit
-
-                    for subLevel in fifoEntry.subLevels
+                subLevelsQueue = [ { subLevels: childMenuLevelArray_, level: level_ + 1 } ]
+                while subLevelsQueue.length
+                    queueEntry = subLevelsQueue.pop()
+                    for subLevel in queueEntry.subLevels
                         evaluateSubLevels = true
-                        if visitorCallback
-                            evaluateSubLevels = visitorCallback(subLevel)
+                        if visitorCallback_? and visitorCallback_
+                            evaluateSubLevels = visitorCallback_(subLevel, visitorCallbackContext_)
                         if evaluateSubLevels
                             subLevelSubLevels = subLevel.subMenus()
-                            if subLevelSubLevels.length then subLevelsFifo.push( { subLevels: subLevelSubLevels, level: subLevel.level() + 1 } )
-
-
+                            if subLevelSubLevels.length
+                                subLevelsQueue.unshift( { subLevels: subLevelSubLevels, level: subLevel.level() + 1 } )
 
             #
             # ============================================================================
-            @internalVisitChildren = (menuLevel_, visitorCallbackUnderLimit_, generationsLimit_, visitorCallbackOverLimit_) =>
+            @internalVisitChildren = (menuLevel_, visitorCallback_, visitorCallbackContext_) =>
                 if not (menuLevel_ and menuLevel_) then throw "Missing menu level object parameter."
-                if not (visitorCallbackUnderLimit_? and visitorCallbackUnderLimit_) then throw "Missing required action under limit visitor callback parameter."
                 currentSubLevels = menuLevel_.subMenus()
-                if not currentSubLevels.length then return false
-                @internalVisitChildrenFromChildArray(currentSubLevels, menuLevel_.level(), visitorCallbackUnderLimit_, generationsLimit_, visitorCallbackOverLimit_)
+                if not currentSubLevels.length
+                    return false
+                @internalVisitChildrenFromChildArray(currentSubLevels, menuLevel_.level(), visitorCallback_, visitorCallbackContext_)
 
 
 
@@ -175,7 +171,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 menuLevel_.selectedItem(flag_)
                 menuLevel_.showAsSelectedUntilMouseOut(flag_)
                 @internalVisitParents(menuLevel_,  ((level_) => level_.selectedChild(flag_)))
-                @internalVisitChildren(menuLevel_, ((level_) -> level_.selectedParent(flag_); return true ), -1, undefined)
+                @internalVisitChildren(menuLevel_, ((level_) -> level_.selectedParent(flag_); return true ))
 
             #
             # ============================================================================
@@ -210,102 +206,15 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             #
             # ============================================================================
 
-
-            #
-            # ============================================================================
-            @internalUpdateSelectedMenuLevelVisibility = (selectedMenuLevel_) =>
-                @internalVisitChildren(
-                    selectedMenuLevel_
-                    (level_) =>
-                        level_.itemVisible(true)
-                        return true
-                    parseInt(@innerDetailLevel())
-                    (level_) =>
-                        level_.itemVisible(false)
-                        return false
-                    )
-
-            #
-            # ============================================================================
-            @internalUpdateMenuLevelOuterDetailVisibilityFromChildArray = (childMenuLevelArray_, level_) =>
-                Console.message("starting internalUpdateMenuLevelOuterDetailVisibilityFromChildArray on level #{level_}")
-                outerDetailLevel = @outerDetailLevel()
-                @internalVisitChildrenFromChildArray(
-                    childMenuLevelArray_
-                    level_
-                    (level_) =>
-                        level_.itemVisible(true)
-                        Console.message("...set #{level_.label()} visible (under limit).")
-                        selectedItem = level_.selectedItem()
-                        selectedChild = level_.selectedChild()
-                        if not (selectedChild or selectedItem)
-                            Console.message("... continue traversal")
-                            return true
-                        if selectedChild
-                            Console.message("... discovered #{level_.label()} is a parent of the current selection (under limit).")
-                            @internalUpdateMenuLevelOuterDetailVisibility(level_)
-                            return false
-                        if selectedItem
-                            Console.message("... discovered #{level_.label()} is the selected item (under limit).")
-                            @internalUpdateSelectedMenuLevelVisibility(level_)
-                            return false
-                        throw "Shouldn't get here."
-                    outerDetailLevel
-                    (level_) =>
-                        selectedItem = level_.selectedItem()
-                        selectedChild = level_.selectedChild()
-                        if not (selectedChild or selectedItem)
-                            Console.message("... set #{level_.label()} not visible (over limit).")
-                            level_.itemVisible(false)
-                            return false
-                        Console.message("... set #{level_.label()} visible (over limit).")
-                        level_.itemVisible(true)
-                        if selectedChild
-                            Console.message("... discovered #{level_.label()} is a parent of the current selection (over limit).")
-                            @internalUpdateMenuLevelOuterDetailVisibility(level_)
-                            return false
-                        if selectedItem
-                            Console.message("... discovered #{level_.label()} is the selected item (over limit).")
-                            @internalUpdateSelectedMenuLevelVisibility(level_)
-                            return false
-                        throw "Shouldn't get here"
-                    )
-                return true
-
-            #
-            # ============================================================================
-            @internalUpdateMenuLevelOuterDetailVisibility = (outerMenuLevel_) =>
-                @internalUpdateMenuLevelOuterDetailVisibilityFromChildArray(outerMenuLevel_.subMenus, outerMenuLevel_.level())
-
-            #
-            # ============================================================================
-            @internalUpdateMenuLevelNoSelectionVisibility = =>
-                # reference: @internalVisitChildrenFromChildArray = (childMenuLevelArray_, level_, visitorCallbackUnderLimit_, generationsLimit_, visitorCallbackOverLimit_) =>
-                @internalVisitChildrenFromChildArray(
-                    @topLevelMenus()
-                    -1
-                    (level_) =>
-                        level_.itemVisible(true)
-                        return true
-                    parseInt(@innerDetailLevel())
-                    (level_) =>
-                        level_.itemVisible(false)
-                        return false
-                    )
-
-
-            #
-            # ============================================================================
             @updateMenuLevelVisibilities = =>
-                innerDetailLevel = parseInt(@innerDetailLevel())
-                outerDetailLevel = parseInt(@outerDetailLevel())
-
-                if not (@currentlySelectedMenuLevel? and @currentlySelectedMenuLevel)
-                    Console.message("Setting default navigator visibilities.")
-                    @internalUpdateMenuLevelNoSelectionVisibility()
-                else
-                    Console.message("Setting selected item navigator visibilities.")
-                    @internalUpdateMenuLevelOuterDetailVisibilityFromChildArray(@topLevelMenus(), -1)
+                activeSelectionFlag = @currentlySelectedMenuLevel? and @currentlySelectedMenuLevel
+                bfsVisitorContext = {}
+                @internalVisitChildren(
+                    @rootMenuLevel,
+                    (levelObject_, bfsContext_) =>
+                        Console.message("NavigatorWindow.updateMenuLevelVisibilities BFS visitor callback for \"#{levelObject_.label()}\"")
+                    bfsVisitorContext
+                    )
 
 
             #
@@ -317,9 +226,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     @internalUpdateSelectionState(menuLevel_.parentMenuLevel, true)
                 
                 @updateMouseOverState(menuLevel_, false)
-
                 @updateMenuLevelVisibilities()
-
 
 
             # Helper method
@@ -343,6 +250,10 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 @internalUpdateLevelsMouseOverState(menuLevel_, flag_)
 
 
+            # Last step in constructor is to set the default view.
+            @updateSelectionState(@rootMenuLevel, true)
+
+
             # / END: constructor try scope
         catch exception
             throw "SchemaScdlNavigatorWindow fail: #{exception}"
@@ -352,8 +263,10 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigator", ( -> """
-outer: <input type="number" min="0" max="5" data-bind="value: outerDetailLevel" /> inner: <input type="number" min="1" max="5" data-bind="value: innerDetailLevel" /><br>
-<span data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: topLevelMenus }"></span>
+detail //
+inner: <input type="number" min="1" max="5" data-bind="value: innerDetailLevel" />
+outer: <input type="number" min="0" max="5" data-bind="value: outerDetailLevel" /><br>
+<span data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: rootMenuLevel.subMenus }"></span>
 """))
 
 
