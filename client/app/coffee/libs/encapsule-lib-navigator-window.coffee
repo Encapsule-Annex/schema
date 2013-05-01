@@ -255,7 +255,9 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             # ============================================================================
             @detailWorker = ko.computed =>
                 outerDetailLevel = @outerDetailLevel()
+                if outerDetailLevel < 0 or outerDetailLevel > 15 then @outerDetailLevel(0)
                 innerDetailLevel = @innerDetailLevel()
+                if innerDetailLevel < 1 or innerDetailLevel > 15 then @innerDetailLevel(1)
                 @updateMenuLevelVisibilities()
                 return "#{outerDetailLevel} #{innerDetailLevel}"
 
@@ -295,9 +297,9 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigator", ( -> """
 <div style="font-family: Arial; font-size: 8pt; font-weight: normal; text-align: center; margin-bottom: 10px; ">
-    view select detail
-    above <input type="number" min="0" max="15" data-bind="value: outerDetailLevel" />
-    below <input type="number" min="1" max="15" data-bind="value: innerDetailLevel" />
+    view detail
+    above <input type="number" min="0" max="15" value="0" data-bind="value: outerDetailLevel" size="1" style="width: 40px;"/>
+    below <input type="number" min="1" max="15" value="1" data-bind="value: innerDetailLevel" size="1" style="width: 40px;"/>
 </div>
 <span data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: rootMenuLevel.subMenus }"></span>
 """))
