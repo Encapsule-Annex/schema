@@ -59,6 +59,7 @@ try
         glassBackgroundColor: undefined
         glassMargin: 0 # document edge to glass edge (default is 10)
         glassBackgroundImage: "brushed-metal-1920x1080.jpg" # (default is undefined)
+        # glassBackgroundImage: "background_linen.jpg" # (default is undefined)
 
     
         #

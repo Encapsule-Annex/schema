@@ -34,6 +34,9 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     label: "SCDL Catalogue Host"
     title: "SCDL Catalogue Host"
 
+    detailBelowSelectDefault: 0
+    detailAboveSelectDefault: 1
+
     baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.7}).toCSS()
     baseBackgroundRatioPercentPerLevel: 0
 

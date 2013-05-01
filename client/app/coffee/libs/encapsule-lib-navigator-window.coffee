@@ -33,7 +33,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             if not layout_? then throw "Missing layout parameter."
             if not layout_ then throw "Missing layout parameter value."
-
+            
             @layout = layout_
 
             @title = layout_.title
@@ -46,8 +46,61 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             @currentSelectionPath = ko.observable "<no selection>"
             @currentlySelectedItemHost = ko.observable undefined
 
-            @outerDetailLevel = ko.observable(0)
-            @innerDetailLevel = ko.observable(1)
+            detailBelowSelectDefault = 0
+            if layout_.detailBelowSelectDefault?
+                value = layout_.detailBelowSelectDefault
+                if (value >= 0) and (value < 256)
+                    detailBelowSelectDefault = value
+            else
+                detailBelowSelectDefault = 0
+
+            detailAboveSelectDefault = 0
+            if layout_.detailAboveSelectDefault?
+                value = layout_.detailAboveSelectDefault
+                if (value > 0) and (value < 256)
+                    detailAboveSelectDefault = value
+
+            @detailBelowSelect = ko.observable(detailBelowSelectDefault)
+            @detailAboveSelect = ko.observable(detailAboveSelectDefault)
+
+
+
+            @resetDetailBelowSelect = =>
+                @detailBelowSelect(detailBelowSelectDefault)
+
+            @incrementDetailBelowSelect = =>
+                detail = @detailBelowSelect()
+                if detail < 255
+                    @detailBelowSelect(detail + 1)
+
+            @decrementDetailBelowSelect = =>
+                detail = @detailBelowSelect()
+                if detail > 0
+                    @detailBelowSelect(detail - 1)
+
+            @explodeDetailBelowSelect = =>
+                @detailBelowSelect(255)
+
+            @resetDetailAboveSelect = =>
+                @detailAboveSelect(detailAboveSelectDefault)
+
+            @incrementDetailAboveSelect = =>
+                detail = @detailAboveSelect()
+                if detail < 255
+                    @detailAboveSelect(detail + 1)
+
+            @decrementDetailAboveSelect = =>
+                detail = @detailAboveSelect()
+                if detail > 1
+                    @detailAboveSelect(detail - 1)
+
+            @explodeDetailAboveSelect = =>
+                @detailAboveSelect(255)
+
+            @resetDetail = =>
+                @resetDetailBelowSelect()
+                @resetDetailAboveSelect()
+
 
             newMenuHierarchy = [
                 {
@@ -85,6 +138,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 catch exception
                     throw "validatePath fail: #{exception}"
                  
+
+
             #
             # ============================================================================
             @getItemPathNamespaceObject = (path_) =>
@@ -97,6 +152,21 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 catch exception
                     throw "getItemHostWindowForPath fail: #{exception}"
 
+
+            #
+            # ============================================================================
+            @selectItemByPath = (path_) =>
+                try
+                    targetMenuLevelObject = undefined
+                    if (not (path_? and path_)) or (path_ == "")
+                        targetMenuLevelObject = @rootMenuLevel
+                    else
+                        targetMenuLevelObject = @getItemPathNamespaceObject(path_).menuLevelModelView
+                    @updateSelectionState(targetMenuLevelObject, true)
+                catch exception
+                    throw "NavigatorWindow.selectItemByPath fail: #{exception}"
+                    
+            
 
             #
             # ============================================================================
@@ -224,9 +294,9 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                         levelObject_.generationsFromSelectionPath = generationsFromSelectionPath
                         generationsThreshold = undefined
                         if not selectedParent
-                             generationsThreshold = parseInt(@outerDetailLevel())
+                             generationsThreshold = parseInt(@detailBelowSelect())
                         else
-                             generationsThreshold = parseInt(@innerDetailLevel())
+                             generationsThreshold = parseInt(@detailAboveSelect())
                         visible = undefined
                         if inSelectionPath
                             visible = true
@@ -254,12 +324,10 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             #
             # ============================================================================
             @detailWorker = ko.computed =>
-                outerDetailLevel = @outerDetailLevel()
-                if outerDetailLevel < 0 or outerDetailLevel > 15 then @outerDetailLevel(0)
-                innerDetailLevel = @innerDetailLevel()
-                if innerDetailLevel < 1 or innerDetailLevel > 15 then @innerDetailLevel(1)
-                @updateMenuLevelVisibilities()
-                return "#{outerDetailLevel} #{innerDetailLevel}"
+                detailBelowSelect = @detailBelowSelect()
+                detailAboveSelect = @detailAboveSelect()
+                return @updateMenuLevelVisibilities()
+
 
 
             # Helper method
@@ -296,11 +364,9 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigator", ( -> """
-<div style="font-family: Arial; font-size: 8pt; font-weight: normal; text-align: center; margin-bottom: 10px; ">
-    view detail
-    above <input type="number" min="0" max="15" value="0" data-bind="value: outerDetailLevel" size="1" style="width: 40px;"/>
-    below <input type="number" min="1" max="15" value="1" data-bind="value: innerDetailLevel" size="1" style="width: 40px;"/>
-</div>
+<div class="classNavigatorViewDetailControlPanel"><button class="button small blue" data-bind="event: { click: explodeDetailBelowSelect }" title="Explode detail below selection.">&infin;</button><button class="button small gray" data-bind="event: { click: decrementDetailBelowSelect }" title="Decrease detail below selection.">&minus;</button><button class="button small white" data-bind="event: { click: incrementDetailBelowSelect }" title="Increase detail below selection.">+</button><button class="button small gray" data-bind="event: { click: resetDetailBelowSelect }" title="Reset detail below selection.">&otimes;</button><button class="button small black" data-bind="event: { click: resetDetail }" title="Reset detail.">&empty;</button><button class="button small gray" data-bind="event: { click: resetDetailAboveSelect }" title="Reset detail above selection.">&otimes;</button><button class="button small white" data-bind="event: { click: incrementDetailAboveSelect }" title="Increase detail above selection.">+</button><button class="button small gray" data-bind="event: { click: decrementDetailAboveSelect }" title="Decrease detail above selection.">-</button><button class="button small blue" data-bind="event: { click: explodeDetailAboveSelect }" title="Explode detail above selection.">&infin;</button></div>
+
+
 <span data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: rootMenuLevel.subMenus }"></span>
 """))
 
