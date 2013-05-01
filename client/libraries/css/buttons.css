@@ -18,8 +18,8 @@ view-source:http://www.webdesignerwall.com/demo/css-buttons.html#
 	text-align: center;
 	text-decoration: none;
 	font: 10px/100% Arial, Helvetica, sans-serif;
-	padding: .5em 2em .55em;
-	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+	padding: 1px;
+	text-shadow: 0 1px 1px rgba(0,0,0,.5);
 	-webkit-border-radius: .5em; 
 	-moz-border-radius: .5em;
 	border-radius: .5em;
