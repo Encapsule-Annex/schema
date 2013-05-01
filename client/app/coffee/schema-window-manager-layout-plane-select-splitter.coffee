@@ -37,11 +37,11 @@ Encapsule.code.app.winmgr.layout.PlaneSelectSplitter = {
     Q1WindowDescriptor: {
         id: "idWindowManagerControlPanel"
         name: "#{appName} Window Manager Control Panel"
-        initialMode: "full"
+        initialMode: "min"
         initialEnable: true
         opacity: CommonSettings.windowOpacityDefault
         backgroundColor: undefined # "#CCCCCC"
-        modes: { full: { reserve: 16 }, min: { reserve: 16 } }
+        modes: { full: { reserve: 28 }, min: { reserve: 22 } }
         MVVM: {
             fnModelView: -> Encapsule.runtime.app.windowmanager.WindowManagerControlPanel
             viewModelTemplateId: "idKoTemplate_WindowManagerControlPanel"
