@@ -110,6 +110,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                         origin: "root"
                         classification: "structure"
                         role: "namespace"
+                        description: "#{appName} app runtime state namespace root."
                     }
                     subMenus: layout_.menuHierarchy
                 }
@@ -351,6 +352,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             # Last step in constructor is to set the default view.
             @updateSelectionState(@rootMenuLevel, true)
+            if layout_.initialSelectionPath? and layout_.initialSelectionPath
+                @selectItemByPath(layout_.initialSelectionPath)
 
 
             # / END: constructor try scope

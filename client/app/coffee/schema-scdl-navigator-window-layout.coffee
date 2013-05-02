@@ -30,17 +30,18 @@ Color = net.brehaut.Color
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
-    jsonTag: "scdlCatalogueNavigatorHost"
-    label: "SCDL Catalogue Host"
-    title: "SCDL Catalogue Host"
+    jsonTag: "app"
+    label: "#{appName} Navigator"
+    title: "#{appName} Navigator"
 
     detailBelowSelectDefault: 0
     detailAboveSelectDefault: 1
+    initialSelectionPath: "app.schema.settings.user"
 
     baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.6}).toCSS()
     baseBackgroundRatioPercentPerLevel: 0
 
-    borderLightRatio: 0.15
+    borderLightRatio: 0.25
     borderDarkRatio: 0.15
     borderFlatRatio: -2
     borderWidth: 1 # default
@@ -48,10 +49,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     borderWidthInset: 1
     borderWidthFlat: 1
 
-    fontColorRatioDefault: 0.7
-    fontColorRatioSelected: -0.7
-    fontColorRatioSelectedChild: -0.7
-    fontColorRatioMouseOver: -0.5
+    fontColorRatioDefault: 0.45
+    fontColorRatioSelected: -0.8
+    fontColorRatioSelectedChild: -0.8
+    fontColorRatioMouseOver: -1
     
     selectedItemBackgroundShiftHue: 0
     selectedItemBackgroundLightenRatio: 0.15
@@ -78,13 +79,13 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     userObjectDarkenRatio: 0
     
 
-    menuLevelBoxShadowColorDarkenRatio: 0.4 # Used as shadow color if mouse over or selection path
-    menuLevelBoxShadowColorLightenRatio: 0.4
+    menuLevelBoxShadowColorDarkenRatio: 0.6 # Used as shadow color if mouse over or selection path
+    menuLevelBoxShadowColorLightenRatio: 0.25
 
     menuLevelBoxShadowInSelectionPath: { type: "inset", xBase: 1, xPerLevel: 2, yBase: 1, yPerLevel: 2, blurBase: 15, blurPerLevel: 1 }
     menuLevelBoxShadowNotSelected: { type: "inset", x: 0, y: 10, blur: 10 }
 
-    menuLevelBoxShadowMouseOverHighlight: { type: "inset", x: 3,  y: 3, blur:  3 }
+    menuLevelBoxShadowMouseOverHighlight: { type: "inset", x: 1,  y: 1, blur:  5 }
 
     menuLevelBoxShadowMouseOverSelected: { type: "inset", x: 0, y: 0, blur: 0 } 
 
@@ -92,7 +93,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuHierarchy: [
         {
             jsonTag: "schema"
-            label: "#{appName} v#{appVersion}"
+            label: "#{appName}"
             objectDescriptor: {
                 type: "object"
                 origin: "new"
@@ -101,90 +102,6 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                 description: "#{appName} v#{appVersion} app runtime state namespace root."
             }
             subMenus: [
-                {
-                    jsonTag: "settings"
-                    label: "Settings"
-                    objectDescriptor: {
-                        type: "object"
-                        origin: "parent"
-                        classification: "structure"
-                        role: "namespace"
-                    }
-                    subMenus: [
-                        {
-                            jsonTag: "user"
-                            label: "User"
-                        }
-                        {
-                            jsonTag: "preferences"
-                            label: "Preferences"
-                        }
-                        {
-                            jsonTag: "advanced"
-                            label: "Advanced"
-                            subMenus: [
-                                {
-                                    jsonTag: "baseScdlCatalogue"
-                                    label: "Base Catalogue"
-                                }
-                                {
-                                    jsonTag: "storage"
-                                    label: "Storage"
-                                    subMenus: [
-                                        {
-                                            jsonTag: "local"
-                                            label: "Local"
-                                        } # local
-                                        {
-                                            jsonTag: "remotes"
-                                            label: "Remotes"
-                                            subMenus: [
-                                                {
-                                                    jsonTag: "remote"
-                                                    label: "Remote"
-                                                } # remote
-                                            ] # remotes submenus
-                                        } # remotes
-                                    ] # storage submenus
-                                } # storage
-                            ] # advanced submenus
-                        } # advanced
-                    ] # settings submenus
-                } # settings
-
-                {
-                    jsonTag: "help"
-                    label: "Help"
-                }
-                {
-                    jsonTag: "about"
-                    label: "About"
-                    subMenus: [
-                        {
-                            jsonTag: "status"
-                            label: "Status"
-                        }
-                        {
-                            jsonTag: "version"
-                            label: "v#{appVersion}"
-                            subMenus: [
-                                {
-                                    jsonTag: "build"
-                                    label: "Build Info"
-                                }
-                                {
-                                    jsonTag: "diagnostic"
-                                    label: "Diagnostic"
-                                }
-                            ]
-                        }
-                        {
-                            jsonTag: "publisher"
-                            label: appPackagePublisher
-                        }
-                    ] # about submenus
-                } # about
-
 
                 {
                     jsonTag: "scdlCatalogue"
@@ -963,6 +880,201 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         } # Assets
                     ] # Catalogue submenu
                 } # Catalogue
+
+
+
+                {
+                    jsonTag: "settings"
+                    label: "Settings"
+                    objectDescriptor: {
+                        type: "object"
+                        origin: "parent"
+                        classification: "structure"
+                        role: "namespace"
+                        description: "#{appName} app settings."
+                    }
+                    subMenus: [
+                        {
+                            jsonTag: "user"
+                            label: "User"
+                            objectDescriptor: {
+                                type: "object"
+                                origin: "parent"
+                                classification: "structure"
+                                role: "form"
+                                description: "User information."
+                            }
+                        }
+                        {
+                            jsonTag: "preferences"
+                            label: "Preferences"
+                            objectDescriptor: {
+                                type: "object"
+                                origin: "parent"
+                                classification: "structure"
+                                role: "namespace"
+                                description: "App preferences."
+                            }
+                        }
+                        {
+                            jsonTag: "advanced"
+                            label: "Advanced"
+                            objectDescriptor: {
+                                type: "object"
+                                origin: "parent"
+                                classification: "structure"
+                                role: "namespace"
+                                description: "Advanced app settings."
+                            }
+                            subMenus: [
+                                {
+                                    jsonTag: "baseScdlCatalogue"
+                                    label: "Base Catalogue"
+                                    objectDescriptor: {
+                                        type: "object"
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "form"
+                                        description: "SCDL catalogue archetype."
+                                    }
+                                }
+                                {
+                                    jsonTag: "storage"
+                                    label: "Storage"
+                                    objectDescriptor: {
+                                        type: "object"
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "form"
+                                        description: "App local and remote storage."
+                                    }
+                                    subMenus: [
+                                        {
+                                            jsonTag: "local"
+                                            label: "Local"
+                                            objectDescriptor: {
+                                                type: "object"
+                                                origin: "parent"
+                                                classification: "structure"
+                                                role: "namespace"
+                                                description: "App local storage."
+                                            }
+                                        } # local
+                                        {
+                                            jsonTag: "remotes"
+                                            label: "Remotes"
+                                            objectDescriptor: {
+                                                type: "array"
+                                                origin: "parent"
+                                                classification: "structure"
+                                                role: "extension"
+                                                description: "Remote stores."
+                                            }
+                                            subMenus: [
+                                                {
+                                                    jsonTag: "source"
+                                                    label: "Source"
+                                                    objectDescriptor: {
+                                                        type: "object"
+                                                        origin: "user"
+                                                        classification: "mutable"
+                                                        role: "namespace"
+                                                        description: "Source descriptor for remote SCDL catalogue(s)."
+                                                    }
+                                                } # remote
+                                            ] # remotes submenus
+                                        } # remotes
+                                    ] # storage submenus
+                                } # storage
+                            ] # advanced submenus
+                        } # advanced
+                    ] # settings submenus
+                } # settings
+
+                {
+                    jsonTag: "about"
+                    label: "About"
+                    objectDescriptor: {
+                        type: "object"
+                        origin: "parent"
+                        classification: "structure"
+                        role: "namespace"
+                        description: "About namespace."
+                    }
+                    subMenus: [
+                        {
+                            jsonTag: "status"
+                            label: "Status"
+                            objectDescriptor: {
+                                type: "object"
+                                origin: "parent"
+                                classification: "structure"
+                                role: "namespace"
+                                description: "Current app status."
+                            }
+                        }
+                        {
+                            jsonTag: "version"
+                            label: "v#{appVersion}"
+                            objectDescriptor: {
+                                type: "object"
+                                origin: "parent"
+                                classification: "structure"
+                                role: "namespace"
+                                description: "#{appName} v#{appVersion} notes."
+                            }
+                            subMenus: [
+                                {
+                                    jsonTag: "build"
+                                    label: "Build Info"
+                                    objectDescriptor: {
+                                        type: "object"
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "namespace"
+                                        description: "Information about build #{appBuildId}"
+                                    }
+                                }
+                                {
+                                    jsonTag: "diagnostic"
+                                    label: "Diagnostic"
+                                    objectDescriptor: {
+                                        type: "object"
+                                        origin: "parent"
+                                        classification: "structure"
+                                        role: "namespace"
+                                        description: "Advanced diagnostic information."
+                                    }
+                                }
+                            ]
+                        }
+                        {
+                            jsonTag: "publisher"
+                            label: appPackagePublisher
+                            objectDescriptor: {
+                                type: "object"
+                                origin: "parent"
+                                classification: "structure"
+                                role: "namespace"
+                                description: "About the #{appPackagePublisher}"
+                            }
+                        }
+                    ] # about submenus
+                } # about
+
+                {
+                    jsonTag: "help"
+                    label: "Help"
+                    objectDescriptor: {
+                        type: "object"
+                        origin: "parent"
+                        classification: "structure"
+                        role: "namespace"
+                        description: "#{appName} help."
+                    }
+                }
+
+
             ] # Schema submenus
         } # Schema
 

@@ -47,11 +47,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             @level =    ko.observable(yourNewLevel_? and yourNewLevel_ or 0)
 
-
             @subMenus = ko.observableArray []
-
-
-
 
             @jsonTag =  yourNewLayoutObject_.jsonTag
             @path =     parentMenuLevel_? and parentMenuLevel_ and parentMenuLevel_.path? and "#{parentMenuLevel_.path}.#{@jsonTag}" or "#{@jsonTag}"
@@ -68,21 +64,26 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @selectedChild = ko.observable(false)
             @selectedParent = ko.observable(false)
 
-            # @label =    ko.observable(yourNewLayoutObject_.label? and yourNewLayoutObject_.label or "no label")
-            @label = ko.computed =>
+            @label =    ko.observable(yourNewLayoutObject_.label? and yourNewLayoutObject_.label or "no label")
+            @labelHtml = ko.computed =>
                 hasChildren = @subMenus().length and true or false
                 prefix = ""
+                prefixHasChildrenClosed = "control.png"
+                prefixHasChildrenOpen = "control-270.png"
+                prefixIsLeaf = "control-stop-square-small.png"
                 if @selectedChild()
-                    prefix = "-"
+                    prefix = prefixHasChildrenOpen
                 else
                     if hasChildren
                         if @selectedItem()
-                            prefix = "-"
+                            prefix = prefixHasChildrenOpen
                         else
-                            prefix = "+"
+                            prefix = prefixHasChildrenClosed
                     else
-                        prefix = "&rsaquo;"
-                return "#{prefix} #{@layoutObject.label}"
+                        prefix = prefixIsLeaf
+
+                iconHtml = """<img src="./img/#{prefix}" style="width: 16px; height: 16px; vertical-align: middle;">"""
+                return "#{iconHtml} #{@label()}"
 
             
             Console.message "New menu item: level #{@level()} #{@label()}"
@@ -101,6 +102,13 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     # navigatorContainer, parentMenuLevel, layout, level
                     @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @, subMenuLayout, (@level() + 1) )
                     parentItemPath = @path
+
+
+            @getTooltipText = ko.computed =>
+                if @layoutObject.objectDescriptor? and @layoutObject.objectDescriptor and @layoutObject.objectDescriptor.description? and @layoutObject.objectDescriptor.description
+                    return @layoutObject.objectDescriptor.description
+                else
+                    return "Missing object descriptor description field."
 
 
             @getCssBackgroundColor = ko.computed =>
@@ -232,11 +240,11 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 if not inSelectionPath
                     if mouseOverHighlight
-                        cssShadow = "1px 1px 5px black"
+                        cssShadow = "1px 1px 2px black"
                     else
                         cssShadow = ""
                 else
-                    cssShadow = "1px 1px 5px black"
+                    cssShadow = "1px 1px 2px black"
 
                 return cssShadow
 
@@ -313,7 +321,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     paddingTop: getCssPaddingTop(), paddingLeft: getCssPaddingLeft(), paddingRight: getCssPaddingRight(), borderTop: getBorderTopLeft(), borderLeft: getBorderTopLeft(),
     borderBottom: getBorderBottomRight(), borderRight: getBorderBottomRight(), boxShadow: getCssBoxShadow() },
     event: { mouseover: onMouseOver, mouseout: onMouseOut, click: onMouseClick }, mouseoverBubble: false, mouseoutBubble: false, clickBubble: false">
-        <span data-bind="html: label, style: { fontWeight: getCssFontWeight(), color: getCssColor(), textShadow: getCssTextShadow() }"></span>
+        <span data-bind="html: labelHtml, style: { fontWeight: getCssFontWeight(), color: getCssColor(), textShadow: getCssTextShadow() }"></span>
         <div class="classSchemaViewModelNaviagatorMenuLevel" data-bind="template: { name: 'idKoTemplate_SchemaViewModelNavigatorMenuLevel', foreach: subMenus }"></div>
     </div>
     </span>
