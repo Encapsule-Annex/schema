@@ -43,7 +43,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     baseBackgroundRatioPercentPerLevel: 0
 
     borderLightRatio: 0.25
-    borderDarkRatio: 0.15
+    borderDarkRatio: 0.30
     borderFlatRatio: -2
     borderWidth: 1 # default
     borderWidthOutset: 1
@@ -70,8 +70,9 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelPaddingLeft: 5
     menuLevelPaddingRight: 5
 
-    menuLevelFontSizeMax: 16
-    menuLevelFontSizeMin: 12
+    menuLevelFontSizeMax: 12
+    menuLevelFontSizeMin: 10
+
 
     structureArrayShiftHue: 0
     structureArrayLightenRatio: 0.2
@@ -80,7 +81,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     userObjectDarkenRatio: 0
     
 
-    menuLevelBoxShadowColorDarkenRatio: 0.6 # Used as shadow color if mouse over or selection path
+    menuLevelBoxShadowColorDarkenRatio: 0.3 # Used as shadow color if mouse over or selection path
     menuLevelBoxShadowColorLightenRatio: 0.25
 
     menuLevelBoxShadowInSelectionPath: { type: "inset", xBase: 1, xPerLevel: 2, yBase: 1, yPerLevel: 2, blurBase: 15, blurPerLevel: 1 }
@@ -115,7 +116,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
             subMenus: [
                 {
-                    jsonTag: "tools"
+                    jsonTag: "workbench"
                     label: "Tools"
                     objectDescriptor: {
                         type: "object"

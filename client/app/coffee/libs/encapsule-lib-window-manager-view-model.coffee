@@ -88,9 +88,9 @@ Encapsule.code.lib.kohelpers.implementation.SynthesizeWindowManagerViewModelFrom
                         result.htmlHead += """
                                     <!-- BEGIN: \\ HOSTED OBSERVABLE WINDOW planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
                                     <span data-bind="with: hostedModelView">
-                                        <span data-bind="event: { click: $parent.toggleWindowMode }">
-                                            <img src="img/ui-button-toggle.png" style="width: 16px; height: 16px; border: 0; float: right; position: relative; top: -10px; " >
-                                        </span>
+                                        <div class="classWindowManagerChromeToggleWindowMode" >
+                                            <img src="img/ui-button-toggle.png" style="width: 16px; height: 16px; border: 0;" data-bind="event: { click: $parent.toggleWindowMode }">
+                                        </div>
                                         <span data-bind="template: { name: '#{windowDescriptor.MVVM.viewModelTemplateId}' }"></span>
                                     </span>
                                     <!-- END: / HOSTED OBSERVABLE WINDOW planeId=#{plane.id} windowId=#{windowDescriptor.id} -->

@@ -3,7 +3,7 @@ Encapsule/schema/README.md
 
 Schema is a a single-page HTML5 application for creating, visualizing, and editing JSON-encoded Soft Circuit Description Language (SCDL) system models. 
 
-Test deployment: http://schema.encapsule.org (until released this is subject to radical change w/out notice)
+Test deployment: http://schema.encapsule.org/ (UNRELEASED! daily test builds at this point)
 
 Copyright: https://github.com/Encapsule/schema/blob/master/copyright.txt
 

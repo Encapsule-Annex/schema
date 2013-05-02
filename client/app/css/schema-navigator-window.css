@@ -9,7 +9,7 @@ font-family: Verdana, Arial, Courier;
 opacity: 1.0; z-index: 1;}
 
 .classNavigatorViewDetailControlPanel {
-font-family: Arial; font-size: 8pt; font-weight: normal; text-align: center; margin-top: 0px; margin-bottom: 1px; margin-left: 0px; margin-right: 0px; padding-top: 4px; padding-bottom: 5px; background-color: rgba(0, 204, 255,0.5); 
+font-family: Arial; font-size: 8pt; font-weight: normal; text-align: center; margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; padding: 5px; background-color: rgba(0, 100, 160, 0.45); border-bottom: 1px solid #0099CC;
 -moz-border-radius: 6px; border-radius: 6px;
 }
 
