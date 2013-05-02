@@ -47,6 +47,7 @@ class Encapsule.code.app.SchemaRouter
 
             @setRoute = (route_) =>
                 Console.message("#{appName} local router: Setting new local route.")
+                @routerCore.setRoute(route_)
 
 
 

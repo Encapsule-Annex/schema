@@ -36,10 +36,6 @@ class Encapsule.code.app.Schema
     constructor: ->
         try
             Console.messageRaw("<h3>#{appName} v#{appVersion} APPLICATION STARTING</h3>")
-            Console.message "Initializing local URI routing:"
-
-            Encapsule.runtime.app.SchemaRouter = new Encapsule.code.app.SchemaRouter()
-            Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(Encapsule.runtime.app.SchemaRouter.routeChangedCallback)
 
             Encapsule.runtime.app.SchemaSession = new Encapsule.code.app.SchemaSession()
 
@@ -57,9 +53,13 @@ class Encapsule.code.app.Schema
 
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager(Encapsule.code.app.winmgr.layout.root.Layout)
 
-            Encapsule.runtime.boot.phase0.spinner.cancel()
+            Console.message "Initializing local URI routing:"
+            Encapsule.runtime.app.SchemaRouter = new Encapsule.code.app.SchemaRouter()
+            Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(Encapsule.runtime.app.SchemaRouter.routeChangedCallback)
 
             Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
+
+            Encapsule.runtime.boot.phase0.spinner.cancel()
 
             Console.message("#{appName} main application document.onLoad event handler exit error.")
 

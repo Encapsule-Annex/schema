@@ -69,6 +69,11 @@ class Encapsule.code.lib.InPageURIRouter
         @lastTriggeredLocation = undefined
         @applicationRouteCallback = undefined
 
+        @setRoute = (route_) =>
+            if not (@clientRouter? and @clientRouter)
+                throw "No client router defined!"
+            @clientRouter.setRoute(route_)
+
         @allRoutes = =>
             if document.location.hash == ""
                 # It's possible for the user to manipulate the URI, hit enter, and affect a route dispatch to

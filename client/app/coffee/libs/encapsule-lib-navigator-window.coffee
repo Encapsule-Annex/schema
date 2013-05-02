@@ -38,8 +38,9 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             @title = layout_.title
 
-            # Instances of NavigatorWindowMenuLevel objects created by this contructor.  
+            @selectionUpdatedCallback = layout_.externalIntegration? and layout_.externalIntegration and layout_.externalIntegration.fnNotifyPathChange? and layout_.externalIntegration.fnNotifyPathChange or undefined
 
+            # Instances of NavigatorWindowMenuLevel objects created by this contructor.  
             @menuItemPathNamespace = {}
 
             @currentlySelectedMenuLevel = undefined
@@ -107,7 +108,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     label: layout_.label
                     objectDescriptor: {
                         type: "object"
-                        origin: "root"
+                        origin: "new"
                         classification: "structure"
                         role: "namespace"
                         description: "#{appName} app runtime state namespace root."
@@ -318,6 +319,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     @internalUpdateSelectionState(menuLevel_.parentMenuLevel, true)
                 @updateMouseOverState(menuLevel_, false)
                 @updateMenuLevelVisibilities()
+                if @selectionUpdatedCallback? and @selectionUpdatedCallback
+                    @selectionUpdatedCallback(@, @currentlySelectedMenuLevel.path)
 
 
             #

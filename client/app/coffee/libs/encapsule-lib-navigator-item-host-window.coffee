@@ -151,7 +151,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                     else
                         jsonWrapper[@jsonTag] = @itemObservableModelView
-                    ko.toJSON jsonWrapper, undefined, 4
+                    ko.toJSON jsonWrapper, undefined, 2
 
                 @saveJSONAsLinkHtml = ko.computed =>
                     # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
