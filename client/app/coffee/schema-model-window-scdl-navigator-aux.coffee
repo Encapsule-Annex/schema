@@ -28,7 +28,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     <div class="path">
         <span data-bind="text: currentSelectionPath"></span>
     </div>
-
+    <br>
     <table>
     <thead><td style="width: 200px">Attribute</td><td>Value</td></thead>
     <tr><td>Label</td><td><span data-bind="with: currentlySelectedItemHost"><span data-bind="text: menuLevelObject.label"></span></span></td></tr>

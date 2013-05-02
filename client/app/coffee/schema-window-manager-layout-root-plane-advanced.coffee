@@ -72,7 +72,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#CCEEDD"
+                backgroundColor: "rgba(0,255,204,0.45)"
                 modes: { full: { reserve: 400 }, min: { reserve: 200 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
@@ -88,21 +88,21 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             id: "idCatalogueNavigatorPathSplitter"
             name: "SCDL Catalogue Navigator Path Split"                                           
             type: "horizontal"                                                 
-            Q1WindowDescriptor: {                                            
+            Q1WindowDescriptor: undefined                                    
+            Q2WindowDescriptor: {                                            
                 id: "idScdlCatalogueNavigatorPath"                                              
                 name: "SCDL Catalogue Navigator Path"                                      
-                initialMode: "full"
+                initialMode: "min"
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
-                backgroundColor: "#FFFFCC"
-                modes: { full: { reserve: 132 }, min: { reserve: 18 } }
+                backgroundColor: "rgba(0,100,160,0.45)"
+                modes: { full: { reserve: 200 }, min: { reserve: 18 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorPathWindow"
                 }
             }                                                            
-            Q2WindowDescriptor: undefined                                    
         }
 
 
@@ -112,7 +112,21 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             id: "idEditSplitter"
             name: "Edit Split"                                           
             type: "horizontal"                                               
-            Q1WindowDescriptor: {
+            Q1WindowDescriptor: {                                            
+                id: "idScdlNavigatorMenuItemWindow"                                                
+                name: "SCDL Catalogue Item View"                                        
+                initialMode: "full"
+                initialEnable: true
+                opacity: CommonSettings.windowOpacityDefault
+                backgroundColor: undefined
+                modes: { full: { reserve: 0 }, min: { reserve: 40 } }
+                MVVM: {
+                    fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
+                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorBrowserWindow"
+
+                }
+            }                                                            
+            Q2WindowDescriptor: {
                 id: "idView1"
                 name: "View 1 Window"
                 initialEnable: false
@@ -125,20 +139,6 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelScdlBrowserCatalogues"
                 }
             }
-            Q2WindowDescriptor: {                                            
-                id: "idScdlNavigatorMenuItemWindow"                                                
-                name: "SCDL Catalogue Item View"                                        
-                initialMode: "full"
-                initialEnable: true
-                opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "#FFFFEE"
-                modes: { full: { reserve: 0 }, min: { reserve: 40 } }
-                MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
-                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorBrowserWindow"
-
-                }
-            }                                                            
         }
 
 
