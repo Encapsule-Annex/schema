@@ -46,14 +46,18 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @layoutObject = yourNewLayoutObject_
 
             @level =    ko.observable(yourNewLevel_? and yourNewLevel_ or 0)
-            @label =    ko.observable(yourNewLayoutObject_.label? and yourNewLayoutObject_.label or "no label")
+
+
+            @subMenus = ko.observableArray []
+
+
+
+
             @jsonTag =  yourNewLayoutObject_.jsonTag
             @path =     parentMenuLevel_? and parentMenuLevel_ and parentMenuLevel_.path? and "#{parentMenuLevel_.path}.#{@jsonTag}" or "#{@jsonTag}"
 
             @generationsFromSelectionPath = 0 # Set dynamically by the navigator container during menu level visibility update.
             @itemVisible = ko.observable true
-
-            @subMenus = ko.observableArray []
 
             @mouseOverChild = ko.observable(false)
             @mouseOverParent = ko.observable(false)
@@ -64,6 +68,23 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @selectedChild = ko.observable(false)
             @selectedParent = ko.observable(false)
 
+            # @label =    ko.observable(yourNewLayoutObject_.label? and yourNewLayoutObject_.label or "no label")
+            @label = ko.computed =>
+                hasChildren = @subMenus().length and true or false
+                prefix = ""
+                if @selectedChild()
+                    prefix = "-"
+                else
+                    if hasChildren
+                        if @selectedItem()
+                            prefix = "-"
+                        else
+                            prefix = "+"
+                    else
+                        prefix = "&rsaquo;"
+                return "#{prefix} #{@layoutObject.label}"
+
+            
             Console.message "New menu item: level #{@level()} #{@label()}"
 
             ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
@@ -85,13 +106,15 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @getCssBackgroundColor = ko.computed =>
 
                 backgroundColorObject = Encapsule.code.lib.js.clone(@baseBackgroundColorObject)
+                mouseOverHighlight = @mouseOverHighlight()
 
                 if @selectedItem() or @showAsSelectedUntilMouseOut()
-                    backgroundColorObject = backgroundColorObject.shiftHue(@navigatorContainer.layout.selectedItemBackgroundShiftHue).lightenByRatio(@navigatorContainer.layout.selectedItemBackgroundLightenRatio)
+                    if not mouseOverHighlight
+                        backgroundColorObject = backgroundColorObject.shiftHue(@navigatorContainer.layout.selectedItemBackgroundShiftHue).lightenByRatio(@navigatorContainer.layout.selectedItemBackgroundLightenRatio)
                 else if @selectedChild()
                     backgroundColorObject = backgroundColorObject.shiftHue(@navigatorContainer.layout.selectedChildItemBackgroundShiftHue).lightenByRatio(@navigatorContainer.layout.selectedChildItemBackgroundLightenRatio)
 
-                if @mouseOverHighlight()
+                if mouseOverHighlight
                     backgroundColorObject = backgroundColorObject.shiftHue(@navigatorContainer.layout.mouseOverItemBackgroundShiftHue).lightenByRatio(@navigatorContainer.layout.mouseOverItemBackgroundLightenRatio)
 
                 return backgroundColorObject.toString()
@@ -175,9 +198,8 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 options = undefined
 
                 if not options and mouseOverSelected
-                    optionsContainer = @navigatorContainer.layout.menuLevelBoxShadowMouseOverSelected
-                    options = optionsContainer.normal
-                    colorObject = colorObjectDark
+                    options = @navigatorContainer.layout.menuLevelBoxShadowNotSelected
+                    colorObject = colorObjectLight
 
                 if not options and mouseOverHighlight
                     if not inSelectionPath
@@ -205,8 +227,18 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 selectedChild = @selectedChild()
                 mouseOverHighlight = @mouseOverHighlight()
                 inSelectionPath = selectedItem or selectedChild
-                if inSelectionPath
-                    return (not mouseOverHighlight and "0px 0px 5px black") or "0px 0px 5px white"
+
+                cssShadow = undefined
+
+                if not inSelectionPath
+                    if mouseOverHighlight
+                        cssShadow = "1px 1px 5px black"
+                    else
+                        cssShadow = ""
+                else
+                    cssShadow = "1px 1px 5px black"
+
+                return cssShadow
 
                     
             @getCssFontWeight = ko.computed =>
@@ -220,10 +252,10 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 fontColorObject = net.brehaut.Color(@getCssBackgroundColor())
 
-                if (not (selectedItem or mouseOverHighlight or selectedChild))
+                if not (selectedItem or mouseOverHighlight or selectedChild)
                     return fontColorObject.darkenByRatio(@navigatorContainer.layout.fontColorRatioDefault).toString()
 
-                if mouseOverHighlight
+                if mouseOverHighlight and not selectedChild
                     return fontColorObject.darkenByRatio(@navigatorContainer.layout.fontColorRatioMouseOver).toString()
 
                 if selectedItem

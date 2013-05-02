@@ -64,7 +64,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             @detailAboveSelect = ko.observable(detailAboveSelectDefault)
 
 
-
             @resetDetailBelowSelect = =>
                 @detailBelowSelect(detailBelowSelectDefault)
 
@@ -316,7 +315,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 @internalUpdateSelectionState(menuLevel_, flag_)
                 if unselectedSelected and menuLevel_.parentMenuLevel
                     @internalUpdateSelectionState(menuLevel_.parentMenuLevel, true)
-                
                 @updateMouseOverState(menuLevel_, false)
                 @updateMenuLevelVisibilities()
 

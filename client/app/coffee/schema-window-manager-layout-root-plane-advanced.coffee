@@ -142,6 +142,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
         }
 
 
+
     ] # / END: splitter stack
 
 } # PlaneAdvanced

@@ -37,30 +37,30 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     detailBelowSelectDefault: 0
     detailAboveSelectDefault: 1
 
-    baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.7}).toCSS()
+    baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.6}).toCSS()
     baseBackgroundRatioPercentPerLevel: 0
 
     borderLightRatio: 0.15
     borderDarkRatio: 0.15
-    borderFlatRatio: -1
-    borderWidth: 2 # default
-    borderWidthOutset: 2
-    borderWidthInset: 2
-    borderWidthFlat: 2
+    borderFlatRatio: -2
+    borderWidth: 1 # default
+    borderWidthOutset: 1
+    borderWidthInset: 1
+    borderWidthFlat: 1
 
-    fontColorRatioDefault: 1
-    fontColorRatioSelected: -1
-    fontColorRatioSelectedChild: -1
-    fontColorRatioMouseOver: 1
+    fontColorRatioDefault: 0.7
+    fontColorRatioSelected: -0.7
+    fontColorRatioSelectedChild: -0.7
+    fontColorRatioMouseOver: -0.5
     
     selectedItemBackgroundShiftHue: 0
-    selectedItemBackgroundLightenRatio: -0.15
+    selectedItemBackgroundLightenRatio: 0.15
 
     selectedChildItemBackgroundShiftHue: 0
-    selectedChildItemBackgroundLightenRatio: -0.15
+    selectedChildItemBackgroundLightenRatio: 0.15
 
-    mouseOverItemBackgroundShiftHue: 0
-    mouseOverItemBackgroundLightenRatio: -0.3
+    mouseOverItemBackgroundShiftHue: -5
+    mouseOverItemBackgroundLightenRatio: 0.3
 
 
     menuLevelPaddingTop: 1
@@ -68,49 +68,124 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelPaddingLeft: 5
     menuLevelPaddingRight: 5
 
-    menuLevelFontSizeMax: 14
+    menuLevelFontSizeMax: 16
     menuLevelFontSizeMin: 12
 
     structureArrayShiftHue: 0
     structureArrayLightenRatio: 0.2
 
-    userObjectShiftHue: -20
+    userObjectShiftHue: -60
     userObjectDarkenRatio: 0
     
 
-    menuLevelBoxShadowColorDarkenRatio: 0.35 # Used as shadow color if mouse over or selection path
-    menuLevelBoxShadowColorLightenRatio: 0.2
+    menuLevelBoxShadowColorDarkenRatio: 0.4 # Used as shadow color if mouse over or selection path
+    menuLevelBoxShadowColorLightenRatio: 0.4
 
     menuLevelBoxShadowInSelectionPath: { type: "inset", xBase: 1, xPerLevel: 2, yBase: 1, yPerLevel: 2, blurBase: 15, blurPerLevel: 1 }
     menuLevelBoxShadowNotSelected: { type: "inset", x: 0, y: 10, blur: 10 }
 
     menuLevelBoxShadowMouseOverHighlight: { type: "inset", x: 3,  y: 3, blur:  3 }
 
-    menuLevelBoxShadowMouseOverSelected: { normal: { type: "inset", x: 0, y: 0, blur: 0 }, explode: { type: "inset", x: 0, y: 10, blur: 25 } }
+    menuLevelBoxShadowMouseOverSelected: { type: "inset", x: 0, y: 0, blur: 0 } 
 
 
     menuHierarchy: [
         {
-            jsonTag: "test"
-            label: "Test Level"
-            objectDescriptor: {
-                type: "object"
-                origin: "new"
-                classification: "structure"
-                description: "top-level menu item for testing collapsable menus."
-            }
-        }
-        {
             jsonTag: "schema"
-            label: appName
+            label: "#{appName} v#{appVersion}"
             objectDescriptor: {
                 type: "object"
                 origin: "new"
                 classification: "structure"
                 role: "namespace"
-                description: "#{appName} root namespace object."
+                description: "#{appName} v#{appVersion} app runtime state namespace root."
             }
             subMenus: [
+                {
+                    jsonTag: "settings"
+                    label: "Settings"
+                    objectDescriptor: {
+                        type: "object"
+                        origin: "parent"
+                        classification: "structure"
+                        role: "namespace"
+                    }
+                    subMenus: [
+                        {
+                            jsonTag: "user"
+                            label: "User"
+                        }
+                        {
+                            jsonTag: "preferences"
+                            label: "Preferences"
+                        }
+                        {
+                            jsonTag: "advanced"
+                            label: "Advanced"
+                            subMenus: [
+                                {
+                                    jsonTag: "baseScdlCatalogue"
+                                    label: "Base Catalogue"
+                                }
+                                {
+                                    jsonTag: "storage"
+                                    label: "Storage"
+                                    subMenus: [
+                                        {
+                                            jsonTag: "local"
+                                            label: "Local"
+                                        } # local
+                                        {
+                                            jsonTag: "remotes"
+                                            label: "Remotes"
+                                            subMenus: [
+                                                {
+                                                    jsonTag: "remote"
+                                                    label: "Remote"
+                                                } # remote
+                                            ] # remotes submenus
+                                        } # remotes
+                                    ] # storage submenus
+                                } # storage
+                            ] # advanced submenus
+                        } # advanced
+                    ] # settings submenus
+                } # settings
+
+                {
+                    jsonTag: "help"
+                    label: "Help"
+                }
+                {
+                    jsonTag: "about"
+                    label: "About"
+                    subMenus: [
+                        {
+                            jsonTag: "status"
+                            label: "Status"
+                        }
+                        {
+                            jsonTag: "version"
+                            label: "v#{appVersion}"
+                            subMenus: [
+                                {
+                                    jsonTag: "build"
+                                    label: "Build Info"
+                                }
+                                {
+                                    jsonTag: "diagnostic"
+                                    label: "Diagnostic"
+                                }
+                            ]
+                        }
+                        {
+                            jsonTag: "publisher"
+                            label: appPackagePublisher
+                        }
+                    ] # about submenus
+                } # about
+
+
                 {
                     jsonTag: "scdlCatalogue"
                     label: "SCDL Catalogue"
