@@ -240,18 +240,18 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 if not inSelectionPath
                     if mouseOverHighlight
-                        cssShadow = "1px 1px 2px black"
+                        cssShadow = "1px 1px 5px black"
                     else
                         cssShadow = ""
                 else
-                    cssShadow = "1px 1px 2px black"
+                    cssShadow = "1px 1px 5px black"
 
                 return cssShadow
 
                     
             @getCssFontWeight = ko.computed =>
                 selectedPathItem = @selectedItem() or @selectedChild()
-                return selectedPathItem and "bold" or "normal"
+                return selectedPathItem and "normal" or "normal"
 
             @getCssColor = ko.computed =>
                 selectedItem = @selectedItem()
@@ -278,15 +278,17 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 return "#{@navigatorContainer.layout.menuLevelPaddingTop}px"
 
             @getCssPaddingBottom = ko.computed =>
-                paddingBottom = 0
+                paddingBottom = 2
                 subMenus = @subMenus()
                 if subMenus? and subMenus and subMenus.length
+                    paddingBottom = 3
                     oneOrMoreVisibleChildren = false
                     for subMenu in subMenus
                         if subMenu.itemVisible()
                             oneOrMoreVisibleChildren = true
 
-                    paddingBottom = oneOrMoreVisibleChildren and @navigatorContainer.layout.menuLevelPaddingBottom or 0
+                    if oneOrMoreVisibleChildren
+                        paddingBottom =  @navigatorContainer.layout.menuLevelPaddingBottom or paddingBottom
 
                 return "#{paddingBottom}px"
                 
