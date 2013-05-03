@@ -2,19 +2,23 @@
     CSS3 for Schema navigator window.
 */
 
-/* first-level container for the Schema navigator view model */
+/* First-level container for the Schema navigator view model */
+/* Actually, this has evolved to mean the tree-view-like thing. Navigator has many views... */
+
+.classMouseCursorPointer { cursor: pointer; }
+
 #idSchemaViewModelNavigator { position: fixed; top: 0px; left: 0px; width: 240px; height: 100%;
 border-right: 1px solid black; border-top: 1px solid white; background-color: #00CCFF; overflow: auto; 
 font-family: Verdana, Arial, Courier; 
 opacity: 1.0; z-index: 1;}
 
+/* Styles for the little button area above the tree-view */
 .classNavigatorViewDetailControlPanel {
 font-family: Arial; font-size: 8pt; font-weight: normal; text-align: center; margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; padding: 5px; background-color: rgba(0, 100, 160, 0.45); border-bottom: 1px solid #0099CC;
 -moz-border-radius: 6px; border-radius: 6px;
 }
 
-
-
+/* A single level item in the tree-view */
 .classSchemaViewModelNavigatorMenuLevel {
 margin-top: 0px;
 margin-bottom: 0x;
@@ -24,37 +28,31 @@ font-family: Verdana, Arial;
 -moz-border-radius: 6px; border-radius: 6px;
 }
 
-.classNavigatorPathWindow {
-font-family: Arial;
-font-size: 10pt;
-font-weight: bold;
-color: #003366;
+/* Current tree-view selection path + metadata about the currently selected item */
+.classSchemaNavigatorSelectedItemMetaWindow {
 }
 
-.classNavigatorItemHostWindow {
-font-family: Courier;
-font-size: 10pt;
-}
-
-.classNavigatorItemHostWindow table {
+.classSchemaNavigatorSelectedItemMetaWindow table {
 border: none;
 margin: 0px;
 padding: 0px;
 }
 
-.classNavigatorItemHostWindow thead {
+.classSchemaNavigatorSelectedItemMetaWindow thead {
 background-color: #DDEEFF;
 }
 
-.classNavigatorItemHostWindow thead td {
+.classSchemaNavigatorSelectedItemMetaWindow thead td {
 background-color: #00FFFF;
 }
 
-.classNavigatorItemHostWindow td {
+.classSchemaNavigatorSelectedItemMetaWindow td {
 border: none;
 padding: 2px;
 margin: 0px;
 background-color: #00AADD;
 }
 
-.classMouseCursorPointer { cursor: pointer; }
+.classNavigatorItemHostWindow {
+margin: 8px;
+}

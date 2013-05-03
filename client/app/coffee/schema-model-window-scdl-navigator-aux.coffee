@@ -21,10 +21,8 @@
 
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorPathWindow", ( -> """
-
-<div class="classSchemaViewModelNavigatorPathWindow">
-
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelSchemaNavigatorSelectedItemMetaWindow", ( -> """
+<div class="classSchemaNavigatorSelectedItemMetaWindow">
     <div class="path">
         <span data-bind="text: currentSelectionPath"></span>
     </div>
@@ -36,11 +34,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     <tr><td>Type</td><td><span data-bind="with: currentlySelectedItemHost"><span data-bind="text: itemObjectOrigin"></span> &bull; <span data-bind="text: itemObjectClassification"></span> &bull; <span data-bind="text: itemObjectRole"></span> &bull; <span data-bind="text: itemObjectType"></span></span></td></tr>
     <tr><td>Path</td><td><span data-bind="with: currentlySelectedItemHost"><span data-bind="text: menuLevelObject.path"></span></span></td></tr>
     </table>
-
-
-
-
 </div>
-
 """))
 

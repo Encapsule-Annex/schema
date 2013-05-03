@@ -51,7 +51,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             @itemObjectDescription = "unspecified"
 
             @itemOuterJsonObject = {}
-            @itemObservableModelView = undefined
+            @itemObservableModelView = ko.observable(undefined)
+            @itemObservableModelViewFree = ko.observable false
 
             if @menuLevelObject.parentMenuLevel? and @menuLevelObject.parentMenuLevel
                 parentPath = @menuLevelObject.parentMenuLevel.path
@@ -85,7 +86,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                             when "new"
                                 # No registration necessary.
-                                @itemObservableModelView = ko.observable {}
+                                @itemObservableModelView({})
                                 break
 
                             when "parent"
@@ -98,7 +99,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                         if not (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
                                             break
 
-                                        @itemObservableModelView = ko.observable {}
+                                        @itemObservableModelView({})
                                         currentModelView = @parentItemHostWindow.itemObservableModelView()
                                         currentModelView[@jsonTag] = @itemObservableModelView
                                         @parentItemHostWindow.itemObservableModelView(currentModelView)
@@ -106,8 +107,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                 break
 
                             when "user"
-                                @itemObservableModelView = ko.observable {}
-                                @itemObservableModelViewFree = ko.observable true
+                                @itemObservableModelView({})
+                                @itemObservableModelViewFree(true)
                                 colorObject = @menuLevelObject.baseBackgroundColorObject
                                 @menuLevelObject.baseBackgroundColorObject = colorObject.darkenByRatio(@navigatorContainer.layout.userObjectDarkenRatio).shiftHue(@navigatorContainer.layout.userObjectShiftHue)
                                 break
@@ -133,7 +134,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                         if not (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
                                             break
 
-                                        @itemObservableModelView = ko.observableArray []
+                                        @itemObservableModelView([])
                                         currentModelView = @parentItemHostWindow.itemObservableModelView()
                                         currentModelView[@jsonTag] = @itemObservableModelView
                                         @parentItemHostWindow.itemObservableModelView(currentModelView)
@@ -166,33 +167,49 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             throw "NavigatorMenuItemHostWindow constructor fail: #{exception}"
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigatorBrowserWindow", ( -> """
-<div class="classNavigatorItemHostWindow">
-<span data-bind="ifnot: currentlySelectedItemHost">
-    <div>
-        <span data-bind="text: title"></span> :: <strong>no selection</strong>
-    </div>
-</span>
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNavigatorSelectedItemWindow", ( -> """
 
 <span data-bind="if: currentlySelectedItemHost">
     <span data-bind="with: currentlySelectedItemHost">
-        <div data-bind="text: menuLevelObject.label"></div>
-        <span data-bind="if: itemObjectType == 'object'">
-            <span data-bind="if: itemObjectRole == 'namespace'">
-            namspace object
+
+        <div class="classNavigatorItemHostWindow">
+
+            <span data-bind="with: menuLevelObject">
+                <h1 data-bind="style: { color: getCssColor(), textShadow: getCssTextShadow() }">
+                    <span data-bind="text: label"></span>
+                </h1>
             </span>
-            <span data-bind="if: itemObjectRole == 'data'">
-            data object
+
+
+            <span data-bind="if: itemObjectType == 'object'">
+                <span data-bind="if: itemObjectRole == 'namespace'">
+                    namspace object
+                </span>
+                <span data-bind="if: itemObjectRole == 'data'">
+                    data object
+                </span>
             </span>
-        </span>
-        <span data-bind="if: itemObjectType == 'array'">
-            <span data-bind="if: itemObjectRole == 'extension'">
-            extension array
+
+            <span data-bind="if: itemObjectType == 'array'">
+                <span data-bind="if: itemObjectRole == 'extension'">
+                    extension array
+                </span>
             </span>
-        </span>
+
+            <span data-bind="if: itemObservableModelViewFree">
+                This is an archetype entity.
+
+                <span data-bind="with: menuLevelObject.parentMenuLevel">
+                    <p>
+                        Add this entity to <span data-bind="text: label"></span>:
+                    </p>
+                </span>
+            </span>
+
+        </div>
     </span>
 </span>
-</div>
+
 """))
 
     

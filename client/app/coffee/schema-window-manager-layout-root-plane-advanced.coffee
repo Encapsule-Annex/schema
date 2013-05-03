@@ -68,12 +68,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             Q2WindowDescriptor: {                                            
                 id: "idScdlNavigatorMenuItemJSONWindow"                                                
                 name: "SCDL Catalogue Item JSON View"                                        
-                initialMode: "full"
+                initialMode: "min"
                 initialEnable: true
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "rgba(0,255,204,0.45)"
-                modes: { full: { reserve: 400 }, min: { reserve: 200 } }
+                modes: { full: { reserve: 400 }, min: { reserve: 250 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorJSONWindow"
@@ -82,66 +82,51 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             }
         }   
 
-        Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
-
         {                                                                    
-            id: "idCatalogueNavigatorPathSplitter"
-            name: "SCDL Catalogue Navigator Path Split"                                           
+            id: "idSchemaNavigatorSelectedItemMetaWindowSplitter"
+            name: "Schema Navigator Selected Item Meta Window Splitter"
             type: "horizontal"                                                 
-            Q1WindowDescriptor: undefined                                    
-            Q2WindowDescriptor: {                                            
-                id: "idScdlCatalogueNavigatorPath"                                              
-                name: "SCDL Catalogue Navigator Path"                                      
+            Q2WindowDescriptor: undefined                                    
+            Q1WindowDescriptor: {                                            
+                id: "idSchemaNavigatorSelectedItemMetaWindow"
+                name: "Selected Item Meta"                              
                 initialMode: "min"
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "rgba(0,100,160,0.45)"
-                modes: { full: { reserve: 200 }, min: { reserve: 18 } }
+                modes: { full: { reserve: 160 }, min: { reserve: 18 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
-                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorPathWindow"
+                    # schema-model-window-scdl-navigator-aux.coffee
+                    viewModelTemplateId: "idKoTemplate_SchemaViewModelSchemaNavigatorSelectedItemMetaWindow"
                 }
             }                                                            
         }
 
+        Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom
 
 
-
-        {                                                                    
-            id: "idEditSplitter"
-            name: "Edit Split"                                           
-            type: "horizontal"                                               
+        {
+            id: "idSchemaNavigatorSelectedItemWindowSplitter"
+            name: "Schema Navigator Selected Item Window Splitter"
+            type: "horizontal"
             Q1WindowDescriptor: {                                            
-                id: "idScdlNavigatorMenuItemWindow"                                                
-                name: "SCDL Catalogue Item View"                                        
+                id: "idSchemaNavigatorSelectedItemWindow"                                     
+                name: "Schema Navigator Selected Item"                               
                 initialMode: "full"
                 initialEnable: true
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: undefined
-                modes: { full: { reserve: 0 }, min: { reserve: 40 } }
+                modes: { full: { reserve: 0 }, min: { reserve: 400 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
-                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorBrowserWindow"
-
-                }
-            }                                                            
-            Q2WindowDescriptor: {
-                id: "idView1"
-                name: "View 1 Window"
-                initialEnable: false
-                initialMode: "min"
-                opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "white"
-                modes: { full: { reserve: 0}, min: { reserve: 40 } }
-                MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.SchemaEditorContext
-                    viewModelTemplateId: "idKoTemplate_SchemaViewModelScdlBrowserCatalogues"
+                    # Template defined in encapsule-lib-navigator-item-host-window.coffee
+                    viewModelTemplateId: "idKoTemplate_SchemaNavigatorSelectedItemWindow"
                 }
             }
+            Q2WindowDescriptor: undefined
         }
-
-
 
     ] # / END: splitter stack
 

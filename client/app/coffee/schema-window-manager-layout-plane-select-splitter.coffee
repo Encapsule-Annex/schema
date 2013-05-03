@@ -49,3 +49,7 @@ Encapsule.code.app.winmgr.layout.PlaneSelectSplitter = {
     }
     Q2WindowDescriptor: undefined
 }
+
+Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom = Encapsule.code.lib.js.clone(Encapsule.code.app.winmgr.layout.PlaneSelectSplitter)
+Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom.Q1WindowDescriptor = Encapsule.code.app.winmgr.layout.PlaneSelectSplitter.Q2WindowDescriptor
+Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom.Q2WindowDescriptor = Encapsule.code.app.winmgr.layout.PlaneSelectSplitter.Q1WindowDescriptor

@@ -31,8 +31,8 @@ Color = net.brehaut.Color
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     jsonTag: "app"
-    label: "#{appName} Navigator"
-    title: "#{appName} Navigator"
+    label: "#{appName} App State Namespace"
+    title: "#{appName} App State Namespace"
 
     detailBelowSelectDefault: 0
     detailAboveSelectDefault: 1
