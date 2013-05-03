@@ -100,7 +100,8 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 for subMenuLayout in yourNewLayoutObject_.subMenus
                     # navigatorContainer, parentMenuLevel, layout, level
-                    @subMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @, subMenuLayout, (@level() + 1) )
+                    newMenuLevelObject = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @, subMenuLayout, (@level() + 1) )
+                    @subMenus.push(newMenuLevelObject)
                     parentItemPath = @path
 
 

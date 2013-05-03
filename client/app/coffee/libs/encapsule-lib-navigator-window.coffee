@@ -111,7 +111,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                         origin: "new"
                         classification: "structure"
                         role: "namespace"
-                        description: "#{appName} app runtime state namespace root."
+                        description: "#{appName} Runtime Namespace"
                     }
                     subMenus: layout_.menuHierarchy
                 }
@@ -171,11 +171,45 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             #
             # ============================================================================
-            @insertArchetype = (path_) =>
+            @insertArchetypeFromItemHostObject = (itemHostObject_) =>
                 try
-                    archetypeItemHostWindow = @getItemHostWindowForPath(path_)
+                    if not (itemHostObject_? and itemHostObject_)
+                        throw "Missing item host object reference parameter."
+
+                    if not itemHostObject_.itemObservableModelViewFree()
+                        throw "Specified item host object does not represent an archetype!"
+
+                    parentItemHostObject = itemHostObject_.parentItemHostWindow
+                    if not (parentItemHostObject? and parentItemHostObject)
+                        throw "Unable to resolve parent item host object reference."
+
+                    if parentItemHostObject.itemObjectType != "array"
+                        throw "Specified item host's parent object type doesn't support this operation. This is an error in your layout declaration."
+
+                    if parentItemHostObject.itemObjectRole != "extension"
+                        throw "Specified item host's parent object is not a valid extension point! This is an error in your layout declaration."
+
+                    sourceMenuLevelObject = itemHostObject_.menuLevelObject
+                    targetMenuLevelObject = sourceMenuLevelObject.parentMenuLevel
+
+                    newMenuLevelObject =
+                        new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, targetMenuLevelObject, sourceMenuLevelObject.layoutObject, targetMenuLevelObject.level() + 1)
+
+                    targetMenuLevelObject.subMenus.push(newMenuLevelObject)
+
+
+
                 catch exception
-                    throw "insertArchetype fail: #{exception}"
+                    throw "NavigatorWindow.insertArchetypeFromItemHostObject fail: #{exception}"
+
+
+            #
+            # ============================================================================
+            @insertArchetypeFromPath = (path_) =>
+                try
+                    @insertArchetypeFromItemHostObject(@getItemHostWindowForPath(path_))
+                catch exception
+                    throw "NavigatorWindow.insertArchetypeFromPath fail: #{exception}"
 
 
 

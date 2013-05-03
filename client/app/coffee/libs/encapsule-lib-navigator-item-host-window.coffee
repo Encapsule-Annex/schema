@@ -158,7 +158,13 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                     # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
                     html = "<a href=\"data:text/json;base64,#{window.btoa(@toJSON())}\" target=\"_blank\">JSON</a>"
 
-                             
+                # OPERATIONS
+
+                @insertArchetype = =>
+                    @navigatorContainer.insertArchetypeFromItemHostObject(@)
+
+
+
 
             # END: / NavigatorMenuItemHostWindow constructor try scope
 
@@ -199,13 +205,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <span data-bind="if: itemObservableModelViewFree">
                 This is an archetype entity.
 
-                <span data-bind="with: menuLevelObject.parentMenuLevel">
-                    <p>
-                        Add this entity to <span data-bind="text: label"></span>:
-                    </p>
-                </span>
-            </span>
-
+                <p>
+                    <span data-bind="with: menuLevelObject.parentMenuLevel">Add this entity to <span data-bind="text: label"></span>:</span>
+                    <button class="button small blue" data-bind="event: { click: insertArchetype }">Add</button>
+                </p>
         </div>
     </span>
 </span>

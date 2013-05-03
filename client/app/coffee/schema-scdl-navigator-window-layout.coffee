@@ -116,7 +116,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
             subMenus: [
                 {
-                    jsonTag: "workbench"
+                    jsonTag: "tools"
                     label: "Tools"
                     objectDescriptor: {
                         type: "object"
@@ -196,32 +196,6 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         }
                     ] # tools submenus
                 } # tools
-
-
-                {
-                    jsonTag: "sessions"
-                    label: "Sessions"
-                    objectDescriptor: {
-                        type: "array"
-                        origin: "parent"
-                        classification: "structure"
-                        role: "extension"
-                        description: "Manager current and past session."
-                    }
-                    subMenus: [
-                        {
-                            jsonTag: "session"
-                            label: "Session"
-                            objectDescriptor: {
-                                type: "object"
-                                origin: "user"
-                                classification: "mutable"
-                                role: "namespace"
-                                description: "#{appName} session object."
-                            }
-                        }
-                    ] # sessionManager submenus
-                } # sessionManager
 
 
                 {
@@ -1015,6 +989,31 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     ]
                 } # catalogueManager
 
+
+                {
+                    jsonTag: "sessions"
+                    label: "Sessions"
+                    objectDescriptor: {
+                        type: "array"
+                        origin: "parent"
+                        classification: "structure"
+                        role: "extension"
+                        description: "Manager current and past session."
+                    }
+                    subMenus: [
+                        {
+                            jsonTag: "session"
+                            label: "Session"
+                            objectDescriptor: {
+                                type: "object"
+                                origin: "user"
+                                classification: "mutable"
+                                role: "namespace"
+                                description: "#{appName} session object."
+                            }
+                        }
+                    ] # sessionManager submenus
+                } # sessionManager
 
 
 
