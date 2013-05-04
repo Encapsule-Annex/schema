@@ -70,8 +70,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelPaddingLeft: 5
     menuLevelPaddingRight: 5
 
-    menuLevelFontSizeMax: 12
-    menuLevelFontSizeMin: 10
+    menuLevelFontSizeMax: 14
+    menuLevelFontSizeMin: 12
 
 
     structureArrayShiftHue: 0
@@ -116,14 +116,14 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
             subMenus: [
                 {
-                    jsonTag: "tools"
-                    label: "Tools"
+                    jsonTag: "Workstations"
+                    label: "Workstations"
                     objectDescriptor: {
                         type: "object"
                         origin: "parent"
                         classification: "structure"
                         role: "namespace"
-                        description: "SCDL toolshed."
+                        description: "Workstations are task-specific SCDL catalogue editors."
                     }
                     subMenus: [
                         {

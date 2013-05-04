@@ -186,6 +186,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
                 </h1>
             </span>
 
+            <strong><span data-bind="text: itemObjectDescription"></span><strong><br>
 
             <span data-bind="if: itemObjectType == 'object'">
                 <span data-bind="if: itemObjectRole == 'namespace'">
