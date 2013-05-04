@@ -2,6 +2,11 @@ In order to keep the Schema client app organized and modular, the following
 conventions for the creating of global Encapsule object namesspace and its
 subobjects will be used:
 
+Status: The class structure captured here is dated. All of the SCDL objects have been
+collapsed into a declarative syntax that allows me to dynamically synthesize MVVM
+instead of writing all this shit by hand. See the bottom of the page for some useful
+recent information relating to this subject.
+
 ```
 Encapsule
 
@@ -69,12 +74,69 @@ Encapsule.code.app.schema.editcontext ................................. Schema e
 
 Encapsule.code.app.schema.editcontext.ObservableEditorContext ......... Top-level editor context data model class
 
-
-
-
 Encapsule.runtime ..................................................... application runtime state
 Encapsule.runtime.app ................................................. application runtime state 
 Encapsule.runtime.boot ................................................ namepsace object (filed during boot)
+
+
+SCHEMA NAVIGATOR MENU LEVEL DECLARATION OBJECT DESCRIPTOR:
+
+type: object | objectRef | arrayRef
+
+typeRole: archetype | extensionPoint | namespace | selectionPoint
+
+typeOrigin: dynamic | new | parent
+
+description: 
+
+Currently-supported combinations:
+
+type             typeRole          origin       mvvmType        support notes
+----             --------          ------       --------        ------- -----
+object           archetype         dynamic
+object           archetype         new          "archetype"     yes
+object           archetype         parent
+object           extensionPoint    dynamic
+object           extensionPoint    new
+object           extensionPoint    parent
+object           namespace         dynamic
+object           namespace         new          "root"          yes
+object           namespace         parent
+object           selectionPoint    dynamic
+object           selectionPoint    new
+object           selectionPoint    parent
+
+
+objectRef        archetype         dynamic
+objectRef        archetype         new
+objectRef        archetype         parent
+objectRef        extensionPoint    dynamic
+objectRef        extensionPoint    new
+objectRef        extensionPoint    parent
+objectRef        namespace         dynamic
+objectRef        namespace         new
+objectRef        namespace         parent       "child"         yes
+objectRef        selectionPoint    dynamic      "select"        yes
+objectRef        selectionPoint    new
+objectRef        selectionPoint    parent
+
+
+arrayRef         archetype         dynamic
+arrayRef         archetype         new
+arrayRef         archetype         parent
+arrayRef         extensionPoint    dynamic
+arrayRef         extensionPoint    new
+arrayRef         extensionPoint    parent       "extension"     yes
+arrayRef         namespace         dynamic
+arrayRef         namespace         new
+arrayRef         namespace         parent
+arrayRef         selectionPoint    dynamic
+arrayRef         selectionPoint    new
+arrayRef         selectionPoint    parent
+
+
+
+
 ```
 
 

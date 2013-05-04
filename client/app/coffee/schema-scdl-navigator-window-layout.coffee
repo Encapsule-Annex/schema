@@ -77,6 +77,9 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     structureArrayShiftHue: 0
     structureArrayLightenRatio: 0.2
 
+    metaArrayElementShiftHue: 0
+    metaArrayElementLightenRatio: 0.2
+
     userObjectShiftHue: -60
     userObjectDarkenRatio: 0
     
@@ -106,10 +109,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
             jsonTag: "schema"
             label: "#{appName}"
             objectDescriptor: {
-                type: "object"
-                origin: "parent"
-                classification: "structure"
-                role: "namespace"
+                mvvmType: "child"
                 description: "#{appName} v#{appVersion} app runtime state namespace root."
             }
 
@@ -119,10 +119,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     jsonTag: "Workstations"
                     label: "Workstations"
                     objectDescriptor: {
-                        type: "object"
-                        origin: "parent"
-                        classification: "structure"
-                        role: "namespace"
+                        mvvmType: "child"
                         description: "Workstations are task-specific SCDL catalogue editors."
                     }
                     subMenus: [
@@ -130,10 +127,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "compose"
                             label: "Compose"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "namespace"
+                                mvvmType: "child"
                                 description: "SCDL system composer."
                             }
                         }
@@ -142,10 +136,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "design"
                             label: "Design"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "namespace"
+                                mvvmType: "child"
                                 description: "SCDL system designer."
                             }
                         }
@@ -154,10 +145,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "model"
                             label: "Model"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "namespace"
+                                mvvmType: "child"
                                 description: "SCDL model designer."
                             }
                         }
@@ -165,10 +153,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "test"
                             label: "Test"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "namespace"
+                                mvvmType: "child"
                                 description: "SCDL test bench."
                             }
                         }
@@ -176,10 +161,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "visualize"
                             label: "Visualize"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "namespace"
+                                mvvmType: "child"
                                 description: "SCDL model visualizer."
                             }
                         }
@@ -187,10 +169,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "share"
                             label: "Share"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "namespace"
+                                mvvmType: "child"
                                 description: "Share your work."
                             }
                         }
@@ -202,32 +181,31 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     jsonTag: "catalogues"
                     label: "Catalogues"
                     objectDescriptor: {
-                        type: "array"
-                        origin: "parent"
-                        classification: "structure"
-                        role: "extension"
+                        mvvmType: "extension"
                         description: "Manage SCDL catalogues in your local repository."
                     }
                     subMenus: [
                         {
-                            jsonTag: "scdlCatalogue"
+                            jsonTag: "scdlCatalogueSelected"
+                            label: "Selected Catalogue"
+                            objectDescriptor: {
+                                mvvmType: "select"
+                                description: "Currently selected SCDL catalogue."
+                            }
+                        }
+                        {
+                            jsonTag: "scdlCatalogueArchetype"
                             label: "Catalogue"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "user"
-                                classification: "mutable"
-                                role: "namespace"
-                                description: "SCDL catalogue."
+                                mvvmType: "archetype"
+                                description: "SCDL catalogue object archetype."
                             }
                             subMenus: [
                                 {
                                     jsonTag: "specifications"
                                     label: "Specifications"
                                     objectDescriptor: {
-                                        type: "array"
-                                        origin: "parent"
-                                        classification: "structure"
-                                        role: "extension"
+                                        mvvmType: "extension"
                                         description: "SCDL specification."
                                     }
                                     subMenus: [
@@ -235,10 +213,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "specification"
                                             label: "Specification"
                                             objectDescriptor: {
-                                                type: "object"
-                                                origin: "user"
-                                                classification: "mutable"
-                                                role: "namespace"
+                                                mvvmType: "archetype"
                                                 description: "SCDL specification."
                                             }
                                             subMenus: [
@@ -246,10 +221,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     jsonTag: "systemInstances"
                                                     label: "System Instances"
                                                     objectDescriptor: {
-                                                        type: "array"
-                                                        origin: "parent"
-                                                        classification: "structure"
-                                                        role: "extension"
+                                                        mvvmType: "extension"
                                                         description: "SCDL system model instances."
                                                     }
                                                     subMenus: [
@@ -257,10 +229,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "systemInstance"
                                                             label: "System Instance"
                                                             objectDescriptor: {
-                                                                type: "object"
-                                                                origin: "user"
-                                                                classification: "mutable"
-                                                                role: "namespace"
+                                                                mvvmType: "archetype"
                                                                 description: "SCDL system model instance."
                                                             }
                                                             subMenus: [
@@ -268,10 +237,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "socketInstances"
                                                                     label: "Socket Instances"
                                                                     objectDescriptor: {
-                                                                        type: "array"
-                                                                        origin: "parent"
-                                                                        classification: "structure"
-                                                                        role: "extension"
+                                                                        mvvmType: "extension"
                                                                         description: "SCDL socket model instances."
                                                                     }
                                                                     subMenus: [
@@ -279,10 +245,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             jsonTag: "socketInstance"
                                                                             label: "Socket Instance"
                                                                             objectDescriptor: {
-                                                                                type: "object"
-                                                                                origin: "user"
-                                                                                classification: "mutable"
-                                                                                role: "namespace"
+                                                                                mvvmType: "archetype"
                                                                                 description: "SCDL socket model instance." 
                                                                             }
                                                                             subMenus: [
@@ -290,10 +253,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                                     jsonTag: "instanceBindings"
                                                                                     label: "Instance Bindings"
                                                                                     objectDescriptor: {
-                                                                                        type: "array"
-                                                                                        origin: "parent"
-                                                                                        classification: "structure"
-                                                                                        role: "extension"
+                                                                                        mvvmType: "extension"
                                                                                         description: "SCDL socket model instance bindings."
                                                                                     }
                                                                                     subMenus: [
@@ -301,10 +261,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                                             jsonTag: "instanceBinding"
                                                                                             label: "Instance Binding"
                                                                                             objectDescriptor: {
-                                                                                                type: "object"
-                                                                                                origin: "user"
-                                                                                                classification: "mutable"
-                                                                                                role: "namespace"
+                                                                                                mvvmType: "archetype"
                                                                                                 description: "SCDL socket model instance binding."
                                                                                             }
                                                                                         }
@@ -326,10 +283,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     jsonTag: "models"
                                     label: "Models"
                                     objectDescriptor: {
-                                        type: "object"
-                                        origin: "parent"
-                                        classification: "structure"
-                                        role: "namespace"
+                                        mvvmType: "child"
                                         description: "SCDL models by type."
                                     }
                                     subMenus: [
@@ -337,10 +291,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "systems"
                                             label: "Systems"
                                             objectDescriptor: {
-                                                type: "array"
-                                                origin: "parent"
-                                                classification: "structure"
-                                                role: "extension"
+                                                mvvmType: "extension"
                                                 description: "SCDL system models."
                                             }
                                             subMenus: [
@@ -348,10 +299,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     jsonTag: "system"
                                                     label: "System"
                                                     objectDescriptor: {
-                                                        type: "object"
-                                                        origin: "user"
-                                                        classification: "mutable"
-                                                        role: "namespace"
+                                                        mvvmType: "archetype"
                                                         description: "SCDL system model."
                                                     }
                                                     subMenus: [
@@ -359,10 +307,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "pins"
                                                             label: "I/O Pins"
                                                             objectDescriptor: {
-                                                                type: "object"
-                                                                origin: "parent"
-                                                                classification: "structure"
-                                                                role: "namepspace"
+                                                                mvvmType: "child"
                                                                 description: "SCDL pin models by function."
                                                             }
                                                             subMenus: [
@@ -370,10 +315,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "inputPins"
                                                                     label: "Input Pins"
                                                                     objectDescriptor: {
-                                                                        type: "array"
-                                                                        origin: "parent"
-                                                                        classification: "structure"
-                                                                        role: "extension"
+                                                                        mvvmType: "extension"
                                                                         description: "SCDL input pin models."
                                                                     }
                                                                     subMenus: [
@@ -381,10 +323,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             jsonTag: "inputPin"
                                                                             label: "Input Pin"
                                                                             objectDescriptor: {
-                                                                                type: "object"
-                                                                                origin: "user"
-                                                                                classification: "mutable"
-                                                                                role: "namespace"
+                                                                                mvvmType: "archetype"
                                                                                 description: "SCDL input pin model."
                                                                             }
                                                                         } # Inputs submenus
@@ -394,10 +333,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "outputPins"
                                                                     label: "Output Pins"
                                                                     objectDescriptor: {
-                                                                        type: "array"
-                                                                        origin: "parent"
-                                                                        classification: "structure"
-                                                                        role: "extension"
+                                                                        mvvmType: "extension"
                                                                         description: "SCDL output pin models."
                                                                     }
                                                                     subMenus: [
@@ -405,10 +341,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             jsonTag: "outputPin"
                                                                             label: "Output Pin"
                                                                             objectDescriptor: {
-                                                                                type: "object"
-                                                                                origin: "user"
-                                                                                classification: "mutable"
-                                                                                role: "namespace"
+                                                                                mvvmType: "archetype"
                                                                                 description: "SCDL output pin model."
                                                                             }
                                                                         } # Output
@@ -420,10 +353,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "models"
                                                             label: "Models"
                                                             objectDescriptor: {
-                                                                type: "array"
-                                                                origin: "parent"
-                                                                classification: "structure"
-                                                                role: "extension"
+                                                                mvvmType:" extension"
                                                                 description: "SCDL model instances."
                                                             }
                                                             subMenus: [
@@ -431,10 +361,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "model"
                                                                     label: "Model"
                                                                     objectDescriptor: {
-                                                                        type: "object"
-                                                                        origin: "user"
-                                                                        classification: "mutable"
-                                                                        role: "namespace"
+                                                                        mvvmType: "archetype"
                                                                         description: "SCDL model instance."
                                                                     }
                                                                 } #  Models submenus
@@ -444,10 +371,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "nodes"
                                                             label: "Nodes"
                                                             objectDescriptor: {
-                                                                type: "array"
-                                                                origin: "parent"
-                                                                classification: "structure"
-                                                                role: "extension"
+                                                                mvvmType: "extension"
                                                                 description: "SCDL node descriptor instances."
                                                             }
                                                             subMenus: [
@@ -455,10 +379,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "node"
                                                                     label: "Node"
                                                                     objectDescriptor: {
-                                                                        type: "object"
-                                                                        origin: "user"
-                                                                        classification: "mutable"
-                                                                        role: "namespace"
+                                                                        mvvmType: "archetype"
                                                                         detail: "SCDL node descriptor instance."
                                                                     }
                                                                 } # Node
@@ -472,10 +393,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "sockets"
                                             label: "Sockets"
                                             objectDescriptor: {
-                                                type: "array"
-                                                origin: "parent"
-                                                classification: "structure"
-                                                role: "extension"
+                                                mvvmType: "extension"
                                                 description: "SCDL socket models."
                                             }
                                             subMenus: [
@@ -483,10 +401,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     jsonTag: "socket"
                                                     label: "Socket"
                                                     objectDescriptor: {
-                                                        type: "object"
-                                                        origin: "user"
-                                                        classification: "mutable"
-                                                        role: "namespace"
+                                                        mvvmType: "archetype"
                                                         description: "SCDL socket model."
                                                     }
                                                     subMenus: [
@@ -494,10 +409,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "pins"
                                                             label: "I/O Pins"
                                                             objectDescriptor: {
-                                                                type: "object"
-                                                                origin: "parent"
-                                                                classification: "structure"
-                                                                role: "namespace"
+                                                                mvvmType: "child"
                                                                 description: "SCDL pin models by function."
                                                             }
                                                             subMenus: [
@@ -505,10 +417,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "inputPins"
                                                                     label: "Input Pins"
                                                                     objectDescriptor: {
-                                                                        type: "array"
-                                                                        origin: "parent"
-                                                                        classification: "structure"
-                                                                        role: "extension"
+                                                                        mvvmType: "extension"
                                                                         description: "SCDL input pin models."
                                                                     }
                                                                     subMenus: [
@@ -516,10 +425,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             jsonTag: "inputPin"
                                                                             label: "Input Pin"
                                                                             objectDescriptor: {
-                                                                                type: "object"
-                                                                                origin: "user"
-                                                                                classification: "mutable"
-                                                                                role: "namespace"
+                                                                                mvvmType: "archetype"
                                                                                 description: "SCDL input pin model."
                                                                             }
                                                                         } # Inputs submenus
@@ -529,10 +435,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "outputPins"
                                                                     label: "Output Pins"
                                                                     objectDescriptor: {
-                                                                        type: "array"
-                                                                        origin: "parent"
-                                                                        classification: "structure"
-                                                                        role: "extension"
+                                                                        mvvmType: "extension"
                                                                         description: "SCDL output pin models."
                                                                     }
                                                                     subMenus: [
@@ -540,10 +443,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             jsonTag: "outputPin"
                                                                             label: "Output Pin"
                                                                             objectDescriptor: {
-                                                                                type: "object"
-                                                                                origin: "user"
-                                                                                classification: "mutable"
-                                                                                role: "namespace"
+                                                                                mvvmType: "archetype"
                                                                                 description: "SCDL output pin model."
                                                                             }
                                                                         } # Output
@@ -559,10 +459,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "contracts"
                                             label: "Contracts"
                                             objectDescriptor: {
-                                                type: "array"
-                                                origin: "parent"
-                                                classification: "structure"
-                                                role: "extension"
+                                                mvvmType: "extension"
                                                 description: "SCDL contract models."
                                             }
                                             subMenus: [
@@ -570,10 +467,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     jsonTag: "contract"
                                                     label: "Contract"
                                                     objectDescriptor: {
-                                                        type: "object"
-                                                        origin: "user"
-                                                        classification: "mutable"
-                                                        role: "namespace"
+                                                        mvvmType: "archetype"
                                                         description: "SCDL contract model."
                                                     }
                                                     subMenus: [
@@ -581,10 +475,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "socketReference"
                                                             label: "Socket Reference"
                                                             objectDescriptor: {
-                                                                type: "object"
-                                                                origin: "parent"
-                                                                classification: "structure"
-                                                                role: "namespace"
+                                                                mvvmType: "child"
                                                                 description: "SCDL socket reference."
                                                             }
                                                         }
@@ -592,10 +483,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "modelReference"
                                                             label: "Model Reference"
                                                             objectDescriptor: {
-                                                                type: "object"
-                                                                origin: "parent"
-                                                                classification: "structure"
-                                                                role: "namespace"
+                                                                mvvmType: "child"
                                                                 description: "SCDL model reference."
                                                             }
                                                         }
@@ -603,10 +491,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "nodes"
                                                             label: "Nodes"
                                                             objectDescriptor: {
-                                                                type: "array"
-                                                                origin: "parent"
-                                                                classification: "structure"
-                                                                role: "extension"
+                                                                mvvmType: "extension"
                                                                 description: "SCDL node instances."
                                                             }
                                                             subMenus: [
@@ -614,10 +499,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "node"
                                                                     label: "Node"
                                                                     objectDescriptor: {
-                                                                        type: "object"
-                                                                        origin: "user"
-                                                                        classification: "mutable"
-                                                                        role: "namespace"
+                                                                        mvvmType: "archetype"
                                                                         description: "SCDL node instance."
                                                                     }
                                                                     subMenus: [
@@ -625,10 +507,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             jsonTag: "sourcePin"
                                                                             label: "Source Pin"
                                                                             objectDescriptor: {
-                                                                                type: "object"
-                                                                                origin: "parent"
-                                                                                classification: "structure"
-                                                                                role: "namespace"
+                                                                                mvvmType: "child"
                                                                                 description: "SCDL source (i.e. output) pin model reference."
                                                                             }
                                                                         }
@@ -636,10 +515,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             jsonTag: "sinkPins"
                                                                             label: "Sink Pins"
                                                                             objectDescriptor: {
-                                                                                type: "array"
-                                                                                origin: "parent"
-                                                                                classification: "structure"
-                                                                                role: "extension"
+                                                                                mvvmType: "extension"
                                                                                 description: "SCDL sink (i.e. input) pin models."
                                                                             }
                                                                             subMenus: [
@@ -647,10 +523,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                                     jsonTag: "sinkPin"
                                                                                     label: "Sink Pin"
                                                                                     objectDescriptor: {
-                                                                                        type: "object"
-                                                                                        origin: "user"
-                                                                                        classification: "mutable"
-                                                                                        role: "namespace"
+                                                                                        mvvmType: "archetype"
                                                                                         description: "SCDL sink (i.e. input) pin model reference."
                                                                                     }
                                                                                 }
@@ -669,10 +542,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "machines"
                                             label: "Machines"
                                             objectDescriptor: {
-                                                type: "array"
-                                                origin: "parent"
-                                                classification: "structure"
-                                                role: "extension"
+                                                mvvmType: "extension"
                                                 description: "SCDL machine models."
                                             }
                                             subMenus: [
@@ -680,10 +550,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     jsonTag: "machine"
                                                     label: "Machine"
                                                     objectDescriptor: {
-                                                        type: "object"
-                                                        origin: "user"
-                                                        classification: "mutable"
-                                                        role: "namespace"
+                                                        mvvmType: "archetype"
                                                         description: "SCDL machine model."
                                                     }
                                                     subMenus: [
@@ -691,10 +558,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "pins"
                                                             label: "I/O Pins"
                                                             objectDescriptor: {
-                                                                type: "object"
-                                                                origin: "parent"
-                                                                classification: "structure"
-                                                                role: "namespace"
+                                                                mvvmType: "child"
                                                                 description: "SCDL pins by function."
                                                             }
                                                             subMenus: [
@@ -702,10 +566,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "inputPins"
                                                                     label: "Input Pins"
                                                                     objectDescriptor: {
-                                                                        type: "array"
-                                                                        origin: "parent"
-                                                                        classification: "structure"
-                                                                        role: "extension"
+                                                                        mvvmType: "extension"
                                                                         description: "SCDL input pin models."
                                                                     }
                                                                     subMenus: [
@@ -713,10 +574,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             jsonTag: "inputPin"
                                                                             label: "Input Pin"
                                                                             objectDescriptor: {
-                                                                                type: "object"
-                                                                                origin: "user"
-                                                                                classification: "mutable"
-                                                                                role: "namespace"
+                                                                                mvvmType: "archetype"
                                                                                 description: "SCDL input pin model."
                                                                             }
                                                                         } # Inputs submenus
@@ -726,10 +584,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "outputPins"
                                                                     label: "Output Pins"
                                                                     objectDescriptor: {
-                                                                        type: "array"
-                                                                        origin: "parent"
-                                                                        classification: "structure"
-                                                                        role: "extension"
+                                                                        mvvmType: "extension"
                                                                         description: "SCDL output pin models."
                                                                     }
                                                                     subMenus: [
@@ -737,10 +592,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             jsonTag: "outputPin"
                                                                             label: "Output Pin"
                                                                             objectDescriptor: {
-                                                                                type: "object"
-                                                                                origin: "user"
-                                                                                classification: "mutable"
-                                                                                role: "namespace"
+                                                                                mvvmType: "archetype"
                                                                                 description: "SCDL output pin model."
                                                                             }
                                                                         } # Output
@@ -752,10 +604,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "states"
                                                             label: "States"
                                                             objectDescriptor: {
-                                                                type: "array"
-                                                                origin: "parent"
-                                                                classification: "structure"
-                                                                role: "extension"
+                                                                mvvmType: "extension"
                                                                 description: "SCDL state descriptors."
                                                             }
                                                             subMenus: [
@@ -763,10 +612,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "state"
                                                                     label: "State"
                                                                     objectDescriptor: {
-                                                                        type: "object"
-                                                                        origin: "user"
-                                                                        classification: "mutable"
-                                                                        role: "namespace"
+                                                                        mvvmType: "archetype"
                                                                         description: "SCDL state descriptor."
                                                                     }
                                                                 } # State
@@ -776,10 +622,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "transitions"
                                                             label: "Transitions"
                                                             objectDescriptor: {
-                                                                type: "array"
-                                                                origin: "parent"
-                                                                classification: "structure"
-                                                                role: "extension"
+                                                                mvvmType: "extension"
                                                                 description: "SCDL state transition descriptors."
                                                             }
                                                             subMenus: [
@@ -787,10 +630,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "transition"
                                                                     label: "Transition"
                                                                     objectDescriptor: {
-                                                                        type: "object"
-                                                                        origin: "user"
-                                                                        classification: "mutable"
-                                                                        role: "namespace"
+                                                                        mvvmType: "archetype"
                                                                         description: "SCDL state transition descriptor."
                                                                     }
                                                                 } # Transition
@@ -800,10 +640,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "actions"
                                                             label: "Actions"
                                                             objectDescriptor: {
-                                                                type: "array"
-                                                                origin: "parent"
-                                                                classification: "structure"
-                                                                role: "extension"
+                                                                mvvmType: "extension"
                                                                 description: "SCDL state transition action descriptors."
                                                             }
                                                             subMenus: [
@@ -811,10 +648,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                     jsonTag: "action"
                                                                     label: "Action"
                                                                     objectDescriptor: {
-                                                                        type: "object"
-                                                                        origin: "user"
-                                                                        classification: "mutable"
-                                                                        role: "namespace"
+                                                                        mvvmType: "archetype"
                                                                         description: "SCDL state transition action descriptor."
                                                                     }
                                                                     subMenus: [
@@ -822,10 +656,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             jsonTag: "entryAction"
                                                                             label: "Entry Action"
                                                                             objectDescriptor: {
-                                                                                type: "object"
-                                                                                origin: "parent"
-                                                                                classification: "structure"
-                                                                                role: "namespace"
+                                                                                mvvmType: "child"
                                                                                 description: "SCDL state transition entry action descriptor."
                                                                             }
                                                                         }
@@ -833,10 +664,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                                             jsonTag: "exitAction"
                                                                             label: "Exit Action"
                                                                             objectDescriptor: {
-                                                                                type: "object"
-                                                                                origin: "parent"
-                                                                                classification: "structure"
-                                                                                role: "namespace"
+                                                                                mvvmType: "child"
                                                                                 description: "SCDL state transition exit action descriptor."
                                                                             }
                                                                         }
@@ -852,10 +680,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "types"
                                             label: "Types"
                                             objectDescriptor: {
-                                                type: "array"
-                                                origin: "parent"
-                                                classification: "structure"
-                                                role: "extension"
+                                                mvvmType: "extension"
                                                 description: "SCDL type models."
                                             }
                                             subMenus: [
@@ -863,10 +688,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     jsonTag: "type"
                                                     label: "Type"
                                                     objectDescriptor: {
-                                                        type: "object"
-                                                        origin: "user"
-                                                        classification: "mutable"
-                                                        role: "namespace"
+                                                        mvvmType: "archetype"
                                                         description: "SCDL type model."
                                                     }
                                                 } # Type
@@ -879,10 +701,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     jsonTag: "assets"
                                     label: "Assets"
                                     objectDescriptor: {
-                                        type: "object"
-                                        origin: "parent"
-                                        classification: "structure"
-                                        role: "namespace"
+                                        mvvmType: "child"
                                         description: "SCDL asset models by namespace."
                                     }
                                     subMenus: [
@@ -890,10 +709,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "people"
                                             label: "People"
                                             objectDescriptor: {
-                                                type: "array"
-                                                origin: "parent"
-                                                classification: "structure"
-                                                role: "extension"
+                                                mvvmType: "extension"
                                                 description: "SCDL person models."
                                             }
                                             subMenus: [
@@ -901,10 +717,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     jsonTag: "person"
                                                     label: "Person"
                                                     objectDescriptor: {
-                                                        type: "object"
-                                                        origin: "user"
-                                                        classification: "mutable"
-                                                        role: "namespace"
+                                                        mvvmType: "archetype"
                                                         description: "SCDL person model."
                                                     }
                                                 } # Person
@@ -914,10 +727,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "organizations"
                                             label: "Organizations"
                                             objectDescriptor: {
-                                                type: "array"
-                                                origin: "parent"
-                                                classification: "structure"
-                                                role: "extension"
+                                                mvvmType: "extension"
                                                 description: "SCDL organization models."
                                             }
                                             subMenus: [
@@ -925,10 +735,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     jsonTag: "organization"
                                                     label: "Organization"
                                                     objectDescriptor: {
-                                                        type: "object"
-                                                        origin: "user"
-                                                        classification: "mutable"
-                                                        role: "namespace"
+                                                        mvvmType: "archetype"
                                                         description: "SCDL organization model."
                                                     }
                                                 }
@@ -938,10 +745,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "licenses"
                                             label: "Licenses"
                                             objectDescriptor: {
-                                                type: "array"
-                                                origin: "parent"
-                                                classification: "structure"
-                                                role: "extension"
+                                                mvvmType: "extension"
                                                 description: "SCDL license models."
                                             }
                                             subMenus: [
@@ -949,10 +753,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     jsonTag: "license"
                                                     label: "License"
                                                     objectDescriptor: {
-                                                        type: "object"
-                                                        origin: "user"
-                                                        classification: "mutable"
-                                                        role: "namespace"
+                                                        mvvmType: "archetype"
                                                         description: "SCDL license model."
                                                     }
                                                 } # Licesne
@@ -962,10 +763,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "copyrights"
                                             label: "Copyrights"
                                             objectDescriptor: {
-                                                type: "array"
-                                                origin: "parent"
-                                                classification: "structure"
-                                                role: "extension"
+                                                mvvmType: "extension"
                                                 description: "SCDL copyright models."
                                             }
                                             subMenus: [
@@ -973,10 +771,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     jsonTag: "copyright"
                                                     label: "Copyright"
                                                     objectDescriptor: {
-                                                        type: "object"
-                                                        origin: "user"
-                                                        classification: "mutable"
-                                                        role: "namespace"
+                                                        mvvmType: "archetype"
                                                         description: "SCDL copyright model."
                                                     }
                                                 } # Copyright
@@ -994,10 +789,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     jsonTag: "sessions"
                     label: "Sessions"
                     objectDescriptor: {
-                        type: "array"
-                        origin: "parent"
-                        classification: "structure"
-                        role: "extension"
+                        mvvmType: "extension"
                         description: "Manager current and past session."
                     }
                     subMenus: [
@@ -1005,10 +797,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "session"
                             label: "Session"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "user"
-                                classification: "mutable"
-                                role: "namespace"
+                                mvvmType: "archetype"
                                 description: "#{appName} session object."
                             }
                         }
@@ -1021,10 +810,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     jsonTag: "settings"
                     label: "Settings"
                     objectDescriptor: {
-                        type: "object"
-                        origin: "parent"
-                        classification: "structure"
-                        role: "namespace"
+                        mvvmType: "child"
                         description: "#{appName} app settings."
                     }
                     subMenus: [
@@ -1032,21 +818,14 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "user"
                             label: "User"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "form"
-                                description: "User information."
+                                mvvmType: "child"
                             }
                         }
                         {
                             jsonTag: "preferences"
                             label: "Preferences"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "namespace"
+                                mvvmType: "child"
                                 description: "App preferences."
                             }
                             subMenus: [
@@ -1054,10 +833,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     jsonTag: "app"
                                     label: "App"
                                     objectDescriptor: {
-                                        type: "object"
-                                        origin: "parent"
-                                        classification: "structure"
-                                        role: "namespace"
+                                        mvvmType: "child"
                                         description: "#{appName} app preferences."
                                     }
                                 }
@@ -1065,10 +841,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     jsonTag: "github"
                                     label: "GitHub"
                                     objectDescriptor: {
-                                        type: "object"
-                                        origin: "parent"
-                                        classification: "structure"
-                                        role: "namespace"
+                                        mvvmType: "child"
                                         description: "GitHub integration preferences."
                                     }
                                 }
@@ -1078,10 +851,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "advanced"
                             label: "Advanced"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "namespace"
+                                mvvmType: "child"
                                 description: "Advanced app settings."
                             }
                             subMenus: [
@@ -1089,10 +859,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     jsonTag: "baseScdlCatalogue"
                                     label: "Base Catalogue"
                                     objectDescriptor: {
-                                        type: "object"
-                                        origin: "parent"
-                                        classification: "structure"
-                                        role: "form"
+                                        mvvmType: "child"
                                         description: "SCDL catalogue archetype."
                                     }
                                 }
@@ -1100,10 +867,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     jsonTag: "storage"
                                     label: "Storage"
                                     objectDescriptor: {
-                                        type: "object"
-                                        origin: "parent"
-                                        classification: "structure"
-                                        role: "form"
+                                        mvvmType: "child"
                                         description: "App local and remote storage."
                                     }
                                     subMenus: [
@@ -1111,10 +875,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "local"
                                             label: "Local"
                                             objectDescriptor: {
-                                                type: "object"
-                                                origin: "parent"
-                                                classification: "structure"
-                                                role: "namespace"
+                                                mvvmType: "child"
                                                 description: "App local storage."
                                             }
                                         } # local
@@ -1122,10 +883,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             jsonTag: "remotes"
                                             label: "Remotes"
                                             objectDescriptor: {
-                                                type: "array"
-                                                origin: "parent"
-                                                classification: "structure"
-                                                role: "extension"
+                                                mvvmType: "extension"
                                                 description: "Remote stores."
                                             }
                                             subMenus: [
@@ -1133,10 +891,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                     jsonTag: "source"
                                                     label: "Source"
                                                     objectDescriptor: {
-                                                        type: "object"
-                                                        origin: "user"
-                                                        classification: "mutable"
-                                                        role: "namespace"
+                                                        mvvmType: "archetype"
                                                         description: "Source descriptor for remote SCDL catalogue(s)."
                                                     }
                                                 } # remote
@@ -1153,10 +908,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     jsonTag: "about"
                     label: "About"
                     objectDescriptor: {
-                        type: "object"
-                        origin: "parent"
-                        classification: "structure"
-                        role: "namespace"
+                        mvvmType: "child"
                         description: "About namespace."
                     }
                     subMenus: [
@@ -1164,10 +916,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "status"
                             label: "Status"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "namespace"
+                                mvvmType: "child"
                                 description: "Current app status."
                             }
                         }
@@ -1175,10 +924,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "version"
                             label: "v#{appVersion}"
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "namespace"
+                                mvvmType: "child"
                                 description: "#{appName} v#{appVersion} notes."
                             }
                             subMenus: [
@@ -1186,10 +932,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     jsonTag: "build"
                                     label: "Build Info"
                                     objectDescriptor: {
-                                        type: "object"
-                                        origin: "parent"
-                                        classification: "structure"
-                                        role: "namespace"
+                                        mvvmType: "child"
                                         description: "Information about build #{appBuildId}"
                                     }
                                 }
@@ -1197,10 +940,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                     jsonTag: "diagnostic"
                                     label: "Diagnostic"
                                     objectDescriptor: {
-                                        type: "object"
-                                        origin: "parent"
-                                        classification: "structure"
-                                        role: "namespace"
+                                        mvvmType: "child"
                                         description: "Advanced diagnostic information."
                                     }
                                 }
@@ -1210,10 +950,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             jsonTag: "publisher"
                             label: appPackagePublisher
                             objectDescriptor: {
-                                type: "object"
-                                origin: "parent"
-                                classification: "structure"
-                                role: "namespace"
+                                mvvmType: "child"
                                 description: "About the #{appPackagePublisher}"
                             }
                         }
@@ -1224,10 +961,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     jsonTag: "help"
                     label: "Help"
                     objectDescriptor: {
-                        type: "object"
-                        origin: "parent"
-                        classification: "structure"
-                        role: "namespace"
+                        mvvmType: "child"
                         description: "#{appName} help."
                     }
                 }

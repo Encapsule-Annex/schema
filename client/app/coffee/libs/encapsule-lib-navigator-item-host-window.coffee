@@ -44,11 +44,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             @parentItemHostWindow = undefined
 
-            @itemObjectType = "undefined"
-            @itemObjectClassification = "unknown"
-            @itemObjectOrigin = "unknown"
-            @itemObjectRole = "unknown"
-            @itemObjectDescription = "unspecified"
+            @itemMVVMType = undefined
 
             @itemOuterJsonObject = {}
             @itemObservableModelView = ko.observable(undefined)
@@ -62,22 +58,65 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                 objectDescriptor = @menuLevelObject.layoutObject.objectDescriptor
 
-                if objectDescriptor.type? and objectDescriptor.type
-                    @itemObjectType = objectDescriptor.type
-
-                if objectDescriptor.classification? and objectDescriptor.classification
-                    @itemObjectClassification = objectDescriptor.classification
-
-                if objectDescriptor.role? and objectDescriptor.role
-                    @itemObjectRole = objectDescriptor.role
-
-                if objectDescriptor.origin? and objectDescriptor.origin
-                    @itemObjectOrigin = objectDescriptor.origin
+                if objectDescriptor.mvvmType? and objectDescriptor.mvvmType
+                    @itemMVVMType = objectDescriptor.mvvmType
 
                 if objectDescriptor.description? and objectDescriptor.description
                     @itemObjectDescription = objectDescriptor.description
 
-                switch @itemObjectType
+                switch @itemMVVMType
+
+                    when "archetype"
+
+                        @itemObservableModelView({})
+                        @itemObservableModelViewFree(true)
+                        colorObject = @menuLevelObject.baseBackgroundColorObject
+                        @menuLevelObject.baseBackgroundColorObject = colorObject.darkenByRatio(@navigatorContainer.layout.userObjectDarkenRatio).shiftHue(@navigatorContainer.layout.userObjectShiftHue)
+                        break
+
+                    when "child"
+                        if not (@parentItemHostWindow? and @parentItemHostWindow)
+                            throw "Can't resolve parent menu item host window reference."
+
+                        switch @parentItemHostWindow.itemObjectType
+                            when "object"
+                                if not (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
+                                    break
+                                @itemObservableModelView({})
+                                currentModelView = @parentItemHostWindow.itemObservableModelView()
+                                currentModelView[@jsonTag] = @itemObservableModelView
+                                @parentItemHostWindow.itemObservableModelView(currentModelView)
+                                break
+
+                        break
+
+                    when "extension"
+                        if not (@parentItemHostWindow? and @parentItemHostWindow)
+                            throw "Can't resolve parent menu item host window reference."
+
+                        colorObject = @menuLevelObject.baseBackgroundColorObject.lightenByRatio(@navigatorContainer.layout.structureArrayLightenRatio).shiftHue(@navigatorContainer.layout.structureArrayShiftHue)
+                        @menuLevelObject.baseBackgroundColorObject = colorObject
+
+                        if (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
+                            @itemObservableModelView([])
+                            currentModelView = @parentItemHostWindow.itemObservableModelView()
+                            currentModelView[@jsonTag] = @itemObservableModelView
+                            @parentItemHostWindow.itemObservableModelView(currentModelView)
+
+                        break
+
+                    when "root"
+                        @itemObservableModelView({})
+                        break
+
+                    when "selection"
+                        if not (@parentItemHostWindow? and @parentItemHostWindow)
+                            throw "Can't resolve parent menu item host window reference."
+
+                        break
+
+
+
 
                     when "object"
 
@@ -87,59 +126,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             when "new"
                                 # No registration necessary.
                                 @itemObservableModelView({})
-                                break
-
-                            when "parent"
-                                if not (@parentItemHostWindow? and @parentItemHostWindow)
-                                    throw "Can't resolve parent menu item host window reference."
-
-                                switch @parentItemHostWindow.itemObjectType
-                                    when "object"
-
-                                        if not (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
-                                            break
-
-                                        @itemObservableModelView({})
-                                        currentModelView = @parentItemHostWindow.itemObservableModelView()
-                                        currentModelView[@jsonTag] = @itemObservableModelView
-                                        @parentItemHostWindow.itemObservableModelView(currentModelView)
-                                        break
-                                break
-
-                            when "user"
-                                @itemObservableModelView({})
-                                @itemObservableModelViewFree(true)
-                                colorObject = @menuLevelObject.baseBackgroundColorObject
-                                @menuLevelObject.baseBackgroundColorObject = colorObject.darkenByRatio(@navigatorContainer.layout.userObjectDarkenRatio).shiftHue(@navigatorContainer.layout.userObjectShiftHue)
-                                break
-
-                        break
-
-                    when "array"
-
-                        colorObject = @menuLevelObject.baseBackgroundColorObject.lightenByRatio(@navigatorContainer.layout.structureArrayLightenRatio).shiftHue(@navigatorContainer.layout.structureArrayShiftHue)
-                        @menuLevelObject.baseBackgroundColorObject = colorObject
-
-                        # Figure out how to register this model view (if it's to be registered)
-                        switch @itemObjectOrigin
-
-                            when "parent"
-
-                                if not (@parentItemHostWindow? and @parentItemHostWindow)
-                                    throw "Can't resolve parent menu item host window reference."
-
-                                switch @parentItemHostWindow.itemObjectType
-                                    when "object"
-
-                                        if not (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
-                                            break
-
-                                        @itemObservableModelView([])
-                                        currentModelView = @parentItemHostWindow.itemObservableModelView()
-                                        currentModelView[@jsonTag] = @itemObservableModelView
-                                        @parentItemHostWindow.itemObservableModelView(currentModelView)
-                                        break
-
                                 break
 
 

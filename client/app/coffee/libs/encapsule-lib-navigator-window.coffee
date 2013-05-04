@@ -107,10 +107,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     jsonTag: layout_.jsonTag
                     label: layout_.label
                     objectDescriptor: {
-                        type: "object"
-                        origin: "new"
-                        classification: "structure"
-                        role: "namespace"
+                        mvvmType: "root"
                         description: "#{appName} Runtime Namespace"
                     }
                     subMenus: layout_.menuHierarchy
