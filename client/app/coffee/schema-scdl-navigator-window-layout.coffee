@@ -31,8 +31,8 @@ Color = net.brehaut.Color
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     jsonTag: "app"
-    label: "#{appName} App State Namespace"
-    title: "#{appName} App State Namespace"
+    label: "#{appName} Root"
+    description: "#{appName} Root State Namespace"
 
     detailBelowSelectDefault: 0
     detailAboveSelectDefault: 1
@@ -110,7 +110,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
             label: "#{appName}"
             objectDescriptor: {
                 mvvmType: "child"
-                description: "#{appName} v#{appVersion} app runtime state namespace root."
+                description: "#{appName} App Root"
             }
 
 
@@ -186,7 +186,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     }
                     subMenus: [
                         {
-                            jsonTag: "scdlCatalogueSelected"
+                            jsonTag: "scdlCatalogueSelectHost"
                             label: "Selected Catalogue"
                             objectDescriptor: {
                                 mvvmType: "select"
@@ -194,7 +194,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             }
                         }
                         {
-                            jsonTag: "scdlCatalogueArchetype"
+                            jsonTag: "scdlCatalogue"
                             label: "Catalogue"
                             objectDescriptor: {
                                 mvvmType: "archetype"
@@ -353,7 +353,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                             jsonTag: "models"
                                                             label: "Models"
                                                             objectDescriptor: {
-                                                                mvvmType:" extension"
+                                                                mvvmType: "extension"
                                                                 description: "SCDL model instances."
                                                             }
                                                             subMenus: [

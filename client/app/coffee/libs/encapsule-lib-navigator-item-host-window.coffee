@@ -72,21 +72,20 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         @itemObservableModelViewFree(true)
                         colorObject = @menuLevelObject.baseBackgroundColorObject
                         @menuLevelObject.baseBackgroundColorObject = colorObject.darkenByRatio(@navigatorContainer.layout.userObjectDarkenRatio).shiftHue(@navigatorContainer.layout.userObjectShiftHue)
+
                         break
 
                     when "child"
                         if not (@parentItemHostWindow? and @parentItemHostWindow)
                             throw "Can't resolve parent menu item host window reference."
 
-                        switch @parentItemHostWindow.itemObjectType
-                            when "object"
-                                if not (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
-                                    break
-                                @itemObservableModelView({})
-                                currentModelView = @parentItemHostWindow.itemObservableModelView()
-                                currentModelView[@jsonTag] = @itemObservableModelView
-                                @parentItemHostWindow.itemObservableModelView(currentModelView)
-                                break
+                        if not (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
+                            break
+
+                        @itemObservableModelView({})
+                        currentModelView = @parentItemHostWindow.itemObservableModelView()
+                        currentModelView[@jsonTag] = @itemObservableModelView
+                        @parentItemHostWindow.itemObservableModelView(currentModelView)
 
                         break
 
@@ -107,26 +106,18 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                     when "root"
                         @itemObservableModelView({})
+
                         break
 
-                    when "selection"
+                    when "select"
                         if not (@parentItemHostWindow? and @parentItemHostWindow)
                             throw "Can't resolve parent menu item host window reference."
-
                         break
 
+                    else
+                        throw "Unrecognized mvvmType specified in menu level objectDescriptor.mvvmType: #{@itemMVVMType}"
 
 
-
-                    when "object"
-
-                        # Figure out how to register this model view (if it's to be registered)
-                        switch @itemObjectOrigin
-
-                            when "new"
-                                # No registration necessary.
-                                @itemObservableModelView({})
-                                break
 
 
 
@@ -163,7 +154,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
 
 <span data-bind="if: currentlySelectedItemHost">
     <span data-bind="with: currentlySelectedItemHost">
-
         <div class="classNavigatorItemHostWindow">
 
             <span data-bind="with: menuLevelObject">
@@ -172,31 +162,35 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
                 </h1>
             </span>
 
-            <strong><span data-bind="text: itemObjectDescription"></span><strong><br>
+            <h2 data-bind="text: itemObjectDescription"></h2>
+            <p>MVVM Type: <span data-bind="text: itemMVVMType"></span></p>
 
-            <span data-bind="if: itemObjectType == 'object'">
-                <span data-bind="if: itemObjectRole == 'namespace'">
-                    namspace object
-                </span>
-                <span data-bind="if: itemObjectRole == 'data'">
-                    data object
-                </span>
-            </span>
-
-            <span data-bind="if: itemObjectType == 'array'">
-                <span data-bind="if: itemObjectRole == 'extension'">
-                    extension array
-                </span>
-            </span>
-
-            <span data-bind="if: itemObservableModelViewFree">
+            <span data-bind="if: itemMVVMType == 'archetype'">
                 This is an archetype entity.
-
                 <p>
                     <span data-bind="with: menuLevelObject.parentMenuLevel">Add this entity to <span data-bind="text: label"></span>:</span>
                     <button class="button small blue" data-bind="event: { click: insertArchetype }">Add</button>
                 </p>
-        </div>
+            </span>
+
+            <span data-bind="if: itemMVVMType == 'root'">
+                root
+            </span>
+
+            <span data-bind="if: itemMVVMType == 'child'">
+                child
+            </span>
+
+            <span data-bind="if: itemMVVMType == 'select'">
+               select
+            </span>
+
+            <span data-bind="if: itemMVVMType == 'extension'">
+                extension
+            </span>
+
+
+        </div><!-- classNavigatorItemHostWindow -->
     </span>
 </span>
 

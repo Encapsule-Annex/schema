@@ -108,7 +108,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     label: layout_.label
                     objectDescriptor: {
                         mvvmType: "root"
-                        description: "#{appName} Runtime Namespace"
+                        description: layout_.description
                     }
                     subMenus: layout_.menuHierarchy
                 }
@@ -180,11 +180,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     if not (parentItemHostObject? and parentItemHostObject)
                         throw "Unable to resolve parent item host object reference."
 
-                    if parentItemHostObject.itemObjectType != "array"
+                    if parentItemHostObject.itemMVVMType != "extension"
                         throw "Specified item host's parent object type doesn't support this operation. This is an error in your layout declaration."
-
-                    if parentItemHostObject.itemObjectRole != "extension"
-                        throw "Specified item host's parent object is not a valid extension point! This is an error in your layout declaration."
 
                     sourceMenuLevelObject = itemHostObject_.menuLevelObject
                     targetMenuLevelObject = sourceMenuLevelObject.parentMenuLevel
@@ -193,8 +190,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                         new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, targetMenuLevelObject, sourceMenuLevelObject.layoutObject, targetMenuLevelObject.level() + 1)
 
                     targetMenuLevelObject.subMenus.push(newMenuLevelObject)
-
-
 
                 catch exception
                     throw "NavigatorWindow.insertArchetypeFromItemHostObject fail: #{exception}"
