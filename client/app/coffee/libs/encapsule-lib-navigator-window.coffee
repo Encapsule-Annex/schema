@@ -173,6 +173,10 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     if not (itemHostObject_? and itemHostObject_)
                         throw "Missing item host object reference parameter."
 
+                    if itemHostObject_.itemMVVMType != "archetype"
+                        throw "The specified item host object is not an archetype object. Invalid request."
+
+                    # This is some legacy code that I think can be removed?
                     if not itemHostObject_.itemObservableModelViewFree()
                         throw "Specified item host object does not represent an archetype!"
 
@@ -182,6 +186,19 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
                     if parentItemHostObject.itemMVVMType != "extension"
                         throw "Specified item host's parent object type doesn't support this operation. This is an error in your layout declaration."
+
+
+                    # Update the parent item host's contained obervable array.
+
+                    newArrayElement = {}
+                    newArrayElement[itemHostObject_.menuLevelObject.layoutObject.objectDescriptor.mvvmJsonTag] = itemHostObject_.itemObservableModelView
+                    parentArray = parentItemHostObject.itemObservableModelView()
+                    parentArray.push(newArrayElement)
+                    parentItemHostObject.itemObservableModelView(parentArray)
+                    return
+
+                    
+
 
                     sourceMenuLevelObject = itemHostObject_.menuLevelObject
                     targetMenuLevelObject = sourceMenuLevelObject.parentMenuLevel
