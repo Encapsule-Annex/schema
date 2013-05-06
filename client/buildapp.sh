@@ -17,7 +17,7 @@ app_package_publisher="Encapsule Project"
 app_package_publisher_url="http://www.encapsule.org"
 
 # THIS CHANGES ALL THE TIME
-app_version="0.879"
+app_version="0.880"
 # 
 
 app_name="Schema"
@@ -49,6 +49,8 @@ fi
 # Declarations: customize for local repo
 
 # level 0
+
+# schema_repo is your local schema repo.
 schema_repo=~/Code/schema
 current_dir=`cd`
 cd $schema_repo

@@ -118,11 +118,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             @rootMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, undefined, @layout.menuHierarchy[0], -1)
 
-            ###
-            for menuLayout in @layout.menuHierarchy
-                # navigatorContainer, parentMenuLevel, layout, level
-                @topLevelMenus.push new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, undefined, menuLayout, 0)
-            ###
 
             # External API function
 
