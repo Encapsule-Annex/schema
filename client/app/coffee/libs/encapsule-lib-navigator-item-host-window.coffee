@@ -111,7 +111,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                         # Not nearly done...
 
-                        ###
 
                         if not (objectDescriptor.archetype? and objectDescriptor.archetype)
                             alert("#{@path} extension w/no declared archetype.")
@@ -124,6 +123,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         selectMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @menuLevelObject, layoutSelectMenuLevel, @menuLevelObject.level() + 1)
                         @menuLevelObject.subMenus.push(selectMenuLevel)
 
+                        ###
 
                         # Create the archetype sub menu of this extension.
                         layoutArchetypeMenuLevel = Encapsule.code.lib.js.clone(objectDescriptor.archetype)
@@ -144,7 +144,13 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                     when "select"
                         if not (@parentItemHostWindow? and @parentItemHostWindow)
                             throw "Can't resolve parent menu item host window reference."
+
+                        # Set the MVVM object-type-specific color of the menu level object.
+                        colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
+                        @menuLevelObject.baseBackgroundColorObject(colorObject)
+
                         @itemObservableModelView({})
+                        @selectItemState = ko.observable("archetype")
                         break
 
                     else
@@ -210,7 +216,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             </span>
 
             <span data-bind="if: itemMVVMType == 'select'">
-               select
+               <p>select state=\"<span data-bind="text: selectItemState"></span>\"</p>
             </span>
 
             <span data-bind="if: itemMVVMType == 'extension'">

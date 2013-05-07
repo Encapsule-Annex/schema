@@ -35,7 +35,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes = {
             label: "Node"
             objectDescriptor: {
                 mvvmType: "archetype"
-                detail: "SCDL node descriptor instance."
+                description: "SCDL node descriptor instance."
             } # node objectDescriptor
         } # node archetype
     } # nodes object descriptor
