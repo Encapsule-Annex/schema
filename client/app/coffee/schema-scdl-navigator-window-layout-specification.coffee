@@ -26,73 +26,65 @@ Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.
 
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
-                    jsonTag: "specification"
-                    label: "Specification"
+    jsonTag: "specification"
+    label: "Specification"
+    objectDescriptor: {
+        mvvmType: "archetype"
+        description: "SCDL specification."
+    }
+    subMenus: [
+        {
+            jsonTag: "systemInstances"
+            label: "System Instances"
+            objectDescriptor: {
+                mvvmType: "extension"
+                description: "SCDL system model instances."
+                archetype: {
+                    jsonTag: "systemInstance"
+                    label: "System Instance"
                     objectDescriptor: {
                         mvvmType: "archetype"
-                        description: "SCDL specification."
+                        description: "SCDL system model instance."
                     }
                     subMenus: [
                         {
-                            jsonTag: "systemInstances"
-                            label: "System Instances"
+                            jsonTag: "socketInstances"
+                            label: "Socket Instances"
                             objectDescriptor: {
                                 mvvmType: "extension"
-                                description: "SCDL system model instances."
-                            }
-                            subMenus: [
-                                {
-                                    jsonTag: "systemInstance"
-                                    label: "System Instance"
+                                description: "SCDL socket model instances."
+                                archetype: {
+                                    jsonTag: "socketInstance"
+                                    label: "Socket Instance"
                                     objectDescriptor: {
                                         mvvmType: "archetype"
-                                        description: "SCDL system model instance."
+                                        description: "SCDL socket model instance." 
                                     }
                                     subMenus: [
                                         {
-                                            jsonTag: "socketInstances"
-                                            label: "Socket Instances"
+                                            jsonTag: "instanceBindings"
+                                            label: "Instance Bindings"
                                             objectDescriptor: {
                                                 mvvmType: "extension"
-                                                description: "SCDL socket model instances."
-                                            }
-                                            subMenus: [
-                                                {
-                                                    jsonTag: "socketInstance"
-                                                    label: "Socket Instance"
+                                                description: "SCDL socket model instance bindings."
+                                                archetype: {
+                                                    jsonTag: "instanceBinding"
+                                                    label: "Instance Binding"
                                                     objectDescriptor: {
                                                         mvvmType: "archetype"
-                                                        description: "SCDL socket model instance." 
-                                                    }
-                                                    subMenus: [
-                                                        {
-                                                            jsonTag: "instanceBindings"
-                                                            label: "Instance Bindings"
-                                                            objectDescriptor: {
-                                                                mvvmType: "extension"
-                                                                description: "SCDL socket model instance bindings."
-                                                            }
-                                                            subMenus: [
-                                                                {
-                                                                    jsonTag: "instanceBinding"
-                                                                    label: "Instance Binding"
-                                                                    objectDescriptor: {
-                                                                        mvvmType: "archetype"
-                                                                        description: "SCDL socket model instance binding."
-                                                                    }
-                                                                }
-                                                            ] # Bindings submenus
-                                                        } # Bindings
-                                                    ] # Socket submenus
-                                                }
-                                            ] # Sockets submenus
-                                        } # 
-                                    ] # System submenus
-                                } # System
-                            ] # Systems submenus
-                        } # Systems
-                    ] # Specification submenus
+                                                        description: "SCDL socket model instance binding."
+                                                    } # instanceBinding objectDescriptor
+                                                } # instanceBindings objectDescriptor.archetype
+                                            } # instanceBindings objectDescriptor
+                                        } # instanceBindings
+                                    ] # socketInstance submenus
+                                } # socketInstances objectDescriptor.archetype
+                            } # socketInstances objectDescriptor # Sockets submenus
+                        } #  socketInstances
+                    ] # systemInstance submenus
+                } # systemInstances objectDescriptor.archetype
+            } # systemInstances objectDescriptor
+        } # systemInstances
+    ] # Specification submenus
+} # specification
 
-
-
-} # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype
