@@ -24,3 +24,30 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
+Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype = {
+    jsonTag: "contract"
+    label: "Contract"
+    objectDescriptor: {
+        mvvmType: "archetype"
+        description: "SCDL contract model."
+    }
+    subMenus: [
+        {
+            jsonTag: "socketReference"
+            label: "Socket Reference"
+            objectDescriptor: {
+                mvvmType: "child"
+                description: "SCDL socket reference."
+            } # socketReference objectDescriptor
+        } # socketReference
+        {
+            jsonTag: "modelReference"
+            label: "Model Reference"
+            objectDescriptor: {
+                mvvmType: "child"
+                description: "SCDL model reference."
+            } # modelReference objectDescriptor
+        } # modelReference
+        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes
+    ] # Socket Contract submenus
+} # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype 

@@ -66,65 +66,9 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL socket models."
-                    }
-                    subMenus: [
-                        {
-                            jsonTag: "socket"
-                            label: "Socket"
-                            objectDescriptor: {
-                                mvvmType: "archetype"
-                                description: "SCDL socket model."
-                            }
-                            subMenus: [
-                                {
-                                    jsonTag: "pins"
-                                    label: "I/O Pins"
-                                    objectDescriptor: {
-                                        mvvmType: "child"
-                                        description: "SCDL pin models by function."
-                                    }
-                                    subMenus: [
-                                        {
-                                            jsonTag: "inputPins"
-                                            label: "Input Pins"
-                                            objectDescriptor: {
-                                                mvvmType: "extension"
-                                                description: "SCDL input pin models."
-                                            }
-                                            subMenus: [
-                                                {
-                                                    jsonTag: "inputPin"
-                                                    label: "Input Pin"
-                                                    objectDescriptor: {
-                                                        mvvmType: "archetype"
-                                                        description: "SCDL input pin model."
-                                                    }
-                                                } # Inputs submenus
-                                            ] # Inputs submenus
-                                        } # Inputs
-                                        {
-                                            jsonTag: "outputPins"
-                                            label: "Output Pins"
-                                            objectDescriptor: {
-                                                mvvmType: "extension"
-                                                description: "SCDL output pin models."
-                                            }
-                                            subMenus: [
-                                                {
-                                                    jsonTag: "outputPin"
-                                                    label: "Output Pin"
-                                                    objectDescriptor: {
-                                                        mvvmType: "archetype"
-                                                        description: "SCDL output pin model."
-                                                    }
-                                                } # Output
-                                            ] # Outputs submenus
-                                        } # Outputs
-                                    ] # Pins submenus
-                                } # Pins
-                            ] # Socket submenus
-                        } # Socket
-                    ] # Sockets submenus
+                        archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype
+                    } # sockets objectDescriptor
+
                 } # Sockets
                 {
                     jsonTag: "contracts"
@@ -132,82 +76,9 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL contract models."
-                    }
-                    subMenus: [
-                        {
-                            jsonTag: "contract"
-                            label: "Contract"
-                            objectDescriptor: {
-                                mvvmType: "archetype"
-                                description: "SCDL contract model."
-                            }
-                            subMenus: [
-                                {
-                                    jsonTag: "socketReference"
-                                    label: "Socket Reference"
-                                    objectDescriptor: {
-                                        mvvmType: "child"
-                                        description: "SCDL socket reference."
-                                    }
-                                }
-                                {
-                                    jsonTag: "modelReference"
-                                    label: "Model Reference"
-                                    objectDescriptor: {
-                                        mvvmType: "child"
-                                        description: "SCDL model reference."
-                                    }
-                                }
-                                {   
-                                    jsonTag: "nodes"
-                                    label: "Nodes"
-                                    objectDescriptor: {
-                                        mvvmType: "extension"
-                                        description: "SCDL node instances."
-                                    }
-                                    subMenus: [
-                                        {
-                                            jsonTag: "node"
-                                            label: "Node"
-                                            objectDescriptor: {
-                                                mvvmType: "archetype"
-                                                description: "SCDL node instance."
-                                            }
-                                            subMenus: [
-                                                {
-                                                    jsonTag: "sourcePin"
-                                                    label: "Source Pin"
-                                                    objectDescriptor: {
-                                                        mvvmType: "child"
-                                                        description: "SCDL source (i.e. output) pin model reference."
-                                                    }
-                                                }
-                                                {
-                                                    jsonTag: "sinkPins"
-                                                    label: "Sink Pins"
-                                                    objectDescriptor: {
-                                                        mvvmType: "extension"
-                                                        description: "SCDL sink (i.e. input) pin models."
-                                                    }
-                                                    subMenus: [
-                                                        {
-                                                            jsonTag: "sinkPin"
-                                                            label: "Sink Pin"
-                                                            objectDescriptor: {
-                                                                mvvmType: "archetype"
-                                                                description: "SCDL sink (i.e. input) pin model reference."
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        } # Node
-                                    ] # Nodes submenus
-                                } # Nodes
-                            ] # Socket Contract submenus
-                        } # Socket Contract
-                    ] # Socket Contracts submenus
-                } # Socket Contracts
+                        archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype
+                    } # contracts objectDescriptor
+                } # sockets
         
                 {
                     jsonTag: "machines"
@@ -215,156 +86,26 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL machine models."
-                    }
-                    subMenus: [
-                        {
-                            jsonTag: "machine"
-                            label: "Machine"
-                            objectDescriptor: {
-                                mvvmType: "archetype"
-                                description: "SCDL machine model."
-                            }
-                            subMenus: [
-                                {
-                                    jsonTag: "pins"
-                                    label: "I/O Pins"
-                                    objectDescriptor: {
-                                        mvvmType: "child"
-                                        description: "SCDL pins by function."
-                                    }
-                                    subMenus: [
-                                        {
-                                            jsonTag: "inputPins"
-                                            label: "Input Pins"
-                                            objectDescriptor: {
-                                                mvvmType: "extension"
-                                                description: "SCDL input pin models."
-                                            }
-                                            subMenus: [
-                                                {
-                                                    jsonTag: "inputPin"
-                                                    label: "Input Pin"
-                                                    objectDescriptor: {
-                                                        mvvmType: "archetype"
-                                                        description: "SCDL input pin model."
-                                                    }
-                                                } # Inputs submenus
-                                            ] # Inputs submenus
-                                        } # Inputs
-                                        {
-                                            jsonTag: "outputPins"
-                                            label: "Output Pins"
-                                            objectDescriptor: {
-                                                mvvmType: "extension"
-                                                description: "SCDL output pin models."
-                                            }
-                                            subMenus: [
-                                                {
-                                                    jsonTag: "outputPin"
-                                                    label: "Output Pin"
-                                                    objectDescriptor: {
-                                                        mvvmType: "archetype"
-                                                        description: "SCDL output pin model."
-                                                    }
-                                                } # Output
-                                            ] # Outputs submenus
-                                        } # Outputs
-                                    ] # Pins submenus
-                                } # I/O Pins
-                                {
-                                    jsonTag: "states"
-                                    label: "States"
-                                    objectDescriptor: {
-                                        mvvmType: "extension"
-                                        description: "SCDL state descriptors."
-                                    }
-                                    subMenus: [
-                                        {
-                                            jsonTag: "state"
-                                            label: "State"
-                                            objectDescriptor: {
-                                                mvvmType: "archetype"
-                                                description: "SCDL state descriptor."
-                                            }
-                                        } # State
-                                    ] # States submenus
-                                } # States
-                                {
-                                    jsonTag: "transitions"
-                                    label: "Transitions"
-                                    objectDescriptor: {
-                                        mvvmType: "extension"
-                                        description: "SCDL state transition descriptors."
-                                    }
-                                    subMenus: [
-                                        {
-                                            jsonTag: "transition"
-                                            label: "Transition"
-                                            objectDescriptor: {
-                                                mvvmType: "archetype"
-                                                description: "SCDL state transition descriptor."
-                                            }
-                                        } # Transition
-                                    ] # Transitions submenus
-                                } # Transitions
-                                {
-                                    jsonTag: "actions"
-                                    label: "Actions"
-                                    objectDescriptor: {
-                                        mvvmType: "extension"
-                                        description: "SCDL state transition action descriptors."
-                                    }
-                                    subMenus: [
-                                        {
-                                            jsonTag: "action"
-                                            label: "Action"
-                                            objectDescriptor: {
-                                                mvvmType: "archetype"
-                                                description: "SCDL state transition action descriptor."
-                                            }
-                                            subMenus: [
-                                                {
-                                                    jsonTag: "entryAction"
-                                                    label: "Entry Action"
-                                                    objectDescriptor: {
-                                                        mvvmType: "child"
-                                                        description: "SCDL state transition entry action descriptor."
-                                                    }
-                                                }
-                                                {
-                                                    jsonTag: "exitAction"
-                                                    label: "Exit Action"
-                                                    objectDescriptor: {
-                                                        mvvmType: "child"
-                                                        description: "SCDL state transition exit action descriptor."
-                                                    }
-                                                }
-                                            ] # Action submenus
-                                        } # Action
-                                    ] # Actions submenus
-                                } # Actions
-                            ] # Machine submenus
-                        } # Machine
-                    ] # Machines submenus
-                } # Machines
+                        archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype
+                    } # machines objectDescriptor
+                } # machines
+
                 {
                     jsonTag: "types"
                     label: "Types"
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL type models."
-                    }
-                    subMenus: [
-                        {
+                        archetype: {
                             jsonTag: "type"
                             label: "Type"
                             objectDescriptor: {
                                 mvvmType: "archetype"
                                 description: "SCDL type model."
-                            }
-                        } # Type
-                    ] # Types submenus
-                } # Types
+                            } # type objectDescriptor
+                        } # type archetype
+                    } # types objectDescriptor
+                } # types
             ] # Models submenus
         } # Models
         {
@@ -381,74 +122,66 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL person models."
-                    }
-                    subMenus: [
-                        {
+                        archetype: {
                             jsonTag: "person"
                             label: "Person"
                             objectDescriptor: {
                                 mvvmType: "archetype"
                                 description: "SCDL person model."
-                            }
-                        } # Person
-                    ] # People submenus
-                } # People
+                            } # person objectDescriptor
+                        } # person archetype
+                    } # people objectDescriptor
+                } # people
                 {
                     jsonTag: "organizations"
                     label: "Organizations"
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL organization models."
-                    }
-                    subMenus: [
-                        {
+                        archetype: {
                             jsonTag: "organization"
                             label: "Organization"
                             objectDescriptor: {
                                 mvvmType: "archetype"
                                 description: "SCDL organization model."
-                            }
-                        }
-                    ] # Organizations submenus
-                } # Organizations
+                            } # organization objectDescriptor
+                        } # organization archetype
+                    } # organizations objectDescriptor
+                } # organizations
                 {
                     jsonTag: "licenses"
                     label: "Licenses"
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL license models."
-                    }
-                    subMenus: [
-                        {
+                        archetype: {
                             jsonTag: "license"
                             label: "License"
                             objectDescriptor: {
                                 mvvmType: "archetype"
                                 description: "SCDL license model."
-                            }
-                        } # Licesne
-                    ] # Licesnes submenus
-                } # Licenses
+                            } # license objectDescriptor
+                        } # license archetype
+                    } # licenses objectDescriptor
+                } # licenses
                 {
                     jsonTag: "copyrights"
                     label: "Copyrights"
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL copyright models."
-                    }
-                    subMenus: [
-                        {
+                        archetype: {
                             jsonTag: "copyright"
                             label: "Copyright"
                             objectDescriptor: {
                                 mvvmType: "archetype"
                                 description: "SCDL copyright model."
-                            }
-                        } # Copyright
-                    ] # Copyrights submenus
-                } # Copyrights
-            ] # Assets submenu
-        } # Assets
+                            } # copyright objectDescriptor
+                        } # copyright archetype
+                    } # copyrights objectDescriptor
+                } # copyrights
+            ] # assets submenu
+        } # assets
     ] # Catalogue submenus
 } # Catalogue archetype
 

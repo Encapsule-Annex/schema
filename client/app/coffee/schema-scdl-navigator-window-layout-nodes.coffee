@@ -16,7 +16,7 @@
 
 ###
 #
-# schema-scdl-navigator-window-layout-socket.coffee
+# schema-scdl-navigator-window-layout-nodes.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
@@ -24,15 +24,19 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype = {
-    jsonTag: "socket"
-    label: "Socket"
+Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes = {
+    jsonTag: "nodes"
+    label: "Nodes"
     objectDescriptor: {
-        mvvmType: "archetype"
-        description: "SCDL socket model."
-    }
-    subMenus: [
-        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins
-    ] # Socket submenus
-
-} # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype 
+        mvvmType: "extension"
+        description: "SCDL node descriptor instances."
+        archetype: {
+            jsonTag: "node"
+            label: "Node"
+            objectDescriptor: {
+                mvvmType: "archetype"
+                detail: "SCDL node descriptor instance."
+            } # node objectDescriptor
+        } # node archetype
+    } # nodes object descriptor
+} # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes
