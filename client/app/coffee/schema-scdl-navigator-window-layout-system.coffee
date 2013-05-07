@@ -24,3 +24,87 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
+Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSystemArchetype = {
+    jsonTag: "system"
+    label: "System"
+    objectDescriptor: {
+        mvvmType: "archetype"
+        description: "SCDL system model."
+    }
+    subMenus: [
+        {
+            jsonTag: "pins"
+            label: "I/O Pins"
+            objectDescriptor: {
+                mvvmType: "child"
+                description: "SCDL pin models by function."
+            }
+            subMenus: [
+                {
+                    jsonTag: "inputPins"
+                    label: "Input Pins"
+                    objectDescriptor: {
+                        mvvmType: "extension"
+                        description: "SCDL input pin models."
+                        archetype: {
+                            jsonTag: "inputPin"
+                            label: "Input Pin"
+                            objectDescriptor: {
+                                mvvmType: "archetype"
+                                description: "SCDL input pin model."
+                            } # inputPin objectDescriptor
+                        } # inputPin archetype
+                    } # inputPins objectDescriptor
+                } # inputPins
+                {
+                    jsonTag: "outputPins"
+                    label: "Output Pins"
+                    objectDescriptor: {
+                        mvvmType: "extension"
+                        description: "SCDL output pin models."
+                        archetype: {
+                            jsonTag: "outputPin"
+                            label: "Output Pin"
+                            objectDescriptor: {
+                                mvvmType: "archetype"
+                                description: "SCDL output pin model."
+                            } # outputPin objectDescriptor
+                        } # outputPin archetype
+                    } # outputPins objectDescriptor
+                } # outputPins
+            ] # pins submenus
+        } # pins
+        {
+            jsonTag: "models"
+            label: "Models"
+            objectDescriptor: {
+                mvvmType: "extension"
+                description: "SCDL model instances."
+                archetype: {
+                    jsonTag: "model"
+                    label: "Model"
+                    objectDescriptor: {
+                        mvvmType: "archetype"
+                        description: "SCDL model instance."
+                    } # model objectDescriptor
+                } # model archetype
+            } # models objectDescriptor
+        } # models
+        {
+            jsonTag: "nodes"
+            label: "Nodes"
+            objectDescriptor: {
+                mvvmType: "extension"
+                description: "SCDL node descriptor instances."
+                archetype: {
+                    jsonTag: "node"
+                    label: "Node"
+                    objectDescriptor: {
+                        mvvmType: "archetype"
+                        detail: "SCDL node descriptor instance."
+                    } # node objectDescriptor
+                } # node archetype
+            } # nodes object descriptor
+        } # nodes
+    ] # system submenus
+} # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSystemArchetype
