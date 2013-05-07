@@ -86,15 +86,18 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 return "#{iconHtml} #{@label()}"
 
             
-            Console.message "New menu item: level #{@level()} #{@label()}"
-
             ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
             @baseBackgroundColorObject = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor).lightenByRatio(ratio)
 
             itemPathNamespaceObject = {}
             itemPathNamespaceObject.menuLevelModelView = @
-            itemPathNamespaceObject.itemHostModelView = new Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow(@navigatorContainer, @)
+
+            # I want to separate the construction of the menu levels from the construction of the menu item hosts
+            # itemPathNamespaceObject.itemHostModelView = new Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow(@navigatorContainer, @)
+
             @navigatorContainer.menuItemPathNamespace[ @path ] = itemPathNamespaceObject
+
+            Console.message "Constructing new menu level object: level=#{@level()}, path=#{@path}, label=\"#{@label()}\""
 
             if yourNewLayoutObject_.subMenus? and yourNewLayoutObject_.subMenus
 
@@ -308,7 +311,6 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             @onMouseClick = =>
                 return @navigatorContainer.toggleSelectionState(@)
-
 
             # / END: constructor try scope
         catch exception

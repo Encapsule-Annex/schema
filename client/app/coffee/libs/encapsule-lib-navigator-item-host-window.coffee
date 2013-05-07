@@ -42,6 +42,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             @path = @menuLevelObject.path
             @jsonTag = @menuLevelObject.jsonTag
 
+            Console.message("NavigatorMenuItemHostWindow constructing for navigator path #{@path}")
+
             @parentItemHostWindow = undefined
 
             @itemMVVMType = undefined
@@ -72,7 +74,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         @itemObservableModelViewFree(true)
                         colorObject = @menuLevelObject.baseBackgroundColorObject
                         @menuLevelObject.baseBackgroundColorObject = colorObject.darkenByRatio(@navigatorContainer.layout.userObjectDarkenRatio).shiftHue(@navigatorContainer.layout.userObjectShiftHue)
-
                         break
 
                     when "child"
@@ -93,25 +94,50 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         if not (@parentItemHostWindow? and @parentItemHostWindow)
                             throw "Can't resolve parent menu item host window reference."
 
+                        # Set the MVVM object-type-specific color of the menu level object.
                         colorObject = @menuLevelObject.baseBackgroundColorObject.lightenByRatio(@navigatorContainer.layout.structureArrayLightenRatio).shiftHue(@navigatorContainer.layout.structureArrayShiftHue)
                         @menuLevelObject.baseBackgroundColorObject = colorObject
 
+                        # Modify the parent menu item host's hosted model view by adding this new array into its object namespace.
                         if (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
                             @itemObservableModelView([])
                             currentModelView = @parentItemHostWindow.itemObservableModelView()
                             currentModelView[@jsonTag] = @itemObservableModelView
                             @parentItemHostWindow.itemObservableModelView(currentModelView)
 
+                        # Not nearly done...
+
+                        if not (objectDescriptor.archetype? and objectDescriptor.archetype)
+                            alert("#{@path} extension w/no declared archetype.")
+                        
+                        # Create the select sub menu of this extension.
+                        layoutSelectMenuLevel = Encapsule.code.lib.js.clone(objectDescriptor.archetype)
+                        layoutSelectMenuLevel.jsonTag = "select"
+                        layoutSelectMenuLevel.objectDescriptor.mvvmType = "select"
+                        
+                        selectMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @menuLevelObject, layoutSelectMenuLevel, @menuLevelObject.level() + 1)
+                        @menuLevelObject.subMenus.push(selectMenuLevel)
+
+
+                        # Create the archetype sub menu of this extension.
+                        layoutArchetypeMenuLevel = Encapsule.code.lib.js.clone(objectDescriptor.archetype)
+                        layoutArchetypeMenuLevel.jsonTag = "archetype"
+                        layoutArchetypeMenuLevel.objectDescriptor.mvvmType = "archetype"
+
+                        archetypeMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @menuLevelObject, layoutArchetypeMenuLevel, @menuLevelObject.level() + 1)
+                        @menuLevelObject.subMenus.push(archetypeMenuLevel)
+
+
                         break
 
                     when "root"
                         @itemObservableModelView({})
-
                         break
 
                     when "select"
                         if not (@parentItemHostWindow? and @parentItemHostWindow)
                             throw "Can't resolve parent menu item host window reference."
+                        @itemObservableModelView({})
                         break
 
                     else
@@ -122,14 +148,9 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
 
                 @toJSON = ko.computed =>
-                    jsonWrapper = {}
-                    if @itemObjectOrigin == "user" and @itemObservableModelViewFree? and @itemObservableModelViewFree and @itemObservableModelViewFree()
-                        jsonWrapper.archetype = {}
-                        jsonWrapper.archetype[@jsonTag] = @itemObservableModelView
+                    ko.toJSON(@itemObservableModelView, undefined, 1)
+                        
 
-                    else
-                        jsonWrapper[@jsonTag] = @itemObservableModelView
-                    ko.toJSON jsonWrapper, undefined, 2
 
                 @saveJSONAsLinkHtml = ko.computed =>
                     # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101

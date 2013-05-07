@@ -102,21 +102,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 @resetDetailAboveSelect()
 
 
-            newMenuHierarchy = [
-                {
-                    jsonTag: layout_.jsonTag
-                    label: layout_.label
-                    objectDescriptor: {
-                        mvvmType: "root"
-                        description: layout_.description
-                    }
-                    subMenus: layout_.menuHierarchy
-                }
-            ]
-            # Patch the incoming layout
-            @layout.menuHierarchy = newMenuHierarchy
-
-            @rootMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, undefined, @layout.menuHierarchy[0], -1)
+ 
 
 
             # External API function
@@ -365,12 +351,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     @selectionUpdatedCallback(@, @currentlySelectedMenuLevel.path)
 
 
-            #
-            # ============================================================================
-            @detailWorker = ko.computed =>
-                detailBelowSelect = @detailBelowSelect()
-                detailAboveSelect = @detailAboveSelect()
-                return @updateMenuLevelVisibilities()
 
 
 
@@ -393,6 +373,45 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             # ============================================================================
             @updateMouseOverState = (menuLevel_, flag_) =>
                 @internalUpdateLevelsMouseOverState(menuLevel_, flag_)
+
+
+
+            newMenuHierarchy = [
+                {
+                    jsonTag: layout_.jsonTag
+                    label: layout_.label
+                    objectDescriptor: {
+                        mvvmType: "root"
+                        description: layout_.description
+                    }
+                    subMenus: layout_.menuHierarchy
+                }
+            ]
+            # Patch the incoming layout
+            @layout.menuHierarchy = newMenuHierarchy
+
+            Console.message("Instantiating root menu level for navigator.")
+            @rootMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, undefined, @layout.menuHierarchy[0], -1)
+
+            createItemHost = (levelObject_) =>
+                itemPathNamespaceObject = @getItemPathNamespaceObject(levelObject_.path)
+                if not (itemPathNamespaceObject? and itemPathNamespaceObject)
+                    throw "Cannot resolve item path namespace object."
+                itemPathNamespaceObject.itemHostModelView = new Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow(@, levelObject_)
+                return true;
+
+            createItemHost(@rootMenuLevel)
+
+            @internalVisitChildren(@rootMenuLevel, ( (level_) =>
+
+                createItemHost(level_) ), -1, undefined)
+
+            #
+            # ============================================================================
+            @detailWorker = ko.computed =>
+                detailBelowSelect = @detailBelowSelect()
+                detailAboveSelect = @detailAboveSelect()
+                return @updateMenuLevelVisibilities()
 
 
             # Last step in constructor is to set the default view.

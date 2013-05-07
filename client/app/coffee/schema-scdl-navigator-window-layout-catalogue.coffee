@@ -40,6 +40,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
             objectDescriptor: {
                 mvvmType: "extension"
                 description: "SCDL specification."
+                archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype 
             } # specification objectDescriptor
         } # Specifications
         {

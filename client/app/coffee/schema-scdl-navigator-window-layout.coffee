@@ -104,6 +104,28 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     }
 
 
+    # There are two separate namespace hierarchies defined here:
+    #
+    # The outer, or the navigator namespace, is comprised of a singly
+    # rooted tree (the root is defined implicitly and auto-generated).
+    # Each menu item in the navigator namespace is given an ID string.
+    # The ID's of sibling menu items must be distinct to ensure that each
+    # menu item is addressable withing the navigator namespace. Other than
+    # this stipulation, menu ID's do not need to be unique as references to
+    # a menu item are specified by its full navigator namespace path. (This
+    # allows for re-use of menu item declarations).
+    #
+    # The inner namespace, or the hosted model view namespace, mirrors the
+    # outer navigator namespace precisely in topology but has alternate semantics.
+    # Most notably, the inner namespace objects inherit their ID's from a menu
+    # item's objectDescriptor.jsonTag along with a number of other attributes that
+    # specialize the behavior of the inner hosted model view object. There are no
+    # restrictions placed on the uniqueness of the jsonTag's given hosted model
+    # view namespace objects because they're always referenced indirectly via
+    # the outer navigator namespace path. 
+    #
+
+
     menuHierarchy: [
         {
             jsonTag: "schema"
@@ -122,6 +144,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "Manage SCDL catalogues in your local repository."
+                        archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype
                     }
                 }
 
@@ -131,9 +154,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "Manager current and past session."
-                    }
-                    subMenus: [
-                        {
+                        archetype: {
                             jsonTag: "session"
                             label: "Session"
                             objectDescriptor: {
@@ -141,7 +162,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                 description: "#{appName} session object."
                             }
                         }
-                    ] # sessionManager submenus
+                    } # session archetype
                 } # sessionManager
 
 
@@ -225,9 +246,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                             objectDescriptor: {
                                                 mvvmType: "extension"
                                                 description: "Remote stores."
-                                            }
-                                            subMenus: [
-                                                {
+                                                archetype: {
                                                     jsonTag: "source"
                                                     label: "Source"
                                                     objectDescriptor: {
@@ -235,7 +254,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                                                         description: "Source descriptor for remote SCDL catalogue(s)."
                                                     }
                                                 } # remote
-                                            ] # remotes submenus
+                                            } # remote archetype
                                         } # remotes
                                     ] # storage submenus
                                 } # storage
