@@ -74,8 +74,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelFontSizeMin: 12
 
 
-    structureArrayShiftHue: 0
-    structureArrayLightenRatio: 0.2
+    structureArrayShiftHue: -60
+    structureArrayLightenRatio: 0
 
     metaArrayElementShiftHue: 0
     metaArrayElementLightenRatio: 0.2
@@ -153,19 +153,17 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     label: "Sessions"
                     objectDescriptor: {
                         mvvmType: "extension"
-                        description: "Manager current and past session."
+                        description: "Manager current and past work sessions."
                         archetype: {
                             jsonTag: "session"
                             label: "Session"
                             objectDescriptor: {
                                 mvvmType: "archetype"
                                 description: "#{appName} session object."
-                            }
-                        }
-                    } # session archetype
-                } # sessionManager
-
-
+                            } # session objectDescriptor
+                        } # session archetype
+                    } # sessions objectDescriptor
+                } # sessions
 
                 {
                     jsonTag: "settings"
@@ -180,6 +178,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                             label: "User"
                             objectDescriptor: {
                                 mvvmType: "child"
+                                description: "#{appName} customizations."
                             }
                         }
                         {

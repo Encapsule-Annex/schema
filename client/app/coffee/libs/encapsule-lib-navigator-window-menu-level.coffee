@@ -87,7 +87,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             
             ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
-            @baseBackgroundColorObject = net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor).lightenByRatio(ratio)
+            @baseBackgroundColorObject = ko.observable(net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor).lightenByRatio(ratio))
 
             itemPathNamespaceObject = {}
             itemPathNamespaceObject.menuLevelModelView = @
@@ -117,7 +117,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             @getCssBackgroundColor = ko.computed =>
 
-                backgroundColorObject = Encapsule.code.lib.js.clone(@baseBackgroundColorObject)
+                backgroundColorObject = Encapsule.code.lib.js.clone(@baseBackgroundColorObject())
                 mouseOverHighlight = @mouseOverHighlight()
 
                 if @selectedItem() or @showAsSelectedUntilMouseOut()

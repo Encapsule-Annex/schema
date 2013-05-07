@@ -62,9 +62,13 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                 if objectDescriptor.mvvmType? and objectDescriptor.mvvmType
                     @itemMVVMType = objectDescriptor.mvvmType
+                else
+                    throw "Missing objectDescriptor.mvvmType declaration."
 
                 if objectDescriptor.description? and objectDescriptor.description
                     @itemObjectDescription = objectDescriptor.description
+                else
+                    throw "Missing objectDescriptor.description declaration."
 
                 switch @itemMVVMType
 
@@ -72,8 +76,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                         @itemObservableModelView({})
                         @itemObservableModelViewFree(true)
-                        colorObject = @menuLevelObject.baseBackgroundColorObject
-                        @menuLevelObject.baseBackgroundColorObject = colorObject.darkenByRatio(@navigatorContainer.layout.userObjectDarkenRatio).shiftHue(@navigatorContainer.layout.userObjectShiftHue)
+                        colorObject = @menuLevelObject.baseBackgroundColorObject()
+                        @menuLevelObject.baseBackgroundColorObject(colorObject.darkenByRatio(@navigatorContainer.layout.userObjectDarkenRatio).shiftHue(@navigatorContainer.layout.userObjectShiftHue))
                         break
 
                     when "child"
@@ -95,8 +99,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             throw "Can't resolve parent menu item host window reference."
 
                         # Set the MVVM object-type-specific color of the menu level object.
-                        colorObject = @menuLevelObject.baseBackgroundColorObject.lightenByRatio(@navigatorContainer.layout.structureArrayLightenRatio).shiftHue(@navigatorContainer.layout.structureArrayShiftHue)
-                        @menuLevelObject.baseBackgroundColorObject = colorObject
+                        colorObject = @menuLevelObject.baseBackgroundColorObject().lightenByRatio(@navigatorContainer.layout.structureArrayLightenRatio).shiftHue(@navigatorContainer.layout.structureArrayShiftHue)
+                        @menuLevelObject.baseBackgroundColorObject(colorObject)
 
                         # Modify the parent menu item host's hosted model view by adding this new array into its object namespace.
                         if (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
@@ -106,6 +110,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             @parentItemHostWindow.itemObservableModelView(currentModelView)
 
                         # Not nearly done...
+
+                        ###
 
                         if not (objectDescriptor.archetype? and objectDescriptor.archetype)
                             alert("#{@path} extension w/no declared archetype.")
@@ -127,6 +133,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         archetypeMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @menuLevelObject, layoutArchetypeMenuLevel, @menuLevelObject.level() + 1)
                         @menuLevelObject.subMenus.push(archetypeMenuLevel)
 
+                        ###
 
                         break
 
