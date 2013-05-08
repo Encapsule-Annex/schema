@@ -85,9 +85,12 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 iconHtml = """<img src="./img/#{prefix}" style="width: 16px; height: 16px; vertical-align: middle;">"""
                 return "#{iconHtml} #{@label()}"
 
-            
-            ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
-            @baseBackgroundColorObject = ko.observable(net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor).lightenByRatio(ratio))
+            @baseBackgroundColorObject = ko.observable undefined
+            @resetBaseBackgroundColor = =>
+                ratio = @level() * @navigatorContainer.layout.baseBackgroundRatioPercentPerLevel
+                @baseBackgroundColorObject(net.brehaut.Color(@navigatorContainer.layout.baseBackgroundColor).lightenByRatio(ratio))
+
+            @resetBaseBackgroundColor()
 
             itemPathNamespaceObject = {}
             itemPathNamespaceObject.menuLevelModelView = @

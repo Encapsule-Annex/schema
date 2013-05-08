@@ -176,8 +176,14 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
                     # Unbox/modify/rebox the parent array.
                     parentArray = parentItemHostObject.itemObservableModelView()
-                    parentArray.push(newArrayElement)
+                    newArrayLength = parentArray.push(newArrayElement)
                     parentItemHostObject.itemObservableModelView(parentArray)
+
+                    # The select menu item host is already bound to the menu array element but
+                    # the semantics of the menu item have changed; update the menu item host's
+                    # itemSelectState to "element" and set the menu item host's element index.
+                    
+                    itemHostObject_.setSelectState("element")
  
                     return true
 

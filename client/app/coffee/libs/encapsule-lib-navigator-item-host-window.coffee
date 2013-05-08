@@ -118,7 +118,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         
                         # Create the select sub menu of this extension.
                         layoutSelectMenuLevel = Encapsule.code.lib.js.clone(layoutObjectDescriptor.archetype)
-                        #layoutSelectMenuLevel.jsonTag = "select"
                         layoutSelectMenuLevel.objectDescriptor.mvvmType = "select"
                         
                         selectMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @menuLevelObject, layoutSelectMenuLevel, @menuLevelObject.level() + 1)
@@ -172,8 +171,25 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                     # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
                     html = "<a href=\"data:text/json;base64,#{window.btoa(@toJSON())}\" target=\"_blank\">JSON</a>"
 
+                @setSelectState = (selectState_) =>
+                    if not (selectState_? and selectState_)
+                        throw "Missing select state paramter."
+                    if @itemMVVMType != "select"
+                        throw "Invalid request. This menu item host is not of MVVM type 'select'."
+
+                    switch selectState_
+                        when "element"
+                            # Set the MVVM object-type-specific color of the menu level object.
+                            @menuLevelObject.resetBaseBackgroundColor()
+                            colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.elementSaturateRatio).lightenByRatio(@navigatorContainer.layout.elementLightenRatio).shiftHue(@navigatorContainer.layout.elementShiftHue)
+                            @menuLevelObject.baseBackgroundColorObject(colorObject)
+
+                    
+
+
                 # OPERATIONS
 
+                # button click event handler delegates to the navigator container.
                 @insertArchetype = =>
                     @navigatorContainer.insertArchetypeFromItemHostObject(@)
 

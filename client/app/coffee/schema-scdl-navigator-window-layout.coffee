@@ -84,6 +84,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     archetypeSaturateRatio: -0.8
     archetypeLightenRatio: 0.4
     
+    elementShiftHue: -50
+    elementSaturateRatio: 0.5
+    elementLightenRatio: 0.6
+
 
     menuLevelBoxShadowColorDarkenRatio: 0.4 # Used as shadow color if mouse over or selection path
     menuLevelBoxShadowColorLightenRatio: 0.35

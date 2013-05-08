@@ -28,12 +28,12 @@ Encapsule.code.app.bootDelay = 2000
 Encapsule.code.app.bootWatchdogTimeout = 10000
 
 Encapsule.code.app.bootChromes = {
-    phase0 : { title: "#{appName} Hello!", backgroundColor: undefined, spinnerText: "Hello!" }
-    phase1 : { title: "#{appName} *", backgroundColor: undefined, spinnerText: "Booting"  }
-    phase2 : { title: "#{appName} +", backgroundColor: undefined, spinnerText: "Checking Cache"  }
-    phase2checking : { title: "#{appName} @", backgroundColor: undefined, spinnerText: undefined  }
-    phase2downloading: { title: "#{appName} =", backgroundColor: "#004477", spinnerText: "Updating Cache"  }
-    phase2progress: { title: "#{appName} = ", backgroundColor: "#004477", spinnerText: "Updating Cache :  "  }
+    phase0 : { title: "#{appName} ~", backgroundColor: undefined, spinnerText: "Hello!" }
+    phase1 : { title: "#{appName} -", backgroundColor: undefined, spinnerText: "Booting"  }
+    phase2 : { title: "#{appName} $", backgroundColor: undefined, spinnerText: "Checking Cache"  }
+    phase2checking : { title: "#{appName} ?", backgroundColor: undefined, spinnerText: undefined  }
+    phase2downloading: { title: "#{appName} $ ", backgroundColor: "#004477", spinnerText: "Updating Cache"  }
+    phase2progress: { title: "#{appName} $ ", backgroundColor: "#004477", spinnerText: "Updating Cache :  "  }
     phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFFF00", spinnerText: "ERROR"  }
     phase2obsolete: { title: "#{appName} LOCKED", backgroundColor: "#FFCC00", spinnerText: "LOCKED"  }
     phase2offline: { title: "#{appName} CACHED", backgroundColor: "#005588", spinnerText: "#{appName} v#{appVersion} CACHED"  }
