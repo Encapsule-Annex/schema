@@ -29,27 +29,27 @@ Encapsule.code.app.bootWatchdogTimeout = 10000
 
 Encapsule.code.app.bootChromes = {
     phase0 : { title: "#{appName} Hello!", backgroundColor: undefined, spinnerText: "Hello!" }
-    phase1 : { title: "#{appName} Booting...", backgroundColor: undefined, spinnerText: "Booting"  }
-    phase2 : { title: "#{appName} Checking...", backgroundColor: undefined, spinnerText: "Checking Cache"  }
-    phase2checking : { title: "#{appName} Checking...", backgroundColor: undefined, spinnerText: undefined  }
-    phase2downloading: { title: "#{appName} Updating...", backgroundColor: "#004477", spinnerText: "Updating Cache"  }
-    phase2progress: { title: "#{appName} Updating ", backgroundColor: "#004477", spinnerText: "Updating Cache :  "  }
+    phase1 : { title: "#{appName} *", backgroundColor: undefined, spinnerText: "Booting"  }
+    phase2 : { title: "#{appName} +", backgroundColor: undefined, spinnerText: "Checking Cache"  }
+    phase2checking : { title: "#{appName} @", backgroundColor: undefined, spinnerText: undefined  }
+    phase2downloading: { title: "#{appName} =", backgroundColor: "#004477", spinnerText: "Updating Cache"  }
+    phase2progress: { title: "#{appName} = ", backgroundColor: "#004477", spinnerText: "Updating Cache :  "  }
     phase2error: { title: "#{appName} ERROR", backgroundColor: "#FFFF00", spinnerText: "ERROR"  }
     phase2obsolete: { title: "#{appName} LOCKED", backgroundColor: "#FFCC00", spinnerText: "LOCKED"  }
-    phase2offline: { title: "#{appName} Cached.", backgroundColor: "#005588", spinnerText: "#{appName} v#{appVersion} CACHED"  }
-    phase2cached: { title: "#{appName} Installed.", backgroundColor: "#005588", spinnerText: "#{appName} v#{appVersion} INSTALLED"  }
-    phase2noupdate: { title: "#{appName} Cached.", backgroundColor: "#005588", spinnerText: "#{appName} v#{appVersion} CACHED"  }
-    phase2updateready: { title: "#{appName} Updated.", backgroundColor: "#005588", spinnerText: "#{appName} v#{appVersion} UPDATED"  }
+    phase2offline: { title: "#{appName} CACHED", backgroundColor: "#005588", spinnerText: "#{appName} v#{appVersion} CACHED"  }
+    phase2cached: { title: "#{appName} INSTALLED", backgroundColor: "#005588", spinnerText: "#{appName} v#{appVersion} INSTALLED"  }
+    phase2noupdate: { title: "#{appName} CACHED", backgroundColor: "#005588", spinnerText: "#{appName} v#{appVersion} CACHED"  }
+    phase2updateready: { title: "#{appName} UPDATED", backgroundColor: "#005588", spinnerText: "#{appName} v#{appVersion} UPDATED"  }
     #phase2watchdog: { title: "#{appName} ?8|", spinnerText: "hello"  }
     #phase2watchdogNoop: { title: "#{appName} v#{appVersion}", spinnerText: "hello"  }
     #phase2watchdogAction: { title: "#{appName} ?>8!", backgroundColor: "#FFCC00", spinnerText: "hello"  }
-    phase3: { title: "#{appName} Starting...", backgroundColor: undefined, spinnerText: "#{appName} v#{appVersion} START"  }
+    phase3: { title: "#{appName} START", backgroundColor: undefined, spinnerText: "#{appName} v#{appVersion} START"  }
     schemaStart : {title: undefined, backgroundColor: undefined, spinnerText: "#{appName} v#{appVersion} INIT" }
     schemaModelView : {title: undefined, backgroundColor: undefined, spinnerText: "Building model view..." }
     schemaViewModel : {title: undefined, backgroundColor: undefined, spinnerText: "Building view model..." }
     schemaBind : {title: undefined, backgroundColor: undefined, spinnerText: "Binding data model..." }
     schemaRender : {title: undefined, backgroundColor: undefined, spinnerText: "Rendering layout.." }
-    schemaWelcome : {title: "#{appPackagePublisher} #{appName} v#{appVersion} (#{appReleasePhase})", backgroundColor: undefined, spinnerText: "#{appName} v#{appVersion} READY" }
+    schemaWelcome : {title: "#{appName} v#{appVersion} (#{appReleasePhase})", backgroundColor: undefined, spinnerText: "#{appName} v#{appVersion} READY" }
     }
 
 Encapsule.code.app.setBootChrome = (phase_, progress_) ->

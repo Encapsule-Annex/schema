@@ -63,6 +63,7 @@ Application Source Code: <strong><a href="#{appGitHubRepoUrl}" target="_blank"><
 <h2>App Files</h2>
 <p>Use the following links to explore the deployed implementation of #{appName} v#{appVersion}:</p>
 <ul>
+<li><a href="./schema.appcache" target="sources">./schema.appcache</a></li>
 <li><a href="./audio" target="sources">./audio/</a></li>
 <li><a href="./css" target="sources">./css/</a></li>
 <li><a href="./img" target="sources">./img/</a></li>

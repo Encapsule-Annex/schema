@@ -54,7 +54,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             @itemMVVMType = undefined
 
-            @itemOuterJsonObject = {}
+            #@itemOuterJsonObject = {}
             @itemObservableModelView = ko.observable(undefined)
             @itemObservableModelViewFree = ko.observable false
 
@@ -112,9 +112,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             currentModelView[@jsonTag] = @itemObservableModelView
                             @parentItemHostWindow.itemObservableModelView(currentModelView)
 
-                        # Not nearly done...
-
-
+                        # Create the select menu item beneath the extension point.
                         if not (layoutObjectDescriptor.archetype? and layoutObjectDescriptor.archetype)
                             alert("#{@path} extension w/no declared archetype.")
                         
@@ -153,7 +151,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         @menuLevelObject.baseBackgroundColorObject(colorObject)
 
                         @itemObservableModelView({})
-                        @selectItemState = ko.observable("archetype")
+                        @itemSelectState = ko.observable("archetype")
                         break
 
                     else
@@ -206,7 +204,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
 
             <span data-bind="if: itemMVVMType == 'select'">
 
-                <p>The selected object is currently in the the \"<span data-bind="text: selectItemState"></span>\" state.</p>
+                <p>The selected object is currently in the the \"<span data-bind="text: itemSelectState"></span>\" state.</p>
 
                 <p>
                     <span data-bind="with: menuLevelObject.parentMenuLevel">Add this object to parent <span data-bind="text: label"></span> array:</span>
@@ -222,9 +220,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
                 child
             </span>
 
-            <span data-bind="if: itemMVVMType == 'select'">
-               <p>select state=\"<span data-bind="text: selectItemState"></span>\"</p>
-            </span>
 
             <span data-bind="if: itemMVVMType == 'extension'">
                 extension

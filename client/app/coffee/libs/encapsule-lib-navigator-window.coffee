@@ -157,9 +157,9 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     if itemHostObject_.itemMVVMType != "select"
                         throw "Invalid request: The specified item host object is not a selection point."
 
-                    # This is some legacy code that I think can be removed?
-                    if not itemHostObject_.itemObservableModelViewFree()
-                        throw "Specified item host object does not represent an archetype!"
+                    itemSelectState = itemHostObject_.itemSelectState? and itemHostObject_.itemSelectState and itemHostObject_.itemSelectState() or undefined
+                    if not (itemSelectState? and itemSelectState)
+                        throw "Invalid request: The specified item host object is missing the expected itemSelectState property."
 
                     parentItemHostObject = itemHostObject_.parentItemHostWindow
                     if not (parentItemHostObject? and parentItemHostObject)
@@ -168,30 +168,18 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     if parentItemHostObject.itemMVVMType != "extension"
                         throw "Specified item host's parent object type doesn't support this operation. This is an error in your layout declaration."
 
-
                     # Update the parent item host's contained obervable array.
 
+                    # Package reference to this item's hosted observable view to push into parent array.
                     newArrayElement = {}
-                    newArrayElement[itemHostObject_.menuLevelObject.layoutObject.objectDescriptor.mvvmJsonTag] = itemHostObject_.itemObservableModelView
+                    newArrayElement[itemHostObject_.jsonTag] = itemHostObject_.itemObservableModelView
+
+                    # Unbox/modify/rebox the parent array.
                     parentArray = parentItemHostObject.itemObservableModelView()
                     parentArray.push(newArrayElement)
                     parentItemHostObject.itemObservableModelView(parentArray)
-                    return
-
-                    
-
-
-                    sourceMenuLevelObject = itemHostObject_.menuLevelObject
-                    targetMenuLevelObject = sourceMenuLevelObject.parentMenuLevel
-
-                    newMenuLevelLayout = Encapsule.code.lib.js.clone(sourceMenuLevelObject.layoutObject)
-                    newMenuLevelLayout.jsonTag = newMenuLevelLayout.objectDescriptor.mvvmJsonTag
-                    newMenuLevelLayout.objectDescriptor.mvvmType = "element"
-
-                    newMenuLevelObject =
-                        new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@, targetMenuLevelObject, newMenuLevelLayout, targetMenuLevelObject.level() + 1)
-
-                    targetMenuLevelObject.subMenus.push(newMenuLevelObject)
+ 
+                    return true
 
                 catch exception
                     throw "NavigatorWindow.insertArchetypeFromItemHostObject fail: #{exception}"

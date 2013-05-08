@@ -37,7 +37,7 @@ try
         #
         id: "idSchemaWindowManager"
         name: "#{appName} v#{appVersion} Window Manager"
-        fadeInTimeMs: 0 # (defaults to 1500ms if undefined)
+        fadeInTimeMs: 250 # (defaults to 1500ms if undefined)
 
         #
         # BODY PAGE ATTRIBUTES
@@ -46,7 +46,7 @@ try
         # The color of the page background may optionally be set via bodyPageBackgroundColor and will be visible
         # if glassMargin > 0 or glassOpacity < 1
         #
-        pageBackgroundColor: "#333333" # (defaults to "white" if undefined)
+        pageBackgroundColor: "#7F7F7F" # (defaults to "white" if undefined)
 
         #
         # WINDOW MANAGER "GLASS" ATTRIBUTES

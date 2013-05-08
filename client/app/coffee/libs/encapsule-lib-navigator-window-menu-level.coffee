@@ -163,9 +163,11 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 # item is outside of selection path
 
+                ###
                 if @mouseOverHighlight() and (not selected or @selectedChild())
                     borderColor = @getBorderColorFlat()
                     borderWidth = @navigatorContainer.layout.borderWidthFlat
+                ###
                     
                 result = "#{borderWidth}px solid #{borderColor}"
                 return result
@@ -188,10 +190,11 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     borderColor = @getBorderColorLight()
                     borderWidth = @navigatorContainer.layout.borderWidthInset
 
+                ###
                 if @mouseOverHighlight() and (not selected or @selectedChild())
                     borderColor = @getBorderColorFlat()
                     borderWidth = @navigatorContainer.layout.borderWidthFlat
-
+                ###
 
                 result = "#{borderWidth}px solid #{borderColor}"
                 return result
