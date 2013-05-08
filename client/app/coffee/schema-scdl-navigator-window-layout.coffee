@@ -39,7 +39,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     initialSelectionPath: "app.schema"
 
-    baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.6}).toCSS()
+    baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.4}).toCSS()
     baseBackgroundRatioPercentPerLevel: 0
 
     borderLightRatio: 0.25
@@ -56,13 +56,13 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     fontColorRatioMouseOver: -1
     
     selectedItemBackgroundShiftHue: 0
-    selectedItemBackgroundLightenRatio: 0.8
+    selectedItemBackgroundLightenRatio: 1
 
     selectedChildItemBackgroundShiftHue: 0
-    selectedChildItemBackgroundLightenRatio: 0.5
+    selectedChildItemBackgroundLightenRatio: 1
 
     mouseOverItemBackgroundShiftHue: -5
-    mouseOverItemBackgroundLightenRatio: 0.3
+    mouseOverItemBackgroundLightenRatio: 0.5
 
 
     menuLevelPaddingTop: 1
@@ -70,8 +70,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelPaddingLeft: 5
     menuLevelPaddingRight: 5
 
-    menuLevelFontSizeMax: 14
-    menuLevelFontSizeMin: 12
+    menuLevelFontSizeMax: 12
+    menuLevelFontSizeMin: 10
 
 
     structureArrayShiftHue: -25
@@ -80,9 +80,9 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     metaArrayElementShiftHue: 0
     metaArrayElementLightenRatio: 0.2
 
-    archetypeShiftHue: 0
-    archetypeSaturateRatio: -1
-    archetypeLightenRatio: -0.3
+    archetypeShiftHue: 210
+    archetypeSaturateRatio: 1
+    archetypeLightenRatio: 0
     
 
     menuLevelBoxShadowColorDarkenRatio: 0.3 # Used as shadow color if mouse over or selection path
@@ -143,6 +143,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     jsonTag: "catalogues"
                     label: "Catalogues"
                     objectDescriptor: {
+                        jsonTag: "SCDLCatalogues"
                         mvvmType: "extension"
                         description: "Manage SCDL catalogues in your local repository."
                         archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype

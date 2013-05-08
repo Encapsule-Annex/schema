@@ -26,9 +26,10 @@ Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
 
-    jsonTag: "scdlCatalogueArchetype"
+    jsonTag: "catalogue"
     label: "Catalogue"
     objectDescriptor: {
+        jsonTag: "SCDLCatalogue"
         mvvmType: "archetype"
         mvvmJsonTag: "scdlCatalogue"
         description: "SCDL catalogue object archetype."

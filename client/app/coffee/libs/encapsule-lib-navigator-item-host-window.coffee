@@ -40,7 +40,13 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             @navigatorContainer = navigatorContainerObject_
             @menuLevelObject = menuLevelObject_
             @path = @menuLevelObject.path
-            @jsonTag = @menuLevelObject.jsonTag
+
+            @jsonTagOrigin = "unknown"
+
+            layoutObject = @menuLevelObject.layoutObject
+            layoutObjectDescriptor = @menuLevelObject.layoutObject.objectDescriptor
+          
+            @jsonTag = layoutObjectDescriptor? and layoutObjectDescriptor and layoutObjectDescriptor.jsonTag? and layoutObjectDescriptor.jsonTag or @menuLevelObject.jsonTag
 
             Console.message("NavigatorMenuItemHostWindow constructing for navigator path #{@path}")
 
@@ -56,29 +62,21 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 parentPath = @menuLevelObject.parentMenuLevel.path
                 @parentItemHostWindow = @navigatorContainer.menuItemPathNamespace[parentPath].itemHostModelView
             
-            if @menuLevelObject.layoutObject.objectDescriptor? and @menuLevelObject.layoutObject.objectDescriptor
+            if layoutObjectDescriptor? and layoutObjectDescriptor
 
-                objectDescriptor = @menuLevelObject.layoutObject.objectDescriptor
+                layoutObjectDescriptor = @menuLevelObject.layoutObject.objectDescriptor
 
-                if objectDescriptor.mvvmType? and objectDescriptor.mvvmType
-                    @itemMVVMType = objectDescriptor.mvvmType
+                if layoutObjectDescriptor.mvvmType? and layoutObjectDescriptor.mvvmType
+                    @itemMVVMType = layoutObjectDescriptor.mvvmType
                 else
                     throw "Missing objectDescriptor.mvvmType declaration."
 
-                if objectDescriptor.description? and objectDescriptor.description
-                    @itemObjectDescription = objectDescriptor.description
+                if layoutObjectDescriptor.description? and layoutObjectDescriptor.description
+                    @itemObjectDescription = layoutObjectDescriptor.description
                 else
                     throw "Missing objectDescriptor.description declaration."
 
                 switch @itemMVVMType
-
-                    when "archetype"
-
-                        @itemObservableModelView({})
-                        @itemObservableModelViewFree(true)
-                        colorObject = @menuLevelObject.baseBackgroundColorObject()
-                        @menuLevelObject.baseBackgroundColorObject(colorObject.darkenByRatio(@navigatorContainer.layout.userObjectDarkenRatio).shiftHue(@navigatorContainer.layout.userObjectShiftHue))
-                        break
 
                     when "child"
                         if not (@parentItemHostWindow? and @parentItemHostWindow)
@@ -102,6 +100,11 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         colorObject = @menuLevelObject.baseBackgroundColorObject().lightenByRatio(@navigatorContainer.layout.structureArrayLightenRatio).shiftHue(@navigatorContainer.layout.structureArrayShiftHue)
                         @menuLevelObject.baseBackgroundColorObject(colorObject)
 
+                        ###
+                        updatedMenuLevelLabel = @menuLevelObject.label() + " EP"
+                        @menuLevelObject.label(updatedMenuLevelLabel)
+                        ###
+
                         # Modify the parent menu item host's hosted model view by adding this new array into its object namespace.
                         if (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
                             @itemObservableModelView([])
@@ -112,12 +115,12 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         # Not nearly done...
 
 
-                        if not (objectDescriptor.archetype? and objectDescriptor.archetype)
+                        if not (layoutObjectDescriptor.archetype? and layoutObjectDescriptor.archetype)
                             alert("#{@path} extension w/no declared archetype.")
                         
                         # Create the select sub menu of this extension.
-                        layoutSelectMenuLevel = Encapsule.code.lib.js.clone(objectDescriptor.archetype)
-                        layoutSelectMenuLevel.jsonTag = "select"
+                        layoutSelectMenuLevel = Encapsule.code.lib.js.clone(layoutObjectDescriptor.archetype)
+                        #layoutSelectMenuLevel.jsonTag = "select"
                         layoutSelectMenuLevel.objectDescriptor.mvvmType = "select"
                         
                         selectMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @menuLevelObject, layoutSelectMenuLevel, @menuLevelObject.level() + 1)
@@ -126,7 +129,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         ###
 
                         # Create the archetype sub menu of this extension.
-                        layoutArchetypeMenuLevel = Encapsule.code.lib.js.clone(objectDescriptor.archetype)
+                        layoutArchetypeMenuLevel = Encapsule.code.lib.js.clone(layoutObjectDescriptor.archetype)
                         layoutArchetypeMenuLevel.jsonTag = "archetype"
                         layoutArchetypeMenuLevel.objectDescriptor.mvvmType = "archetype"
 
@@ -161,7 +164,9 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
 
                 @toJSON = ko.computed =>
-                    ko.toJSON(@itemObservableModelView, undefined, 1)
+                    jsonView = {}
+                    jsonView[@jsonTag] = @itemObservableModelView
+                    ko.toJSON(jsonView, undefined, 1)
                         
 
 
@@ -199,10 +204,12 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <h2 data-bind="text: itemObjectDescription"></h2>
             <p>MVVM Type: <span data-bind="text: itemMVVMType"></span></p>
 
-            <span data-bind="if: itemMVVMType == 'archetype'">
-                This is an archetype entity.
+            <span data-bind="if: itemMVVMType == 'select'">
+
+                <p>The selected object is currently in the the \"<span data-bind="text: selectItemState"></span>\" state.</p>
+
                 <p>
-                    <span data-bind="with: menuLevelObject.parentMenuLevel">Add this entity to <span data-bind="text: label"></span>:</span>
+                    <span data-bind="with: menuLevelObject.parentMenuLevel">Add this object to parent <span data-bind="text: label"></span> array:</span>
                     <button class="button small blue" data-bind="event: { click: insertArchetype }">Add</button>
                 </p>
             </span>

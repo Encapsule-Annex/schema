@@ -154,8 +154,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     if not (itemHostObject_? and itemHostObject_)
                         throw "Missing item host object reference parameter."
 
-                    if itemHostObject_.itemMVVMType != "archetype"
-                        throw "The specified item host object is not an archetype object. Invalid request."
+                    if itemHostObject_.itemMVVMType != "select"
+                        throw "Invalid request: The specified item host object is not a selection point."
 
                     # This is some legacy code that I think can be removed?
                     if not itemHostObject_.itemObservableModelViewFree()
