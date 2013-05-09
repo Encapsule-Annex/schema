@@ -68,41 +68,49 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
 
             @resetDetailBelowSelect = =>
+                @blipper.blip("24")
                 @detailBelowSelect(detailBelowSelectDefault)
 
             @incrementDetailBelowSelect = =>
                 detail = @detailBelowSelect()
                 if detail < 255
+                    @blipper.blip("28")
                     @detailBelowSelect(detail + 1)
 
             @decrementDetailBelowSelect = =>
                 detail = @detailBelowSelect()
                 if detail > 0
+                    @blipper.blip("13")
                     @detailBelowSelect(detail - 1)
 
             @explodeDetailBelowSelect = =>
+                @blipper.blip("26")
                 @detailBelowSelect(255)
 
             @resetDetailAboveSelect = =>
+                @blipper.blip("24")
                 @detailAboveSelect(detailAboveSelectDefault)
 
             @incrementDetailAboveSelect = =>
                 detail = @detailAboveSelect()
                 if detail < 255
+                    @blipper.blip("28")
                     @detailAboveSelect(detail + 1)
 
             @decrementDetailAboveSelect = =>
                 detail = @detailAboveSelect()
                 if detail > 1
+                    @blipper.blip("13")
                     @detailAboveSelect(detail - 1)
 
             @explodeDetailAboveSelect = =>
+                @blipper.blip("26")
                 @detailAboveSelect(255)
 
             @resetDetail = =>
-                @blipper.blip("meatkick")
                 @resetDetailBelowSelect()
                 @resetDetailAboveSelect()
+                @blipper.blip("24")
 
 
  

@@ -123,9 +123,7 @@ class window.Console
 
         if Encapsule? and Encapsule.runtime? and Encapsule.runtime.boot? and Encapsule.runtime.boot.phase3? and Encapsule.runtime.boot.phase3.blipper?
             blipper = Encapsule.runtime.boot.phase3.blipper
-            blipper.blip "beep4"
-            blipper.blip "beep2"
-            blipper.blip "regen"
+            blipper.blip "03"
 
 
 
