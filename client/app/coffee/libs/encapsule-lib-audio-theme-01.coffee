@@ -37,6 +37,7 @@ class Encapsule.code.lib.audio.theme
         host.createBlipper "00a", "audio/8105__suonho__residue-signal-illcommunications-suonho.wav"
         host.createBlipper "00", "audio/12690__scuzzpuck__zippo-open.wav"
         host.createBlipper "01", "audio/16460__emmanuel__one-use-camera-clic-with-flash.wav"
+        host.createBlipper "01a", "audio/16897__melack__toc-2.wav"                                                      # add archetype
         host.createBlipper "02", "audio/25003__lg__powerup.wav"
         host.createBlipper "03", "audio/25259__suonho__deconstruction-set-turn-on.wav"
         host.createBlipper "04", "audio/28854__junggle__btn044.wav"
@@ -50,7 +51,7 @@ class Encapsule.code.lib.audio.theme
         host.createBlipper "12", "audio/36106__jak-damage__digi-code-door-uncatch.wav"
         host.createBlipper "13", "audio/39562__the-bizniss__mouse-click.wav"
         host.createBlipper "13a", "audio/41116__perlssdj__bd-open.wav"
-        host.createBlipper "14", "audio/42144__crescendo__zippo.wav" # long
+        host.createBlipper "14", "audio/42144__crescendo__zippo.wav"                                                    # long
         host.createBlipper "15", "audio/44614__rfhache__ds-fh-fanny-tones-8.wav"
         host.createBlipper "16", "audio/47950__jesterroot4__meatkick.wav"
         host.createBlipper "17", "audio/54405__korgms2000b__button-click.wav"
@@ -59,7 +60,8 @@ class Encapsule.code.lib.audio.theme
         host.createBlipper "19a","audio/81494__johnlavine333__bump1.wav"
         host.createBlipper "20", "audio/90081__jivatma07__sinebd-short-w-click.wav"
         host.createBlipper "21", "audio/126698__slightlydrybeans__hit-9.wav"
-        host.createBlipper "22", "audio/130789__alexsani__butane-lighter-flip-closed.wav" # short
+        host.createBlipper "22", "audio/130789__alexsani__butane-lighter-flip-closed.wav"                               # short
+        host.createBlipper "22a","audio/136614__fkurz__high-voltage.wav" # error
         host.createBlipper "23", "audio/153301__felipelnv__coffee-machine-selection.wav"
         host.createBlipper "24", "audio/160756__cosmicembers__fast-swing-air-woosh.wav"
         host.createBlipper "25", "audio/162266__qubodup__cute-activation-and-exit-off-sounds.wav"

@@ -329,7 +329,9 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                 @navigatorContainer.updateMouseOverState(@, false)
 
             @onMouseClick = =>
-                @blipper.blip("22")
+                #@blipper.blip("22")
+                #@blipper.blip("21")
+                @blipper.blip("28")
                 return @navigatorContainer.toggleSelectionState(@)
 
             # / END: constructor try scope

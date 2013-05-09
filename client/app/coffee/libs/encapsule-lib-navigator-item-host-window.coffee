@@ -224,7 +224,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                 # button click event handler delegates to the navigator container.
                 @insertArchetype = =>
-                    @blipper.blip("19a")
+                    @blipper.blip("01a")
                     @navigatorContainer.insertArchetypeFromItemHostObject(@)
 
 
