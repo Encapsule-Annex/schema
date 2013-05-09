@@ -37,6 +37,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             if not menuLevelObject_? then throw "Missing menuLevelObject parameter."
             if not menuLevelObject_ then throw "Missing menuLevelObject parameter value."
 
+            @blipper = Encapsule.runtime.boot.phase3.blipper
+
             @navigatorContainer = navigatorContainerObject_
             @menuLevelObject = menuLevelObject_
             @path = @menuLevelObject.path
@@ -54,9 +56,22 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             @itemMVVMType = undefined
 
-            #@itemOuterJsonObject = {}
             @itemObservableModelView = ko.observable(undefined)
-            @itemObservableModelViewFree = ko.observable false
+
+            @itemSelectState = ko.observable("offline")
+
+            @isSelectedArchetype = ko.computed =>
+                itemMVVMType = @itemMVVMType
+                itemSelectState = @itemSelectState()
+                result = itemMVVMType? and itemMVVMType and (itemMVVMType == "select") and itemSelectState? and itemSelectState and (itemSelectState == "archetype")
+                return result
+
+            @isSelectedElement = ko.computed =>
+                itemMVVMType = @itemMVVMType
+                itemSelectState = @itemSelectState()
+                result = itemMVVMType? and itemMVVMType and (itemMVVMType == "select") and itemSelectState? and itemSelectState and (itemSelectState == "element")
+                return result
+            
 
             if @menuLevelObject.parentMenuLevel? and @menuLevelObject.parentMenuLevel
                 parentPath = @menuLevelObject.parentMenuLevel.path
@@ -150,7 +165,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         @menuLevelObject.baseBackgroundColorObject(colorObject)
 
                         @itemObservableModelView({})
-                        @itemSelectState = ko.observable("archetype")
+                        @itemSelectState("archetype")
                         break
 
                     else
@@ -183,6 +198,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             @menuLevelObject.resetBaseBackgroundColor()
                             colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.elementSaturateRatio).lightenByRatio(@navigatorContainer.layout.elementLightenRatio).shiftHue(@navigatorContainer.layout.elementShiftHue)
                             @menuLevelObject.baseBackgroundColorObject(colorObject)
+                            @itemSelectState(selectState_)
 
                     
 
@@ -191,6 +207,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                 # button click event handler delegates to the navigator container.
                 @insertArchetype = =>
+                    @blipper.blip("addArchetype1")
                     @navigatorContainer.insertArchetypeFromItemHostObject(@)
 
 
@@ -218,15 +235,17 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <h2 data-bind="text: itemObjectDescription"></h2>
             <p>MVVM Type: <span data-bind="text: itemMVVMType"></span></p>
 
-            <span data-bind="if: itemMVVMType == 'select'">
+            <h2>Operations</h2>
 
-                <p>The selected object is currently in the the \"<span data-bind="text: itemSelectState"></span>\" state.</p>
-
-                <p>
-                    <span data-bind="with: menuLevelObject.parentMenuLevel">Add this object to parent <span data-bind="text: label"></span> array:</span>
-                    <button class="button small blue" data-bind="event: { click: insertArchetype }">Add</button>
-                </p>
+            <span data-bind="if: isSelectedArchetype">
+                <button class="button small blue" data-bind="event: { click: insertArchetype }">Add</button>                                                                                    
             </span>
+
+            <span data-bind="if: isSelectedElement">
+                <button class="button small black" data-bind="event: { click: insertArchetype }">Unselect</button>
+                <button class="button small red" data-bind="event: { click: insertArchetype }">Remove</button>
+            </span>  
+
 
             <span data-bind="if: itemMVVMType == 'root'">
                 root
@@ -238,7 +257,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
 
 
             <span data-bind="if: itemMVVMType == 'extension'">
-                extension
+                <h2><span data-bind="text: menuLevelObject.label"></span> Elements</h2>
+                <div data-bind="foreach: itemObservableModelView">
+                    <span data-bind="text: $index"></span>
+                </div>
             </span>
 
 

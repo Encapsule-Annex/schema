@@ -34,6 +34,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             if not layout_? then throw "Missing layout parameter."
             if not layout_ then throw "Missing layout parameter value."
             
+            @blipper = Encapsule.runtime.boot.phase3.blipper
+
             @layout = layout_
 
             @title = layout_.title
@@ -98,6 +100,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 @detailAboveSelect(255)
 
             @resetDetail = =>
+                @blipper.blip("meatkick")
                 @resetDetailBelowSelect()
                 @resetDetailAboveSelect()
 
@@ -184,7 +187,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     # itemSelectState to "element" and set the menu item host's element index.
                     
                     itemHostObject_.setSelectState("element")
- 
+
                     return true
 
                 catch exception

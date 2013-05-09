@@ -295,14 +295,14 @@ phase3 = (bootstrapperOptions_) ->
         checkOnline ((statusIn_) -> 
             phase3Out.originServerOnline = statusIn_
             if statusIn_
-                blipper.blip "xindi-on"
+                blipper.blip "originServerOnline"
                 Console.messageRaw """
                     <p>
                         #{appName} online check #{Date()}: <strong>ONLINE</strong><br>
                         ... #{appPackagePublisherUrl}/#{checkOnlineOptions.pingFilePrefix} was retrieved.
                     </p>"""
             else
-                blipper.blip "xindi-off"
+                blipper.blip "originServerOffline"
                 Console.messageRaw """
                     <p>
                         #{appName} online check #{Date()}: <strong>ONLINE</strong><br>

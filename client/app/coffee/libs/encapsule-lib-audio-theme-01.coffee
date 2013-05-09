@@ -33,18 +33,25 @@ class Encapsule.code.lib.audio.theme
 
     @create: (parentElement_) ->
         host = Encapsule.code.lib.audio.blipper.createHost(parentElement_)
-        host.createBlipper "initializing", "audio/klingon_transporter_clean.mp3"
-        host.createBlipper "heartbeat", "audio/doorbell.wav"
-        host.createBlipper "update-complete", "audio/stng-comp-update-complete.wav"
-        host.createBlipper "beep2", "audio/romulan_computerbeep3.mp3"
-        host.createBlipper "beep4", "audio/xindi_controls02.mp3"
-        host.createBlipper "blip", "audio/stng-beep-blip.wav"
-        host.createBlipper "regen", "audio/borg_alcove_regen_cycle.mp3"
-        host.createBlipper "regen-abort", "audio/borg_alcove_regen_cycle_abort.mp3"
-        host.createBlipper "transition", "audio/alien_door01.mp3"
-        host.createBlipper "xindi-on", "audio/xindi_control_lights.mp3"
-        host.createBlipper "xindi-off", "audio/xindi_control_lights2.mp3"
-        
+
+        host.createBlipper "button-click-sharp", "audio/29092__junggle__btn282.wav"
+        host.createBlipper "button-click-percussive", "audio/54405__korgms2000b__button-click.wav"
+        host.createBlipper "mouseover", "audio/166186__drminky__menu-screen-mouse-over.wav"
+        host.createBlipper "mouseover2", "audio/130789__alexsani__butane-lighter-flip-closed.wav"
+
+        host.createBlipper "zippo-slow", "audio/42144__crescendo__zippo.wav"
+        host.createBlipper "zippo-fast", "audio/12690__scuzzpuck__zippo-open.wav"
+
+        host.createBlipper "doubleclick", "audio/39562__the-bizniss__mouse-click.wav"
+        host.createBlipper "meatkick", "audio/47950__jesterroot4__meatkick.wav"
+
+        host.createBlipper "addArchetype", "audio/153301__felipelnv__coffee-machine-selection.wav"
+        host.createBlipper "addArchetype1", "audio/28988__junggle__btn178.wav"
+
+        host.createBlipper "originServerOffline", "audio/75727__benboncan__transporter-passby.wav"
+        host.createBlipper "originServerOnline", "audio/162266__qubodup__cute-activation-and-exit-off-sounds.wav"
+
+        host.createBlipper "thump", "audio/90081__jivatma07__sinebd-short-w-click.wav"
 
         # Return the host object
         host

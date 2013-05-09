@@ -41,6 +41,9 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             # Per-class instance references to construction parameters.
 
+            @blipper = Encapsule.runtime.boot.phase3.blipper
+
+
             @navigatorContainer = navigatorContainerObject_
             @parentMenuLevel = parentMenuLevel_
             @layoutObject = yourNewLayoutObject_
@@ -310,12 +313,14 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
 
             @onMouseOver = =>
+                #@blipper.blip("mouseover2")
                 @navigatorContainer.updateMouseOverState(@, true)
 
             @onMouseOut = =>
                 @navigatorContainer.updateMouseOverState(@, false)
 
             @onMouseClick = =>
+                @blipper.blip("button-click-percussive")
                 return @navigatorContainer.toggleSelectionState(@)
 
             # / END: constructor try scope
