@@ -53,7 +53,15 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @subMenus = ko.observableArray []
 
             @jsonTag =  yourNewLayoutObject_.jsonTag
-            @path =     parentMenuLevel_? and parentMenuLevel_ and parentMenuLevel_.path? and "#{parentMenuLevel_.path}.#{@jsonTag}" or "#{@jsonTag}"
+            @path =     undefined
+            if parentMenuLevel_? and parentMenuLevel_ and parentMenuLevel_.path? and parentMenuLevel_.path
+                @path = parentMenuLevel_.path
+                if @level() > 0
+                    @path += "/"
+                @path += @jsonTag
+            else
+                @path = "#{@jsonTag}?path="
+
 
             @generationsFromSelectionPath = 0 # Set dynamically by the navigator container during menu level visibility update.
             @itemVisible = ko.observable true

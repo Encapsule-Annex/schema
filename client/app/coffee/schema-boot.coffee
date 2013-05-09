@@ -295,7 +295,7 @@ phase3 = (bootstrapperOptions_) ->
         checkOnline ((statusIn_) -> 
             phase3Out.originServerOnline = statusIn_
             if statusIn_
-                blipper.blip "06"
+                blipper.blip "12"
                 Console.messageRaw """
                     <p>
                         #{appName} online check #{Date()}: <strong>ONLINE</strong><br>

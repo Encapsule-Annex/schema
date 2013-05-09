@@ -123,7 +123,7 @@ class window.Console
 
         if Encapsule? and Encapsule.runtime? and Encapsule.runtime.boot? and Encapsule.runtime.boot.phase3? and Encapsule.runtime.boot.phase3.blipper?
             blipper = Encapsule.runtime.boot.phase3.blipper
-            blipper.blip "03"
+            blipper.blip "00a"
 
 
 

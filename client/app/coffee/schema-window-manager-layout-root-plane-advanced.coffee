@@ -51,7 +51,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: undefined
-                modes: { full: { reserve: 640 }, min: { reserve: 280 } }
+                modes: { full: { reserve: 640 }, min: { reserve: 300 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
@@ -68,7 +68,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             Q2WindowDescriptor: {                                            
                 id: "idScdlNavigatorMenuItemJSONWindow"                                                
                 name: "SCDL Catalogue Item JSON View"                                        
-                initialMode: "min"
+                initialMode: "full"
                 initialEnable: true
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
@@ -82,15 +82,18 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             }
         }   
 
+
+        Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom
+
         {                                                                    
             id: "idSchemaNavigatorSelectedItemMetaWindowSplitter"
             name: "Schema Navigator Selected Item Meta Window Splitter"
             type: "horizontal"                                                 
-            Q2WindowDescriptor: undefined                                    
-            Q1WindowDescriptor: {                                            
+            Q1WindowDescriptor: undefined                                    
+            Q2WindowDescriptor: {                                            
                 id: "idSchemaNavigatorSelectedItemMetaWindow"
                 name: "Selected Item Meta"                              
-                initialMode: "min"
+                initialMode: "full"
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
@@ -103,9 +106,6 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 }
             }                                                            
         }
-
-        Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom
-
 
         {
             id: "idSchemaNavigatorSelectedItemWindowSplitter"

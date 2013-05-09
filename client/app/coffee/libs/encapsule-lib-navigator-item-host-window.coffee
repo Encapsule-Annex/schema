@@ -226,11 +226,14 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
     <span data-bind="with: currentlySelectedItemHost">
         <div class="classNavigatorItemHostWindow">
 
-            <span data-bind="with: menuLevelObject">
-                <h1 data-bind="style: { color: getCssColor(), textShadow: getCssTextShadow() }">
-                    <span data-bind="text: label"></span>
-                </h1>
-            </span>
+            <div style="font-size: 10pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.3); padding: 5px;" data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
+                <span data-bind="text: menuLevelObject.path"></span>
+            </div>
+
+
+            <div style="font-size: 22pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.15); padding: 5px;" data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
+                    <span data-bind="text: menuLevelObject.label"></span>
+            </div>                
 
             <h2 data-bind="text: itemObjectDescription"></h2>
             <p>MVVM Type: <span data-bind="text: itemMVVMType"></span></p>
