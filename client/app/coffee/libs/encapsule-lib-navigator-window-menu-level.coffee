@@ -75,7 +75,8 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @selectedChild = ko.observable(false)
             @selectedParent = ko.observable(false)
 
-            @label =    ko.observable(yourNewLayoutObject_.label? and yourNewLayoutObject_.label or "no label")
+            @labelDefault = yourNewLayoutObject_.label? and yourNewLayoutObject_.label or "no label"
+            @label =    ko.observable(@labelDefault)
             @labelHtml = ko.computed =>
                 hasChildren = @subMenus().length and true or false
                 prefix = ""

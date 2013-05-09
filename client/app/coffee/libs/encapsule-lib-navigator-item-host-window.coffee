@@ -59,6 +59,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             @itemObservableModelView = ko.observable(undefined)
 
             @itemSelectState = ko.observable("offline")
+            @itemSelectElementOrdinal = ko.observable(-1)
 
             @isSelectedArchetype = ko.computed =>
                 itemMVVMType = @itemMVVMType
@@ -71,8 +72,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 itemSelectState = @itemSelectState()
                 result = itemMVVMType? and itemMVVMType and (itemMVVMType == "select") and itemSelectState? and itemSelectState and (itemSelectState == "element")
                 return result
-            
 
+            
             if @menuLevelObject.parentMenuLevel? and @menuLevelObject.parentMenuLevel
                 parentPath = @menuLevelObject.parentMenuLevel.path
                 @parentItemHostWindow = @navigatorContainer.menuItemPathNamespace[parentPath].itemHostModelView
@@ -180,7 +181,23 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                     jsonView[@jsonTag] = @itemObservableModelView
                     ko.toJSON(jsonView, undefined, 1)
                         
+                @itemPageTitle = ko.computed =>
+                    isExtensionPoint = @itemMVVMType == "extension"
+                    isSelectionPoint = @itemMVVMType == "select"
+                    isSelectedArchetype = @isSelectedArchetype()
+                    isSelectedElement = @isSelectedElement()
+                    itemObservableModelView = @itemObservableModelView()
 
+                    pageTitle = @menuLevelObject.labelDefault
+
+                    if isExtensionPoint then pageTitle = "#{@menuLevelObject.labelDefault} (#{itemObservableModelView.length})"
+                    if isSelectedArchetype then pageTitle = "#{@menuLevelObject.labelDefault} (new)"
+                    if isSelectedElement then pageTitle = "#{@menuLevelObject.labelDefault} (#{@itemSelectElementOrdinal()})"
+
+                    if pageTitle != @menuLevelObject.label()
+                        @menuLevelObject.label(pageTitle)
+
+                    return pageTitle
 
                 @saveJSONAsLinkHtml = ko.computed =>
                     # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
@@ -231,33 +248,24 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             </div>
 
 
-            <div style="font-size: 22pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.15); padding: 5px;" data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
-                    <span data-bind="text: menuLevelObject.label"></span>
+            <div style="font-size: 22pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.15); padding: 5px;">
+                <div data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
+                    <span data-bind="text: itemPageTitle"></span>
+                </div>
             </div>                
-
-            <h2 data-bind="text: itemObjectDescription"></h2>
-            <p>MVVM Type: <span data-bind="text: itemMVVMType"></span></p>
 
             <h2>Operations</h2>
 
             <span data-bind="if: isSelectedArchetype">
+                <p>New, unmodified instance of <strong><span data-bind="text: menuLevelObject.label"></span></strong> (extends <strong><span data-bind="text: menuLevelObject.parentMenuLevel.label"></span></strong>)</p>
                 <button class="button small blue" data-bind="event: { click: insertArchetype }">Add</button>                                                                                    
             </span>
 
             <span data-bind="if: isSelectedElement">
+                <p><i>This namespace represents an unmodified, archetypical extension supporting the following operations:</i></p>
                 <button class="button small black" data-bind="event: { click: insertArchetype }">Unselect</button>
                 <button class="button small red" data-bind="event: { click: insertArchetype }">Remove</button>
             </span>  
-
-
-            <span data-bind="if: itemMVVMType == 'root'">
-                root
-            </span>
-
-            <span data-bind="if: itemMVVMType == 'child'">
-                child
-            </span>
-
 
             <span data-bind="if: itemMVVMType == 'extension'">
                 <h2><span data-bind="text: menuLevelObject.label"></span> Elements</h2>
@@ -265,6 +273,16 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
                     <span data-bind="text: $index"></span>
                 </div>
             </span>
+
+            <span data-bind="if: itemMVVMType == 'root'">
+                <p><i>This namespace cannot be modified by the user.</i></p>
+            </span>
+
+            <span data-bind="if: itemMVVMType == 'child'">
+                <p><i>This namespace cannot be modified by the user.</i></p>
+            </span>
+
+
 
 
         </div><!-- classNavigatorItemHostWindow -->

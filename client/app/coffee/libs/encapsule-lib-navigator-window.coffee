@@ -194,6 +194,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     # the semantics of the menu item have changed; update the menu item host's
                     # itemSelectState to "element" and set the menu item host's element index.
                     
+                    itemHostObject_.itemSelectElementOrdinal(newArrayLength - 1)
                     itemHostObject_.setSelectState("element")
 
                     return true
@@ -378,7 +379,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             # ============================================================================
             @updateMouseOverState = (menuLevel_, flag_) =>
                 @internalUpdateLevelsMouseOverState(menuLevel_, flag_)
-
 
 
             newMenuHierarchy = [
