@@ -224,8 +224,22 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                 # button click event handler delegates to the navigator container.
                 @insertArchetype = =>
-                    @blipper.blip("01a")
-                    @navigatorContainer.insertArchetypeFromItemHostObject(@)
+                    try
+                        @blipper.blip("01a")
+                        @navigatorContainer.insertArchetypeFromItemHostObject(@)
+                    catch exception
+                        Console.messageError("NavigatorMenuItemHost.insertArchetype fail: #{exception}")
+
+                @closeSelectedView = =>
+
+                @cloneSelectedElement = =>
+
+                @removeSelectedElement = =>
+
+                @resetSelectedView = =>
+
+
+                @addExtensionArchetype 
 
 
 
@@ -247,7 +261,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
                 <span data-bind="text: menuLevelObject.path"></span>
             </div>
 
-
             <div style="font-size: 22pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.15); padding: 5px;">
                 <div data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
                     <span data-bind="text: itemPageTitle"></span>
@@ -256,33 +269,43 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
 
             <h2>Operations</h2>
 
+            <!-- Operations specific to select, archetype menu items. -->
             <span data-bind="if: isSelectedArchetype">
-                <p>New, unmodified instance of <strong><span data-bind="text: menuLevelObject.label"></span></strong> (extends <strong><span data-bind="text: menuLevelObject.parentMenuLevel.label"></span></strong>)</p>
-                <button class="button small blue" data-bind="event: { click: insertArchetype }">Add</button>                                                                                    
+                <button class="button small green" data-bind="event: { click: insertArchetype }">Add</button>
+                <button class="button small black" data-bind="event: { click: closeSelectedView }">Close</button>                                                                         
             </span>
 
+            <!-- Operations specific to select, element menu items. -->
             <span data-bind="if: isSelectedElement">
-                <p><i>This namespace represents an unmodified, archetypical extension supporting the following operations:</i></p>
-                <button class="button small black" data-bind="event: { click: insertArchetype }">Unselect</button>
-                <button class="button small red" data-bind="event: { click: insertArchetype }">Remove</button>
+                <button class="button small blue" data-bind="event: { click: cloneSelectedElement }">Clone</button>
+                <button class="button small red" data-bind="event: { click: removeSelectedElement }">Remove</button>
+                <button class="button small orange" data-bind="event: { click: resetSelectedView }">Reset</button>
+                <button class="button small black" data-bind="event: { click: closeSelectedView }">Close</button>
             </span>  
 
+            <!-- Operations specific to extension menu items. -->
             <span data-bind="if: itemMVVMType == 'extension'">
-                <h2><span data-bind="text: menuLevelObject.label"></span> Elements</h2>
+                <button class="button small gray" data-bind="event: { click: insertArchetype }">Add</button>
+                <button class="button small black" data-bind="event: { click: closeSelectedView }">Close</button>
+                <button class="button small orange" data-bind="event: { click: resetSelectedView }">Reset</button>
+            </span>
+
+            <!-- Operations specific to root menu items. -->
+            <span data-bind="if: itemMVVMType == 'root'">
+                <i>root menu item-specific operations?</i>
+            </span>
+
+            <!-- Operations specific to child menu items. -->
+            <span data-bind="if: itemMVVMType == 'child'">
+                <i>child menu item-specific operations?</i>
+            </span>
+
+            <span data-bind="if: itemMVVMType == 'extension'">
+                <h2><span data-bind="text: menuLevelObject.label"></span></h2>
                 <div data-bind="foreach: itemObservableModelView">
                     <span data-bind="text: $index"></span>
                 </div>
             </span>
-
-            <span data-bind="if: itemMVVMType == 'root'">
-                <p><i>This namespace cannot be modified by the user.</i></p>
-            </span>
-
-            <span data-bind="if: itemMVVMType == 'child'">
-                <p><i>This namespace cannot be modified by the user.</i></p>
-            </span>
-
-
 
 
         </div><!-- classNavigatorItemHostWindow -->
