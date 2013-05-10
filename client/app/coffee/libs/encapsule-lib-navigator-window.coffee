@@ -133,6 +133,13 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             #
             # ============================================================================
             @getItemPathNamespaceObject = (path_) =>
+                # e.g.
+                #
+            # menuItemPathNamespace: Object
+                #    appHost?path=: Object
+                #        itemHostModelView: NavigatorMenuItemHostWindow
+                #        menuLevelModelView: NavigatorWindowMenuLevel
+
                 try
                     @validatePath(path_)
                     itemHostWindow = @menuItemPathNamespace[path_]

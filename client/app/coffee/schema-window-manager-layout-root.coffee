@@ -46,7 +46,7 @@ try
         # The color of the page background may optionally be set via bodyPageBackgroundColor and will be visible
         # if glassMargin > 0 or glassOpacity < 1
         #
-        pageBackgroundColor: "#7F7F7F" # (defaults to "white" if undefined)
+        pageBackgroundColor: "#999999" # (defaults to "white" if undefined)
 
         #
         # WINDOW MANAGER "GLASS" ATTRIBUTES

@@ -58,6 +58,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             @itemObservableModelView = ko.observable(undefined)
 
+            @itemExtensionSelectItemHostWindow = undefined
+
             @itemSelectState = ko.observable("offline")
             @itemSelectElementOrdinal = ko.observable(-1)
 
@@ -116,11 +118,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         colorObject = @menuLevelObject.baseBackgroundColorObject().lightenByRatio(@navigatorContainer.layout.structureArrayLightenRatio).shiftHue(@navigatorContainer.layout.structureArrayShiftHue)
                         @menuLevelObject.baseBackgroundColorObject(colorObject)
 
-                        ###
-                        updatedMenuLevelLabel = @menuLevelObject.label() + " EP"
-                        @menuLevelObject.label(updatedMenuLevelLabel)
-                        ###
-
                         # Modify the parent menu item host's hosted model view by adding this new array into its object namespace.
                         if (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
                             @itemObservableModelView([])
@@ -161,6 +158,9 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         if not (@parentItemHostWindow? and @parentItemHostWindow)
                             throw "Can't resolve parent menu item host window reference."
 
+                        # Register this select item host window with the parent extension point's item host window.
+                        @parentItemHostWindow.itemExtensionSelectItemHostWindow = @
+
                         # Set the MVVM object-type-specific color of the menu level object.
                         colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
                         @menuLevelObject.baseBackgroundColorObject(colorObject)
@@ -190,9 +190,9 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                     pageTitle = @menuLevelObject.labelDefault
 
-                    if isExtensionPoint then pageTitle = "#{@menuLevelObject.labelDefault} (#{itemObservableModelView.length})"
+                    if isExtensionPoint then pageTitle = "#{@menuLevelObject.labelDefault}: #{itemObservableModelView.length}"
                     if isSelectedArchetype then pageTitle = "#{@menuLevelObject.labelDefault} (new)"
-                    if isSelectedElement then pageTitle = "#{@menuLevelObject.labelDefault} (#{@itemSelectElementOrdinal()})"
+                    if isSelectedElement then pageTitle = "#{@menuLevelObject.labelDefault} ##{@itemSelectElementOrdinal() + 1}"
 
                     if pageTitle != @menuLevelObject.label()
                         @menuLevelObject.label(pageTitle)
@@ -225,8 +225,32 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 # button click event handler delegates to the navigator container.
                 @insertArchetype = =>
                     try
-                        @blipper.blip("01a")
-                        @navigatorContainer.insertArchetypeFromItemHostObject(@)
+                        @blipper.blip("05")
+
+                        # Note that this method is bound to buttons diplayed in both extension and select-type
+                        # menu items. The semantics are nearly identical; when called from an extension page
+                        # the meaning is create a new archetype element, add the element to the extension container,
+                        # and select it. When called from an archetype, the semantics are push the archetype into
+                        # the parent extension array and select.
+
+                        itemHostWindow = undefined
+
+                        switch @itemMVVMType
+                            when "extension"
+                                archetypePath = @path + "/" + @menuLevelObject.layoutObject.objectDescriptor.archetype.jsonTag
+                                itemHostWindow = @navigatorContainer.getItemPathNamespaceObject(archetypePath).itemHostModelView
+                                if not (itemHostWindow? and itemHostWindow)
+                                    throw "Cannot resolve itemHostWindow for request."
+                                break
+                            when "select"
+                                itemHostWindow = @
+                                break
+                            else
+                                throw "Invalid item host object for request!"
+                                break
+
+                        @navigatorContainer.insertArchetypeFromItemHostObject(itemHostWindow)
+
                     catch exception
                         Console.messageError("NavigatorMenuItemHost.insertArchetype fail: #{exception}")
 
@@ -237,11 +261,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 @removeSelectedElement = =>
 
                 @resetSelectedView = =>
-
-
-                @addExtensionArchetype 
-
-
 
 
             # END: / NavigatorMenuItemHostWindow constructor try scope
@@ -267,13 +286,18 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
                 </div>
             </div>                
 
-            <h2>Operations</h2>
-
             <!-- Operations specific to select, archetype menu items. -->
-            <span data-bind="if: isSelectedArchetype">
-                <button class="button small green" data-bind="event: { click: insertArchetype }">Add</button>
+            <span data-bind="if: isSelectedArchetype"><p>
+                <button class="button small green" data-bind="event: { click: insertArchetype }">
+                    Add new
+                    <span data-bind="text: menuLevelObject.labelDefault"></span>
+                    to
+                    <span data-bind="text: menuLevelObject.parentMenuLevel.labelDefault"></span>
+                </button>
+
+
                 <button class="button small black" data-bind="event: { click: closeSelectedView }">Close</button>                                                                         
-            </span>
+            </p></span>
 
             <!-- Operations specific to select, element menu items. -->
             <span data-bind="if: isSelectedElement">
@@ -303,7 +327,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <span data-bind="if: itemMVVMType == 'extension'">
                 <h2><span data-bind="text: menuLevelObject.label"></span></h2>
                 <div data-bind="foreach: itemObservableModelView">
-                    <span data-bind="text: $index"></span>
+                    <span data-bind=
+                    <span data-bind="text: $index() + 1"></span>
                 </div>
             </span>
 
