@@ -167,8 +167,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                         @itemObservableModelView({})
                         @itemSelectState("archetype")
-                        @menuLevelObject.itemVisible(false)
-                        @menuLevelObject.itemVisibilityLock = true
+                        #@menuLevelObject.itemVisible(false)
+                        #@menuLevelObject.itemVisibilityLock = true
                         break
 
                     else

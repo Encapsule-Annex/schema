@@ -34,7 +34,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             if not layout_? then throw "Missing layout parameter."
             if not layout_ then throw "Missing layout parameter value."
             
-            @blipper = Encapsule.runtime.boot.phase3.blipper
+            @blipper = Encapsule.runtime.boot.phase0.blipper
 
             @layout = layout_
 
