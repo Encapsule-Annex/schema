@@ -176,7 +176,6 @@ phase2 = (bootstrapperOptions_) ->
     Encapsule.code.app.setBootChrome("phase2")
     Console.log("#{appName} v#{appVersion} starting boot phase 2 (application cache)")
 
-
     # Note to self: This entire subsystem will be completely redesigned using Schema v1.0.
 
     Console.message("This Javacsript is executing in a #{appName} v#{appVersion} app host.")

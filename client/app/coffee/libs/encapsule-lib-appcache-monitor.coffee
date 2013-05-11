@@ -30,7 +30,7 @@ class Encapsule.code.lib.ApplicationCacheMonitor
     status: undefined
     error: undefined
     fileCount: 0
-     
+
     onChecking: =>
         Console.message("Encapsule application cache monitor: CHECKING event handler.")
         @status = "checking"
@@ -220,12 +220,14 @@ class Encapsule.code.lib.ApplicationCacheMonitor
         @status = "waiting"
 
         @watchDogTimerElapsedTime = 0
+        @watchDogTimerElapsedTimeActual = 0
         @watchDogTimerInterval = 2000
         @watchDogTimerDropDeadTimeout = 10000
 
         @watchDogTimer = setInterval( ( =>
             currentAppCacheStatus = @cache.status
             @watchDogTimerElapsedTime += @watchDogTimerInterval
+            @watchDogTimerElapsedTimeActual += @watchDogTimerInterval
             Console.message("Encapsule application cache monitor watchdog: Elaped=#{@watchDogTimerElapsedTime} Current browser cache status=#{currentAppCacheStatus} Monitor status=#{@status}")
 
             # Give the browser a swift kick in the pants iff necessary.
@@ -234,6 +236,10 @@ class Encapsule.code.lib.ApplicationCacheMonitor
             # - The original browser app cache status (@initialAppCacheStatus)
             # - The current browser app cache status (currentAppCacheStatus)
             # - The app cache monitor class status (@status (note this is a string))
+
+            Encapsule.runtime.boot.phase0.blipper.blip "1526"
+            if (@watchDogTimerElapsedTimeActual % 20000) == 0
+                Encapsule.runtime.boot.phase0.blipper.blip "loading-profile"
 
             switch currentAppCacheStatus
                 when window.applicationCache.UNCACHED
