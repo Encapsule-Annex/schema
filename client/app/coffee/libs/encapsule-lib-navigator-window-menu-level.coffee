@@ -41,7 +41,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             # Per-class instance references to construction parameters.
 
-            @blipper = Encapsule.runtime.boot.phase3.blipper
+            @blipper = Encapsule.runtime.boot.phase0.blipper
 
 
             @navigatorContainer = navigatorContainerObject_
@@ -65,6 +65,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             @generationsFromSelectionPath = 0 # Set dynamically by the navigator container during menu level visibility update.
             @itemVisible = ko.observable true
+            @itemVisibilityLock = false
 
             @mouseOverChild = ko.observable(false)
             @mouseOverParent = ko.observable(false)
@@ -78,6 +79,9 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @labelDefault = yourNewLayoutObject_.label? and yourNewLayoutObject_.label or "no label"
             @label =    ko.observable(@labelDefault)
             @labelHtml = ko.computed =>
+                return @label()
+
+                # Disable this for now.
                 hasChildren = @subMenus().length and true or false
                 prefix = ""
                 prefixHasChildrenClosed = "control.png"
@@ -96,6 +100,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
                 iconHtml = """<img src="./img/#{prefix}" style="width: 16px; height: 16px; vertical-align: middle;">"""
                 return "#{iconHtml} #{@label()}"
+
 
             @baseBackgroundColorObject = ko.observable undefined
             @resetBaseBackgroundColor = =>

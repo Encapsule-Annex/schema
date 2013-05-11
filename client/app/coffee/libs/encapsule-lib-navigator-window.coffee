@@ -203,6 +203,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     
                     itemHostObject_.itemSelectElementOrdinal(newArrayLength - 1)
                     itemHostObject_.setSelectState("element")
+                    itemHostObject_.menuLevelObject.itemVisible(true)
+                    itemHostObject_.menuLevelObject.itemVisibilityLock = false
 
                     return true
 
@@ -324,6 +326,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                 @internalVisitChildren(
                     @rootMenuLevel,
                     (levelObject_, bfsContext_) =>
+                        if levelObject_.itemVisibilityLock
+                            return false
                         selectedItem = levelObject_.selectedItem()
                         selectedChild = levelObject_.selectedChild() # i.e. above the selection
                         selectedParent = levelObject_.selectedParent() # i.e. below the selection

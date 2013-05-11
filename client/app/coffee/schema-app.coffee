@@ -63,6 +63,8 @@ class Encapsule.code.app.Schema
 
             Console.message("#{appName} main application document.onLoad event handler exit error.")
 
+            Encapsule.runtime.boot.phase0.blipper.blip "system-normal"
+
         catch exception
             Console.messageError """#{appPackagePublisher} #{appName} v#{appVersion} APP INIT FAIL:: #{exception}"""
 

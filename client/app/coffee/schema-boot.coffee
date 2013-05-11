@@ -115,6 +115,10 @@ phase0 = (bootstrapperOptions_) ->
     Console.log "#{appPackagePublisher} #{appName} v#{appVersion} #{appReleaseName} :: #{appPackageId}"
     Console.log "#{appName}: #{appBuildTime} by #{appBuilder} :: Thanks for using #{appName}. #{appPackagePublisherUrl}"
 
+    blipper = phase0Out.blipper = Encapsule.code.lib.audio.theme.create($("body"))
+    blipper.blip "system-starting"
+
+
     phase0Out.router = new Encapsule.code.lib.InPageURIRouter()
     bootstrapperOptions = bootstrapperOptions_
 
@@ -156,6 +160,7 @@ phase1 = (bootstrapperOptions_) ->
 
 phase2 = (bootstrapperOptions_) ->
     Console.messageRaw("<h3>BOOTSTRAP PHASE 2 : offline application cache</h3>")
+    blipper = bootstrapperOptions_.phase0.blipper
 
     # APP BOOT PHASE 2 : Application cache monitor
     #
@@ -231,6 +236,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache CACHED")
             phase2Out.appCacheMonitorState = "cached"
             phase2Out.appCacheTerminalState = "cached"
+            blipper.blip "update-complete"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.messageRaw("<h2>#{appName} v#{appVersion} is now fully cached for on/offline use. Welcome :)</h2>")
             setTimeout ( ->
@@ -249,6 +255,7 @@ phase2 = (bootstrapperOptions_) ->
             Console.log("#{appName} v#{appVersion} starting boot phase 2: app cache UPDATEREADY")
             phase2Out.appCacheMonitorState = "updateready"
             phase2Out.appCacheTerminalState = "updateready"
+            blipper.blip "update-complete"
             Console.messageEnd(" <strong>complete</strong> (#{fileCount_} files updated)")
             Console.messageRaw("<h2> The #{appName} application has been updated :) Booting #{appName} vNext...</h2>")
             Console.message("What could go wrong?")
@@ -280,7 +287,8 @@ phase3 = (bootstrapperOptions_) ->
 
     phase3Out = bootstrapperOptions_.phase3 = {}
     phase3Out.originServerOnline = false
-    blipper = phase3Out.blipper = Encapsule.code.lib.audio.theme.create($("body"))
+
+    blipper = bootstrapperOptions_.phase0.blipper
 
     Encapsule.code.app.setBootChrome("phase3")
 

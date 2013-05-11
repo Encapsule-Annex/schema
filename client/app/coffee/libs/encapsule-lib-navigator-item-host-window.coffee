@@ -37,7 +37,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             if not menuLevelObject_? then throw "Missing menuLevelObject parameter."
             if not menuLevelObject_ then throw "Missing menuLevelObject parameter value."
 
-            @blipper = Encapsule.runtime.boot.phase3.blipper
+            @blipper = Encapsule.runtime.boot.phase0.blipper
 
             @navigatorContainer = navigatorContainerObject_
             @menuLevelObject = menuLevelObject_
@@ -58,7 +58,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             @itemObservableModelView = ko.observable(undefined)
 
-            @itemExtensionSelectItemHostWindow = undefined
+            @itemExtensionSelectLabel = "missing archetype label"
+            @itemExtensionSelectPath = ""
 
             @itemSelectState = ko.observable("offline")
             @itemSelectElementOrdinal = ko.observable(-1)
@@ -135,6 +136,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         
                         selectMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @menuLevelObject, layoutSelectMenuLevel, @menuLevelObject.level() + 1)
                         @menuLevelObject.subMenus.push(selectMenuLevel)
+                        @itemExtensionSelectLabel = layoutSelectMenuLevel.label
+                        @itemExtensionSelectPath = "#{@path}/#{layoutSelectMenuLevel.jsonTag}"
 
                         ###
 
@@ -158,15 +161,14 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         if not (@parentItemHostWindow? and @parentItemHostWindow)
                             throw "Can't resolve parent menu item host window reference."
 
-                        # Register this select item host window with the parent extension point's item host window.
-                        @parentItemHostWindow.itemExtensionSelectItemHostWindow = @
-
                         # Set the MVVM object-type-specific color of the menu level object.
                         colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
                         @menuLevelObject.baseBackgroundColorObject(colorObject)
 
                         @itemObservableModelView({})
                         @itemSelectState("archetype")
+                        @menuLevelObject.itemVisible(false)
+                        @menuLevelObject.itemVisibilityLock = true
                         break
 
                     else
@@ -225,7 +227,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 # button click event handler delegates to the navigator container.
                 @insertArchetype = =>
                     try
-                        @blipper.blip("05")
+                        @blipper.blip("07")
 
                         # Note that this method is bound to buttons diplayed in both extension and select-type
                         # menu items. The semantics are nearly identical; when called from an extension page
@@ -250,6 +252,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                 break
 
                         @navigatorContainer.insertArchetypeFromItemHostObject(itemHostWindow)
+                        @navigatorContainer.selectItemByPath(itemHostWindow.path)
+
 
                     catch exception
                         Console.messageError("NavigatorMenuItemHost.insertArchetype fail: #{exception}")
@@ -327,8 +331,9 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <span data-bind="if: itemMVVMType == 'extension'">
                 <h2><span data-bind="text: menuLevelObject.label"></span></h2>
                 <div data-bind="foreach: itemObservableModelView">
-                    <span data-bind=
-                    <span data-bind="text: $index() + 1"></span>
+                    <span data-bind="text: $parent.itemExtensionSelectLabel"></span>
+                    #<span data-bind="text: $index() + 1"></span>: blah blah
+                    <br>
                 </div>
             </span>
 

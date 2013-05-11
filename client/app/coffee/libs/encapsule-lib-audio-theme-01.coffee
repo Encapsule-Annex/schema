@@ -69,6 +69,15 @@ class Encapsule.code.lib.audio.theme
         host.createBlipper "27", "audio/176145__quartzporta__signal-tone-0001.wav"
         host.createBlipper "28", "audio/176891__mickmon__click-2.wav"
 
+        host.createBlipper "analyzing","audio/83337__corsica-s__analyzing.wav"
+        host.createBlipper "loading-profile", "audio/83338__corsica-s__loading-profile.wav"
+        host.createBlipper "system-critical", "audio/83339__corsica-s__system-critical.wav"
+        host.createBlipper "system-normal", "audio/83340__corsica-s__system-normal.wav"
+        host.createBlipper "system-starting", "audio/83342__corsica-s__system-starting-up.wav"
+        host.createBlipper "warning", "audio/83343__corsica-s__warning.wav"
+        host.createBlipper "history-deleted", "audio/99466__corsica-s__history-deleted.wav"
+        host.createBlipper "update-complete", "audio/99469__corsica-s__update-complete.wav"
+
         # Return the host object
         host
 
