@@ -225,46 +225,29 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 # OPERATIONS
 
                 # button click event handler delegates to the navigator container.
-                @insertArchetype = =>
+                @onButtonClickInsertArchetype = =>
                     try
                         @blipper.blip("07")
+                        @navigatorContainer.selectItemByPath( @navigatorContainer.insertArchetypeFromItemHostObject(@).path )
 
-                        # Note that this method is bound to buttons diplayed in both extension and select-type
-                        # menu items. The semantics are nearly identical; when called from an extension page
-                        # the meaning is create a new archetype element, add the element to the extension container,
-                        # and select it. When called from an archetype, the semantics are push the archetype into
-                        # the parent extension array and select.
+                    catch exception
+                        Console.messageError("NavigatorMenuItemHost.onButtonClickInsertArchetype fail: #{exception}")
 
-                        itemHostWindow = undefined
+                @onButtonClickCloseSelectedView = =>
 
-                        switch @itemMVVMType
-                            when "extension"
-                                archetypePath = @path + "/" + @menuLevelObject.layoutObject.objectDescriptor.archetype.jsonTag
-                                itemHostWindow = @navigatorContainer.getItemPathNamespaceObject(archetypePath).itemHostModelView
-                                if not (itemHostWindow? and itemHostWindow)
-                                    throw "Cannot resolve itemHostWindow for request."
-                                break
-                            when "select"
-                                itemHostWindow = @
-                                break
-                            else
-                                throw "Invalid item host object for request!"
-                                break
+                @onButtonClickCloneSelectedElement = =>
 
-                        @navigatorContainer.insertArchetypeFromItemHostObject(itemHostWindow)
-                        @navigatorContainer.selectItemByPath(itemHostWindow.path)
+                @onButtonClickRemoveSelectedElement = =>
+
+                @onButtonClickResetSelectedView = =>
+                    try
+                        if @itemMVVMType != "select"
+                            throw "Invalid item host object for request!"
 
 
                     catch exception
-                        Console.messageError("NavigatorMenuItemHost.insertArchetype fail: #{exception}")
+                        Console.messageError("NavigatorMenuItemHost.onButtonClickResetSelectedView fail: #{exception}")
 
-                @closeSelectedView = =>
-
-                @cloneSelectedElement = =>
-
-                @removeSelectedElement = =>
-
-                @resetSelectedView = =>
 
 
             # END: / NavigatorMenuItemHostWindow constructor try scope
@@ -292,40 +275,46 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
 
             <!-- Operations specific to select, archetype menu items. -->
             <span data-bind="if: isSelectedArchetype"><p>
-                <button class="button small green" data-bind="event: { click: insertArchetype }">
+                <button class="button small green" data-bind="event: { click: onButtonClickInsertArchetype }">
                     Add new
                     <span data-bind="text: menuLevelObject.labelDefault"></span>
                     to
                     <span data-bind="text: menuLevelObject.parentMenuLevel.labelDefault"></span>
                 </button>
-
-
-                <button class="button small black" data-bind="event: { click: closeSelectedView }">Close</button>                                                                         
+                <button class="button small black" data-bind="event: { click: onButtonClickCloseSelectedView }">Close</button>                                                                         
             </p></span>
 
             <!-- Operations specific to select, element menu items. -->
             <span data-bind="if: isSelectedElement">
-                <button class="button small blue" data-bind="event: { click: cloneSelectedElement }">Clone</button>
-                <button class="button small red" data-bind="event: { click: removeSelectedElement }">Remove</button>
-                <button class="button small orange" data-bind="event: { click: resetSelectedView }">Reset</button>
-                <button class="button small black" data-bind="event: { click: closeSelectedView }">Close</button>
+                <p>
+                <button class="button small blue" data-bind="event: { click: onButtonClickCloneSelectedElement }">Clone</button>
+                <button class="button small red" data-bind="event: { click: onButtonClickRemoveSelectedElement }">Remove</button>
+                <button class="button small orange" data-bind="event: { click: onButtonClickResetSelectedView }">Reset</button>
+                <button class="button small black" data-bind="event: { click: onButtonClickCloseSelectedView }">Close</button>
+                </p>
             </span>  
 
             <!-- Operations specific to extension menu items. -->
             <span data-bind="if: itemMVVMType == 'extension'">
-                <button class="button small gray" data-bind="event: { click: insertArchetype }">Add</button>
-                <button class="button small black" data-bind="event: { click: closeSelectedView }">Close</button>
-                <button class="button small orange" data-bind="event: { click: resetSelectedView }">Reset</button>
+                <p>
+                <button class="button small gray" data-bind="event: { click: onButtonClickInsertArchetype }">Add</button>
+                <button class="button small black" data-bind="event: { click: onButtonClickCloseSelectedView }">Close</button>
+                <button class="button small orange" data-bind="event: { click: onButtonClickResetSelectedView }">Reset</button>
+                </p>
             </span>
 
             <!-- Operations specific to root menu items. -->
             <span data-bind="if: itemMVVMType == 'root'">
+                <p>
                 <i>root menu item-specific operations?</i>
+                </p>
             </span>
 
             <!-- Operations specific to child menu items. -->
             <span data-bind="if: itemMVVMType == 'child'">
+                <p>
                 <i>child menu item-specific operations?</i>
+                </p>
             </span>
 
             <span data-bind="if: itemMVVMType == 'extension'">

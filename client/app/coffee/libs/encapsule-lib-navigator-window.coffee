@@ -172,14 +172,34 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     if not (itemHostObject_? and itemHostObject_)
                         throw "Missing item host object reference parameter."
 
-                    if itemHostObject_.itemMVVMType != "select"
-                        throw "Invalid request: The specified item host object is not a selection point."
+                    # Note that this method is bound to buttons diplayed in both extension and select-type
+                    # menu items. The semantics are nearly identical; when called from an extension page
+                    # the meaning is create a new archetype element, add the element to the extension container,
+                    # and select it. When called from an archetype, the semantics are push the archetype into
+                    # the parent extension array and select.
 
-                    itemSelectState = itemHostObject_.itemSelectState? and itemHostObject_.itemSelectState and itemHostObject_.itemSelectState() or undefined
+                    itemHostObject = undefined
+
+                    switch itemHostObject_.itemMVVMType
+                        when "extension"
+                            archetypePath = itemHostObject_.path + "/" + itemHostObject_.menuLevelObject.layoutObject.objectDescriptor.archetype.jsonTag
+                            itemHostObject = @getItemPathNamespaceObject(archetypePath).itemHostModelView
+                            if not (itemHostObject? and itemHostObject)
+                                throw "Cannot resolve itemHostObject for request."
+                            break
+                        when "select"
+                            itemHostObject = itemHostObject_
+                            break
+                        else
+                            throw "Invalid item host object for request!"
+                            break
+
+
+                    itemSelectState = itemHostObject.itemSelectState? and itemHostObject.itemSelectState and itemHostObject.itemSelectState() or undefined
                     if not (itemSelectState? and itemSelectState)
                         throw "Invalid request: The specified item host object is missing the expected itemSelectState property."
 
-                    parentItemHostObject = itemHostObject_.parentItemHostWindow
+                    parentItemHostObject = itemHostObject.parentItemHostWindow
                     if not (parentItemHostObject? and parentItemHostObject)
                         throw "Unable to resolve parent item host object reference."
 
@@ -190,7 +210,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
                     # Package reference to this item's hosted observable view to push into parent array.
                     newArrayElement = {}
-                    newArrayElement[itemHostObject_.jsonTag] = itemHostObject_.itemObservableModelView
+                    newArrayElement[itemHostObject_.jsonTag] = itemHostObject.itemObservableModelView
 
                     # Unbox/modify/rebox the parent array.
                     parentArray = parentItemHostObject.itemObservableModelView()
@@ -201,12 +221,12 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     # the semantics of the menu item have changed; update the menu item host's
                     # itemSelectState to "element" and set the menu item host's element index.
                     
-                    itemHostObject_.itemSelectElementOrdinal(newArrayLength - 1)
-                    itemHostObject_.setSelectState("element")
-                    itemHostObject_.menuLevelObject.itemVisible(true)
-                    itemHostObject_.menuLevelObject.itemVisibilityLock = false
+                    itemHostObject.itemSelectElementOrdinal(newArrayLength - 1)
+                    itemHostObject.setSelectState("element")
+                    itemHostObject.menuLevelObject.itemVisible(true)
+                    itemHostObject.menuLevelObject.itemVisibilityLock = false
 
-                    return true
+                    return itemHostObject
 
                 catch exception
                     throw "NavigatorWindow.insertArchetypeFromItemHostObject fail: #{exception}"
@@ -221,6 +241,14 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     throw "NavigatorWindow.insertArchetypeFromPath fail: #{exception}"
 
 
+            #
+            # ============================================================================
+            @resetContainedItemHostModelView = (itemHostObject_) =>
+                try
+                
+
+                catch exception
+                    throw "NavigatorWindow.resetContainedItemHostModelView fail: #{exception}"
 
 
             # Internal menu level traversal helper methods.
