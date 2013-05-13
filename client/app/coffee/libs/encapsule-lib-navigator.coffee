@@ -167,7 +167,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             #
             # ============================================================================
-            @insertArchetypeFromItemHostObject = (itemHostObject_) =>
+            @insertExtensionFromItemHostObject = (itemHostObject_) =>
                 try
                     if not (itemHostObject_? and itemHostObject_)
                         throw "Missing item host object reference parameter."
@@ -229,26 +229,70 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     return itemHostObject
 
                 catch exception
-                    throw "NavigatorWindow.insertArchetypeFromItemHostObject fail: #{exception}"
+                    throw "NavigatorWindow.insertExtensionFromItemHostObject fail: #{exception}"
 
 
             #
             # ============================================================================
-            @insertArchetypeFromPath = (path_) =>
+            @insertExtensionFromPath = (path_) =>
                 try
-                    @insertArchetypeFromItemHostObject(@getItemHostWindowForPath(path_))
+                    @insertExtensionFromItemHostObject(@getItemHostWindowForPath(path_))
                 catch exception
-                    throw "NavigatorWindow.insertArchetypeFromPath fail: #{exception}"
+                    throw "NavigatorWindow.insertExtension fail: #{exception}"
 
 
             #
             # ============================================================================
-            @resetContainedItemHostModelView = (itemHostObject_) =>
+            @closeExtension = (itemHostObject_) =>
                 try
+                    return itemHostObject_
+
+                catch exception
+                    throw "NavigatorWindow.closeExtension fail: #{exception}"
+
+
+            #
+            # ============================================================================
+            @cloneExtension = (itemHostObject_) =>
+                try
+                    return itemHostObject_
+
+                catch exception
+                    throw "NavigatorWindow.cloneExtension fail: #{exception}"
+
+
+
+            #
+            # ============================================================================
+            @removeExtension = (itemHostObject_) =>
+                try
+                    return itemHostObject_
+
+                catch exception
+                    throw "NavigatorWindow.closeExtension fail: #{exception}"
+
+
+
+            #
+            # ============================================================================
+            @resetExtension = (itemHostObject_) =>
+                try
+
+                    return itemHostObject_
                 
 
                 catch exception
-                    throw "NavigatorWindow.resetContainedItemHostModelView fail: #{exception}"
+                    throw "NavigatorWindow.resetExtensionContainedModelView fail: #{exception}"
+
+
+            #
+            # ============================================================================
+
+
+            #
+            # ============================================================================
+
+
 
 
             # Internal menu level traversal helper methods.
