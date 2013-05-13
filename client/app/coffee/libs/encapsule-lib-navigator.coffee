@@ -16,7 +16,7 @@
 
 ###
 #
-# encapsule-lib-navigator-window.coffee
+# encapsule-lib-navigator.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}

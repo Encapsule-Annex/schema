@@ -16,7 +16,7 @@
 
 ###
 #
-# encapsule-lib-navigator-item-host-window.coffee
+# encapsule-lib-navigator-item-host.coffee
 #
 #
 
