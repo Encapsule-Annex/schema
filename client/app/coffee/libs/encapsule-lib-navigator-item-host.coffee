@@ -219,7 +219,39 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             @menuLevelObject.baseBackgroundColorObject(colorObject)
                             @itemSelectState(selectState_)
 
-                    
+                #
+                # ============================================================================
+                @internalResetContainedModelView = =>
+                
+                    try
+                        switch @itemMVVMType
+                            when "child"
+                                break
+                            when "extension"
+                                @itemObservableModelView([])
+                                break
+                            when "root"
+                                break
+                            when "select"
+                                switch @itemSelectState()
+                                    when "archetype"
+                                        break
+                                    when "element"
+                                        @itemSelectState("archetype")
+                                        # @itemSelectElementOrdinal(-1)
+                                        colorObject =colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
+                                        @menuLevelObject.baseBackgroundColorObject(colorObject)
+                                        break
+                                    else
+                                        throw "Unrecognized item select state!"
+                                break
+                            else
+                                throw "Unrecognized mvvmType specified in menu level objectDescriptor.mvvmType: #{@itemMVVMType}"
+
+
+                    catch exception
+                        throw "NavigatorMenuItemHost.internalResetContainedModelView fail: #{exception}"
+
 
 
                 # OPERATIONS

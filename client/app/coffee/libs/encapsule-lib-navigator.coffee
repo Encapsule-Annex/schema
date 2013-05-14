@@ -135,7 +135,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             @getItemPathNamespaceObject = (path_) =>
                 # e.g.
                 #
-            # menuItemPathNamespace: Object
+                # menuItemPathNamespace: Object
                 #    appHost?path=: Object
                 #        itemHostModelView: NavigatorMenuItemHostWindow
                 #        menuLevelModelView: NavigatorWindowMenuLevel
@@ -148,6 +148,16 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     return itemHostWindow
                 catch exception
                     throw "getItemHostWindowForPath fail: #{exception}"
+
+            #
+            # ============================================================================
+            @getItemHostObjectFromPath = (path_) =>
+                try
+                    pathNamespaceObject = @getItemPathNamespaceObject(path_)
+                    return pathNamespaceObject.itemHostModelView
+                catch exception
+                    throw "NavigatorWindow.getItemHostObjectFromPath #{path} failed: #{exception}"
+
 
 
             #
@@ -210,7 +220,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
                     # Package reference to this item's hosted observable view to push into parent array.
                     newArrayElement = {}
-                    newArrayElement[itemHostObject_.jsonTag] = itemHostObject.itemObservableModelView
+                    newArrayElement[itemHostObject.jsonTag] = itemHostObject.itemObservableModelView
 
                     # Unbox/modify/rebox the parent array.
                     parentArray = parentItemHostObject.itemObservableModelView()
@@ -277,6 +287,30 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             # ============================================================================
             @resetExtension = (itemHostObject_) =>
                 try
+                    if not (itemHostObject_? and itemHostObject_)
+                        throw "Missing item host object parameter."
+
+                    ###
+                    if itemHostObject_.itemMVVMType != "select"
+                        throw "Invalid item host object for request!"
+                    ###
+
+                    bfsSearch = [ itemHostObject_.menuLevelObject.path ]
+                    bfsContext = {}
+                    @internalVisitChildren(
+                        itemHostObject_.menuLevelObject,
+                        (levelObject_, bfsContext_) =>
+                            currentNavigatorPath = levelObject_.path
+                            bfsSearch.push(currentNavigatorPath)
+                            return true # continue BFS searh on this vertex's children.
+                        bfsContext
+                        )
+
+                    while bfsSearch.length
+                        path = bfsSearch.pop()
+                        itemHostObject = @getItemHostObjectFromPath(path)
+                        itemHostObject.internalResetContainedModelView()
+
 
                     return itemHostObject_
                 

@@ -78,6 +78,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
 
             @labelDefault = yourNewLayoutObject_.label? and yourNewLayoutObject_.label or "no label"
             @label =    ko.observable(@labelDefault)
+            @resetLabel = => @label(@labelDefault)
             @labelHtml = ko.computed =>
                 return @label()
 
