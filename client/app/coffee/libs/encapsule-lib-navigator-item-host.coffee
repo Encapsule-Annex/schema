@@ -64,12 +64,16 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             @itemSelectState = ko.observable("offline")
             @itemSelectElementOrdinal = ko.observable(-1)
 
+            #
+            # ============================================================================
             @isSelectedArchetype = ko.computed =>
                 itemMVVMType = @itemMVVMType
                 itemSelectState = @itemSelectState()
                 result = itemMVVMType? and itemMVVMType and (itemMVVMType == "select") and itemSelectState? and itemSelectState and (itemSelectState == "archetype")
                 return result
 
+            #
+            # ============================================================================
             @isSelectedElement = ko.computed =>
                 itemMVVMType = @itemMVVMType
                 itemSelectState = @itemSelectState()
@@ -77,6 +81,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 return result
 
             
+
             if @menuLevelObject.parentMenuLevel? and @menuLevelObject.parentMenuLevel
                 parentPath = @menuLevelObject.parentMenuLevel.path
                 @parentItemHostWindow = @navigatorContainer.menuItemPathNamespace[parentPath].itemHostModelView
@@ -188,134 +193,154 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         throw "Unrecognized mvvmType specified in menu level objectDescriptor.mvvmType: #{@itemMVVMType}"
 
 
-
-
-
-                @toJSON = ko.computed =>
-                    jsonView = {}
-                    jsonView[@jsonTag] = @itemObservableModelView
-                    ko.toJSON(jsonView, undefined, 1)
+            #
+            # ============================================================================
+            @toJSON = ko.computed =>
+                jsonView = {}
+                jsonView[@jsonTag] = @itemObservableModelView
+                ko.toJSON(jsonView, undefined, 1)
                         
-                @itemPageTitle = ko.computed =>
-                    isExtensionPoint = @itemMVVMType == "extension"
-                    isSelectionPoint = @itemMVVMType == "select"
-                    isSelectedArchetype = @isSelectedArchetype()
-                    isSelectedElement = @isSelectedElement()
-                    itemObservableModelView = @itemObservableModelView()
+            #
+            # ============================================================================
+            @itemPageTitle = ko.computed =>
+                isExtensionPoint = @itemMVVMType == "extension"
+                isSelectionPoint = @itemMVVMType == "select"
+                isSelectedArchetype = @isSelectedArchetype()
+                isSelectedElement = @isSelectedElement()
+                itemObservableModelView = @itemObservableModelView()
 
-                    pageTitle = @menuLevelObject.labelDefault
+                pageTitle = @menuLevelObject.labelDefault
 
-                    if isExtensionPoint then pageTitle = "#{@menuLevelObject.labelDefault}: #{itemObservableModelView.length}"
-                    if isSelectedArchetype then pageTitle = "#{@menuLevelObject.labelDefault} (new)"
-                    if isSelectedElement then pageTitle = "#{@menuLevelObject.labelDefault} ##{@itemSelectElementOrdinal() + 1}"
+                if isExtensionPoint then pageTitle = "#{@menuLevelObject.labelDefault}: #{itemObservableModelView.length}"
+                if isSelectedArchetype then pageTitle = "#{@menuLevelObject.labelDefault} (new)"
+                if isSelectedElement then pageTitle = "#{@menuLevelObject.labelDefault} ##{@itemSelectElementOrdinal() + 1}"
 
-                    if pageTitle != @menuLevelObject.label()
-                        @menuLevelObject.label(pageTitle)
+                if pageTitle != @menuLevelObject.label()
+                    @menuLevelObject.label(pageTitle)
 
-                    return pageTitle
+                return pageTitle
 
-                @saveJSONAsLinkHtml = ko.computed =>
-                    # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
-                    html = "<a href=\"data:text/json;base64,#{window.btoa(@toJSON())}\" target=\"_blank\">JSON</a>"
+            #
+            # ============================================================================
+            @saveJSONAsLinkHtml = ko.computed =>
+                # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
+                html = "<a href=\"data:text/json;base64,#{window.btoa(@toJSON())}\" target=\"_blank\">JSON</a>"
 
-                @setSelectState = (selectState_) =>
-                    if not (selectState_? and selectState_)
-                        throw "Missing select state paramter."
-                    if @itemMVVMType != "select"
-                        throw "Invalid request. This menu item host is not of MVVM type 'select'."
+            #
+            # ============================================================================
+            @setSelectState = (selectState_) =>
+                if not (selectState_? and selectState_)
+                    throw "Missing select state paramter."
+                if @itemMVVMType != "select"
+                    throw "Invalid request. This menu item host is not of MVVM type 'select'."
 
-                    switch selectState_
-                        when "element"
-                            # Set the MVVM object-type-specific color of the menu level object.
-                            @menuLevelObject.resetBaseBackgroundColor()
-                            colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.elementSaturateRatio).lightenByRatio(@navigatorContainer.layout.elementLightenRatio).shiftHue(@navigatorContainer.layout.elementShiftHue)
-                            @menuLevelObject.baseBackgroundColorObject(colorObject)
-                            @itemSelectState(selectState_)
+                switch selectState_
+                    when "element"
+                        # Set the MVVM object-type-specific color of the menu level object.
+                        @menuLevelObject.resetBaseBackgroundColor()
+                        colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.elementSaturateRatio).lightenByRatio(@navigatorContainer.layout.elementLightenRatio).shiftHue(@navigatorContainer.layout.elementShiftHue)
+                        @menuLevelObject.baseBackgroundColorObject(colorObject)
+                        @itemSelectState(selectState_)
 
-                #
-                # ============================================================================
-                @internalResetContainedModelView = =>
+            #
+            # ============================================================================
+            @internalResetContainedModelView = =>
                 
-                    try
-                        switch @itemMVVMType
-                            when "child"
-                                break
-                            when "extension"
-                                @itemObservableModelView([])
-                                break
-                            when "root"
-                                break
-                            when "select"
-                                switch @itemSelectState()
-                                    when "archetype"
-                                        break
-                                    when "element"
-                                        @itemSelectState("archetype")
-                                        # @itemSelectElementOrdinal(-1)
-                                        colorObject =colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
-                                        @menuLevelObject.baseBackgroundColorObject(colorObject)
-                                        break
-                                    else
-                                        throw "Unrecognized item select state!"
-                                break
-                            else
-                                throw "Unrecognized mvvmType specified in menu level objectDescriptor.mvvmType: #{@itemMVVMType}"
+                try
+                    switch @itemMVVMType
+                        when "child"
+                            # TODO: reset object members excluding child objects for which an item host exists.
+                            break
+                        when "extension"
+                            # TODO: reset object members excluding child objects for which an item host exists.
+                            # Reset the contents of the array
+                            @itemObservableModelView([])
+                            break
+                        when "root"
+                            # TODO: reset object members excluding child objects for which an item host exists.
+                            break
+                        when "select"
+                            switch @itemSelectState()
+                                when "archetype"
+                                    # The object is already pristine.
+                                    break
+                                when "element"
+
+                                    # 2013.05.14 :: LEFT OFF HERE FIXING RESET WITH NEW PARENT OBJECT OWNERSHIP SCHEME.
+
+                                    @itemSelectState("archetype")
+                                    # @itemSelectElementOrdinal(-1)
+                                    colorObject =colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
+                                    @menuLevelObject.baseBackgroundColorObject(colorObject)
+                                    break
+                                else
+                                    throw "Unrecognized item select state!"
+                                    break
+                        else
+                            throw "Unrecognized mvvmType specified in menu level objectDescriptor.mvvmType: #{@itemMVVMType}"
 
 
-                    catch exception
-                        throw "NavigatorMenuItemHost.internalResetContainedModelView fail: #{exception}"
+                catch exception
+                    throw "NavigatorMenuItemHost.internalResetContainedModelView fail: #{exception}"
 
 
 
-                # OPERATIONS
+            # OPERATIONS
 
-                # button click event handler delegates to the navigator container.
-                @onButtonClickInsertExtension = =>
-                    try
-                        @blipper.blip("08")
-                        itemHostObjectToSelect = @navigatorContainer.insertExtensionFromItemHostObject(@)
-                        @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
+            #
+            # ============================================================================
+            # button click event handler delegates to the navigator container.
+            @onButtonClickInsertExtension = =>
+                try
+                    @blipper.blip("08")
+                    itemHostObjectToSelect = @navigatorContainer.insertExtensionFromItemHostObject(@)
+                    @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
 
-                    catch exception
-                        Console.messageError("NavigatorMenuItemHost.onButtonClickInsertArchetype fail: #{exception}")
+                catch exception
+                    Console.messageError("NavigatorMenuItemHost.onButtonClickInsertArchetype fail: #{exception}")
 
-                @onButtonClickCloseExtension = =>
-                    try
-                        @blipper.blip("09")
-                        itemHostObjectToSelect = @navigatorContainer.closeExtension(@)
-                        @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
+            #
+            # ============================================================================
+            @onButtonClickCloseExtension = =>
+                try
+                    @blipper.blip("09")
+                    itemHostObjectToSelect = @navigatorContainer.closeExtension(@)
+                    @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
 
-                    catch exception
-                        Console.messageError("NavigatorMenuItemHost.onButtonClickCloseExtension fail: #{exception}")
+                catch exception
+                    Console.messageError("NavigatorMenuItemHost.onButtonClickCloseExtension fail: #{exception}")
 
-                @onButtonClickCloneExtension = =>
-                    try
-                        @blipper.blip("10")
-                        itemHostObjectToSelect = @navigatorContainer.cloneExtension(@)
-                        @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
+            #
+            # ============================================================================
+            @onButtonClickCloneExtension = =>
+                try
+                    @blipper.blip("10")
+                    itemHostObjectToSelect = @navigatorContainer.cloneExtension(@)
+                    @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
 
-                    catch exception
-                        Console.messageError("NavigatorMenuItemHost.onButtonClickCloneExtension fail: #{exception}")
+                catch exception
+                    Console.messageError("NavigatorMenuItemHost.onButtonClickCloneExtension fail: #{exception}")
 
-                @onButtonClickRemoveExtension = =>
-                    try
-                        @blipper.blip("11")
-                        itemHostObjectToSelect = @navigatorContainer.removeExtension(@)
-                        @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path)
-                        
+            #
+            # ============================================================================
+            @onButtonClickRemoveExtension = =>
+                try
+                    @blipper.blip("11")
+                    itemHostObjectToSelect = @navigatorContainer.removeExtension(@)
+                    @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path)
+                    
+                 catch exception
+                    Console.messageError("NavigatorMenuItemHost.onButtonClickRemoveExtension fail: #{exception}")
 
-                    catch exception
-                        Console.messageError("NavigatorMenuItemHost.onButtonClickRemoveExtension fail: #{exception}")
+            #
+            # ============================================================================
+            @onButtonClickResetExtension = =>
+                try
+                    @blipper.blip("07")
+                    @navigatorContainer.resetExtension(@)
 
-                @onButtonClickResetExtension = =>
-                    try
-                        @blipper.blip("07")
-                        @navigatorContainer.resetExtension(@)
-
-
-                    catch exception
-                        Console.messageError("NavigatorMenuItemHost.onButtonClickResetExtensionContainedModelView fail: #{exception}")
-
+                catch exception
+                    Console.messageError("NavigatorMenuItemHost.onButtonClickResetExtensionContainedModelView fail: #{exception}")
 
 
             # END: / NavigatorMenuItemHostWindow constructor try scope

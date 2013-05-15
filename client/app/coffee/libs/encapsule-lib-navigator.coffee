@@ -218,14 +218,22 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
                     # Update the parent item host's contained obervable array.
 
+                    # Deep copy the select item's contained model view object.
+                    clonedItemHostModelView = Encapsule.code.lib.js.clone(itemHostObject.itemObservableModelView)
+
                     # Package reference to this item's hosted observable view to push into parent array.
                     newArrayElement = {}
-                    newArrayElement[itemHostObject.jsonTag] = itemHostObject.itemObservableModelView
+                    newArrayElement[itemHostObject.jsonTag] = clonedItemHostModelView
 
                     # Unbox/modify/rebox the parent array.
                     parentArray = parentItemHostObject.itemObservableModelView()
                     newArrayLength = parentArray.push(newArrayElement)
                     parentItemHostObject.itemObservableModelView(parentArray)
+
+                    # Now replace this item host's contained model view with a reference to the
+                    # newly cloned object stored in the parent's array.
+
+                    itemHostObject.itemObservableModelView = clonedItemHostModelView
 
                     # The select menu item host is already bound to the menu array element but
                     # the semantics of the menu item have changed; update the menu item host's
