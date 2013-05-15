@@ -58,9 +58,13 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             @itemObservableModelView = undefined
 
+            # If this item host is an "extension"-type item then these members are
+            # used to track the item's state.
             @itemExtensionSelectLabel = "missing archetype label"
             @itemExtensionSelectPath = ""
 
+            # If this item host is a "select"-type item then these members are
+            # used to track the item's state.
             @itemSelectState = ko.observable("offline")
             @itemSelectElementOrdinal = ko.observable(-1)
 
@@ -112,13 +116,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         # We want the parent to own the actual data so this object's @itemObservableModelView
                         # will be a reference to the actual object, not the allocated object itself.
 
-                        ###
-                        @itemObservableModelView({})
-                        currentModelView = @parentItemHostWindow.itemObservableModelView()
-                        currentModelView[@jsonTag] = @itemObservableModelView
-                        @parentItemHostWindow.itemObservableModelView(currentModelView)
-                        ###
-
                         # Unbox the parent's contained model view.
                         currentModelView = @parentItemHostWindow.itemObservableModelView()
                         # Modify the parent's contained model view.
@@ -140,13 +137,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                         # Modify the parent menu item host's hosted model view by adding this new array into its object namespace.
                         if (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
-                            ###
-                            @itemObservableModelView([])
-                            currentModelView = @parentItemHostWindow.itemObservableModelView()
-                            currentModelView[@jsonTag] = @itemObservableModelView
-                            @parentItemHostWindow.itemObservableModelView(currentModelView)
-                            ###
-
                             # Unbox the parent's contained model view.
                             currentModelView = @parentItemHostWindow.itemObservableModelView()
                             # Modify the parent's contained model view.
@@ -250,11 +240,30 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                     switch @itemMVVMType
                         when "child"
                             # TODO: reset object members excluding child objects for which an item host exists.
+
+                            # It's possible that this "child"-type item's parent is a "select"-type item that
+                            # has just been reset. If so, we need to re-link this item host to it's parent.
+                            if @parentItemHostWindow? and @parentItemHostWindow
+                                parentObservableModelView = @parentItemHostWindow.itemObservableModelView()
+                                if not (parentObservableModelView[@jsonTag]? and parentObservableModelView[@jsonTag])
+                                    parentObservableModelView[@jsonTag] = ko.observable({})
+                                    @itemObservableModelView = parentObservableModelView[@jsonTag]
+                                    @parentItemHostWindow.itemObservableModelView(parentObservableModelView)
                             break
                         when "extension"
                             # TODO: reset object members excluding child objects for which an item host exists.
                             # Reset the contents of the array
-                            @itemObservableModelView([])
+
+                            if @parentItemHostWindow? and @parentItemHostWindow
+                                parentObservableModelView = @parentItemHostWindow.itemObservableModelView()
+                                if not (parentObservableModelView[@jsonTag]? and parentObservableModelView[@jsonTag])
+                                    parentObservableModelView[@jsonTag] = ko.observable([])
+                                    @itemObservableModelView = parentObservableModelView[@jsonTag]
+                                    @parentItemHostWindow.itemObservableModelView(parentObservableModelView)
+                                else
+                                    @itemObservableModelView([])
+                            updatedItemPageTitle = @itemPageTitle()
+                            @menuLevelObject.label(updatedItemPageTitle)
                             break
                         when "root"
                             # TODO: reset object members excluding child objects for which an item host exists.
@@ -265,14 +274,21 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                     # The object is already pristine.
                                     break
                                 when "element"
+                                    # If the reset originated above this "element" "select"-type item, then logically
+                                    # the data associated with this item has been removed and this item must be returned
+                                    # to its pristine "archetype" state. Otherwise, the item is to remain as an element
+                                    # and its data reset (i.e. it remains linked into the parent array).
+                                    
+                                    if not @parentItemHostWindow.itemObservableModelView().length
+                                        @itemSelectState("archetype")
+                                        @itemSelectElementOrdinal(-1)
+                                        colorObject =colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
+                                        @menuLevelObject.baseBackgroundColorObject(colorObject)
 
-                                    # 2013.05.14 :: LEFT OFF HERE FIXING RESET WITH NEW PARENT OBJECT OWNERSHIP SCHEME.
+                                    @itemObservableModelView({}) # will need to recreate members. Okay for now.
 
-                                    @itemSelectState("archetype")
-                                    # @itemSelectElementOrdinal(-1)
-                                    colorObject =colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
-                                    @menuLevelObject.baseBackgroundColorObject(colorObject)
                                     break
+
                                 else
                                     throw "Unrecognized item select state!"
                                     break

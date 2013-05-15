@@ -298,37 +298,20 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     if not (itemHostObject_? and itemHostObject_)
                         throw "Missing item host object parameter."
 
-                    ###
-                    if itemHostObject_.itemMVVMType != "select"
-                        throw "Invalid item host object for request!"
-                    ###
+                    itemHostObject_.internalResetContainedModelView()
 
                     bfsSearch = [ itemHostObject_.menuLevelObject.path ]
                     bfsContext = {}
                     @internalVisitChildren(
                         itemHostObject_.menuLevelObject,
                         (levelObject_, bfsContext_) =>
-                            currentNavigatorPath = levelObject_.path
-                            bfsSearch.push(currentNavigatorPath)
-
-                            # If an "extention" item (i.e. hosts an extensible array), continue the BFS
-                            # only if the child "select" item is linked into the extension (i.e. 
-                            #continueBfsSearchOfChildren = true
-                            #itemHostObject = @getItemHostObjectFromPath(path)
-
-
+                            itemHostObject = @getItemHostObjectFromPath(levelObject_.path)
+                            itemHostObject.internalResetContainedModelView()
                             return true # continue BFS searh on this vertex's children.
                         bfsContext
                         )
 
-                    while bfsSearch.length
-                        path = bfsSearch.pop()
-                        itemHostObject = @getItemHostObjectFromPath(path)
-                        itemHostObject.internalResetContainedModelView()
-
-
                     return itemHostObject_
-                
 
                 catch exception
                     throw "NavigatorWindow.resetExtensionContainedModelView fail: #{exception}"
