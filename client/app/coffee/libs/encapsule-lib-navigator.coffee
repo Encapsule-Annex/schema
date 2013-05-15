@@ -302,6 +302,13 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                         (levelObject_, bfsContext_) =>
                             currentNavigatorPath = levelObject_.path
                             bfsSearch.push(currentNavigatorPath)
+
+                            # If an "extention" item (i.e. hosts an extensible array), continue the BFS
+                            # only if the child "select" item is linked into the extension (i.e. 
+                            #continueBfsSearchOfChildren = true
+                            #itemHostObject = @getItemHostObjectFromPath(path)
+
+
                             return true # continue BFS searh on this vertex's children.
                         bfsContext
                         )

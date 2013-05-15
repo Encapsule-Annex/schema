@@ -56,7 +56,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             @itemMVVMType = undefined
 
-            @itemObservableModelView = ko.observable(undefined)
+            @itemObservableModelView = undefined
 
             @itemExtensionSelectLabel = "missing archetype label"
             @itemExtensionSelectPath = ""
@@ -104,10 +104,24 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         if not (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
                             break
 
+                        # We want the parent to own the actual data so this object's @itemObservableModelView
+                        # will be a reference to the actual object, not the allocated object itself.
+
+                        ###
                         @itemObservableModelView({})
                         currentModelView = @parentItemHostWindow.itemObservableModelView()
                         currentModelView[@jsonTag] = @itemObservableModelView
                         @parentItemHostWindow.itemObservableModelView(currentModelView)
+                        ###
+
+                        # Unbox the parent's contained model view.
+                        currentModelView = @parentItemHostWindow.itemObservableModelView()
+                        # Modify the parent's contained model view.
+                        currentModelView[@jsonTag] = ko.observable({})
+                        @itemObservableModelView = currentModelView[@jsonTag]
+                        # Update the parent's contained model view.
+                        @parentItemHostWindow.itemObservableModelView(currentModelView)
+
 
                         break
 
@@ -121,10 +135,21 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                         # Modify the parent menu item host's hosted model view by adding this new array into its object namespace.
                         if (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
+                            ###
                             @itemObservableModelView([])
                             currentModelView = @parentItemHostWindow.itemObservableModelView()
                             currentModelView[@jsonTag] = @itemObservableModelView
                             @parentItemHostWindow.itemObservableModelView(currentModelView)
+                            ###
+
+                            # Unbox the parent's contained model view.
+                            currentModelView = @parentItemHostWindow.itemObservableModelView()
+                            # Modify the parent's contained model view.
+                            currentModelView[@jsonTag] = ko.observable([])
+                            @itemObservableModelView = currentModelView[@jsonTag]
+                            # Update the parent's contained model view.
+                            @parentItemHostWindow.itemObservableModelView(currentModelView)
+                            
 
                         # Create the select menu item beneath the extension point.
                         if not (layoutObjectDescriptor.archetype? and layoutObjectDescriptor.archetype)
@@ -139,22 +164,10 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         @itemExtensionSelectLabel = layoutSelectMenuLevel.label
                         @itemExtensionSelectPath = "#{@path}/#{layoutSelectMenuLevel.jsonTag}"
 
-                        ###
-
-                        # Create the archetype sub menu of this extension.
-                        layoutArchetypeMenuLevel = Encapsule.code.lib.js.clone(layoutObjectDescriptor.archetype)
-                        layoutArchetypeMenuLevel.jsonTag = "archetype"
-                        layoutArchetypeMenuLevel.objectDescriptor.mvvmType = "archetype"
-
-                        archetypeMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @menuLevelObject, layoutArchetypeMenuLevel, @menuLevelObject.level() + 1)
-                        @menuLevelObject.subMenus.push(archetypeMenuLevel)
-
-                        ###
-
                         break
 
                     when "root"
-                        @itemObservableModelView({})
+                        @itemObservableModelView = ko.observable({})
                         break
 
                     when "select"
@@ -165,7 +178,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
                         @menuLevelObject.baseBackgroundColorObject(colorObject)
 
-                        @itemObservableModelView({})
+                        @itemObservableModelView = ko.observable({})
                         @itemSelectState("archetype")
                         #@menuLevelObject.itemVisible(false)
                         #@menuLevelObject.itemVisibilityLock = true
