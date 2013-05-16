@@ -34,8 +34,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     label: "#{appName} Client"
     description: "#{appName} client app host namespace."
 
-    detailBelowSelectDefault: 0
-    detailAboveSelectDefault: 1
+    detailBelowSelectDefault: 1
+    detailAboveSelectDefault: 2
 
     initialSelectionPath: "appHost?path=schema"
 
@@ -51,8 +51,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     borderWidthFlat: 2
 
     fontColorRatioDefault: 0.45
-    fontColorRatioSelected: -0.8
-    fontColorRatioSelectedChild: -0.8
+    fontColorRatioSelected: -1 # -0.8
+    fontColorRatioSelectedChild: -2 # -0.8
     fontColorRatioMouseOver: -1
     
     selectedItemBackgroundShiftHue: 0
@@ -82,7 +82,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     archetypeSaturateRatio: -0.5
     archetypeLightenRatio: 0.2
     
-    elementShiftHue: 0 # -50
+    elementShiftHue: -40
     elementSaturateRatio: 0 # 0.5
     elementLightenRatio: 0 # 0.3
 

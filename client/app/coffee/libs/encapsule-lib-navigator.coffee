@@ -216,6 +216,11 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     if parentItemHostObject.itemMVVMType != "extension"
                         throw "Specified item host's parent object type doesn't support this operation. This is an error in your layout declaration."
 
+                    # If the "select"-type item is in the "element" (vs. "archetype") state, we need to detach the
+                    # select from the element and return the "select" to "archetype" status before proceeding.
+                    if itemHostObject.itemSelectState() == "element"
+                        @resetExtension(itemHostObject, true)
+
                     # Update the parent item host's contained obervable array.
 
                     # Deep copy the select item's contained model view object.
@@ -293,12 +298,12 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             #
             # ============================================================================
-            @resetExtension = (itemHostObject_) =>
+            @resetExtension = (itemHostObject_, forceSelectElementDetach_) =>
                 try
                     if not (itemHostObject_? and itemHostObject_)
                         throw "Missing item host object parameter."
 
-                    itemHostObject_.internalResetContainedModelView()
+                    itemHostObject_.internalResetContainedModelView(forceSelectElementDetach_)
 
                     bfsSearch = [ itemHostObject_.menuLevelObject.path ]
                     bfsContext = {}
@@ -306,7 +311,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                         itemHostObject_.menuLevelObject,
                         (levelObject_, bfsContext_) =>
                             itemHostObject = @getItemHostObjectFromPath(levelObject_.path)
-                            itemHostObject.internalResetContainedModelView()
+                            itemHostObject.internalResetContainedModelView(forceSelectElementDetach_)
                             return true # continue BFS searh on this vertex's children.
                         bfsContext
                         )

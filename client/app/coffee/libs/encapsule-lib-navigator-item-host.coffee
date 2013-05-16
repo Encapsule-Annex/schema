@@ -234,9 +234,12 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             #
             # ============================================================================
-            @internalResetContainedModelView = =>
+            @internalResetContainedModelView = (forceSelectElementDetach_) =>
                 
                 try
+                    forceSelectElementDetach = forceSelectElementDetach_? and forceSelectElementDetach_ or false
+
+
                     switch @itemMVVMType
                         when "child"
                             # TODO: reset object members excluding child objects for which an item host exists.
@@ -277,17 +280,20 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                     # If the reset originated above this "element" "select"-type item, then logically
                                     # the data associated with this item has been removed and this item must be returned
                                     # to its pristine "archetype" state. Otherwise, the item is to remain as an element
-                                    # and its data reset (i.e. it remains linked into the parent array).
+                                    # and its data reset (i.e. it remains linked into the parent array) UNLESS the
+                                    # forceSelectElementDetach flag is true. In this case, the attached element
+                                    #
                                     
-                                    if not @parentItemHostWindow.itemObservableModelView().length
+                                    if forceSelectElementDetach or (not @parentItemHostWindow.itemObservableModelView().length)
                                         @itemSelectState("archetype")
                                         @itemSelectElementOrdinal(-1)
+                                        @itemObservableModelView = ko.observable({})
                                         @menuLevelObject.itemVisible(false)
                                         @menuLevelObject.itemVisibilityLock = true
                                         colorObject =colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
                                         @menuLevelObject.baseBackgroundColorObject(colorObject)
-
-                                    @itemObservableModelView({}) # will need to recreate members. Okay for now.
+                                    else
+                                        @itemObservableModelView({}) # will need to recreate members. Okay for now.
 
                                     break
 
