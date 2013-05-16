@@ -17,7 +17,7 @@ app_package_publisher="Encapsule Project"
 app_package_publisher_url="http://www.encapsule.org"
 
 # THIS CHANGES ALL THE TIME
-app_version="0.885"
+app_version="0.886"
 # 
 
 app_name="Schema"
@@ -41,9 +41,9 @@ app_build_date=`date -u`
 app_build_uuid=`uuidgen`
 app_package_id="[ "$app_uuid" :: "$app_version_uuid" :: "$app_build_uuid" ]"
 
-if [ "$app_builder" = "" ]
+if [ "$app_builder_email" = "" ]
 then
-    app_builder="(local user) "$app_builder_local"@"$app_build_host
+    app_builder_email="(local user) "$app_builder_local"@"$app_build_host
 fi
 
 # Declarations: customize for local repo
@@ -102,7 +102,7 @@ build_appcache_manifest=$schema_deploy_client_html/schema.appcache
 
 #### BUILD: CLEAN
 
-echo App builder e-mail specified on command line: $app_builder
+echo App builder e-mail specified on command line: $app_builder_email
 
 echo -----------------------------------------------------------------
 cd $schema_repo
@@ -130,7 +130,7 @@ cp -rv $schema_client_app_nocache/* $schema_deploy_client_html_nocache/
 
 echo schema.encapsule.org buildapp.sh: > $build_log
 echo . >> $build_log
-echo $y $x $t by $app_builder >> $build_log
+echo $y $x $t by $app_builder_email >> $build_log
 echo . >> $build_log
 echo ---
 echo "// encapsule-build.js (generated)" > $build_id_js
@@ -222,7 +222,7 @@ echo $appCache | sort -k3,3
 
 echo CACHE MANIFEST > $build_appcache_manifest
 echo "# Package ID: "$app_package_id  >> $build_appcache_manifest
-echo "# Package Detail: "$app_name" v"$app_version" tag=\""$app_release_name"\" built "$app_build_date" by "$app_builder >> $build_appcache_manifest
+echo "# Package Detail: "$app_name" v"$app_version" tag=\""$app_release_name"\" built "$app_build_date" by "$app_builder_email >> $build_appcache_manifest
 echo "#" >> $build_appcache_manifest
 echo "# These files will be cached for offline use by the app." >> $build_appcache_manifest
 count=0
