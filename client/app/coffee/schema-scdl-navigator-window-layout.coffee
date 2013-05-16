@@ -79,8 +79,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     metaArrayElementLightenRatio: 0.2
 
     archetypeShiftHue: 0
-    archetypeSaturateRatio: -0.8
-    archetypeLightenRatio: 0.4
+    archetypeSaturateRatio: -0.5
+    archetypeLightenRatio: 0.2
     
     elementShiftHue: 0 # -50
     elementSaturateRatio: 0 # 0.5

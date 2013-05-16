@@ -56,7 +56,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             @itemMVVMType = undefined
 
-            @itemObservableModelView = undefined
+            @itemObservableModelView = ko.observable({})
 
             # If this item host is an "extension"-type item then these members are
             # used to track the item's state.
@@ -84,6 +84,23 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 result = itemMVVMType? and itemMVVMType and (itemMVVMType == "select") and itemSelectState? and itemSelectState and (itemSelectState == "element")
                 return result
 
+            #
+            # ============================================================================
+            @itemPageTitle = ko.observable undefined
+
+            @updateItemPageTitle = =>
+                isExtensionPoint = @itemMVVMType == "extension"
+                isSelectionPoint = @itemMVVMType == "select"
+                isSelectedArchetype = @isSelectedArchetype()
+                isSelectedElement = @isSelectedElement()
+                itemObservableModelView = @itemObservableModelView()
+                pageTitle = @menuLevelObject.labelDefault
+                if isExtensionPoint then pageTitle = "#{@menuLevelObject.labelDefault}: #{itemObservableModelView.length}"
+                if isSelectedArchetype then pageTitle = "#{@menuLevelObject.labelDefault} (archetype)"
+                if isSelectedElement then pageTitle = "#{@menuLevelObject.labelDefault} ##{@itemSelectElementOrdinal() + 1}"
+                if pageTitle != @menuLevelObject.label()
+                    @menuLevelObject.label(pageTitle)
+                @itemPageTitle(pageTitle)
             
 
             if @menuLevelObject.parentMenuLevel? and @menuLevelObject.parentMenuLevel
@@ -140,7 +157,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             # Unbox the parent's contained model view.
                             currentModelView = @parentItemHostWindow.itemObservableModelView()
                             # Modify the parent's contained model view.
-                            currentModelView[@jsonTag] = ko.observable([])
+                            currentModelView[@jsonTag] = ko.observableArray()
                             @itemObservableModelView = currentModelView[@jsonTag]
                             # Update the parent's contained model view.
                             @parentItemHostWindow.itemObservableModelView(currentModelView)
@@ -175,12 +192,14 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                         @itemObservableModelView = ko.observable({})
                         @itemSelectState("archetype")
-                        #@menuLevelObject.itemVisible(false)
-                        #@menuLevelObject.itemVisibilityLock = true
+                        @menuLevelObject.itemVisible(false)
+                        @menuLevelObject.itemVisibilityLock = true
                         break
 
                     else
                         throw "Unrecognized mvvmType specified in menu level objectDescriptor.mvvmType: #{@itemMVVMType}"
+
+                @updateItemPageTitle()
 
 
             #
@@ -188,27 +207,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             @toJSON = ko.computed =>
                 jsonView = {}
                 jsonView[@jsonTag] = @itemObservableModelView
-                ko.toJSON(jsonView, undefined, 1)
+                ko.toJSON(jsonView, undefined, 2)
                         
-            #
-            # ============================================================================
-            @itemPageTitle = ko.computed =>
-                isExtensionPoint = @itemMVVMType == "extension"
-                isSelectionPoint = @itemMVVMType == "select"
-                isSelectedArchetype = @isSelectedArchetype()
-                isSelectedElement = @isSelectedElement()
-                itemObservableModelView = @itemObservableModelView()
-
-                pageTitle = @menuLevelObject.labelDefault
-
-                if isExtensionPoint then pageTitle = "#{@menuLevelObject.labelDefault}: #{itemObservableModelView.length}"
-                if isSelectedArchetype then pageTitle = "#{@menuLevelObject.labelDefault} (new)"
-                if isSelectedElement then pageTitle = "#{@menuLevelObject.labelDefault} ##{@itemSelectElementOrdinal() + 1}"
-
-                if pageTitle != @menuLevelObject.label()
-                    @menuLevelObject.label(pageTitle)
-
-                return pageTitle
 
             #
             # ============================================================================
@@ -257,11 +257,11 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             if @parentItemHostWindow? and @parentItemHostWindow
                                 parentObservableModelView = @parentItemHostWindow.itemObservableModelView()
                                 if not (parentObservableModelView[@jsonTag]? and parentObservableModelView[@jsonTag])
-                                    parentObservableModelView[@jsonTag] = ko.observable([])
+                                    parentObservableModelView[@jsonTag] = ko.observableArray()
                                     @itemObservableModelView = parentObservableModelView[@jsonTag]
                                     @parentItemHostWindow.itemObservableModelView(parentObservableModelView)
                                 else
-                                    @itemObservableModelView([])
+                                    @itemObservableModelView.removeAll()
                             updatedItemPageTitle = @itemPageTitle()
                             @menuLevelObject.label(updatedItemPageTitle)
                             break
@@ -282,6 +282,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                     if not @parentItemHostWindow.itemObservableModelView().length
                                         @itemSelectState("archetype")
                                         @itemSelectElementOrdinal(-1)
+                                        @menuLevelObject.itemVisible(false)
+                                        @menuLevelObject.itemVisibilityLock = true
                                         colorObject =colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
                                         @menuLevelObject.baseBackgroundColorObject(colorObject)
 
@@ -295,6 +297,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         else
                             throw "Unrecognized mvvmType specified in menu level objectDescriptor.mvvmType: #{@itemMVVMType}"
 
+                    @updateItemPageTitle()
 
                 catch exception
                     throw "NavigatorMenuItemHost.internalResetContainedModelView fail: #{exception}"
@@ -308,7 +311,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             # button click event handler delegates to the navigator container.
             @onButtonClickInsertExtension = =>
                 try
-                    @blipper.blip("08")
+                    @blipper.blip("10")
                     itemHostObjectToSelect = @navigatorContainer.insertExtensionFromItemHostObject(@)
                     @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
 
@@ -330,7 +333,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             # ============================================================================
             @onButtonClickCloneExtension = =>
                 try
-                    @blipper.blip("10")
+                    @blipper.blip("08")
                     itemHostObjectToSelect = @navigatorContainer.cloneExtension(@)
                     @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
 

@@ -225,10 +225,9 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     newArrayElement = {}
                     newArrayElement[itemHostObject.jsonTag] = clonedItemHostModelView
 
-                    # Unbox/modify/rebox the parent array.
-                    parentArray = parentItemHostObject.itemObservableModelView()
-                    newArrayLength = parentArray.push(newArrayElement)
-                    parentItemHostObject.itemObservableModelView(parentArray)
+                    # Add the new element to the parent extension's array.
+                    newArrayLength = parentItemHostObject.itemObservableModelView.push(newArrayElement)
+                    parentItemHostObject.updateItemPageTitle()
 
                     # Now replace this item host's contained model view with a reference to the
                     # newly cloned object stored in the parent's array.
@@ -243,6 +242,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     itemHostObject.setSelectState("element")
                     itemHostObject.menuLevelObject.itemVisible(true)
                     itemHostObject.menuLevelObject.itemVisibilityLock = false
+                    itemHostObject.updateItemPageTitle()
 
                     return itemHostObject
 
