@@ -368,6 +368,17 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                     Console.messageError("NavigatorMenuItemHost.onButtonClickResetExtensionContainedModelView fail: #{exception}")
 
 
+            #
+            # ============================================================================
+            @onLinkClickSelectExtension = (arrayIndex_, data_, event_) ->
+                try
+                    alert("click on #{arrayIndex_ + 1}")
+
+                catch exception
+                    Console.messageError("NavigatorMenuItemHost.onLinkClickSelectExtension fail: #{exception}")
+
+
+
             # END: / NavigatorMenuItemHostWindow constructor try scope
 
         catch exception
@@ -438,9 +449,9 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <span data-bind="if: itemMVVMType == 'extension'">
                 <h2><span data-bind="text: menuLevelObject.label"></span></h2>
                 <div data-bind="foreach: itemObservableModelView">
-                    <span data-bind="text: $parent.itemExtensionSelectLabel"></span>
-                    #<span data-bind="text: $index() + 1"></span>: blah blah
-                    <br>
+                    <div data-bind="click: function(data_, event_) { $parent.onLinkClickSelectExtension($index(), data_, event_) }">
+                        <span data-bind="text: $parent.itemExtensionSelectLabel"></span> #<span data-bind="text: $index() + 1"></span>
+                    </div>
                 </div>
             </span>
 
