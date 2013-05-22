@@ -219,7 +219,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     # If the "select"-type item is in the "element" (vs. "archetype") state, we need to detach the
                     # select from the element and return the "select" to "archetype" status before proceeding.
                     if itemHostObject.itemSelectState() == "element"
-                        @resetExtension(itemHostObject, true)
+                        @resetExtension(itemHostObject, "detach")
 
                     # Update the parent item host's contained obervable array.
 
@@ -298,20 +298,24 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
             #
             # ============================================================================
-            @resetExtension = (itemHostObject_, forceSelectElementDetach_) =>
+            @resetExtension = (itemHostObject_, forceSelectElementAction_) =>
                 try
+                    Console.message("NavigatorWindow.resetExtension start")
+
                     if not (itemHostObject_? and itemHostObject_)
                         throw "Missing item host object parameter."
 
-                    itemHostObject_.internalResetContainedModelView(forceSelectElementDetach_)
+                    if (not (forceSelectElementAction_? and forceSelectElementAction_)) or (forceSelectElementAction_ != "relink")
+                        itemHostObject_.internalResetContainedModelView(forceSelectElementAction_)
 
                     bfsSearch = [ itemHostObject_.menuLevelObject.path ]
                     bfsContext = {}
                     @internalVisitChildren(
                         itemHostObject_.menuLevelObject,
                         (levelObject_, bfsContext_) =>
+                            Console.message("... processing menu level path=#{levelObject_.path}")
                             itemHostObject = @getItemHostObjectFromPath(levelObject_.path)
-                            itemHostObject.internalResetContainedModelView(forceSelectElementDetach_)
+                            itemHostObject.internalResetContainedModelView(forceSelectElementAction_)
                             return true # continue BFS searh on this vertex's children.
                         bfsContext
                         )
@@ -319,11 +323,34 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     return itemHostObject_
 
                 catch exception
-                    throw "NavigatorWindow.resetExtensionContainedModelView fail: #{exception}"
+                    throw "NavigatorWindow.resetExtensionContainedModelView fail for item host path #{itemHostObject_.path} (#{forceSelectElementAction_}) : #{exception}"
 
 
             #
             # ============================================================================
+            @selectElementInExtensionArray = (itemHostObject_, arrayIndex_) =>
+                try
+                    Console.message("NavigatorContainer.selectElementInExtensionArray begin...")
+                    Console.message("... path=#{itemHostObject_.path} arrayIndex=#{arrayIndex_}")
+
+                    if not (itemHostObject_? and itemHostObject_) then throw "Missing item host object parameter."
+                    if not (arrayIndex_?) then throw "Missing array element to select."
+                    if (itemHostObject_.itemMVVMType != "extension") then throw "Invalid item host object type for this call! Must be an extension."
+                    extensionArrayLength = itemHostObject_.itemObservableModelView().length
+                    if (arrayIndex_ >= extensionArrayLength) then throw "Invalid request. The array index exceeds extension array size."
+                    if not (itemHostObject_.itemExtensionSelectPath? and itemHostObject_.itemExtensionSelectPath) then throw "Internal error. Unknown path to select item host."
+
+                    selectItemHostObject = @getItemHostObjectFromPath(itemHostObject_.itemExtensionSelectPath)
+                    if not (selectItemHostObject? and selectItemHostObject) then throw "Cannot resolve select item host."
+
+                    selectItemHostObject.internalRelinkSelectToElement(arrayIndex_)
+                    @resetExtension(selectItemHostObject, "relink")
+
+
+
+
+                catch exception
+                    throw "NavigatorWindow.selectElementInExtensionArray fail: #{exception}"
 
 
             #

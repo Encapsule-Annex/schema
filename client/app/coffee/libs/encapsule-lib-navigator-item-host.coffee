@@ -127,9 +127,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         if not (@parentItemHostWindow? and @parentItemHostWindow)
                             throw "Can't resolve parent menu item host window reference."
 
-                        if not (@parentItemHostWindow.itemObservableModelView? and @parentItemHostWindow.itemObservableModelView)
-                            break
-
                         # We want the parent to own the actual data so this object's @itemObservableModelView
                         # will be a reference to the actual object, not the allocated object itself.
 
@@ -140,7 +137,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         @itemObservableModelView = currentModelView[@jsonTag]
                         # Update the parent's contained model view.
                         @parentItemHostWindow.itemObservableModelView(currentModelView)
-
 
                         break
 
@@ -189,7 +185,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         # Set the MVVM object-type-specific color of the menu level object.
                         colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
                         @menuLevelObject.baseBackgroundColorObject(colorObject)
-
                         @itemObservableModelView = ko.observable({})
                         @itemSelectState("archetype")
                         @menuLevelObject.itemVisible(false)
@@ -205,9 +200,15 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             #
             # ============================================================================
             @toJSON = ko.computed =>
-                jsonView = {}
-                jsonView[@jsonTag] = @itemObservableModelView
-                ko.toJSON(jsonView, undefined, 2)
+
+                @itemSelectState()
+                @itemSelectElementOrdinal()
+
+                #jsonView = {}
+                #jsonView[@jsonTag] = @itemObservableModelView
+
+                #ko.toJSON(jsonView, undefined, 2)
+                ko.toJSON(@itemObservableModelView, undefined, 2)
                         
 
             #
@@ -232,46 +233,107 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         @menuLevelObject.baseBackgroundColorObject(colorObject)
                         @itemSelectState(selectState_)
 
+
             #
             # ============================================================================
-            @internalResetContainedModelView = (forceSelectElementDetach_) =>
+            @internalRelinkSelectToElement = (arrayIndex_) =>
+                try
+                    Console.message("NavigatorMenuItemHostWindow.internalRelinkSelectToElement start")
+                    Console.message("... path=#{@path} arrayIndex=#{arrayIndex_}")
+
+                    if @itemMVVMType != "select" then throw "Invalid item host for request. Must be a select."
+
+                    # We don't care if the item is in the "archetype" or "element" state as we're going to
+                    # replace this select item's contained view model with a reference to the parent
+                    # extension array's specified element.
+
+                    @itemSelectState("element")
+                    @itemSelectElementOrdinal(arrayIndex_)
+                    @menuLevelObject.itemVisible(true)
+                    @menuLevelObject.itemVisibilityLock = false
+                    parentObservableModelView = @parentItemHostWindow.itemObservableModelView()
+                    arrayElement = parentObservableModelView[arrayIndex_]
+                    thisObservableModelView = arrayElement[@jsonTag]
+                    @itemObservableModelView = thisObservableModelView
+
+                catch exception
+                    throw "NavigatorItemHost.internalRelinkSelectToElement fail: #{exception}"
+                
+
+
+            #
+            # ============================================================================
+            # forceSelectElementAction_ may be undefined | "detach" | "relink"
+            # 
+            @internalResetContainedModelView = (forceSelectElementAction_) =>
                 
                 try
-                    forceSelectElementDetach = forceSelectElementDetach_? and forceSelectElementDetach_ or false
+                    forceSelectElementDetach = forceSelectElementAction_? and forceSelectElementAction_ and forceSelectElementAction_ == "detach"
+                    forceSelectElementRelink = forceSelectElementAction_? and forceSelectElementAction_ and forceSelectElementAction_ == "relink"
 
+                    Console.message("NavigatorItemHost.internalResetContainedModelView on path #{@path}, detach=#{forceSelectElementDetach}, relink=#{forceSelectElementRelink}")
 
                     switch @itemMVVMType
                         when "child"
+                            Console.message("... processing child")
                             # TODO: reset object members excluding child objects for which an item host exists.
 
                             # It's possible that this "child"-type item's parent is a "select"-type item that
                             # has just been reset. If so, we need to re-link this item host to it's parent.
-                            if @parentItemHostWindow? and @parentItemHostWindow
-                                parentObservableModelView = @parentItemHostWindow.itemObservableModelView()
+                            if not (@parentItemHostWindow? and @parentItemHostWindow) then throw "Internal error. No parent item host set?"
+
+                            parentObservableModelView = @parentItemHostWindow.itemObservableModelView()
+
+                            if forceSelectElementRelink
+                                unboxed = parentObservableModelView[@jsonTag]
+                                if not (unboxed? and unboxed)
+                                    throw "Error unboxing child item host."
+                                @itemObservableModelView = unboxed
+                                if not @itemObservableModelView
+                                    throw "Internal error!"
+
+                            else
                                 if not (parentObservableModelView[@jsonTag]? and parentObservableModelView[@jsonTag])
                                     parentObservableModelView[@jsonTag] = ko.observable({})
                                     @itemObservableModelView = parentObservableModelView[@jsonTag]
                                     @parentItemHostWindow.itemObservableModelView(parentObservableModelView)
                             break
+
                         when "extension"
+                            Console.message("... processing extension")
                             # TODO: reset object members excluding child objects for which an item host exists.
                             # Reset the contents of the array
 
-                            if @parentItemHostWindow? and @parentItemHostWindow
-                                parentObservableModelView = @parentItemHostWindow.itemObservableModelView()
+                            if not (@parentItemHostWindow? and @parentItemHostWindow) then throw "Internal error. No parent item host set?"
+                            parentObservableModelView = @parentItemHostWindow.itemObservableModelView()
+
+                            if forceSelectElementRelink
+                                unboxed = parentObservableModelView[@jsonTag]
+                                if not (unboxed? and unboxed)
+                                    throw "Error unboxing child item host."
+                                @itemObservableModelView = unboxed
+                                if not @itemObservableModelView
+                                    throw "Internal error!"
+
+                            else
                                 if not (parentObservableModelView[@jsonTag]? and parentObservableModelView[@jsonTag])
-                                    parentObservableModelView[@jsonTag] = ko.observableArray()
+                                    parentObservableModelView[@jsonTag] = ko.observableArray([])
                                     @itemObservableModelView = parentObservableModelView[@jsonTag]
                                     @parentItemHostWindow.itemObservableModelView(parentObservableModelView)
                                 else
                                     @itemObservableModelView.removeAll()
+
                             updatedItemPageTitle = @itemPageTitle()
                             @menuLevelObject.label(updatedItemPageTitle)
                             break
+
                         when "root"
+                            Console.message("... processing root")
                             # TODO: reset object members excluding child objects for which an item host exists.
                             break
+
                         when "select"
+                            Console.message("... processing select")
                             switch @itemSelectState()
                                 when "archetype"
                                     # The object is already pristine.
@@ -284,7 +346,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                     # forceSelectElementDetach flag is true. In this case, the attached element
                                     #
                                     
-                                    if forceSelectElementDetach or (not @parentItemHostWindow.itemObservableModelView().length)
+                                    if forceSelectElementDetach or (not @parentItemHostWindow.itemObservableModelView().length) or forceSelectElementRelink
                                         @itemSelectState("archetype")
                                         @itemSelectElementOrdinal(-1)
                                         @itemObservableModelView = ko.observable({})
@@ -303,10 +365,18 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         else
                             throw "Unrecognized mvvmType specified in menu level objectDescriptor.mvvmType: #{@itemMVVMType}"
 
+
+                    debugName = @itemObservableModelView.name
+                    if debugName != "observable"
+                        throw "itemHostObservableModelView.name != observable"
+
+
+
                     @updateItemPageTitle()
 
+
                 catch exception
-                    throw "NavigatorMenuItemHost.internalResetContainedModelView fail: #{exception}"
+                    throw "NavigatorMenuItemHost.internalResetContainedModelView fail for item host path=#{@path}, detach=#{forceSelectElementDetach}, relink=#{forceSelectElementRelink} : #{exception}"
 
 
 
@@ -370,9 +440,14 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             #
             # ============================================================================
-            @onLinkClickSelectExtension = (arrayIndex_, data_, event_) ->
+            @onLinkClickSelectExtension = (arrayIndex_, data_, event_) =>
                 try
-                    alert("click on #{arrayIndex_ + 1}")
+                    @blipper.blip("15")
+                    # Note that this handler is called in response to clicking a link generated
+                    # by a KO foreach data binding and is invoked in the context of the "extension"-type
+                    # item host (i.e. the item host that contains the actual array).
+                    @navigatorContainer.selectElementInExtensionArray(@, arrayIndex_)
+
 
                 catch exception
                     Console.messageError("NavigatorMenuItemHost.onLinkClickSelectExtension fail: #{exception}")
