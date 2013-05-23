@@ -43,8 +43,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             @menuLevelObject = menuLevelObject_
             @path = @menuLevelObject.path
 
-            @jsonTagOrigin = "unknown"
-
             layoutObject = @menuLevelObject.layoutObject
             layoutObjectDescriptor = @menuLevelObject.layoutObject.objectDescriptor
           
@@ -57,6 +55,9 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             @itemMVVMType = undefined
 
             @itemObservableModelView = ko.observable({})
+            @itemObservableModelViewUpdateCount = ko.observable(0)
+            @itemObservableModelViewUpdated = =>
+                @itemObservableModelViewUpdateCount(@itemObservableModelViewUpdateCount() + 1)
 
             # If this item host is an "extension"-type item then these members are
             # used to track the item's state.
@@ -135,6 +136,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         # Modify the parent's contained model view.
                         currentModelView[@jsonTag] = ko.observable({})
                         @itemObservableModelView = currentModelView[@jsonTag]
+                        @itemObservableModelViewUpdated()
                         # Update the parent's contained model view.
                         @parentItemHostWindow.itemObservableModelView(currentModelView)
 
@@ -155,6 +157,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             # Modify the parent's contained model view.
                             currentModelView[@jsonTag] = ko.observableArray()
                             @itemObservableModelView = currentModelView[@jsonTag]
+                            @itemObservableModelViewUpdated()
                             # Update the parent's contained model view.
                             @parentItemHostWindow.itemObservableModelView(currentModelView)
                             
@@ -176,6 +179,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                     when "root"
                         @itemObservableModelView = ko.observable({})
+                        @itemObservableModelViewUpdated()
                         break
 
                     when "select"
@@ -186,6 +190,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
                         @menuLevelObject.baseBackgroundColorObject(colorObject)
                         @itemObservableModelView = ko.observable({})
+                        @itemObservableModelViewUpdated()
                         @itemSelectState("archetype")
                         @menuLevelObject.itemVisible(false)
                         @menuLevelObject.itemVisibilityLock = true
@@ -201,14 +206,21 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             # ============================================================================
             @toJSON = ko.computed =>
 
+                # This is a hack. Because navigator uses references to observable's extensively
+                # the fundamental update mechanism is fooled completely and it's not yet clear
+                # to me if it even makes sense to leverage computed observables in this scenario
+                # where state changes are wholely contained within the navigator subsystem (i.e.
+                # a simple function call would suffice to update a simple observable.
+
                 @itemSelectState()
                 @itemSelectElementOrdinal()
+                @itemObservableModelViewUpdateCount()
 
-                #jsonView = {}
-                #jsonView[@jsonTag] = @itemObservableModelView
+                jsonView = {}
+                jsonView[@jsonTag] = @itemObservableModelView
+                ko.toJSON(jsonView, undefined, 2)
 
-                #ko.toJSON(jsonView, undefined, 2)
-                ko.toJSON(@itemObservableModelView, undefined, 2)
+                #ko.toJSON(@itemObservableModelView, undefined, 2)
                         
 
             #
@@ -255,6 +267,9 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                     arrayElement = parentObservableModelView[arrayIndex_]
                     thisObservableModelView = arrayElement[@jsonTag]
                     @itemObservableModelView = thisObservableModelView
+                    @itemObservableModelViewUpdated()
+                    @updateItemPageTitle()
+                    
 
                 catch exception
                     throw "NavigatorItemHost.internalRelinkSelectToElement fail: #{exception}"
@@ -287,8 +302,12 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             if forceSelectElementRelink
                                 unboxed = parentObservableModelView[@jsonTag]
                                 if not (unboxed? and unboxed)
-                                    throw "Error unboxing child item host."
+                                    # Recreate the archetype
+                                    unboxed = parentObservableModelView[@jsonTag] = ko.observable({})
+                                    @parentItemHostWindow.itemObservableModelView(parentObservableModelView)
+                                        
                                 @itemObservableModelView = unboxed
+                                @itemObservableModelViewUpdated()
                                 if not @itemObservableModelView
                                     throw "Internal error!"
 
@@ -296,6 +315,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                 if not (parentObservableModelView[@jsonTag]? and parentObservableModelView[@jsonTag])
                                     parentObservableModelView[@jsonTag] = ko.observable({})
                                     @itemObservableModelView = parentObservableModelView[@jsonTag]
+                                    @itemObservableModelViewUpdated()
                                     @parentItemHostWindow.itemObservableModelView(parentObservableModelView)
                             break
 
@@ -310,8 +330,12 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                             if forceSelectElementRelink
                                 unboxed = parentObservableModelView[@jsonTag]
                                 if not (unboxed? and unboxed)
-                                    throw "Error unboxing child item host."
+                                    # Recreate the archetype
+                                    unboxed = parentObservableModelView[@jsonTag] = ko.observableArray([])
+                                    @parentItemHostWindow.itemObservableModelView(parentObservableModelView)
+
                                 @itemObservableModelView = unboxed
+                                @itemObservableModelViewUpdated()
                                 if not @itemObservableModelView
                                     throw "Internal error!"
 
@@ -319,6 +343,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                 if not (parentObservableModelView[@jsonTag]? and parentObservableModelView[@jsonTag])
                                     parentObservableModelView[@jsonTag] = ko.observableArray([])
                                     @itemObservableModelView = parentObservableModelView[@jsonTag]
+                                    @itemObservableModelViewUpdated()
                                     @parentItemHostWindow.itemObservableModelView(parentObservableModelView)
                                 else
                                     @itemObservableModelView.removeAll()
@@ -350,6 +375,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                         @itemSelectState("archetype")
                                         @itemSelectElementOrdinal(-1)
                                         @itemObservableModelView = ko.observable({})
+                                        @itemObservableModelViewUpdated()
                                         @menuLevelObject.itemVisible(false)
                                         @menuLevelObject.itemVisibilityLock = true
                                         colorObject =colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
