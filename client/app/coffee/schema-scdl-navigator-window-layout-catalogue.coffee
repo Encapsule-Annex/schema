@@ -31,8 +31,53 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
     objectDescriptor: {
         jsonTag: "SCDLCatalogue"
         mvvmType: "archetype"
-        mvvmJsonTag: "scdlCatalogue"
-        description: "SCDL catalogue object archetype."
+        description: "SCDL catalogue object."
+        namespaceDescriptor: {
+            userImmutable: {
+                uuid: {
+                    type: "uuid"
+                    fnCreate: -> uuid.v4()
+                    fnReinitialize: undefined
+                }
+                revision: {
+                    type: "revision"
+                    fnCreate: -> 0
+                    fnReinitialize: -> 0
+                }
+                createTime: {
+                    type: "epochTime"
+                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
+                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
+                }
+                updateTime: {
+                    type: "epochTime"
+                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
+                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
+                }
+            }
+            userMutable: {
+                name: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                description: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                tags: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                author: {
+                    type: "uuid"
+                    fnCreate: -> "00000000-0000-0000-0000-000000000000"
+                    fnReinitialize: -> "00000000-0000-0000-0000-000000000000"
+                }
+            }
+        }
     }
     subMenus: [
         {

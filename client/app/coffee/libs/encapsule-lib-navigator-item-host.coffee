@@ -45,6 +45,11 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             layoutObject = @menuLevelObject.layoutObject
             layoutObjectDescriptor = @menuLevelObject.layoutObject.objectDescriptor
+
+            @namespaceMemberInitializer = undefined
+            if layoutObjectDescriptor.namespaceDescriptor? and layoutObjectDescriptor.namespaceDescriptor
+                @namespaceMemberInitializer = new Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer(layoutObjectDescriptor.namespaceDescriptor)
+
           
             @jsonTag = layoutObjectDescriptor? and layoutObjectDescriptor and layoutObjectDescriptor.jsonTag? and layoutObjectDescriptor.jsonTag or @menuLevelObject.jsonTag
 
@@ -134,7 +139,10 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         # Unbox the parent's contained model view.
                         currentModelView = @parentItemHostWindow.itemObservableModelView()
                         # Modify the parent's contained model view.
-                        currentModelView[@jsonTag] = ko.observable({})
+                        newObject = {}
+                        if @namespaceMemberInitializer? and @namespaceMemberInitializer
+                            @namespaceMemberInitializer.initializeNamespace(newObject)
+                        currentModelView[@jsonTag] = ko.observable(newObject)
                         @itemObservableModelView = currentModelView[@jsonTag]
                         @itemObservableModelViewUpdated()
                         # Update the parent's contained model view.
@@ -178,7 +186,11 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         break
 
                     when "root"
-                        @itemObservableModelView = ko.observable({})
+                        newObject = {}
+                        if @namespaceMemberInitializer? and @namespaceMemberInitializer
+                            @namespaceMemberInitializer.initializeNamespace(newObject)
+
+                        @itemObservableModelView = ko.observable(newObject)
                         @itemObservableModelViewUpdated()
                         break
 
@@ -189,7 +201,10 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         # Set the MVVM object-type-specific color of the menu level object.
                         colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
                         @menuLevelObject.baseBackgroundColorObject(colorObject)
-                        @itemObservableModelView = ko.observable({})
+                        newObject = {}
+                        if @namespaceMemberInitializer? and @namespaceMemberInitializer
+                            @namespaceMemberInitializer.initializeNamespace(newObject)
+                        @itemObservableModelView = ko.observable(newObject)
                         @itemObservableModelViewUpdated()
                         @itemSelectState("archetype")
                         @menuLevelObject.itemVisible(false)
@@ -303,7 +318,10 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                 unboxed = parentObservableModelView[@jsonTag]
                                 if not (unboxed? and unboxed)
                                     # Recreate the archetype
-                                    unboxed = parentObservableModelView[@jsonTag] = ko.observable({})
+                                    newObject = {}
+                                    if @namespaceMemberInitializer? and @namespaceMemberInitializer
+                                        @namespaceMemberInitializer.initializeNamespace(newObject)
+                                    unboxed = parentObservableModelView[@jsonTag] = ko.observable(newObject)
                                     @parentItemHostWindow.itemObservableModelView(parentObservableModelView)
                                         
                                 @itemObservableModelView = unboxed
@@ -313,7 +331,10 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                             else
                                 if not (parentObservableModelView[@jsonTag]? and parentObservableModelView[@jsonTag])
-                                    parentObservableModelView[@jsonTag] = ko.observable({})
+                                    newObject = {}
+                                    if @namespaceMemberInitializer? and @namespaceMemberInitializer
+                                        @namespaceMemberInitializer.initializeNamespace(newObject)
+                                    parentObservableModelView[@jsonTag] = ko.observable(newObject)
                                     @itemObservableModelView = parentObservableModelView[@jsonTag]
                                     @itemObservableModelViewUpdated()
                                     @parentItemHostWindow.itemObservableModelView(parentObservableModelView)
@@ -374,7 +395,10 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                     if forceSelectElementDetach or (not @parentItemHostWindow.itemObservableModelView().length) or forceSelectElementRelink
                                         @itemSelectState("archetype")
                                         @itemSelectElementOrdinal(-1)
-                                        @itemObservableModelView = ko.observable({})
+                                        newObject = {}
+                                        if @namespaceMemberInitializer? and @namespaceMemberInitializer
+                                            @namespaceMemberInitializer.initializeNamespace(newObject)
+                                        @itemObservableModelView = ko.observable(newObject)
                                         @itemObservableModelViewUpdated()
                                         @menuLevelObject.itemVisible(false)
                                         @menuLevelObject.itemVisibilityLock = true
