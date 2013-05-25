@@ -138,8 +138,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                 description: "#{appName} client app homepage."
             }
 
-
             subMenus: [
+
+                Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTools
+
 
                 {
                     jsonTag: "catalogues"

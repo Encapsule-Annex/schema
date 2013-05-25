@@ -67,14 +67,21 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                     fnReinitialize: -> ""
                 }
                 tags: {
-                    type: "string"
+                    type: "stringCSV"
                     fnCreate: -> ""
                     fnReinitialize: -> ""
                 }
                 author: {
-                    type: "uuid"
-                    fnCreate: -> "00000000-0000-0000-0000-000000000000"
-                    fnReinitialize: -> "00000000-0000-0000-0000-000000000000"
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/people"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                }
+                organization: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
                 }
             }
         }

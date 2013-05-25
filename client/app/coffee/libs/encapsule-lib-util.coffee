@@ -15,15 +15,12 @@
   Visit http://www.encapsule.org for more information and happy hacking.
 
 ###
-# arachne-util.coffee
+#
+# encapsule-lib-util.coffee 
 #
 # Leverages code re-use technique suggested here:
 # http://coffeescriptcookbook.com/chapters/syntax/code_reuse_on_client_and_server
 # if not Encapsule? and not Encapsule
-
-#     Encapsule = exports? and exports or @Encapsule = {}
-# ^--- doesn't scale to multiple coffee modules as contents of Encapsule gets whacked
-# v--- my solution seems to work for client-side. likely need to use both on node.js
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
@@ -38,3 +35,4 @@ class namespaceEncapsule_code_lib.util
     # Call externally as: Encapsule.util.getEpochTime()
     @getEpochTime: getEpochTime
 
+    @uuidNull = "00000000-0000-0000-0000-000000000000"

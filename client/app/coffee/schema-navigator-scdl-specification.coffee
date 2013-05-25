@@ -31,6 +31,72 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
     objectDescriptor: {
         mvvmType: "archetype"
         description: "SCDL specification."
+        namespaceDescriptor: {
+            userImmutable: {
+                uuid: {
+                    type: "uuid"
+                    fnCreate: -> uuid.v4()
+                    fnReinitialize: undefined
+                }
+                revision: {
+                    type: "revision"
+                    fnCreate: -> 0
+                    fnReinitialize: -> 0
+                }
+                createTime: {
+                    type: "epochTime"
+                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
+                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
+                }
+                updateTime: {
+                    type: "epochTime"
+                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
+                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
+                }
+            }
+            userMutable: {
+                name: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                description: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                tags: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                author: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/people"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                }
+                organization: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                }
+                copyright: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/copyrights"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                }
+                license: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/licenses"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                }
+
+            }
+        }
     }
     subMenus: [
         {
@@ -45,6 +111,65 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                     objectDescriptor: {
                         mvvmType: "archetype"
                         description: "SCDL system model instance."
+                        namespaceDescriptor: {
+                            userImmutable: {
+                                uuidInstance: {
+                                    type: "uuid"
+                                    fnCreate: -> uuid.v4()
+                                    fnReinitialize: undefined
+                                }
+                                revision: {
+                                    type: "revision"
+                                    fnCreate: -> 0
+                                    fnReinitialize: -> 0
+                                }
+                                createTime: {
+                                    type: "epochTime"
+                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
+                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
+                                }
+                                updateTime: {
+                                    type: "epochTime"
+                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
+                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
+                                }
+                            }
+                            userMutable: {
+                                uuidModel: {
+                                    type: "uuidSelection"
+                                    selectionSource: "schema/catalogues/catalogue/models/systems"
+                                    fnCreate: ->  Encapsule.code.lib.util.uuidNull
+                                    fnReinitialize: Encapsule.code.lib.util.uuidNull
+                                }
+                                name: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                description: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                tags: {
+                                    type: "stringCSV"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                author: {
+                                    type: "uuidSelection"
+                                    selectionSource: "schema/catalogues/catalogue/assets/people"
+                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                                }
+                                organization: {
+                                    type: "uuidSelection"
+                                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                                }
+                            }
+                        }
                     }
                     subMenus: [
                         {
@@ -58,7 +183,66 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                                     label: "Socket Instance"
                                     objectDescriptor: {
                                         mvvmType: "archetype"
-                                        description: "SCDL socket model instance." 
+                                        description: "SCDL socket model instance."
+                                        namespaceDescriptor: {
+                                            userImmutable: {
+                                                uuidInstance: {
+                                                    type: "uuid"
+                                                    fnCreate: -> uuid.v4()
+                                                    fnReinitialize: undefined
+                                                }
+                                                revision: {
+                                                    type: "revision"
+                                                    fnCreate: -> 0
+                                                    fnReinitialize: -> 0
+                                                }
+                                                createTime: {
+                                                    type: "epochTime"
+                                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
+                                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
+                                                }
+                                                updateTime: {
+                                                    type: "epochTime"
+                                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
+                                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
+                                                }
+                                            }
+                                            userMutable: {
+                                                uuidModel: {
+                                                    type: "uuidSelection"
+                                                    selectionSource: "schema/catalogues/catalogue/models/sockets"
+                                                    fnCreate: ->  Encapsule.code.lib.util.uuidNull
+                                                    fnReinitialize: Encapsule.code.lib.util.uuidNull
+                                                }
+                                                name: {
+                                                    type: "string"
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
+                                                }
+                                                description: {
+                                                    type: "string"
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
+                                                }
+                                                tags: {
+                                                    type: "stringCSV"
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
+                                                }
+                                                author: {
+                                                    type: "uuidSelection"
+                                                    selectionSource: "schema/catalogues/catalogue/assets/people"
+                                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                                                }
+                                                organization: {
+                                                    type: "uuidSelection"
+                                                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                                                }
+                                            }
+                                        }
                                     }
                                     subMenus: [
                                         {
@@ -73,6 +257,67 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                                                     objectDescriptor: {
                                                         mvvmType: "archetype"
                                                         description: "SCDL socket model instance binding."
+
+                                                        namespaceDescriptor: {
+                                                            userImmutable: {
+                                                                uuidInstance: {
+                                                                    type: "uuid"
+                                                                    fnCreate: -> uuid.v4()
+                                                                    fnReinitialize: undefined
+                                                                }
+                                                                revision: {
+                                                                    type: "revision"
+                                                                    fnCreate: -> 0
+                                                                    fnReinitialize: -> 0
+                                                                }
+                                                                createTime: {
+                                                                    type: "epochTime"
+                                                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
+                                                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
+                                                                }
+                                                                updateTime: {
+                                                                    type: "epochTime"
+                                                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
+                                                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
+                                                                }
+                                                            }
+                                                            userMutable: {
+                                                                uuidModel: {
+                                                                    type: "uuidSelection"
+                                                                    selectionSource: "schema/catalogues/catalogue/models/sockets"
+                                                                    fnCreate: ->  Encapsule.code.lib.util.uuidNull
+                                                                    fnReinitialize: Encapsule.code.lib.util.uuidNull
+                                                                }
+                                                                name: {
+                                                                    type: "string"
+                                                                    fnCreate: -> ""
+                                                                    fnReinitialize: -> ""
+                                                                }
+                                                                description: {
+                                                                    type: "string"
+                                                                    fnCreate: -> ""
+                                                                    fnReinitialize: -> ""
+                                                                }
+                                                                tags: {
+                                                                    type: "stringCSV"
+                                                                    fnCreate: -> ""
+                                                                    fnReinitialize: -> ""
+                                                                }
+                                                                author: {
+                                                                    type: "uuidSelection"
+                                                                    selectionSource: "schema/catalogues/catalogue/assets/people"
+                                                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                                                                }
+                                                                organization: {
+                                                                    type: "uuidSelection"
+                                                                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                                                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                                                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                                                                }
+                                                            }
+                                                        }
+
                                                     } # instanceBinding objectDescriptor
                                                 } # instanceBindings objectDescriptor.archetype
                                             } # instanceBindings objectDescriptor

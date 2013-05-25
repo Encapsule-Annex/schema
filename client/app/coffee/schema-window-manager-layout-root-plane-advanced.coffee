@@ -73,7 +73,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "rgba(0,255,204,0.45)"
-                modes: { full: { reserve: 400 }, min: { reserve: 250 } }
+                modes: { full: { reserve: 680 }, min: { reserve: 250 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorJSONWindow"
