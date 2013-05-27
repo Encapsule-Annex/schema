@@ -30,25 +30,173 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSystemArchetype = {
     objectDescriptor: {
         mvvmType: "archetype"
         description: "SCDL system model."
+        namespaceDescriptor: {
+            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+            userMutable: {
+                name: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                description: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                tags: {
+                    type: "stringCSV"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                author: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/people"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                }
+                organization: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                }
+            }
+        }
     }
     subMenus: [
         Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins
-        {
-            jsonTag: "models"
-            label: "Models"
+
+        { 
+            jsonTag: "subsystems"
+            label: "System Instances"
             objectDescriptor: {
                 mvvmType: "extension"
-                description: "SCDL model instances."
+                description: "Contained SCDL system model instances."
                 archetype: {
-                    jsonTag: "model"
-                    label: "Model"
+                    jsonTag: "subsystem"
+                    label: "System Instance"
                     objectDescriptor: {
                         mvvmType: "archetype"
-                        description: "SCDL model instance."
-                    } # model objectDescriptor
-                } # model archetype
-            } # models objectDescriptor
-        } # models
+                        description: "Contained SCDL system instance."
+                        namespaceDescriptor: {
+                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                            userMutable: {
+                                name: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                description: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                tags: {
+                                    type: "stringCSV"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                systemUuid : {
+                                    type: "uuidSelection"
+                                    selectionSource: "schema/catalogues/catalogue/models/systems"
+                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                                }
+                            } # userMutable
+                        } # namespaceDescriptor
+                    } # subsystem objectDescriptor
+                } # subsystem archetype
+            } # subsystems objectDescriptor
+        } # subsystems
+
+        { 
+            jsonTag: "submachines"
+            label: "Machine Instances"
+            objectDescriptor: {
+                mvvmType: "extension"
+                description: "Contained SCDL machine model instances."
+                archetype: {
+                    jsonTag: "submachine"
+                    label: "Machine Instance"
+                    objectDescriptor: {
+                        mvvmType: "archetype"
+                        description: "SCDL machine instance."
+                        namespaceDescriptor: {
+                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                            userMutable: {
+                                name: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                description: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                tags: {
+                                    type: "stringCSV"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                machineUuid : {
+                                    type: "uuidSelection"
+                                    selectionSource: "schema/catalogues/catalogue/models/systems"
+                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                                }
+                            } # userMutable
+                        } # namespaceDescriptor
+                    } # subsystem objectDescriptor
+                } # subsystem archetype
+            } # subsystems objectDescriptor
+        } # subsystems
+
+
+        { 
+            jsonTag: "subsockets"
+            label: "Socket Instances"
+            objectDescriptor: {
+                mvvmType: "extension"
+                description: "Contained SCDL socket model instances."
+                archetype: {
+                    jsonTag: "subsocket"
+                    label: "Socket Instance"
+                    objectDescriptor: {
+                        mvvmType: "archetype"
+                        description: "SCDL socket instance."
+                        namespaceDescriptor: {
+                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                            userMutable: {
+                                name: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                description: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                tags: {
+                                    type: "stringCSV"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                socketUuid : {
+                                    type: "uuidSelection"
+                                    selectionSource: "schema/catalogues/catalogue/models/systems"
+                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                                }
+                            } # userMutable
+                        } # namespaceDescriptor
+                    } # subsystem objectDescriptor
+                } # subsystem archetype
+            } # subsystems objectDescriptor
+        } # subsystems
+
         Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes
+
     ] # system submenus
 } # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSystemArchetype

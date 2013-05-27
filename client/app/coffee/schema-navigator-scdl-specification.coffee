@@ -32,28 +32,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
         mvvmType: "archetype"
         description: "SCDL specification."
         namespaceDescriptor: {
-            userImmutable: {
-                uuid: {
-                    type: "uuid"
-                    fnCreate: -> uuid.v4()
-                    fnReinitialize: undefined
-                }
-                revision: {
-                    type: "revision"
-                    fnCreate: -> 0
-                    fnReinitialize: -> 0
-                }
-                createTime: {
-                    type: "epochTime"
-                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
-                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
-                }
-                updateTime: {
-                    type: "epochTime"
-                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
-                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
-                }
-            }
+            userImmutable:  Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
             userMutable: {
                 name: {
                     type: "string"
@@ -112,28 +91,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                         mvvmType: "archetype"
                         description: "SCDL system model instance."
                         namespaceDescriptor: {
-                            userImmutable: {
-                                uuidInstance: {
-                                    type: "uuid"
-                                    fnCreate: -> uuid.v4()
-                                    fnReinitialize: undefined
-                                }
-                                revision: {
-                                    type: "revision"
-                                    fnCreate: -> 0
-                                    fnReinitialize: -> 0
-                                }
-                                createTime: {
-                                    type: "epochTime"
-                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
-                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
-                                }
-                                updateTime: {
-                                    type: "epochTime"
-                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
-                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
-                                }
-                            }
+                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta 
                             userMutable: {
                                 uuidModel: {
                                     type: "uuidSelection"
@@ -185,28 +143,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                                         mvvmType: "archetype"
                                         description: "SCDL socket model instance."
                                         namespaceDescriptor: {
-                                            userImmutable: {
-                                                uuidInstance: {
-                                                    type: "uuid"
-                                                    fnCreate: -> uuid.v4()
-                                                    fnReinitialize: undefined
-                                                }
-                                                revision: {
-                                                    type: "revision"
-                                                    fnCreate: -> 0
-                                                    fnReinitialize: -> 0
-                                                }
-                                                createTime: {
-                                                    type: "epochTime"
-                                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
-                                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
-                                                }
-                                                updateTime: {
-                                                    type: "epochTime"
-                                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
-                                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
-                                                }
-                                            }
+                                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
                                             userMutable: {
                                                 uuidModel: {
                                                     type: "uuidSelection"
@@ -259,28 +196,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                                                         description: "SCDL socket model instance binding."
 
                                                         namespaceDescriptor: {
-                                                            userImmutable: {
-                                                                uuidInstance: {
-                                                                    type: "uuid"
-                                                                    fnCreate: -> uuid.v4()
-                                                                    fnReinitialize: undefined
-                                                                }
-                                                                revision: {
-                                                                    type: "revision"
-                                                                    fnCreate: -> 0
-                                                                    fnReinitialize: -> 0
-                                                                }
-                                                                createTime: {
-                                                                    type: "epochTime"
-                                                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
-                                                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
-                                                                }
-                                                                updateTime: {
-                                                                    type: "epochTime"
-                                                                    fnCreate: -> Encapsule.code.lib.util.getEpochTime()
-                                                                    fnReinitialize: Encapsule.code.lib.util.getEpochTime()
-                                                                }
-                                                            }
+                                                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
                                                             userMutable: {
                                                                 uuidModel: {
                                                                     type: "uuidSelection"

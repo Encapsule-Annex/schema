@@ -69,7 +69,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelPaddingLeft: 5
     menuLevelPaddingRight: 5
 
-    menuLevelFontSizeMax: 14
+    menuLevelFontSizeMax: 12
     menuLevelFontSizeMin: 10
 
     structureArrayShiftHue: 0
