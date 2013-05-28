@@ -47,6 +47,14 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins = {
                         namespaceDescriptor: {
                             userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
                             userMutable: {
+                                name: {
+                                }
+                                description: {
+                                }
+                                tags: {
+                                }
+                                type: {
+                                }
                             } # userMutable
                         } # namespaceDescriptor
                     } # inputPin objectDescriptor
@@ -68,6 +76,14 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins = {
                         namespaceDescriptor: {
                             userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
                             userMutable: {
+                                name: {
+                                }
+                                description: {
+                                }
+                                tags: {
+                                }
+                                type: {
+                                }
                             } # userMutable
                         } # namespaceDescriptor
                     } # outputPin objectDescriptor

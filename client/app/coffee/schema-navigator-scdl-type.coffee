@@ -24,3 +24,36 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
+Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTypeArchetype = {
+    jsonTag: "type"
+    label: "Type"
+    objectDescriptor: {
+        mvvmType: "archetype"
+        description: "SCDL type model."
+        namespaceDescriptor: {
+            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+            userMutable: {
+                name: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                description: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                tags: {
+                    type: "stringCSV"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                platformBinding: {
+                    type: "uuid"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                }
+            } # type userMutable
+        } # type namespaceDescriptor
+    } # type objectDescriptor
+} # ScdlNavigatorWindowLayoutTypeArchetype

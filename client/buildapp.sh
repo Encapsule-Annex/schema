@@ -29,7 +29,7 @@ app_uuid="56611225-be91-40cf-b9b8-5c7b8a6c6f3d"
 # be refreshed in order to provide meaning to server logfiles (please).
 #
 
-app_release_name="pre-release debug build"
+app_release_name="because test harness"
 app_release_fun_url="http://alpinelakes.smugmug.com/Photography/Outdoors/Canola-Field-in-Bloom/22722376_n5XvFq"
 app_version_uuid="42c28c61-da0d-4abd-9821-86e57c129239"
 app_release_phase="unreleased test build"

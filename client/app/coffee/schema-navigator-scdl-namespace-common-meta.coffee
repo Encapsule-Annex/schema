@@ -48,6 +48,6 @@ Encapsule.code.app.modelview.ScdlNamespaceCommonMeta = {
     updateTime: {
         type: "epochTime"
         fnCreate: -> Encapsule.code.lib.util.getEpochTime()
-        fnReinitialize: Encapsule.code.lib.util.getEpochTime()
+        fnReinitialize: -> Encapsule.code.lib.util.getEpochTime()
     }
 }

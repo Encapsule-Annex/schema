@@ -69,8 +69,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelPaddingLeft: 5
     menuLevelPaddingRight: 5
 
-    menuLevelFontSizeMax: 12
-    menuLevelFontSizeMin: 10
+    menuLevelFontSizeMax: 14
+    menuLevelFontSizeMin: 12
 
     structureArrayShiftHue: 0
     structureArrayLightenRatio: 0.5
@@ -136,8 +136,25 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
             objectDescriptor: {
                 mvvmType: "child"
                 description: "#{appName} client app homepage."
-            }
-
+                namespaceDescriptor: {
+                    userImmutable: {
+                        clientDeployment: {
+                            type: "uuid"
+                            fnCreate: -> uuid.v4() # TODO: from indexdb
+                            fnReinitialize: undefined
+                        } # clientDeployment
+                        localSession: {
+                            type: "object"
+                            fnCreate: -> {
+                                uuid: uuid.v4()
+                                timeStart: Encapsule.code.lib.util.getEpochTime()
+                            }
+                            fnReinitialize: undefined
+                        } # localSession
+                    } # userImmutable
+                } # namespaceDescriptor
+            } # objectDescriptor
+    
             subMenus: [
 
                 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTools
@@ -147,30 +164,12 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     jsonTag: "catalogues"
                     label: "Catalogues"
                     objectDescriptor: {
-                        jsonTag: "SCDLCatalogues"
+                        jsonTag: "catalogues"
                         mvvmType: "extension"
                         description: "Manage SCDL catalogues in your local repository."
                         archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype
                     }
                 }
-
-                {
-                    jsonTag: "sessions"
-                    label: "Sessions"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "Manager current and past work sessions."
-                        archetype: {
-                            jsonTag: "session"
-                            label: "Session"
-                            objectDescriptor: {
-                                mvvmType: "archetype"
-                                description: "#{appName} session object."
-                            } # session objectDescriptor
-                        } # session archetype
-                    } # sessions objectDescriptor
-                } # sessions
-
                 {
                     jsonTag: "settings"
                     label: "Settings"

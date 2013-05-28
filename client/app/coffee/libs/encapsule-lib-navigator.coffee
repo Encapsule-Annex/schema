@@ -535,7 +535,24 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     objectDescriptor: {
                         mvvmType: "root"
                         description: layout_.description
-                    }
+                        namespaceDescriptor: {
+                            userImmutable: {
+                                userAgent: {
+                                    type: "object"
+                                    fnCreate: -> {
+                                       appPublisher: appPackagePublisher
+                                       appName: appName
+                                       appVersion: appVersion
+                                       appId: appId
+                                       appReleaseId: appReleaseId
+                                       appBuildId: appBuildId
+                                       appBuildTime: appBuildTime
+                                    }
+                                    fnReinitialize: undefined
+                                } # userAgent
+                            } # userImmutable
+                        } # namespaceDescriptor
+                    } #object Descriptor
                     subMenus: layout_.menuHierarchy
                 }
             ]

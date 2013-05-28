@@ -29,7 +29,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
     jsonTag: "catalogue"
     label: "Catalogue"
     objectDescriptor: {
-        jsonTag: "SCDLCatalogue"
+        jsonTag: "catalogue"
         mvvmType: "archetype"
         description: "SCDL catalogue object."
         namespaceDescriptor: {
@@ -128,14 +128,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL type models."
-                        archetype: {
-                            jsonTag: "type"
-                            label: "Type"
-                            objectDescriptor: {
-                                mvvmType: "archetype"
-                                description: "SCDL type model."
-                            } # type objectDescriptor
-                        } # type archetype
+                        archetype:  Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTypeArchetype
                     } # types objectDescriptor
                 } # types
             ] # Models submenus
