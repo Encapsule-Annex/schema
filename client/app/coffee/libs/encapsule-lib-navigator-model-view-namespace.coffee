@@ -40,7 +40,7 @@ class Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer
                             if functions.fnCreate? and functions.fnCreate
                                 namespaceObject_[memberName] = functions.fnCreate()
                         
-                    if @namespaceDescriptor.userImmutable? and @namespaceDescriptor.userMutable
+                    if @namespaceDescriptor.userMutable? and @namespaceDescriptor.userMutable
                         for memberName, functions of @namespaceDescriptor.userMutable
                             if functions.fnCreate? and functions.fnCreate
                                 namespaceObject_[memberName] = functions.fnCreate()

@@ -56,3 +56,9 @@ background-color: #00AADD;
 .classNavigatorItemHostWindow {
 margin: 8px;
 }
+
+.classEncapsuleNavigatorMenuItemJSONWindow {
+font-family: Couier;
+font-size: 8pt;
+font-weight: normal;
+}

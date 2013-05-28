@@ -435,11 +435,12 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             #
             # ============================================================================
             # button click event handler delegates to the navigator container.
-            @onButtonClickInsertExtension = =>
+            @onButtonClickInsertExtension = (data_, event_, select_) =>
                 try
                     @blipper.blip("10")
                     itemHostObjectToSelect = @navigatorContainer.insertExtensionFromItemHostObject(@)
-                    @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
+                    if select_? and select_
+                        @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
 
                 catch exception
                     Console.messageError("NavigatorMenuItemHost.onButtonClickInsertArchetype fail: #{exception}")
@@ -529,31 +530,32 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
 
             <!-- Operations specific to select, archetype menu items. -->
             <span data-bind="if: isSelectedArchetype"><p>
-                <button class="button small green" data-bind="event: { click: onButtonClickInsertExtension }">
+                <button class="button small green" data-bind="click: onButtonClickInsertExtension">
                     Add new
                     <span data-bind="text: menuLevelObject.labelDefault"></span>
                     to
                     <span data-bind="text: menuLevelObject.parentMenuLevel.labelDefault"></span>
                 </button>
-                <button class="button small black" data-bind="event: { click: onButtonClickCloseExtension }">Close</button>                                                                         
+                <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>                                                                         
             </p></span>
 
             <!-- Operations specific to select, element menu items. -->
             <span data-bind="if: isSelectedElement">
                 <p>
-                <button class="button small blue" data-bind="event: { click: onButtonClickCloneExtension }">Clone</button>
-                <button class="button small red" data-bind="event: { click: onButtonClickRemoveExtension }">Remove</button>
-                <button class="button small orange" data-bind="event: { click: onButtonClickResetExtension }">Reset</button>
-                <button class="button small black" data-bind="event: { click: onButtonClickCloseExtension }">Close</button>
+                <button class="button small blue" data-bind="click: onButtonClickCloneExtension">Clone</button>
+                <button class="button small red" data-bind="click: onButtonClickRemoveExtension">Remove</button>
+                <button class="button small orange" data-bind="click: onButtonClickResetExtension">Reset</button>
+                <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>
                 </p>
             </span>  
 
             <!-- Operations specific to extension menu items. -->
             <span data-bind="if: itemMVVMType == 'extension'">
                 <p>
-                <button class="button small gray" data-bind="event: { click: onButtonClickInsertExtension }">Add</button>
-                <button class="button small black" data-bind="event: { click: onButtonClickCloseExtension }">Close</button>
-                <button class="button small orange" data-bind="event: { click: onButtonClickResetExtension }">Reset</button>
+                <button class="button small gray" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, false) }">Add</button>
+                <button class="button small gray" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, true) }">Add/Select</button>
+                <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>
+                <button class="button small orange" data-bind="click: onButtonClickResetExtension">Reset</button>
                 </p>
             </span>
 

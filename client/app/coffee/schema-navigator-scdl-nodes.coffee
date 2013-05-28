@@ -35,8 +35,75 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes = {
             label: "Node"
             objectDescriptor: {
                 mvvmType: "archetype"
-                description: "SCDL node descriptor instance."
+                description: "SCDL node object."
+                namespaceDescriptor: {
+                    userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                    userMutable: {
+                        name: {
+                            type: "string"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                        description: {
+                            type: "string"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                        tags: {
+                            type: "stringCSV"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                    } # user mutable
+                } # node namespaceDescriptor
             } # node objectDescriptor
+            subMenus: [
+                {
+                    jsonTag: "outputPinInstance"
+                    label: "Output Pin Instance"
+                    objectDescriptor: {
+                        mvvmType: "child"
+                        description: "Output pin (source) instance."
+                        namespaceDescriptor: {
+                            userMutable: {
+                                uuidOutputPinInstance: {
+                                    type: "uuidSelection"
+                                    selectionSource: "schema/catalogues/catalogue/" # WRONG!
+                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                                } # uuidOutputPinInstance
+                            } # userMutable
+                        } # namespaceDescriptor
+                    } # outputPinInstance objectDescriptor
+                } # outputPinInstance
+
+                {
+                    jsonTag: "inputPinInstances"
+                    label: "Input Pins Instances"
+                    objectDescriptor: {
+                        mvvmType: "extension"
+                        description: "Input Pin Instances"
+                        archetype: {
+                            jsonTag: "inputPinInstance"
+                            label: "Input Pin Instance"
+                            objectDescriptor: {
+                                mvvmtType: "archetype"
+                                description: "Input pin (sink) instance."
+                                namespaceDescriptor: {
+                                    userMutable: {
+                                        uuidOutputPinInstance: {
+                                            type: "uuidSelection"
+                                            selectionSource: "schema/catalogues/catalogue/" # WRONG!
+                                            fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                            fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                                        } # uuidOutputPinInstance
+                                    } # userMutable
+                                } # namespaceDescriptor
+                            } # input pin objectDescriptor
+                        } # input pin archetype
+                    } # inputPinInstances objectDescriptor
+                } # inputPinInstances
+            ] # node subMenus
         } # node archetype
     } # nodes object descriptor
 } # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes
