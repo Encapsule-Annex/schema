@@ -34,7 +34,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     label: "#{appName} Client"
     description: "#{appName} client app host namespace."
 
-    detailBelowSelectDefault: 0
+    detailBelowSelectDefault: 1
     detailAboveSelectDefault: 1
 
     initialSelectionPath: "appHost?path=schema"

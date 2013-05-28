@@ -44,6 +44,11 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins = {
                     objectDescriptor: {
                         mvvmType: "archetype"
                         description: "SCDL input pin model."
+                        namespaceDescriptor: {
+                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                            userMutable: {
+                            } # userMutable
+                        } # namespaceDescriptor
                     } # inputPin objectDescriptor
                 } # inputPin archetype
             } # inputPins objectDescriptor
@@ -60,6 +65,11 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins = {
                     objectDescriptor: {
                         mvvmType: "archetype"
                         description: "SCDL output pin model."
+                        namespaceDescriptor: {
+                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                            userMutable: {
+                            } # userMutable
+                        } # namespaceDescriptor
                     } # outputPin objectDescriptor
                 } # outputPin archetype
             } # outputPins objectDescriptor

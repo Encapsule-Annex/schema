@@ -68,7 +68,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes = {
                             userMutable: {
                                 uuidOutputPinInstance: {
                                     type: "uuidSelection"
-                                    selectionSource: "schema/catalogues/catalogue/" # WRONG!
+                                    selectionSource: "schema/catalogues/catalogue/models/systems/system"
                                     fnCreate: -> Encapsule.code.lib.util.uuidNull
                                     fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
                                 } # uuidOutputPinInstance
@@ -93,7 +93,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes = {
                                     userMutable: {
                                         uuidOutputPinInstance: {
                                             type: "uuidSelection"
-                                            selectionSource: "schema/catalogues/catalogue/" # WRONG!
+                                            selectionSource: "schema/catalogues/catalogue/models/systems/system"
                                             fnCreate: -> Encapsule.code.lib.util.uuidNull
                                             fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
                                         } # uuidOutputPinInstance
