@@ -268,7 +268,35 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             # ============================================================================
             @closeExtension = (itemHostObject_) =>
                 try
-                    return itemHostObject_
+                    Console.message("NavigatorWindow.closeExtension start")
+                    
+                    if not (itemHostObject_? and itemHostObject_)
+                        throw "Missing item host object parameter."
+
+                    elementItemHostObject = undefined
+                    extensionItemHostObject = undefined
+
+                    switch (itemHostObject_.itemMVVMType)
+                        when "extension"
+                            elementItemHostObject = @getItemHostObjectFromPath(itemHostObject_.itemExtensionSelectPath)
+                            extensionItemHostObject = itemHostObject_
+                            break
+                            
+                        when "select"
+                            elementItemHostObject = itemHostObject_
+                            extensionItemHostObject = itemHostObject_.parentItemHostWindow # shoud be parentItemHostObject for consistency
+                            break
+                        else
+                            throw "Unrecognized MVVM type #{itemHostObject_.mvvmType} specified in closeExtension call."
+
+
+                    if not elementItemHostObject.isSelectedElement()
+                        # ignore the request to close (unselect) already unselected extension point
+                        return extensionItemHostObject
+
+                    @resetExtension(elementItemHostObject, "detach")
+                    
+                    return extensionItemHostObject
 
                 catch exception
                     throw "NavigatorWindow.closeExtension fail: #{exception}"
@@ -289,7 +317,33 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             # ============================================================================
             @removeExtension = (itemHostObject_) =>
                 try
-                    return itemHostObject_
+                    Console.message("NavigatorWindow.removeExtension start")
+
+                    if not (itemHostObject_? and itemHostObject_)
+                        throw "Missing item host object parameter."
+
+                    extensionHostItemObject = undefined
+                    switch (itemHostObject_.itemMVVMType)
+                        when "select"
+                            if not itemHostObject_.isSelectedElement()
+                                # ignore the request to close (unselect) already unselected extension point
+                                return itemHostObject_
+                            extensionHostItemObject = itemHostObject_.parentItemHostWindow # shoud be parentItemHostObject for consistency
+                            break
+                        else
+                            throw "Unrecognized MVVM type #{itemHostObject_.mvvmType} specified in removeExtension call."
+
+                   
+                    extensionArray = extensionHostItemObject.itemObservableModelView()
+                    selectedArrayElement = itemHostObject_.itemSelectElementOrdinal()
+
+                    @closeExtension(itemHostObject_)
+
+                    extensionArray.splice(selectedArrayElement, 1)
+                    extensionHostItemObject.itemObservableModelView(extensionArray)
+                    extensionHostItemObject.updateItemPageTitle()
+                    
+                    return extensionHostItemObject
 
                 catch exception
                     throw "NavigatorWindow.closeExtension fail: #{exception}"

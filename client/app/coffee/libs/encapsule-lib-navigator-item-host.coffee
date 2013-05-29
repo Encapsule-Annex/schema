@@ -545,20 +545,37 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <!-- Operations specific to select, element menu items. -->
             <span data-bind="if: isSelectedElement">
                 <p>
-                <button class="button small blue" data-bind="click: onButtonClickCloneExtension">Clone</button>
-                <button class="button small red" data-bind="click: onButtonClickRemoveExtension">Remove</button>
-                <button class="button small orange" data-bind="click: onButtonClickResetExtension">Reset</button>
-                <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>
+                <!-- <button class="button small blue" data-bind="click: onButtonClickCloneExtension">Clone</button> -->
+                <button class="button small black" data-bind="click: onButtonClickCloseExtension">
+                    Close this <span data-bind="text: menuLevelObject.labelDefault"></span>
+                </button>
+                <span style="float: right;">
+                    <button class="button small orange" data-bind="click: onButtonClickResetExtension">
+                        Reset this <span data-bind="text: menuLevelObject.labelDefault"></span>
+                    </button>
+                    <button class="button small red" data-bind="click: onButtonClickRemoveExtension">
+                        Remove this  <span data-bind="text: menuLevelObject.labelDefault"></span>
+                    </button>
+                </span><br clear="all">
                 </p>
             </span>  
 
             <!-- Operations specific to extension menu items. -->
             <span data-bind="if: itemMVVMType == 'extension'">
                 <p>
-                <button class="button small gray" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, false) }">Add</button>
-                <button class="button small gray" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, true) }">Add/Select</button>
-                <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>
-                <button class="button small orange" data-bind="click: onButtonClickResetExtension">Reset</button>
+                <button class="button small gray" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, false) }">
+                    Add <span data-bind="text: itemExtensionSelectLabel"></span>
+                </button>
+                <button class="button small gray" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, true) }">
+                    Add <span data-bind="text: itemExtensionSelectLabel"></span> & Select
+                </button>
+                <button class="button small black" data-bind="click: onButtonClickCloseExtension">
+                    Close <span data-bind="text: itemExtensionSelectLabel"></span>
+                </button>
+                <span style="float: right;">
+                    <button class="button small orange" data-bind="click: onButtonClickResetExtension">
+                        Reset <span data-bind="text: itemExtensionSelectLabel"></span> Collection</button>
+                </span><br clear="all">
                 </p>
             </span>
 
