@@ -63,7 +63,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     selectedChildItemBackgroundLightenRatio: -0.3
 
     mouseOverItemBackgroundShiftHue: -35
-    mouseOverItemBackgroundLightenRatio: 0.8
+    mouseOverItemBackgroundLightenRatio: 0.3
 
     menuLevelPaddingTop: 1
     menuLevelPaddingBottom: 5
@@ -88,11 +88,11 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     elementLightenRatio: 0.3
 
 
-    menuLevelBoxShadowColorDarkenRatio: 0.5 # Used as shadow color if mouse over or selection path
-    menuLevelBoxShadowColorLightenRatio: 0.35
+    menuLevelBoxShadowColorDarkenRatio: 0.3 # Used as shadow color if mouse over or selection path
+    menuLevelBoxShadowColorLightenRatio: 0.6
 
-    menuLevelBoxShadowInSelectionPath: { type: "inset", xBase: 1, xPerLevel: 1, yBase: 1, yPerLevel: 1, blurBase: 5, blurPerLevel: 1 }
-    menuLevelBoxShadowNotSelected: { type: "inset", x: 0, y: 10, blur: 10 }
+    menuLevelBoxShadowInSelectionPath: { type: "inset", xBase: 1, xPerLevel: 2, yBase: 1, yPerLevel: 2, blurBase: 15, blurPerLevel: 0 }
+    menuLevelBoxShadowNotSelected: { type: "inset", x: 0, y: 16, blur: 16 }
 
     menuLevelBoxShadowMouseOverHighlight: { type: "inset", x: 3,  y: 3, blur:  10 }
 
@@ -163,7 +163,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
                 {
                     jsonTag: "catalogues"
-                    label: "Catalogues"
+                    label: "SCDL Catalogues"
                     objectDescriptor: {
                         jsonTag: "catalogues"
                         mvvmType: "extension"

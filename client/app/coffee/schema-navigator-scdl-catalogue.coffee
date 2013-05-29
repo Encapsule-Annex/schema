@@ -27,7 +27,7 @@ Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
 
     jsonTag: "catalogue"
-    label: "Catalogue"
+    label: "SCDL Catalogue"
     objectDescriptor: {
         jsonTag: "catalogue"
         mvvmType: "archetype"
@@ -68,7 +68,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
     subMenus: [
         {
             jsonTag: "specifications"
-            label: "Specifications"
+            label: "SCDL Specifications"
             objectDescriptor: {
                 mvvmType: "extension"
                 description: "SCDL specification."
@@ -77,7 +77,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
         } # Specifications
         {
             jsonTag: "models"
-            label: "Models"
+            label: "SCDL Model Library"
             objectDescriptor: {
                 mvvmType: "child"
                 description: "SCDL models by type."
@@ -85,7 +85,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
             subMenus: [
                 {
                     jsonTag: "systems"
-                    label: "Systems"
+                    label: "SCDL System Models"
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL system models."
@@ -94,7 +94,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                 } # Systems
                 {
                     jsonTag: "sockets"
-                    label: "Sockets"
+                    label: "SCDL Socket Models"
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL socket models."
@@ -104,7 +104,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                 } # Sockets
                 {
                     jsonTag: "contracts"
-                    label: "Contracts"
+                    label: "SCDL Contract Models"
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL contract models."
@@ -114,7 +114,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
         
                 {
                     jsonTag: "machines"
-                    label: "Machines"
+                    label: "SCDL Machine Models"
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL machine models."
@@ -124,7 +124,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
 
                 {
                     jsonTag: "types"
-                    label: "Types"
+                    label: "SCDL Type Models"
                     objectDescriptor: {
                         mvvmType: "extension"
                         description: "SCDL type models."
@@ -135,7 +135,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
         } # Models
         {
             jsonTag: "resources"
-            label: "Resources"
+            label: "SCDL Resources"
             objectDescriptor: {
                 mvvmType: "child"
                 description: "SCDL common resources by resource type."
