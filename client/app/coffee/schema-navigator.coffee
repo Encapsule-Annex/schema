@@ -43,7 +43,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     baseBackgroundRatioPercentPerLevel: 0
 
     borderLightRatio: 0.35
-    borderDarkRatio: 0.35
+    borderDarkRatio: 0.45
     borderFlatRatio: -2
     borderWidth: 1 # default
     borderWidthOutset: 1
@@ -62,7 +62,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     selectedChildItemBackgroundShiftHue: -7.5
     selectedChildItemBackgroundLightenRatio: -0.3
 
-    mouseOverItemBackgroundShiftHue: -5
+    mouseOverItemBackgroundShiftHue: -35
     mouseOverItemBackgroundLightenRatio: 0.8
 
     menuLevelPaddingTop: 1
@@ -88,7 +88,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     elementLightenRatio: 0.3
 
 
-    menuLevelBoxShadowColorDarkenRatio: 0.4 # Used as shadow color if mouse over or selection path
+    menuLevelBoxShadowColorDarkenRatio: 0.5 # Used as shadow color if mouse over or selection path
     menuLevelBoxShadowColorLightenRatio: 0.35
 
     menuLevelBoxShadowInSelectionPath: { type: "inset", xBase: 1, xPerLevel: 1, yBase: 1, yPerLevel: 1, blurBase: 5, blurPerLevel: 1 }
@@ -269,59 +269,6 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                 } # settings
 
                 {
-                    jsonTag: "about"
-                    label: "About"
-                    objectDescriptor: {
-                        mvvmType: "child"
-                        description: "About namespace."
-                    }
-                    subMenus: [
-                        {
-                            jsonTag: "status"
-                            label: "Status"
-                            objectDescriptor: {
-                                mvvmType: "child"
-                                description: "Current app status."
-                            }
-                        }
-                        {
-                            jsonTag: "version"
-                            label: "v#{appVersion}"
-                            objectDescriptor: {
-                                mvvmType: "child"
-                                description: "#{appName} v#{appVersion} notes."
-                            }
-                            subMenus: [
-                                {
-                                    jsonTag: "build"
-                                    label: "Build Info"
-                                    objectDescriptor: {
-                                        mvvmType: "child"
-                                        description: "Information about build #{appBuildId}"
-                                    }
-                                }
-                                {
-                                    jsonTag: "diagnostic"
-                                    label: "Diagnostic"
-                                    objectDescriptor: {
-                                        mvvmType: "child"
-                                        description: "Advanced diagnostic information."
-                                    }
-                                }
-                            ]
-                        }
-                        {
-                            jsonTag: "publisher"
-                            label: appPackagePublisher
-                            objectDescriptor: {
-                                mvvmType: "child"
-                                description: "About the #{appPackagePublisher}"
-                            }
-                        }
-                    ] # about submenus
-                } # about
-
-                {
                     jsonTag: "help"
                     label: "Help"
                     objectDescriptor: {
@@ -329,6 +276,16 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         description: "#{appName} help."
                     }
                 }
+
+                {
+                    jsonTag: "about"
+                    label: "About"
+                    objectDescriptor: {
+                        mvvmType: "child"
+                        description: "About namespace."
+                    }
+                } # about
+
 
 
             ] # Schema submenus

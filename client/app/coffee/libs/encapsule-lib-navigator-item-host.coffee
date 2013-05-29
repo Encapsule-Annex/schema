@@ -101,9 +101,9 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 isSelectedElement = @isSelectedElement()
                 itemObservableModelView = @itemObservableModelView()
                 pageTitle = @menuLevelObject.labelDefault
-                if isExtensionPoint then pageTitle = "#{@menuLevelObject.labelDefault}: #{itemObservableModelView.length}"
+                if isExtensionPoint then pageTitle = "#{@menuLevelObject.labelDefault} [ #{itemObservableModelView.length} ]"
                 if isSelectedArchetype then pageTitle = "#{@menuLevelObject.labelDefault} (archetype)"
-                if isSelectedElement then pageTitle = "#{@menuLevelObject.labelDefault} ##{@itemSelectElementOrdinal() + 1}"
+                if isSelectedElement then pageTitle = "#{@menuLevelObject.labelDefault} #{@itemSelectElementOrdinal() + 1}"
                 if pageTitle != @menuLevelObject.label()
                     @menuLevelObject.label(pageTitle)
                 @itemPageTitle(pageTitle)
@@ -502,17 +502,17 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                     # item host (i.e. the item host that contains the actual array).
                     @navigatorContainer.selectElementInExtensionArray(@, arrayIndex_)
 
-
                 catch exception
                     Console.messageError("NavigatorMenuItemHost.onLinkClickSelectExtension fail: #{exception}")
-
-
 
             # END: / NavigatorMenuItemHostWindow constructor try scope
 
         catch exception
-
             throw "NavigatorMenuItemHostWindow constructor fail: #{exception}"
+
+
+
+
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNavigatorSelectedItemWindow", ( -> """
@@ -565,14 +565,12 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <!-- Operations specific to root menu items. -->
             <span data-bind="if: itemMVVMType == 'root'">
                 <p>
-                <i>root menu item-specific operations?</i>
                 </p>
             </span>
 
             <!-- Operations specific to child menu items. -->
             <span data-bind="if: itemMVVMType == 'child'">
                 <p>
-                CHILD
                 </p>
             </span>
 
@@ -597,10 +595,12 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
     """
     <div class="classEncapsuleNavigatorMenuItemJSONWindow">
         <span data-bind="if: currentlySelectedItemHost">
+            <img src="./img/json_file-48x48.png" style="width: 24px; heigh: 24px; border: 0px solid black; vertical-align: middle;" >
             <span data-bind="with: currentlySelectedItemHost">
-                <strong>SCDL Catalogue <span id="idJSONSourceDownload" data-bind="html: saveJSONAsLinkHtml"></span></strong>
+                #{appName} <span id="idJSONSourceDownload" data-bind="html: saveJSONAsLinkHtml"></span>
                 <pre data-bind="text: toJSON"></pre>
             </span>
+            <br clear="all">
         </span>
         <span data-bind="ifnot: currentlySelectedItemHost">
             There is no active navigator selection.

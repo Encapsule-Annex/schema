@@ -82,7 +82,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @labelHtml = ko.computed =>
                 return @label()
 
-                # Disable this for now.
+                # Disable what follows for now.
                 hasChildren = @subMenus().length and true or false
                 prefix = ""
                 prefixHasChildrenClosed = "control.png"
