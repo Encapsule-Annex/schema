@@ -51,3 +51,53 @@ Encapsule.code.app.modelview.ScdlNamespaceCommonMeta = {
         fnReinitialize: -> Encapsule.code.lib.util.getEpochTime()
     }
 }
+
+
+
+Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties = {
+                name: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                description: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                tags: {
+                    type: "stringCSV"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                author: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/people"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                }
+                organization: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                }
+                copyright: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/copyrights"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                }
+                license: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/licenses"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                }
+                platformBinding: {
+                    type: "uuid"
+                    optional: true
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                }
+}

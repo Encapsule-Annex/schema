@@ -134,79 +134,89 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
             ] # Models submenus
         } # Models
         {
-            jsonTag: "assets"
-            label: "Assets"
+            jsonTag: "resources"
+            label: "Resources"
             objectDescriptor: {
                 mvvmType: "child"
-                description: "SCDL asset models by namespace."
+                description: "SCDL common resources by resource type."
             }
             subMenus: [
                 {
-                    jsonTag: "people"
-                    label: "People"
+                    jsonTag: "attribution"
+                    label: "Attribution"
                     objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "SCDL person models."
-                        archetype: {
-                            jsonTag: "person"
-                            label: "Person"
+                        mvvmType: "child"
+                        description: "Shared objects used to attribute SCDL specifications and models."
+                    } # objectDescriptor
+                    subMenus: [
+                        {
+                            jsonTag: "people"
+                            label: "People"
                             objectDescriptor: {
-                                mvvmType: "archetype"
-                                description: "SCDL person model."
-                            } # person objectDescriptor
-                        } # person archetype
-                    } # people objectDescriptor
-                } # people
-                {
-                    jsonTag: "organizations"
-                    label: "Organizations"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "SCDL organization models."
-                        archetype: {
-                            jsonTag: "organization"
-                            label: "Organization"
+                                mvvmType: "extension"
+                                description: "SCDL person models."
+                                archetype: {
+                                    jsonTag: "person"
+                                    label: "Person"
+                                    objectDescriptor: {
+                                        mvvmType: "archetype"
+                                        description: "SCDL person model."
+                                    } # person objectDescriptor
+                                } # person archetype
+                            } # people objectDescriptor
+                        } # people
+                        {
+                            jsonTag: "organizations"
+                            label: "Organizations"
                             objectDescriptor: {
-                                mvvmType: "archetype"
-                                description: "SCDL organization model."
-                            } # organization objectDescriptor
-                        } # organization archetype
-                    } # organizations objectDescriptor
-                } # organizations
-                {
-                    jsonTag: "licenses"
-                    label: "Licenses"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "SCDL license models."
-                        archetype: {
-                            jsonTag: "license"
-                            label: "License"
+                                mvvmType: "extension"
+                                description: "SCDL organization models."
+                                archetype: {
+                                    jsonTag: "organization"
+                                    label: "Organization"
+                                    objectDescriptor: {
+                                        mvvmType: "archetype"
+                                        description: "SCDL organization model."
+                                    } # organization objectDescriptor
+                                } # organization archetype
+                            } # organizations objectDescriptor
+                        } # organizations
+                        {
+                            jsonTag: "licenses"
+                            label: "Licenses"
                             objectDescriptor: {
-                                mvvmType: "archetype"
-                                description: "SCDL license model."
-                            } # license objectDescriptor
-                        } # license archetype
-                    } # licenses objectDescriptor
-                } # licenses
-                {
-                    jsonTag: "copyrights"
-                    label: "Copyrights"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "SCDL copyright models."
-                        archetype: {
-                            jsonTag: "copyright"
-                            label: "Copyright"
+                                mvvmType: "extension"
+                                description: "SCDL license models."
+                                archetype: {
+                                    jsonTag: "license"
+                                    label: "License"
+                                    objectDescriptor: {
+                                        mvvmType: "archetype"
+                                        description: "SCDL license model."
+                                    } # license objectDescriptor
+                                } # license archetype
+                            } # licenses objectDescriptor
+                        } # licenses
+                        {
+                            jsonTag: "copyrights"
+                            label: "Copyrights"
                             objectDescriptor: {
-                                mvvmType: "archetype"
-                                description: "SCDL copyright model."
-                            } # copyright objectDescriptor
-                        } # copyright archetype
-                    } # copyrights objectDescriptor
-                } # copyrights
-            ] # assets submenu
-        } # assets
+                                mvvmType: "extension"
+                                description: "SCDL copyright models."
+                                archetype: {
+                                    jsonTag: "copyright"
+                                    label: "Copyright"
+                                    objectDescriptor: {
+                                        mvvmType: "archetype"
+                                        description: "SCDL copyright model."
+                                    } # copyright objectDescriptor
+                                } # copyright archetype
+                            } # copyrights objectDescriptor
+                        } # copyrights
+                    ] # assets submenu
+                } # assets
+            ] # attribution subMenus
+        } # attribution
     ] # Catalogue submenus
 } # Catalogue archetype
 

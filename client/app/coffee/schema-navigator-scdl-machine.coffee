@@ -30,7 +30,11 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype = {
     objectDescriptor: {
         mvvmType: "archetype"
         description: "SCDL machine model."
-    }
+        namespaceDescriptor: {
+            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+            userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties 
+        } # namespaceDescriptor
+    } # objectDescriptor
     subMenus: [
         Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins
         {

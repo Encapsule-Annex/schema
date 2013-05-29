@@ -48,6 +48,30 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTypeArchetype = {
                     fnCreate: -> ""
                     fnReinitialize: -> ""
                 }
+                author: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/people"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                }
+                organization: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                }
+                copyright: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/copyrights"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                }
+                license: {
+                    type: "uuidSelection"
+                    selectionSource: "schema/catalogues/catalogue/assets/licenses"
+                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                }
                 platformBinding: {
                     type: "uuid"
                     fnCreate: -> Encapsule.code.lib.util.uuidNull

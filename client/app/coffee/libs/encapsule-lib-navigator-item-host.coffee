@@ -405,7 +405,10 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                         colorObject =colorObject = @menuLevelObject.baseBackgroundColorObject().saturateByRatio(@navigatorContainer.layout.archetypeSaturateRatio).lightenByRatio(@navigatorContainer.layout.archetypeLightenRatio).shiftHue(@navigatorContainer.layout.archetypeShiftHue)
                                         @menuLevelObject.baseBackgroundColorObject(colorObject)
                                     else
-                                        @itemObservableModelView({}) # will need to recreate members. Okay for now.
+                                        newObject = {}
+                                        if @namespaceMemberInitializer? and @namespaceMemberInitializer
+                                            @namespaceMemberInitializer.initializeNamespace(newObject)
+                                        @itemObservableModelView(newObject)
 
                                     break
 
@@ -518,15 +521,15 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
     <span data-bind="with: currentlySelectedItemHost">
         <div class="classNavigatorItemHostWindow">
 
-            <div style="font-size: 10pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.3); padding: 5px;" data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
-                <span data-bind="text: menuLevelObject.path"></span>
-            </div>
-
             <div style="font-size: 22pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.15); padding: 5px;">
                 <div data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
                     <span data-bind="text: itemPageTitle"></span>
                 </div>
             </div>                
+
+            <div style="font-size: 10pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.3); padding: 5px;" data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
+                <span data-bind="text: menuLevelObject.path"></span>
+            </div>
 
             <!-- Operations specific to select, archetype menu items. -->
             <span data-bind="if: isSelectedArchetype"><p>
@@ -569,7 +572,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <!-- Operations specific to child menu items. -->
             <span data-bind="if: itemMVVMType == 'child'">
                 <p>
-                <i>child menu item-specific operations?</i>
+                CHILD
                 </p>
             </span>
 

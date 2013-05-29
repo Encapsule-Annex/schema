@@ -51,7 +51,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: undefined
-                modes: { full: { reserve: 640 }, min: { reserve: 300 } }
+                modes: { full: { reserve: 450 }, min: { reserve: 300 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
@@ -72,7 +72,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "rgba(0,255,204,0.45)"
+                backgroundColor: "rgba(0,255,204,0.25)"
                 modes: { full: { reserve: 680 }, min: { reserve: 250 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
@@ -93,12 +93,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             Q2WindowDescriptor: {                                            
                 id: "idSchemaNavigatorSelectedItemMetaWindow"
                 name: "Selected Item Meta"                              
-                initialMode: "full"
+                initialMode: "min"
                 initialEnable: true
-                overflow: "auto"
+                overflow: "hide"
                 opacity: 1.0
-                backgroundColor: "rgba(0,100,160,0.45)"
-                modes: { full: { reserve: 160 }, min: { reserve: 18 } }
+                backgroundColor: "rgba(0,100,160,0.25)"
+                modes: { full: { reserve: 0 }, min: { reserve: 18 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     # schema-model-window-scdl-navigator-aux.coffee
@@ -117,7 +117,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 initialMode: "full"
                 initialEnable: true
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: undefined
+                backgroundColor: "rgba(255,255,255,0.1)"
                 modes: { full: { reserve: 0 }, min: { reserve: 400 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
