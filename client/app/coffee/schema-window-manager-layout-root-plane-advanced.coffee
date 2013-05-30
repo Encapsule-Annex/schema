@@ -68,12 +68,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             Q2WindowDescriptor: {                                            
                 id: "idScdlNavigatorMenuItemJSONWindow"                                                
                 name: "SCDL Catalogue Item JSON View"                                        
-                initialMode: "min"
+                initialMode: "full"
                 initialEnable: true
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "rgba(0,100,160,0.05)" # "rgba(0,255,204,0.1)"
-                modes: { full: { reserve: 680 }, min: { reserve: 250 } }
+                modes: { full: { reserve: 500 }, min: { reserve: 250 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorJSONWindow"

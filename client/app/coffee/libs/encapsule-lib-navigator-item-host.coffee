@@ -502,6 +502,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                     # item host (i.e. the item host that contains the actual array).
                     @navigatorContainer.selectElementInExtensionArray(@, arrayIndex_)
 
+                    @navigatorContainer.selectItemByPath(@itemExtensionSelectPath)
+
                 catch exception
                     Console.messageError("NavigatorMenuItemHost.onLinkClickSelectExtension fail: #{exception}")
 
@@ -534,7 +536,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <!-- Operations specific to select, archetype menu items. -->
             <span data-bind="if: isSelectedArchetype"><p>
                 <button class="button small green" data-bind="click: onButtonClickInsertExtension">
-                    Add new
+                    Add 
                     <span data-bind="text: menuLevelObject.labelDefault"></span>
                     to
                     <span data-bind="text: menuLevelObject.parentMenuLevel.labelDefault"></span>
@@ -545,59 +547,71 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <!-- Operations specific to select, element menu items. -->
             <span data-bind="if: isSelectedElement">
                 <p>
+                <span data-bind="text: itemPageTitle"></span>
+
                 <!-- <button class="button small blue" data-bind="click: onButtonClickCloneExtension">Clone</button> -->
-                <button class="button small black" data-bind="click: onButtonClickCloseExtension">
-                    Close this <span data-bind="text: menuLevelObject.labelDefault"></span>
-                </button>
+
                 <span style="float: right;">
-                    <button class="button small orange" data-bind="click: onButtonClickResetExtension">
-                        Reset this <span data-bind="text: menuLevelObject.labelDefault"></span>
-                    </button>
-                    <button class="button small red" data-bind="click: onButtonClickRemoveExtension">
-                        Remove this  <span data-bind="text: menuLevelObject.labelDefault"></span>
-                    </button>
-                </span><br clear="all">
+                    <span data-bind="text: itemPageTitle"></span>
+                    <button class="button small orange" data-bind="click: onButtonClickResetExtension">Reset</button>
+                    <button class="button small red" data-bind="click: onButtonClickRemoveExtension">Remove</button>
+                </span>
+
+                <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>
+                <br clear="all">
                 </p>
+
+                <!-- Here is where we'll provide the nice user-friendly view of this object namespace
+                     using a Knockout.js template synthesized by the item host object constructor from
+                     the declared namespace descriptor. -->
+                <span data-bind="with: itemObservableModelView">
+                </span>
+
             </span>  
 
             <!-- Operations specific to extension menu items. -->
             <span data-bind="if: itemMVVMType == 'extension'">
                 <p>
-                <button class="button small green" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, false) }">
-                    Add <span data-bind="text: itemExtensionSelectLabel"></span>
-                </button>
-                <button class="button small green" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, true) }">
-                    Add <span data-bind="text: itemExtensionSelectLabel"></span> & Select
-                </button>
-                <button class="button small black" data-bind="click: onButtonClickCloseExtension">
-                    Close <span data-bind="text: itemExtensionSelectLabel"></span>
-                </button>
+                <span data-bind="text: itemExtensionSelectLabel"></span>
                 <span style="float: right;">
-                    <button class="button small orange" data-bind="click: onButtonClickResetExtension">
-                        Reset <span data-bind="text: itemExtensionSelectLabel"></span> Collection</button>
-                </span><br clear="all">
+                    <span data-bind="text: itemPageTitle"></span>
+                    <button class="button small orange" data-bind="click: onButtonClickResetExtension">Reset</button>
+                </span>
+                <button class="button small green" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, false) }">Add</button>
+                <button class="button small green" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, true) }">Add/Select</button>
+                <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>
+                <br clear="all">
                 </p>
             </span>
 
             <!-- Operations specific to root menu items. -->
             <span data-bind="if: itemMVVMType == 'root'">
                 <p>
+                <!-- debug: root object namespace -->
                 </p>
             </span>
 
             <!-- Operations specific to child menu items. -->
             <span data-bind="if: itemMVVMType == 'child'">
                 <p>
+                <!-- debug: child object namespace -->
                 </p>
             </span>
 
             <span data-bind="if: itemMVVMType == 'extension'">
-                <h2><span data-bind="text: menuLevelObject.label"></span></h2>
+
                 <div data-bind="foreach: itemObservableModelView">
-                    <div data-bind="click: function(data_, event_) { $parent.onLinkClickSelectExtension($index(), data_, event_) }">
+
+                    <div style="border-top: 1px solid #666666; padding-top: 5px; padding-bottom: 5px;" >
+
+                    <button class="button small blue" data-bind="click: function(data_, event_) { $parent.onLinkClickSelectExtension($index(), data_, event_) }">
                         <span data-bind="text: $parent.itemExtensionSelectLabel"></span> #<span data-bind="text: $index() + 1"></span>
+                    </button>
+
                     </div>
+
                 </div>
+
             </span>
 
 

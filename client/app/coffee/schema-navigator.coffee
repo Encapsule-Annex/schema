@@ -31,7 +31,7 @@ Color = net.brehaut.Color
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     jsonTag: "appStateHost"
-    label: "#{appName} HTML 5 Client"
+    label: "#{appName} App Root"
     description: "#{appName} client app host namespace."
 
     detailBelowSelectDefault: 1
@@ -74,7 +74,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelFontSizeMin: 12
 
     structureArrayShiftHue: 0
-    structureArrayLightenRatio: 0.5
+    structureArrayLightenRatio: 0.2
 
     metaArrayElementShiftHue: 0
     metaArrayElementLightenRatio: 0.2
