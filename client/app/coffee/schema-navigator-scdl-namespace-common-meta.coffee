@@ -97,7 +97,7 @@ Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties = {
                 platformBinding: {
                     type: "uuid"
                     optional: true
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                    fnCreate: -> undefined
+                    fnReinitialize: undefined
                 }
 }

@@ -26,7 +26,7 @@ Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins = {
     jsonTag: "pins"
-    label: "I/O Pins"
+    label: "Input/Output Pins"
     objectDescriptor: {
         mvvmType: "child"
         description: "SCDL pin models by function."
@@ -48,12 +48,25 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins = {
                             userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
                             userMutable: {
                                 name: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
                                 }
                                 description: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
                                 }
                                 tags: {
+                                    type: "stringCSV"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
                                 }
                                 type: {
+                                    type: "uuidSelection"
+                                    selectionSource: "schema/catalogues/catalogue/models/types"
+                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
                                 }
                             } # userMutable
                         } # namespaceDescriptor
@@ -77,12 +90,25 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins = {
                             userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
                             userMutable: {
                                 name: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
                                 }
                                 description: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
                                 }
                                 tags: {
+                                    type: "stringCSV"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
                                 }
                                 type: {
+                                    type: "uuidSelection"
+                                    selectionSource: "schema/catalogues/catalogue/models/types"
+                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
                                 }
                             } # userMutable
                         } # namespaceDescriptor

@@ -74,6 +74,11 @@ class Encapsule.code.lib.InPageURIRouter
                 throw "No client router defined!"
             @clientRouter.setRoute(route_)
 
+        @getRoute = =>
+            if not (@clientRouter? and @clientRouter)
+                throw "No client router defined!"
+            @clientRouter.getRoute()
+
         @allRoutes = =>
             if document.location.hash == ""
                 # It's possible for the user to manipulate the URI, hit enter, and affect a route dispatch to

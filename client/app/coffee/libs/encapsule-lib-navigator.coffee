@@ -667,7 +667,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
 
 <br>
 
-
 <button style="width: 32px;" size="1" class="button small blue" data-bind="event: { click: explodeDetailBelowSelect }" title="Explode detail below selection.">&infin;</button>
 
 <button style="width: 32px;" size="1" class="button small white" data-bind="event: { click: incrementDetailBelowSelect }" title="Increase detail below selection.">+</button>

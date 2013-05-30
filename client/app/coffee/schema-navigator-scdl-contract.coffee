@@ -30,6 +30,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype = {
     objectDescriptor: {
         mvvmType: "archetype"
         description: "SCDL contract model."
+        namespaceDescriptor: {
+            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+            userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties 
+        } # namespaceDescriptor
     }
     subMenus: [
         {

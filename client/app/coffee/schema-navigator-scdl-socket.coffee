@@ -30,6 +30,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype = {
     objectDescriptor: {
         mvvmType: "archetype"
         description: "SCDL socket model."
+        namespaceDescriptor: {
+            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+            userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties 
+        } # namespaceDescriptor
     }
     subMenus: [
         Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins

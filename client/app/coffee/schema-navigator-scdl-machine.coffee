@@ -49,6 +49,26 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype = {
                     objectDescriptor: {
                         mvvmType: "archetype"
                         description: "SCDL state descriptor."
+                        namespaceDescriptor: {
+                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                            userMutable: {
+                                name: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                description: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                tags: {
+                                    type: "stringCSV"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                            } # userMutable
+                        } # namespaceDescriptor
                     } # state objectDescriptor
                 } # state archetype
             } # states objectDescriptor

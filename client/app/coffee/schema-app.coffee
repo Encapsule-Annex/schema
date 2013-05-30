@@ -57,6 +57,10 @@ class Encapsule.code.app.Schema
             Encapsule.runtime.app.SchemaRouter = new Encapsule.code.app.SchemaRouter()
             Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(Encapsule.runtime.app.SchemaRouter.routeChangedCallback)
 
+            Console.message( Encapsule.runtime.app.SchemaRouter.getRoute() )
+
+            Encapsule.runtime.app.SchemaRouter.setRoute(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout.initialSelectionPath)
+
             Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
 
             Encapsule.runtime.boot.phase0.spinner.cancel()

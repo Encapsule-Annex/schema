@@ -614,7 +614,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaVi
         <span data-bind="if: currentlySelectedItemHost">
             <img src="./img/json_file-48x48.png" style="width: 24px; heigh: 24px; border: 0px solid black; vertical-align: middle;" >
             <span data-bind="with: currentlySelectedItemHost">
-                #{appName} <span id="idJSONSourceDownload" data-bind="html: saveJSONAsLinkHtml"></span>
+                <span style="font-size: 12pt; font-weight: medium;">#{appName} <span id="idJSONSourceDownload" data-bind="html: saveJSONAsLinkHtml"></span></span>
                 <pre data-bind="text: toJSON"></pre>
             </span>
             <br clear="all">

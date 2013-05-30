@@ -49,7 +49,8 @@ class Encapsule.code.app.SchemaRouter
                 Console.message("#{appName} local router: Setting new local route.")
                 @routerCore.setRoute(route_)
 
-
+            @getRoute = =>
+                @routerCore.getRoute()
 
             # / END: constructor try scope
         catch exception

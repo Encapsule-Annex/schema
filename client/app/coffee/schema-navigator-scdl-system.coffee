@@ -32,35 +32,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSystemArchetype = {
         description: "SCDL system model."
         namespaceDescriptor: {
             userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-            userMutable: {
-                name: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                description: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                tags: {
-                    type: "stringCSV"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                author: {
-                    type: "uuidSelection"
-                    selectionSource: "schema/catalogues/catalogue/assets/people"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
-                }
-                organization: {
-                    type: "uuidSelection"
-                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
-                }
-            }
+            userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties 
         }
     }
     subMenus: [
