@@ -56,14 +56,14 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     fontColorRatioMouseOver: -1
     
     selectedItemBackgroundShiftHue: 0
-    selectedItemBackgroundLightenRatio: 0.85
+    selectedItemBackgroundLightenRatio: 0.65
 
     # with respect to a specific menu level, this style applies if the level has a child selected.
     selectedChildItemBackgroundShiftHue: -7.5
     selectedChildItemBackgroundLightenRatio: -0.3
 
     mouseOverItemBackgroundShiftHue: -35
-    mouseOverItemBackgroundLightenRatio: 0.3
+    mouseOverItemBackgroundLightenRatio: 0.1
 
     menuLevelPaddingTop: 1
     menuLevelPaddingBottom: 5

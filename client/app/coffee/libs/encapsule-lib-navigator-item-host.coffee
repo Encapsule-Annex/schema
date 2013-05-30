@@ -563,10 +563,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             <!-- Operations specific to extension menu items. -->
             <span data-bind="if: itemMVVMType == 'extension'">
                 <p>
-                <button class="button small gray" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, false) }">
+                <button class="button small green" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, false) }">
                     Add <span data-bind="text: itemExtensionSelectLabel"></span>
                 </button>
-                <button class="button small gray" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, true) }">
+                <button class="button small green" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, true) }">
                     Add <span data-bind="text: itemExtensionSelectLabel"></span> & Select
                 </button>
                 <button class="button small black" data-bind="click: onButtonClickCloseExtension">

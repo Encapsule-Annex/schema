@@ -67,61 +67,71 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype = {
                                     fnCreate: -> ""
                                     fnReinitialize: -> ""
                                 }
+                                stateEnterExpression: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
+                                stateExitExpression: {
+                                    type: "string"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
+                                }
                             } # userMutable
                         } # namespaceDescriptor
                     } # state objectDescriptor
+                    subMenus: [
+                        {
+                            jsonTag: "transitions"
+                            label: "Transitions"
+                            objectDescriptor: {
+                                mvvmType: "extension"
+                                description: "SCDL state transition descriptors."
+                                archetype: {
+                                    jsonTag: "transition"
+                                    label: "Transition"
+                                    objectDescriptor: {
+                                        mvvmType: "archetype"
+                                        description: "SCDL state transition descriptor."
+                                        namespaceDescriptor: {
+                                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                                            userMutable: {
+                                                name: {
+                                                    type: "string"
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
+                                                }
+                                                description: {
+                                                    type: "string"
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
+                                                }
+                                                tags: {
+                                                    type: "stringCSV"
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
+                                                }
+                                                finalState: {
+                                                    type: "uuidSelection"
+                                                    selectionSource: "schema/catalogues/catalogue/models/machines/machine/states"
+                                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                                                }
+                                                vectorExpression: {
+                                                    type: "string"
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
+                                                }
+                                            } # userMutable
+                                        } # namespaceDescriptor
+                                    } # transition objectDescriptor
+                                } # transition archetype
+                            } # transitions objectDescriptor
+                        } # Transitions
+
+                    ] # state subMenus
                 } # state archetype
             } # states objectDescriptor
         } # States
-        {
-            jsonTag: "transitions"
-            label: "Transitions"
-            objectDescriptor: {
-                mvvmType: "extension"
-                description: "SCDL state transition descriptors."
-                archetype: {
-                    jsonTag: "transition"
-                    label: "Transition"
-                    objectDescriptor: {
-                        mvvmType: "archetype"
-                        description: "SCDL state transition descriptor."
-                    } # transition objectDescriptor
-                } # transition archetype
-            } # transitions objectDescriptor
-        } # Transitions
-        {
-            jsonTag: "actions"
-            label: "Actions"
-            objectDescriptor: {
-                mvvmType: "extension"
-                description: "SCDL state transition action descriptors."
-                archetype: {
-                    jsonTag: "action"
-                    label: "Action"
-                    objectDescriptor: {
-                        mvvmType: "archetype"
-                        description: "SCDL state transition action descriptor."
-                    }
-                    subMenus: [
-                        {
-                            jsonTag: "entryAction"
-                            label: "Entry Action"
-                            objectDescriptor: {
-                                mvvmType: "child"
-                                description: "SCDL state transition entry action descriptor."
-                            } # entryAction objectDecriptor
-                        } # entryAction
-                        {
-                            jsonTag: "exitAction"
-                            label: "Exit Action"
-                            objectDescriptor: {
-                                mvvmType: "child"
-                                description: "SCDL state transition exit action descriptor."
-                            } # exitAction objectDecriptor
-                        } # exitAction
-                    ] # action submenus
-                } # actions archetype
-            } # actions objectDescriptor
-        } # Actions
-    ] # Machine submenus
+     ] # Machine submenus
 } # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype
