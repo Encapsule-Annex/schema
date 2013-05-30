@@ -295,7 +295,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                         return extensionItemHostObject
 
                     @resetExtension(elementItemHostObject, "detach")
-                    
+                    elementItemHostObject.setSelectState("element")
+
                     return extensionItemHostObject
 
                 catch exception

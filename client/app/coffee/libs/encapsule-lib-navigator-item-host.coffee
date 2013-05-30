@@ -440,7 +440,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             # button click event handler delegates to the navigator container.
             @onButtonClickInsertExtension = (data_, event_, select_) =>
                 try
-                    @blipper.blip("10")
+                    @blipper.blip("28")
                     itemHostObjectToSelect = @navigatorContainer.insertExtensionFromItemHostObject(@)
                     if select_? and select_
                         @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
@@ -452,7 +452,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             # ============================================================================
             @onButtonClickCloseExtension = =>
                 try
-                    @blipper.blip("09")
+                    @blipper.blip("28")
                     itemHostObjectToSelect = @navigatorContainer.closeExtension(@)
                     @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
 
@@ -463,7 +463,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             # ============================================================================
             @onButtonClickCloneExtension = =>
                 try
-                    @blipper.blip("08")
+                    @blipper.blip("28")
                     itemHostObjectToSelect = @navigatorContainer.cloneExtension(@)
                     @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path )
 
@@ -474,7 +474,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             # ============================================================================
             @onButtonClickRemoveExtension = =>
                 try
-                    @blipper.blip("11")
+                    @blipper.blip("28")
                     itemHostObjectToSelect = @navigatorContainer.removeExtension(@)
                     @navigatorContainer.selectItemByPath(itemHostObjectToSelect.path)
                     
@@ -485,7 +485,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             # ============================================================================
             @onButtonClickResetExtension = =>
                 try
-                    @blipper.blip("07")
+                    @blipper.blip("28")
                     @navigatorContainer.resetExtension(@)
 
                 catch exception
@@ -496,7 +496,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             # ============================================================================
             @onLinkClickSelectExtension = (arrayIndex_, data_, event_) =>
                 try
-                    @blipper.blip("15")
+                    @blipper.blip("28")
                     # Note that this handler is called in response to clicking a link generated
                     # by a KO foreach data binding and is invoked in the context of the "extension"-type
                     # item host (i.e. the item host that contains the actual array).

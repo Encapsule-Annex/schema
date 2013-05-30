@@ -279,7 +279,7 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
                     
             @getCssFontWeight = ko.computed =>
                 selectedPathItem = @selectedItem() or @selectedChild()
-                return selectedPathItem and "bold" or "normal"
+                return selectedPathItem and "medium" or "normal"
 
             @getCssColor = ko.computed =>
                 selectedItem = @selectedItem()
