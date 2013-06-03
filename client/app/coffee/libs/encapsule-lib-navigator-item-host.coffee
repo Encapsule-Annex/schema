@@ -69,6 +69,20 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             @itemExtensionSelectLabel = "missing archetype label"
             @itemExtensionSelectPath = ""
 
+            # Note that item host objects are initially created via BFS traversal and thus
+            # this the child item host object cannot be resolved at construction time. All
+            # access within this classes methods to the childSelectItemHostObject must be
+            # made via the getChildSelectItemHostObject method consequently.
+            @childSelectItemHostObject = undefined
+            @getChildSelectItemHostObject = =>
+                try
+                    if not @childSelectItemHostObject
+                        @childSelectItemHostObject = @navigatorContainer.getItemHostObjectFromPath(@itemExtensionSelectPath) # throws
+                    return @childSelectItemHostObject
+
+                catch exception
+                    throw "There is no child item host object to get! fail: #{exception}"
+
             # If this item host is a "select"-type item then these members are
             # used to track the item's state.
             @itemSelectState = ko.observable("offline")
@@ -101,7 +115,16 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 isSelectedElement = @isSelectedElement()
                 itemObservableModelView = @itemObservableModelView()
                 pageTitle = @menuLevelObject.labelDefault
-                if isExtensionPoint then pageTitle = "#{@menuLevelObject.labelDefault} [ #{itemObservableModelView.length} ]"
+                if isExtensionPoint
+
+                    # This doesn't work at all.
+                    #selectedElementOrdinal = -1
+                    #childItemHost = @getChildSelectItemHostObject()
+                    #if childItemHost? and childItemHost
+                    #    selectedElementOrdinal = childItemHost.itemSelectElementOrdinal()
+
+                    pageTitle = "#{@menuLevelObject.labelDefault} #{itemObservableModelView.length}"
+
                 if isSelectedArchetype then pageTitle = "#{@menuLevelObject.labelDefault} (archetype)"
                 if isSelectedElement then pageTitle = "#{@menuLevelObject.labelDefault} #{@itemSelectElementOrdinal() + 1}"
                 if pageTitle != @menuLevelObject.label()
@@ -112,7 +135,9 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             if @menuLevelObject.parentMenuLevel? and @menuLevelObject.parentMenuLevel
                 parentPath = @menuLevelObject.parentMenuLevel.path
                 @parentItemHostWindow = @navigatorContainer.menuItemPathNamespace[parentPath].itemHostModelView
-            
+
+            @itemElementModelView = undefined
+
             if layoutObjectDescriptor? and layoutObjectDescriptor
 
                 layoutObjectDescriptor = @menuLevelObject.layoutObject.objectDescriptor
@@ -148,6 +173,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         # Update the parent's contained model view.
                         @parentItemHostWindow.itemObservableModelView(currentModelView)
 
+                        @itemElementModelView = new Encapsule.code.lib.modelview.NavigatorChildItemElementModelView(@)
+
                         break
 
                     when "extension"
@@ -181,7 +208,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         selectMenuLevel = new Encapsule.code.lib.modelview.NavigatorWindowMenuLevel(@navigatorContainer, @menuLevelObject, layoutSelectMenuLevel, @menuLevelObject.level() + 1)
                         @menuLevelObject.subMenus.push(selectMenuLevel)
                         @itemExtensionSelectLabel = layoutSelectMenuLevel.label
-                        @itemExtensionSelectPath = "#{@path}/#{layoutSelectMenuLevel.jsonTag}"
+                        @itemExtensionSelectPath = "#{@path}.#{layoutSelectMenuLevel.jsonTag}"
 
                         break
 
@@ -599,6 +626,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
             </span>
 
             <span data-bind="if: itemMVVMType == 'extension'">
+
+                <span data-bind="text: getChildSelectItemHostObject().path"></span>
 
                 <div data-bind="foreach: itemObservableModelView">
 

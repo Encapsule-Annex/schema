@@ -30,16 +30,16 @@ Color = net.brehaut.Color
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
-    jsonTag: "appStateHost"
-    label: "#{appName} App Root"
-    description: "#{appName} client app host namespace."
+    jsonTag: "appState"
+    label: "#{appName} App State"
+    description: "#{appName} application state."
 
-    detailBelowSelectDefault: 1
+    detailBelowSelectDefault: 0
     detailAboveSelectDefault: 1
 
-    initialSelectionPath: "appStateHost?path=schema"
+    initialSelectionPath: "appState.schema"
 
-    baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.4}).toCSS()
+    baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.5}).toCSS()
     baseBackgroundRatioPercentPerLevel: 0
 
     borderLightRatio: 0.35
@@ -55,15 +55,15 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     fontColorRatioSelectedChild: -2 # -0.8
     fontColorRatioMouseOver: -1
     
-    selectedItemBackgroundShiftHue: 0
-    selectedItemBackgroundLightenRatio: 0.65
+    selectedItemBackgroundShiftHue: -45
+    selectedItemBackgroundLightenRatio: 0.45
 
     # with respect to a specific menu level, this style applies if the level has a child selected.
-    selectedChildItemBackgroundShiftHue: -7.5
-    selectedChildItemBackgroundLightenRatio: -0.3
+    selectedChildItemBackgroundShiftHue: 20
+    selectedChildItemBackgroundLightenRatio: 0.3
 
-    mouseOverItemBackgroundShiftHue: -35
-    mouseOverItemBackgroundLightenRatio: 0.1
+    mouseOverItemBackgroundShiftHue: 20
+    mouseOverItemBackgroundLightenRatio: 1
 
     menuLevelPaddingTop: 1
     menuLevelPaddingBottom: 5
@@ -74,16 +74,16 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelFontSizeMin: 12
 
     structureArrayShiftHue: 0
-    structureArrayLightenRatio: 0.2
+    structureArrayLightenRatio: -0.25
 
-    metaArrayElementShiftHue: 0
+    metaArrayElementShiftHue: -30
     metaArrayElementLightenRatio: 0.2
 
     archetypeShiftHue: 0
     archetypeSaturateRatio: -0.5
     archetypeLightenRatio: 0.2
     
-    elementShiftHue: -40
+    elementShiftHue: -10
     elementSaturateRatio: 0.3 # 0.5
     elementLightenRatio: 0.3
 

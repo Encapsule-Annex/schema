@@ -192,7 +192,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
                     switch itemHostObject_.itemMVVMType
                         when "extension"
-                            archetypePath = itemHostObject_.path + "/" + itemHostObject_.menuLevelObject.layoutObject.objectDescriptor.archetype.jsonTag
+                            # Calculate the local route
+                            archetypePath = itemHostObject_.path + "." + itemHostObject_.menuLevelObject.layoutObject.objectDescriptor.archetype.jsonTag
                             itemHostObject = @getItemPathNamespaceObject(archetypePath).itemHostModelView
                             if not (itemHostObject? and itemHostObject)
                                 throw "Cannot resolve itemHostObject for request."
@@ -232,7 +233,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
                     # Add the new element to the parent extension's array.
                     newArrayLength = parentItemHostObject.itemObservableModelView.push(newArrayElement)
-                    parentItemHostObject.updateItemPageTitle()
 
                     # Now replace this item host's contained model view with a reference to the
                     # newly cloned object stored in the parent's array.
@@ -248,6 +248,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     itemHostObject.menuLevelObject.itemVisible(true)
                     itemHostObject.menuLevelObject.itemVisibilityLock = false
                     itemHostObject.updateItemPageTitle()
+                    parentItemHostObject.updateItemPageTitle()
 
                     return itemHostObject
 
@@ -466,6 +467,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             #
             # ============================================================================
             @onMenuLevelMouseDoubleClick = (menuLevel_) =>
+                Console.message("onMenuLevelDoubleClick enter")
 
 
             # Responsible for updating all required menu level objects' selectedItem, selectedChild, and selectedParent observable flags.

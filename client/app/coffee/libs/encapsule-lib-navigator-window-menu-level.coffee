@@ -56,11 +56,11 @@ class Encapsule.code.lib.modelview.NavigatorWindowMenuLevel
             @path =     undefined
             if parentMenuLevel_? and parentMenuLevel_ and parentMenuLevel_.path? and parentMenuLevel_.path
                 @path = parentMenuLevel_.path
-                if @level() > 0
-                    @path += "/"
+                if @level() >= 0
+                    @path += "."
                 @path += @jsonTag
             else
-                @path = "#{@jsonTag}?path="
+                @path = "#{@jsonTag}"
 
 
             @generationsFromSelectionPath = 0 # Set dynamically by the navigator container during menu level visibility update.
