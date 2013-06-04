@@ -36,7 +36,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype = {
         } # namespaceDescriptor
     } # objectDescriptor
     subMenus: [
-        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins
+        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins
+        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPins
         {
             jsonTag: "states"
             label: "States"

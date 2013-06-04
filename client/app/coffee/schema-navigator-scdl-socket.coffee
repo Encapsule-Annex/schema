@@ -36,7 +36,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype = {
         } # namespaceDescriptor
     }
     subMenus: [
-        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPins
+        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins
+        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPins
     ] # Socket submenus
 
 } # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype 

@@ -58,51 +58,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes = {
                 } # node namespaceDescriptor
             } # node objectDescriptor
             subMenus: [
-                {
-                    jsonTag: "outputPinInstance"
-                    label: "Output Pin Instance"
-                    objectDescriptor: {
-                        mvvmType: "child"
-                        description: "Output pin (source) instance."
-                        namespaceDescriptor: {
-                            userMutable: {
-                                uuidOutputPinInstance: {
-                                    type: "uuidSelection"
-                                    selectionSource: "schema/catalogues/catalogue/models/systems/system"
-                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
-                                } # uuidOutputPinInstance
-                            } # userMutable
-                        } # namespaceDescriptor
-                    } # outputPinInstance objectDescriptor
-                } # outputPinInstance
 
-                {
-                    jsonTag: "inputPinInstances"
-                    label: "Input Pins Instances"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "Input Pin Instances"
-                        archetype: {
-                            jsonTag: "inputPinInstance"
-                            label: "Input Pin Instance"
-                            objectDescriptor: {
-                                mvvmtType: "archetype"
-                                description: "Input pin (sink) instance."
-                                namespaceDescriptor: {
-                                    userMutable: {
-                                        uuidOutputPinInstance: {
-                                            type: "uuidSelection"
-                                            selectionSource: "schema/catalogues/catalogue/models/systems/system"
-                                            fnCreate: -> Encapsule.code.lib.util.uuidNull
-                                            fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
-                                        } # uuidOutputPinInstance
-                                    } # userMutable
-                                } # namespaceDescriptor
-                            } # input pin objectDescriptor
-                        } # input pin archetype
-                    } # inputPinInstances objectDescriptor
-                } # inputPinInstances
+                Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinChild
+                Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins
+
             ] # node subMenus
         } # node archetype
     } # nodes object descriptor

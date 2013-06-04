@@ -50,6 +50,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             if layoutObjectDescriptor.namespaceDescriptor? and layoutObjectDescriptor.namespaceDescriptor
                 @namespaceMemberInitializer = new Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer(layoutObjectDescriptor.namespaceDescriptor)
 
+            @namespaceViewModelTemplateName = Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate(layoutObject, @path)
+
           
             @jsonTag = layoutObjectDescriptor? and layoutObjectDescriptor and layoutObjectDescriptor.jsonTag? and layoutObjectDescriptor.jsonTag or @menuLevelObject.jsonTag
 
@@ -550,84 +552,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
     <span data-bind="with: currentlySelectedItemHost">
         <div class="classNavigatorItemHostWindow">
 
-            <div style="font-size: 22pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.15); padding: 5px;">
-                <div data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
-                    <span data-bind="text: itemPageTitle"></span>
-                </div>
-            </div>                
+            <span data-bind="template: { name: namespaceViewModelTemplateName }"></span>
 
-            <div style="font-size: 10pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.3); padding: 5px;" data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
-                <span data-bind="text: menuLevelObject.path"></span>
-            </div>
-
-            <!-- Operations specific to select, archetype menu items. -->
-            <span data-bind="if: isSelectedArchetype"><p>
-                <button class="button small green" data-bind="click: onButtonClickInsertExtension">
-                    Add 
-                    <span data-bind="text: menuLevelObject.labelDefault"></span>
-                    to
-                    <span data-bind="text: menuLevelObject.parentMenuLevel.labelDefault"></span>
-                </button>
-                <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>                                                                         
-            </p></span>
-
-            <!-- Operations specific to select, element menu items. -->
-            <span data-bind="if: isSelectedElement">
-                <p>
-                <span data-bind="text: itemPageTitle"></span>
-
-                <!-- <button class="button small blue" data-bind="click: onButtonClickCloneExtension">Clone</button> -->
-
-                <span style="float: right;">
-                    <span data-bind="text: itemPageTitle"></span>
-                    <button class="button small orange" data-bind="click: onButtonClickResetExtension">Reset</button>
-                    <button class="button small red" data-bind="click: onButtonClickRemoveExtension">Remove</button>
-                </span>
-
-                <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>
-                <br clear="all">
-                </p>
-
-                <!-- Here is where we'll provide the nice user-friendly view of this object namespace
-                     using a Knockout.js template synthesized by the item host object constructor from
-                     the declared namespace descriptor. -->
-                <span data-bind="with: itemObservableModelView">
-                </span>
-
-            </span>  
-
-            <!-- Operations specific to extension menu items. -->
-            <span data-bind="if: itemMVVMType == 'extension'">
-                <p>
-                <span data-bind="text: itemExtensionSelectLabel"></span>
-                <span style="float: right;">
-                    <span data-bind="text: itemPageTitle"></span>
-                    <button class="button small orange" data-bind="click: onButtonClickResetExtension">Reset</button>
-                </span>
-                <button class="button small green" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, false) }">Add</button>
-                <button class="button small green" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, true) }">Add/Select</button>
-                <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>
-                <br clear="all">
-                </p>
-            </span>
-
-            <!-- Operations specific to root menu items. -->
-            <span data-bind="if: itemMVVMType == 'root'">
-                <p>
-                <!-- debug: root object namespace -->
-                </p>
-            </span>
-
-            <!-- Operations specific to child menu items. -->
-            <span data-bind="if: itemMVVMType == 'child'">
-                <p>
-                <!-- debug: child object namespace -->
-                </p>
-            </span>
 
             <span data-bind="if: itemMVVMType == 'extension'">
-
-                <span data-bind="text: getChildSelectItemHostObject().path"></span>
 
                 <div data-bind="foreach: itemObservableModelView">
 
@@ -642,7 +570,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
                 </div>
 
             </span>
-
 
         </div><!-- classNavigatorItemHostWindow -->
     </span>

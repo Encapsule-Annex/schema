@@ -30,14 +30,14 @@ Color = net.brehaut.Color
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
-    jsonTag: "appState"
-    label: "#{appName} App State"
-    description: "#{appName} application state."
+    jsonTag: "appRoot"
+    label: "#{appName} Client Root"
+    description: "#{appName} client root."
 
     detailBelowSelectDefault: 0
     detailAboveSelectDefault: 1
 
-    initialSelectionPath: "appState.schema"
+    initialSelectionPath: "appRoot.schema"
 
     baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.5}).toCSS()
     baseBackgroundRatioPercentPerLevel: 0
@@ -60,10 +60,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     # with respect to a specific menu level, this style applies if the level has a child selected.
     selectedChildItemBackgroundShiftHue: 20
-    selectedChildItemBackgroundLightenRatio: 0.3
+    selectedChildItemBackgroundLightenRatio: 0.5
 
-    mouseOverItemBackgroundShiftHue: 20
-    mouseOverItemBackgroundLightenRatio: 1
+    mouseOverItemBackgroundShiftHue: 0
+    mouseOverItemBackgroundLightenRatio: 0.5
 
     menuLevelPaddingTop: 1
     menuLevelPaddingBottom: 5
@@ -84,8 +84,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     archetypeLightenRatio: 0.2
     
     elementShiftHue: -10
-    elementSaturateRatio: 0.3 # 0.5
-    elementLightenRatio: 0.3
+    elementSaturateRatio: 0.3
+    elementLightenRatio: 0.1
 
 
     menuLevelBoxShadowColorDarkenRatio: 0.3 # Used as shadow color if mouse over or selection path
@@ -133,10 +133,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuHierarchy: [
         {
             jsonTag: "schema"
-            label: "#{appName} SCDL Editor"
+            label: "#{appName}"
             objectDescriptor: {
                 mvvmType: "child"
-                description: "#{appName} client app homepage."
+                description: "#{appName} client home."
                 namespaceDescriptor: {
                     userImmutable: {
                         clientDeployment: {
@@ -163,7 +163,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
                 {
                     jsonTag: "catalogues"
-                    label: "SCDL Catalogues"
+                    label: "Catalogues"
                     objectDescriptor: {
                         jsonTag: "catalogues"
                         mvvmType: "extension"
