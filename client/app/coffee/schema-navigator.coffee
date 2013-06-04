@@ -158,7 +158,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     
             subMenus: [
 
-                Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTools
+                # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTools
 
 
                 {
@@ -171,102 +171,9 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype
                     }
                 }
-                {
-                    jsonTag: "settings"
-                    label: "Settings"
-                    objectDescriptor: {
-                        mvvmType: "child"
-                        description: "#{appName} app settings."
-                    }
-                    subMenus: [
-                        {
-                            jsonTag: "user"
-                            label: "User"
-                            objectDescriptor: {
-                                mvvmType: "child"
-                                description: "#{appName} customizations."
-                            }
-                        }
-                        {
-                            jsonTag: "preferences"
-                            label: "Preferences"
-                            objectDescriptor: {
-                                mvvmType: "child"
-                                description: "App preferences."
-                            }
-                            subMenus: [
-                                {
-                                    jsonTag: "app"
-                                    label: "App"
-                                    objectDescriptor: {
-                                        mvvmType: "child"
-                                        description: "#{appName} app preferences."
-                                    }
-                                }
-                                {
-                                    jsonTag: "github"
-                                    label: "GitHub"
-                                    objectDescriptor: {
-                                        mvvmType: "child"
-                                        description: "GitHub integration preferences."
-                                    }
-                                }
-                            ]
-                        }
-                        {
-                            jsonTag: "advanced"
-                            label: "Advanced"
-                            objectDescriptor: {
-                                mvvmType: "child"
-                                description: "Advanced app settings."
-                            }
-                            subMenus: [
-                                {
-                                    jsonTag: "baseScdlCatalogue"
-                                    label: "Base Catalogue"
-                                    objectDescriptor: {
-                                        mvvmType: "child"
-                                        description: "SCDL catalogue archetype."
-                                    }
-                                }
-                                {
-                                    jsonTag: "storage"
-                                    label: "Storage"
-                                    objectDescriptor: {
-                                        mvvmType: "child"
-                                        description: "App local and remote storage."
-                                    }
-                                    subMenus: [
-                                        {
-                                            jsonTag: "local"
-                                            label: "Local"
-                                            objectDescriptor: {
-                                                mvvmType: "child"
-                                                description: "App local storage."
-                                            }
-                                        } # local
-                                        {
-                                            jsonTag: "remotes"
-                                            label: "Remotes"
-                                            objectDescriptor: {
-                                                mvvmType: "extension"
-                                                description: "Remote stores."
-                                                archetype: {
-                                                    jsonTag: "source"
-                                                    label: "Source"
-                                                    objectDescriptor: {
-                                                        mvvmType: "archetype"
-                                                        description: "Source descriptor for remote SCDL catalogue(s)."
-                                                    }
-                                                } # remote
-                                            } # remote archetype
-                                        } # remotes
-                                    ] # storage submenus
-                                } # storage
-                            ] # advanced submenus
-                        } # advanced
-                    ] # settings submenus
-                } # settings
+
+                # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSettings
+
 
                 {
                     jsonTag: "help"

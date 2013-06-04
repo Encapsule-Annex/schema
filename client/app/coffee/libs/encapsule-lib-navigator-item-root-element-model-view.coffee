@@ -50,12 +50,18 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
 
         templateName = "idKoTemplate_NavigatorItemElement_#{path_}"
 
+        ###
+        Navigator path
+        ###
         templateHtml = """
             <div style="font-size: 10pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.2); padding: 5px;" data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
                 <strong>Navigator path::</strong> <span data-bind="text: menuLevelObject.path"></span>
             </div>
             """
 
+        ###
+        Navigator item title
+        ###
         templateHtml += """
 
             <div style="font-weight: normal; background-color: rgba(0, 200, 255, 0.1); padding: 5px;">
@@ -66,7 +72,9 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                 </div>
                 """
 
-        # Operations menu
+        ###
+        Navigator item operations
+        ###
         switch mvvmType
             when "root"
                 break
@@ -134,30 +142,34 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
         if (namespaceDescriptor? and namespaceDescriptor)
 
             namespaceDescriptorImmutable = namespaceDescriptor.userImmutable? and namespaceDescriptor.userImmutable or {}
+
             templateHtmlNamespaceImmutable = """
-                <h3>The #{label} object has the following immutable properties:</h3>
+                <thead style="text-align: center; font-weight: bold; background-color: rgba(255,255,255,0.5);"><td>immutable properties</td><td>type</td><td>value</td></thead>
                 """
-            templateHtmlNamespaceImmutable += """<div data-bind="with: itemObservableModelView">"""
+
             for memberName, functions of namespaceDescriptorImmutable
                 templateHtmlNamespaceImmutable += """
-                #{memberName} (#{functions.type}) :: <span data-bind="text: #{memberName}"></span><br>
+                <tr style="background-color: rgba(255,255,255,0.1);"><td><strong>#{memberName}</strong></td><td>#{functions.type}</td><td><span data-bind="text: #{memberName}"></span></td></tr>
                 """
-            templateHtmlNamespaceImmutable += "</div>"
-
 
             namespaceDescriptorMutable = namespaceDescriptor.userMutable? and namespaceDescriptor.userMutable or {}
             templateHtmlNamespaceMutable = """
-                <h3>The #{label} object has the following mutable properties:</h3>
+                <thead style="text-align: center; font-weight: bold; background-color: rgba(0,200,255,0.5);"><td>mutable properties</td><td>type</td><td>value</td></thead>
                 """
-            templateHtmlNamespaceMutable += """<div data-bind="with: itemObservableModelView">"""
             for memberName, functions of namespaceDescriptorMutable
                 templateHtmlNamespaceMutable += """
-                    #{memberName} (#{functions.type}) :: <span data-bind="text: #{memberName}"></span><br>
+                    <tr style="background-color: rgba(0,200,255,0.1);"><td><strong>#{memberName}</strong></td><td>#{functions.type}</td><td><span data-bind="text: #{memberName}"></span></td></tr>
                     """
-            templateHtmlNamespaceMutable += "</div>"
 
-            templateHtml += templateHtmlNamespaceImmutable + templateHtmlNamespaceMutable
-
+            templateHtml += """
+                <h3>#{label} object namespace:</h3>
+                <div data-bind="with: itemObservableModelView">
+                <table style="border: none;">
+                """ + templateHtmlNamespaceImmutable + templateHtmlNamespaceMutable +
+                """
+                </table>
+                </div>
+                """
 
         # LAST STEP (ALWAYS)
 

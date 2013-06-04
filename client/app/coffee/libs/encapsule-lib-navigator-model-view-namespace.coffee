@@ -45,9 +45,10 @@ class Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer
                             if functions.fnCreate? and functions.fnCreate
                                 namespaceObject_[memberName] = functions.fnCreate()
                         
-
                 catch exception
                     throw "NavigatorModelViewNamespace.initializeNamespace fail: #{exception}"
+
+                
 
         catch exception
             throw "NavigatorModelViewNamespace fail: #{exception}"
