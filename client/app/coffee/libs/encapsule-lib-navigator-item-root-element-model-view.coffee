@@ -24,7 +24,7 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or Encapsule.code.lib.modelview = {}
 
-Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (layoutObject_, path_) ->
+Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (layoutObject_, itemHostObject_, path_) ->
 
     try
 
@@ -66,8 +66,7 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                 </div>
                 """
 
-
-
+        # Operations menu
         switch mvvmType
             when "root"
                 break
@@ -133,7 +132,31 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
 
 
         if (namespaceDescriptor? and namespaceDescriptor)
-            Console.message("... namespaceDescriptor defined for path #{path_}")
+
+            namespaceDescriptorImmutable = namespaceDescriptor.userImmutable? and namespaceDescriptor.userImmutable or {}
+            templateHtmlNamespaceImmutable = """
+                <h3>The #{label} object has the following immutable properties:</h3>
+                """
+            templateHtmlNamespaceImmutable += """<div data-bind="with: itemObservableModelView">"""
+            for memberName, functions of namespaceDescriptorImmutable
+                templateHtmlNamespaceImmutable += """
+                #{memberName} (#{functions.type}) :: <span data-bind="text: #{memberName}"></span><br>
+                """
+            templateHtmlNamespaceImmutable += "</div>"
+
+
+            namespaceDescriptorMutable = namespaceDescriptor.userMutable? and namespaceDescriptor.userMutable or {}
+            templateHtmlNamespaceMutable = """
+                <h3>The #{label} object has the following mutable properties:</h3>
+                """
+            templateHtmlNamespaceMutable += """<div data-bind="with: itemObservableModelView">"""
+            for memberName, functions of namespaceDescriptorMutable
+                templateHtmlNamespaceMutable += """
+                    #{memberName} (#{functions.type}) :: <span data-bind="text: #{memberName}"></span><br>
+                    """
+            templateHtmlNamespaceMutable += "</div>"
+
+            templateHtml += templateHtmlNamespaceImmutable + templateHtmlNamespaceMutable
 
 
         # LAST STEP (ALWAYS)

@@ -50,7 +50,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             if layoutObjectDescriptor.namespaceDescriptor? and layoutObjectDescriptor.namespaceDescriptor
                 @namespaceMemberInitializer = new Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer(layoutObjectDescriptor.namespaceDescriptor)
 
-            @namespaceViewModelTemplateName = Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate(layoutObject, @path)
+            @namespaceViewModelTemplateName = Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate(layoutObject, @, @path)
 
           
             @jsonTag = layoutObjectDescriptor? and layoutObjectDescriptor and layoutObjectDescriptor.jsonTag? and layoutObjectDescriptor.jsonTag or @menuLevelObject.jsonTag
