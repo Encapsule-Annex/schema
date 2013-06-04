@@ -54,16 +54,17 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
             <div style="font-size: 10pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.2); padding: 5px;" data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
                 <strong>Navigator path::</strong> <span data-bind="text: menuLevelObject.path"></span>
             </div>
+            """
+
+        templateHtml += """
 
             <div style="font-weight: normal; background-color: rgba(0, 200, 255, 0.1); padding: 5px;">
                 <div style="font-size: 22pt;" data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
                    <span data-bind="text: itemPageTitle"></span>
                 </div>
                 <span>#{objectDescriptor.description}</span>
-            </div>                
-
-            """
-
+                </div>
+                """
 
 
 
@@ -84,6 +85,7 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                 <button class="button small green" data-bind="click: function(data_, event_) { onButtonClickInsertExtension(data_, event_, true) }">Add/Select</button>
                 <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>
                 <br clear="all">
+                </div>
                 """
                 break
             when "select"
@@ -102,6 +104,7 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                 <strong><span data-bind="text: itemPageTitle"></span> &gt;</strong>
                 <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>
                 <br clear="all">
+                </div>
                 """
                 break
             when "archetype"
@@ -119,6 +122,7 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                 <strong><span data-bind="text: itemPageTitle"></span> &gt;</strong>
                 <button class="button small black" data-bind="click: onButtonClickCloseExtension">Close</button>
                 <br clear="all">
+                </div>
                 """
                 break
 
@@ -127,12 +131,12 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                 throw "Unrecognized MVVM type=#{mvvmType}"
 
 
+
         if (namespaceDescriptor? and namespaceDescriptor)
             Console.message("... namespaceDescriptor defined for path #{path_}")
 
 
         # LAST STEP (ALWAYS)
-        templateHtml += """</div>"""
 
         
 

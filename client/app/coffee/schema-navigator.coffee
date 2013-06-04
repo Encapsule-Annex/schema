@@ -31,10 +31,10 @@ Color = net.brehaut.Color
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     jsonTag: "appRoot"
-    label: "#{appName} Client Root"
+    label: "#{appName} Root"
     description: "#{appName} client root."
 
-    detailBelowSelectDefault: 0
+    detailBelowSelectDefault: 1
     detailAboveSelectDefault: 1
 
     initialSelectionPath: "appRoot.schema"
@@ -51,19 +51,19 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     borderWidthFlat: 2
 
     fontColorRatioDefault: 0.45
-    fontColorRatioSelected: -1 # -0.8
+    fontColorRatioSelected: -2 # -0.8
     fontColorRatioSelectedChild: -2 # -0.8
     fontColorRatioMouseOver: -1
     
-    selectedItemBackgroundShiftHue: -45
-    selectedItemBackgroundLightenRatio: 0.45
+    selectedItemBackgroundShiftHue: 20
+    selectedItemBackgroundLightenRatio: 0.5
 
     # with respect to a specific menu level, this style applies if the level has a child selected.
     selectedChildItemBackgroundShiftHue: 20
     selectedChildItemBackgroundLightenRatio: 0.5
 
     mouseOverItemBackgroundShiftHue: 0
-    mouseOverItemBackgroundLightenRatio: 0.5
+    mouseOverItemBackgroundLightenRatio: 0.4
 
     menuLevelPaddingTop: 1
     menuLevelPaddingBottom: 5
@@ -74,7 +74,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelFontSizeMin: 12
 
     structureArrayShiftHue: 0
-    structureArrayLightenRatio: -0.25
+    structureArrayLightenRatio: -0.15
 
     metaArrayElementShiftHue: -30
     metaArrayElementLightenRatio: 0.2
@@ -133,7 +133,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuHierarchy: [
         {
             jsonTag: "schema"
-            label: "#{appName}"
+            label: "#{appName} Home"
             objectDescriptor: {
                 mvvmType: "child"
                 description: "#{appName} client home."
@@ -167,7 +167,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     objectDescriptor: {
                         jsonTag: "catalogues"
                         mvvmType: "extension"
-                        description: "Manage SCDL catalogues in your local repository."
+                        description: "SCDL catalogue object collection."
                         archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype
                     }
                 }
