@@ -141,33 +141,38 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
 
         if (namespaceDescriptor? and namespaceDescriptor)
 
-            namespaceDescriptorImmutable = namespaceDescriptor.userImmutable? and namespaceDescriptor.userImmutable or {}
+            namespaceDescriptorImmutable = namespaceDescriptor.userImmutable? and namespaceDescriptor.userImmutable or undefined
+            namespaceDescriptorMutable = namespaceDescriptor.userMutable? and namespaceDescriptor.userMutable or undefined
 
             templateHtmlNamespaceImmutable = """
-                <thead style="text-align: center; font-weight: bold; background-color: rgba(255,255,255,0.5);"><td>immutable properties</td><td>type</td><td>value</td></thead>
+                <thead class="classNavigatorItemNamespaceImmutableHeader"><td>immutable properties</td><td>type</td><td>value</td></thead>
                 """
 
             for memberName, functions of namespaceDescriptorImmutable
                 templateHtmlNamespaceImmutable += """
-                <tr style="background-color: rgba(255,255,255,0.1);"><td><strong>#{memberName}</strong></td><td>#{functions.type}</td><td><span data-bind="text: #{memberName}"></span></td></tr>
+                <tr class="classNavigatorItemNamespaceImmutableMember"><td>#{memberName}</td><td>#{functions.type}</td><td><span data-bind="text: #{memberName}"></span></td></tr>
                 """
 
-            namespaceDescriptorMutable = namespaceDescriptor.userMutable? and namespaceDescriptor.userMutable or {}
             templateHtmlNamespaceMutable = """
-                <thead style="text-align: center; font-weight: bold; background-color: rgba(0,200,255,0.5);"><td>mutable properties</td><td>type</td><td>value</td></thead>
+                <thead class="classNavigatorItemNamespaceMutableHeader"><td>mutable properties</td><td>type</td><td>value</td></thead>
                 """
+
             for memberName, functions of namespaceDescriptorMutable
                 templateHtmlNamespaceMutable += """
-                    <tr style="background-color: rgba(0,200,255,0.1);"><td><strong>#{memberName}</strong></td><td>#{functions.type}</td><td><span data-bind="text: #{memberName}"></span></td></tr>
+                    <tr class="classNavigatorItemNamespaceMutableMember"><td><strong>#{memberName}</strong></td><td>#{functions.type}</td><td><span class="classNavigatorItemNamespaceMutableMemberReadOnly" data-bind="text: #{memberName}"></span></td></tr>
                     """
 
+            tableInnerHtml = ""
+            if namespaceDescriptorImmutable? and namespaceDescriptorImmutable and templateHtmlNamespaceImmutable
+                tableInnerHtml += templateHtmlNamespaceImmutable
+
+            if namespaceDescriptorMutable? and namespaceDescriptorMutable and templateHtmlNamespaceMutable
+                tableInnerHtml += templateHtmlNamespaceMutable
+            
             templateHtml += """
                 <h3>#{label} object namespace:</h3>
-                <div data-bind="with: itemObservableModelView">
-                <table style="border: none;">
-                """ + templateHtmlNamespaceImmutable + templateHtmlNamespaceMutable +
-                """
-                </table>
+                <div class="classNavigatorItemNamespace" data-bind="with: itemObservableModelView">
+                <table>#{tableInnerHtml}</table>
                 </div>
                 """
 

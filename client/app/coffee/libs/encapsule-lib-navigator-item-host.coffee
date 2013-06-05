@@ -48,9 +48,16 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             @namespaceMemberInitializer = undefined
             if layoutObjectDescriptor.namespaceDescriptor? and layoutObjectDescriptor.namespaceDescriptor
-                @namespaceMemberInitializer = new Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer(layoutObjectDescriptor.namespaceDescriptor)
+                @namespaceMemberInitializer = new Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer(@, layoutObjectDescriptor.namespaceDescriptor)
 
             @namespaceViewModelTemplateName = Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate(layoutObject, @, @path)
+
+            @namespaceUpdateObservableState = =>
+                if @namespaceMemberInitializer? and @namespaceMemberInitializer and @namespaceMemberInitializer.updateObservableState?
+                    @namespaceMemberInitializer.updateObservableState()
+                @updatePageTitle()
+                if @parentItemHostWindow? and @parentItemHostWindow
+                    @parentItemHostWindow.namespaceUpdateObservableState()
 
           
             @jsonTag = layoutObjectDescriptor? and layoutObjectDescriptor and layoutObjectDescriptor.jsonTag? and layoutObjectDescriptor.jsonTag or @menuLevelObject.jsonTag

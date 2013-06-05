@@ -57,6 +57,48 @@ background-color: #00AADD;
 margin: 8px;
 }
 
+.classNavigatorItemNamespace {}
+
+.classNavigatorItemNamespace TABLE {
+margin: 0px;
+padding: 2px;
+border: 1px solid #999999;
+}
+
+.classNavigatorItemNamespace THEAD {
+text-align: center;
+font-weight: bold;
+}
+
+.classNavigatorItemNamespace TD {
+border: none;
+}
+
+.classNavigatorItemNamespaceImmutableHeader {
+background-color: rgba(255,255,255,0.2);
+color: rgba(0,0,0,0.5);
+}
+
+.classNavigatorItemNamespaceImmutableMember {
+background-color: rgba(255,255,255,0.1);
+color: rgba(0,0,0,0.5);
+}
+
+.classNavigatorItemNamespaceMutableHeader {
+background-color: rgba(0,200,255,0.3);
+color: rgba(255,255,255,1);
+}
+
+.classNavigatorItemNamespaceMutableMember {
+background-color: rgba(0,200,255,0.1);
+color: rgba(255,255,255,0.75);
+}
+
+.classNavigatorItemNamespaceMutableMemberReadOnly {
+background-color: rgba(0, 200, 255, 0.5);
+color: black;
+}
+
 .classEncapsuleNavigatorMenuItemJSONWindow {
 font-family: Lucida Console, Couier;
 font-size: 10pt;

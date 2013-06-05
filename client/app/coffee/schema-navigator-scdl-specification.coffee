@@ -36,13 +36,13 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
             userMutable: {
                 name: {
                     type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
+                    fnCreate: -> "New Specification"
+                    fnReinitialize: -> "New Specification"
                 }
                 description: {
                     type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
+                    fnCreate: -> "New SCDL specification object."
+                    fnReinitialize: -> "New SCDL specification object"
                 }
                 tags: {
                     type: "string"
@@ -93,26 +93,26 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                         namespaceDescriptor: {
                             userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta 
                             userMutable: {
-                                uuidModel: {
-                                    type: "uuidSelection"
-                                    selectionSource: "schema/catalogues/catalogue/models/systems"
-                                    fnCreate: ->  Encapsule.code.lib.util.uuidNull
-                                    fnReinitialize: Encapsule.code.lib.util.uuidNull
-                                }
                                 name: {
                                     type: "string"
-                                    fnCreate: -> ""
-                                    fnReinitialize: -> ""
+                                    fnCreate: -> "New System Instance"
+                                    fnReinitialize: -> "New System Instance"
                                 }
                                 description: {
                                     type: "string"
-                                    fnCreate: -> ""
-                                    fnReinitialize: -> ""
+                                    fnCreate: -> "New SCDL system instance."
+                                    fnReinitialize: -> "New SCDL system instance."
                                 }
                                 tags: {
                                     type: "stringCSV"
                                     fnCreate: -> ""
                                     fnReinitialize: -> ""
+                                }
+                                uuidModel: {
+                                    type: "uuidSelection"
+                                    selectionSource: "schema/catalogues/catalogue/models/systems"
+                                    fnCreate: ->  Encapsule.code.lib.util.uuidNull
+                                    fnReinitialize: Encapsule.code.lib.util.uuidNull
                                 }
                                 author: {
                                     type: "uuidSelection"
@@ -145,26 +145,26 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                                         namespaceDescriptor: {
                                             userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
                                             userMutable: {
-                                                uuidModel: {
-                                                    type: "uuidSelection"
-                                                    selectionSource: "schema/catalogues/catalogue/models/sockets"
-                                                    fnCreate: ->  Encapsule.code.lib.util.uuidNull
-                                                    fnReinitialize: Encapsule.code.lib.util.uuidNull
-                                                }
                                                 name: {
                                                     type: "string"
-                                                    fnCreate: -> ""
-                                                    fnReinitialize: -> ""
+                                                    fnCreate: -> "New Socket Instance"
+                                                    fnReinitialize: -> "New Socket Instance"
                                                 }
                                                 description: {
                                                     type: "string"
-                                                    fnCreate: -> ""
-                                                    fnReinitialize: -> ""
+                                                    fnCreate: -> "New SCDL socket instance."
+                                                    fnReinitialize: -> "New SCDL socket instance."
                                                 }
                                                 tags: {
                                                     type: "stringCSV"
                                                     fnCreate: -> ""
                                                     fnReinitialize: -> ""
+                                                }
+                                                uuidModel: {
+                                                    type: "uuidSelection"
+                                                    selectionSource: "schema/catalogues/catalogue/models/sockets"
+                                                    fnCreate: ->  Encapsule.code.lib.util.uuidNull
+                                                    fnReinitialize: Encapsule.code.lib.util.uuidNull
                                                 }
                                                 author: {
                                                     type: "uuidSelection"
@@ -198,26 +198,26 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                                                         namespaceDescriptor: {
                                                             userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
                                                             userMutable: {
-                                                                uuidModel: {
-                                                                    type: "uuidSelection"
-                                                                    selectionSource: "schema/catalogues/catalogue/models/sockets"
-                                                                    fnCreate: ->  Encapsule.code.lib.util.uuidNull
-                                                                    fnReinitialize: Encapsule.code.lib.util.uuidNull
-                                                                }
                                                                 name: {
                                                                     type: "string"
-                                                                    fnCreate: -> ""
-                                                                    fnReinitialize: -> ""
+                                                                    fnCreate: -> "New Instance Binding"
+                                                                    fnReinitialize: -> "New Instance Binding"
                                                                 }
                                                                 description: {
                                                                     type: "string"
-                                                                    fnCreate: -> ""
-                                                                    fnReinitialize: -> ""
+                                                                    fnCreate: -> "New SCDL instance binding."
+                                                                    fnReinitialize: -> "New SCDL instance binding."
                                                                 }
                                                                 tags: {
                                                                     type: "stringCSV"
                                                                     fnCreate: -> ""
                                                                     fnReinitialize: -> ""
+                                                                }
+                                                                uuidModel: {
+                                                                    type: "uuidSelection"
+                                                                    selectionSource: "schema/catalogues/catalogue/models/sockets"
+                                                                    fnCreate: ->  Encapsule.code.lib.util.uuidNull
+                                                                    fnReinitialize: Encapsule.code.lib.util.uuidNull
                                                                 }
                                                                 author: {
                                                                     type: "uuidSelection"

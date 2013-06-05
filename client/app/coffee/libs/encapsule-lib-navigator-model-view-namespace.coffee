@@ -25,15 +25,20 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or Encapsule.code.lib.modelview = {}
 
 class Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer
-    constructor: (namespaceDescriptor_) ->
+    constructor: (itemHostObject_, namespaceDescriptor_) ->
         try
-            if not (namespaceDescriptor_? and namespaceDescriptor_) then throw "NavigatorModelViewNamespace constructor missing namespace declaration parameter."
+            if not (itemHostObject_? and itemHostObject_) then throw "Missing item host object parameter."
+            if not (namespaceDescriptor_? and namespaceDescriptor_) then throw "Missing namespace declaration parameter."
 
             @namespaceDescriptor = namespaceDescriptor_
+            @namespaceObjectReference = undefined
+            @itemHostObject = itemHostObject_
 
             @initializeNamespace = (namespaceObject_) =>
                 try
                     if not (namespaceObject_? and namespaceObject_) then throw "Missing namespace object parameter."
+
+                    @namespaceObjectReference = namespaceObject_
 
                     if @namespaceDescriptor.userImmutable? and @namespaceDescriptor.userImmutable
                         for memberName, functions of @namespaceDescriptor.userImmutable
@@ -44,9 +49,22 @@ class Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer
                         for memberName, functions of @namespaceDescriptor.userMutable
                             if functions.fnCreate? and functions.fnCreate
                                 namespaceObject_[memberName] = functions.fnCreate()
-                        
+
                 catch exception
                     throw "NavigatorModelViewNamespace.initializeNamespace fail: #{exception}"
+
+            @updateObservableState = =>
+
+                if (@namespaceObjectReference? and @namespaceObjectReference)
+                    revision = @namespaceObjectReference["revision"]
+                    updateTime = @namespaceObjectReference["updateTime"]
+                    revision++
+                    if revision? and revision
+                        @namespaceObjectReference["revision"] = revision
+                    if updateTime? and updateTime
+                        @namespaceObjectReference["updateTime"] =  Encapsule.code.lib.util.getEpochTime()
+
+                return true
 
                 
 
