@@ -217,6 +217,8 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                     if parentItemHostObject.itemMVVMType != "extension"
                         throw "Specified item host's parent object type doesn't support this operation. This is an error in your layout declaration."
 
+                    parentItemHostObject.namespaceUpdateObservableState()
+
                     # If the "select"-type item is in the "element" (vs. "archetype") state, we need to detach the
                     # select from the element and return the "select" to "archetype" status before proceeding.
                     if itemHostObject.itemSelectState() == "element"
@@ -343,7 +345,7 @@ class Encapsule.code.lib.modelview.NavigatorWindow
 
                     extensionArray.splice(selectedArrayElement, 1)
                     extensionHostItemObject.itemObservableModelView(extensionArray)
-                    extensionHostItemObject.updateItemPageTitle()
+                    extensionHostItemObject.namespaceUpdateObservableState()
                     
                     return extensionHostItemObject
 
@@ -375,6 +377,9 @@ class Encapsule.code.lib.modelview.NavigatorWindow
                             return true # continue BFS searh on this vertex's children.
                         bfsContext
                         )
+
+                    if itemHostObject_.parentItemHostWindow? and itemHostObject_.parentItemHostWindow
+                        itemHostObject_.parentItemHostWindow.namespaceUpdateObservableState()
 
                     return itemHostObject_
 

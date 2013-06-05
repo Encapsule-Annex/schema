@@ -150,7 +150,11 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
 
             for memberName, functions of namespaceDescriptorImmutable
                 templateHtmlNamespaceImmutable += """
-                <tr class="classNavigatorItemNamespaceImmutableMember"><td>#{memberName}</td><td>#{functions.type}</td><td><span data-bind="text: #{memberName}"></span></td></tr>
+                <tr class="classNavigatorItemNamespaceImmutableMember">
+                    <td>#{memberName}</td>
+                    <td>#{functions.type}</td>
+                    <td><span data-bind="text: #{memberName}"></span></td>
+                </tr>
                 """
 
             templateHtmlNamespaceMutable = """
@@ -159,7 +163,11 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
 
             for memberName, functions of namespaceDescriptorMutable
                 templateHtmlNamespaceMutable += """
-                    <tr class="classNavigatorItemNamespaceMutableMember"><td><strong>#{memberName}</strong></td><td>#{functions.type}</td><td><span class="classNavigatorItemNamespaceMutableMemberReadOnly" data-bind="text: #{memberName}"></span></td></tr>
+                    <tr class="classNavigatorItemNamespaceMutableMember">
+                        <td><strong>#{memberName}</strong></td>
+                        <td>#{functions.type}</td>
+                        <td><span data-bind="click: $parent.namespaceUpdateObservableState">Update</span> <span class="classNavigatorItemNamespaceMutableMemberReadOnly" data-bind="text: #{memberName}"></span></td>
+                    </tr>
                     """
 
             tableInnerHtml = ""

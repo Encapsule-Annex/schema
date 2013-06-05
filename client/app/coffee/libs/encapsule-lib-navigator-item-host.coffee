@@ -55,7 +55,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             @namespaceUpdateObservableState = =>
                 if @namespaceMemberInitializer? and @namespaceMemberInitializer and @namespaceMemberInitializer.updateObservableState?
                     @namespaceMemberInitializer.updateObservableState()
-                @updatePageTitle()
+                @updateItemPageTitle()
+                @itemObservableModelViewUpdated()
                 if @parentItemHostWindow? and @parentItemHostWindow
                     @parentItemHostWindow.namespaceUpdateObservableState()
 
@@ -139,6 +140,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 if pageTitle != @menuLevelObject.label()
                     @menuLevelObject.label(pageTitle)
                 @itemPageTitle(pageTitle)
+                @itemObservableModelViewUpdateCount()
+
             
 
             if @menuLevelObject.parentMenuLevel? and @menuLevelObject.parentMenuLevel
