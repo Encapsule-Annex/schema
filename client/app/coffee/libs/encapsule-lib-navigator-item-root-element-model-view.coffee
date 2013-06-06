@@ -189,7 +189,8 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                             </span>
                             <span class="classNavigatorItemNamespaceMutableMemberEditAreaLabel">Edit #{functions.type} property: <strong>#{itemHostObject_.jsonTag}.#{memberName}</strong></span><br>
                             <span data-bind="with: $parent.namespaceMemberInitializer.namespaceMemberModelView['#{memberName}']">
-                                <textarea data-bind="value: editValue" row="1" cols="80" maxlength="256" class="classNavigatorItemNamespaceMutableMemberValue"/>
+                                <!-- <textarea data-bind="value: editValue" row="1" cols="80" maxlength="256" class="classNavigatorItemNamespaceMutableMemberValue"/> -->
+                                <div contenteditable="true" class="classNavigatorItemNamespaceMutableMemberValue" data-bind="editableText: editValue"></div>
                             </span>
                             <br clear="all">
                         </div>
