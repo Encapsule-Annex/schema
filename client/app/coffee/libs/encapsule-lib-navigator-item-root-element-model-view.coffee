@@ -172,11 +172,11 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
             # Enumerate namespace's mutable member properties.
             for memberName, functions of namespaceDescriptorMutable
                 templateHtmlNamespaceMutable += """
-                    <tr class="classNavigatorItemNamespaceMutableMember" data-bind="click: function(data_, event_) { $parent.onNamespaceMutableMemberClick('#{memberName}', #{memberName}, data_, event_); }">
+                    <tr class="classNavigatorItemNamespaceMutableMember classMouseCursorPointer" data-bind="click: function(data_, event_) { $parent.onNamespaceMutableMemberClick('#{memberName}', #{memberName}, data_, event_); }">
                         <td><strong>#{memberName}</strong></td>
                         <td>#{functions.type}</td>
                         <td>
-                            <span class="classNavigatorItemNamespaceMutableMemberReadOnly" data-bind="text: #{memberName}"></span>
+                            <span class="classNavigatorItemNamespaceMutableMemberValue" data-bind="text: #{memberName}"></span>
                         </td>
                     </tr>
                     <tr class="classNavigatorItemNamespaceMutableMemberEdit" data-bind="visible: $parent.namespaceMemberInitializer.namespaceMemberModelView['#{memberName}'].editMode">
@@ -187,9 +187,9 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                                 <button class="button small orange" data-bind="click: function(data_, event_) { $parent.onNamespaceMutableMemberClickReset('#{memberName}', data_, event_); }">Reset</button>
                                 <button class="button small black" data-bind="click: function(data_, event_) { $parent.onNamespaceMutableMemberClickCancel('#{memberName}', data_, event_); }">Cancel</button>
                             </span>
-                            #{itemHostObject_.path}.<strong>#{memberName}</strong> (#{functions.type}):<br>
+                            <span class="classNavigatorItemNamespaceMutableMemberEditAreaLabel">Edit #{functions.type} property: <strong>#{itemHostObject_.jsonTag}.#{memberName}</strong></span><br>
                             <span data-bind="with: $parent.namespaceMemberInitializer.namespaceMemberModelView['#{memberName}']">
-                                <textarea data-bind="value: editValue" row="1" cols="80" maxlength="256" style="background-color: rgba(0,100,255,0.2);"/>
+                                <textarea data-bind="value: editValue" row="1" cols="80" maxlength="256" class="classNavigatorItemNamespaceMutableMemberValue"/>
                             </span>
                             <br clear="all">
                         </div>

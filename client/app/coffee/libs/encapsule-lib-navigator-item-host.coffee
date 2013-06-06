@@ -46,6 +46,8 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
             layoutObject = @menuLevelObject.layoutObject
             layoutObjectDescriptor = @menuLevelObject.layoutObject.objectDescriptor
 
+            @jsonTag = layoutObjectDescriptor? and layoutObjectDescriptor and layoutObjectDescriptor.jsonTag? and layoutObjectDescriptor.jsonTag or @menuLevelObject.jsonTag
+
             @namespaceMemberInitializer = undefined
             if layoutObjectDescriptor.namespaceDescriptor? and layoutObjectDescriptor.namespaceDescriptor
                 @namespaceMemberInitializer = new Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer(@, layoutObjectDescriptor.namespaceDescriptor)
@@ -60,7 +62,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 if @parentItemHostWindow? and @parentItemHostWindow
                     @parentItemHostWindow.namespaceUpdateObservableState()
 
-            @jsonTag = layoutObjectDescriptor? and layoutObjectDescriptor and layoutObjectDescriptor.jsonTag? and layoutObjectDescriptor.jsonTag or @menuLevelObject.jsonTag
 
             Console.message("NavigatorMenuItemHostWindow constructing for navigator path #{@path}")
 
@@ -592,6 +593,7 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 memberModelView = @namespaceMemberInitializer.namespaceMemberModelView[memberName_]
                 currentEditValue = memberModelView.editValue()
                 objectContextValue_[memberName_] = currentEditValue
+                @itemObservableModelView(@itemObservableModelView())
                 @namespaceUpdateObservableState()
                 @onNamespaceMutableMemberClick(memberName_, undefined, objectContextValue_, event_)
 
