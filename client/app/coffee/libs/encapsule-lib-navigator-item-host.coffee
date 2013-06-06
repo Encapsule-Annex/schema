@@ -126,17 +126,11 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 itemObservableModelView = @itemObservableModelView()
                 pageTitle = @menuLevelObject.labelDefault
                 if isExtensionPoint
-
-                    # This doesn't work at all.
-                    #selectedElementOrdinal = -1
-                    #childItemHost = @getChildSelectItemHostObject()
-                    #if childItemHost? and childItemHost
-                    #    selectedElementOrdinal = childItemHost.itemSelectElementOrdinal()
-
                     pageTitle = "#{@menuLevelObject.labelDefault} #{itemObservableModelView.length}"
 
                 if isSelectedArchetype then pageTitle = "#{@menuLevelObject.labelDefault} (archetype)"
                 if isSelectedElement then pageTitle = "#{@menuLevelObject.labelDefault} #{@itemSelectElementOrdinal() + 1}"
+
                 if pageTitle != @menuLevelObject.label()
                     @menuLevelObject.label(pageTitle)
                 @itemPageTitle(pageTitle)
@@ -323,6 +317,10 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                     @itemObservableModelView = thisObservableModelView
                     @itemObservableModelViewUpdated()
                     @updateItemPageTitle()
+                    if @namespaceMemberInitializer? and @namespaceMemberInitializer
+                        @namespaceMemberInitializer.refreshLabel()
+
+
                     
 
                 catch exception
@@ -365,6 +363,9 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                         
                                 @itemObservableModelView = unboxed
                                 @itemObservableModelViewUpdated()
+                                if @namespaceMemberInitializer? and @namespaceMemberInitializer
+                                    @namespaceMemberInitializer.refreshLabel()
+
                                 if not @itemObservableModelView
                                     throw "Internal error!"
 
@@ -396,6 +397,10 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
                                 @itemObservableModelView = unboxed
                                 @itemObservableModelViewUpdated()
+                                if @namespaceMemberInitializer? and @namespaceMemberInitializer
+                                    @namespaceMemberInitializer.refreshLabel()
+
+
                                 if not @itemObservableModelView
                                     throw "Internal error!"
 
@@ -450,6 +455,11 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                                         @itemObservableModelView(newObject)
 
                                     break
+
+                                    if @namespaceMemberInitializer? and @namespaceMemberInitializer
+                                        @namespaceMemberInitializer.refreshLabel()
+
+
 
                                 else
                                     throw "Unrecognized item select state!"

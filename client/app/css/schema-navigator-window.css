@@ -75,44 +75,63 @@ border: none;
 }
 
 .classNavigatorItemNamespaceImmutableHeader {
-background-color: rgba(255,255,255,0.2);
+background-color: rgba(255,255,255,0.3);
 color: rgba(0,0,0,0.5);
 }
 
 .classNavigatorItemNamespaceImmutableMember {
-background-color: rgba(255,255,255,0.1);
+background-color: rgba(255,255,255,0.2);
 color: rgba(0,0,0,0.5);
 }
 
+/* mutable namespace member header row style */
 .classNavigatorItemNamespaceMutableHeader {
 background-color: rgba(0,200,255,0.3);
 color: rgba(255,255,255,1);
 }
 
+/* mutable namespace member table row (summary row) style */
 .classNavigatorItemNamespaceMutableMember {
 background-color: rgba(0,200,255,0.5);
 color: rgba(255,255,255,0.75);
 }
 
+/* mutable namespace member table row (edit row) style */
 .classNavigatorItemNamespaceMutableMemberEdit {
+background-color: rgba(0,0,0,0.1);
 }
 
+/* mutable namespace member edit row containing DIV style */
 .classNavigatorItemNamespaceMutableMemberEditArea {
 -moz-border-radius: 6px; border-radius: 6px;
 border: 2px solid white;
-background-color: rgba(0,200,255,0.5);
+background-color: rgba(0,200,255,0.3);
 padding: 5px;
+margin: 5px;
 }
 
+/* mutable namespace member edit row label text style */
 .classNavigatorItemNamespaceMutableMemberEditAreaLabel {
-font-size: 14pt;
-color: white;
+font-size: 12pt;
+color: #00CCFF;
 }
 
-.classNavigatorItemNamespaceMutableMemberValue {
-background-color: rgba(0,200,255,1);
-color: black;
+/* mutable namespace member edit row text edit div style */
+.classNavigatorItemNamespaceMutableMemberEditAreEdit {
+background-color: rgba(0,200,255,0.5);
+color: white;
+font-size: 14pt;
+font-weight: bold;
+margin: 5px;
+padding: 5px;
+border: 1px solid white;
 }
+
+
+/* Display attribute of the namespace member value in the summary row. */
+.classNavigatorItemNamespaceMutableMemberValue {
+}
+
 
 .classEncapsuleNavigatorMenuItemJSONWindow {
 font-family: Lucida Console, Couier;

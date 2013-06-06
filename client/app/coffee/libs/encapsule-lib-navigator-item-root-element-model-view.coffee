@@ -67,6 +67,10 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
             <div style="font-weight: normal; background-color: rgba(0, 200, 255, 0.1); padding: 5px;">
                 <div style="font-size: 22pt;" data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
                    <span data-bind="text: itemPageTitle"></span>
+                   <span data-bind="if: namespaceMemberInitializer"><span data-bind="if: namespaceMemberInitializer.namespaceLabel">
+                       :
+                       <span data-bind="text: namespaceMemberInitializer.namespaceLabel"></span>
+                   </span></span>
                 </div>
                 <span>#{objectDescriptor.description}</span>
                 </div>
@@ -187,12 +191,11 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                                 <button class="button small orange" data-bind="click: function(data_, event_) { $parent.onNamespaceMutableMemberClickReset('#{memberName}', data_, event_); }">Reset</button>
                                 <button class="button small black" data-bind="click: function(data_, event_) { $parent.onNamespaceMutableMemberClickCancel('#{memberName}', data_, event_); }">Cancel</button>
                             </span>
-                            <span class="classNavigatorItemNamespaceMutableMemberEditAreaLabel">Edit #{functions.type} property: <strong>#{itemHostObject_.jsonTag}.#{memberName}</strong></span><br>
-                            <span data-bind="with: $parent.namespaceMemberInitializer.namespaceMemberModelView['#{memberName}']">
-                                <!-- <textarea data-bind="value: editValue" row="1" cols="80" maxlength="256" class="classNavigatorItemNamespaceMutableMemberValue"/> -->
-                                <div contenteditable="true" class="classNavigatorItemNamespaceMutableMemberValue" data-bind="editableText: editValue"></div>
-                            </span>
+                            <span class="classNavigatorItemNamespaceMutableMemberEditAreaLabel">Edit #{functions.type} property <strong>#{itemHostObject_.jsonTag}.#{memberName}</strong></span>
                             <br clear="all">
+                            <span data-bind="with: $parent.namespaceMemberInitializer.namespaceMemberModelView['#{memberName}']">
+                                <div contenteditable="true" class="classNavigatorItemNamespaceMutableMemberEditAreEdit" data-bind="editableText: editValue"></div>
+                            </span>
                         </div>
                     </td>
                     </tr>

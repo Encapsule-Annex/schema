@@ -36,6 +36,7 @@ class Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer
 
             @namespaceMemberModelView = {} # This should be used purely for managing namespace member UI state
 
+
             @initializeNamespace = (namespaceObject_) =>
                 try
                     if not (namespaceObject_? and namespaceObject_) then throw "Missing namespace object parameter."
@@ -59,22 +60,64 @@ class Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer
                                 memberNamespace.editMode = ko.observable(false)
                                 memberNamespace.editValue = ko.observable(undefined)
 
+                    @refreshLabel()
+
                 catch exception
                     throw "NavigatorModelViewNamespace.initializeNamespace fail: #{exception}"
 
+            @getLabel = =>
+            
+                try
+                    if not (@namespaceObjectReference and @namespaceObjectReference)
+                        return undefined
+                    if not (@itemHostObject? and @itemHostObject)
+                        return undefined
+                    if not (@itemHostObject.navigatorContainer? and @itemHostObject.navigatorContainer)
+                        return undefined
+
+                    semanticBindings = @itemHostObject.navigatorContainer.layout.semanticBindings
+                    if not (semanticBindings? and semanticBindings)
+                        return undefined
+
+                    getLabelBinding = semanticBindings.getLabel? and semanticBindings.getLabel
+                    if not (getLabelBinding? and getLabelBinding)
+                        return undefined
+
+                    result = getLabelBinding(@namespaceObjectReference)
+                    return result
+
+                catch exception
+                    throw "getLabel fail: #{exception}"
+                
+            @namespaceLabel = ko.observable(undefined)
+
+            @refreshLabel = =>
+                @namespaceLabel(@getLabel())
+
+            @refreshLabel()
+
+
             @updateObservableState = =>
 
-                if (@namespaceObjectReference? and @namespaceObjectReference)
-                    revision = @namespaceObjectReference["revision"]
-                    updateTime = @namespaceObjectReference["updateTime"]
-                    revision++
-                    if revision? and revision
-                        @namespaceObjectReference["revision"] = revision
-                    if updateTime? and updateTime
-                        @namespaceObjectReference["updateTime"] =  Encapsule.code.lib.util.getEpochTime()
+                try
+                    if not (@itemHostObject? and @itemHostObject) then throw "Cannot resolve item host object reference."
+                    if not (@itemHostObject.navigatorContainer? and @itemHostObject.navigatorContainer) then throw "Cannot resolve navigator container reference."
+                    semanticBindings = @itemHostObject.navigatorContainer.layout.semanticBindings
+                    if not (semanticBindings? and semanticBindings)
+                        return false
 
-                return true
+                    updateBinding = semanticBindings.update? and semanticBindings.update
+                    if not (updateBinding? and updateBinding)
+                        return false
 
+                    result = updateBinding(@namespaceObjectReference)
+                    @refreshLabel() 
+
+                    return result
+
+                catch exception
+                    throw "updateObservableState fail: #{exception}"
+                
                 
 
         catch exception

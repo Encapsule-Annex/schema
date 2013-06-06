@@ -36,13 +36,13 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
             userMutable: {
                 name: {
                     type: "string"
-                    fnCreate: -> "New Specification"
-                    fnReinitialize: -> "New Specification"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
                 }
                 description: {
                     type: "string"
-                    fnCreate: -> "New SCDL specification object."
-                    fnReinitialize: -> "New SCDL specification object"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
                 }
                 tags: {
                     type: "string"
@@ -95,13 +95,13 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                             userMutable: {
                                 name: {
                                     type: "string"
-                                    fnCreate: -> "New System Instance"
-                                    fnReinitialize: -> "New System Instance"
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
                                 }
                                 description: {
                                     type: "string"
-                                    fnCreate: -> "New SCDL system instance."
-                                    fnReinitialize: -> "New SCDL system instance."
+                                    fnCreate: -> ""
+                                    fnReinitialize: -> ""
                                 }
                                 tags: {
                                     type: "stringCSV"
@@ -147,13 +147,13 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                                             userMutable: {
                                                 name: {
                                                     type: "string"
-                                                    fnCreate: -> "New Socket Instance"
-                                                    fnReinitialize: -> "New Socket Instance"
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
                                                 }
                                                 description: {
                                                     type: "string"
-                                                    fnCreate: -> "New SCDL socket instance."
-                                                    fnReinitialize: -> "New SCDL socket instance."
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
                                                 }
                                                 tags: {
                                                     type: "stringCSV"
@@ -200,13 +200,13 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                                                             userMutable: {
                                                                 name: {
                                                                     type: "string"
-                                                                    fnCreate: -> "New Instance Binding"
-                                                                    fnReinitialize: -> "New Instance Binding"
+                                                                    fnCreate: -> ""
+                                                                    fnReinitialize: -> ""
                                                                 }
                                                                 description: {
                                                                     type: "string"
-                                                                    fnCreate: -> "New SCDL instance binding."
-                                                                    fnReinitialize: -> "New SCDL instance binding."
+                                                                    fnCreate: -> ""
+                                                                    fnReinitialize: -> ""
                                                                 }
                                                                 tags: {
                                                                     type: "stringCSV"

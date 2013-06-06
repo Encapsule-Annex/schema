@@ -37,13 +37,13 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
             userMutable: {
                 name: {
                     type: "string"
-                    fnCreate: -> "New Catalogue"
-                    fnReinitialize: -> "New Catalogue"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
                 }
                 description: {
                     type: "string"
-                    fnCreate: -> "New SCDL catalogue object."
-                    fnReinitialize: -> "New SCDL catalogue object."
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
                 }
                 tags: {
                     type: "stringCSV"

@@ -70,8 +70,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelPaddingLeft: 5
     menuLevelPaddingRight: 5
 
-    menuLevelFontSizeMax: 14
-    menuLevelFontSizeMin: 12
+    menuLevelFontSizeMax: 12
+    menuLevelFontSizeMin: 10
 
     structureArrayShiftHue: 0
     structureArrayLightenRatio: -0.15
@@ -105,6 +105,24 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
             # will not be forwarded. That's okay.
             if Encapsule.runtime.app.SchemaRouter? and Encapsule.runtime.app.SchemaRouter
                 Encapsule.runtime.app.SchemaRouter.setRoute(path_)
+    }
+
+    semanticBindings: {
+        update: (namespaceObjectReference_) ->
+            revision = namespaceObjectReference_["revision"]
+            updateTime = namespaceObjectReference_["updateTime"]
+            revision++
+            if revision? and revision
+                namespaceObjectReference_["revision"] = revision
+            if updateTime? and updateTime
+                namespaceObjectReference_["updateTime"] =  Encapsule.code.lib.util.getEpochTime()
+            return true
+
+        getLabel: (namespaceObjectReference_) ->
+            label = namespaceObjectReference_["name"]? and namespaceObjectReference_["name"] or
+                namespaceObjectReference_["uuid"]? and namespaceObjectReference_["uuid"] or
+                undefined
+            return label
     }
 
 
