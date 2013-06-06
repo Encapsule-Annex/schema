@@ -90,8 +90,18 @@ color: rgba(255,255,255,1);
 }
 
 .classNavigatorItemNamespaceMutableMember {
-background-color: rgba(0,200,255,0.1);
+background-color: rgba(0,200,255,0.5);
 color: rgba(255,255,255,0.75);
+}
+
+.classNavigatorItemNamespaceMutableMemberEdit {
+border: 1px solid black;
+background-color: rgba(0,200,255,1);
+color: black;
+}
+
+.classNavigatorItemNamespaceMutableMemberEditArea {
+
 }
 
 .classNavigatorItemNamespaceMutableMemberReadOnly {

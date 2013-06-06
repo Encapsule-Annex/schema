@@ -60,7 +60,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 if @parentItemHostWindow? and @parentItemHostWindow
                     @parentItemHostWindow.namespaceUpdateObservableState()
 
-          
             @jsonTag = layoutObjectDescriptor? and layoutObjectDescriptor and layoutObjectDescriptor.jsonTag? and layoutObjectDescriptor.jsonTag or @menuLevelObject.jsonTag
 
             Console.message("NavigatorMenuItemHostWindow constructing for navigator path #{@path}")
@@ -548,6 +547,54 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
 
             # END: / NavigatorMenuItemHostWindow constructor try scope
 
+
+            #
+            # ============================================================================
+            @onNamespaceImmutableMemberClick = (memberName_, memberValue_, objectContextValue_, event_) =>
+                Console.message("onNamespaceImmutableMemberClick on #{@path}.#{memberName_}")
+                memberModelView = @namespaceMemberInitializer.namespaceMemberModelView[memberName_]
+                editMode = memberModelView.editMode()
+                memberModelView.editMode(not editMode)
+
+
+            #
+            # ============================================================================
+            @onNamespaceMutableMemberClick = (memberName_, memberValue_, objectContextValue_, event_) =>
+                Console.message("onNamespaceMutableMemberClick on #{@path}.#{memberName_}")
+                memberModelView = @namespaceMemberInitializer.namespaceMemberModelView[memberName_]
+                editMode = memberModelView.editMode()
+                if not editMode
+                    # We're about to enable editMode
+                    # Reload the value.
+                    memberModelView.editValue(memberValue_)
+                # Toggle edit mode for the namespace member
+                memberModelView.editMode(not editMode)
+
+            #
+            # ============================================================================
+            @onNamespaceMutableMemberClickCancel = (memberName_, objectContextValue_, event_) =>
+                Console.message("onNamespaceMutableMemberClickCancel")
+                @onNamespaceMutableMemberClick(memberName_, undefined, objectContextValue_, event_)
+
+            #
+            # ============================================================================
+            @onNamespaceMutableMemberClickReset = (memberName_, objectContextValue_, event_) =>
+                Console.message("onNamespaceMutableMemberClickReset")
+                defaultValue = @namespaceMemberInitializer.namespaceDescriptor.userMutable[memberName_].fnCreate()
+                memberModelView = @namespaceMemberInitializer.namespaceMemberModelView[memberName_]
+                memberModelView.editValue(defaultValue)
+                return true
+
+            #
+            # ============================================================================
+            @onNamespaceMutableMemberClickUpdate = (memberName_, objectContextValue_, event_) =>
+                Console.message("onNamespaceMutableMemberClickUpdate")
+                memberModelView = @namespaceMemberInitializer.namespaceMemberModelView[memberName_]
+                currentEditValue = memberModelView.editValue()
+                objectContextValue_[memberName_] = currentEditValue
+                @namespaceUpdateObservableState()
+                @onNamespaceMutableMemberClick(memberName_, undefined, objectContextValue_, event_)
+
         catch exception
             throw "NavigatorMenuItemHostWindow constructor fail: #{exception}"
 
@@ -571,7 +618,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaNa
 
                     <div style="border-top: 1px solid #666666; padding-top: 5px; padding-bottom: 5px;" >
 
-                    <button class="button small blue" data-bind="click: function(data_, event_) { $parent.onLinkClickSelectExtension($index(), data_, event_) }">
+                    <button class="button small blue" data-bind="click: function(data_, event_) { $parent.onLinkClickSelectExtension($index(), data_, event_); }">
                         <span data-bind="text: $parent.itemExtensionSelectLabel"></span> #<span data-bind="text: $index() + 1"></span>
                     </button>
 

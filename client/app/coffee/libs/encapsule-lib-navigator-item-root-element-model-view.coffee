@@ -73,7 +73,7 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                 """
 
         ###
-        Navigator item operations
+        START: NAVIGATOR ITEM OPERATIONS VIEW MODEL
         ###
         switch mvvmType
             when "root"
@@ -137,6 +137,13 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
             else
                 throw "Unrecognized MVVM type=#{mvvmType}"
 
+        ###
+        END: NAVIGATOR ITEM OPERATIONS VIEW MODEL
+        ###
+
+        ###
+        START: NAVIGATOR ITEM NAMESPACE MEMBER VIEW MODEL
+        ###
 
 
         if (namespaceDescriptor? and namespaceDescriptor)
@@ -148,25 +155,45 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                 <thead class="classNavigatorItemNamespaceImmutableHeader"><td>immutable properties</td><td>type</td><td>value</td></thead>
                 """
 
+            templateHtmlNamespaceMutable = """
+                <thead class="classNavigatorItemNamespaceMutableHeader"><td>mutable properties</td><td>type</td><td>value</td></thead>
+                """
+
+            # Enumerate namespace's immutable member properties.
             for memberName, functions of namespaceDescriptorImmutable
                 templateHtmlNamespaceImmutable += """
-                <tr class="classNavigatorItemNamespaceImmutableMember">
+                <tr class="classNavigatorItemNamespaceImmutableMember" data-bind="click: function(data_, event_) { $parent.onNamespaceImmutableMemberClick('#{memberName}', #{memberName}, data_, event_); }">
                     <td>#{memberName}</td>
                     <td>#{functions.type}</td>
                     <td><span data-bind="text: #{memberName}"></span></td>
                 </tr>
                 """
 
-            templateHtmlNamespaceMutable = """
-                <thead class="classNavigatorItemNamespaceMutableHeader"><td>mutable properties</td><td>type</td><td>value</td></thead>
-                """
-
+            # Enumerate namespace's mutable member properties.
             for memberName, functions of namespaceDescriptorMutable
                 templateHtmlNamespaceMutable += """
-                    <tr class="classNavigatorItemNamespaceMutableMember">
+                    <tr class="classNavigatorItemNamespaceMutableMember" data-bind="click: function(data_, event_) { $parent.onNamespaceMutableMemberClick('#{memberName}', #{memberName}, data_, event_); }">
                         <td><strong>#{memberName}</strong></td>
                         <td>#{functions.type}</td>
-                        <td><span data-bind="click: $parent.namespaceUpdateObservableState">Update</span> <span class="classNavigatorItemNamespaceMutableMemberReadOnly" data-bind="text: #{memberName}"></span></td>
+                        <td>
+                            <span class="classNavigatorItemNamespaceMutableMemberReadOnly" data-bind="text: #{memberName}"></span>
+                        </td>
+                    </tr>
+                    <tr class="classNavigatorItemNamespaceMutableMemberEdit" data-bind="visible: $parent.namespaceMemberInitializer.namespaceMemberModelView['#{memberName}'].editMode">
+                    <td colspan="3">
+                        <div class="classNavigatorItemNamespaceMutableMemberEditArea">
+                            <span style="float: right;">
+                                <button class="button small green" data-bind="click: function(data_, event_) { $parent.onNamespaceMutableMemberClickUpdate('#{memberName}', data_, event_); }">Update</button>
+                                <button class="button small orange" data-bind="click: function(data_, event_) { $parent.onNamespaceMutableMemberClickReset('#{memberName}', data_, event_); }">Reset</button>
+                                <button class="button small black" data-bind="click: function(data_, event_) { $parent.onNamespaceMutableMemberClickCancel('#{memberName}', data_, event_); }">Cancel</button>
+                            </span>
+                            #{itemHostObject_.path}.<strong>#{memberName}</strong> (#{functions.type}):<br>
+                            <span data-bind="with: $parent.namespaceMemberInitializer.namespaceMemberModelView['#{memberName}']">
+                                <textarea data-bind="value: editValue" row="1" cols="80" maxlength="256" style="background-color: rgba(0,100,255,0.2);"/>
+                            </span>
+                            <br clear="all">
+                        </div>
+                    </td>
                     </tr>
                     """
 
@@ -184,14 +211,15 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
                 </div>
                 """
 
-        # LAST STEP (ALWAYS)
+        ###
+        END: NAVIGATOR ITEM NAMESPACE MEMBER VIEW MODEL
+        ###
 
-        
-
+        ###
+        REGISTER VIEW MODEL TEMPLATE AND EXIT
+        ###
         Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate(templateName, -> templateHtml)
-
         Console.message("NavigatorModelViewFactory exit")
-
         return templateName
 
     catch exception

@@ -31,8 +31,10 @@ class Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer
             if not (namespaceDescriptor_? and namespaceDescriptor_) then throw "Missing namespace declaration parameter."
 
             @namespaceDescriptor = namespaceDescriptor_
-            @namespaceObjectReference = undefined
-            @itemHostObject = itemHostObject_
+            @namespaceObjectReference = undefined # This is the public, serializable model view
+            @itemHostObject = itemHostObject_ # This is the item host object that owns this instance
+
+            @namespaceMemberModelView = {} # This should be used purely for managing namespace member UI state
 
             @initializeNamespace = (namespaceObject_) =>
                 try
@@ -44,11 +46,18 @@ class Encapsule.code.lib.modelview.NavigatorModelViewNamespaceInitializer
                         for memberName, functions of @namespaceDescriptor.userImmutable
                             if functions.fnCreate? and functions.fnCreate
                                 namespaceObject_[memberName] = functions.fnCreate()
+                                memberNamespace = @namespaceMemberModelView[memberName] = {}
+                                memberNamespace.editMode = ko.observable(false)
+                                memberNamespace.editValue = ko.observable(undefined)
+
                         
                     if @namespaceDescriptor.userMutable? and @namespaceDescriptor.userMutable
                         for memberName, functions of @namespaceDescriptor.userMutable
                             if functions.fnCreate? and functions.fnCreate
                                 namespaceObject_[memberName] = functions.fnCreate()
+                                memberNamespace = @namespaceMemberModelView[memberName] = {}
+                                memberNamespace.editMode = ko.observable(false)
+                                memberNamespace.editValue = ko.observable(undefined)
 
                 catch exception
                     throw "NavigatorModelViewNamespace.initializeNamespace fail: #{exception}"
