@@ -55,7 +55,7 @@ Encapsule.code.lib.modelview.NavigatorCreateItemHostViewModelHtmlTemplate = (lay
         ###
         templateHtml = """
             <div style="font-size: 10pt; font-weight: normal; background-color: rgba(0, 200, 255, 0.2); padding: 5px;" data-bind="style: { color: menuLevelObject.getCssColor(), textShadow: menuLevelObject.getCssTextShadow() }">
-                <strong>Navigator path::</strong> <span data-bind="text: menuLevelObject.path"></span>
+                <strong>Navigator path::</strong> <span data-bind="text: path"></span>
             </div>
             """
 

@@ -1,0 +1,71 @@
+{
+  "schema": {
+    "clientDeployment": "58ec6d8c-2d96-4ce1-8169-7601ccc187bd",
+    "localSession": {
+      "uuid": "95c84b4e-6bff-44d4-b73c-a2ca8cb2408e",
+      "timeStart": 1370579339
+    },
+    "catalogues": [
+      {
+        "catalogue": {
+          "uuid": "243d3fc5-a323-4c36-9cd2-7c7c7a373f8f",
+          "revision": 1,
+          "createTime": 1370581293,
+          "updateTime": 1370581628,
+          "name": "test",
+          "description": "",
+          "tags": "",
+          "author": "00000000-0000-0000-0000-000000000000",
+          "organization": "00000000-0000-0000-0000-000000000000",
+          "specifications": [],
+          "models": {
+            "systems": [],
+            "sockets": [],
+            "contracts": [],
+            "machines": [],
+            "types": []
+          },
+          "resources": {
+            "attribution": {
+              "people": [],
+              "organizations": [],
+              "licenses": [],
+              "copyrights": []
+            }
+          }
+        }
+      },
+      {
+        "catalogue": {
+          "uuid": "a52e7c15-203e-4e1a-a2b5-9a6e7b01951c",
+          "revision": 1,
+          "createTime": 1370581633,
+          "updateTime": 1370581640,
+          "name": "test 2",
+          "description": "",
+          "tags": "",
+          "author": "00000000-0000-0000-0000-000000000000",
+          "organization": "00000000-0000-0000-0000-000000000000",
+          "specifications": [],
+          "models": {
+            "systems": [],
+            "sockets": [],
+            "contracts": [],
+            "machines": [],
+            "types": []
+          },
+          "resources": {
+            "attribution": {
+              "people": [],
+              "organizations": [],
+              "licenses": [],
+              "copyrights": []
+            }
+          }
+        }
+      }
+    ],
+    "help": {},
+    "about": {}
+  }
+}

@@ -86,19 +86,19 @@ color: rgba(0,0,0,0.5);
 
 /* mutable namespace member header row style */
 .classNavigatorItemNamespaceMutableHeader {
-background-color: rgba(0,200,255,0.3);
+background-color: rgba(0,200,255,0.5);
 color: rgba(255,255,255,1);
 }
 
 /* mutable namespace member table row (summary row) style */
 .classNavigatorItemNamespaceMutableMember {
-background-color: rgba(0,200,255,0.5);
+background-color: rgba(0,200,255,0.3);
 color: rgba(255,255,255,0.75);
 }
 
 /* mutable namespace member table row (edit row) style */
 .classNavigatorItemNamespaceMutableMemberEdit {
-background-color: rgba(0,0,0,0.1);
+background-color: rgba(0,200,255,0.3);
 }
 
 /* mutable namespace member edit row containing DIV style */
