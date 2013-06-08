@@ -89,7 +89,7 @@ class Encapsule.code.lib.omm.ObjectModel
 
             # --------------------------------------------------------------------------
             #
-            processObjectModelDescriptor = (objectModelDescriptor_, map_, sort_, path_, count_) ->
+            processObjectModelDescriptor = (objectModelDescriptor_, map_, sort_, extensionMap_, path_, count_) ->
 
                 tag = objectModelDescriptor_.jsonTag
                 path = path_? and path_ and "#{path_}.#{tag}" or "#{tag}"
@@ -105,19 +105,25 @@ class Encapsule.code.lib.omm.ObjectModel
                 if (mvvmType == "extension")
                     if not (extensionObjectDescriptor? and extensionObjectDescriptor)
                         throw "Cannot resolve extension object descriptor."
-                    processObjectModelDescriptor(extensionObjectDescriptor, map_, sort_, path_, count + 1)
+
+                    if not (extensionMap_? and extensionMap_)
+                        throw "Cannot resolve extension map."
+                    extensionMap_[path] = mapValue
+
+                    processObjectModelDescriptor(extensionObjectDescriptor, map_, sort_, extensionMap_, path_, count + 1)
 
                 if not (objectModelDescriptor_.subMenus? and objectModelDescriptor_.subMenus)
                     return
                 
                 for subObjectDescriptor in objectModelDescriptor_.subMenus
-                     processObjectModelDescriptor(subObjectDescriptor, map_, sort_, path, count+1)
+                     processObjectModelDescriptor(subObjectDescriptor, map_, sort_, extensionMap_, path, count + 1)
 
 
             @objectModelPathMap = {}
             @objectModelPathSort = []
+            @objectModelExtensionMap = {}
 
-            processObjectModelDescriptor(rootObjectDescriptor, @objectModelPathMap, @objectModelPathSort)
+            processObjectModelDescriptor(rootObjectDescriptor, @objectModelPathMap, @objectModelPathSort, @objectModelExtensionMap)
                 
 
                 
