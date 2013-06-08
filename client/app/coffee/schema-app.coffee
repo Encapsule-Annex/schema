@@ -47,7 +47,7 @@ class Encapsule.code.app.Schema
             Encapsule.runtime.app.SchemaScdlCatalogue = new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
 
             # OMM experiments.
-            Encapsule.runtime.app.SchemaObject = new Encapsule.code.lib.omm.core.Object(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
+            Encapsule.runtime.app.SchemaObject = new Encapsule.code.lib.omm.Object(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
             jsonSerializeTest = Encapsule.runtime.app.SchemaObject.toJSON()
 
             Encapsule.runtime.app.SchemaObject.fromJSON(jsonSerializeTest)

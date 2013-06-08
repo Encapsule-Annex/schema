@@ -27,36 +27,125 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 Encapsule.code.lib.omm.core = Encapsule.code.lib.omm.core? and Encapsule.code.lib.omm.core or @Encapsule.code.lib.omm.core = {}
 
+
+Encapsule.code.lib.omm.RootObjectDescriptorFactory = (jsonTag_, label_, description_, menuHierarchy_) ->
+    rootObjectDescriptor = {
+        jsonTag: jsonTag_
+        label: label_
+        objectDescriptor: {
+            mvvmType: "root"
+            description: description_
+            namespaceDescriptor: {
+                userImmutable: {
+                    userAgent: {
+                        type: "object"
+                        fnCreate: -> {
+                            appPublisher: appPackagePublisher
+                            appName: appName
+                            appVersion: appVersion
+                            appId: appId
+                            appReleaseId: appReleaseId
+                            appBuildId: appBuildId
+                            appBuildTime: appBuildTime
+                        }
+                        fnReinitialize: undefined
+                    } # userAgent
+                } # userImmutable
+            } # namespaceDescriptor
+        } #object Descriptor
+        subMenus: menuHierarchy_
+    } # rootObjectDescriptor
+    return rootObjectDescriptor
+
+
 #
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.core.ObjectModel
+class Encapsule.code.lib.omm.ObjectModel
     constructor: (objectModelDeclaration_) ->
         try
-            @namespaceRoot = undefined
+            Console.message("Encapsule.code.lib.omm.ObjectModel for #{objectModelDeclaration_.jsonTag}")
 
+            if not (objectModelDeclaration_? and objectModelDeclaration_)
+                throw "Missing object model delcaration input parameter!"
+
+            @jsonTag = objectModelDeclaration_.jsonTag
+            @label = objectModelDeclaration_.label
+            @description = objectModelDeclaration_.description
+            
+            # --------------------------------------------------------------------------
+            rootObjectDescriptor = Encapsule.code.lib.omm.RootObjectDescriptorFactory(
+                @jsonTag
+                @label
+                @description
+                objectModelDeclaration_.menuHierarchy
+                )
+
+            @objectModelDeclaration = Encapsule.code.lib.js.clone objectModelDeclaration_
+            if not (@objectModelDeclaration? and @objectModelDeclaration)
+                throw "Failed to clone source object model declaration."
+            @objectModelDeclaration.menuHierarchy = [ rootObjectDescriptor ]
+
+
+            # --------------------------------------------------------------------------
+            #
+            processObjectModelDescriptor = (objectModelDescriptor_, map_, sort_, path_, count_) ->
+
+                tag = objectModelDescriptor_.jsonTag
+                path = path_? and path_ and "#{path_}.#{tag}" or "#{tag}"
+                count = count_? and count_ or 0
+
+                mapValue =  { "count": count, "jsonTag": objectModelDescriptor_.jsonTag, "path": path }
+                map_[path] = mapValue
+                sort_.push path
+
+                mvvmType = objectModelDescriptor_.objectDescriptor.mvvmType
+                extensionObjectDescriptor = objectModelDescriptor_.objectDescriptor.archetype
+
+                if (mvvmType == "extension")
+                    if not (extensionObjectDescriptor? and extensionObjectDescriptor)
+                        throw "Cannot resolve extension object descriptor."
+                    processObjectModelDescriptor(extensionObjectDescriptor, map_, sort_, path_, count + 1)
+
+                if not (objectModelDescriptor_.subMenus? and objectModelDescriptor_.subMenus)
+                    return
+                
+                for subObjectDescriptor in objectModelDescriptor_.subMenus
+                     processObjectModelDescriptor(subObjectDescriptor, map_, sort_, path, count+1)
+
+
+            @objectModelPathMap = {}
+            @objectModelPathSort = []
+
+            processObjectModelDescriptor(rootObjectDescriptor, @objectModelPathMap, @objectModelPathSort)
+                
+
+                
             
 
 
+
         catch exception
-            throw "Encapsule.code.lib.omm.core.ObjectModel construction fail: #{exception}"
+            throw "Encapsule.code.lib.omm.ObjectModel construction fail: #{exception}"
 
 
 
 #
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.core.Object
+class Encapsule.code.lib.omm.Object
     constructor: (objectModelDeclaration_, jsonString_) ->
         try
-            Console.message("Encapsule.code.lib.omm.core.Object construction.")
+            Console.message("Encapsule.code.lib.omm.Object construction.")
 
             # Validate parameter.
             if not (objectModelDeclaration_? and objectModelDeclaration_) then throw "Missing object model declaration parameter!"
 
-            @objectModelDeclaration = objectModelDeclaration_
+            @objectModel = new Encapsule.code.lib.omm.ObjectModel(objectModelDeclaration_)
 
-            @jsonTag = objectModelDeclaration_.jsonTag
+            @jsonTag = @objectModel.jsonTag
+            @label = @objectModel.label
+            @description = @objectModel.description
             @objectData = {}
 
             @instancePrivateState = {}
@@ -73,7 +162,7 @@ class Encapsule.code.lib.omm.core.Object
             # ============================================================================
             @fromJSON = (jsonString_) =>
                 try
-                    Console.message("Encapsule.code.lib.omm.core.Object.initializeFromJSON for object #{@jsonTag}")
+                    Console.message("Encapsule.code.lib.omm.Object.initializeFromJSON for object #{@jsonTag}")
                     if not (jsonString_? and jsonString_)
                         throw "Missing JSON string input parameter!"
                     deserializedObject = JSON.parse(jsonString_) or {}
@@ -83,7 +172,7 @@ class Encapsule.code.lib.omm.core.Object
                     
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.core.Object.fromJson fail on object #{@jsonTag} : #{exception}"
+                    throw "Encapsule.code.lib.omm.Object.fromJson fail on object #{@jsonTag} : #{exception}"
 
                 
 
@@ -91,7 +180,7 @@ class Encapsule.code.lib.omm.core.Object
             # ============================================================================
             @toJSON = =>
                 try
-                    Console.message("Encapsule.code.lib.omm.core.Object.toJSON for obejct #{@jsonTag}")
+                    Console.message("Encapsule.code.lib.omm.Object.toJSON for obejct #{@jsonTag}")
                     resultObject = {}
                     resultObject[@jsonTag] = @objectData
                     resultJSON = JSON.stringify(resultObject)
@@ -100,7 +189,7 @@ class Encapsule.code.lib.omm.core.Object
                     return resultJSON
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.core.Object.toJSON fail on object #{@jsonTag} : #{exception}"
+                    throw "Encapsule.code.lib.omm.Object.toJSON fail on object #{@jsonTag} : #{exception}"
 
             #
             # ============================================================================
@@ -131,7 +220,7 @@ class Encapsule.code.lib.omm.core.Object
 
 
         catch exception
-            throw "Encapsule.code.lib.omm.core.Object construction failed: #{exception}"
+            throw "Encapsule.code.lib.omm.Object construction failed: #{exception}"
 
 
         
