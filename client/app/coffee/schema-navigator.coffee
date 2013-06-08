@@ -30,14 +30,14 @@ Color = net.brehaut.Color
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
-    jsonTag: "appRoot"
+    jsonTag: "schema"
     label: "#{appName} Root"
     description: "#{appName} client root."
 
     detailBelowSelectDefault: 1
     detailAboveSelectDefault: 1
 
-    initialSelectionPath: "appRoot.schema"
+    initialSelectionPath: "schema.client"
 
     baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.5}).toCSS()
     baseBackgroundRatioPercentPerLevel: 0
@@ -150,8 +150,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     menuHierarchy: [
         {
-            jsonTag: "schema"
-            label: "#{appName} Home"
+            jsonTag: "client"
+            label: "#{appName} Client"
             objectDescriptor: {
                 mvvmType: "child"
                 description: "#{appName} client home."

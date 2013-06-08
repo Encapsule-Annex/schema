@@ -43,7 +43,14 @@ class Encapsule.code.app.Schema
 
             Encapsule.runtime.app.SchemaEditorContext = new Encapsule.code.app.SchemaEditorContext()
 
+            # This is so deprecated...
             Encapsule.runtime.app.SchemaScdlCatalogue = new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
+
+            # OMM experiments.
+            Encapsule.runtime.app.SchemaObject = new Encapsule.code.lib.omm.core.Object(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
+            jsonSerializeTest = Encapsule.runtime.app.SchemaObject.toJSON()
+
+            Encapsule.runtime.app.SchemaObject.fromJSON(jsonSerializeTest)
 
             Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.lib.modelview.NavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
 
