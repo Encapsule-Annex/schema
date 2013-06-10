@@ -89,62 +89,134 @@ class Encapsule.code.lib.omm.ObjectModel
 
             # --------------------------------------------------------------------------
             #
-            processObjectModelDescriptor = (objectModelDescriptor_, path_, rank_) =>
+
+            # objectModelDescriptor = reference to OM layout declaration object
+            # path (optional) = parent descriptor's OM path (defaults to jsonTag if undefined)
+            # rank (optional) = directed graph rank (aka level - a zero-based count of tree depth)
+            # parent
+
+            processObjectModelDescriptor = (objectModelLayoutObject_, path_, rank_, parentDescriptor_, componentDescriptor_) =>
                 # \ BEGIN: processObjectModelDescriptor
 
-                tag = objectModelDescriptor_.jsonTag
+                if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter!"
 
-                path = undefined
-                if path_? and path_
-                    path = "#{path_}.#{tag}"
+                # Local variables used to construct this descriptor.
+                tag = objectModelLayoutObject_.jsonTag
+
+                path = path_? and path_ and "#{path_}.#{tag}" or tag
+                rank = undefined
+                if rank_?
+                    rank = rank_ + 1
                 else
-                    path = "#{tag}"
+                    rank = 0
 
-                rank = rank_? and rank_ or 0
+                id = @countDescriptors
+                @countDescriptors++ # set up for the next invocation of this function (use the id var locally)
 
-                id = @descriptorCount
-                @descriptorCount++
+                mvvmType = objectModelLayoutObject_.objectDescriptor.mvvmType
+                extensionDescriptor = objectModelLayoutObject_.objectDescriptor.archetype
 
-                thisObjectModelDescriptor = @objectModelDescriptorById[id] = {
+                # Build this descriptor and add it to the OM's descriptor array.
+                thisDescriptor = @objectModelDescriptorById[id] = {
                     "id": id
-                    "rank": rank,
-                    "jsonTag": objectModelDescriptor_.jsonTag,
-                    "path": path
+                    "rank": rank
+                    "jsonTag": tag
+                    "path":  path
+                    "parent": parentDescriptor_
+                    "children": []
                      }
 
-                @objectModelPathMap[path] = thisObjectModelDescriptor
+                componentDescriptor = undefined
+                switch mvvmType
+                    when "extension"
+                        if not (componentDescriptor_? and componentDescriptor_) then throw "Internal error: componentDescriptor_ should be defined."
+                        componentDescriptor = componentDescriptor_
+                        componentDescriptor.extensionPoints[path] = thisDescriptor
+                        break
+                    when "archetype"
+                        thisDescriptor.isComponent = true
+                        thisDescriptor.extensionPoints = {}
+                        componentDescriptor = thisDescriptor
+                        @objectModelComponentMap[path] = thisDescriptor
+                        break
+                    when "root"
+                        if componentDescriptor_? or componentDescriptor then throw "Internal error: componentDescriptor_ should be undefined."
+                        thisDescriptor.isComponent = true
+                        thisDescriptor.extensionPoints = {}
+                        componentDescriptor = thisDescriptor
+                        @objectModelComponentMap[path] = thisDescriptor
+                        break
+                    when "child"
+                        componentDescriptor = componentDescriptor_
+                        break
+                    else
+                        throw "Unrecognized MVVM type \"#{mvvmType}\" in call."
 
-                mvvmType = objectModelDescriptor_.objectDescriptor.mvvmType
-                extensionObjectDescriptor = objectModelDescriptor_.objectDescriptor.archetype
+                # Add this descriptor to parent descriptor's children array
+                if parentDescriptor_? and parentDescriptor_
+                    parentDescriptor_.children.push thisDescriptor
 
-                if (mvvmType == "extension")
-                    if not (extensionObjectDescriptor? and extensionObjectDescriptor)
+                # Add this descriptor to the OM intance's path map.
+                @objectModelPathMap[path] = thisDescriptor
+
+
+                # Currently Javascript/JSON arrays are used exclusively to represents "extension points"
+                # (or points of extension if you prefer). 
+
+                if (mvvmType == "extension") # TODO: rename extensionPoint
+                    if not (extensionDescriptor? and extensionDescriptor)
                         throw "Cannot resolve extension object descriptor."
 
-                    @objectModelExtensionPointMap[path] = thisObjectModelDescriptor
-                    processObjectModelDescriptor(extensionObjectDescriptor, path, rank + 1)
+                    # Add this descriptor to OM instance's extension point map.
+                    @objectModelExtensionPointMap[path] = thisDescriptor
+                    thisDescriptor.children.push extensionDescriptor
 
+                    # RECURSION
+                    processObjectModelDescriptor(extensionDescriptor, path, rank, thisDescriptor, componentDescriptor)
 
                 if (mvvmType == "archetype")
-                    @objectModelExtensionMap[path] = thisObjectModelDescriptor
+                    @objectModelExtensionMap[path] = thisDescriptor
 
-
-                if not (objectModelDescriptor_.subMenus? and objectModelDescriptor_.subMenus)
+                if not (objectModelLayoutObject_.subMenus? and objectModelLayoutObject_.subMenus)
                     return
 
-                for subObjectDescriptor in objectModelDescriptor_.subMenus
-                     processObjectModelDescriptor(subObjectDescriptor, path, rank + 1)
+                for subObjectDescriptor in objectModelLayoutObject_.subMenus
+                     # RECURSION
+                     processObjectModelDescriptor(subObjectDescriptor, path, rank, thisDescriptor, componentDescriptor)
+
+                return true
 
                 # / END: processObjectModelDescriptor
 
 
 
+            @objectModelComponentMap = {}
             @objectModelPathMap = {}
             @objectModelDescriptorById = []
             @objectModelExtensionPointMap = {}
             @objectModelExtensionMap = {}
-            @descriptorCount = 0
+            @countDescriptors = 0
             processObjectModelDescriptor(rootObjectDescriptor)
+
+            @countComponents = @objectModelComponentMap.length
+
+            @countExtensionPoints = 0
+            for memberName, functions of @objectModelExtensionPointMap
+                @countExtensionPoints++
+
+            @countExtensions = 0
+            for memberName, functions of @objectModelExtensionMap
+                @countExtensions++
+
+            @countComponents = 0
+            for memberName, functions of @objectModelComponentMap
+                @countComponents++
+
+            if @countExtensionPoints != @countExtensions
+                throw "Layout declaration error: extension point and extension descriptor counts do not match. countExtensionPoints=#{@countExtensionPoints} countExtensions=#{@countExtensions}"
+
+            if @countComponents != @countExtensionPoints + 1
+                throw "Layout declaration error: component count should be extension count + 1. componentCount=#{@componentCount} countExtensions=#{@countExtensions}"
 
 
         catch exception
