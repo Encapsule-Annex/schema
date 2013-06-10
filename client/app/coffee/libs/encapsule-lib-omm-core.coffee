@@ -95,7 +95,7 @@ class Encapsule.code.lib.omm.ObjectModel
             # rank (optional) = directed graph rank (aka level - a zero-based count of tree depth)
             # parent
 
-            processObjectModelDescriptor = (objectModelLayoutObject_, path_, rank_, parentDescriptor_, componentDescriptor_) =>
+            processObjectModelDescriptor = (objectModelLayoutObject_, path_, rank_, parentDescriptor_, componentDescriptor_, inheritedExtensionPoints_) =>
                 # \ BEGIN: processObjectModelDescriptor
 
                 if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter!"
@@ -109,9 +109,18 @@ class Encapsule.code.lib.omm.ObjectModel
                     rank = rank_ + 1
                 else
                     rank = 0
+                if @rankMax < rank
+                    @rankMax = rank
 
                 id = @countDescriptors
                 @countDescriptors++ # set up for the next invocation of this function (use the id var locally)
+
+
+                pathResolveExtensionPoints = undefined
+                if inheritedExtensionPoints_? and inheritedExtensionPoints_
+                    pathResolveExtensionPoints = Encapsule.code.lib.js.clone inheritedExtensionPoints_
+                else
+                    pathResolveExtensionPoints = []
 
                 mvvmType = objectModelLayoutObject_.objectDescriptor.mvvmType
                 extensionDescriptor = objectModelLayoutObject_.objectDescriptor.archetype
@@ -122,9 +131,13 @@ class Encapsule.code.lib.omm.ObjectModel
                     "rank": rank
                     "jsonTag": tag
                     "path":  path
+                    "pathResolveExtensionPoints": pathResolveExtensionPoints
                     "parent": parentDescriptor_
                     "children": []
+                    "weight": 0
                      }
+
+
 
                 componentDescriptor = undefined
                 switch mvvmType
@@ -132,6 +145,7 @@ class Encapsule.code.lib.omm.ObjectModel
                         if not (componentDescriptor_? and componentDescriptor_) then throw "Internal error: componentDescriptor_ should be defined."
                         componentDescriptor = componentDescriptor_
                         componentDescriptor.extensionPoints[path] = thisDescriptor
+                        pathResolveExtensionPoints.push id
                         break
                     when "archetype"
                         thisDescriptor.isComponent = true
@@ -163,26 +177,30 @@ class Encapsule.code.lib.omm.ObjectModel
                 # Currently Javascript/JSON arrays are used exclusively to represents "extension points"
                 # (or points of extension if you prefer). 
 
-                if (mvvmType == "extension") # TODO: rename extensionPoint
-                    if not (extensionDescriptor? and extensionDescriptor)
-                        throw "Cannot resolve extension object descriptor."
+                switch mvvmType
+                    when "extension"
+                        if not (extensionDescriptor? and extensionDescriptor)
+                            throw "Cannot resolve extension object descriptor."
+                        # Add this descriptor to OM instance's extension point map.
+                        @objectModelExtensionPointMap[path] = thisDescriptor
 
-                    # Add this descriptor to OM instance's extension point map.
-                    @objectModelExtensionPointMap[path] = thisDescriptor
-                    thisDescriptor.children.push extensionDescriptor
+                        # RECURSION
+                        processObjectModelDescriptor(extensionDescriptor, path, rank, thisDescriptor, componentDescriptor, pathResolveExtensionPoints)
+                        break
 
-                    # RECURSION
-                    processObjectModelDescriptor(extensionDescriptor, path, rank, thisDescriptor, componentDescriptor)
+                    when "archetype"
+                        @objectModelExtensionMap[path] = thisDescriptor
+                        break
 
-                if (mvvmType == "archetype")
-                    @objectModelExtensionMap[path] = thisDescriptor
+                    else
+                        break
 
                 if not (objectModelLayoutObject_.subMenus? and objectModelLayoutObject_.subMenus)
-                    return
+                    return true
 
                 for subObjectDescriptor in objectModelLayoutObject_.subMenus
                      # RECURSION
-                     processObjectModelDescriptor(subObjectDescriptor, path, rank, thisDescriptor, componentDescriptor)
+                     processObjectModelDescriptor(subObjectDescriptor, path, rank, thisDescriptor, componentDescriptor, pathResolveExtensionPoints)
 
                 return true
 
@@ -196,6 +214,7 @@ class Encapsule.code.lib.omm.ObjectModel
             @objectModelExtensionPointMap = {}
             @objectModelExtensionMap = {}
             @countDescriptors = 0
+            @rankMax = 0
             processObjectModelDescriptor(rootObjectDescriptor)
 
             @countComponents = @objectModelComponentMap.length
@@ -212,11 +231,22 @@ class Encapsule.code.lib.omm.ObjectModel
             for memberName, functions of @objectModelComponentMap
                 @countComponents++
 
+            @countChildren = @countDescriptors - @countComponents
+
             if @countExtensionPoints != @countExtensions
                 throw "Layout declaration error: extension point and extension descriptor counts do not match. countExtensionPoints=#{@countExtensionPoints} countExtensions=#{@countExtensions}"
 
             if @countComponents != @countExtensionPoints + 1
                 throw "Layout declaration error: component count should be extension count + 1. componentCount=#{@componentCount} countExtensions=#{@countExtensions}"
+
+            Console.message("ObjectModel for #{@jsonTag}:")
+            Console.message("... #{@jsonTag} object comprises #{@countDescriptors} descriptors as follows:")
+            Console.message("... ... 1 root descriptor")
+            Console.message("... ... #{@countChildren} child descriptor(s)")
+            Console.message("... ... #{@countExtensionPoints} extension point descriptor(s)")
+            Console.message("... ... #{@countExtensions} extension descriptor(s)")
+            Console.message("... The #{@jsonTag} object schema is partitioned into #{@countComponents} component(s).")
+            Console.message("... The #{@jsonTag} object schema's tallest branch is #{@rankMax + 1} level(s) high.")
 
 
         catch exception
