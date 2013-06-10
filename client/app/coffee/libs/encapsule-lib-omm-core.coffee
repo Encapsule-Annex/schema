@@ -89,26 +89,30 @@ class Encapsule.code.lib.omm.ObjectModel
 
             # --------------------------------------------------------------------------
             #
-	    processObjectModelDescriptor = (objectModelDescriptor_, path_, rank_) =>
+            processObjectModelDescriptor = (objectModelDescriptor_, path_, rank_) =>
+                # \ BEGIN: processObjectModelDescriptor
 
                 tag = objectModelDescriptor_.jsonTag
+
                 path = undefined
                 if path_? and path_
                     path = "#{path_}.#{tag}"
                 else
                     path = "#{tag}"
+
                 rank = rank_? and rank_ or 0
 
-                objectModelDescriptor = {
-                    "id": @descriptorCount,
+                id = @descriptorCount
+                @descriptorCount++
+
+                thisObjectModelDescriptor = @objectModelDescriptorById[id] = {
+                    "id": id
                     "rank": rank,
                     "jsonTag": objectModelDescriptor_.jsonTag,
                     "path": path
                      }
-                @objectModelPathMap[path] = objectModelDescriptor
-                @objectModelDescriptorById[@descriptorCount] = objectModelDescriptor
-                @descriptorCount++
 
+                @objectModelPathMap[path] = thisObjectModelDescriptor
 
                 mvvmType = objectModelDescriptor_.objectDescriptor.mvvmType
                 extensionObjectDescriptor = objectModelDescriptor_.objectDescriptor.archetype
@@ -117,30 +121,36 @@ class Encapsule.code.lib.omm.ObjectModel
                     if not (extensionObjectDescriptor? and extensionObjectDescriptor)
                         throw "Cannot resolve extension object descriptor."
 
-                    @objectModelExtensionPointMap[path] = mapValue
-
+                    @objectModelExtensionPointMap[path] = thisObjectModelDescriptor
                     processObjectModelDescriptor(extensionObjectDescriptor, path, rank + 1)
+
+
+                if (mvvmType == "archetype")
+                    @objectModelExtensionMap[path] = thisObjectModelDescriptor
+
 
                 if not (objectModelDescriptor_.subMenus? and objectModelDescriptor_.subMenus)
                     return
-                
+
                 for subObjectDescriptor in objectModelDescriptor_.subMenus
                      processObjectModelDescriptor(subObjectDescriptor, path, rank + 1)
-            #
-            # --------------------------------------------------------------------------
+
+                # / END: processObjectModelDescriptor
+
+
 
             @objectModelPathMap = {}
             @objectModelDescriptorById = []
             @objectModelExtensionPointMap = {}
             @objectModelExtensionMap = {}
             @descriptorCount = 0
-
             processObjectModelDescriptor(rootObjectDescriptor)
 
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModel construction fail: #{exception}"
-        # --------------------------------------------------------------------------
+
+
 
 
 #
