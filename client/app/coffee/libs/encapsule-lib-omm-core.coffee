@@ -28,34 +28,42 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 Encapsule.code.lib.omm.core = Encapsule.code.lib.omm.core? and Encapsule.code.lib.omm.core or @Encapsule.code.lib.omm.core = {}
 
 
+
 Encapsule.code.lib.omm.RootObjectDescriptorFactory = (jsonTag_, label_, description_, menuHierarchy_) ->
-    rootObjectDescriptor = {
-        jsonTag: jsonTag_
-        label: label_
-        objectDescriptor: {
-            mvvmType: "root"
-            description: description_
-            namespaceDescriptor: {
-                userImmutable: {
-                    userAgent: {
-                        type: "object"
-                        fnCreate: -> {
-                            appPublisher: appPackagePublisher
-                            appName: appName
-                            appVersion: appVersion
-                            appId: appId
-                            appReleaseId: appReleaseId
-                            appBuildId: appBuildId
-                            appBuildTime: appBuildTime
-                        }
-                        fnReinitialize: undefined
-                    } # userAgent
-                } # userImmutable
-            } # namespaceDescriptor
-        } #object Descriptor
-        subMenus: menuHierarchy_
-    } # rootObjectDescriptor
-    return rootObjectDescriptor
+    try
+        rootObjectDescriptor = {
+            jsonTag: jsonTag_
+            label: label_
+            objectDescriptor: {
+                mvvmType: "root"
+                description: description_
+                namespaceDescriptor: {
+                    userImmutable: {
+                        userAgent: {
+                            type: "object"
+                            fnCreate: -> {
+                                appPublisher: appPackagePublisher
+                                appName: appName
+                                appVersion: appVersion
+                                appId: appId
+                                appReleaseId: appReleaseId
+                                appBuildId: appBuildId
+                                appBuildTime: appBuildTime
+                            }
+                            fnReinitialize: undefined
+                        } # userAgent
+                    } # userImmutable
+                } # namespaceDescriptor
+            } #object Descriptor
+            subMenus: menuHierarchy_
+        } # rootObjectDescriptor
+
+        return rootObjectDescriptor
+
+    catch exception
+        throw "Encapsule.code.lib.omm.RooObjectDescriptorFactor function failed: #{exception}"
+
+
 
 
 #
@@ -95,117 +103,125 @@ class Encapsule.code.lib.omm.ObjectModel
             # rank (optional) = directed graph rank (aka level - a zero-based count of tree depth)
             # parent
 
-            processObjectModelDescriptor = (objectModelLayoutObject_, path_, rank_, parentDescriptor_, componentDescriptor_, inheritedExtensionPoints_) =>
+            buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, rank_, parentDescriptor_, componentDescriptor_, inheritedExtensionPoints_) =>
                 # \ BEGIN: processObjectModelDescriptor
+                try
 
-                if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter!"
+                    if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter!"
 
-                # Local variables used to construct this descriptor.
-                tag = objectModelLayoutObject_.jsonTag
+                    # Local variables used to construct this descriptor.
+                    tag = objectModelLayoutObject_.jsonTag
 
-                path = path_? and path_ and "#{path_}.#{tag}" or tag
-                rank = undefined
-                if rank_?
-                    rank = rank_ + 1
-                else
-                    rank = 0
-                if @rankMax < rank
-                    @rankMax = rank
-
-                id = @countDescriptors
-                @countDescriptors++ # set up for the next invocation of this function (use the id var locally)
-
-
-                pathResolveExtensionPoints = undefined
-                if inheritedExtensionPoints_? and inheritedExtensionPoints_
-                    pathResolveExtensionPoints = Encapsule.code.lib.js.clone inheritedExtensionPoints_
-                else
-                    pathResolveExtensionPoints = []
-
-                mvvmType = objectModelLayoutObject_.objectDescriptor.mvvmType
-                extensionDescriptor = objectModelLayoutObject_.objectDescriptor.archetype
-
-                # Build this descriptor and add it to the OM's descriptor array.
-                thisDescriptor = @objectModelDescriptorById[id] = {
-                    "id": id
-                    "rank": rank
-                    "jsonTag": tag
-                    "path":  path
-                    "pathResolveExtensionPoints": pathResolveExtensionPoints
-                    "parent": parentDescriptor_
-                    "children": []
-                    "weight": 0
-                     }
-
-
-
-                componentDescriptor = undefined
-                switch mvvmType
-                    when "extension"
-                        if not (componentDescriptor_? and componentDescriptor_) then throw "Internal error: componentDescriptor_ should be defined."
-                        componentDescriptor = componentDescriptor_
-                        componentDescriptor.extensionPoints[path] = thisDescriptor
-                        pathResolveExtensionPoints.push id
-                        break
-                    when "archetype"
-                        thisDescriptor.isComponent = true
-                        thisDescriptor.extensionPoints = {}
-                        componentDescriptor = thisDescriptor
-                        @objectModelComponentMap[path] = thisDescriptor
-                        break
-                    when "root"
-                        if componentDescriptor_? or componentDescriptor then throw "Internal error: componentDescriptor_ should be undefined."
-                        thisDescriptor.isComponent = true
-                        thisDescriptor.extensionPoints = {}
-                        componentDescriptor = thisDescriptor
-                        @objectModelComponentMap[path] = thisDescriptor
-                        break
-                    when "child"
-                        componentDescriptor = componentDescriptor_
-                        break
+                    path = path_? and path_ and "#{path_}.#{tag}" or tag
+                    rank = undefined
+                    if rank_?
+                        rank = rank_ + 1
                     else
-                        throw "Unrecognized MVVM type \"#{mvvmType}\" in call."
+                        rank = 0
+                    if @rankMax < rank
+                        @rankMax = rank
 
-                # Add this descriptor to parent descriptor's children array
-                if parentDescriptor_? and parentDescriptor_
-                    parentDescriptor_.children.push thisDescriptor
+                    id = @countDescriptors
+                    @countDescriptors++ # set up for the next invocation of this function (use the id var locally)
 
-                # Add this descriptor to the OM intance's path map.
-                @objectModelPathMap[path] = thisDescriptor
+                    pathResolveExtensionPoints = undefined
+                    if inheritedExtensionPoints_? and inheritedExtensionPoints_
+                        pathResolveExtensionPoints = Encapsule.code.lib.js.clone inheritedExtensionPoints_
+                    else
+                        pathResolveExtensionPoints = []
 
+                    mvvmType = objectModelLayoutObject_.objectDescriptor.mvvmType
+                    extensionDescriptor = objectModelLayoutObject_.objectDescriptor.archetype
 
-                # Currently Javascript/JSON arrays are used exclusively to represents "extension points"
-                # (or points of extension if you prefer). 
+                    # Build this descriptor and add it to the OM's descriptor array.
+                    thisDescriptor = @objectModelDescriptorById[id] = {
+                        "id": id
+                        "rank": rank
+                        "jsonTag": tag
+                        "path":  path
+                        "pathResolveExtensionPoints": pathResolveExtensionPoints
+                        "parent": parentDescriptor_
+                        "children": []
+                        "weight": 0
+                         }
 
-                switch mvvmType
-                    when "extension"
-                        if not (extensionDescriptor? and extensionDescriptor)
-                            throw "Cannot resolve extension object descriptor."
-                        # Add this descriptor to OM instance's extension point map.
-                        @objectModelExtensionPointMap[path] = thisDescriptor
+                    componentDescriptor = undefined
+                    switch mvvmType
+                        when "extension"
+                            if not (componentDescriptor_? and componentDescriptor_) then throw "Internal error: componentDescriptor_ should be defined."
+                            componentDescriptor = componentDescriptor_
+                            componentDescriptor.extensionPoints[path] = thisDescriptor
+                            break
+                        when "archetype"
+                            thisDescriptor.isComponent = true
+                            thisDescriptor.extensionPoints = {}
+                            componentDescriptor = thisDescriptor
+                            @objectModelComponentMap[path] = thisDescriptor
+                            break
+                        when "root"
+                            if componentDescriptor_? or componentDescriptor then throw "Internal error: componentDescriptor_ should be undefined."
+                            thisDescriptor.isComponent = true
+                            thisDescriptor.extensionPoints = {}
+                            componentDescriptor = thisDescriptor
+                            @objectModelComponentMap[path] = thisDescriptor
+                            break
+                        when "child"
+                            componentDescriptor = componentDescriptor_
+                            break
+                        else
+                            throw "Unrecognized MVVM type \"#{mvvmType}\" in call."
 
+                    # Add this descriptor to parent descriptor's children array
+                    if parentDescriptor_? and parentDescriptor_
+                        parentDescriptor_.children.push thisDescriptor
+
+                    # Add this descriptor to the OM intance's path map.
+                    @objectModelPathMap[path] = thisDescriptor
+
+                    # Currently Javascript/JSON arrays are used exclusively to represents "extension points"
+                    # (or points of extension if you prefer). 
+
+                    switch mvvmType
+                        when "extension"
+                            if not (extensionDescriptor? and extensionDescriptor)
+                                throw "Cannot resolve extension object descriptor."
+                            # Add this descriptor to OM instance's extension point map.
+                            @objectModelExtensionPointMap[path] = thisDescriptor
+                            updatedResolves = Encapsule.code.lib.js.clone pathResolveExtensionPoints
+                            updatedResolves.push id
+
+                            # RECURSION
+                            buildOMDescriptorFromLayout(extensionDescriptor, path, rank, thisDescriptor, componentDescriptor, updatedResolves)
+                            break
+
+                        when "archetype"
+                            @objectModelExtensionMap[path] = thisDescriptor
+                            break
+
+                        else
+                            break
+
+                    if not (objectModelLayoutObject_.subMenus? and objectModelLayoutObject_.subMenus)
+                        return true
+
+                    for subObjectDescriptor in objectModelLayoutObject_.subMenus
                         # RECURSION
-                        processObjectModelDescriptor(extensionDescriptor, path, rank, thisDescriptor, componentDescriptor, pathResolveExtensionPoints)
-                        break
+                        buildOMDescriptorFromLayout(subObjectDescriptor, path, rank, thisDescriptor, componentDescriptor, pathResolveExtensionPoints)
 
-                    when "archetype"
-                        @objectModelExtensionMap[path] = thisDescriptor
-                        break
-
-                    else
-                        break
-
-                if not (objectModelLayoutObject_.subMenus? and objectModelLayoutObject_.subMenus)
                     return true
 
-                for subObjectDescriptor in objectModelLayoutObject_.subMenus
-                     # RECURSION
-                     processObjectModelDescriptor(subObjectDescriptor, path, rank, thisDescriptor, componentDescriptor, pathResolveExtensionPoints)
+                catch exception
+                    throw "buildOMDescriptorFromLayout fail: #{exception}"
 
-                return true
 
-                # / END: processObjectModelDescriptor
+            # --------------------------------------------------------------------------
+            # \ START: processObjectModelDescriptor
 
+            # / END: processObjectModelDescriptor
+            # --------------------------------------------------------------------------
+
+            # --------------------------------------------------------------------------
+            # / END: processObjectModelDescriptor
 
 
             @objectModelComponentMap = {}
@@ -215,7 +231,7 @@ class Encapsule.code.lib.omm.ObjectModel
             @objectModelExtensionMap = {}
             @countDescriptors = 0
             @rankMax = 0
-            processObjectModelDescriptor(rootObjectDescriptor)
+            buildOMDescriptorFromLayout(rootObjectDescriptor)
 
             @countComponents = @objectModelComponentMap.length
 
@@ -252,7 +268,26 @@ class Encapsule.code.lib.omm.ObjectModel
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModel construction fail: #{exception}"
 
+# ****************************************************************************
+#
 
+#
+# ****************************************************************************
+class Encapsule.code.lib.omm.ObjectModelNamespaceProxy
+    constructor: (objectModel_, objectModelPath_, objectModelSelectVector_) ->
+        try
+
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectModelNamespaceProxy construction fail: #{exception}"
+# ****************************************************************************
+#
+
+
+    
+
+
+# ****************************************************************************
+#
 
 
 #
@@ -277,11 +312,6 @@ class Encapsule.code.lib.omm.Object
             @instancePrivateState.objectDataCreateTime = 0
             @instancePrivateState.objectDataUpdateTime = 0
 
-
-
-
-
-
             #
             # ============================================================================
             @fromJSON = (jsonString_) =>
@@ -297,8 +327,6 @@ class Encapsule.code.lib.omm.Object
 
                 catch exception
                     throw "Encapsule.code.lib.omm.Object.fromJson fail on object #{@jsonTag} : #{exception}"
-
-                
 
             #
             # ============================================================================
