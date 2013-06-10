@@ -89,15 +89,26 @@ class Encapsule.code.lib.omm.ObjectModel
 
             # --------------------------------------------------------------------------
             #
-            processObjectModelDescriptor = (objectModelDescriptor_, map_, sort_, extensionMap_, path_, count_) ->
+	    processObjectModelDescriptor = (objectModelDescriptor_, path_, rank_) =>
 
                 tag = objectModelDescriptor_.jsonTag
-                path = path_? and path_ and "#{path_}.#{tag}" or "#{tag}"
-                count = count_? and count_ or 0
+                path = undefined
+                if path_? and path_
+                    path = "#{path_}.#{tag}"
+                else
+                    path = "#{tag}"
+                rank = rank_? and rank_ or 0
 
-                mapValue =  { "count": count, "jsonTag": objectModelDescriptor_.jsonTag, "path": path }
-                map_[path] = mapValue
-                sort_.push path
+                objectModelDescriptor = {
+                    "id": @descriptorCount,
+                    "rank": rank,
+                    "jsonTag": objectModelDescriptor_.jsonTag,
+                    "path": path
+                     }
+                @objectModelPathMap[path] = objectModelDescriptor
+                @objectModelDescriptorById[@descriptorCount] = objectModelDescriptor
+                @descriptorCount++
+
 
                 mvvmType = objectModelDescriptor_.objectDescriptor.mvvmType
                 extensionObjectDescriptor = objectModelDescriptor_.objectDescriptor.archetype
@@ -106,37 +117,32 @@ class Encapsule.code.lib.omm.ObjectModel
                     if not (extensionObjectDescriptor? and extensionObjectDescriptor)
                         throw "Cannot resolve extension object descriptor."
 
-                    if not (extensionMap_? and extensionMap_)
-                        throw "Cannot resolve extension map."
-                    extensionMap_[path] = mapValue
+                    @objectModelExtensionPointMap[path] = mapValue
 
-                    processObjectModelDescriptor(extensionObjectDescriptor, map_, sort_, extensionMap_, path_, count + 1)
+                    processObjectModelDescriptor(extensionObjectDescriptor, path, rank + 1)
 
                 if not (objectModelDescriptor_.subMenus? and objectModelDescriptor_.subMenus)
                     return
                 
                 for subObjectDescriptor in objectModelDescriptor_.subMenus
-                     processObjectModelDescriptor(subObjectDescriptor, map_, sort_, extensionMap_, path, count + 1)
-
+                     processObjectModelDescriptor(subObjectDescriptor, path, rank + 1)
+            #
+            # --------------------------------------------------------------------------
 
             @objectModelPathMap = {}
-            @objectModelPathSort = []
+            @objectModelDescriptorById = []
+            @objectModelExtensionPointMap = {}
             @objectModelExtensionMap = {}
+            @descriptorCount = 0
 
-            processObjectModelDescriptor(rootObjectDescriptor, @objectModelPathMap, @objectModelPathSort, @objectModelExtensionMap)
-                
-
-                
-            
-
+            processObjectModelDescriptor(rootObjectDescriptor)
 
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModel construction fail: #{exception}"
+        # --------------------------------------------------------------------------
 
 
-
-#
 #
 # ****************************************************************************
 class Encapsule.code.lib.omm.Object
