@@ -38,13 +38,11 @@ class Encapsule.code.lib.omm.Object
             # Validate parameter.
             if not (objectModelDeclaration_? and objectModelDeclaration_) then throw "Missing object model declaration parameter!"
 
-            @objectModel = new Encapsule.code.lib.omm.ObjectModel(objectModelDeclaration_)
+            @jsonTag = objectModelDeclaration_.jsonTag
+            @label = objectModelDeclaration_.label
+            @description = objectModelDeclaration_.description
 
-            @jsonTag = @objectModel.jsonTag
-            @label = @objectModel.label
-            @description = @objectModel.description
             @objectData = {}
-
             @instancePrivateState = {}
             @instancePrivateState.objectDataRevision = 0
             @instancePrivateState.objectDataCreateTime = 0
@@ -84,57 +82,6 @@ class Encapsule.code.lib.omm.Object
 
             #
             # ============================================================================
-            @getPathIdFromPath = (objectModelPath_) =>
-                try
-                    if not (@objectModel? and @objectModel) then throw "Internal error: Unable to resolve internal object model instance!"
-                    if not (objectModelPath_? and objectModelPath_) then throw "Missing object model path parameter!"
-
-                    objectModelDescriptor = @objectModel.objectModelPathMap[objectModelPath_]
-                    if not (objectModelDescriptor? and objectModelDescriptor)
-                        throw "Internal error: Unable to resolve object model descriptor!"
-        
-                    objectModelPathId = objectModelDescriptor.id
-                    if not objectModelPathId?
-                        throw "Internal error: Unable to resolve object model path ID from object model descriptor."
-
-                    return objectModelPathId
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.Object.getPathIdFromPath fail: #{exception}"
-
-
-            #
-            # ============================================================================
-            @getPathFromPathId = (pathId_) =>
-                try
-                    if not (pathId_?) then throw "Missing path ID parameter!"
-
-                    objectModelDescriptor = @objectModel.objectModelDescriptorById[pathId_]
-                    if not (objectModelDescriptor? and objectModelDescriptor)
-                        throw "Unable to resolve object descriptor for path ID #{pathId_}"
-                    path = objectModelDescriptor.path
-                    return path
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.Object.getPathFromPathId fail: #{exception}"
-
-
-
-            #
-            # ============================================================================
-            @getSelector = (pathId_, selectKeyVector_) =>
-                try
-                    if not pathId_? then throw "Missing object model path ID input parameter!"
-
-                    selector = new Encapsule.code.lib.omm.ObjectModelSelector(@objectModel, pathId_, selectKeyVector_)
-                    if not (selector? and selector)
-                        throw "Unable to resolve selector for path ID #{pathId_}"
-                    return selector
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.Object.getNamespaceProxy fail on object #{@jsonTag} : #{exception}"
-
-
             #
             # ============================================================================
 
