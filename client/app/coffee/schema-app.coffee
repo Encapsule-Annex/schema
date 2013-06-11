@@ -48,17 +48,22 @@ class Encapsule.code.app.Schema
 
             # OMM experiments.
 
-            ommSchemaObject = Encapsule.runtime.app.SchemaObject =
-                new Encapsule.code.lib.omm.Object(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
-
             ommSchemaObjectModel = Encapsule.runtime.app.SchemaObjectModel =
                 new Encapsule.code.lib.omm.ObjectModel(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
 
-            schemaJSON = ommSchemaObject.toJSON()
-            ommSchemaObject.fromJSON(schemaJSON)
-
             schemaSelectorId = ommSchemaObjectModel.getPathIdFromPath("schema")
-            schemaSelector = ommSchemaObjectModel.getSelector(schemaSelectorId, undefined)
+            schemaSelectKeyVector = []
+
+            ommSchemaObjectModelNamespaceSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(ommSchemaObjectModel, schemaSelectorId, undefined)
+
+
+            ommSchemaObjectStore = Encapsule.runtime.app.SchemaObjectStore =
+                new Encapsule.code.lib.omm.ObjectStore(ommSchemaObjectModel)
+
+            schemaJSON = ommSchemaObjectStore.toJSON()
+            ommSchemaObjectStore.fromJSON(schemaJSON)
+
+
 
 
             Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.lib.modelview.NavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)

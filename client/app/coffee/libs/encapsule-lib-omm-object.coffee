@@ -30,17 +30,17 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.Object
-    constructor: (objectModelDeclaration_, jsonString_) ->
+class Encapsule.code.lib.omm.ObjectStore
+    constructor: (objectModel_) ->
         try
-            Console.message("Encapsule.code.lib.omm.Object construction.")
+            Console.message("Encapsule.code.lib.omm.ObjectStore construction for object namespace \"#{objectModel_.jsonTag}\".")
 
             # Validate parameter.
-            if not (objectModelDeclaration_? and objectModelDeclaration_) then throw "Missing object model declaration parameter!"
+            if not (objectModel_? and objectModel_) then throw "Missing object model parameter!"
 
-            @jsonTag = objectModelDeclaration_.jsonTag
-            @label = objectModelDeclaration_.label
-            @description = objectModelDeclaration_.description
+            @jsonTag = objectModel_.jsonTag
+            @label = objectModel_.label
+            @description = objectModel_.description
 
             @objectData = {}
             @instancePrivateState = {}
@@ -52,7 +52,7 @@ class Encapsule.code.lib.omm.Object
             # ============================================================================
             @fromJSON = (jsonString_) =>
                 try
-                    Console.message("Encapsule.code.lib.omm.Object.initializeFromJSON for object #{@jsonTag}")
+                    Console.message("Encapsule.code.lib.omm.ObjectStore.fromJSON for object store #{@jsonTag}")
                     if not (jsonString_? and jsonString_)
                         throw "Missing JSON string input parameter!"
                     deserializedObject = JSON.parse(jsonString_) or {}
@@ -62,13 +62,13 @@ class Encapsule.code.lib.omm.Object
                     
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.Object.fromJson fail on object #{@jsonTag} : #{exception}"
+                    throw "Encapsule.code.lib.omm.ObjectStore.fromJson fail on object store #{@jsonTag} : #{exception}"
 
             #
             # ============================================================================
             @toJSON = =>
                 try
-                    Console.message("Encapsule.code.lib.omm.Object.toJSON for obejct #{@jsonTag}")
+                    Console.message("Encapsule.code.lib.omm.ObjectStore.toJSON for object store #{@jsonTag}")
                     resultObject = {}
                     resultObject[@jsonTag] = @objectData
                     resultJSON = JSON.stringify(resultObject)
@@ -77,7 +77,7 @@ class Encapsule.code.lib.omm.Object
                     return resultJSON
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.Object.toJSON fail on object #{@jsonTag} : #{exception}"
+                    throw "Encapsule.code.lib.omm.ObjectStore.toJSON fail on object store #{@jsonTag} : #{exception}"
 
 
             #

@@ -35,8 +35,8 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 # objectModelPath_ = OM path
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.ObjectModelSelector
-    constructor: (objectModel_, pathId_, objectModelSelectVector_) ->
+class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
+    constructor: (objectModel_, pathId_, selectKeyVector_) ->
         try
             if not (objectModel_? and objectModel_) then throw "Missing object model input parameter."
             if not (pathId_?) then throw "Missing object model path parameter."
@@ -45,9 +45,8 @@ class Encapsule.code.lib.omm.ObjectModelSelector
                 throw "Out of range path ID specified in request."
 
             @objectModel = objectModel_
-            @objectModelSelectVector = objectModelSelectVector_
+            @selectKeyVector = selectKeyVector_
             @pathId = pathId_
-
 
             # Get the OM descriptor associated with the specified OM path.
 
@@ -56,11 +55,13 @@ class Encapsule.code.lib.omm.ObjectModelSelector
                 throw "Unable to resolve object model descriptor for path #{objectModelPath_}"
 
             @selectKeysRequired = @objectModelDescriptor.pathResolveExtensionPoints.length
-            @selectKeysProvided = objectModelSelectVector_? and objectModelSelectVector_ and objectModelSelectVector_.length or 0
+            @selectKeysProvided = selectKeyVector_? and selectKeyVector_ and selectKeyVector_.length or 0
 
             if @selectKeysRequired != @selectKeysProvided
                 throw "Unable to resolve object model selector. Expected #{@selectKeysRequired} select keys. #{@selectKeysProvided} keys were provided."
 
+            Console.message("Encapsule.code.lib.omm.ObjectModelNamespaceSelector created selector for pathID=#{pathId_}. #{@selectKeysProvided} keys provided.")
+
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectSelector construction fail: #{exception}"
+            throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector construction fail: #{exception}"
 

@@ -251,26 +251,13 @@ class Encapsule.code.lib.omm.ObjectModel
                     if not (objectModelDescriptor? and objectModelDescriptor)
                         throw "Unable to resolve object descriptor for path ID #{pathId_}"
                     path = objectModelDescriptor.path
+                    Console.message("Encapsule.code.lib.omm.ObjectModel.getPathFromPathId #{pathId} -> #{path}")
                     return path
 
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModel.getPathFromPathId fail: #{exception}"
             # --------------------------------------------------------------------------
 
-
-            # --------------------------------------------------------------------------
-            @getSelector = (pathId_, selectKeyVector_) =>
-                try
-                    if not pathId_? then throw "Missing object model path ID input parameter!"
-
-                    selector = new Encapsule.code.lib.omm.ObjectModelSelector(@, pathId_, selectKeyVector_)
-                    if not (selector? and selector)
-                        throw "Unable to resolve selector for path ID #{pathId_}"
-                    return selector
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.Object.getNamespaceProxy fail on object #{@jsonTag} : #{exception}"
-            # --------------------------------------------------------------------------
 
 
 
@@ -308,8 +295,8 @@ class Encapsule.code.lib.omm.ObjectModel
             Console.message("... ... #{@countChildren} child descriptor(s)")
             Console.message("... ... #{@countExtensionPoints} extension point descriptor(s)")
             Console.message("... ... #{@countExtensions} extension descriptor(s)")
-            Console.message("... The #{@jsonTag} object schema is partitioned into #{@countComponents} component(s).")
-            Console.message("... The #{@jsonTag} object schema's tallest branch is #{@rankMax + 1} level(s) high.")
+            Console.message("... ... #{@jsonTag} object comprises #{@countComponents} component partition(s)")
+            Console.message("... ... #{@jsonTag} object's tallest branch is height #{@rankMax}")
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModel construction fail: #{exception}"
