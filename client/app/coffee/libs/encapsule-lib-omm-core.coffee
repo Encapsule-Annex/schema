@@ -29,6 +29,8 @@ Encapsule.code.lib.omm.core = Encapsule.code.lib.omm.core? and Encapsule.code.li
 
 
 
+#
+# ****************************************************************************
 Encapsule.code.lib.omm.RootObjectDescriptorFactory = (jsonTag_, label_, description_, menuHierarchy_) ->
     try
         rootObjectDescriptor = {
@@ -63,6 +65,8 @@ Encapsule.code.lib.omm.RootObjectDescriptorFactory = (jsonTag_, label_, descript
     catch exception
         throw "Encapsule.code.lib.omm.RooObjectDescriptorFactor function failed: #{exception}"
 
+# ****************************************************************************
+#
 
 
 
@@ -95,18 +99,15 @@ class Encapsule.code.lib.omm.ObjectModel
             @objectModelDeclaration.menuHierarchy = [ rootObjectDescriptor ]
 
 
-            # --------------------------------------------------------------------------
             #
-
+            # --------------------------------------------------------------------------
             # objectModelDescriptor = reference to OM layout declaration object
             # path (optional) = parent descriptor's OM path (defaults to jsonTag if undefined)
             # rank (optional) = directed graph rank (aka level - a zero-based count of tree depth)
             # parent
 
             buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, rank_, parentDescriptor_, componentDescriptor_, inheritedExtensionPoints_) =>
-                # \ BEGIN: processObjectModelDescriptor
                 try
-
                     if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter!"
 
                     # Local variables used to construct this descriptor.
@@ -213,16 +214,8 @@ class Encapsule.code.lib.omm.ObjectModel
                 catch exception
                     throw "buildOMDescriptorFromLayout fail: #{exception}"
 
-
+            # / END: buildOMDesriptorFromLayout
             # --------------------------------------------------------------------------
-            # \ START: processObjectModelDescriptor
-
-            # / END: processObjectModelDescriptor
-            # --------------------------------------------------------------------------
-
-            # --------------------------------------------------------------------------
-            # / END: processObjectModelDescriptor
-
 
             @objectModelComponentMap = {}
             @objectModelPathMap = {}
@@ -271,14 +264,42 @@ class Encapsule.code.lib.omm.ObjectModel
 # ****************************************************************************
 #
 
+
+
 #
+# An OM selector represents a unique object namespace within the space defined
+# by the object model parameter.
+# objectModel_ = reference to an instance of ObjectModel class
+# objectModelPath_ = OM path
 # ****************************************************************************
-class Encapsule.code.lib.omm.ObjectModelNamespaceProxy
-    constructor: (objectModel_, objectModelPath_, objectModelSelectVector_) ->
+class Encapsule.code.lib.omm.ObjectModelSelector
+    constructor: (objectModel_, pathId_, objectModelSelectVector_) ->
         try
+            if not (objectModel_? and objectModel_) then throw "Missing object model input parameter."
+            if not (pathId_?) then throw "Missing object model path parameter."
+
+            if (pathId_ < 0) or (pathId_ >= objectModel_.objectModelDescriptorById.length)
+                throw "Out of range path ID specified in request."
+
+            @objectModel = objectModel_
+            @objectModelSelectVector = objectModelSelectVector_
+            @pathId = pathId_
+
+
+            # Get the OM descriptor associated with the specified OM path.
+
+            @objectModelDescriptor = @objectModel.objectModelDescriptorById[pathId_]
+            if not (@objectModelDescriptor? and @objectModelDescriptor)
+                throw "Unable to resolve object model descriptor for path #{objectModelPath_}"
+
+            selectKeysRequired = @objectModelDescriptor.pathResolveExtensionPoints.length
+            selectKeysProvided = objectModelSelectVector_? and objectModelSelectVector_ and objectModelSelectVector_.length or 0
+
+            if selectKeysRequired != selectKeysProvided
+                throw "Unable to resolve object model selector. Expected #{selectKeysRequired} select keys. #{selectKeysProvided} keys were provided."
 
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectModelNamespaceProxy construction fail: #{exception}"
+            throw "Encapsule.code.lib.omm.ObjectSelector construction fail: #{exception}"
 # ****************************************************************************
 #
 
@@ -343,8 +364,43 @@ class Encapsule.code.lib.omm.Object
                 catch exception
                     throw "Encapsule.code.lib.omm.Object.toJSON fail on object #{@jsonTag} : #{exception}"
 
+
             #
             # ============================================================================
+            @getPathIdFromPath = (objectModelPath_) =>
+                try
+                    if not (@objectModel? and @objectModel) then throw "Internal error: Unable to resolve internal object model instance!"
+                    if not (objectModelPath_? and objectModelPath_) then throw "Missing object model path parameter!"
+
+                    objectModelDescriptor = @objectModel.objectModelPathMap[objectModelPath_]
+                    if not (objectModelDescriptor? and objectModelDescriptor)
+                        throw "Internal error: Unable to resolve object model descriptor!"
+        
+                    objectModelPathId = objectModelDescriptor.id
+                    if not objectModelPathId?
+                        throw "Internal error: Unable to resolve object model path ID from object model descriptor."
+
+                    return objectModelPathId
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.GetOMPathIDFromPath fail: #{exception}"
+
+
+
+            #
+            # ============================================================================
+            @getSelector = (pathId_, selectKeyVector_) =>
+                try
+                    if not pathId_? then throw "Missing object model path ID input parameter!"
+
+                    selector = new Encapsule.code.lib.omm.ObjectModelSelector(@objectModel, pathId_, selectKeyVector_)
+                    if not (selector? and selector)
+                        throw "Unable to resolve selector for path ID #{pathId_}"
+                    return selector
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.Object.getNamespaceProxy fail on object #{@jsonTag} : #{exception}"
+
 
             #
             # ============================================================================
