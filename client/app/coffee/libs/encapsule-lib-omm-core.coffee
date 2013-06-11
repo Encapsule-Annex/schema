@@ -146,17 +146,35 @@ class Encapsule.code.lib.omm.ObjectModel
                         "weight": 0
                          }
 
+                    # Add this descriptor to parent descriptor's children array
+                    if parentDescriptor_? and parentDescriptor_
+                        parentDescriptor_.children.push thisDescriptor
+
+                    # Add this descriptor to the OM intance's path map.
+                    @objectModelPathMap[path] = thisDescriptor
+
                     componentDescriptor = undefined
                     switch mvvmType
                         when "extension"
                             if not (componentDescriptor_? and componentDescriptor_) then throw "Internal error: componentDescriptor_ should be defined."
                             componentDescriptor = componentDescriptor_
                             componentDescriptor.extensionPoints[path] = thisDescriptor
+                            if not (extensionDescriptor? and extensionDescriptor)
+                                throw "Cannot resolve extension object descriptor."
+                            # Add this descriptor to OM instance's extension point map.
+                            @objectModelExtensionPointMap[path] = thisDescriptor
+                            updatedResolves = Encapsule.code.lib.js.clone pathResolveExtensionPoints
+                            updatedResolves.push id
+
+                            # RECURSION
+                            buildOMDescriptorFromLayout(extensionDescriptor, path, rank, thisDescriptor, componentDescriptor, updatedResolves)
                             break
+
                         when "archetype"
                             thisDescriptor.isComponent = true
                             thisDescriptor.extensionPoints = {}
                             componentDescriptor = thisDescriptor
+                            @objectModelExtensionMap[path] = thisDescriptor
                             @objectModelComponentMap[path] = thisDescriptor
                             break
                         when "root"
@@ -171,36 +189,6 @@ class Encapsule.code.lib.omm.ObjectModel
                             break
                         else
                             throw "Unrecognized MVVM type \"#{mvvmType}\" in call."
-
-                    # Add this descriptor to parent descriptor's children array
-                    if parentDescriptor_? and parentDescriptor_
-                        parentDescriptor_.children.push thisDescriptor
-
-                    # Add this descriptor to the OM intance's path map.
-                    @objectModelPathMap[path] = thisDescriptor
-
-                    # Currently Javascript/JSON arrays are used exclusively to represents "extension points"
-                    # (or points of extension if you prefer). 
-
-                    switch mvvmType
-                        when "extension"
-                            if not (extensionDescriptor? and extensionDescriptor)
-                                throw "Cannot resolve extension object descriptor."
-                            # Add this descriptor to OM instance's extension point map.
-                            @objectModelExtensionPointMap[path] = thisDescriptor
-                            updatedResolves = Encapsule.code.lib.js.clone pathResolveExtensionPoints
-                            updatedResolves.push id
-
-                            # RECURSION
-                            buildOMDescriptorFromLayout(extensionDescriptor, path, rank, thisDescriptor, componentDescriptor, updatedResolves)
-                            break
-
-                        when "archetype"
-                            @objectModelExtensionMap[path] = thisDescriptor
-                            break
-
-                        else
-                            break
 
                     if not (objectModelLayoutObject_.subMenus? and objectModelLayoutObject_.subMenus)
                         return true
@@ -271,6 +259,7 @@ class Encapsule.code.lib.omm.ObjectModel
 # by the object model parameter.
 # objectModel_ = reference to an instance of ObjectModel class
 # objectModelPath_ = OM path
+#
 # ****************************************************************************
 class Encapsule.code.lib.omm.ObjectModelSelector
     constructor: (objectModel_, pathId_, objectModelSelectVector_) ->
@@ -292,11 +281,11 @@ class Encapsule.code.lib.omm.ObjectModelSelector
             if not (@objectModelDescriptor? and @objectModelDescriptor)
                 throw "Unable to resolve object model descriptor for path #{objectModelPath_}"
 
-            selectKeysRequired = @objectModelDescriptor.pathResolveExtensionPoints.length
-            selectKeysProvided = objectModelSelectVector_? and objectModelSelectVector_ and objectModelSelectVector_.length or 0
+            @selectKeysRequired = @objectModelDescriptor.pathResolveExtensionPoints.length
+            @selectKeysProvided = objectModelSelectVector_? and objectModelSelectVector_ and objectModelSelectVector_.length or 0
 
-            if selectKeysRequired != selectKeysProvided
-                throw "Unable to resolve object model selector. Expected #{selectKeysRequired} select keys. #{selectKeysProvided} keys were provided."
+            if @selectKeysRequired != @selectKeysProvided
+                throw "Unable to resolve object model selector. Expected #{@selectKeysRequired} select keys. #{@selectKeysProvided} keys were provided."
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectSelector construction fail: #{exception}"
@@ -383,7 +372,23 @@ class Encapsule.code.lib.omm.Object
                     return objectModelPathId
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.GetOMPathIDFromPath fail: #{exception}"
+                    throw "Encapsule.code.lib.omm.Object.getPathIdFromPath fail: #{exception}"
+
+
+            #
+            # ============================================================================
+            @getPathFromPathId = (pathId_) =>
+                try
+                    if not (pathId_?) then throw "Missing path ID parameter!"
+
+                    objectModelDescriptor = @objectModel.objectModelDescriptorById[pathId_]
+                    if not (objectModelDescriptor? and objectModelDescriptor)
+                        throw "Unable to resolve object descriptor for path ID #{pathId_}"
+                    path = objectModelDescriptor.path
+                    return path
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.Object.getPathFromPathId fail: #{exception}"
 
 
 
