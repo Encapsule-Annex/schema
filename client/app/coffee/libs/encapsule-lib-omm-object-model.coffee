@@ -25,12 +25,13 @@ namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
+Encapsule.code.lib.omm.implementation = Encapsule.code.lib.omm.implementation? and Encapsule.code.lib.omm.implementation or @Encapsule.code.lib.omm.implementation = {}
 
 
 
 #
 # ****************************************************************************
-Encapsule.code.lib.omm.RootObjectDescriptorFactory = (jsonTag_, label_, description_, menuHierarchy_) ->
+Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory = (jsonTag_, label_, description_, menuHierarchy_) ->
     try
         rootObjectDescriptor = {
             jsonTag: jsonTag_
@@ -62,7 +63,7 @@ Encapsule.code.lib.omm.RootObjectDescriptorFactory = (jsonTag_, label_, descript
         return rootObjectDescriptor
 
     catch exception
-        throw "Encapsule.code.lib.omm.RooObjectDescriptorFactor function failed: #{exception}"
+        throw "Encapsule.code.lib.omm.implementation.RooObjectDescriptorFactor function failed: #{exception}"
 # ****************************************************************************
 #
 
@@ -84,7 +85,7 @@ class Encapsule.code.lib.omm.ObjectModel
             @description = objectModelDeclaration_.description
             
             # --------------------------------------------------------------------------
-            rootObjectDescriptor = Encapsule.code.lib.omm.RootObjectDescriptorFactory(
+            rootObjectDescriptor = Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory(
                 @jsonTag
                 @label
                 @description
@@ -99,10 +100,10 @@ class Encapsule.code.lib.omm.ObjectModel
 
             #
             # --------------------------------------------------------------------------
-            # objectModelDescriptor = reference to OM layout declaration object
-            # path (optional) = parent descriptor's OM path (defaults to jsonTag if undefined)
-            # rank (optional) = directed graph rank (aka level - a zero-based count of tree depth)
-            # parent
+            # objectModelDescriptor = (required) reference to OM layout declaration object
+            # path = (optional/used in recursion) parent descriptor's OM path (defaults to jsonTag if undefined)
+            # rank = (optional/used in recursion) directed graph rank (aka level - a zero-based count of tree depth)
+            # parentDescriptor_ = (optional/used in recursion) 
 
             buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, rank_, parentDescriptor_, componentDescriptor_, inheritedExtensionPoints_) =>
                 try
