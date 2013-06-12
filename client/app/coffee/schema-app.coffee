@@ -56,6 +56,7 @@ class Encapsule.code.app.Schema
             objectStore = 
                 Encapsule.runtime.app.SchemaObjectStore =
                 new Encapsule.code.lib.omm.ObjectStore(objectModel)
+
             jsonString = objectStore.toJSON()
             objectStore.fromJSON(jsonString)
 

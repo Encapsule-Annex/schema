@@ -16,7 +16,7 @@
 
 ###
 #
-# encapsule-lib-omm-object-store-namespace.coffee
+# encapsule-lib-omm-object-store-namespace-binder.coffee
 #
 # OMM stands for Object Model Manager
 
