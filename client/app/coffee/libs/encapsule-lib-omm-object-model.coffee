@@ -141,12 +141,15 @@ class Encapsule.code.lib.omm.ObjectModel
 
                     mvvmType = objectModelLayoutObject_.objectDescriptor.mvvmType
                     extensionDescriptor = objectModelLayoutObject_.objectDescriptor.archetype
+                    extensionPathId = -1
 
                     # Build this descriptor and add it to the OM's descriptor array.
                     thisDescriptor = @objectModelDescriptorById[id] = {
                         "id": id
                         "jsonTag": tag
                         "path":  path
+                        "mvvmType": mvvmType
+                        "extensionPathId": -1
                         "pathResolveExtensionPoints": pathResolveExtensionPoints
                         "parent": parentDescriptor_
                         "parentPathIdVector": []
@@ -186,6 +189,7 @@ class Encapsule.code.lib.omm.ObjectModel
                         when "archetype"
                             thisDescriptor.isComponent = true
                             thisDescriptor.extensionPoints = {}
+                            parentDescriptor_.extensionPathId = id
                             componentDescriptor = thisDescriptor
                             @objectModelExtensionMap[path] = thisDescriptor
                             @objectModelComponentMap[path] = thisDescriptor
@@ -198,6 +202,7 @@ class Encapsule.code.lib.omm.ObjectModel
                             @objectModelComponentMap[path] = thisDescriptor
                             break
                         when "child"
+                            thisDescriptor.isComponent = false
                             componentDescriptor = componentDescriptor_
                             break
                         else
