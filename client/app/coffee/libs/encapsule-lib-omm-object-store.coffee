@@ -38,15 +38,27 @@ class Encapsule.code.lib.omm.ObjectStore
             # Validate parameter.
             if not (objectModel_? and objectModel_) then throw "Missing object model parameter!"
 
+            # Keep a reference to this object store's associated object model.
+            @objectModel = objectModel_
+
             @jsonTag = objectModel_.jsonTag
             @label = objectModel_.label
             @description = objectModel_.description
 
-            @objectData = {}
-            @instancePrivateState = {}
-            @instancePrivateState.objectDataRevision = 0
-            @instancePrivateState.objectDataCreateTime = 0
-            @instancePrivateState.objectDataUpdateTime = 0
+            @objectStore = {}
+
+            # ObjectStoreNamespace by pathId
+            @objectStoreNamespaceBinders = []
+
+            @isValid = =>
+                return @objectStoreNamespaces.length and true or false
+
+            descriptorArrayIndex = 0
+            descriptorArray = @objectModel.objectModelDescriptorById
+            while descriptorArrayIndex < descriptorArray.length
+                objectModelDescriptor = descriptorArray[descriptorArrayIndex]
+                @objectStoreNamespaceBinders.push new Encapsule.code.lib.omm.ObjectStoreNamespaceBinder(@, objectModelDescriptor)
+                descriptorArrayIndex++
 
             #
             # ============================================================================
@@ -58,7 +70,7 @@ class Encapsule.code.lib.omm.ObjectStore
                     deserializedObject = JSON.parse(jsonString_) or {}
                     if not (deserializedObject? and deserializedObject)
                         throw "Cannot deserialized Javascript object from JSON!"
-                    @objectData = deserializedObject[@jsonTag]
+                    @objectStore = deserializedObject[@jsonTag]
                     
 
                 catch exception
@@ -70,7 +82,7 @@ class Encapsule.code.lib.omm.ObjectStore
                 try
                     Console.message("Encapsule.code.lib.omm.ObjectStore.toJSON for object store #{@jsonTag}")
                     resultObject = {}
-                    resultObject[@jsonTag] = @objectData
+                    resultObject[@jsonTag] = @objectStore
                     resultJSON = JSON.stringify(resultObject)
                     if not (resultJSON? and resultJSON)
                         throw "Cannot serialize Javascript object to JSON!"
@@ -82,6 +94,22 @@ class Encapsule.code.lib.omm.ObjectStore
 
             #
             # ============================================================================
+            @bindNamespace = (objectModelNamespaceSelector_) =>
+                try
+                    if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
+
+                    pathId = objectModelNamespaceSelector_.pathId
+
+                    storeNamespaceBinder = @objectStoreNamespaceBinders[pathId]
+                    if not (storeNamespaceBinder? and storeNamespaceBinder)
+                        throw "Unable to resolve store namespace binder for specified model namespace path!"
+
+                    storeNamespace = storeNamespaceBinder.bind(objectModelNamespaceSelector_)
+
+                    return storeNamespace
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStore.createNamespaceInstance failed: #{exception}"
             #
             # ============================================================================
 

@@ -46,25 +46,28 @@ class Encapsule.code.app.Schema
             # This is so deprecated...
             Encapsule.runtime.app.SchemaScdlCatalogue = new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
 
+            # ==============================================================================
             # OMM experiments.
 
-            ommSchemaObjectModel = Encapsule.runtime.app.SchemaObjectModel =
+            objectModel = 
+                Encapsule.runtime.app.SchemaObjectModel =
                 new Encapsule.code.lib.omm.ObjectModel(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
 
-            schemaSelectorId = ommSchemaObjectModel.getPathIdFromPath("schema")
-            schemaSelectKeyVector = []
+            objectStore = 
+                Encapsule.runtime.app.SchemaObjectStore =
+                new Encapsule.code.lib.omm.ObjectStore(objectModel)
+            jsonString = objectStore.toJSON()
+            objectStore.fromJSON(jsonString)
 
-            ommSchemaObjectModelNamespaceSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(ommSchemaObjectModel, schemaSelectorId, undefined)
+            selectorId = objectModel.getPathIdFromPath("schema")
+            selectKeyVector = []
+            namespaceSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(objectModel, selectorId, selectKeyVector)
 
-
-            ommSchemaObjectStore = Encapsule.runtime.app.SchemaObjectStore =
-                new Encapsule.code.lib.omm.ObjectStore(ommSchemaObjectModel)
-
-            schemaJSON = ommSchemaObjectStore.toJSON()
-            ommSchemaObjectStore.fromJSON(schemaJSON)
+            objectStoreNamespace = objectStore.bindNamespace(namespaceSelector)
 
 
 
+            # ==============================================================================
 
             Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.lib.modelview.NavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
             Encapsule.runtime.app.SchemaTitlebarWindow = new Encapsule.code.app.modelview.SchemaTitleBarWindow()

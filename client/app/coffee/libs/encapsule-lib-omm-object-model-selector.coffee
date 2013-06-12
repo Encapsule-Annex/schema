@@ -31,8 +31,11 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 #
 # An OM selector represents a unique object namespace within the space defined
 # by the object model parameter.
-# objectModel_ = reference to an instance of ObjectModel class
-# objectModelPath_ = OM path
+# pathId_ = zero-based index of OM path
+# selectKeyVector_ = orderred array of extension array keys (we're concerned only
+#     with the existence or size of this array here; undefined or length = 0 are
+#     both taken as "no keys provided" (i.e. okay for pathId's corresponding to
+#     OM paths that do not have embedded extension points).
 #
 # ****************************************************************************
 class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
