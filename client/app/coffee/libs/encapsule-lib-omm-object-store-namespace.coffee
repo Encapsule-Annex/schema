@@ -16,7 +16,7 @@
 
 ###
 #
-# encapsule-lib-omm-object-store-namespace.coffee
+# encapsule-lib-omm-object-store-namespace-instance.coffee
 #
 # OMM stands for Object Model Manager
 
@@ -27,42 +27,9 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 Encapsule.code.lib.omm.implementation = Encapsule.code.lib.omm.implementation? and Encapsule.code.lib.omm.implementation or @Encapsule.code.lib.omm.implementation = {}
 
-
-
-# are these actually BINDERS?
-
-#
-# ****************************************************************************
-class Encapsule.code.lib.omm.ObjectStoreNamespaceBinder
-    constructor: (objectStore_, objectModelDescriptor_) ->
+class Encapsule.code.lib.omm.ObjectStoreNamespace
+    constructor: (objectStoreNamespace_, objectModelNamespaceSelector_) ->
         try
-            if not (objectStore_? and objectStore_) then throw "Missing object store input parameter!"
-            if not (objectModelDescriptor_? and objectModelDescriptor_) then throw "Missing object model descriptor input parameter."
-
-            # Keep references to this namespace's backing store.
-            @objectStore = objectStore_
-            @objectModelDescriptor = objectModelDescriptor_
-
-            @keysRequiredToBind = objectModelDescriptor_.pathResolveExtensionPoints.length
-
-
-            # A reference to the actual namespace storage owned by the object store.
-            @dataReference = undefined
-
-            # Returns a new Encapsule.code.lib.omm.ObjectStoreNamespaceInstance object.
-
-            @bind = (objectModelNamespaceSelector_) =>
-                try
-                    if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
-
-                    newStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
-
-                    return newStoreNamespace
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreNamespace.bind failed: #{exception}"
-
 
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectStoreNamespaceBinder constructor failed: #{exception}"
-
+            throw "Encapsule.code.lib.omm.ObjectStoreNamespaceInstance construction failed: #{exception}"
