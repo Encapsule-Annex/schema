@@ -36,5 +36,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             @objectStoreNamespaceBinder = objectStoreNamespaceBinder_
             @objectModelNamespaceSelector = objectModelNamespaceSelector_
 
+            
+
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespaceInstance construction failed: #{exception}"

@@ -75,7 +75,7 @@ Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory = (jsonTag_, l
 class Encapsule.code.lib.omm.ObjectModel
     constructor: (objectModelDeclaration_) ->
         try
-            Console.message("Encapsule.code.lib.omm.ObjectModel for #{objectModelDeclaration_.jsonTag}")
+            Console.message("Encapsule.code.lib.omm.ObjectModel constructor for OMM root namespace \"#{objectModelDeclaration_.jsonTag}\"")
 
             if not (objectModelDeclaration_? and objectModelDeclaration_)
                 throw "Missing object model delcaration input parameter!"
@@ -121,7 +121,7 @@ class Encapsule.code.lib.omm.ObjectModel
             @rankMax = 0
             #
             # --------------------------------------------------------------------------
-            buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, rank_, parentDescriptor_, componentDescriptor_, inheritedExtensionPoints_) =>
+            buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, parentDescriptor_, componentDescriptor_, parentPathIdVector_, inheritedExtensionPoints_) =>
                 try
                     if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter!"
 
@@ -129,13 +129,6 @@ class Encapsule.code.lib.omm.ObjectModel
                     tag = objectModelLayoutObject_.jsonTag
 
                     path = path_? and path_ and "#{path_}.#{tag}" or tag
-                    rank = undefined
-                    if rank_?
-                        rank = rank_ + 1
-                    else
-                        rank = 0
-                    if @rankMax < rank
-                        @rankMax = rank
 
                     id = @countDescriptors
                     @countDescriptors++ # set up for the next invocation of this function (use the id var locally)
@@ -152,11 +145,11 @@ class Encapsule.code.lib.omm.ObjectModel
                     # Build this descriptor and add it to the OM's descriptor array.
                     thisDescriptor = @objectModelDescriptorById[id] = {
                         "id": id
-                        "rank": rank
                         "jsonTag": tag
                         "path":  path
                         "pathResolveExtensionPoints": pathResolveExtensionPoints
                         "parent": parentDescriptor_
+                        "parentPathIdVector": []
                         "children": []
                         "weight": 0
                          }
@@ -164,6 +157,11 @@ class Encapsule.code.lib.omm.ObjectModel
                     # Add this descriptor to parent descriptor's children array
                     if parentDescriptor_? and parentDescriptor_
                         parentDescriptor_.children.push thisDescriptor
+                        thisDescriptor.parentPathIdVector = Encapsule.code.lib.js.clone parentDescriptor_.parentPathIdVector
+                        thisDescriptor.parentPathIdVector.push parentDescriptor_.id
+
+                    if @rankMax < thisDescriptor.parentPathIdVector.length
+                        @rankMax = thisDescriptor.parentPathIdVector.length
 
                     # Add this descriptor to the OM intance's path map.
                     @objectModelPathMap[path] = thisDescriptor
@@ -182,7 +180,7 @@ class Encapsule.code.lib.omm.ObjectModel
                             updatedResolves.push id
 
                             # RECURSION
-                            buildOMDescriptorFromLayout(extensionDescriptor, path, rank, thisDescriptor, componentDescriptor, updatedResolves)
+                            buildOMDescriptorFromLayout(extensionDescriptor, path, thisDescriptor, componentDescriptor, updatedResolves)
                             break
 
                         when "archetype"
@@ -210,7 +208,7 @@ class Encapsule.code.lib.omm.ObjectModel
 
                     for subObjectDescriptor in objectModelLayoutObject_.subMenus
                         # RECURSION
-                        buildOMDescriptorFromLayout(subObjectDescriptor, path, rank, thisDescriptor, componentDescriptor, pathResolveExtensionPoints)
+                        buildOMDescriptorFromLayout(subObjectDescriptor, path, thisDescriptor, componentDescriptor, pathResolveExtensionPoints)
 
                     return true
 
@@ -289,14 +287,14 @@ class Encapsule.code.lib.omm.ObjectModel
                 throw "Layout declaration error: component count should be extension count + 1. componentCount=#{@componentCount} countExtensions=#{@countExtensions}"
 
             # Debug summary output.
-            Console.message("ObjectModel for #{@jsonTag}:")
-            Console.message("... #{@jsonTag} object comprises #{@countDescriptors} descriptors as follows:")
-            Console.message("... ... 1 root descriptor")
-            Console.message("... ... #{@countChildren} child descriptor(s)")
-            Console.message("... ... #{@countExtensionPoints} extension point descriptor(s)")
-            Console.message("... ... #{@countExtensions} extension descriptor(s)")
-            Console.message("... ... #{@jsonTag} object comprises #{@countComponents} component partition(s)")
-            Console.message("... ... #{@jsonTag} object's tallest branch is height #{@rankMax}")
+            Console.message("#{@jsonTag} namespace object model:")
+            Console.message("... 1 root descriptor")
+            Console.message("... #{@countChildren} child descriptor(s)")
+            Console.message("... #{@countExtensionPoints} extension point descriptor(s)")
+            Console.message("... #{@countExtensions} extension descriptor(s)")
+            Console.message("... <strong>Total:</strong> #{@countDescriptors} (namepspace descriptors processed)")
+            Console.message("... <strong>Components:</strong> #{@countComponents} (composable components)")
+            Console.message("... <strong>Max Rank:</strong> #{@rankMax} (tallest leaf vertex)")
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModel construction fail: #{exception}"
