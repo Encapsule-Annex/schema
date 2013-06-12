@@ -60,11 +60,18 @@ class Encapsule.code.app.Schema
             jsonString = objectStore.toJSON()
             objectStore.fromJSON(jsonString)
 
-            selectorId = objectModel.getPathIdFromPath("schema")
             selectKeyVector = []
-            namespaceSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(objectModel, selectorId, selectKeyVector)
 
-            objectStoreNamespace = objectStore.bindNamespace(namespaceSelector)
+            schemaClientId = objectModel.getPathIdFromPath("schema.client")
+            schemaClientCataloguesId = objectModel.getPathIdFromPath("schema.client.catalogues")
+
+            schemaClientSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(objectModel, schemaClientId, selectKeyVector)
+            schemaClientCataloguesSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(objectModel, schemaClientCataloguesId, selectKeyVector)
+
+            schemaClientNamespace = objectStore.bindNamespace(schemaClientSelector)
+            schemaClientCataloguesNamespace = objectStore.bindNamespace(schemaClientCataloguesSelector)
+
+            jsonString = objectStore.toJSON()
 
 
 

@@ -28,7 +28,7 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 Encapsule.code.lib.omm.implementation = Encapsule.code.lib.omm.implementation? and Encapsule.code.lib.omm.implementation or @Encapsule.code.lib.omm.implementation = {}
 
 class Encapsule.code.lib.omm.ObjectStoreNamespace
-    constructor: (objectStoreNamespaceBinder_, objectModelNamespaceSelector_) ->
+    constructor: (objectStoreNamespaceBinder_, objectModelNamespaceSelector_, objectStoreReference_) ->
         try
             if not (objectStoreNamespaceBinder_? and objectStoreNamespaceBinder_) then throw "Missing object store namespace binder input parameter!"
             if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
@@ -36,7 +36,10 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             @objectStoreNamespaceBinder = objectStoreNamespaceBinder_
             @objectModelNamespaceSelector = objectModelNamespaceSelector_
 
-            
+            @objectStoreReference = objectStoreReference_
+
+
+
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespaceInstance construction failed: #{exception}"
