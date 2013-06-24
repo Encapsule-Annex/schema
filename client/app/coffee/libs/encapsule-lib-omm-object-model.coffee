@@ -182,7 +182,7 @@ class Encapsule.code.lib.omm.ObjectModel
                             updatedResolves.push id
 
                             # RECURSION
-                            buildOMDescriptorFromLayout(extensionDescriptor, path, thisDescriptor, componentDescriptor, updatedResolves)
+                            buildOMDescriptorFromLayout(extensionDescriptor, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, updatedResolves)
                             break
 
                         when "archetype"
@@ -212,7 +212,7 @@ class Encapsule.code.lib.omm.ObjectModel
 
                     for subObjectDescriptor in objectModelLayoutObject_.subMenus
                         # RECURSION
-                        buildOMDescriptorFromLayout(subObjectDescriptor, path, thisDescriptor, componentDescriptor, pathResolveExtensionPoints)
+                        buildOMDescriptorFromLayout(subObjectDescriptor, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, pathResolveExtensionPoints)
 
                     return true
 

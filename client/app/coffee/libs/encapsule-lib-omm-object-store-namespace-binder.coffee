@@ -151,6 +151,10 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceBinder
             # / END: bind
             # ==============================================================================
 
+            if @keysRequiredToBind == 0
+                objectModelNamespaceSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(objectStore_.objectModel, objectModelDescriptor_.id, undefined)
+                @bind(objectModelNamespaceSelector)
+
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespaceBinder constructor failed: #{exception}"
 
