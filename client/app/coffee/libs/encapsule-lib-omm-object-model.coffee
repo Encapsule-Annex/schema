@@ -154,7 +154,6 @@ class Encapsule.code.lib.omm.ObjectModel
                         "parent": parentDescriptor_
                         "parentPathIdVector": []
                         "children": []
-                        "weight": 0
                          }
 
                     # Add this descriptor to parent descriptor's children array
@@ -260,9 +259,6 @@ class Encapsule.code.lib.omm.ObjectModel
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModel.getPathFromPathId fail: #{exception}"
             # --------------------------------------------------------------------------
-
-
-
 
 
             # CONSTRUCT THE ROOT OBJECT DESCRIPTOR FROM THE SPECIFIED OBJECT MODEL LAYOUT 

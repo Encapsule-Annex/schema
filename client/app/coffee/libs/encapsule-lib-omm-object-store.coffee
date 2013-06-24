@@ -47,18 +47,23 @@ class Encapsule.code.lib.omm.ObjectStore
 
             @objectStore = {}
 
-            # ObjectStoreNamespace by pathId
+            # ObjectStoreNamespaceBinder by pathId
             @objectStoreNamespaceBinders = []
-
-            @isValid = =>
-                return @objectStoreNamespaces.length and true or false
 
             descriptorArrayIndex = 0
             descriptorArray = @objectModel.objectModelDescriptorById
+
             while descriptorArrayIndex < descriptorArray.length
                 objectModelDescriptor = descriptorArray[descriptorArrayIndex]
                 @objectStoreNamespaceBinders.push new Encapsule.code.lib.omm.ObjectStoreNamespaceBinder(@, objectModelDescriptor)
                 descriptorArrayIndex++
+
+
+            #
+            # ============================================================================
+            @isValid = =>
+                return @objectStoreNamespaces.length and true or false
+
 
             #
             # ============================================================================

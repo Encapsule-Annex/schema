@@ -51,14 +51,17 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             @selectKeyVector = selectKeyVector_
             @pathId = pathId_
 
+            #
+            # ============================================================================
             @getSelectKey = (index_) =>
                 try
                     if not index_? then throw "Missing index input parameter!"
                     if (index_ < 0) or (@selectKeyVector.length <= index_) then throw "Specified index is out of range!"
                     return @selectKeyVector[index_]
-
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getSelectKey failure: #{exception}"
+            # ============================================================================
+            #
 
             # Get the OM descriptor associated with the specified OM path.
 

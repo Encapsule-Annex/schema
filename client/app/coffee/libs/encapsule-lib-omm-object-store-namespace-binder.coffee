@@ -29,10 +29,23 @@ Encapsule.code.lib.omm.implementation = Encapsule.code.lib.omm.implementation? a
 
 
 
-# are these actually BINDERS?
 
 #
 # ****************************************************************************
+#
+# An ObjectStoreNamespaceBinder class instance is a helper object responsible for 
+# locating specific sub-objects within an OMM store.
+#
+# ObjectStore, the parent class by containment, maintains an array of ObjectStoreNamespaceBinder
+# instances per object model path ID ordinal.
+#
+# At runtime, an app may obtain a reference to a specific object (or sub-object) within an ObjectStore
+# by calling the bindNamespace method. bindNamespace takes as input ObjectModelNamespaceSelector and
+# returns a reference to the sub-object data.
+#
+# Internally ObjectStore.bindNamespace delegates to ObjectStoreNamespaceBinder.bind.
+#
+
 class Encapsule.code.lib.omm.ObjectStoreNamespaceBinder
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
     constructor: (objectStore_, objectModelDescriptor_) ->
@@ -47,18 +60,23 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceBinder
 
             @keysRequiredToBind = objectModelDescriptor_.pathResolveExtensionPoints.length
 
-
-            # If successful, bind returns a new instance of ObjectStoreNamespace to the caller that represents
-            # a specific sub-object in the OM instance owned by ObjectStore. 
+            # If successful, bind returns to the caller a new instance of ObjectStoreNamespace that represents
+            # a specific sub-object in the OM instance owned by ObjectStore. The specific sub-object to bind
+            # is specified by OM coordinates specified in the objectModelNamespaceSelector_ parameter. If the
+            # the coordinates specified in the namespace selector cannot be resolved, bind throws an exception.
             #
-            # The objectModelNamespaceSelector_ specifies the OM coordinates to select in ObjectStore.
-
             # ==============================================================================
-            @bind = (objectModelNamespaceSelector_) =>
+            # \ BEGIN: bind
+            @bind = (objectModelNamespaceSelector_, bindMode_) =>
                 try
                     if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
 
+                    bindMode = "new"
+                    if bindMode_? and bindMode_ and bindMode_ == "strict"
+                        bindMode = "strict"
+
                     # ------------------------------------------------------------------------------
+                    # \ BEGIN: internalBindNamespace
                     internalBindNamespace = (objectModelDescriptor_, objectStoreReference_) =>
 
                         storeReference = undefined
@@ -71,8 +89,11 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceBinder
                             when "child"
                                 storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
                                 if not (storeReference? and storeReference)
-                                    objectStoreReference_[objectModelDescriptor_.jsonTag] = {}
-                                    storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
+                                    if bindMode == "new"
+                                        objectStoreReference_[objectModelDescriptor_.jsonTag] = {}
+                                        storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
+                                    else
+                                        throw "Strict mode binding failure: child namespace does not exist for \"#{objectModelDescriptor_.jsonTag}\"."
                                 break
 
                             when "extension"
@@ -104,6 +125,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceBinder
                             throw "Cannot resolve store reference!"
 
                         return storeReference
+                    # / END: internalBindNamespace
                     # ------------------------------------------------------------------------------
 
                     # Bind the indicated namespace's parent namespaces.
@@ -126,6 +148,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceBinder
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectStoreNamespace.bind failed: #{exception}"
 
+            # / END: bind
             # ==============================================================================
 
         catch exception
