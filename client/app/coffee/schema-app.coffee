@@ -49,27 +49,28 @@ class Encapsule.code.app.Schema
             # ==============================================================================
             # OMM experiments.
 
-            objectModel = 
-                Encapsule.runtime.app.SchemaObjectModel =
+            objectModel = Encapsule.runtime.app.SchemaObjectModel =
                 new Encapsule.code.lib.omm.ObjectModel(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
 
-            objectStore = 
-                Encapsule.runtime.app.SchemaObjectStore =
-                new Encapsule.code.lib.omm.ObjectStore(objectModel)
+            objectStore = Encapsule.runtime.app.SchemaObjectStore = new Encapsule.code.lib.omm.ObjectStore(objectModel)
 
             jsonString = objectStore.toJSON()
             objectStore.fromJSON(jsonString)
 
+            # Raw old style
             selectKeyVector = []
-
             schemaClientId = objectModel.getPathIdFromPath("schema.client")
             schemaClientCataloguesId = objectModel.getPathIdFromPath("schema.client.catalogues")
-
             schemaClientSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(objectModel, schemaClientId, selectKeyVector)
             schemaClientCataloguesSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(objectModel, schemaClientCataloguesId, selectKeyVector)
+            schemaClientNamespace = objectStore.createNamespace(schemaClientSelector)
+            schemaClientCataloguesNamespace = objectStore.createNamespace(schemaClientCataloguesSelector)
 
-            schemaClientNamespace = objectStore.bindNamespace(schemaClientSelector)
-            schemaClientCataloguesNamespace = objectStore.bindNamespace(schemaClientCataloguesSelector)
+            # Abbreviated new style
+
+            catalogues = objectStore.createNamespaceFromPath("schema.client.catalogues", undefined)
+
+
 
             jsonString = objectStore.toJSON()
 

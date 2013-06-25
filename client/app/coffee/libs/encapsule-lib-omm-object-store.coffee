@@ -99,7 +99,7 @@ class Encapsule.code.lib.omm.ObjectStore
 
             #
             # ============================================================================
-            @bindNamespace = (objectModelNamespaceSelector_) =>
+            @createNamespace = (objectModelNamespaceSelector_) =>
                 try
                     if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
 
@@ -114,12 +114,29 @@ class Encapsule.code.lib.omm.ObjectStore
                     return storeNamespace
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.createNamespaceInstance failed: #{exception}"
-            #
-            # ============================================================================
+                    throw "Encapsule.code.lib.omm.ObjectStore.createNamespace failed: #{exception}"
+
+
 
             #
             # ============================================================================
+            @createNamespaceFromPathId = (pathId_, selectKeyVector_) =>
+                try
+                    selector = @objectModel.createNamespaceSelectorFromPathId(pathId_, selectKeyVector_)
+                    storeNamespace = @createNamespace(selector)
+                    return storeNamespace
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStore.createNamespaceFromPathId failed: #{exception}"
+
+            #
+            # ============================================================================
+            @createNamespaceFromPath = (path_, selectKeyVector_) =>
+                try
+                    pathId = @objectModel.getPathIdFromPath(path_)
+                    storeNamespace = @createNamespaceFromPathId(pathId, selectKeyVector_)
+                    return storeNamespace
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStore.createNamespaceFromPath failed: #{exception}"
 
             #
             # ============================================================================

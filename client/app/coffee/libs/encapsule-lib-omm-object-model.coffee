@@ -261,6 +261,25 @@ class Encapsule.code.lib.omm.ObjectModel
             # --------------------------------------------------------------------------
 
 
+            # --------------------------------------------------------------------------
+            @createNamespaceSelectorFromPathId = (pathId_, selectKeyVector_) =>
+                try
+                    selector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@, pathId_, selectKeyVector_)
+                    return selector
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPathId failed: #{exception}"
+
+            # --------------------------------------------------------------------------
+            @createNamespaceSelectorFromPath = (path_, selectKeyVector_) =>
+                try
+                    pathId = @getPathIdFromPath(path_)
+                    selector = @createNamespaceSelectorFromPathId(pathId, selectKeyVector_)
+                    return selector
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPath failed: #{exception}"
+
+
+
             # CONSTRUCT THE ROOT OBJECT DESCRIPTOR FROM THE SPECIFIED OBJECT MODEL LAYOUT 
             buildOMDescriptorFromLayout(rootObjectDescriptor)
 
