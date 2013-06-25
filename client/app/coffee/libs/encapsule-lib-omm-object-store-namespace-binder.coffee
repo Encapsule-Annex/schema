@@ -56,6 +56,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceBinder
 
             # Keep references to this namespace's backing store.
             @objectStore = objectStore_
+            @objectStoreSouce = objectStore_.objectStoreSource # currently "new" or "json"
             @objectModelDescriptor = objectModelDescriptor_
 
             @keysRequiredToBind = objectModelDescriptor_.parentPathExtensionPoints.length
