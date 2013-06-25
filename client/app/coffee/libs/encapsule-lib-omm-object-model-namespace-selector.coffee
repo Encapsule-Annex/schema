@@ -69,7 +69,7 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             if not (@objectModelDescriptor? and @objectModelDescriptor)
                 throw "Unable to resolve object model descriptor for path #{objectModelPath_}"
 
-            @selectKeysRequired = @objectModelDescriptor.pathResolveExtensionPoints.length
+            @selectKeysRequired = @objectModelDescriptor.parentPathExtensionPoints.length
             @selectKeysProvided = selectKeyVector_? and selectKeyVector_ and selectKeyVector_.length or 0
 
             if @selectKeysRequired != @selectKeysProvided

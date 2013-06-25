@@ -31,11 +31,11 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 #
 # ****************************************************************************
 class Encapsule.code.lib.omm.ObjectStore
-    constructor: (objectModel_) ->
+    constructor: (objectModel_, jsonInitialState_) ->
         try
             Console.message("Encapsule.code.lib.omm.ObjectStore construction for object namespace \"#{objectModel_.jsonTag}\".")
 
-            # Validate parameter.
+            # Validate parameters.
             if not (objectModel_? and objectModel_) then throw "Missing object model parameter!"
 
             # Keep a reference to this object store's associated object model.
@@ -45,10 +45,23 @@ class Encapsule.code.lib.omm.ObjectStore
             @label = objectModel_.label
             @description = objectModel_.description
 
-            @objectStore = {}
+            @objectStoreNamespaceBinders = []             # ObjectStoreNamespaceBinder by pathId
 
-            # ObjectStoreNamespaceBinder by pathId
-            @objectStoreNamespaceBinders = []
+            @objectStoreSource = "new"                    # default - may be overridden below
+
+            @objectStore = undefined
+
+            if jsonInitialState_? and jsonInitialState_
+                Console.message("... attempting to initialize store from JSON string")
+                @objectStoreSource = "json"
+                @objectStore = JSON.parse(jsonInitialState_)
+                if not (@objectStore? and @objectStore)
+                    throw "Cannot deserialize specified JSON string!"
+                else
+                    Console.message("... JSON string deserialized.")
+            else
+                @objectStore = {}
+
 
             descriptorArrayIndex = 0
             descriptorArray = @objectModel.objectModelDescriptorById
@@ -64,22 +77,6 @@ class Encapsule.code.lib.omm.ObjectStore
             @isValid = =>
                 return @objectStoreNamespaces.length and true or false
 
-
-            #
-            # ============================================================================
-            @fromJSON = (jsonString_) =>
-                try
-                    Console.message("Encapsule.code.lib.omm.ObjectStore.fromJSON for object store #{@jsonTag}")
-                    if not (jsonString_? and jsonString_)
-                        throw "Missing JSON string input parameter!"
-                    deserializedObject = JSON.parse(jsonString_) or {}
-                    if not (deserializedObject? and deserializedObject)
-                        throw "Cannot deserialized Javascript object from JSON!"
-                    @objectStore = deserializedObject[@jsonTag]
-                    
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.fromJson fail on object store #{@jsonTag} : #{exception}"
 
             #
             # ============================================================================

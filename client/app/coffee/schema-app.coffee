@@ -55,7 +55,6 @@ class Encapsule.code.app.Schema
             objectStore = Encapsule.runtime.app.SchemaObjectStore = new Encapsule.code.lib.omm.ObjectStore(objectModel)
 
             jsonString = objectStore.toJSON()
-            objectStore.fromJSON(jsonString)
 
             # Raw old style
             selectKeyVector = []
@@ -68,11 +67,14 @@ class Encapsule.code.app.Schema
 
             # Abbreviated new style
 
+            cataloguesSelector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues", undefined)
+
             catalogues = objectStore.createNamespaceFromPath("schema.client.catalogues", undefined)
 
-
-
             jsonString = objectStore.toJSON()
+
+
+            objectStore2 = new Encapsule.code.lib.omm.ObjectStore(objectModel, jsonString)
 
 
 

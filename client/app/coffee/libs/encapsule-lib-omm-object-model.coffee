@@ -121,7 +121,8 @@ class Encapsule.code.lib.omm.ObjectModel
             @rankMax = 0
             #
             # --------------------------------------------------------------------------
-            buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, parentDescriptor_, componentDescriptor_, parentPathIdVector_, inheritedExtensionPoints_) =>
+            # buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, parentDescriptor_, componentDescriptor_, parentPathIdVector_, inheritedExtensionPoints_) =>
+            buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, parentDescriptor_, componentDescriptor_, parentPathIdVector_, parentPathExtensionPointIdVector_) =>
                 try
                     if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter!"
 
@@ -133,11 +134,11 @@ class Encapsule.code.lib.omm.ObjectModel
                     id = @countDescriptors
                     @countDescriptors++ # set up for the next invocation of this function (use the id var locally)
 
-                    pathResolveExtensionPoints = undefined
-                    if inheritedExtensionPoints_? and inheritedExtensionPoints_
-                        pathResolveExtensionPoints = Encapsule.code.lib.js.clone inheritedExtensionPoints_
+                    parentPathExtensionPoints = undefined
+                    if parentPathExtensionPointIdVector_? and parentPathExtensionPointIdVector_
+                        parentPathExtensionPoints = Encapsule.code.lib.js.clone parentPathExtensionPointIdVector_
                     else
-                        pathResolveExtensionPoints = []
+                        parentPathExtensionPoints = []
 
                     mvvmType = objectModelLayoutObject_.objectDescriptor.mvvmType
                     extensionDescriptor = objectModelLayoutObject_.objectDescriptor.archetype
@@ -150,9 +151,9 @@ class Encapsule.code.lib.omm.ObjectModel
                         "path":  path
                         "mvvmType": mvvmType
                         "extensionPathId": -1
-                        "pathResolveExtensionPoints": pathResolveExtensionPoints
                         "parent": parentDescriptor_
                         "parentPathIdVector": []
+                        "parentPathExtensionPoints": parentPathExtensionPoints
                         "children": []
                          }
 
@@ -178,11 +179,11 @@ class Encapsule.code.lib.omm.ObjectModel
                                 throw "Cannot resolve extension object descriptor."
                             # Add this descriptor to OM instance's extension point map.
                             @objectModelExtensionPointMap[path] = thisDescriptor
-                            updatedResolves = Encapsule.code.lib.js.clone pathResolveExtensionPoints
-                            updatedResolves.push id
+                            updatedParentPathExtensionPointIdVector = Encapsule.code.lib.js.clone parentPathExtensionPoints
+                            updatedParentPathExtensionPointIdVector.push id
 
                             # RECURSION
-                            buildOMDescriptorFromLayout(extensionDescriptor, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, updatedResolves)
+                            buildOMDescriptorFromLayout(extensionDescriptor, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, updatedParentPathExtensionPointIdVector)
                             break
 
                         when "archetype"
@@ -212,7 +213,7 @@ class Encapsule.code.lib.omm.ObjectModel
 
                     for subObjectDescriptor in objectModelLayoutObject_.subMenus
                         # RECURSION
-                        buildOMDescriptorFromLayout(subObjectDescriptor, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, pathResolveExtensionPoints)
+                        buildOMDescriptorFromLayout(subObjectDescriptor, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, parentPathExtensionPoints)
 
                     return true
 
@@ -258,7 +259,6 @@ class Encapsule.code.lib.omm.ObjectModel
 
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModel.getPathFromPathId fail: #{exception}"
-            # --------------------------------------------------------------------------
 
 
             # --------------------------------------------------------------------------
