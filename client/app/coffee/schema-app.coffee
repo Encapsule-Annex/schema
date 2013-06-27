@@ -66,6 +66,8 @@ class Encapsule.code.app.Schema
             selectorNew = namespace2.getObjectModelNamespaceSelector()
 
             testNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selectorNew, "strict")
+            testNamespace2 = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selectorNew)
+
 
             json2 = objectStore.toJSON()
 

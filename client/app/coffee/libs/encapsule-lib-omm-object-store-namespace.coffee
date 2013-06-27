@@ -49,6 +49,13 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             switch objectModelDescriptor_.mvvmType
                 when "root"
                     storeReference = @objectStore.objectStore
+                    switch mode
+                        when "new"
+                            break
+                        when "strict"
+                            break
+                        else
+                            throw "Unrecognized mode for MVVM type."
                     break
                 when "child"
                     storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
@@ -106,6 +113,9 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
             mode = mode_? and mode_ or "strict"
 
+            if mode == "strict" and not objectModelNamespaceSelector_.selectKeysReady
+                throw "Object model selector extension key vector is incomplete. Cannot create object store namespace instance."
+
             # Save references to this namespace's backing object store and object model descriptor.
             @objectStore = objectStore_ # reference to ObjectStore instance
             @pathId = objectModelNamespaceSelector_.pathId 
@@ -115,7 +125,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             @objectStoreNamespace = undefined # reference to specific namespace within the object store
 
             # Obtain the target namespace's object model descriptor from the namespace selector.
-            objectModelDescriptor = objectStore_.objectModel.objectModelDescriptorById[objectModelNamespaceSelector_.pathId]
+            @objectModelDescriptor = objectStore_.objectModel.objectModelDescriptorById[objectModelNamespaceSelector_.pathId]
 
             # Prepare to resolve parent namespaces.
             objectModel = objectStore_.objectModel # alias
@@ -123,7 +133,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             objectStoreReference = undefined
 
             # Resolve parent namespaces.
-            for parentPathId in objectModelDescriptor.parentPathIdVector
+            for parentPathId in @objectModelDescriptor.parentPathIdVector
                 key = undefined
                 parentObjectModelDescriptor = objectModel.objectModelDescriptorById[parentPathId]
                 if parentObjectModelDescriptor.mvvmType == "archetype"
@@ -135,12 +145,13 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
             # Resolve this namespace.
             key = undefined
-            if objectModelDescriptor.mvvmType == "archetype"
+            if @objectModelDescriptor.mvvmType == "archetype"
                 key = objectModelNamespaceSelector_.getSelectKey(extensionPointIndex++)
 
-            @objectStoreNamespace = @internalResolveNamespaceDescriptor(objectStoreReference, objectModelDescriptor, mode, key)
+            @objectStoreNamespace = @internalResolveNamespaceDescriptor(objectStoreReference, @objectModelDescriptor, mode, key)
 
-
+            if not (@objectStoreNamespace? and @objectStoreNamespace)
+                throw "Unable to instantiate object store namespace."
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace constructor failed: #{exception}"

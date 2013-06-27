@@ -149,6 +149,9 @@ class Encapsule.code.lib.omm.ObjectModel
                         "id": id
                         "jsonTag": tag
                         "path":  path
+                        "label": objectModelLayoutObject_.label
+                        "description": objectModelLayoutObject_.objectDescriptor.description
+                        "namespaceDescriptor": objectModelLayoutObject_.objectDescriptor.namespaceDescriptor
                         "mvvmType": mvvmType
                         "extensionPathId": -1
                         "parent": parentDescriptor_
