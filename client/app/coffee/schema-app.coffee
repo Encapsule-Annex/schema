@@ -57,11 +57,15 @@ class Encapsule.code.app.Schema
 
             selector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues", undefined)
 
-            namespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selector)
+            namespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selector, "new")
 
             selector2 = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue", undefined)
 
-            namespace2 = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selector2)
+            namespace2 = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selector2, "new")
+
+            selectorNew = namespace2.getObjectModelNamespaceSelector()
+
+            testNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selectorNew, "strict")
 
             json2 = objectStore.toJSON()
 

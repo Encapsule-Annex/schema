@@ -68,11 +68,13 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             # ============================================================================
             @getSelectKey = (index_) =>
                 try
-                    keyValue = undefined
                     if not index_? then throw "Missing index input parameter!"
-                    if @selectKeyVector? and @selectKeyVector and @selectKeyVector.length? and @selectKeyVector.length and (index_ < 0) and (@selectKeyVector.length <= index_)
-                        keyValue = @selectKeyVector[index_]
-                    return keyValue
+
+                    if (not @selectKeyVector?) or (not @selectKeyVector) or (not @selectKeyVector.length?) or (not @selectKeyVector.length) or (index_ < 0) or (index_ >= @selectKeyVector.length)
+                        return undefined
+
+                    return @selectKeyVector[index_]
+
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getSelectKey failure: #{exception}"
             # ============================================================================

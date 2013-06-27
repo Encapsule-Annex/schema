@@ -69,8 +69,9 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                 when "archetype"
                     for elementObject in objectStoreReference_
                         # Should hey "hey - is this your key?"
-                        if elementObject.uuid? and elementObject.uuid and elementObject.uuid == key_
-                            storeReference = elementObject
+                        namespace = elementObject[objectModelDescriptor_.jsonTag]
+                        if namespace.uuid? and namespace.uuid and namespace.uuid == key_
+                            storeReference = namespace
                             @resolvedKeyVector.push key_
                             break
                     if not (storeReference? and storeReference)
@@ -94,11 +95,16 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalResolveNamespaceDescriptor failure: '#{exception}'"
 
 
+    getObjectModelNamespaceSelector: =>
+        objectModelNamespaceSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(@pathId, @resolvedKeyVector)
+        return objectModelNamespaceSelector
 
-    constructor: (objectStore_, objectModelNamespaceSelector_) ->
+    constructor: (objectStore_, objectModelNamespaceSelector_, mode_) ->
         try
             if not (objectStore_? and objectStore_) then throw "Missing object store input parameter!"
             if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
+
+            mode = mode_? and mode_ or "strict"
 
             # Save references to this namespace's backing object store and object model descriptor.
             @objectStore = objectStore_ # reference to ObjectStore instance
@@ -122,7 +128,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                 parentObjectModelDescriptor = objectModel.objectModelDescriptorById[parentPathId]
                 if parentObjectModelDescriptor.mvvmType == "archetype"
                     key = objectModelNamespaceSelector_.getSelectKey(extensionPointIndex++)
-                objectStoreReference = @internalResolveNamespaceDescriptor(objectStoreReference, parentObjectModelDescriptor, "new", key)
+                objectStoreReference = @internalResolveNamespaceDescriptor(objectStoreReference, parentObjectModelDescriptor, mode, key)
 
             if not (objectStoreReference? and objectStoreReference)
                 throw "Unable to resolve parent namespace(s)"
@@ -132,9 +138,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             if objectModelDescriptor.mvvmType == "archetype"
                 key = objectModelNamespaceSelector_.getSelectKey(extensionPointIndex++)
 
-            @objectStoreNamespace = @internalResolveNamespaceDescriptor(objectStoreReference, objectModelDescriptor, "new", key)
+            @objectStoreNamespace = @internalResolveNamespaceDescriptor(objectStoreReference, objectModelDescriptor, mode, key)
 
-            
 
 
         catch exception
