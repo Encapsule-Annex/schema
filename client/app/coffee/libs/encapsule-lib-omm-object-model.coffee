@@ -147,6 +147,8 @@ class Encapsule.code.lib.omm.ObjectModel
                     # Build this descriptor and add it to the OM's descriptor array.
                     thisDescriptor = @objectModelDescriptorById[id] = {
                         "id": id
+                        "idComponent": id
+                        "componentNamespaceIds": []
                         "jsonTag": tag
                         "path":  path
                         "label": objectModelLayoutObject_.label
@@ -176,6 +178,7 @@ class Encapsule.code.lib.omm.ObjectModel
                     switch mvvmType
                         when "extension"
                             if not (componentDescriptor_? and componentDescriptor_) then throw "Internal error: componentDescriptor_ should be defined."
+                            thisDescriptor.idComponent = thisDescriptor.parent.idComponent
                             componentDescriptor = componentDescriptor_
                             componentDescriptor.extensionPoints[path] = thisDescriptor
                             if not (extensionDescriptor? and extensionDescriptor)
@@ -206,10 +209,13 @@ class Encapsule.code.lib.omm.ObjectModel
                             break
                         when "child"
                             thisDescriptor.isComponent = false
+                            thisDescriptor.idComponent = thisDescriptor.parent.idComponent
                             componentDescriptor = componentDescriptor_
                             break
                         else
                             throw "Unrecognized MVVM type \"#{mvvmType}\" in call."
+
+                    @objectModelDescriptorById[thisDescriptor.idComponent].componentNamespaceIds.push thisDescriptor.id
 
                     if not (objectModelLayoutObject_.subMenus? and objectModelLayoutObject_.subMenus)
                         return true
