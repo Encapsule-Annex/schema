@@ -45,15 +45,16 @@ class Encapsule.code.lib.omm.ObjectStore
             @label = objectModel_.label
             @description = objectModel_.description
 
-            @objectStore = undefined
+            @objectStore = undefined # THE ACTUAL DATA
             @objectStoreSource = undefined
 
             if initialStateJSON_? and initialStateJSON_
                 Console.message("... deserializing from JSON string")
-                @objectStore = JSON.parse(initialStateJSON_)
-                @objectStoreSource = "json"
+                parsedObject = JSON.parse(initialStateJSON_)
+                @objectStore = parsedObject[@jsonTag]
                 if not (@objectStore? and @objectStore)
                     throw "Cannot deserialize specified JSON string!"
+                @objectStoreSource = "json"
                 Console.message("... Store initialized from deserialized JSON string.")
             else
                 Console.message("... Initializing new instance of the '#{@jsonTag}' object model.")

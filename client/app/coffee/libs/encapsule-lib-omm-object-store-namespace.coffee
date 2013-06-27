@@ -56,67 +56,115 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                     if functions.fnCreate? and functions.fnCreate
                         storeReference_[memberName] = functions.fnCreate()
 
-             
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalInitializeNamespaceMembers failure '#{exception}'."
 
     internalVerifyNamespaceMembers: (storeReference_, namespaceDescriptor_) ->
+        try
+            if not (storeReference_? and storeReference_ and namespaceDescriptor_? and namespaceDescriptor_)
+                return
+           
+            if namespaceDescriptor_.userImmutable? and namespaceDescriptor_.userImmutable
+                for memberName, functions of namespaceDescriptor_.userImmutable
+                    memberReference = storeReference_[memberName]
+                    if not memberReference?
+                        throw "Expected immutable member '#{memberName}' not found."
 
+            if namespaceDescriptor_.userMutable? and namespaceDescriptor_.userMutable
+                for memberName, functions of namespaceDescriptor_.userMutable
+                    memberReference = storeReference_[memberName]
+                    if not memberReference?
+                        throw "Expected mutable member '#{memberName}' not found."
+
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalVerifyNamespaceMembers failure '#{exception}'."
+
+
+    # 
 
     internalResolveNamespaceDescriptor: (objectStoreReference_, objectModelDescriptor_, mode_, key_) =>
         try
             storeReference = undefined
-            mode = mode_? and mode_ or "new"
+
+            if not (mode_? and mode_) then throw "Missing required mode input parameter value!"
+            mode = mode_
 
             switch objectModelDescriptor_.mvvmType
                 when "root"
                     storeReference = @objectStore.objectStore
                     switch mode
+                        when "bypass"
+                            break
                         when "new"
                             @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
+                            break
+                        when "strict"
+                            @internalVerifyNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
+                            break
+                        else
+                            throw "Unrecognized mode for MVVM type."
+                    break
+
+
+                when "child"
+                    storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
+                    switch mode
+                        when "bypass"
+                            break
+                        when "new"
+                            if not (storeReference? and storeReference)
+                                storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag] = {}
+                            @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
+                            break
+                        when "strict"
+                            @internalVerifyNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
+                            break
+                        else
+                            throw "Unrecognized mode for MVVM type."
+                    break
+
+
+                when "extension"
+                    storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
+                    switch mode
+                        when "bypass"
+                            break
+                        when "new"
+                            if not (storeReference? and storeReference)
+                                storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag] = []
                             break
                         when "strict"
                             break
                         else
                             throw "Unrecognized mode for MVVM type."
                     break
-                when "child"
-                    storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
-                    if not (storeReference? and storeReference)
-                        if mode == "new"
-                            storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag] = {}
-                            @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
-                        else
-                            throw "Strict mode binding failure: child namespace does not exist for '#{objectModelDescriptor_.jsonTag}'."
-                    break
-                when "extension"
-                    storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
-                    if not (storeReference? and storeReference)
-                        if mode == "new"
-                            storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag] = []
-                        else
-                            throw "Strict mode binding failure: extension namespace deos not exisit for '#{objectModelDescriptor_.jsonTag}'."
-                    break
-                when "archetype"
-                    for elementObject in objectStoreReference_
-                        # Should hey "hey - is this your key?"
-                        namespace = elementObject[objectModelDescriptor_.jsonTag]
-                        if namespace.uuid? and namespace.uuid and namespace.uuid == key_
-                            storeReference = namespace
-                            @resolvedKeyVector.push key_
-                            break
-                    if not (storeReference? and storeReference)
-                        if mode == "new"
-                            storeReference = {}
-                            @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
-                            key_ = storeReference.uuid
-                            objectReference = {}
-                            objectReference[objectModelDescriptor_.jsonTag] = storeReference
-                            objectStoreReference_.push objectReference
-                            @resolvedKeyVector.push key_
 
-                        else
-                            throw "Strict mode binding failure: "
+
+                when "archetype"
+
+                    if mode == "new"
+                        storeReference = {}
+                        @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
+                        key_ = storeReference.uuid
+                        objectReference = {}
+                        objectReference[objectModelDescriptor_.jsonTag] = storeReference
+                        objectStoreReference_.push objectReference
+                        @resolvedKeyVector.push key_
+                    else
+                        # mode != "new" means we search for our archetype by its key.
+                        for elementObject in objectStoreReference_
+                            # Should hey "hey - is this your key?"
+                            namespace = elementObject[objectModelDescriptor_.jsonTag]
+                            if namespace.uuid? and namespace.uuid and namespace.uuid == key_
+                                storeReference = namespace
+                                @resolvedKeyVector.push key_
+                                break
+                        switch mode
+                            when "bypass"
+                                break
+                            when "strict"
+                                @internalVerifyNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
+                                break
                     break
                 else
                     throw "Unrecognized mvvmType \"#{objectModelDescriptor.mvvmType}\"!"

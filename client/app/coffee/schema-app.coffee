@@ -71,6 +71,10 @@ class Encapsule.code.app.Schema
 
             json2 = objectStore.toJSON()
 
+            reconstitutedStore = new Encapsule.code.lib.omm.ObjectStore(objectModel, json2)
+
+            reconstitutedCatalogueNamepsace = new Encapsule.code.lib.omm.ObjectStoreNamespace(reconstitutedStore, selectorNew, "strict")
+
 
 
             ###
