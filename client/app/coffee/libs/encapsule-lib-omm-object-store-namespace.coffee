@@ -41,6 +41,28 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
     # parent store namespace, and per specified mode.
     #
 
+    internalInitializeNamespaceMembers: (storeReference_, namespaceDescriptor_) ->
+        try
+            if not (storeReference_? and storeReference_ and namespaceDescriptor_? and namespaceDescriptor_)
+                return
+
+            if namespaceDescriptor_.userImmutable? and namespaceDescriptor_.userImmutable
+                for memberName, functions of namespaceDescriptor_.userImmutable
+                    if functions.fnCreate? and functions.fnCreate
+                        storeReference_[memberName] = functions.fnCreate()
+
+            if namespaceDescriptor_.userMutable? and namespaceDescriptor_.userMutable
+                for memberName, functions of namespaceDescriptor_.userMutable
+                    if functions.fnCreate? and functions.fnCreate
+                        storeReference_[memberName] = functions.fnCreate()
+
+             
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalInitializeNamespaceMembers failure '#{exception}'."
+
+    internalVerifyNamespaceMembers: (storeReference_, namespaceDescriptor_) ->
+
+
     internalResolveNamespaceDescriptor: (objectStoreReference_, objectModelDescriptor_, mode_, key_) =>
         try
             storeReference = undefined
@@ -51,6 +73,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                     storeReference = @objectStore.objectStore
                     switch mode
                         when "new"
+                            @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
                             break
                         when "strict"
                             break
@@ -62,6 +85,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                     if not (storeReference? and storeReference)
                         if mode == "new"
                             storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag] = {}
+                            @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
                         else
                             throw "Strict mode binding failure: child namespace does not exist for '#{objectModelDescriptor_.jsonTag}'."
                     break
@@ -84,7 +108,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                     if not (storeReference? and storeReference)
                         if mode == "new"
                             storeReference = {}
-                            key_ = storeReference.uuid = uuid.v4()
+                            @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
+                            key_ = storeReference.uuid
                             objectReference = {}
                             objectReference[objectModelDescriptor_.jsonTag] = storeReference
                             objectStoreReference_.push objectReference
