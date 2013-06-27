@@ -54,6 +54,21 @@ class Encapsule.code.app.Schema
 
             objectStore = Encapsule.runtime.app.SchemaObjectStore = new Encapsule.code.lib.omm.ObjectStore(objectModel)
 
+
+            selector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues", undefined)
+
+            namespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selector)
+
+            selector2 = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue", undefined)
+
+            namespace2 = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selector2)
+
+            json2 = objectStore.toJSON()
+
+
+
+            ###
+
             jsonString = objectStore.toJSON()
 
             # Raw old style
@@ -75,6 +90,8 @@ class Encapsule.code.app.Schema
 
 
             objectStore2 = new Encapsule.code.lib.omm.ObjectStore(objectModel, jsonString)
+
+            ###
 
 
 

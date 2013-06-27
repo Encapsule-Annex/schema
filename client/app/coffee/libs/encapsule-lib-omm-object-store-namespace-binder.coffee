@@ -25,7 +25,6 @@ namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
-Encapsule.code.lib.omm.implementation = Encapsule.code.lib.omm.implementation? and Encapsule.code.lib.omm.implementation or @Encapsule.code.lib.omm.implementation = {}
 
 
 
@@ -143,7 +142,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceBinder
                     # Bind this namespace
                     objectStoreReference = internalBindNamespace(@objectModelDescriptor, objectStoreReference)
 
-                    newStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, objectStoreReference)
+                    newStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespaceReference(@, objectModelNamespaceSelector_, objectStoreReference)
                     return newStoreNamespace
 
                 catch exception

@@ -31,9 +31,9 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 #
 # ****************************************************************************
 class Encapsule.code.lib.omm.ObjectStore
-    constructor: (objectModel_, jsonInitialState_) ->
+    constructor: (objectModel_, initialStateJSON_) ->
         try
-            Console.message("Encapsule.code.lib.omm.ObjectStore construction for object namespace \"#{objectModel_.jsonTag}\".")
+            Console.message("Encapsule.code.lib.omm.ObjectStore instance '#{objectModel_.jsonTag}'")
 
             # Validate parameters.
             if not (objectModel_? and objectModel_) then throw "Missing object model parameter!"
@@ -45,37 +45,25 @@ class Encapsule.code.lib.omm.ObjectStore
             @label = objectModel_.label
             @description = objectModel_.description
 
-            @objectStoreNamespaceBinders = []             # ObjectStoreNamespaceBinder by pathId
-
-            @objectStoreSource = "new"                    # default - may be overridden below
-
             @objectStore = undefined
+            @objectStoreSource = undefined
 
-            if jsonInitialState_? and jsonInitialState_
-                Console.message("... attempting to initialize store from JSON string")
+            if initialStateJSON_? and initialStateJSON_
+                Console.message("... deserializing from JSON string")
+                @objectStore = JSON.parse(initialStateJSON_)
                 @objectStoreSource = "json"
-                @objectStore = JSON.parse(jsonInitialState_)
                 if not (@objectStore? and @objectStore)
                     throw "Cannot deserialize specified JSON string!"
-                else
-                    Console.message("... JSON string deserialized.")
+                Console.message("... Store initialized from deserialized JSON string.")
             else
+                Console.message("... Initializing new instance of the '#{@jsonTag}' object model.")
                 @objectStore = {}
-
-
-            descriptorArrayIndex = 0
-            descriptorArray = @objectModel.objectModelDescriptorById
-
-            while descriptorArrayIndex < descriptorArray.length
-                objectModelDescriptor = descriptorArray[descriptorArrayIndex]
-                @objectStoreNamespaceBinders.push new Encapsule.code.lib.omm.ObjectStoreNamespaceBinder(@, objectModelDescriptor)
-                descriptorArrayIndex++
+                @objectStoreSource = "new"
 
 
             #
             # ============================================================================
-            @isValid = =>
-                return @objectStoreNamespaces.length and true or false
+
 
 
             #

@@ -51,17 +51,6 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             @selectKeyVector = selectKeyVector_
             @pathId = pathId_
 
-            #
-            # ============================================================================
-            @getSelectKey = (index_) =>
-                try
-                    if not index_? then throw "Missing index input parameter!"
-                    if (index_ < 0) or (@selectKeyVector.length <= index_) then throw "Specified index is out of range!"
-                    return @selectKeyVector[index_]
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getSelectKey failure: #{exception}"
-            # ============================================================================
-            #
 
             # Get the OM descriptor associated with the specified OM path.
 
@@ -71,11 +60,24 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
 
             @selectKeysRequired = @objectModelDescriptor.parentPathExtensionPoints.length
             @selectKeysProvided = selectKeyVector_? and selectKeyVector_ and selectKeyVector_.length or 0
-
-            if @selectKeysRequired != @selectKeysProvided
-                throw "Unable to resolve object model selector. Expected #{@selectKeysRequired} select keys. #{@selectKeysProvided} keys were provided."
+            @selectKeysReady = @selectKeysRequired == @selectKeysProvided
 
             Console.message("Encapsule.code.lib.omm.ObjectModelNamespaceSelector created selector for pathID=#{pathId_}. #{@selectKeysProvided} keys provided.")
+
+            #
+            # ============================================================================
+            @getSelectKey = (index_) =>
+                try
+                    keyValue = undefined
+                    if not index_? then throw "Missing index input parameter!"
+                    if @selectKeyVector? and @selectKeyVector and @selectKeyVector.length? and @selectKeyVector.length and (index_ < 0) and (@selectKeyVector.length <= index_)
+                        keyValue = @selectKeyVector[index_]
+                    return keyValue
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getSelectKey failure: #{exception}"
+            # ============================================================================
+            #
+
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector construction fail: #{exception}"
