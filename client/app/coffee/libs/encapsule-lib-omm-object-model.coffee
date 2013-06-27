@@ -141,7 +141,7 @@ class Encapsule.code.lib.omm.ObjectModel
                         parentPathExtensionPoints = []
 
                     mvvmType = objectModelLayoutObject_.objectDescriptor.mvvmType
-                    extensionDescriptor = objectModelLayoutObject_.objectDescriptor.archetype
+                    extensionDescriptor = objectModelLayoutObject_.objectDescriptor.archetype # may be undefined
                     extensionPathId = -1
 
                     # Build this descriptor and add it to the OM's descriptor array.
@@ -153,7 +153,7 @@ class Encapsule.code.lib.omm.ObjectModel
                         "description": objectModelLayoutObject_.objectDescriptor.description
                         "namespaceDescriptor": objectModelLayoutObject_.objectDescriptor.namespaceDescriptor
                         "mvvmType": mvvmType
-                        "extensionPathId": -1
+                        "archetypePathId": -1           
                         "parent": parentDescriptor_
                         "parentPathIdVector": []
                         "parentPathExtensionPoints": parentPathExtensionPoints
@@ -192,7 +192,7 @@ class Encapsule.code.lib.omm.ObjectModel
                         when "archetype"
                             thisDescriptor.isComponent = true
                             thisDescriptor.extensionPoints = {}
-                            parentDescriptor_.extensionPathId = id
+                            parentDescriptor_.archetypePathId = id
                             componentDescriptor = thisDescriptor
                             @objectModelExtensionMap[path] = thisDescriptor
                             @objectModelComponentMap[path] = thisDescriptor
@@ -310,14 +310,12 @@ class Encapsule.code.lib.omm.ObjectModel
                 throw "Layout declaration error: component count should be extension count + 1. componentCount=#{@componentCount} countExtensions=#{@countExtensions}"
 
             # Debug summary output.
-            Console.message("#{@jsonTag} namespace object model:")
-            Console.message("... 1 root descriptor")
+            Console.message("... '#{@jsonTag}' root descriptor")
             Console.message("... #{@countChildren} child descriptor(s)")
             Console.message("... #{@countExtensionPoints} extension point descriptor(s)")
             Console.message("... #{@countExtensions} extension descriptor(s)")
-            Console.message("... <strong>Total:</strong> #{@countDescriptors} (namepspace descriptors processed)")
-            Console.message("... <strong>Components:</strong> #{@countComponents} (composable components)")
-            Console.message("... <strong>Max Rank:</strong> #{@rankMax} (tallest leaf vertex)")
+            Console.message("... <strong>#{@countDescriptors} total namespace declarations processed.</strong>")
+            Console.message("... ... #{@countComponents} composable components / tallest leaf = rank #{@rankMax}")
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModel construction fail: #{exception}"

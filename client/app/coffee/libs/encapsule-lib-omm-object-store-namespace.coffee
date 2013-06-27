@@ -80,7 +80,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalVerifyNamespaceMembers failure '#{exception}'."
 
 
-    # 
+
 
     internalResolveNamespaceDescriptor: (objectStoreReference_, objectModelDescriptor_, mode_, key_) =>
         try
@@ -184,7 +184,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             if not (objectStore_? and objectStore_) then throw "Missing object store input parameter!"
             if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
 
-            mode = mode_? and mode_ or "strict"
+            mode = mode_? and mode_ or "bypass"
 
             if mode == "strict" and not objectModelNamespaceSelector_.selectKeysReady
                 throw "Object model selector extension key vector is incomplete. Cannot create object store namespace instance."
