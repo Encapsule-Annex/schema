@@ -142,29 +142,40 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
                 when "archetype"
 
-                    if mode == "new"
-                        storeReference = {}
-                        @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
-                        key_ = storeReference.uuid
-                        objectReference = {}
-                        objectReference[objectModelDescriptor_.jsonTag] = storeReference
-                        objectStoreReference_.push objectReference
-                        @resolvedKeyVector.push key_
-                    else
-                        # mode != "new" means we search for our archetype by its key.
-                        for elementObject in objectStoreReference_
-                            # Should hey "hey - is this your key?"
-                            namespace = elementObject[objectModelDescriptor_.jsonTag]
-                            if namespace.uuid? and namespace.uuid and namespace.uuid == key_
-                                storeReference = namespace
-                                @resolvedKeyVector.push key_
+                    # Here we humbly, brutally, find the key before deciding what to do.
+                    storeReference = undefined
+                    for elementObject in objectStoreReference_
+                        # Should hey "hey - is this your key?"
+                        namespace = elementObject[objectModelDescriptor_.jsonTag]
+                        if namespace.uuid? and namespace.uuid and namespace.uuid == key_
+                            storeReference = namespace
+                            @resolvedKeyVector.push key_
+                            break
+
+                    # Now decide what to do based on the mode
+                    switch mode
+                        when "bypass"
+                            break
+                        when "new"
+                            # Create a new component iff we didn't resolve the key above.
+                            if storeReference? and storeReference
                                 break
-                        switch mode
-                            when "bypass"
-                                break
-                            when "strict"
-                                @internalVerifyNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
-                                break
+
+                            storeReference = {}
+                            @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
+                            key_ = storeReference.uuid
+                            objectReference = {}
+                            objectReference[objectModelDescriptor_.jsonTag] = storeReference
+                            objectStoreReference_.push objectReference
+                            @resolvedKeyVector.push key_
+                            component = new Encapsule.code.lib.omm.ObjectStoreComponent(@objectStore, @resolvedKeyVector, objectModelDescriptor_.id, "new")
+                            break
+                        when "strict"
+                            @internalVerifyNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
+                            break
+                        else
+                            throw "Unrecognized MVVM type."
+
                     break
                 else
                     throw "Unrecognized mvvmType \"#{objectModelDescriptor.mvvmType}\"!"
@@ -213,7 +224,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                     key = objectModelNamespaceSelector_.getSelectKey(extensionPointIndex++)
                 objectStoreReference = @internalResolveNamespaceDescriptor(objectStoreReference, parentObjectModelDescriptor, mode, key)
 
-            if not (objectStoreReference? and objectStoreReference)
+            if @objectModelDescriptor.parentPathIdVector.length and not (objectStoreReference? and objectStoreReference)
                 throw "Unable to resolve parent namespace(s)"
 
             # Resolve this namespace.

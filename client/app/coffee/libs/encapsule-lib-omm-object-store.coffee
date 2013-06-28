@@ -62,9 +62,7 @@ class Encapsule.code.lib.omm.ObjectStore
                 @objectStoreSource = "new"
 
 
-            #
-            # ============================================================================
-
+            component = new Encapsule.code.lib.omm.ObjectStoreComponent(@, undefined, @objectModel.getPathIdFromPath(@jsonTag), "new")
 
 
             #
