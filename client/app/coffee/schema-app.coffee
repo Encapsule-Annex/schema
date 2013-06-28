@@ -49,39 +49,37 @@ class Encapsule.code.app.Schema
             # ==============================================================================
             # OMM experiments.
 
-            objectModel = Encapsule.runtime.app.SchemaObjectModel =
+            objectModel = 
+                Encapsule.runtime.app.SchemaObjectModel =
                 new Encapsule.code.lib.omm.ObjectModel(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
 
-            objectStore = Encapsule.runtime.app.SchemaObjectStore = new Encapsule.code.lib.omm.ObjectStore(objectModel)
+            objectStore = 
+                Encapsule.runtime.app.SchemaObjectStore =
+                new Encapsule.code.lib.omm.ObjectStore(objectModel)
 
             jsonStoreDefault = objectStore.toJSON()
 
-            
-            selector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues")
+            selectorCatalogues = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues")
+            namespaceCatalogues = objectStore.openNamespace(selectorCatalogues)
 
-            namespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selector)
+            selectorCatalogueUnresolved = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue")
+            namespaceCatalogue = objectStore.createComponent(selectorCatalogueUnresolved)
+            selectorCatalogueResolved = namespaceCatalogue.getResolvedSelector()
 
-            selector2 = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue")
+            namespaceCatalogueTest = objectStore.openNamespace(selectorCatalogueResolved)
 
-            namespace2 = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selector2, "new")
+            saveStore = objectStore.toJSON()
 
-            selectorNew = namespace2.getObjectModelNamespaceSelector()
+            reconstitutedStore = new Encapsule.code.lib.omm.ObjectStore(objectModel, saveStore)
 
-            testNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selectorNew, "strict")
-            testNamespace2 = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selectorNew)
+            scdlMachineSelectorUnresolved = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue.models.machines.machine")
+            scdlMachineNamespace = reconstitutedStore.createComponent(scdlMachineSelectorUnresolved)
+            scdlMachineSelectorResolved = scdlMachineNamespace.getResolvedSelector()
 
-
-            json2 = objectStore.toJSON()
-
-            reconstitutedStore = new Encapsule.code.lib.omm.ObjectStore(objectModel, json2)
-
-            reconstitutedCatalogueNamepsace = new Encapsule.code.lib.omm.ObjectStoreNamespace(reconstitutedStore, selectorNew, "strict")
+            reconstitutedStore.removeComponent(scdlMachineSelectorResolved)
 
 
-            selectorMachine = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue.models.machines.machine")
-            namespaceNewMachine = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selectorMachine, "new")
-
-            jsonFinal = objectStore.toJSON(undefined, 4)
+            jsonFinal = reconstitutedStore.toJSON(undefined, 4)
             Console.messageRaw("<pre>#{jsonFinal}</pre>")
 
 

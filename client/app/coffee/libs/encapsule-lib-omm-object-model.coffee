@@ -148,6 +148,7 @@ class Encapsule.code.lib.omm.ObjectModel
                     thisDescriptor = @objectModelDescriptorById[id] = {
                         "id": id
                         "idComponent": id
+                        "isComponent": false
                         "componentNamespaceIds": []
                         "jsonTag": tag
                         "path":  path
@@ -208,7 +209,6 @@ class Encapsule.code.lib.omm.ObjectModel
                             @objectModelComponentMap[path] = thisDescriptor
                             break
                         when "child"
-                            thisDescriptor.isComponent = false
                             thisDescriptor.idComponent = thisDescriptor.parent.idComponent
                             componentDescriptor = componentDescriptor_
                             break
@@ -289,6 +289,7 @@ class Encapsule.code.lib.omm.ObjectModel
 
 
             # CONSTRUCT THE ROOT OBJECT DESCRIPTOR FROM THE SPECIFIED OBJECT MODEL LAYOUT 
+            # **************************************************************************
             buildOMDescriptorFromLayout(rootObjectDescriptor)
 
             # Counts and internal consistency checking.

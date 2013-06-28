@@ -41,6 +41,22 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
     constructor: (objectModel_, pathId_, selectKeyVector_) ->
         try
+            #
+            # ============================================================================
+            @getSelectKey = (index_) =>
+                try
+                    if not index_? then throw "Missing index input parameter!"
+
+                    if (not @selectKeyVector?) or (not @selectKeyVector) or (not @selectKeyVector.length?) or (not @selectKeyVector.length) or (index_ < 0) or (index_ >= @selectKeyVector.length)
+                        return undefined
+
+                    return @selectKeyVector[index_]
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getSelectKey failure: #{exception}"
+
+            #
+            # ============================================================================
             if not (objectModel_? and objectModel_) then throw "Missing object model input parameter."
             if not (pathId_?) then throw "Missing object model path parameter."
 
@@ -61,22 +77,6 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             @selectKeysRequired = @objectModelDescriptor.parentPathExtensionPoints.length
             @selectKeysProvided = selectKeyVector_? and selectKeyVector_ and selectKeyVector_.length or 0
             @selectKeysReady = @selectKeysRequired == @selectKeysProvided
-
-            #
-            # ============================================================================
-            @getSelectKey = (index_) =>
-                try
-                    if not index_? then throw "Missing index input parameter!"
-
-                    if (not @selectKeyVector?) or (not @selectKeyVector) or (not @selectKeyVector.length?) or (not @selectKeyVector.length) or (index_ < 0) or (index_ >= @selectKeyVector.length)
-                        return undefined
-
-                    return @selectKeyVector[index_]
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getSelectKey failure: #{exception}"
-            # ============================================================================
-            #
 
 
         catch exception

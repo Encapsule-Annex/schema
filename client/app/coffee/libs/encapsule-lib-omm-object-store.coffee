@@ -33,6 +33,121 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 class Encapsule.code.lib.omm.ObjectStore
     constructor: (objectModel_, initialStateJSON_) ->
         try
+
+            #
+            # ============================================================================
+            @toJSON = (replacer_, space_) =>
+                try
+                    resultObject = {}
+                    resultObject[@jsonTag] = @objectStore
+                    space = space_? and space_ or 0
+                    resultJSON = JSON.stringify(resultObject, replacer_, space)
+                    if not (resultJSON? and resultJSON)
+                        throw "Cannot serialize Javascript object to JSON!"
+                    return resultJSON
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStore.toJSON fail on object store #{@jsonTag} : #{exception}"
+
+
+            #
+            # ============================================================================
+            @createComponent = (objectModelNamespaceSelector_) =>
+                try
+                    if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_)
+                        throw "Missing object model namespace selector input parameter!"
+
+                    if objectModelNamespaceSelector_.selectKeysReady
+                        throw "Invalid resolved namespace selector in request."
+
+                    if not objectModelNamespaceSelector_.objectModelDescriptor.isComponent
+                        throw "Invalid selector specifies non-component root namespace."
+
+                    if objectModelNamespaceSelector_.pathId == 0
+                        throw "Invalid selector specifies root component which cannot be removed."
+
+                    objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, "new")
+                    
+                    return objectStoreNamespace
+
+                catch exception
+
+                    throw "Encapsule.code.lib.omm.ObjectStore.createComponent failure: #{exception}"
+
+            #
+            # ============================================================================
+            @removeComponent = (objectModelNamespaceSelector_) =>
+                try
+                    if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_)
+                        throw "Missing object model namespace selector input parameter!"
+
+                    if not objectModelNamespaceSelector_.selectKeysReady
+                        throw "Invalid unresolved namespace selector in request."
+
+                    if not objectModelNamespaceSelector_.objectModelDescriptor.isComponent
+                        throw "Invalid selector specifies non-component root namespace."
+
+                    if objectModelNamespaceSelector_.pathId == 0
+                        throw "Invalid selector specifies root component which cannot be removed."
+
+                    componentStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
+
+                    arrayIndexToRemove = componentStoreNamespace.resolvedKeyIndexVector[componentStoreNamespace.resolvedKeyIndexVector.length - 1]
+
+                    extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(
+                        objectModelNamespaceSelector_.objectModelDescriptor.parent.id,
+                        objectModelNamespaceSelector_.selectKeyVector)
+
+                    extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector)
+
+                    extensionPointNamespace.objectStoreNamespace.splice(arrayIndexToRemove, 1)
+
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStore.removeComponent failure: #{exception}"
+
+
+            #
+            # ============================================================================
+            @openNamespace = (objectModelNamespaceSelector_) =>
+                try
+                    if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_)
+                        throw "Missing object model namespace selector input parameter!"
+
+                    if not objectModelNamespaceSelector_.selectKeysReady
+                        throw "Invalid unresolved namespace selector in request."
+
+                    # Leverage default "bypass" mode (i.e. no validation, no creation, throw if not exist)
+                    objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
+
+                    return objectStoreNamespace
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStore.openNamespace failure: #{exception}"
+                
+
+
+
+
+            #
+            # ============================================================================
+            @createStoreNamespace = (objectModelNamespaceSelector_, mode_) =>
+                try
+                    if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
+                    objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, mode_)
+                    return objectStoreNamespace
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStore.createStoreNamespace failed: #{exception}"
+
+
+
+
+                    
+
+
+            #
+            # ============================================================================
             Console.message("Encapsule.code.lib.omm.ObjectStore: Creating memory store instance for object model '#{objectModel_.jsonTag}'")
 
             # Validate parameters.
@@ -60,86 +175,8 @@ class Encapsule.code.lib.omm.ObjectStore
                 Console.message("... Initializing new instance of the '#{@jsonTag}' object model.")
                 @objectStore = {}
                 @objectStoreSource = "new"
+                component = new Encapsule.code.lib.omm.ObjectStoreComponent(@, undefined, @objectModel.getPathIdFromPath(@jsonTag), "new")
 
-
-            component = new Encapsule.code.lib.omm.ObjectStoreComponent(@, undefined, @objectModel.getPathIdFromPath(@jsonTag), "new")
-
-
-            #
-            # ============================================================================
-            @toJSON = (replacer_, space_) =>
-                try
-                    Console.message("Encapsule.code.lib.omm.ObjectStore.toJSON for object store #{@jsonTag}")
-                    resultObject = {}
-                    resultObject[@jsonTag] = @objectStore
-                    space = space_? and space_ or 0
-                    resultJSON = JSON.stringify(resultObject, replacer_, space)
-                    if not (resultJSON? and resultJSON)
-                        throw "Cannot serialize Javascript object to JSON!"
-                    return resultJSON
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.toJSON fail on object store #{@jsonTag} : #{exception}"
-
-
-            #
-            # ============================================================================
-            @createNamespace = (objectModelNamespaceSelector_) =>
-                try
-                    if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
-
-                    pathId = objectModelNamespaceSelector_.pathId
-
-                    storeNamespaceBinder = @objectStoreNamespaceBinders[pathId]
-                    if not (storeNamespaceBinder? and storeNamespaceBinder)
-                        throw "Unable to resolve store namespace binder for specified model namespace path!"
-
-                    storeNamespace = storeNamespaceBinder.bind(objectModelNamespaceSelector_)
-
-                    return storeNamespace
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.createNamespace failed: #{exception}"
-
-
-
-            #
-            # ============================================================================
-            @createNamespaceFromPathId = (pathId_, selectKeyVector_) =>
-                try
-                    selector = @objectModel.createNamespaceSelectorFromPathId(pathId_, selectKeyVector_)
-                    storeNamespace = @createNamespace(selector)
-                    return storeNamespace
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.createNamespaceFromPathId failed: #{exception}"
-
-            #
-            # ============================================================================
-            @createNamespaceFromPath = (path_, selectKeyVector_) =>
-                try
-                    pathId = @objectModel.getPathIdFromPath(path_)
-                    storeNamespace = @createNamespaceFromPathId(pathId, selectKeyVector_)
-                    return storeNamespace
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.createNamespaceFromPath failed: #{exception}"
-
-            #
-            # ============================================================================
-
-            #
-            # ============================================================================
-
-            #
-            # ============================================================================
-
-            #
-            # ============================================================================
-
-            #
-            # ============================================================================
-
-            #
-            # ============================================================================
 
 
         catch exception

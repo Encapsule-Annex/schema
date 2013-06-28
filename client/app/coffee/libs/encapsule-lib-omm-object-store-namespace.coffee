@@ -43,6 +43,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
     #
     # ============================================================================
+    # class Encapsule.code.lib.omm.ObjectStoreNamespace
     internalInitializeNamespaceMembers: (storeReference_, namespaceDescriptor_) ->
         try
             if not (storeReference_? and storeReference_ and namespaceDescriptor_? and namespaceDescriptor_)
@@ -63,6 +64,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
     #
     # ============================================================================
+    # class Encapsule.code.lib.omm.ObjectStoreNamespace
     internalVerifyNamespaceMembers: (storeReference_, namespaceDescriptor_) ->
         try
             if not (storeReference_? and storeReference_ and namespaceDescriptor_? and namespaceDescriptor_)
@@ -87,6 +89,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
     #
     # ============================================================================
+    # class Encapsule.code.lib.omm.ObjectStoreNamespace
     internalResolveNamespaceDescriptor: (objectStoreReference_, objectModelDescriptor_, mode_, key_) =>
         try
             storeReference = undefined
@@ -149,13 +152,16 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
                     # Here we humbly, brutally, find the key before deciding what to do.
                     storeReference = undefined
+                    index = 0
                     for elementObject in objectStoreReference_
                         # Should hey "hey - is this your key?"
                         namespace = elementObject[objectModelDescriptor_.jsonTag]
                         if namespace.uuid? and namespace.uuid and namespace.uuid == key_
                             storeReference = namespace
                             @resolvedKeyVector.push key_
+                            @resolvedKeyIndexVector.push index
                             break
+                        index++
 
                     # Now decide what to do based on the mode
                     switch mode
@@ -172,6 +178,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                             objectReference[objectModelDescriptor_.jsonTag] = storeReference
                             objectStoreReference_.push objectReference
                             @resolvedKeyVector.push key_
+                            @resolvedKeyIndexVector.push @resolvedKeyVector.length - 1
                             component = new Encapsule.code.lib.omm.ObjectStoreComponent(@objectStore, @resolvedKeyVector, objectModelDescriptor_.id, "new")
                             break
                         when "strict"
@@ -194,14 +201,14 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
     #
     # ============================================================================
-    getObjectModelNamespaceSelector: =>
+    # class Encapsule.code.lib.omm.ObjectStoreNamespace
+    getResolvedSelector: =>
         objectModelNamespaceSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(@pathId, @resolvedKeyVector)
         return objectModelNamespaceSelector
 
-
-
     #
     # ============================================================================
+    # class Encapsule.code.lib.omm.ObjectStoreNamespace
     constructor: (objectStore_, objectModelNamespaceSelector_, mode_) ->
         try
             if not (objectStore_? and objectStore_) then throw "Missing object store input parameter!"
@@ -216,6 +223,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             @objectStore = objectStore_ # reference to ObjectStore instance
             @pathId = objectModelNamespaceSelector_.pathId 
             @resolvedKeyVector = []
+            @resolvedKeyIndexVector = []
 
             # STORE REFERENCE
             @objectStoreNamespace = undefined # reference to specific namespace within the object store
