@@ -75,7 +75,7 @@ Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory = (jsonTag_, l
 class Encapsule.code.lib.omm.ObjectModel
     constructor: (objectModelDeclaration_) ->
         try
-            Console.message("Encapsule.code.lib.omm.ObjectModel constructor for OMM root namespace \"#{objectModelDeclaration_.jsonTag}\"")
+            Console.message("Encapsule.code.lib.omm.ObjectModel: Processing object model declaration '#{objectModelDeclaration_.jsonTag}'")
 
             if not (objectModelDeclaration_? and objectModelDeclaration_)
                 throw "Missing object model delcaration input parameter!"
@@ -263,7 +263,6 @@ class Encapsule.code.lib.omm.ObjectModel
                     if not (objectModelDescriptor? and objectModelDescriptor)
                         throw "Unable to resolve object descriptor for path ID #{pathId_}"
                     path = objectModelDescriptor.path
-                    Console.message("Encapsule.code.lib.omm.ObjectModel.getPathFromPathId #{pathId} -> #{path}")
                     return path
 
                 catch exception

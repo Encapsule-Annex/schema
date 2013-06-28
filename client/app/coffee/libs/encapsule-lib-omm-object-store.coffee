@@ -33,7 +33,7 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 class Encapsule.code.lib.omm.ObjectStore
     constructor: (objectModel_, initialStateJSON_) ->
         try
-            Console.message("Encapsule.code.lib.omm.ObjectStore instance '#{objectModel_.jsonTag}'")
+            Console.message("Encapsule.code.lib.omm.ObjectStore: Creating memory store instance for object model '#{objectModel_.jsonTag}'")
 
             # Validate parameters.
             if not (objectModel_? and objectModel_) then throw "Missing object model parameter!"
@@ -67,12 +67,13 @@ class Encapsule.code.lib.omm.ObjectStore
 
             #
             # ============================================================================
-            @toJSON = =>
+            @toJSON = (replacer_, space_) =>
                 try
                     Console.message("Encapsule.code.lib.omm.ObjectStore.toJSON for object store #{@jsonTag}")
                     resultObject = {}
                     resultObject[@jsonTag] = @objectStore
-                    resultJSON = JSON.stringify(resultObject)
+                    space = space_? and space_ or 0
+                    resultJSON = JSON.stringify(resultObject, replacer_, space)
                     if not (resultJSON? and resultJSON)
                         throw "Cannot serialize Javascript object to JSON!"
                     return resultJSON

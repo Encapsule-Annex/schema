@@ -54,12 +54,14 @@ class Encapsule.code.app.Schema
 
             objectStore = Encapsule.runtime.app.SchemaObjectStore = new Encapsule.code.lib.omm.ObjectStore(objectModel)
 
+            jsonStoreDefault = objectStore.toJSON()
 
-            selector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues", undefined)
+            
+            selector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues")
 
-            namespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selector, "new")
+            namespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selector)
 
-            selector2 = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue", undefined)
+            selector2 = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue")
 
             namespace2 = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selector2, "new")
 
@@ -75,6 +77,12 @@ class Encapsule.code.app.Schema
 
             reconstitutedCatalogueNamepsace = new Encapsule.code.lib.omm.ObjectStoreNamespace(reconstitutedStore, selectorNew, "strict")
 
+
+            selectorMachine = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue.models.machines.machine")
+            namespaceNewMachine = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore, selectorMachine, "new")
+
+            jsonFinal = objectStore.toJSON(undefined, 4)
+            Console.messageRaw("<pre>#{jsonFinal}</pre>")
 
 
             ###

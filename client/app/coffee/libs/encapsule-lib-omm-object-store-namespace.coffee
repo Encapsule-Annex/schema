@@ -41,6 +41,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
     # parent store namespace, and per specified mode.
     #
 
+    #
+    # ============================================================================
     internalInitializeNamespaceMembers: (storeReference_, namespaceDescriptor_) ->
         try
             if not (storeReference_? and storeReference_ and namespaceDescriptor_? and namespaceDescriptor_)
@@ -59,6 +61,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalInitializeNamespaceMembers failure '#{exception}'."
 
+    #
+    # ============================================================================
     internalVerifyNamespaceMembers: (storeReference_, namespaceDescriptor_) ->
         try
             if not (storeReference_? and storeReference_ and namespaceDescriptor_? and namespaceDescriptor_)
@@ -81,7 +85,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
 
 
-
+    #
+    # ============================================================================
     internalResolveNamespaceDescriptor: (objectStoreReference_, objectModelDescriptor_, mode_, key_) =>
         try
             storeReference = undefined
@@ -160,7 +165,6 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                             # Create a new component iff we didn't resolve the key above.
                             if storeReference? and storeReference
                                 break
-
                             storeReference = {}
                             @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
                             key_ = storeReference.uuid
@@ -186,10 +190,18 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalResolveNamespaceDescriptor failure: '#{exception}'"
 
 
+
+
+    #
+    # ============================================================================
     getObjectModelNamespaceSelector: =>
         objectModelNamespaceSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(@pathId, @resolvedKeyVector)
         return objectModelNamespaceSelector
 
+
+
+    #
+    # ============================================================================
     constructor: (objectStore_, objectModelNamespaceSelector_, mode_) ->
         try
             if not (objectStore_? and objectStore_) then throw "Missing object store input parameter!"

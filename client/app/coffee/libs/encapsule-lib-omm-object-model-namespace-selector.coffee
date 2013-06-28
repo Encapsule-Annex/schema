@@ -62,8 +62,6 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             @selectKeysProvided = selectKeyVector_? and selectKeyVector_ and selectKeyVector_.length or 0
             @selectKeysReady = @selectKeysRequired == @selectKeysProvided
 
-            Console.message("Encapsule.code.lib.omm.ObjectModelNamespaceSelector created selector for pathID=#{pathId_}. #{@selectKeysProvided} keys provided.")
-
             #
             # ============================================================================
             @getSelectKey = (index_) =>
