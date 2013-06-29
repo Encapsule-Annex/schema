@@ -42,9 +42,13 @@ class Encapsule.code.lib.omm.ObjectStoreComponent
             if not (componentNamespaceIds.length? and componentNamespaceIds.length)
                 throw "Internal error: Component namespace ID array should always be one or more elements!"
 
+            @componentStoreNamespace = undefined
+
             for id in componentNamespaceIds
                 componentNamespaceSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(id, selectKeyVector_)
                 componentStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore_, componentNamespaceSelector, mode_)
+                if not (@componentStoreNamespace? and @componentStoreNamespace)
+                    @componentStoreNamespace = componentStoreNamespace
 
 
         catch exception

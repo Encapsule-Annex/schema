@@ -67,8 +67,10 @@ class Encapsule.code.lib.omm.ObjectStore
                         throw "Invalid selector specifies root component which cannot be removed."
 
                     objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, "new")
-                    
                     return objectStoreNamespace
+
+                    # component = new Encapsule.code.lib.omm.ObjectStoreComponent(@, objectModelNamespaceSelector_.selectKeyVector, objectModelNamespaceSelector_.pathId, "new")
+                    # return component.componentStoreNamespace
 
                 catch exception
 
@@ -90,9 +92,9 @@ class Encapsule.code.lib.omm.ObjectStore
                     if objectModelNamespaceSelector_.pathId == 0
                         throw "Invalid selector specifies root component which cannot be removed."
 
-                    componentStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
+                    objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
 
-                    arrayIndexToRemove = componentStoreNamespace.resolvedKeyIndexVector[componentStoreNamespace.resolvedKeyIndexVector.length - 1]
+                    arrayIndexToRemove = objectStoreNamespace.resolvedKeyIndexVector[objectStoreNamespace.resolvedKeyIndexVector.length - 1]
 
                     extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(
                         objectModelNamespaceSelector_.objectModelDescriptor.parent.id,
@@ -102,6 +104,7 @@ class Encapsule.code.lib.omm.ObjectStore
 
                     extensionPointNamespace.objectStoreNamespace.splice(arrayIndexToRemove, 1)
 
+                    return objectStoreNamespace
 
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectStore.removeComponent failure: #{exception}"
