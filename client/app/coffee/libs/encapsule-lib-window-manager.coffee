@@ -290,6 +290,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         try
                             # @@@
                             # BEGIN: planeLayout try scope
+                            if not (planeLayout? and planeLayout)
+                                throw "Unable to resolve layout plane declaration for index #{planeIndex}. Perhaps you missed an include or there's a typo in the declaration?"
                             planeRuntime = { id: planeLayout.id, name: planeLayout.name, splitterStack: [], windowManagerReservePlane: planeLayout.windowManagerReservePlane }
                             planeRuntime.enabled = ko.observable planeLayout.windowManagerReservePlane? and planeLayout.windowManagerReservePlane or false
                             if not @currentDisplayPlaneId and (planeLayout.initialEnable == true)
@@ -337,7 +339,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                             # / END: planeLayout try scope
                             # @@@
                         catch exception
-                            throw """Layout plane ##{planeIndex} id="#{planeLayout.id}" failure: #{exception}"""
+                            throw """Layout plane ##{planeIndex} failure: #{exception}"""
                         @planes.push planeRuntime
                         @planesDictionary[planeRuntime.id] = planeRuntime
                         planeIndex++

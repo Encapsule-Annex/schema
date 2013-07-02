@@ -33,7 +33,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
 
 
     id: "idSchemaPlaneScdlCatalogueNavigator"
-    name: "Catalogue"
+    name: "Catalogue (pass 2)"
     initialEnable: false
     splitterStack: [
 

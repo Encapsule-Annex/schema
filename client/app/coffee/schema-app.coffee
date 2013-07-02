@@ -116,13 +116,24 @@ class Encapsule.code.app.Schema
             Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.lib.modelview.NavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
             Encapsule.runtime.app.SchemaTitlebarWindow = new Encapsule.code.app.modelview.SchemaTitleBarWindow()
             Encapsule.runtime.app.SchemaBootInfoWindow = new Encapsule.code.app.modelview.SchemaBootInfoWindow()
+
+            Encapsule.runtime.app.SchemaD3Main = new Encapsule.code.app.SchemaViewModelSvgPlane()
+
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager(Encapsule.code.app.winmgr.layout.root.Layout)
+
+
             Console.message "Initializing local URI routing:"
             Encapsule.runtime.app.SchemaRouter = new Encapsule.code.app.SchemaRouter()
             Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(Encapsule.runtime.app.SchemaRouter.routeChangedCallback)
             Console.message( Encapsule.runtime.app.SchemaRouter.getRoute() )
             Encapsule.runtime.app.SchemaRouter.setRoute(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout.initialSelectionPath)
-            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
+
+
+            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
+
+            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneD3")
+
+
             Encapsule.runtime.boot.phase0.spinner.cancel()
             Console.message("#{appName} main application document.onLoad event handler exit error.")
             Encapsule.runtime.boot.phase0.blipper.blip "system-normal"

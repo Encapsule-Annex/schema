@@ -29,24 +29,14 @@ namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.ap
 
 class Encapsule.code.app.SchemaViewModelSvgPlane
     constructor: ->
+        Console.message("How do we get here?")
 
-        @planeViewWidth = ko.observable undefined
-        @cssWidth = ko.computed => "#{@planeViewWidth()}px"
-        @planeViewHeight = ko.observable undefined
-        @cssHeight = ko.computed => "#{@planeViewHeight()}px"
-
-        @planeMarginLeftOffset = ko.computed => Math.round @planeViewWidth() / -2
-        @cssMarginLeft = ko.computed => "#{@planeMarginLeftOffset()}px"
-
-        @planeMarginTopOffset = ko.computed => Math.round @planeViewHeight() / -2
-        @cssMarginTop = ko.computed => "#{@planeMarginTopOffset()}px"
-
-        @selectionPath = ko.observable undefined
-        @viewMode = ko.observable undefined
 
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelSvgPlane", ( ->
     """
     Hello!
+    <svg id="idSchemaSVGMain"></svg>
+
     """))
