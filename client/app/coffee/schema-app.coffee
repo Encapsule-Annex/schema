@@ -130,8 +130,9 @@ class Encapsule.code.app.Schema
 
 
             #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
-
             Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneD3")
+
+            Encapsule.runtime.app.SchemaD3Main.initializeD3()
 
 
             Encapsule.runtime.boot.phase0.spinner.cancel()

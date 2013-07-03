@@ -45,7 +45,7 @@ Encapsule.code.app.winmgr.layout.root.SchemaD3 = {
                 name: "D3 Main"
                 initialMode: "full"
                 initialEnable: true
-                overflow: "hidden"
+                overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "rgba(100,255,255,0.3)"
                 modes: { full: { reserve: 0}, min: { reserve: 0 } }
