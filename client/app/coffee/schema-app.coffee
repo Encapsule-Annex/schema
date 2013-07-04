@@ -41,8 +41,6 @@ class Encapsule.code.app.Schema
 
             Console.messageRaw("<h3>INITIALIZING #{appName} MODEL VIEW</h3>")
 
-            Encapsule.runtime.app.SchemaEditorContext = new Encapsule.code.app.SchemaEditorContext()
-
             # This is so deprecated...
             Encapsule.runtime.app.SchemaScdlCatalogue = new Encapsule.code.app.scdl.ObservableCatalogueShimHost()
 
