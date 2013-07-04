@@ -95,6 +95,6 @@ class Encapsule.code.app.SchemaViewModelSvgPlane
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelSvgPlane", ( ->
     """
-    <div id="idSchemaSVGHost" style=""></div>
+    <div id="idSchemaSVGHost" style=""><button data-bind="click: initializeD3">click</button></div>
 
     """))
