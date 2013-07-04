@@ -142,8 +142,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                 parentPath = @menuLevelObject.parentMenuLevel.path
                 @parentItemHostWindow = @navigatorContainer.menuItemPathNamespace[parentPath].itemHostModelView
 
-            @itemElementModelView = undefined
-
             if layoutObjectDescriptor? and layoutObjectDescriptor
 
                 layoutObjectDescriptor = @menuLevelObject.layoutObject.objectDescriptor
@@ -178,8 +176,6 @@ class Encapsule.code.lib.modelview.NavigatorMenuItemHostWindow
                         @itemObservableModelViewUpdated()
                         # Update the parent's contained model view.
                         @parentItemHostWindow.itemObservableModelView(currentModelView)
-
-                        @itemElementModelView = new Encapsule.code.lib.modelview.NavigatorChildItemElementModelView(@)
 
                         break
 
