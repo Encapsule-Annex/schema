@@ -84,14 +84,12 @@ schema_deploy_client_html=$schema_deploy_client/public_html
 
 # level 4: /root/client/app/coffee
 schema_client_app_coffee_libs=$schema_client_app_coffee/libs
-schema_client_app_coffee_scdl=$schema_client_app_coffee/scdl
 
 # level 4: root/deployment/client/public_html
 schema_deploy_client_html_audio=$schema_deploy_client_html/audio
 schema_deploy_client_html_css=$schema_deploy_client_html/css
 schema_deploy_client_html_img=$schema_deploy_client_html/img
 schema_deploy_client_html_js=$schema_deploy_client_html/js
-schema_deploy_client_html_scdl=$schema_deploy_client_html/scdl
 schema_deploy_client_html_nocache=$schema_deploy_client_html/no-cache
 
 # Special files (e.g. build logs)
@@ -115,7 +113,6 @@ mkdir $schema_deploy_client_html_audio
 mkdir $schema_deploy_client_html_css
 mkdir $schema_deploy_client_html_img
 mkdir $schema_deploy_client_html_js
-mkdir $schema_deploy_client_html_scdl
 mkdir $schema_deploy_client_html_nocache
 
 cp -rv $schema_client_lib/* $schema_deploy_client_html/
@@ -166,10 +163,6 @@ echo =================================================================
 echo === v--- COFFEESCRIPT: EXPECT NO ERRORS =========================
 echo Building application Coffeescript libraries:
 cd $schema_client_app_coffee
-coffee -o $schema_deploy_client_html_js/ -c *.coffee
-cd $schema_client_app_coffee_scdl
-# cat *.coffee > encapsule-lib-scdl.coffee
-# coffee -o $schema_deploy_client_html_js/ -c encapsule-scdl.coffee
 coffee -o $schema_deploy_client_html_js/ -c *.coffee
 cd $schema_client_app_coffee_libs
 coffee -o $schema_deploy_client_html_js/ -c *.coffee
