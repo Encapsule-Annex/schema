@@ -94,8 +94,8 @@ try
             }
 
         planes: [
-            Encapsule.code.app.winmgr.layout.root.SchemaD3 
             Encapsule.code.app.winmgr.layout.root.PlaneAdvanced # Now "Catalogue"
+            Encapsule.code.app.winmgr.layout.root.SchemaD3 
             Encapsule.code.app.winmgr.layout.root.PlaneDebug # Now "About"
             ]
         }

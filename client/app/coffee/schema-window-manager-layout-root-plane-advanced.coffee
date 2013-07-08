@@ -33,11 +33,11 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
 
 
     id: "idSchemaPlaneScdlCatalogueNavigator"
-    name: "Catalogue (pass 2)"
+    name: "Navigator"
     initialEnable: false
     splitterStack: [
 
-
+        Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom
 
         {                                                                    
             id: "idCatalogueNavigatorSplitter"
@@ -82,8 +82,6 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
             }
         }   
 
-
-        Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom
 
         {                                                                    
             id: "idSchemaNavigatorSelectedItemWindowSplitter"

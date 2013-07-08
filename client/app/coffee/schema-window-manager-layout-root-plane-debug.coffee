@@ -33,7 +33,8 @@ Encapsule.code.app.winmgr.layout.root.PlaneDebug = {
     name: "About"
     initialEnable: false
     splitterStack: [
-        Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
+        # Encapsule.code.app.winmgr.layout.PlaneSelectSplitter
+        Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom
         {
             id: "idRootLayoutDebugPlaneSplit0"
             name: undefined
@@ -54,5 +55,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneDebug = {
             }
             Q2WindowDescriptor: undefined
         }
+
+
     ]
 } # PlaneDebug
