@@ -41,11 +41,11 @@ Encapsule.code.app.winmgr.layout.root.PlaneDebug = {
             type: "vertical"
             Q1WindowDescriptor: {
                 id: "idSchemaBootStats"
-                name: "#{appName} App Boot Info"
+                name: "#{appName} App About"
                 initialMode: "full"
                 initialEnable: true
-                opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: undefined
+                opacity: 1.0
+                backgroundColor: "rgba(255,255,255,0.2)"
                 overflow: "auto"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                 MVVM: {
