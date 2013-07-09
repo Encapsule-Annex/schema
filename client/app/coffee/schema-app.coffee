@@ -107,6 +107,17 @@ class Encapsule.code.app.Schema
 
 
             # ==============================================================================
+            # Object Model Navigator (Navigator refactored to leverage OMM library)
+
+            omNav = new Encapsule.code.lib.modelview.OMNavigatorWindow(objectStore)
+            
+
+            # ==============================================================================
+
+
+
+
+
 
             Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.lib.modelview.NavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
             Encapsule.runtime.app.SchemaTitlebarWindow = new Encapsule.code.app.modelview.SchemaTitleBarWindow()

@@ -112,6 +112,9 @@ class Encapsule.code.lib.omm.ObjectStore
 
             #
             # ============================================================================
+            # Assumes the existence of the namespace indicated by the specified selector.
+            # Throws if the selector cannot be resolved against the contents of the store.
+            #
             @openNamespace = (objectModelNamespaceSelector_) =>
                 try
                     if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_)
@@ -134,6 +137,14 @@ class Encapsule.code.lib.omm.ObjectStore
 
             #
             # ============================================================================
+            # mode_ should be set to:
+            #     "bypass" - no checking of extension keys. If the selector cannot be resolved, an error is thrown.
+            #     "new" - create new extension keys as needed to complete the requested create operation.
+            #     "strict" - verify the extension keys in the selector and throw an error on missing/unresolved keys in the store.
+            #
+            # Note that if mode_ == "new" and the selector specifies a path within a component that does not exist, this method
+            # will create the entire component and return the requested namespace.
+            #
             @createStoreNamespace = (objectModelNamespaceSelector_, mode_) =>
                 try
                     if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"

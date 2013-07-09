@@ -16,7 +16,7 @@
 
 ###
 #
-# encapsule-lib-navigator.coffee
+# encapsule-lib-omnav-model-view.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
@@ -24,15 +24,11 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
 
-class Encapsule.code.lib.modelview.NavigatorWindow
-    constructor: (layout_) ->
+class Encapsule.code.lib.modelview.OMNavigatorWindow
+    constructor: (objectModelManagerStore_) ->
         # \ BEGIN: constructor
         try
             # \ BEGIN: constructor try scope
-            Console.message "Initializing #{appName} navigator data model."
-
-            if not layout_? then throw "Missing layout parameter."
-            if not layout_ then throw "Missing layout parameter value."
             
             @blipper = Encapsule.runtime.boot.phase0.blipper
 
@@ -588,7 +584,6 @@ class Encapsule.code.lib.modelview.NavigatorWindow
             # ============================================================================
             @updateMouseOverState = (menuLevel_, flag_) =>
                 @internalUpdateLevelsMouseOverState(menuLevel_, flag_)
-
 
             newMenuHierarchy = [
                 {
