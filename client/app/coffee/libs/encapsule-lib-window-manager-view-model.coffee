@@ -57,7 +57,7 @@ Encapsule.code.lib.kohelpers.implementation.SynthesizeWindowManagerViewModelFrom
     planeNumber = 0
     for plane in layout_.planes
 
-        result.htmlHead += """<!-- BEGIN: \\ LAYOUT PLANE id=#{plane.id} --><div id="#{plane.id}" class="classWindowManagerPlane" data-bind="if: planes[#{planeNumber}].enabled">"""
+        result.htmlHead += """<!-- BEGIN: \\ LAYOUT PLANE id=#{plane.id} --><div id="#{plane.id}" class="classWindowManagerPlane" data-bind="visible: planes[#{planeNumber}].enabled">"""
 
         # Enumerate the splitter objects defined in the plane.
         for splitter in plane.splitterStack
@@ -96,13 +96,6 @@ Encapsule.code.lib.kohelpers.implementation.SynthesizeWindowManagerViewModelFrom
                                     <!-- END: / HOSTED OBSERVABLE WINDOW planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
                             """
                         # END: / if
-
-                    ### Disable but keep for reference
-                    result.htmlHead += """
-                                    <b>Toggle [ <span data-bind="event: { click: toggleWindowMode }, text: windowMode" style="color: blue; font-weight: bold; text-decoration: underline;"></span> ]</b>
-                                    ObservableWindow: id=<span data-bind="text: id"></span> &bull; <span data-bind="text: name"></span><br>
-                         """
-                    ###
 
                     result.htmlHead += """
                                 </div><!-- END: / OBSERVABLE WINDOW LAYER planeId=#{plane.id} windowId=#{windowDescriptor.id} -->
