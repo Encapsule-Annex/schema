@@ -50,7 +50,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
-                backgroundColor: "rgba(0,100,160,0.05)" # undefined
+                backgroundColor: "rgba(0, 128, 256, 0.5)"
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
                 ###
                 MVVM: {
@@ -74,7 +74,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "rgba(0,100,160,0.05)" # "rgba(0,255,204,0.1)"
+                backgroundColor: "rgba(255, 255, 255, 0.5)" # "rgba(0,255,204,0.1)"
                 modes: { full: { reserve: 500 }, min: { reserve: 250 } }
                 ###
                 MVVM: {
@@ -99,7 +99,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 opacity: CommonSettings.windowOpacityDefault
                 overflow: "auto"
                 backgroundColor:  "rgba(255,255,255,0.1)"
-                modes: { full: { reserve: 0 }, min: { reserve: 400 } }
+                modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                 ###
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
@@ -109,23 +109,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 ###
             }
 
-            Q2WindowDescriptor: {                                            
-                id: "idSchemaNavigatorSelectedItemMetaWindow"
-                name: "Selected Item Meta"                              
-                initialMode: "min"
-                initialEnable: true
-                overflow: "hide"
-                opacity: 1.0
-                backgroundColor: "rgba(0,100,160,0.25)"
-                modes: { full: { reserve: 0 }, min: { reserve: 18 } }
-                ###
-                MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
-                    # schema-model-window-scdl-navigator-aux.coffee
-                    viewModelTemplateId: "idKoTemplate_SchemaViewModelSchemaNavigatorSelectedItemMetaWindow"
-                }
-                ###
-            }                                                            
+            Q2WindowDescriptor: undefined
         }
 
     ] # / END: splitter stack

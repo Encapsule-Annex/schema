@@ -43,7 +43,7 @@ class Encapsule.code.app.SchemaViewModelSvgPlane
                 @data = objectModel.objectModelDescriptorById
 
 
-                svg = d3.select("#idSchemaSVGHost").append("svg")
+                svg = d3.select("#idSchemaSVGHost").append("svg").attr("width", "100%").attr("height", "100%")
 
                 rectangles = svg.selectAll("rect").
                     data(@data).
@@ -95,6 +95,5 @@ class Encapsule.code.app.SchemaViewModelSvgPlane
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelSvgPlane", ( ->
     """
-    <div id="idSchemaSVGHost" style=""><button data-bind="click: initializeD3">click</button></div>
-
+    <div id="idSchemaSVGHost" style="width: 100%; height: 100%;"></div>
     """))

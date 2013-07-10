@@ -47,7 +47,7 @@ Encapsule.code.app.winmgr.layout.root.SchemaD3 = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
-                backgroundColor: "rgba(100,255,255,0.3)"
+                backgroundColor: "rgba(255,255,255,0.8)"
                 modes: { full: { reserve: 0}, min: { reserve: 0 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaD3Main
