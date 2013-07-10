@@ -654,7 +654,7 @@ class Encapsule.code.lib.modelview.OMNavigatorWindow
 
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaViewModelNavigator", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_OmmNavigatorWindow", ( -> """
 
 <div class="classNavigatorViewDetailControlPanel">
 

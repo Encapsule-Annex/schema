@@ -16,7 +16,7 @@
 
 ###
 #
-# schema-window-manager-layout-plane-navigator.coffee
+# schema-window-manager-layout-plane-omm-nav.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
@@ -28,12 +28,12 @@ Encapsule.code.app.winmgr.layout.root = Encapsule.code.app.winmgr.layout.root? a
 
 CommonSettings = Encapsule.code.app.winmgr.layout.CommonSettings
 
-Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
+Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
 
 
 
-    id: "idSchemaPlaneScdlCatalogueNavigator"
-    name: "Navigator"
+    id: "idSchemaPlaneOmmNavigator"
+    name: "OMM Navigator"
     initialEnable: false
     splitterStack: [
 
@@ -52,10 +52,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 opacity: 1.0
                 backgroundColor: "rgba(0,100,160,0.05)" # undefined
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
+                ###
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
                 }
+                ###
             }                                                            
             Q2WindowDescriptor: undefined                                    
         }
@@ -74,11 +76,13 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "rgba(0,100,160,0.05)" # "rgba(0,255,204,0.1)"
                 modes: { full: { reserve: 500 }, min: { reserve: 250 } }
+                ###
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorJSONWindow"
 
                 }
+                ###
             }
         }   
 
@@ -96,11 +100,13 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 overflow: "auto"
                 backgroundColor:  "rgba(255,255,255,0.1)"
                 modes: { full: { reserve: 0 }, min: { reserve: 400 } }
+                ###
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     # Template defined in encapsule-lib-navigator-item-host-window.coffee
                     viewModelTemplateId: "idKoTemplate_SchemaNavigatorSelectedItemWindow"
                 }
+                ###
             }
 
             Q2WindowDescriptor: {                                            
@@ -112,11 +118,13 @@ Encapsule.code.app.winmgr.layout.root.PlaneAdvanced = {
                 opacity: 1.0
                 backgroundColor: "rgba(0,100,160,0.25)"
                 modes: { full: { reserve: 0 }, min: { reserve: 18 } }
+                ###
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
                     # schema-model-window-scdl-navigator-aux.coffee
                     viewModelTemplateId: "idKoTemplate_SchemaViewModelSchemaNavigatorSelectedItemMetaWindow"
                 }
+                ###
             }                                                            
         }
 
