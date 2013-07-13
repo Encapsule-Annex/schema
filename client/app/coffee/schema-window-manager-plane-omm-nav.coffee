@@ -44,20 +44,18 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
             name: "SCDL Catalogue Navigator Splitter"                                           
             type: "vertical"                                                 
             Q1WindowDescriptor: {                                            
-                id: "idScdlCatalogueNavigator"                                              
-                name: "SCDL Catalogue Navigator"                                      
+                id: "idScdlCatalogueNavigator"
+                name: "SCDL Catalogue Navigator"
                 initialMode: "min"
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "rgba(0, 128, 256, 0.5)"
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
-                ###
                 MVVM: {
-                    modelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
-                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigator"
+                    modelView: -> Encapsule.runtime.app.ObjectModelNavigatorWindow
+                    viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorWindow"
                 }
-                ###
             }                                                            
             Q2WindowDescriptor: undefined                                    
         }

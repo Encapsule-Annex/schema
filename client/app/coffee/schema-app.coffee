@@ -109,7 +109,7 @@ class Encapsule.code.app.Schema
             # ==============================================================================
             # Object Model Navigator (Navigator refactored to leverage OMM library)
 
-            #omNav = new Encapsule.code.lib.modelview.OMNavigatorWindow(objectStore)
+            omNav = Encapsule.runtime.app.ObjectModelNavigatorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorWindow(objectStore)
             
 
             # ==============================================================================
