@@ -208,7 +208,12 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
     #
     # ============================================================================
-    # class Encapsule.code.lib.omm.ObjectStoreNamespace
+    # class Encapsule.code.lib.omm.ObjectStoreNamespace.constructor
+    # mode_ should be set to:
+    #     "bypass" - no checking of extension keys. If the selector cannot be resolved, an error is thrown.
+    #     "new" - create new extension keys as needed to complete the requested create operation.
+    #     "strict" - verify the extension keys in the selector and throw an error on missing/unresolved keys in the store.
+    #
     constructor: (objectStore_, objectModelNamespaceSelector_, mode_) ->
         try
             if not (objectStore_? and objectStore_) then throw "Missing object store input parameter!"

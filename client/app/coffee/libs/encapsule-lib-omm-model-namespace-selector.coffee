@@ -57,6 +57,30 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
 
             #
             # ============================================================================
+            # Iff the namespace selector is complete (i.e. @selectKeysReady == true)
+            # then return a unique string created by concatenating the selector's path ID
+            # and the select keys. Model-view classes (e.g. classes that leverage Knockout.js
+            # and D3js) leverage selector hash strings to associate internal state with
+            # specific namespaces (e.g. map keys).
+            #
+            @getHashString = =>
+                try
+                    if not @selectKeysReady
+                        throw "Unable to retrieve namespace selector hash key of abstract selector."
+
+                    hashKey = "#{@pathId}"
+                    for selectKey in @selectKeyVector
+                        hashKey += ":#{selectKey}"
+
+                    return hashKey
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getSelectorHashKeyString failure: #{exception}"
+
+
+
+            #
+            # ============================================================================
             if not (objectModel_? and objectModel_) then throw "Missing object model input parameter."
             if not (pathId_?) then throw "Missing object model path parameter."
 

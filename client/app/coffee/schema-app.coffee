@@ -71,6 +71,8 @@ class Encapsule.code.app.Schema
             scdlMachineNamespace = reconstitutedStore.createComponent(scdlMachineSelectorUnresolved)
             scdlMachineSelectorResolved = scdlMachineNamespace.getResolvedSelector()
 
+            selectorHashKey = scdlMachineSelectorResolved.getHashString()
+
             reconstitutedStore.removeComponent(scdlMachineSelectorResolved)
 
 

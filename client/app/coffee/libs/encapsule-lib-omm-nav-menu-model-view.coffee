@@ -25,16 +25,8 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or Encapsule.code.lib.modelview = {}
 
 
-class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow
-    # DEPRECATED::: constructor: (navigatorContainerObject_, parentMenuLevel_, yourNewLayoutObject_, yourNewLevel_) ->
-
-    constructor: (objectModelNavigatorWindow_, objectModelNamespaceDescriptor_) ->
-
-        # \ BEGIN: constructor scope
-        try
-            # \ BEGIN: constructor try scope
-
-            @blipper = Encapsule.runtime.boot.phase0.blipper
+class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
+      constructor: (objectModelNavigatorWindow_, objectModelNamespaceDescriptor_) ->
 
             # Cache references to this instance's construction parameters.
             @objectModelNavigatorWindow = objectModelNavigatorWindow_
@@ -46,6 +38,19 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow
             @childMenuObjects = []
 
 
+class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
+
+    constructor: (objectModelNavigatorWindow_, objectModelNamespaceDescriptor_) ->
+
+        # \ BEGIN: constructor scope
+        try
+            # \ BEGIN: constructor try scope
+            super(objectModelNavigatorWindow_, objectModelNamespaceDescriptor_)
+
+            @blipper = Encapsule.runtime.boot.phase0.blipper
+
+
+
             # / END: constructor try scope
         catch exception
             throw "Encapsule.code.lib.modelview.NavigatorWindowMenuLevel failure: : #{exception}"
@@ -54,6 +59,9 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorMenuWindow", ( ->
     """
-    Yo!
+    <div class="classSchemaViewModelNavigatorMenuLevel">
+        <span data-bind="text: objectModelNamespaceDescriptor.label"></span>
+        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: childMenuObjects }"></span>
+    </div>
     """))
 

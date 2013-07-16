@@ -24,12 +24,10 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
 
-class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
+class Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase
     constructor: (objectModelManagerStore_) ->
         # \ BEGIN: constructor
         try
-            # \ BEGIN: constructor try scope
-            
             if not (objectModelManagerStore_? and objectModelManagerStore_) then throw "Missing object model manager store object input parameter!"
 
             # Save a reference to the associated object store.
@@ -60,6 +58,24 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
             
 
 
+        catch exception
+            throw " Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase constructor failure: #{exception}"
+
+        # / END: constructor
+
+
+
+
+class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow extends Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase
+    constructor: (objectModelManagerStore_) ->
+        # \ BEGIN: constructor
+        try
+            # \ BEGIN: constructor try scope
+
+            super(objectModelManagerStore_)
+            
+
+
             @blipper = Encapsule.runtime.boot.phase0.blipper
 
             # / END: constructor try scope
@@ -71,7 +87,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorWindow", ( -> """
-Hello!
+<span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: menuObjectById[0].childMenuObjects }"></span>
 """))
 
 
