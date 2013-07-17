@@ -123,6 +123,10 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                 namespaceObjectReference_["uuid"]? and namespaceObjectReference_["uuid"] or
                 undefined
             return label
+
+        getUniqueKey: (namespaceObjectReference_) ->
+            key = namespaceObjectReference_["uuid"]? and namespaceObjectReference_["uuid"] or undefined
+            return key
     }
 
 

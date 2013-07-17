@@ -112,11 +112,17 @@ class Encapsule.code.lib.omm.ObjectModel
             #
             # buildOMDescriptorFromLayout additionally depends on the following class members
             #
+
+            # USED FOR WHAT? SLATED FOR REMOVAL
             @objectModelComponentMap = {}
+
             @objectModelPathMap = {}
             @objectModelDescriptorById = []
+
+            # USED FOR WHAT? SLATED FOR REMOVAL
             @objectModelExtensionPointMap = {}
             @objectModelExtensionMap = {}
+
             @countDescriptors = 0
             @rankMax = 0
             #
@@ -166,6 +172,7 @@ class Encapsule.code.lib.omm.ObjectModel
                     # Add this descriptor to parent descriptor's children array
                     if parentDescriptor_? and parentDescriptor_
                         parentDescriptor_.children.push thisDescriptor
+                        # Clone the parent's parentPathIdVector and add ourselves to it.
                         thisDescriptor.parentPathIdVector = Encapsule.code.lib.js.clone parentDescriptor_.parentPathIdVector
                         thisDescriptor.parentPathIdVector.push parentDescriptor_.id
 
@@ -286,6 +293,14 @@ class Encapsule.code.lib.omm.ObjectModel
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPath failed: #{exception}"
 
+            # --------------------------------------------------------------------------
+            @getSemanticBindings = =>
+                try
+                    semanticBindings = @objectModelDeclaration.semanticBindings
+                    if not (semanticBindings? and semanticBindings) then throw "Object model declaration does not include required semanticBindings namespace."
+                    return semanticBindings
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModel failure: #{exception}"
 
 
             # CONSTRUCT THE ROOT OBJECT DESCRIPTOR FROM THE SPECIFIED OBJECT MODEL LAYOUT 

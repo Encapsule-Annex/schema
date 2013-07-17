@@ -53,6 +53,88 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     throw "Encapsule.code.lib.omm.ObjectStore.createStoreNamespace failed: #{exception}"
             ###
 
+            # 
+            # ============================================================================
+            @internalReflectStoreComponent = (modelViewObject_, componentNamespaceSelector_) =>
+                try
+                    
+                    # Invoke the model view object's onComponentCreate callback.
+                    modelViewObject_.onComponentCreated(componentNamespaceSelector_)
+
+                    # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
+
+                    for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds
+                        selectKeyVector = undefined
+                        namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
+                        modelViewObject_.onNamespaceCreated(namespaceSelector)
+
+                    return true
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalReflectStoreComponent failure: #{exception}"
+
+
+
+            # 
+            # ============================================================================
+            @internalReflectStoreComponentExtensions = (modelViewObject_, componentNamespaceSelector_) =>
+                try
+
+                    # Dereference the component's object model descriptor and find its extension points.
+                    componentObjectModelDescriptor = componentNamespaceSelector_.objectModelDescriptor
+
+                    if not componentObjectModelDescriptor.isComponent 
+                        throw "Invalid namespace selector does not correspond to a component in this object model."
+
+                    componentExtensionPointMap = componentNamespaceSelector_.objectModelDescriptor.extensionPoints
+
+                    for path, namespaceDescriptor of componentExtensionPointMap
+
+                        # Use the extension point's ID obtained from namespace descriptor to create an object model namespace selector for the extension point.
+                        extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceDescriptor.id, componentNamespaceSelector_.selectKeyVector)
+
+                        # Create a new store namespace object to gain access to the extension point array data.
+                        extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector, "bypass")
+
+                        extensionPointArray = extensionPointNamespace.objectStoreNamespace
+                        if not (extensionPointArray.length?) then throw "Expected extension point array to support length property."
+
+                        extensionJsonTag = namespaceDescriptor.children[0].jsonTag
+                        extensionPath = "#{namespaceDescriptor.path}.#{extensionJsonTag}"
+
+                        for component in extensionPointArray
+
+                            subcomponentObject = component[extensionJsonTag]
+                            subcomponentKey = @objectModel.getSemanticBindings().getUniqueKey(subcomponentObject) # decoupled from scheme employed to identify components uniquely
+
+                            subcomponentSelectKeyVector = undefined
+                            if componentNamespaceSelector_.selectKeyVector? and componentSelector_.selectKeyVector
+                                subcomponentSelectKeyVector = Encapsule.code.lib.js.clone componentNamespaceSelector_.selectKeyVector
+                            else
+                                subcomponentSelectKeyVector = []
+                            subcomponentSelectKeyVector.push subcomponentKey
+                            subcomponentNamespaceSelector = @objectModel.createNamespaceSelectorFromPath(extensionPath, subcomponentSelectKeyVector)
+
+                            # Reflect the store's subcomponent to the model view object.                                
+                            @internalReflectStoreComponent(modelViewObject_, subcomponentNamespaceSelector)
+
+                            # RECURSION
+                            @internalReflectStoreComponentExtensions(modelViewObject_, subcomponentNamespaceSelector)
+
+                            true
+
+                            # END: for component in...
+
+                        # END: for path, namespaceDescriptor of...
+
+                    
+
+                    # extensionPointStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointNamespaceSelector_, "bypass")
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalRegisterModelViewObserverExtensions failure: #{exception}"
+
+
             #
             # 
             # ============================================================================
@@ -86,14 +168,20 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     # Create a namespace selector that references the root namespace of the store.
                     rootNamespaceSelector = @objectModel.createNamespaceSelectorFromPathId(0)
 
-                    # Invoke the model view object's onComponentCreate callback.
-                    modelViewObject_.onComponentCreated(rootNamespaceSelector)
+                    # Reflect the root component to the model view object.
+                    @internalReflectStoreComponent(modelViewObject_, rootNamespaceSelector)
 
-                    # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
+                    # Now kick off the recursive process of enumerating the stores extension points
+                    # and registering sub-components found to exist in the store with the newly registered
+                    # model view object. This process additionally registers each enumerated component's
+                    # associated namespaces with the model view object.
+                    #
+                    # After the initial registration "catch-up", the model view object subsequently
+                    # tracks changes to the store state via discrete component/namespace create,
+                    # update, and remove callback notifications issued by the store.
 
-                    for namespaceId in rootNamespaceSelector.objectModelDescriptor.componentNamespaceIds
-                        namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId)
-                        modelViewObject_.onNamespaceCreated(namespaceSelector)
+                    @internalReflectStoreComponentExtensions(modelViewObject_, rootNamespaceSelector)
+
 
                     return observerIdCode
 
@@ -278,7 +366,7 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                         throw "Invalid unresolved namespace selector in request."
 
                     # Leverage default "bypass" mode (i.e. no validation, no creation, throw if not exist)
-                    objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
+                    objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, "bypass")
 
                     return objectStoreNamespace
 

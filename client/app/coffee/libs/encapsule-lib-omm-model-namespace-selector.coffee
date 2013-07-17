@@ -69,13 +69,13 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                         throw "Unable to retrieve namespace selector hash key of abstract selector."
 
                     hashKey = "#{@pathId}"
-                    for selectKey in @selectKeyVector
+                    for selectKey in (@selectKeyVector? and @selectKeyVector or [])
                         hashKey += ":#{selectKey}"
 
                     return hashKey
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getSelectorHashKeyString failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getHashString failure: #{exception}"
 
 
 
