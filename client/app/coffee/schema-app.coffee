@@ -164,7 +164,8 @@ class Encapsule.code.app.Schema
 
 
             #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
-            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneD3")
+            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneD3")
+            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootLayoutDebugPlane")
 
             Encapsule.runtime.app.SchemaD3Main.initializeD3()
 
