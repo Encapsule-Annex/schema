@@ -54,11 +54,47 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             ###
 
             #
+            # 
             # ============================================================================
             @internalRegisterModelViewObserver = (modelViewObject_) =>
                 try
+                    # Test modelViewObject_ interface for compatibility.
+
+                    if not (modelViewObject_.onComponentCreated? and modelViewObject_.onComponentCreated)
+                        throw "Model view object missing required onComponentCreated callback interface."
+
+                    if not (modelViewObject_.onComponentRemoved? and modelViewObject_.onComponentRemoved)
+                        throw "Model view object missing required onComponentRemoved callback interface."
+
+                    if not (modelViewObject_.onNamespaceCreated? and modelViewObject_.onNamespaceCreated)
+                        throw "Model view object missing required onNamespaceCreated callback interface."
+
+                    if not (modelViewObject_.onNamespaceRemoved? and modelViewObject_.onNamespaceRemoved)
+                        throw "Model view object missing required onNamespaceRemoved callback interface."
+
+
+                    # Create a new observer ID code (UUID because multiple registrations allowed).
                     observerIdCode = uuid.v4()
+                    # Affect the registration using the observer ID as the key and the caller's modelViewObject_ by reference.
                     @modelViewObservers[observerIdCode] = modelViewObject_
+
+
+                    # The root namespace of an object store always exists and comprises the base of the root component -
+                    # a hierarchy of sub-namespaces defined as the set of all descendents excluding extension namespaces
+                    # and their descendents.
+
+                    # Create a namespace selector that references the root namespace of the store.
+                    rootNamespaceSelector = @objectModel.createNamespaceSelectorFromPathId(0)
+
+                    # Invoke the model view object's onComponentCreate callback.
+                    modelViewObject_.onComponentCreated(rootNamespaceSelector)
+
+                    # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
+
+                    for namespaceId in rootNamespaceSelector.objectModelDescriptor.componentNamespaceIds
+                        namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId)
+                        modelViewObject_.onNamespaceCreated(namespaceSelector)
+
                     return observerIdCode
 
                 catch exception
@@ -137,12 +173,16 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
 
             @registerModelViewObserver = (modelViewObject_) =>
                 try
+                    if not (modelViewObject_? and modelViewObject_) then throw "Missing model view object input parameter!"
+                    return @internalRegisterModelViewObserver(modelViewObject_)
 
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectStore.registerModelViewObserver failure: #{exception}"
 
             @unregisterModelViewObserver = (observerIdCode_) =>
                 try
+                    if not (observerIdCode_? and observerIdCode_) then throw "Missing observer ID code input parameter!"
+                    @internalUnregisterModelViewObserver(observerIdCode_)
 
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectStore.unregisterModelViewObserver failure: #{exception}"

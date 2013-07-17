@@ -112,6 +112,29 @@ class Encapsule.code.app.Schema
             # Object Model Navigator (Navigator refactored to leverage OMM library)
 
             omNav = Encapsule.runtime.app.ObjectModelNavigatorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorWindow(objectStore)
+
+            # Temporary code to test registraton/unregistration and callbacks from object store
+
+            omNav.onComponentCreated = (namespaceSelector_) ->
+                Console.message("onComponentCreate")
+
+            omNav.onComponentUpdated = (namespaceSelector_) ->
+                Console.message("onComponentUpdated")
+
+            omNav.onComponentRemoved = (namespaceSelector_) ->
+                Console.message("onComponentRemoved")
+
+            omNav.onNamespaceCreated = (namespaceSelector_) ->
+                Console.message("onNamespaceCreated")
+
+            omNav.onNamespaceUpdated = (namespaceSelector_) ->
+                Console.message("onNamespaceUpdated")
+
+            omNav.onNamespaceRemoved = (namespaceSelector_) ->
+                Console.message("onNamespaceRemoved")
+
+            omNavObserverId = reconstitutedStore.registerModelViewObserver(omNav)
+            reconstitutedStore.unregisterModelViewObserver(omNavObserverId)
             
 
             # ==============================================================================
