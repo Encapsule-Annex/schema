@@ -67,18 +67,14 @@ Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory = (jsonTag_, l
 # ****************************************************************************
 #
 
-
-
 #
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.ObjectModel
+class Encapsule.code.lib.omm.ObjectModelBase
     constructor: (objectModelDeclaration_) ->
         try
 
-            #
             # --------------------------------------------------------------------------
-
             buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, parentDescriptor_, componentDescriptor_, parentPathIdVector_, parentPathExtensionPointIdVector_) =>
                 try
                     if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter!"
@@ -189,74 +185,8 @@ class Encapsule.code.lib.omm.ObjectModel
                     throw "buildOMDescriptorFromLayout fail: #{exception}"
 
             # / END: buildOMDesriptorFromLayout
-            # --------------------------------------------------------------------------
-
 
             # --------------------------------------------------------------------------
-            @getPathIdFromPath = (objectModelPath_) =>
-                try
-                    if not (objectModelPath_? and objectModelPath_) then throw "Missing object model path parameter!"
-
-                    objectModelDescriptor = @objectModelPathMap[objectModelPath_]
-                    if not (objectModelDescriptor? and objectModelDescriptor)
-                        throw "Unable to resolve object model descriptor!"
-        
-                    objectModelPathId = objectModelDescriptor.id
-                    if not objectModelPathId?
-                        throw "Internal error: Unable to resolve object model path ID from object model descriptor."
-
-                    return objectModelPathId
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModel.getPathIdFromPath fail: #{exception}"
-
-            # --------------------------------------------------------------------------
-
-
-            # --------------------------------------------------------------------------
-            @getPathFromPathId = (pathId_) =>
-                try
-                    if not (pathId_?) then throw "Missing path ID parameter!"
-
-                    objectModelDescriptor = @objectModelDescriptorById[pathId_]
-                    if not (objectModelDescriptor? and objectModelDescriptor)
-                        throw "Unable to resolve object descriptor for path ID #{pathId_}"
-                    path = objectModelDescriptor.path
-                    return path
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModel.getPathFromPathId fail: #{exception}"
-
-
-            # --------------------------------------------------------------------------
-            @createNamespaceSelectorFromPathId = (pathId_, selectKeyVector_) =>
-                try
-                    selector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@, pathId_, selectKeyVector_)
-                    return selector
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPathId failed: #{exception}"
-
-            # --------------------------------------------------------------------------
-            @createNamespaceSelectorFromPath = (path_, selectKeyVector_) =>
-                try
-                    pathId = @getPathIdFromPath(path_)
-                    selector = @createNamespaceSelectorFromPathId(pathId, selectKeyVector_)
-                    return selector
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPath failed: #{exception}"
-
-            # --------------------------------------------------------------------------
-            @getSemanticBindings = =>
-                try
-                    semanticBindings = @objectModelDeclaration.semanticBindings
-                    if not (semanticBindings? and semanticBindings) then throw "Object model declaration does not include required semanticBindings namespace."
-                    return semanticBindings
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModel failure: #{exception}"
-
-
-            # CONSTRUCT THE ROOT OBJECT DESCRIPTOR FROM THE SPECIFIED OBJECT MODEL LAYOUT 
-            # **************************************************************************
             Console.message("Encapsule.code.lib.omm.ObjectModel: Processing object model declaration '#{objectModelDeclaration_.jsonTag}'")
 
             if not (objectModelDeclaration_? and objectModelDeclaration_)
@@ -308,6 +238,9 @@ class Encapsule.code.lib.omm.ObjectModel
             # *** START RECURSION
             buildOMDescriptorFromLayout(rootObjectDescriptor)
 
+            # Some basic consistency checks to ensure that completely screwed up declaratons
+            # aren't foisted upon unsuspecting observers.
+
             if @countExtensionPoints != @countExtensions
                 throw "Layout declaration error: extension point and extension descriptor counts do not match. countExtensionPoints=#{@countExtensionPoints} countExtensions=#{@countExtensions}"
 
@@ -322,6 +255,86 @@ class Encapsule.code.lib.omm.ObjectModel
             Console.message("... <strong>#{@countDescriptors} total namespace declarations processed.</strong>")
             Console.message("... ... #{@countComponents} composable components / tallest leaf = rank #{@rankMax}")
 
+
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectModelBase.construction failure: #{exception}"
+
+# ****************************************************************************
+#
+
+
+#
+#
+# ****************************************************************************
+class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectModelBase
+    constructor: (objectModelDeclaration_) ->
+        try
+            super(objectModelDeclaration_)
+
+
+            # --------------------------------------------------------------------------
+            @getPathIdFromPath = (objectModelPath_) =>
+                try
+                    if not (objectModelPath_? and objectModelPath_) then throw "Missing object model path parameter!"
+
+                    objectModelDescriptor = @objectModelPathMap[objectModelPath_]
+                    if not (objectModelDescriptor? and objectModelDescriptor)
+                        throw "Unable to resolve object model descriptor!"
+        
+                    objectModelPathId = objectModelDescriptor.id
+                    if not objectModelPathId?
+                        throw "Internal error: Unable to resolve object model path ID from object model descriptor."
+
+                    return objectModelPathId
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModel.getPathIdFromPath fail: #{exception}"
+
+
+            # --------------------------------------------------------------------------
+            @getPathFromPathId = (pathId_) =>
+                try
+                    if not (pathId_?) then throw "Missing path ID parameter!"
+
+                    objectModelDescriptor = @objectModelDescriptorById[pathId_]
+                    if not (objectModelDescriptor? and objectModelDescriptor)
+                        throw "Unable to resolve object descriptor for path ID #{pathId_}"
+                    path = objectModelDescriptor.path
+                    return path
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModel.getPathFromPathId fail: #{exception}"
+
+
+            # --------------------------------------------------------------------------
+            @createNamespaceSelectorFromPathId = (pathId_, selectKeyVector_) =>
+                try
+                    selector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@, pathId_, selectKeyVector_)
+                    return selector
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPathId failed: #{exception}"
+
+            # --------------------------------------------------------------------------
+            @createNamespaceSelectorFromPath = (path_, selectKeyVector_) =>
+                try
+                    pathId = @getPathIdFromPath(path_)
+                    selector = @createNamespaceSelectorFromPathId(pathId, selectKeyVector_)
+                    return selector
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPath failed: #{exception}"
+
+            # --------------------------------------------------------------------------
+            @getSemanticBindings = =>
+                try
+                    semanticBindings = @objectModelDeclaration.semanticBindings
+                    if not (semanticBindings? and semanticBindings) then throw "Object model declaration does not include required semanticBindings namespace."
+                    return semanticBindings
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModel failure: #{exception}"
+
+
+            # CONSTRUCT THE ROOT OBJECT DESCRIPTOR FROM THE SPECIFIED OBJECT MODEL LAYOUT 
+            # **************************************************************************
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModel construction fail: #{exception}"
