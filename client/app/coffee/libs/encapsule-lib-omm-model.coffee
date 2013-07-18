@@ -75,59 +75,10 @@ Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory = (jsonTag_, l
 class Encapsule.code.lib.omm.ObjectModel
     constructor: (objectModelDeclaration_) ->
         try
-            Console.message("Encapsule.code.lib.omm.ObjectModel: Processing object model declaration '#{objectModelDeclaration_.jsonTag}'")
 
-            if not (objectModelDeclaration_? and objectModelDeclaration_)
-                throw "Missing object model delcaration input parameter!"
-
-            @jsonTag = objectModelDeclaration_.jsonTag
-            @label = objectModelDeclaration_.label
-            @description = objectModelDeclaration_.description
-            
-            # Create the root object descriptor (note that this is a generic descriptor shared by all
-            # instances of ObjectModel. The namespace is reserved for use by OMM itself and cannot be
-            # accessed via the object model layout declaration object.
-
-            rootObjectDescriptor = Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory(
-                @jsonTag
-                @label
-                @description
-                objectModelDeclaration_.menuHierarchy
-                )
-
-            # ObjectModel instances take a deep copy of objectModelDeclaration_
-            @objectModelDeclaration = Encapsule.code.lib.js.clone objectModelDeclaration_
-
-            if not (@objectModelDeclaration? and @objectModelDeclaration)
-                throw "Failed to clone source object model declaration."
-
-            # Note that we patch our _copy_ of the declaration leaving the original declaration unchanged.
-            @objectModelDeclaration.menuHierarchy = [ rootObjectDescriptor ]
-
-            #
-            # objectModelDescriptor = (required) reference to OM layout declaration object
-            # path = (optional/used in recursion) parent descriptor's OM path (defaults to jsonTag if undefined)
-            # rank = (optional/used in recursion) directed graph rank (aka level - a zero-based count of tree depth)
-            # parentDescriptor_ = (optional/used in recursion) 
-            #
-            # buildOMDescriptorFromLayout additionally depends on the following class members
-            #
-
-            # USED FOR WHAT? SLATED FOR REMOVAL
-            @objectModelComponentMap = {}
-
-            @objectModelPathMap = {}
-            @objectModelDescriptorById = []
-
-            # USED FOR WHAT? SLATED FOR REMOVAL
-            @objectModelExtensionPointMap = {}
-            @objectModelExtensionMap = {}
-
-            @countDescriptors = 0
-            @rankMax = 0
             #
             # --------------------------------------------------------------------------
-            # buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, parentDescriptor_, componentDescriptor_, parentPathIdVector_, inheritedExtensionPoints_) =>
+
             buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, parentDescriptor_, componentDescriptor_, parentPathIdVector_, parentPathExtensionPointIdVector_) =>
                 try
                     if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter!"
@@ -169,6 +120,9 @@ class Encapsule.code.lib.omm.ObjectModel
                         "children": []
                          }
 
+                    # Add this descriptor to the OM intance's path map for fast look-up based on path.
+                    @objectModelPathMap[path] = thisDescriptor
+
                     # Add this descriptor to parent descriptor's children array
                     if parentDescriptor_? and parentDescriptor_
                         parentDescriptor_.children.push thisDescriptor
@@ -179,9 +133,6 @@ class Encapsule.code.lib.omm.ObjectModel
                     if @rankMax < thisDescriptor.parentPathIdVector.length
                         @rankMax = thisDescriptor.parentPathIdVector.length
 
-                    # Add this descriptor to the OM intance's path map.
-                    @objectModelPathMap[path] = thisDescriptor
-
                     componentDescriptor = undefined
                     switch mvvmType
                         when "extension"
@@ -191,12 +142,10 @@ class Encapsule.code.lib.omm.ObjectModel
                             componentDescriptor.extensionPoints[path] = thisDescriptor
                             if not (extensionDescriptor? and extensionDescriptor)
                                 throw "Cannot resolve extension object descriptor."
-                            # Add this descriptor to OM instance's extension point map.
-                            @objectModelExtensionPointMap[path] = thisDescriptor
                             updatedParentPathExtensionPointIdVector = Encapsule.code.lib.js.clone parentPathExtensionPoints
                             updatedParentPathExtensionPointIdVector.push id
-
-                            # RECURSION
+                            @countExtensionPoints++
+                            # *** RECURSION
                             buildOMDescriptorFromLayout(extensionDescriptor, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, updatedParentPathExtensionPointIdVector)
                             break
 
@@ -205,19 +154,22 @@ class Encapsule.code.lib.omm.ObjectModel
                             thisDescriptor.extensionPoints = {}
                             parentDescriptor_.archetypePathId = id
                             componentDescriptor = thisDescriptor
-                            @objectModelExtensionMap[path] = thisDescriptor
-                            @objectModelComponentMap[path] = thisDescriptor
+                            @countExtensions++
+                            @countComponents++
                             break
+
                         when "root"
                             if componentDescriptor_? or componentDescriptor then throw "Internal error: componentDescriptor_ should be undefined."
                             thisDescriptor.isComponent = true
                             thisDescriptor.extensionPoints = {}
                             componentDescriptor = thisDescriptor
-                            @objectModelComponentMap[path] = thisDescriptor
+                            @countComponents++
                             break
+
                         when "child"
                             thisDescriptor.idComponent = thisDescriptor.parent.idComponent
                             componentDescriptor = componentDescriptor_
+                            @countChildren++
                             break
                         else
                             throw "Unrecognized MVVM type \"#{mvvmType}\" in call."
@@ -228,7 +180,7 @@ class Encapsule.code.lib.omm.ObjectModel
                         return true
 
                     for subObjectDescriptor in objectModelLayoutObject_.subMenus
-                        # RECURSION
+                        # *** RECURSION
                         buildOMDescriptorFromLayout(subObjectDescriptor, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, parentPathExtensionPoints)
 
                     return true
@@ -305,24 +257,56 @@ class Encapsule.code.lib.omm.ObjectModel
 
             # CONSTRUCT THE ROOT OBJECT DESCRIPTOR FROM THE SPECIFIED OBJECT MODEL LAYOUT 
             # **************************************************************************
-            buildOMDescriptorFromLayout(rootObjectDescriptor)
+            Console.message("Encapsule.code.lib.omm.ObjectModel: Processing object model declaration '#{objectModelDeclaration_.jsonTag}'")
 
-            # Counts and internal consistency checking.
-            @countComponents = @objectModelComponentMap.length
+            if not (objectModelDeclaration_? and objectModelDeclaration_)
+                throw "Missing object model delcaration input parameter!"
 
-            @countExtensionPoints = 0
-            for memberName, functions of @objectModelExtensionPointMap
-                @countExtensionPoints++
+            @jsonTag = objectModelDeclaration_.jsonTag
+            @label = objectModelDeclaration_.label
+            @description = objectModelDeclaration_.description
+            
+            # Create the root object descriptor (note that this is a generic descriptor shared by all
+            # instances of ObjectModel. The namespace is reserved for use by OMM itself and cannot be
+            # accessed via the object model layout declaration object.
 
-            @countExtensions = 0
-            for memberName, functions of @objectModelExtensionMap
-                @countExtensions++
+            rootObjectDescriptor = Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory(
+                @jsonTag
+                @label
+                @description
+                objectModelDeclaration_.menuHierarchy
+                )
 
+            # ObjectModel instances take a deep copy of objectModelDeclaration_
+            @objectModelDeclaration = Encapsule.code.lib.js.clone objectModelDeclaration_
+
+            if not (@objectModelDeclaration? and @objectModelDeclaration)
+                throw "Failed to clone source object model declaration."
+
+            # Note that we patch our _copy_ of the declaration leaving the original declaration unchanged.
+            @objectModelDeclaration.menuHierarchy = [ rootObjectDescriptor ]
+
+            #
+            # objectModelDescriptor = (required) reference to OM layout declaration object
+            # path = (optional/used in recursion) parent descriptor's OM path (defaults to jsonTag if undefined)
+            # rank = (optional/used in recursion) directed graph rank (aka level - a zero-based count of tree depth)
+            # parentDescriptor_ = (optional/used in recursion) 
+            #
+            # buildOMDescriptorFromLayout additionally depends on the following class members
+            #
+
+            @objectModelPathMap = {}
+            @objectModelDescriptorById = []
+
+            @countDescriptors = 0
             @countComponents = 0
-            for memberName, functions of @objectModelComponentMap
-                @countComponents++
+            @countExtensionPoints = 0
+            @countExtensions = 0
+            @countChildren = 0
+            @rankMax = 0
 
-            @countChildren = @countDescriptors - @countComponents
+            # *** START RECURSION
+            buildOMDescriptorFromLayout(rootObjectDescriptor)
 
             if @countExtensionPoints != @countExtensions
                 throw "Layout declaration error: extension point and extension descriptor counts do not match. countExtensionPoints=#{@countExtensionPoints} countExtensions=#{@countExtensions}"
@@ -337,6 +321,7 @@ class Encapsule.code.lib.omm.ObjectModel
             Console.message("... #{@countExtensions} extension descriptor(s)")
             Console.message("... <strong>#{@countDescriptors} total namespace declarations processed.</strong>")
             Console.message("... ... #{@countComponents} composable components / tallest leaf = rank #{@rankMax}")
+
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModel construction fail: #{exception}"
