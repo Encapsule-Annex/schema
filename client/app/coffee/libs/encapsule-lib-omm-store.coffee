@@ -58,15 +58,13 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             @internalReflectStoreComponent = (modelViewObject_, componentNamespaceSelector_) =>
                 try
                     
-                    # Invoke the model view object's onComponentCreate callback.
-                    modelViewObject_.onComponentCreated(componentNamespaceSelector_)
-
                     # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
-
                     for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds
-                        selectKeyVector = undefined
                         namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
                         modelViewObject_.onNamespaceCreated(namespaceSelector)
+
+                    # Invoke the model view object's onComponentCreate callback.
+                    modelViewObject_.onComponentCreated(componentNamespaceSelector_)
 
                     return true
 
