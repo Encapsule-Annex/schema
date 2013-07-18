@@ -31,52 +31,67 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 class Encapsule.code.lib.omm.ObjectStoreBase
     constructor: (objectModel_, initialStateJSON_) ->
         try
-            #
-            # ============================================================================
-            # mode_ should be set to:
-            #     "bypass" - no checking of extension keys. If the selector cannot be resolved, an error is thrown.
-            #     "new" - create new extension keys as needed to complete the requested create operation.
-            #     "strict" - verify the extension keys in the selector and throw an error on missing/unresolved keys in the store.
-            #
-            # Note that if mode_ == "new" and the selector specifies a path within a component that does not exist, this method
-            # will create the entire component and return the requested namespace.
-            #
-            ###
-            # This is currently not being called from anywhere. Keep it around temporarily
-            @internalCreateStoreNamespace = (objectModelNamespaceSelector_, mode_) =>
-                try
-                    if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
-                    objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, mode_)
-                    return objectStoreNamespace
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.createStoreNamespace failed: #{exception}"
-            ###
 
             # 
             # ============================================================================
-            @internalReflectStoreComponent = (modelViewObject_, componentNamespaceSelector_) =>
+            @internalReifyStoreComponent = (componentNamespaceSelector_, modelViewObject_) =>
                 try
-                    
                     # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
                     for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds
                         namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
-                        modelViewObject_.onNamespaceCreated(namespaceSelector)
+                        if modelViewObject_? and modelViewObject_
+                            modelViewObject_.onNamespaceCreated(namespaceSelector)
+                        else
+                            for observerId, modelViewObject of @modelViewObjects
+                                modelViewObject.onNamespaceCreated(namespaceSelector)
 
                     # Invoke the model view object's onComponentCreate callback.
-                    modelViewObject_.onComponentCreated(componentNamespaceSelector_)
+                    if modelViewObject_? and modelViewObject_
+                        modelViewObject_.onComponentCreated(componentNamespaceSelector_)
+                    else
+                        for observerId, modelViewObject of @modelViewObjets
+                            modelViewObject.onNamespaceCreated(componentNamespaceSelector_)
 
-                    return true
+                    true
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalReflectStoreComponent failure: #{exception}"
-
+                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalReifyStoreComponent failure: #{exception}"
 
 
             # 
             # ============================================================================
-            @internalReflectStoreComponentExtensions = (modelViewObject_, componentNamespaceSelector_) =>
+            @internalUnreifyStoreComponent = (componentNamespaceSelector_, modelViewObject_) =>
                 try
+                    # Invoke the model view object's onComponentRemoved callback.
+                    if modelViewObject_? and modelViewObject_
+                        modelViewObject_.onComponentRemoved(componentNamespaceSelector_)
+                    else
+                        for observerId, modelViewObserver of @modelViewObjects
+                            modelViewObject.onComponentRemoved(componentNamespaceSelector_)
+
+                    # Invoke the model view object's onNamespaceRemoved callback for each namespace in the root component.
+                    # (reverse order - children first, then parent(s))
+                    for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds.reverse()
+                        namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
+                        if modelViewObject_? and modelViewObject_
+                            modelViewObject_.onNamespaceRemoved(namespaceSelector)
+                        else
+                            for observerId, modelViewObject of @modelViewObjects
+                                modelViewObject.onNamespaceRemoved(namespaceSelector)
+
+                    true
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalUnreifyStoreComponent failure: #{exception}"
+
+
+            # 
+            # ============================================================================
+            @internalReifyStoreExtensions = (componentNamespaceSelector_, modelViewObject_, undoFlag_) =>
+                try
+                    # undoFlag indicates that we should reverse a prior reification (e.g. in response to
+                    # a component being removed from the store.
+                    undoFlag = undoFlag_? and undoFlag_ or false
 
                     # Dereference the component's object model descriptor and find its extension points.
                     componentObjectModelDescriptor = componentNamespaceSelector_.objectModelDescriptor
@@ -113,11 +128,32 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                             subcomponentSelectKeyVector.push subcomponentKey
                             subcomponentNamespaceSelector = @objectModel.createNamespaceSelectorFromPath(extensionPath, subcomponentSelectKeyVector)
 
-                            # Reflect the store's subcomponent to the model view object.                                
-                            @internalReflectStoreComponent(modelViewObject_, subcomponentNamespaceSelector)
+                            if not undoFlag
+                                # Note that when we're reifying (i.e. reflecting the contents of the store out to the model view)
+                                # that we proceed top-down. The protocol is that namespaces are "created" parent-first and then
+                                # the component is "created", and finally the component's sub-components are evaluated until all
+                                # leaf components have been processed and the entire store has been traversed.
 
-                            # RECURSION
-                            @internalReflectStoreComponentExtensions(modelViewObject_, subcomponentNamespaceSelector)
+                                # Reify the store subcomponent to the model view object.                                
+                                @internalReifyStoreComponent(subcomponentNamespaceSelector, modelViewObject_)
+
+                                # *** RECURSION
+                                @internalReifyStoreExtensions(subcomponentNamespaceSelector, modelViewObject_, false)
+
+                            else
+                                # Note that when we're unreifying (i.e. undoing the a prior reification) that we proceed
+                                # bottom-up. Subcomponents are always evaluated prior to their parent components. When a
+                                # leaf component is discovered, it is "removed". The protocol is that the component is
+                                # "removed" first, and then the namespaces are "removed" in the reverse order they were
+                                # "created" during reification. Parent components are "removed" via the same protocol only
+                                # after all their sub-components have been "removed" until the root component (which cannot
+                                # be removed because it's not an extension) is reached.
+                            
+                                # *** RECURSION
+                                @internalReifyStoreExtensions(subcomponentNamespaceSelector, modelViewObject_, true)
+                                
+                                # Unreify the store subcomponent to the model view object.
+                                @internalUnreifyStoreComponent(subcomponentNamespaceSelector, modelViewObject_)
 
                             true
 
@@ -125,15 +161,12 @@ class Encapsule.code.lib.omm.ObjectStoreBase
 
                         # END: for path, namespaceDescriptor of...
 
-                    
-
                     # extensionPointStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointNamespaceSelector_, "bypass")
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalRegisterModelViewObserverExtensions failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalReifyStoreExtensions failure: #{exception}"
 
 
-            #
             # 
             # ============================================================================
             @internalRegisterModelViewObserver = (modelViewObject_) =>
@@ -167,7 +200,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     rootNamespaceSelector = @objectModel.createNamespaceSelectorFromPathId(0)
 
                     # Reflect the root component to the model view object.
-                    @internalReflectStoreComponent(modelViewObject_, rootNamespaceSelector)
+                    @internalReifyStoreComponent(rootNamespaceSelector, modelViewObject_)
 
                     # Now kick off the recursive process of enumerating the stores extension points
                     # and registering sub-components found to exist in the store with the newly registered
@@ -178,8 +211,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     # tracks changes to the store state via discrete component/namespace create,
                     # update, and remove callback notifications issued by the store.
 
-                    @internalReflectStoreComponentExtensions(modelViewObject_, rootNamespaceSelector)
-
+                    @internalReifyStoreExtensions(rootNamespaceSelector, modelViewObject_)
 
                     return observerIdCode
 
@@ -309,6 +341,9 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
 
                     # Creating the root namespace of a component automatically creates all its sub-namespaces as well.
                     objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, "new")
+
+                    @internalReifyStoreExtensions(objectStoreNamespace.getResolvedSelector())
+
                     return objectStoreNamespace
 
 
@@ -331,6 +366,10 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
 
                     if objectModelNamespaceSelector_.pathId == 0
                         throw "Invalid selector specifies root component which cannot be removed."
+
+                    # !!! BAD SOLUTION: Really we want to incur the overhead of traversing the store only once (not once / registered observer ). 
+                    for observerId, modelViewObserver of @modelViewObservers
+                        @internalReifyStoreExtensions(objectModelNamespaceSelector_, modelViewObserver)
 
                     objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
 
