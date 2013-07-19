@@ -50,6 +50,8 @@ class Encapsule.code.lib.omm.ObjectStoreComponent
                 if not (@componentStoreNamespace? and @componentStoreNamespace)
                     @componentStoreNamespace = componentStoreNamespace
 
+            objectStore_.internalReifyStoreComponent(componentRootNamespaceSelector)
+
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreComponent failure '#{exception}'."

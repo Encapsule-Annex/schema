@@ -36,21 +36,28 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             # ============================================================================
             @internalReifyStoreComponent = (componentNamespaceSelector_, modelViewObject_) =>
                 try
+
+                    # If broadcast (i.e. modelViewObject_ not specified or undefined) AND no observers then return.
+                    if ( not (modelViewObserver_? and modelViewObserver_) ) and ( not Object.keys(@modelViewObservers).length )
+                        return
+
+                    # MODEL VIEW OBSERVER CALLBACK ORIGIN: onComponentCreate
+                    # Invoke the model view object's onComponentCreate callback.
+                    if modelViewObject_? and modelViewObject_
+                        modelViewObject_.onComponentCreated(componentNamespaceSelector_)
+                    else
+                        for observerId, modelViewObject of @modelViewObservers
+                            modelViewObject.onComponentCreated(componentNamespaceSelector_)
+
+                    # MODEL VIEW OBSERVER CALLBACK ORIGIN: onNamespaceCreate
                     # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
                     for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds
                         namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
                         if modelViewObject_? and modelViewObject_
                             modelViewObject_.onNamespaceCreated(namespaceSelector)
                         else
-                            for observerId, modelViewObject of @modelViewObjects
+                            for observerId, modelViewObject of @modelViewObservers
                                 modelViewObject.onNamespaceCreated(namespaceSelector)
-
-                    # Invoke the model view object's onComponentCreate callback.
-                    if modelViewObject_? and modelViewObject_
-                        modelViewObject_.onComponentCreated(componentNamespaceSelector_)
-                    else
-                        for observerId, modelViewObject of @modelViewObjets
-                            modelViewObject.onNamespaceCreated(componentNamespaceSelector_)
 
                     true
 
@@ -62,13 +69,11 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             # ============================================================================
             @internalUnreifyStoreComponent = (componentNamespaceSelector_, modelViewObject_) =>
                 try
-                    # Invoke the model view object's onComponentRemoved callback.
-                    if modelViewObject_? and modelViewObject_
-                        modelViewObject_.onComponentRemoved(componentNamespaceSelector_)
-                    else
-                        for observerId, modelViewObserver of @modelViewObjects
-                            modelViewObject.onComponentRemoved(componentNamespaceSelector_)
+                    # If broadcast (i.e. modelViewObject_ not specified or undefined) AND no observers then return.
+                    if ( not (modelViewObserver_? and modelViewObserver_) ) and ( not Object.keys(@modelViewObservers).length )
+                        return
 
+                    # MODEL VIEW OBSERVER CALLBACK ORIGIN: onNamespaceRemoved
                     # Invoke the model view object's onNamespaceRemoved callback for each namespace in the root component.
                     # (reverse order - children first, then parent(s))
                     for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds.reverse()
@@ -76,8 +81,17 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                         if modelViewObject_? and modelViewObject_
                             modelViewObject_.onNamespaceRemoved(namespaceSelector)
                         else
-                            for observerId, modelViewObject of @modelViewObjects
+                            for observerId, modelViewObject of @modelViewObservers
                                 modelViewObject.onNamespaceRemoved(namespaceSelector)
+
+
+                    # MODEL VIEW OBSERVER CALLBACK ORIGIN: onComponentRemoved
+                    # Invoke the model view object's onComponentRemoved callback.
+                    if modelViewObject_? and modelViewObject_
+                        modelViewObject_.onComponentRemoved(componentNamespaceSelector_)
+                    else
+                        for observerId, modelViewObject of @modelViewObservers
+                            modelViewObject.onComponentRemoved(componentNamespaceSelector_)
 
                     true
 
@@ -342,8 +356,6 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     # Creating the root namespace of a component automatically creates all its sub-namespaces as well.
                     objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, "new")
 
-                    @internalReifyStoreExtensions(objectStoreNamespace.getResolvedSelector())
-
                     return objectStoreNamespace
 
 
@@ -367,12 +379,13 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     if objectModelNamespaceSelector_.pathId == 0
                         throw "Invalid selector specifies root component which cannot be removed."
 
-                    # !!! BAD SOLUTION: Really we want to incur the overhead of traversing the store only once (not once / registered observer ). 
-                    for observerId, modelViewObserver of @modelViewObservers
-                        @internalReifyStoreExtensions(objectModelNamespaceSelector_, modelViewObserver)
+                    # Unrefify the component before actually making any modifications to the store.
+                    # modelViewObserver_ == undefined -> broadcast to all registered observers
+                    # undoFlag_ == true -> invert namespace traversal order and invoke remove callbacks
+                    @internalReifyStoreExtensions(objectModelNamespaceSelector_, undefined, true)
+                    @internalUnreifyStoreComponent(objectModelNamespaceSelector_)
 
                     objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
-
                     arrayIndexToRemove = objectStoreNamespace.resolvedKeyIndexVector[objectStoreNamespace.resolvedKeyIndexVector.length - 1]
 
                     extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(

@@ -80,31 +80,6 @@ class Encapsule.code.app.Schema
             Console.messageRaw("<pre>#{jsonFinal}</pre>")
 
 
-            ###
-
-            jsonString = objectStore.toJSON()
-
-            # Raw old style
-            selectKeyVector = []
-            schemaClientId = objectModel.getPathIdFromPath("schema.client")
-            schemaClientCataloguesId = objectModel.getPathIdFromPath("schema.client.catalogues")
-            schemaClientSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(objectModel, schemaClientId, selectKeyVector)
-            schemaClientCataloguesSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(objectModel, schemaClientCataloguesId, selectKeyVector)
-            schemaClientNamespace = objectStore.createNamespace(schemaClientSelector)
-            schemaClientCataloguesNamespace = objectStore.createNamespace(schemaClientCataloguesSelector)
-
-            # Abbreviated new style
-
-            cataloguesSelector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues", undefined)
-
-            catalogues = objectStore.createNamespaceFromPath("schema.client.catalogues", undefined)
-
-            jsonString = objectStore.toJSON()
-
-
-            objectStore2 = new Encapsule.code.lib.omm.ObjectStore(objectModel, jsonString)
-
-            ###
 
 
 
@@ -133,7 +108,28 @@ class Encapsule.code.app.Schema
             omNav.onNamespaceRemoved = (namespaceSelector_) ->
                 Console.message("onNamespaceRemoved path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
+
+            Console.message("*** REGISTER MODEL VIEW")
+
             omNavObserverId = reconstitutedStore.registerModelViewObserver(omNav)
+
+            Console.message("*** CREATE A NEW SCDL MACHINE MODEL WITH AN OBSERVER REGISTERED")
+            machineSelector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue.models.machines.machine")
+            machineNamespace = reconstitutedStore.createComponent(machineSelector)
+
+
+            Console.message("*** REMOVE THE SCDL MACHINE MODEL WITH AN OBSERVER REGISTERED")
+
+            machineSelector = machineNamespace.getResolvedSelector()
+
+            reconstitutedStore.removeComponent(machineSelector)
+
+            catalogueSelector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue", machineSelector.selectKeyVector)
+
+            
+
+
+            Console.message("*** UNREGISTER MODEL VIEW")
             reconstitutedStore.unregisterModelViewObserver(omNavObserverId)
             
 
