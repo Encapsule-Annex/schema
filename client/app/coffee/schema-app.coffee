@@ -90,23 +90,23 @@ class Encapsule.code.app.Schema
 
             # Temporary code to test registraton/unregistration and callbacks from object store
 
-            omNav.onComponentCreated = (namespaceSelector_) ->
-                Console.message("onComponentCreate for path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+            omNav.onComponentCreated = (observerId_, namespaceSelector_) ->
+                Console.message("onComponentCreate observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
-            omNav.onComponentUpdated = (namespaceSelector_) ->
-                Console.message("onComponentUpdated path=#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+            omNav.onComponentUpdated = (observerId_, namespaceSelector_) ->
+                Console.message("onComponentUpdated  observerId='#{observerId_}' path=#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
-            omNav.onComponentRemoved = (namespaceSelector_) ->
-                Console.message("onComponentRemoved path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+            omNav.onComponentRemoved = (observerId_, namespaceSelector_) ->
+                Console.message("onComponentRemoved  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
-            omNav.onNamespaceCreated = (namespaceSelector_) ->
-                Console.message("onNamespaceCreated path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+            omNav.onNamespaceCreated = (observerId_, namespaceSelector_) ->
+                Console.message("onNamespaceCreated  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
-            omNav.onNamespaceUpdated = (namespaceSelector_) ->
-                Console.message("onNamespaceUpdated path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+            omNav.onNamespaceUpdated = (observerId_, namespaceSelector_) ->
+                Console.message("onNamespaceUpdated  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
-            omNav.onNamespaceRemoved = (namespaceSelector_) ->
-                Console.message("onNamespaceRemoved path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+            omNav.onNamespaceRemoved = (observerId_, namespaceSelector_) ->
+                Console.message("onNamespaceRemoved  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
 
             Console.message("*** REGISTER MODEL VIEW")

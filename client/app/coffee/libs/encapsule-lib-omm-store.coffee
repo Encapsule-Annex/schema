@@ -34,7 +34,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
 
             # 
             # ============================================================================
-            @internalReifyStoreComponent = (componentNamespaceSelector_, modelViewObject_) =>
+            @internalReifyStoreComponent = (componentNamespaceSelector_, modelViewObject_, observerId_) =>
                 try
 
                     # If broadcast (i.e. modelViewObject_ not specified or undefined) AND no observers then return.
@@ -44,20 +44,20 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     # MODEL VIEW OBSERVER CALLBACK ORIGIN: onComponentCreate
                     # Invoke the model view object's onComponentCreate callback.
                     if modelViewObject_? and modelViewObject_
-                        modelViewObject_.onComponentCreated(componentNamespaceSelector_)
+                        modelViewObject_.onComponentCreated(observerId_, componentNamespaceSelector_)
                     else
                         for observerId, modelViewObject of @modelViewObservers
-                            modelViewObject.onComponentCreated(componentNamespaceSelector_)
+                            modelViewObject.onComponentCreated(observerId, componentNamespaceSelector_)
 
                     # MODEL VIEW OBSERVER CALLBACK ORIGIN: onNamespaceCreate
                     # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
                     for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds
                         namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
                         if modelViewObject_? and modelViewObject_
-                            modelViewObject_.onNamespaceCreated(namespaceSelector)
+                            modelViewObject_.onNamespaceCreated(observerId_, namespaceSelector)
                         else
                             for observerId, modelViewObject of @modelViewObservers
-                                modelViewObject.onNamespaceCreated(namespaceSelector)
+                                modelViewObject.onNamespaceCreated(observerId, namespaceSelector)
 
                     true
 
@@ -67,7 +67,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
 
             # 
             # ============================================================================
-            @internalUnreifyStoreComponent = (componentNamespaceSelector_, modelViewObject_) =>
+            @internalUnreifyStoreComponent = (componentNamespaceSelector_, modelViewObject_, observerId_) =>
                 try
                     # If broadcast (i.e. modelViewObject_ not specified or undefined) AND no observers then return.
                     if ( not (modelViewObserver_? and modelViewObserver_) ) and ( not Object.keys(@modelViewObservers).length )
@@ -79,19 +79,19 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds.reverse()
                         namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
                         if modelViewObject_? and modelViewObject_
-                            modelViewObject_.onNamespaceRemoved(namespaceSelector)
+                            modelViewObject_.onNamespaceRemoved(observerId_, namespaceSelector)
                         else
                             for observerId, modelViewObject of @modelViewObservers
-                                modelViewObject.onNamespaceRemoved(namespaceSelector)
+                                modelViewObject.onNamespaceRemoved(observerId, namespaceSelector)
 
 
                     # MODEL VIEW OBSERVER CALLBACK ORIGIN: onComponentRemoved
                     # Invoke the model view object's onComponentRemoved callback.
                     if modelViewObject_? and modelViewObject_
-                        modelViewObject_.onComponentRemoved(componentNamespaceSelector_)
+                        modelViewObject_.onComponentRemoved(observerId_, componentNamespaceSelector_)
                     else
                         for observerId, modelViewObject of @modelViewObservers
-                            modelViewObject.onComponentRemoved(componentNamespaceSelector_)
+                            modelViewObject.onComponentRemoved(observerId, componentNamespaceSelector_)
 
                     true
 
@@ -101,7 +101,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
 
             # 
             # ============================================================================
-            @internalReifyStoreExtensions = (componentNamespaceSelector_, modelViewObject_, undoFlag_) =>
+            @internalReifyStoreExtensions = (componentNamespaceSelector_, modelViewObject_, observerId_, undoFlag_) =>
                 try
                     # undoFlag indicates that we should reverse a prior reification (e.g. in response to
                     # a component being removed from the store.
@@ -149,10 +149,10 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                                 # leaf components have been processed and the entire store has been traversed.
 
                                 # Reify the store subcomponent to the model view object.                                
-                                @internalReifyStoreComponent(subcomponentNamespaceSelector, modelViewObject_)
+                                @internalReifyStoreComponent(subcomponentNamespaceSelector, modelViewObject_, observerId_)
 
                                 # *** RECURSION
-                                @internalReifyStoreExtensions(subcomponentNamespaceSelector, modelViewObject_, false)
+                                @internalReifyStoreExtensions(subcomponentNamespaceSelector, modelViewObject_, observerId_, false)
 
                             else
                                 # Note that when we're unreifying (i.e. undoing the a prior reification) that we proceed
@@ -164,10 +164,10 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                                 # be removed because it's not an extension) is reached.
                             
                                 # *** RECURSION
-                                @internalReifyStoreExtensions(subcomponentNamespaceSelector, modelViewObject_, true)
+                                @internalReifyStoreExtensions(subcomponentNamespaceSelector, modelViewObject_, observerId_, true)
                                 
                                 # Unreify the store subcomponent to the model view object.
-                                @internalUnreifyStoreComponent(subcomponentNamespaceSelector, modelViewObject_)
+                                @internalUnreifyStoreComponent(subcomponentNamespaceSelector, modelViewObject_, observerId_)
 
                             true
 
@@ -214,7 +214,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     rootNamespaceSelector = @objectModel.createNamespaceSelectorFromPathId(0)
 
                     # Reflect the root component to the model view object.
-                    @internalReifyStoreComponent(rootNamespaceSelector, modelViewObject_)
+                    @internalReifyStoreComponent(rootNamespaceSelector, modelViewObject_, observerIdCode)
 
                     # Now kick off the recursive process of enumerating the stores extension points
                     # and registering sub-components found to exist in the store with the newly registered
@@ -225,7 +225,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     # tracks changes to the store state via discrete component/namespace create,
                     # update, and remove callback notifications issued by the store.
 
-                    @internalReifyStoreExtensions(rootNamespaceSelector, modelViewObject_)
+                    @internalReifyStoreExtensions(rootNamespaceSelector, modelViewObject_, observerIdCode)
 
                     return observerIdCode
 
