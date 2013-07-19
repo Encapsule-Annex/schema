@@ -198,13 +198,75 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
 
 
-
     #
     # ============================================================================
     # class Encapsule.code.lib.omm.ObjectStoreNamespace
     getResolvedSelector: =>
-        objectModelNamespaceSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(@pathId, @resolvedKeyVector)
-        return objectModelNamespaceSelector
+        try
+            objectModelNamespaceSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(@pathId, @resolvedKeyVector)
+            return objectModelNamespaceSelector
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectStoreNamespace.getResolvedSelector failure: #{exception}"
+
+    #
+    # ============================================================================
+    # class Encapsule.code.lib.omm.ObjectStoreNamespace
+    updateRevision: =>
+        try
+            # Many OM namespaces include associated revision numbers and/or revision timestamp information.
+            # The OMM doesn't know or care precisely what any particular OM uses for a scheme but supports
+            # generically a simple protocol that allows client code to grossly mark store namespaces as
+            # "revised". Revision of a store namespace has the following semantics:
+            #
+            # The namespace store data is modified via a call to objectModelDeclaration.sementicBindings.update()
+            # The revised namespace's parent namespace's are similarly modified via calls to objectModelDeclaration.semanticBindings.update()
+            # onNamespaceUpdated for the revised namespace is called for each registered store observer.
+            # onChildNamespaceUpdated for the revised namespace parents is called for each registered store observer.
+            # onParentNamespaceUpdated for the revised namespace children is called for each registered store observer.
+            #
+
+
+
+            revisedNamespaceSelector = @getResolvedSelector()
+            signalComponentUpdated = @objectModelDescriptor.isComponent
+            semanticBindings = @objectStore.objectModel.getSemanticBindings()
+
+            # Update this namespace's revision metadata.
+            semanticBindings.update(@objectStoreNamespace)
+
+            for observerId, modelViewObserver of @objectStore.modelViewObservers
+                modelViewObserver.onNamespaceUpdated(observerId, revisedNamespaceSelector)
+                if signalComponentUpdated
+                    modelViewObserver.onComponentUpdated(observerId, revisedNamespaceSelector)
+
+
+            for parentPathId in @objectModelDescriptor.parentPathIdVector.reverse()
+                parentSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(parentPathId, revisedNamespaceSelector.selectKeyVector)
+                parentNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@objectStore, parentSelector)
+
+                # Update the parent namespace's revision metadata.
+                semanticBindings.update(parentNamespace.objectStoreNamespace)
+
+                signalComponentUpdated = parentNamespace.objectModelDescriptor.isComponent
+
+                for observerId, modelViewObserver of @objectStore.modelViewObservers
+                    modelViewObserver.onChildNamespaceUpdated(observerId, parentSelector)
+                    if signalComponentUpdated
+                        modelViewObserver.onChildComponentUpdated(observerId, parentSelector)
+
+
+            for childNamespaceDescriptor in @objectModelDescriptor.children
+                childSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(childNamespaceDescriptor.id, revisedNamespaceSelector.selectKeyVector)
+                for observerId, modelViewObserver of @objectStore.modelViewObservers
+                    modelViewObserver.onParentNamespaceUpdated(observerId, childSelector)
+
+                
+
+
+
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectStoreNamespace.updateRevision failure: #{exception}"
+
 
     #
     # ============================================================================
@@ -230,7 +292,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             @resolvedKeyVector = []
             @resolvedKeyIndexVector = []
 
-            # STORE REFERENCE
+            # STORE NAMESPACE DATA REFERENCE
             @objectStoreNamespace = undefined # reference to specific namespace within the object store
 
             # Obtain the target namespace's object model descriptor from the namespace selector.

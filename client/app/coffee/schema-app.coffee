@@ -96,6 +96,9 @@ class Encapsule.code.app.Schema
             omNav.onComponentUpdated = (observerId_, namespaceSelector_) ->
                 Console.message("onComponentUpdated  observerId='#{observerId_}' path=#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
+            omNav.onChildComponentUpdated = (observerId_, namespaceSelector_) ->
+                Console.message("onChildComponentUpdated  observerId='#{observerId_}' path=#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+
             omNav.onComponentRemoved = (observerId_, namespaceSelector_) ->
                 Console.message("onComponentRemoved  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
@@ -104,6 +107,12 @@ class Encapsule.code.app.Schema
 
             omNav.onNamespaceUpdated = (observerId_, namespaceSelector_) ->
                 Console.message("onNamespaceUpdated  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+
+            omNav.onChildNamespaceUpdated = (observerId_, namespaceSelector_) ->
+                Console.message("onChildNamespaceUpdated  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+
+            omNav.onParentNamespaceUpdated = (observerId_, namespaceSelector_) ->
+                Console.message("onParentNamespaceUpdated  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
             omNav.onNamespaceRemoved = (observerId_, namespaceSelector_) ->
                 Console.message("onNamespaceRemoved  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
@@ -118,9 +127,12 @@ class Encapsule.code.app.Schema
             machineNamespace = reconstitutedStore.createComponent(machineSelector)
 
 
-            Console.message("*** REMOVE THE SCDL MACHINE MODEL WITH AN OBSERVER REGISTERED")
-
             machineSelector = machineNamespace.getResolvedSelector()
+
+            Console.message("*** REVISE THE MACHINE NAMESPACE")
+            machineNamespace.updateRevision()
+
+            Console.message("*** REMOVE THE SCDL MACHINE MODEL WITH AN OBSERVER REGISTERED")
 
             # reconstitutedStore.removeComponent(machineSelector)
 
