@@ -150,13 +150,20 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
                 when "archetype"
 
-                    # Here we humbly, brutally, find the key before deciding what to do.
-                    storeReference = undefined
+                    if storeReference? and storeReference
+                        throw "Unexepcted storeReference should be undefined"
+
                     index = 0
                     for elementObject in objectStoreReference_
                         # Should hey "hey - is this your key?"
+
+                        # Get namespace data actual
                         namespace = elementObject[objectModelDescriptor_.jsonTag]
-                        if namespace.uuid? and namespace.uuid and namespace.uuid == key_
+
+                        # Get the namespace's key actual
+                        namespaceKey = @objectStore.objectModel.getSemanticBindings().getUniqueKey(namespace)
+                        
+                        if namespaceKey == key_
                             storeReference = namespace
                             @resolvedKeyVector.push key_
                             @resolvedKeyIndexVector.push index
@@ -166,6 +173,9 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                     # Now decide what to do based on the mode
                     switch mode
                         when "bypass"
+                            # "bypass" mode minimally ensures the existence of the storeReference
+                            if not (storeReference? and storeReference)
+                                throw "Error - unresolved store reference requested in bypass mode."
                             break
                         when "new"
                             # Create a new component iff we didn't resolve the key above.
@@ -182,6 +192,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                             component = new Encapsule.code.lib.omm.ObjectStoreComponent(@objectStore, @resolvedKeyVector, objectModelDescriptor_.id, "new")
                             break
                         when "strict"
+                            if not (storeReference? and storeReference)
+                                throw "Error - unresolved store reference requested in strict mode."
                             @internalVerifyNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
                             break
                         else
@@ -255,13 +267,11 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                         modelViewObserver.onChildComponentUpdated(observerId, parentSelector)
 
 
-            for childNamespaceDescriptor in @objectModelDescriptor.children
-                childSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(childNamespaceDescriptor.id, revisedNamespaceSelector.selectKeyVector)
-                for observerId, modelViewObserver of @objectStore.modelViewObservers
-                    modelViewObserver.onParentNamespaceUpdated(observerId, childSelector)
-
-                
-
+            if not (@objectModelDescriptor.mvvmType == "extension")
+                for childNamespaceDescriptor in @objectModelDescriptor.children
+                    childSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(childNamespaceDescriptor.id, revisedNamespaceSelector.selectKeyVector)
+                    for observerId, modelViewObserver of @objectStore.modelViewObservers
+                        modelViewObserver.onParentNamespaceUpdated(observerId, childSelector)
 
 
         catch exception

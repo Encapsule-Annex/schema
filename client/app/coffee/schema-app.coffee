@@ -80,9 +80,6 @@ class Encapsule.code.app.Schema
             Console.messageRaw("<pre>#{jsonFinal}</pre>")
 
 
-
-
-
             # ==============================================================================
             # Object Model Navigator (Navigator refactored to leverage OMM library)
 
@@ -94,28 +91,28 @@ class Encapsule.code.app.Schema
                 Console.message("onComponentCreate observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
             omNav.onComponentUpdated = (observerId_, namespaceSelector_) ->
-                Console.message("onComponentUpdated  observerId='#{observerId_}' path=#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+                Console.message("onComponentUpdated observerId='#{observerId_}' path=#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
             omNav.onChildComponentUpdated = (observerId_, namespaceSelector_) ->
-                Console.message("onChildComponentUpdated  observerId='#{observerId_}' path=#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+                Console.message("onChildComponentUpdated observerId='#{observerId_}' path=#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
             omNav.onComponentRemoved = (observerId_, namespaceSelector_) ->
-                Console.message("onComponentRemoved  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+                Console.message("onComponentRemoved observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
             omNav.onNamespaceCreated = (observerId_, namespaceSelector_) ->
-                Console.message("onNamespaceCreated  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+                Console.message("onNamespaceCreated observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
             omNav.onNamespaceUpdated = (observerId_, namespaceSelector_) ->
-                Console.message("onNamespaceUpdated  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+                Console.message("onNamespaceUpdated observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
             omNav.onChildNamespaceUpdated = (observerId_, namespaceSelector_) ->
-                Console.message("onChildNamespaceUpdated  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+                Console.message("onChildNamespaceUpdated observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
             omNav.onParentNamespaceUpdated = (observerId_, namespaceSelector_) ->
-                Console.message("onParentNamespaceUpdated  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+                Console.message("onParentNamespaceUpdated observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
             omNav.onNamespaceRemoved = (observerId_, namespaceSelector_) ->
-                Console.message("onNamespaceRemoved  observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+                Console.message("onNamespaceRemoved observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
 
             Console.message("*** REGISTER MODEL VIEW")
@@ -145,6 +142,10 @@ class Encapsule.code.app.Schema
 
             Console.message("*** ATTACH ANOTHER MODEL VIEW OBSERVER TO THE STORE")
             id2 = reconstitutedStore.registerModelViewObserver(omNav)
+
+            jsonFinal = reconstitutedStore.toJSON(undefined, 4)
+            Console.messageRaw("<pre>#{jsonFinal}</pre>")
+
 
             Console.message("*** UNREGISTER MODEL VIEW")
             reconstitutedStore.unregisterModelViewObserver(omNavObserverId)
