@@ -75,7 +75,6 @@ class Encapsule.code.app.Schema
 
             reconstitutedStore.removeComponent(scdlMachineSelectorResolved)
 
-
             jsonFinal = reconstitutedStore.toJSON(undefined, 4)
             Console.messageRaw("<pre>#{jsonFinal}</pre>")
 
@@ -125,15 +124,13 @@ class Encapsule.code.app.Schema
 
 
             machineSelector = machineNamespace.getResolvedSelector()
-
             Console.message("*** REVISE THE MACHINE NAMESPACE")
             machineNamespace.updateRevision()
 
             Console.message("*** REMOVE THE SCDL MACHINE MODEL WITH AN OBSERVER REGISTERED")
 
-            # reconstitutedStore.removeComponent(machineSelector)
-
             catalogueSelector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue", machineSelector.selectKeyVector)
+            # reconstitutedStore.removeComponent(machineSelector)
             reconstitutedStore.removeComponent(catalogueSelector)
 
             
@@ -147,9 +144,8 @@ class Encapsule.code.app.Schema
             Console.messageRaw("<pre>#{jsonFinal}</pre>")
 
 
-            Console.message("*** UNREGISTER MODEL VIEW")
+            Console.message("*** UNREGISTER MODEL VIEWS")
             reconstitutedStore.unregisterModelViewObserver(omNavObserverId)
-
             reconstitutedStore.unregisterModelViewObserver(id2)
             
 

@@ -397,21 +397,18 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     # Unrefify the component before actually making any modifications to the store.
                     # modelViewObserver_ == undefined -> broadcast to all registered observers
                     # undoFlag_ == true -> invert namespace traversal order and invoke remove callbacks
-                    @internalReifyStoreExtensions(objectModelNamespaceSelector_, undefined, true)
+                    @internalReifyStoreExtensions(objectModelNamespaceSelector_, undefined, undefined, true)
                     @internalUnreifyStoreComponent(objectModelNamespaceSelector_)
 
                     objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
                     arrayIndexToRemove = objectStoreNamespace.resolvedKeyIndexVector[objectStoreNamespace.resolvedKeyIndexVector.length - 1]
 
-                    ###
-                    extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(
-                        objectModelNamespaceSelector_.objectModelDescriptor.parent.id,
-                        objectModelNamespaceSelector_.selectKeyVector)
+                    extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(objectModelNamespaceSelector_.objectModelDescriptor.parent.id, objectModelNamespaceSelector_.selectKeyVector)
 
                     extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector)
                     extensionPointNamespace.objectStoreNamespace.splice(arrayIndexToRemove, 1)
-                    extensionPointNamespace.updateRevision()
-                    ###
+
+                    #extensionPointNamespace.updateRevision()
 
                     return objectStoreNamespace
 

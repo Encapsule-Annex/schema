@@ -99,14 +99,19 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
             switch objectModelDescriptor_.mvvmType
                 when "root"
+                    if not (@objectStore.objectStore? and @objectStore.objectStore)
+                        throw "Error - root object store is undefined."
                     storeReference = @objectStore.objectStore
                     switch mode
                         when "bypass"
-                            break
+                            if not (storeReference? and storeReference)
+                                throw "Error - unable to resolve root namespace."
                         when "new"
                             @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
                             break
                         when "strict"
+                            if not (storeReference? and storeReference)
+                                throw "Error - unable to resolve root namespace."
                             @internalVerifyNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
                             break
                         else
@@ -115,16 +120,21 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
 
                 when "child"
+                    if not (objectStoreReference_ and objectStoreReference_)
+                        throw "Error - child objectStoreReference is undefined."
                     storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
                     switch mode
                         when "bypass"
-                            break
+                            if not (storeReference? and storeReference)
+                                throw "Error - unable to resolve child namespace."
                         when "new"
                             if not (storeReference? and storeReference)
                                 storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag] = {}
                             @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
                             break
                         when "strict"
+                            if not (storeReference? and storeReference)
+                                throw "Error - unable to resolve child namespace."
                             @internalVerifyNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
                             break
                         else
@@ -136,13 +146,15 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                     storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
                     switch mode
                         when "bypass"
-                            break
+                            if not (storeReference? and storeReference)
+                                throw "Error - unable to resolve extension point namespace."
                         when "new"
                             if not (storeReference? and storeReference)
                                 storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag] = []
                             break
                         when "strict"
-                            break
+                            if not (storeReference? and storeReference)
+                                throw "Error - unable to resolve extension point namespace."
                         else
                             throw "Unrecognized mode for MVVM type."
                     break
@@ -168,7 +180,9 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                             @resolvedKeyVector.push key_
                             @resolvedKeyIndexVector.push index
                             break
+
                         index++
+                        # / END: for
 
                     # Now decide what to do based on the mode
                     switch mode
