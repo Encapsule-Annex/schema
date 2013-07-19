@@ -135,7 +135,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                             subcomponentKey = @objectModel.getSemanticBindings().getUniqueKey(subcomponentObject) # decoupled from scheme employed to identify components uniquely
 
                             subcomponentSelectKeyVector = undefined
-                            if componentNamespaceSelector_.selectKeyVector? and componentSelector_.selectKeyVector
+                            if componentNamespaceSelector_.selectKeyVector? and componentNamespaceSelector_.selectKeyVector
                                 subcomponentSelectKeyVector = Encapsule.code.lib.js.clone componentNamespaceSelector_.selectKeyVector
                             else
                                 subcomponentSelectKeyVector = []

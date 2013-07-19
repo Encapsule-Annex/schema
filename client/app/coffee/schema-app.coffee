@@ -122,9 +122,10 @@ class Encapsule.code.app.Schema
 
             machineSelector = machineNamespace.getResolvedSelector()
 
-            reconstitutedStore.removeComponent(machineSelector)
+            # reconstitutedStore.removeComponent(machineSelector)
 
             catalogueSelector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue", machineSelector.selectKeyVector)
+            reconstitutedStore.removeComponent(catalogueSelector)
 
             
 

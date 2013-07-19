@@ -104,7 +104,6 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             @selectKeysReady = @selectKeysRequired <= @selectKeysProvided
 
             if @selectKeysProvided > @selectKeysRequired
-                Console.message("Key surplus!")
                 newSelectKeyVector = Encapsule.code.lib.js.clone @selectKeyVector
                 newSelectKeyVector.splice(@selectKeysRequired, @selectKeysProvided - @selectKeysRequired)
                 @selectKeyVector = newSelectKeyVector
