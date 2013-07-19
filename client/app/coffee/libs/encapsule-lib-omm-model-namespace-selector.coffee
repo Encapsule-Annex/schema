@@ -98,34 +98,16 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                 throw "Unable to resolve object model descriptor for path #{objectModelPath_}"
                
             
-            @selectKeyVector = undefined # selectKeyVector_
+            @selectKeyVector = selectKeyVector_ # Take a reference
             @selectKeysRequired = @objectModelDescriptor.parentPathExtensionPoints.length
             @selectKeysProvided = selectKeyVector_? and selectKeyVector_ and selectKeyVector_.length or 0
+            @selectKeysReady = @selectKeysRequired <= @selectKeysProvided
 
-            # old
-            @selectKeyVector = selectKeyVector_ # work with a reference
-            @selectKeysReady = @selectKeysRequired == @selectKeysProvided
-
-
-            ###
-            @selectKeysReady = false
-            
-            if @selectKeysProvided <= @selectKeysRequired
-                # Selectors are permissive in that they do not require that all select keys
-                # required to resolve the specified path are provided. Depending on how the
-                # selector is used, this might cause a subseuquent downstream error. e.g.
-                # a selector used to open a store namespace that's missing keys.
-                @selectKeyVector = selectKeyVector_ # work with a reference
-                @selectKeysReady = @selectKeysRequired == @selectKeysProvided
-            else
-                # More keys were provided than actually required. Deep copy the caller's
-                # key vector and trim it down to just the keys that are necessary to resolve
-                # an instance of the namespace indicated by the pathId_.
-                @selectKeyVector = Encapsule.code.lib.js.clone selectKeyVector_
-                @selectKeyVector.splice(@selectKeysRequired - 1, @selectKeysProvided - @selectKeysRequired)
-                @selectKeysReady = true
-
-            ###
+            if @selectKeysProvided > @selectKeysRequired
+                Console.message("Key surplus!")
+                newSelectKeyVector = Encapsule.code.lib.js.clone @selectKeyVector
+                newSelectKeyVector.splice(@selectKeysRequired, @selectKeysProvided - @selectKeysRequired)
+                @selectKeyVector = newSelectKeyVector
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector construction fail: #{exception}"
