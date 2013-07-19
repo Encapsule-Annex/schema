@@ -128,10 +128,16 @@ class Encapsule.code.app.Schema
             reconstitutedStore.removeComponent(catalogueSelector)
 
             
+            # Just for grins, re-register the same model view so we get two notifation callback streams
+            # when we unregister below.
 
+            Console.message("*** ATTACH ANOTHER MODEL VIEW OBSERVER TO THE STORE")
+            id2 = reconstitutedStore.registerModelViewObserver(omNav)
 
             Console.message("*** UNREGISTER MODEL VIEW")
             reconstitutedStore.unregisterModelViewObserver(omNavObserverId)
+
+            reconstitutedStore.unregisterModelViewObserver(id2)
             
 
             # ==============================================================================

@@ -238,8 +238,16 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             @internalUnregisterModelViewObserver = (observerIdCode_) =>
                 try
                     registeredObserver = @modelViewObservers[observerIdCode_]
+
                     if not (registeredObserver? and registeredObserver)
                         throw "Unknown observer ID code provided. No registration to remove."
+
+                    # Unreify the contents of the store before removing the registration.
+                    rootSelector = @objectModel.createNamespaceSelectorFromPathId(0)
+                    @internalReifyStoreExtensions(rootSelector, registeredObserver, observerIdCode_, true)
+                    @internalUnreifyStoreComponent(rootSelector, registeredObserver, observerIdCode_)
+
+                    # Remove the registration.
                     @modelViewObservers[observerIdCode_] = undefined
 
                 catch exception
