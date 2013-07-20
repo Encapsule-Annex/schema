@@ -92,6 +92,10 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
     # class Encapsule.code.lib.omm.ObjectStoreNamespace
     internalResolveNamespaceDescriptor: (objectStoreReference_, objectModelDescriptor_, mode_, key_) =>
         try
+            # Console.message("ObjectStoreNamespace.internalResolveNamespaceDescriptor path='#{objectModelDescriptor_.path}'")
+            # Console.message("... mode='#{mode_}'")
+            # Console.message("... key='" + (key_? and key_ or "undefined") + "'")
+
             storeReference = undefined
 
             if not (mode_? and mode_) then throw "Missing required mode input parameter value!"
@@ -120,8 +124,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
 
                 when "child"
-                    if not (objectStoreReference_ and objectStoreReference_)
-                        throw "Error - child objectStoreReference is undefined."
+                    if not (objectStoreReference_? and objectStoreReference_)
+                        throw "Error - no parent namespace provided to resolve child namespace!"
                     storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
                     switch mode
                         when "bypass"
@@ -165,24 +169,26 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                     if storeReference? and storeReference
                         throw "Unexepcted storeReference should be undefined"
 
-                    index = 0
-                    for elementObject in objectStoreReference_
-                        # Should hey "hey - is this your key?"
+                    if key_? and key_
+                        index = 0
+                        for elementObject in objectStoreReference_
+                            # Should hey "hey - is this your key?"
 
-                        # Get namespace data actual
-                        namespace = elementObject[objectModelDescriptor_.jsonTag]
+                            # Get namespace data actual
+                            namespace = elementObject[objectModelDescriptor_.jsonTag]
 
-                        # Get the namespace's key actual
-                        namespaceKey = @objectStore.objectModel.getSemanticBindings().getUniqueKey(namespace)
+                            # Get the namespace's key actual
+                            namespaceKey = @objectStore.objectModel.getSemanticBindings().getUniqueKey(namespace)
                         
-                        if namespaceKey == key_
-                            storeReference = namespace
-                            @resolvedKeyVector.push key_
-                            @resolvedKeyIndexVector.push index
-                            break
+                            if namespaceKey == key_
+                                storeReference = namespace
+                                @resolvedKeyVector.push key_
+                                @resolvedKeyIndexVector.push index
+                                break
 
-                        index++
-                        # / END: for
+                            index++
+                            # / END: for
+                       # / END: if key_? and key
 
                     # Now decide what to do based on the mode
                     switch mode
@@ -220,7 +226,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                 throw "Cannot resolve store reference!"
             return storeReference
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalResolveNamespaceDescriptor failure: '#{exception}'"
+            throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalResolveNamespaceDescriptor failure for path='#{objectModelDescriptor_.path}' : '#{exception}'"
 
 
 
@@ -265,8 +271,10 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                 if signalComponentUpdated
                     modelViewObserver.onComponentUpdated(observerId, revisedNamespaceSelector)
 
+            parentPathIdsReverse = Encapsule.code.lib.js.clone @objectModelDescriptor.parentPathIdVector
+            parentPathIdsReverse.reverse()
 
-            for parentPathId in @objectModelDescriptor.parentPathIdVector.reverse()
+            for parentPathId in parentPathIdsReverse
                 parentSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(parentPathId, revisedNamespaceSelector.selectKeyVector)
                 parentNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@objectStore, parentSelector)
 
@@ -302,6 +310,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
     #
     constructor: (objectStore_, objectModelNamespaceSelector_, mode_) ->
         try
+            # Console.message("ObjectStoreNamespace constructor path='#{objectModelNamespaceSelector_.objectModelDescriptor.path}'")
+
             if not (objectStore_? and objectStore_) then throw "Missing object store input parameter!"
             if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
 

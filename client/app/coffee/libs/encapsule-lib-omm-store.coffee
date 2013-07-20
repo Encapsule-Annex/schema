@@ -76,7 +76,9 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     # MODEL VIEW OBSERVER CALLBACK ORIGIN: onNamespaceRemoved
                     # Invoke the model view object's onNamespaceRemoved callback for each namespace in the root component.
                     # (reverse order - children first, then parent(s))
-                    for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds.reverse()
+                    componentNamespaceIdsReverse = Encapsule.code.lib.js.clone componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds
+                    componentNamespaceIdsReverse.reverse()
+                    for namespaceId in componentNamespaceIdsReverse
                         namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
                         if modelViewObject_? and modelViewObject_
                             modelViewObject_.onNamespaceRemoved(observerId_, namespaceSelector)
@@ -408,7 +410,7 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector)
                     extensionPointNamespace.objectStoreNamespace.splice(arrayIndexToRemove, 1)
 
-                    #extensionPointNamespace.updateRevision()
+                    extensionPointNamespace.updateRevision()
 
                     return objectStoreNamespace
 
