@@ -366,12 +366,10 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     # Creating the root namespace of a component automatically creates all its sub-namespaces as well.
                     objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, "new")
 
-                    ###
                     extensionPointId = objectModelNamespaceSelector_.objectModelDescriptor.parent.id
                     extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(extensionPointId, objectStoreNamespace.resolvedKeyVector)
                     extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector)
                     extensionPointNamespace.updateRevision()
-                    ###
 
                     return objectStoreNamespace
 
