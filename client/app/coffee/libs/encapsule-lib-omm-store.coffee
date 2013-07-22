@@ -41,23 +41,27 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     if ( not (modelViewObserver_? and modelViewObserver_) ) and ( not Object.keys(@modelViewObservers).length )
                         return
 
-                    # MODEL VIEW OBSERVER CALLBACK ORIGIN: onComponentCreate
+                    # MODEL VIEW OBSERVER CALLBACK ORIGIN: onComponentCreated
                     # Invoke the model view object's onComponentCreate callback.
                     if modelViewObject_? and modelViewObject_
-                        modelViewObject_.onComponentCreated(observerId_, componentNamespaceSelector_)
+                        if (modelViewObject_.onComponentCreated? and modelViewObject_.onComponentCreated)
+                            modelViewObject_.onComponentCreated(observerId_, componentNamespaceSelector_)
                     else
                         for observerId, modelViewObject of @modelViewObservers
-                            modelViewObject.onComponentCreated(observerId, componentNamespaceSelector_)
+                            if modelViewObject.onComponentCreated? and modelViewObject.onComponentCreated
+                                modelViewObject.onComponentCreated(observerId, componentNamespaceSelector_)
 
                     # MODEL VIEW OBSERVER CALLBACK ORIGIN: onNamespaceCreate
                     # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
                     for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds
                         namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
                         if modelViewObject_? and modelViewObject_
-                            modelViewObject_.onNamespaceCreated(observerId_, namespaceSelector)
+                            if modelViewObject_.onNamespaceCreated? and modelViewObject_.onNamespaceCreated
+                                modelViewObject_.onNamespaceCreated(observerId_, namespaceSelector)
                         else
                             for observerId, modelViewObject of @modelViewObservers
-                                modelViewObject.onNamespaceCreated(observerId, namespaceSelector)
+                                if modelViewObject.onNamespaceCreated? and modelViewObject.onNamespaceCreated
+                                    modelViewObject.onNamespaceCreated(observerId, namespaceSelector)
 
                     true
 
@@ -81,19 +85,23 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     for namespaceId in componentNamespaceIdsReverse
                         namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
                         if modelViewObject_? and modelViewObject_
-                            modelViewObject_.onNamespaceRemoved(observerId_, namespaceSelector)
+                            if modelViewObject_.onNamespaceRemoved? and modelViewObject_.onNamespaceRemoved
+                                modelViewObject_.onNamespaceRemoved(observerId_, namespaceSelector)
                         else
                             for observerId, modelViewObject of @modelViewObservers
-                                modelViewObject.onNamespaceRemoved(observerId, namespaceSelector)
+                                if modelViewObject.onNamespaceRemoved? and modelViewObject.onNamespaceRemoved
+                                    modelViewObject.onNamespaceRemoved(observerId, namespaceSelector)
 
 
                     # MODEL VIEW OBSERVER CALLBACK ORIGIN: onComponentRemoved
                     # Invoke the model view object's onComponentRemoved callback.
                     if modelViewObject_? and modelViewObject_
-                        modelViewObject_.onComponentRemoved(observerId_, componentNamespaceSelector_)
+                        if modelViewObject_.onComponentRemoved? and modelViewObject_.onComponentRemoved
+                            modelViewObject_.onComponentRemoved(observerId_, componentNamespaceSelector_)
                     else
                         for observerId, modelViewObject of @modelViewObservers
-                            modelViewObject.onComponentRemoved(observerId, componentNamespaceSelector_)
+                            if modelViewObject.onComponentRemoved? and modelViewObject.onComponentRemoved
+                                modelViewObject.onComponentRemoved(observerId, componentNamespaceSelector_)
 
                     true
 
@@ -188,19 +196,6 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             @internalRegisterModelViewObserver = (modelViewObject_) =>
                 try
                     # Test modelViewObject_ interface for compatibility.
-
-                    if not (modelViewObject_.onComponentCreated? and modelViewObject_.onComponentCreated)
-                        throw "Model view object missing required onComponentCreated callback interface."
-
-                    if not (modelViewObject_.onComponentRemoved? and modelViewObject_.onComponentRemoved)
-                        throw "Model view object missing required onComponentRemoved callback interface."
-
-                    if not (modelViewObject_.onNamespaceCreated? and modelViewObject_.onNamespaceCreated)
-                        throw "Model view object missing required onNamespaceCreated callback interface."
-
-                    if not (modelViewObject_.onNamespaceRemoved? and modelViewObject_.onNamespaceRemoved)
-                        throw "Model view object missing required onNamespaceRemoved callback interface."
-
 
                     # Create a new observer ID code (UUID because multiple registrations allowed).
                     observerIdCode = uuid.v4()

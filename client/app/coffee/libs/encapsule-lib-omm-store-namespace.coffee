@@ -257,8 +257,6 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             # onParentNamespaceUpdated for the revised namespace children is called for each registered store observer.
             #
 
-
-
             revisedNamespaceSelector = @getResolvedSelector()
             signalComponentUpdated = @objectModelDescriptor.isComponent
             semanticBindings = @objectStore.objectModel.getSemanticBindings()
@@ -267,9 +265,11 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             semanticBindings.update(@objectStoreNamespace)
 
             for observerId, modelViewObserver of @objectStore.modelViewObservers
-                modelViewObserver.onNamespaceUpdated(observerId, revisedNamespaceSelector)
+                if modelViewObserver.onNamespaceUpdated? and modelViewObserver.onNamespaceUpdated
+                    modelViewObserver.onNamespaceUpdated(observerId, revisedNamespaceSelector)
                 if signalComponentUpdated
-                    modelViewObserver.onComponentUpdated(observerId, revisedNamespaceSelector)
+                    if modelViewObserver.onComponentUpdated? and modelViewObserver.onComponentUpdated
+                        modelViewObserver.onComponentUpdated(observerId, revisedNamespaceSelector)
 
             parentPathIdsReverse = Encapsule.code.lib.js.clone @objectModelDescriptor.parentPathIdVector
             parentPathIdsReverse.reverse()
@@ -284,17 +284,18 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                 signalComponentUpdated = parentNamespace.objectModelDescriptor.isComponent
 
                 for observerId, modelViewObserver of @objectStore.modelViewObservers
-                    modelViewObserver.onChildNamespaceUpdated(observerId, parentSelector)
+                    if modelViewObserver.onChildNamespaceUpdated? and modelViewObserver.onChildNamespaceUpdated
+                        modelViewObserver.onChildNamespaceUpdated(observerId, parentSelector)
                     if signalComponentUpdated
-                        modelViewObserver.onChildComponentUpdated(observerId, parentSelector)
-
+                        if modelViewObserver.onChildComponentUpdated? and modelViewObserver.onChildComponentUpdated
+                            modelViewObserver.onChildComponentUpdated(observerId, parentSelector)
 
             if not (@objectModelDescriptor.mvvmType == "extension")
                 for childNamespaceDescriptor in @objectModelDescriptor.children
                     childSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(childNamespaceDescriptor.id, revisedNamespaceSelector.selectKeyVector)
                     for observerId, modelViewObserver of @objectStore.modelViewObservers
-                        modelViewObserver.onParentNamespaceUpdated(observerId, childSelector)
-
+                        if modelViewObserver.onParentNamespaceUpdated? and modelViewObserver.onParentNamespaceUpdated
+                            modelViewObserver.onParentNamespaceUpdated(observerId, childSelector)
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace.updateRevision failure: #{exception}"
@@ -360,7 +361,3 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace constructor failed: #{exception}"
-
-
-
-

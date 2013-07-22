@@ -86,8 +86,9 @@ class Encapsule.code.app.Schema
 
             # Temporary code to test registraton/unregistration and callbacks from object store
 
+            ###
             omNav.onComponentCreated = (observerId_, namespaceSelector_) ->
-                Console.message("onComponentCreate observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+                Console.message("onComponentCreated observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
 
             omNav.onComponentUpdated = (observerId_, namespaceSelector_) ->
                 Console.message("onComponentUpdated observerId='#{observerId_}' path=#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
@@ -112,6 +113,8 @@ class Encapsule.code.app.Schema
 
             omNav.onNamespaceRemoved = (observerId_, namespaceSelector_) ->
                 Console.message("onNamespaceRemoved observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
+
+            ###
 
 
             Console.message("*** REGISTER MODEL VIEW")
