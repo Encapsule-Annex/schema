@@ -24,38 +24,50 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
 
+
+
+
 class Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase
-    constructor: (objectModelManagerStore_) ->
+
+    onNamespaceCreated: (objectStore_, observerId_, namespaceSelector_) =>
+        try
+            Console.message("ObjectModelNavigatorWindowBase.onNamespaceCreated observerId=#{observerId_}")
+            namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
+            namespaceState.selector = namespaceSelector_
+            namespaceState.children = []
+            parentDescriptor = namespaceSelector_.objectModelDescriptor.parent? and namespaceSelector_.objectModelDescriptor.parent or undefined
+            if parentDescriptor? and parentDescriptor
+                parentSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(parentDescriptor.id, namespaceSelector_.selectKeyVector)
+                parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
+                parentNamespaceState.children[namespaceSelector_.pathId] = namespaceState
+
+        catch exception
+            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase.onNamespaceCreated failure: #{exception}"
+        
+
+    onNamespaceRemoved: (objectStore_, observerId_, namespaceSelector_) =>
+        try
+            Console.message("ObjectModelNavigatorWindowBase.onNamespaceRemoved observerId=#{observerId_}")
+            namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
+            parentDescriptor = namespaceSelector_.objectModelDescriptor.parent? and namespaceSelector_.objectModelDescriptor.parent or undefined
+            if parentDescriptor? and parentDescriptor
+                parentSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(parentDescriptor.id, namespaceSelector_.selectKeyVector)
+                parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
+                parentNamespaceState.children.splice(namespaceSelector_.pathId, 1)
+
+        catch exception
+            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase.onNamespaceRemoved failure: #{exception}"
+
+
+    onNamespaceUpdated: (objectStore_, observerId_, namespaceSelector) =>
+
+            
+
+
+    constructor: ->
         # \ BEGIN: constructor
         try
-            if not (objectModelManagerStore_? and objectModelManagerStore_) then throw "Missing object model manager store object input parameter!"
 
-            # Save a reference to the associated object store.
-            @objectModelManagerStore = objectModelManagerStore_
-
-            # Build a menu level model view object for each namespace descriptor
-            # cached in the object store's associated object model.
-
-            @menuObjectById = []
-
-            pathId = 0
-            namespaceDescriptorByIdArray = objectModelManagerStore_.objectModel.objectModelDescriptorById
-            pathIdCount = namespaceDescriptorByIdArray.length
-            while pathId < pathIdCount
-                # Dereference the next current and parent namespace descriptors.
-                namespaceDescriptor = namespaceDescriptorByIdArray[pathId]
-                parentNamespaceDescriptor = namespaceDescriptor.parent
-                parentMenuObject = parentNamespaceDescriptor? and parentNamespaceDescriptor and @menuObjectById[parentNamespaceDescriptor.id] or undefined
-                # Create a new menu window instance
-                childMenuObject = @menuObjectById[pathId] = new Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow(@, namespaceDescriptor)
-                if parentMenuObject? and parentMenuObject
-                    # Add the newly create menu object to its parent's childMenuObjects array.
-                    parentMenuObject.childMenuObjects.push childMenuObject
-                pathId++
-
-            
-
-            
 
 
         catch exception
@@ -73,8 +85,6 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow extends Encapsule.
             # \ BEGIN: constructor try scope
 
             super(objectModelManagerStore_)
-            
-
 
             @blipper = Encapsule.runtime.boot.phase0.blipper
 
@@ -88,7 +98,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow extends Encapsule.
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorWindow", ( -> """
 SUP!
-<span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: menuObjectById[0].childMenuObjects }"></span>
+
 """))
 
 

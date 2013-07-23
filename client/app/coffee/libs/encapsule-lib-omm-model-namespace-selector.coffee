@@ -55,6 +55,18 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getSelectKey failure: #{exception}"
 
+
+            #
+            # ============================================================================
+            @getComponentKey = =>
+                try
+                    if not (@selectKeyVector? and @selectKeyVector) then return undefined
+                    if not (@selectKeyVector.length? and @selectKeyVector.length) then return undefined
+                    return @selectKeyVector[@selectKeyVector.length - 1]
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getSelectKey failure: #{exception}"
+
             #
             # ============================================================================
             # Iff the namespace selector is complete (i.e. @selectKeysReady == true)

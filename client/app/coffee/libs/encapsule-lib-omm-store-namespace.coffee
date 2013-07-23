@@ -266,10 +266,10 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
             for observerId, modelViewObserver of @objectStore.modelViewObservers
                 if modelViewObserver.onNamespaceUpdated? and modelViewObserver.onNamespaceUpdated
-                    modelViewObserver.onNamespaceUpdated(observerId, revisedNamespaceSelector)
+                    modelViewObserver.onNamespaceUpdated(@objectStore, observerId, revisedNamespaceSelector)
                 if signalComponentUpdated
                     if modelViewObserver.onComponentUpdated? and modelViewObserver.onComponentUpdated
-                        modelViewObserver.onComponentUpdated(observerId, revisedNamespaceSelector)
+                        modelViewObserver.onComponentUpdated(@objectStore, observerId, revisedNamespaceSelector)
 
             parentPathIdsReverse = Encapsule.code.lib.js.clone @objectModelDescriptor.parentPathIdVector
             parentPathIdsReverse.reverse()
@@ -285,17 +285,17 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
                 for observerId, modelViewObserver of @objectStore.modelViewObservers
                     if modelViewObserver.onChildNamespaceUpdated? and modelViewObserver.onChildNamespaceUpdated
-                        modelViewObserver.onChildNamespaceUpdated(observerId, parentSelector)
+                        modelViewObserver.onChildNamespaceUpdated(@objectStore, observerId, parentSelector)
                     if signalComponentUpdated
                         if modelViewObserver.onChildComponentUpdated? and modelViewObserver.onChildComponentUpdated
-                            modelViewObserver.onChildComponentUpdated(observerId, parentSelector)
+                            modelViewObserver.onChildComponentUpdated(@objectStore_, observerId, parentSelector)
 
             if not (@objectModelDescriptor.mvvmType == "extension")
                 for childNamespaceDescriptor in @objectModelDescriptor.children
                     childSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(childNamespaceDescriptor.id, revisedNamespaceSelector.selectKeyVector)
                     for observerId, modelViewObserver of @objectStore.modelViewObservers
                         if modelViewObserver.onParentNamespaceUpdated? and modelViewObserver.onParentNamespaceUpdated
-                            modelViewObserver.onParentNamespaceUpdated(observerId, childSelector)
+                            modelViewObserver.onParentNamespaceUpdated(@objectStore, observerId, childSelector)
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace.updateRevision failure: #{exception}"

@@ -155,10 +155,9 @@ class Encapsule.code.app.Schema
             # ==============================================================================
 
 
+            navigatorWindow = Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.lib.modelview.NavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
 
-
-
-            Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.lib.modelview.NavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
+            #observerId = reconstitutedStore.registerModelViewObserver(navigatorWindow)
 
 
 

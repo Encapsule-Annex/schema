@@ -45,11 +45,11 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     # Invoke the model view object's onComponentCreate callback.
                     if modelViewObject_? and modelViewObject_
                         if (modelViewObject_.onComponentCreated? and modelViewObject_.onComponentCreated)
-                            modelViewObject_.onComponentCreated(observerId_, componentNamespaceSelector_)
+                            modelViewObject_.onComponentCreated(@, observerId_, componentNamespaceSelector_)
                     else
                         for observerId, modelViewObject of @modelViewObservers
                             if modelViewObject.onComponentCreated? and modelViewObject.onComponentCreated
-                                modelViewObject.onComponentCreated(observerId, componentNamespaceSelector_)
+                                modelViewObject.onComponentCreated(@, observerId, componentNamespaceSelector_)
 
                     # MODEL VIEW OBSERVER CALLBACK ORIGIN: onNamespaceCreate
                     # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
@@ -57,11 +57,11 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                         namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
                         if modelViewObject_? and modelViewObject_
                             if modelViewObject_.onNamespaceCreated? and modelViewObject_.onNamespaceCreated
-                                modelViewObject_.onNamespaceCreated(observerId_, namespaceSelector)
+                                modelViewObject_.onNamespaceCreated(@, observerId_, namespaceSelector)
                         else
                             for observerId, modelViewObject of @modelViewObservers
                                 if modelViewObject.onNamespaceCreated? and modelViewObject.onNamespaceCreated
-                                    modelViewObject.onNamespaceCreated(observerId, namespaceSelector)
+                                    modelViewObject.onNamespaceCreated(@, observerId, namespaceSelector)
 
                     true
 
@@ -86,22 +86,25 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                         namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
                         if modelViewObject_? and modelViewObject_
                             if modelViewObject_.onNamespaceRemoved? and modelViewObject_.onNamespaceRemoved
-                                modelViewObject_.onNamespaceRemoved(observerId_, namespaceSelector)
+                                modelViewObject_.onNamespaceRemoved(@, observerId_, namespaceSelector)
                         else
                             for observerId, modelViewObject of @modelViewObservers
                                 if modelViewObject.onNamespaceRemoved? and modelViewObject.onNamespaceRemoved
-                                    modelViewObject.onNamespaceRemoved(observerId, namespaceSelector)
+                                    modelViewObject.onNamespaceRemoved(@, observerId, namespaceSelector)
+                        @internalRemoveObserverNamespaceState(observerId, namespaceSelector)
 
 
                     # MODEL VIEW OBSERVER CALLBACK ORIGIN: onComponentRemoved
                     # Invoke the model view object's onComponentRemoved callback.
                     if modelViewObject_? and modelViewObject_
                         if modelViewObject_.onComponentRemoved? and modelViewObject_.onComponentRemoved
-                            modelViewObject_.onComponentRemoved(observerId_, componentNamespaceSelector_)
+                            modelViewObject_.onComponentRemoved(@, observerId_, componentNamespaceSelector_)
                     else
                         for observerId, modelViewObject of @modelViewObservers
                             if modelViewObject.onComponentRemoved? and modelViewObject.onComponentRemoved
-                                modelViewObject.onComponentRemoved(observerId, componentNamespaceSelector_)
+                                modelViewObject.onComponentRemoved(@, observerId, componentNamespaceSelector_)
+
+                    @internalRemoveObserverNamespaceState(observerId, componentNamespaceSelector_)
 
                     true
 
@@ -244,11 +247,62 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     @internalReifyStoreExtensions(rootSelector, registeredObserver, observerIdCode_, true)
                     @internalUnreifyStoreComponent(rootSelector, registeredObserver, observerIdCode_)
 
+                    @internalRemoveObserverState(observerIdCode_)
+
                     # Remove the registration.
                     @modelViewObservers[observerIdCode_] = undefined
 
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectStoreBase.internalUnregisterModelViewObserver failure: #{exception}"
+
+
+
+
+
+            #
+            # ============================================================================
+            @internalOpenObserverState = (observerId_) =>
+                return @observerState[observerId_]? and @observerState[observerId_] or @observerState[observerId_] = []
+
+            #
+            # ============================================================================
+            @internalRemoveObserverState = (observerId_) =>
+                @observerState[observerId_] = undefined
+                @
+
+            #
+            # ============================================================================
+            @internalOpenObserverComponentState = (observerId_, namespaceSelector_) =>
+                componentSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceSelector_.objectModelDescriptor.componentId, namespaceSelector_.selectKeyVector)
+                return @internalOpenObserverNamespaceState(observerId_, componentSelector)
+
+            #
+            # ============================================================================
+            @internalOpenObserverNamespaceState = (observerId_, namespaceSelector_) =>
+                observerState = @internalOpenObserverState(observerId_)
+                namespaceRecord = observerState[namespaceSelector_.pathId]? and observerState[namespaceSelector_.pathId] or observerState[namespaceSelector_.pathId] = {}
+                componentKey = namespaceSelector_.getComponentKey()
+                namespaceState = undefined
+                if componentKey? and componentKey
+                    namespaceState = namespaceRecord[componentKey]? and namespaceRecord[componentKey] or namespaceRecord[componentKey] = {}
+                else
+                    namespaceState = namespaceRecord
+                return namespaceState
+
+
+            #
+            # ============================================================================
+            @internalRemoveObserverNamespaceState = (observerId_, namespaceSelector_) =>
+
+                observerState = @observerState[observerId_]
+                if not (observerState? and observerState)
+                    return @
+                namespaceRecord = observerState[namespaceSelector_.pathId]
+                if not (namespaceRecord? and namespaceRecord)
+                    return @
+                componentKey = namespaceSelector_.getComponentKey()
+                namespaceRecord[componentKey] = undefined
+                return @
 
             #
             # ============================================================================
@@ -269,6 +323,9 @@ class Encapsule.code.lib.omm.ObjectStoreBase
 
             # We use a map to store registered model view observers. 
             @modelViewObservers = {}
+
+            # Private (and opaque) state managed on behalf of registered model view observers.
+            @observerState = {}
 
             if initialStateJSON_? and initialStateJSON_
                 Console.message("... deserializing from JSON string")
@@ -294,6 +351,8 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
     constructor: (objectModel_, initialStateJSON_) ->
         try
             super(objectModel_, initialStateJSON_)
+            
+            @observerState = {}
 
             #
             # ============================================================================
@@ -434,7 +493,35 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                 
 
 
+            #
+            # ============================================================================
+            @openObserverState = (observerId_) =>
+                try
+                    if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
+                    return @internalOpenObserverState(observerId_)
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStore.openObserverStateObject failure: #{exception}"
 
+            #
+            # ============================================================================
+            @openObserverComponentState = (observerId_, namespaceSelector_) =>
+                try
+                    if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
+                    if not (namespaceSelector_? and namespaceSelector_) then throw "Missing namespace selector parameter!"
+                    return @internalOpenObserverComponentState(observerId_, namespaceSelector_)
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStore.openObserverComponentState failure: #{exception}"
+
+
+            #
+            # ============================================================================
+            @openObserverNamespaceState = (observerId_, namespaceSelector_) =>
+                try
+                    if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
+                    if not (namespaceSelector_? and namespaceSelector_) then throw "Missing namespace selector parameter!"
+                    return @internalOpenObserverNamespaceState(observerId_, namespaceSelector_)
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStore.openObserverNamespaceState failure: #{exception}"
 
 
 
