@@ -26,26 +26,24 @@ Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.
 
 
 class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
-      constructor: (objectModelNavigatorWindow_, objectModelNamespaceDescriptor_) ->
+      constructor: (objectStore_, objectModelNavigatorWindow_, namespaceSelector_) ->
 
-            # Cache references to this instance's construction parameters.
-            @objectModelNavigatorWindow = objectModelNavigatorWindow_
-            @objectModelNamespaceDescriptor = objectModelNamespaceDescriptor_
-
-            # Menu objects are constructed in topological sort order (i.e. parent prior to children).
-            # ObjectModelNavigatorWindow is responsible for populating the childMenuObjects array
-            # of the parent in the context of creating its children.
-            @childMenuObjects = []
 
 
 class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
 
-    constructor: (objectModelNavigatorWindow_, objectModelNamespaceDescriptor_) ->
+    constructor: (objectStore_, objectModelNavigatorWindow_, namespaceSelector_) ->
 
         # \ BEGIN: constructor scope
         try
             # \ BEGIN: constructor try scope
-            super(objectModelNavigatorWindow_, objectModelNamespaceDescriptor_)
+            super(objectStore_, objectModelNavigatorWindow_, namespaceSelector_)
+
+            # Cache references to this instance's construction parameters.
+            @objectStore = objectStore_
+            @objectModelNavigatorWindow = objectModelNavigatorWindow_
+            @namespaceSelector = namespaceSelector_
+            @children = ko.observableArray []
 
             @blipper = Encapsule.runtime.boot.phase0.blipper
 
@@ -59,9 +57,12 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encaps
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorMenuWindow", ( ->
     """
-    <div class="classSchemaViewModelNavigatorMenuLevel">
-        <span data-bind="text: objectModelNamespaceDescriptor.label"></span>
-        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: childMenuObjects }"></span>
-    </div>
+        <div class="classObjectModelNavigatorWindow">
+            <span data-bind="text: namespaceSelector.objectModelDescriptor.label"></span>
+            <span data-bind="if: children().length">
+            <div data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: children }"></div>
+            </span>
+        </div>
+    </span>
     """))
 

@@ -141,15 +141,15 @@ class Encapsule.code.app.Schema
             # when we unregister below.
 
             Console.message("*** ATTACH ANOTHER MODEL VIEW OBSERVER TO THE STORE")
-            id2 = reconstitutedStore.registerModelViewObserver(omNav)
+            # id2 = reconstitutedStore.registerModelViewObserver(omNav)
 
             jsonFinal = reconstitutedStore.toJSON(undefined, 4)
             Console.messageRaw("<pre>#{jsonFinal}</pre>")
 
 
             Console.message("*** UNREGISTER MODEL VIEWS")
-            reconstitutedStore.unregisterModelViewObserver(omNavObserverId)
-            reconstitutedStore.unregisterModelViewObserver(id2)
+            #reconstitutedStore.unregisterModelViewObserver(omNavObserverId)
+            #reconstitutedStore.unregisterModelViewObserver(id2)
             
 
             # ==============================================================================

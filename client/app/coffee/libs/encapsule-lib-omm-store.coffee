@@ -262,12 +262,12 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             #
             # ============================================================================
             @internalOpenObserverState = (observerId_) =>
-                return @observerState[observerId_]? and @observerState[observerId_] or @observerState[observerId_] = []
+                return @modelViewObserversState[observerId_]? and @modelViewObserversState[observerId_] or @modelViewObserversState[observerId_] = []
 
             #
             # ============================================================================
             @internalRemoveObserverState = (observerId_) =>
-                @observerState[observerId_] = undefined
+                delete @modelViewObserversState[observerId_]
                 @
 
             #
@@ -294,14 +294,16 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             # ============================================================================
             @internalRemoveObserverNamespaceState = (observerId_, namespaceSelector_) =>
 
-                observerState = @observerState[observerId_]
+                observerState = @modelViewObserversState[observerId_]
                 if not (observerState? and observerState)
                     return @
                 namespaceRecord = observerState[namespaceSelector_.pathId]
                 if not (namespaceRecord? and namespaceRecord)
                     return @
                 componentKey = namespaceSelector_.getComponentKey()
-                namespaceRecord[componentKey] = undefined
+                delete namespaceRecord[componentKey]
+                if Encapsule.code.lib.js.dictionaryLength(namespaceRecord) == 0
+                    delete observerState[namespaceSelector_.pathId]
                 return @
 
             #
@@ -325,7 +327,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             @modelViewObservers = {}
 
             # Private (and opaque) state managed on behalf of registered model view observers.
-            @observerState = {}
+            @modelViewObserversState = {}
 
             if initialStateJSON_? and initialStateJSON_
                 Console.message("... deserializing from JSON string")

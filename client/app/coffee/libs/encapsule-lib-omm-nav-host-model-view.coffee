@@ -27,48 +27,50 @@ Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.
 
 
 
-class Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase
-
+class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
+    #
+    # ============================================================================
     onNamespaceCreated: (objectStore_, observerId_, namespaceSelector_) =>
         try
             Console.message("ObjectModelNavigatorWindowBase.onNamespaceCreated observerId=#{observerId_}")
             namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
-            namespaceState.selector = namespaceSelector_
-            namespaceState.children = []
+            namespaceState.menuModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow(objectStore_, @, namespaceSelector_)
+            if namespaceSelector_.pathId == 0
+                @rootMenuModelView = namespaceState.menuModelView
             parentDescriptor = namespaceSelector_.objectModelDescriptor.parent? and namespaceSelector_.objectModelDescriptor.parent or undefined
             if parentDescriptor? and parentDescriptor
                 parentSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(parentDescriptor.id, namespaceSelector_.selectKeyVector)
                 parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
-                parentNamespaceState.children[namespaceSelector_.pathId] = namespaceState
+                parentNamespaceState.menuModelView.children.push namespaceState.menuModelView
+                namespaceState.indexInParentChildArray = parentNamespaceState.menuModelView.children().length - 1
 
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase.onNamespaceCreated failure: #{exception}"
         
 
+    #
+    # ============================================================================
     onNamespaceRemoved: (objectStore_, observerId_, namespaceSelector_) =>
         try
             Console.message("ObjectModelNavigatorWindowBase.onNamespaceRemoved observerId=#{observerId_}")
             namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
+            if namespaceSelector_.pathId == 0
+                @rootMenuModelView = undefined
             parentDescriptor = namespaceSelector_.objectModelDescriptor.parent? and namespaceSelector_.objectModelDescriptor.parent or undefined
             if parentDescriptor? and parentDescriptor
                 parentSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(parentDescriptor.id, namespaceSelector_.selectKeyVector)
                 parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
-                parentNamespaceState.children.splice(namespaceSelector_.pathId, 1)
+                parentNamespaceState.menuModelView.children.splice(namespaceState.indexInParentChildArray, 1)
+                return true
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase.onNamespaceRemoved failure: #{exception}"
-
-
-    onNamespaceUpdated: (objectStore_, observerId_, namespaceSelector) =>
-
-            
-
+            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindow.onNamespaceRemoved failure: #{exception}"
 
     constructor: ->
         # \ BEGIN: constructor
         try
-
-
+            @blipper = Encapsule.runtime.boot.phase0.blipper
+            @rootMenuModelView = undefined
 
         catch exception
             throw " Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase constructor failure: #{exception}"
@@ -76,29 +78,10 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase
         # / END: constructor
 
 
-
-
-class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow extends Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase
-    constructor: (objectModelManagerStore_) ->
-        # \ BEGIN: constructor
-        try
-            # \ BEGIN: constructor try scope
-
-            super(objectModelManagerStore_)
-
-            @blipper = Encapsule.runtime.boot.phase0.blipper
-
-            # / END: constructor try scope
-        catch exception
-            throw "SchemaScdlNavigatorWindow fail: #{exception}"
-        # / END: constructor
-
-
-
-
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorWindow", ( -> """
-SUP!
-
+<span data-bind="if: rootMenuModelView">
+    <div data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: rootMenuModelView.children }"></div>
+</span>
 """))
 
 
