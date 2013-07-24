@@ -28,49 +28,72 @@ Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.
 
 
 class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
-    #
-    # ============================================================================
-    onNamespaceCreated: (objectStore_, observerId_, namespaceSelector_) =>
-        try
-            Console.message("ObjectModelNavigatorWindowBase.onNamespaceCreated observerId=#{observerId_}")
-            namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
-            namespaceState.menuModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow(objectStore_, @, namespaceSelector_)
-            if namespaceSelector_.pathId == 0
-                @rootMenuModelView = namespaceState.menuModelView
-            parentDescriptor = namespaceSelector_.objectModelDescriptor.parent? and namespaceSelector_.objectModelDescriptor.parent or undefined
-            if parentDescriptor? and parentDescriptor
-                parentSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(parentDescriptor.id, namespaceSelector_.selectKeyVector)
-                parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
-                parentNamespaceState.menuModelView.children.push namespaceState.menuModelView
-                namespaceState.indexInParentChildArray = parentNamespaceState.menuModelView.children().length - 1
 
-        catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase.onNamespaceCreated failure: #{exception}"
-        
-
-    #
-    # ============================================================================
-    onNamespaceRemoved: (objectStore_, observerId_, namespaceSelector_) =>
-        try
-            Console.message("ObjectModelNavigatorWindowBase.onNamespaceRemoved observerId=#{observerId_}")
-            namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
-            if namespaceSelector_.pathId == 0
-                @rootMenuModelView = undefined
-            parentDescriptor = namespaceSelector_.objectModelDescriptor.parent? and namespaceSelector_.objectModelDescriptor.parent or undefined
-            if parentDescriptor? and parentDescriptor
-                parentSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(parentDescriptor.id, namespaceSelector_.selectKeyVector)
-                parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
-                parentNamespaceState.menuModelView.children.splice(namespaceState.indexInParentChildArray, 1)
-                return true
-
-        catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindow.onNamespaceRemoved failure: #{exception}"
-
-    constructor: ->
+    constructor: (objectStore_, initialSelector_) ->
         # \ BEGIN: constructor
         try
+            if not (objectStore_? and objectStore_) then throw "Missing required object store input parameter."
+            if not (objectStore_.jsonTag == "schema") then throw "Specified object store has unexpected JSON tag. Expected 'schema' found '#{objectStore_.jsonTag}'"
+
             @blipper = Encapsule.runtime.boot.phase0.blipper
+            @objectStore = objectStore_            
+
             @rootMenuModelView = undefined
+
+            objectStoreObserverCallbacks =
+
+                onNamespaceCreated: (objectStore_, observerId_, namespaceSelector_) =>
+                    try
+                        Console.message("ObjectModelNavigatorWindowBase.onNamespaceCreated observerId=#{observerId_}")
+                        namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
+                        namespaceState.menuModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow(objectStore_, @, namespaceSelector_)
+                        if namespaceSelector_.pathId == 0
+                            @rootMenuModelView = namespaceState.menuModelView
+                        parentDescriptor = namespaceSelector_.objectModelDescriptor.parent? and namespaceSelector_.objectModelDescriptor.parent or undefined
+                        if parentDescriptor? and parentDescriptor
+                            parentSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(parentDescriptor.id, namespaceSelector_.selectKeyVector)
+                            parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
+                            parentNamespaceState.menuModelView.children.push namespaceState.menuModelView
+                            namespaceState.indexInParentChildArray = parentNamespaceState.menuModelView.children().length - 1
+                    catch exception
+                        throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase.onNamespaceCreated failure: #{exception}"
+        
+                onNamespaceRemoved: (objectStore_, observerId_, namespaceSelector_) =>
+                    try
+                        Console.message("ObjectModelNavigatorWindowBase.onNamespaceRemoved observerId=#{observerId_}")
+                        namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
+                        if namespaceSelector_.pathId == 0
+                            @rootMenuModelView = undefined
+                        parentDescriptor = namespaceSelector_.objectModelDescriptor.parent? and namespaceSelector_.objectModelDescriptor.parent or undefined
+                        if parentDescriptor? and parentDescriptor
+                            parentSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(parentDescriptor.id, namespaceSelector_.selectKeyVector)
+                            parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
+                            parentNamespaceState.menuModelView.children.splice(namespaceState.indexInParentChildArray, 1)
+                            return true
+
+                    catch exception
+                        throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindow.onNamespaceRemoved failure: #{exception}"
+
+            # Register this ObjectModelNavigatorWindow object as an observer of the objectStore_
+            @objectStoreObserverId = objectStore_.registerModelViewObserver(objectStoreObserverCallbacks)
+
+            # Create a SelectorStore instance associated with objectStore_.
+            @selectorStore = new Encapsule.code.lib.modelview.SelectorStore(objectStore_, initialSelector_)
+
+            selectorStoreCallbacks = {
+
+                onComponentCreated: (objectStore_, observerId_, namespaceSelector_) =>
+                    Console.message("Received onComponentCreated notification from selector store.")
+
+                onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
+                    Console.message("Received onComponentUpdated notification from selector store.")
+
+            }
+
+            @selectorStoreObserverId = @selectorStore.registerModelViewObserver(selectorStoreCallbacks)
+
+            
+
 
         catch exception
             throw " Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase constructor failure: #{exception}"

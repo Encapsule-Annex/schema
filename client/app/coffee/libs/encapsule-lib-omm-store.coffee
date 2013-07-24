@@ -354,8 +354,6 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
         try
             super(objectModel_, initialStateJSON_)
             
-            @observerState = {}
-
             #
             # ============================================================================
             # A model view object may be registered with the OM store object to receive
@@ -369,6 +367,8 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
             # observer can be unregistered by calling unregisterModelViewObserver providing
             # the "observer ID code" received when it was registered.
 
+            #
+            # ============================================================================
             @registerModelViewObserver = (modelViewObject_) =>
                 try
                     if not (modelViewObject_? and modelViewObject_) then throw "Missing model view object input parameter!"
@@ -377,6 +377,8 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectStore.registerModelViewObserver failure: #{exception}"
 
+            #
+            # ============================================================================
             @unregisterModelViewObserver = (observerIdCode_) =>
                 try
                     if not (observerIdCode_? and observerIdCode_) then throw "Missing observer ID code input parameter!"

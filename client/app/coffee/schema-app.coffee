@@ -117,39 +117,36 @@ class Encapsule.code.app.Schema
             ###
 
 
-            Console.message("*** REGISTER MODEL VIEW")
-
-            omNavObserverId = reconstitutedStore.registerModelViewObserver(omNav)
+            # Console.message("*** REGISTER MODEL VIEW")
+            # omNavObserverId = reconstitutedStore.registerModelViewObserver(omNav)
 
             Console.message("*** CREATE A NEW SCDL MACHINE MODEL WITH AN OBSERVER REGISTERED")
             machineSelector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue.models.machines.machine")
-            machineNamespace = reconstitutedStore.createComponent(machineSelector)
+            machineNamespace = objectStore.createComponent(machineSelector)
 
-
-            machineSelector = machineNamespace.getResolvedSelector()
             Console.message("*** REVISE THE MACHINE NAMESPACE")
+            machineSelector = machineNamespace.getResolvedSelector()
             machineNamespace.updateRevision()
 
-            Console.message("*** REMOVE THE SCDL MACHINE MODEL WITH AN OBSERVER REGISTERED")
-
+            # Console.message("*** REMOVE THE SCDL MACHINE MODEL WITH AN OBSERVER REGISTERED")
             catalogueSelector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue", machineSelector.selectKeyVector)
             # reconstitutedStore.removeComponent(machineSelector)
-            reconstitutedStore.removeComponent(catalogueSelector)
+            # reconstitutedStore.removeComponent(catalogueSelector)
 
             
             # Just for grins, re-register the same model view so we get two notifation callback streams
             # when we unregister below.
 
-            Console.message("*** ATTACH ANOTHER MODEL VIEW OBSERVER TO THE STORE")
+            # Console.message("*** ATTACH ANOTHER MODEL VIEW OBSERVER TO THE STORE")
             # id2 = reconstitutedStore.registerModelViewObserver(omNav)
 
-            jsonFinal = reconstitutedStore.toJSON(undefined, 4)
+            jsonFinal = objectStore.toJSON(undefined, 4)
             Console.messageRaw("<pre>#{jsonFinal}</pre>")
 
 
-            Console.message("*** UNREGISTER MODEL VIEWS")
-            #reconstitutedStore.unregisterModelViewObserver(omNavObserverId)
-            #reconstitutedStore.unregisterModelViewObserver(id2)
+            # Console.message("*** UNREGISTER MODEL VIEWS")
+            # reconstitutedStore.unregisterModelViewObserver(omNavObserverId)
+            # reconstitutedStore.unregisterModelViewObserver(id2)
             
 
             # ==============================================================================
