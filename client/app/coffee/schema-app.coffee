@@ -118,7 +118,6 @@ class Encapsule.code.app.Schema
 
 
             # Console.message("*** REGISTER MODEL VIEW")
-            # omNavObserverId = reconstitutedStore.registerModelViewObserver(omNav)
 
             Console.message("*** CREATE A NEW SCDL MACHINE MODEL WITH AN OBSERVER REGISTERED")
             machineSelector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue.models.machines.machine")

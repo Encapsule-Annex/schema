@@ -279,11 +279,11 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
 
                     objectModelDescriptor = @objectModelPathMap[objectModelPath_]
                     if not (objectModelDescriptor? and objectModelDescriptor)
-                        throw "Unable to resolve object model descriptor!"
+                        throw "Invalid object model path '#{objectModelPath_}' cannot be resolved."
         
                     objectModelPathId = objectModelDescriptor.id
                     if not objectModelPathId?
-                        throw "Internal error: Unable to resolve object model path ID from object model descriptor."
+                        throw "Internal error: Invalid object model descriptor doesn't support id property for path '#{objectModelPath_}."
 
                     return objectModelPathId
 
@@ -295,11 +295,15 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
             @getPathFromPathId = (pathId_) =>
                 try
                     if not (pathId_?) then throw "Missing path ID parameter!"
+                    if (pathId_ < 0) or (pathId_ >= @objectModelDescriptorById.length)
+                        throw "Out of range path ID '#{pathId_} cannot be resolved."
 
                     objectModelDescriptor = @objectModelDescriptorById[pathId_]
                     if not (objectModelDescriptor? and objectModelDescriptor)
-                        throw "Unable to resolve object descriptor for path ID #{pathId_}"
+                        throw "Internal error: Can't find object descriptor for valid path ID '#{pathId_}."
                     path = objectModelDescriptor.path
+                    if not (path? and path)
+                        throw "Internal error: Invalid object model descriptor doesn't support path property for path '#{objectModelPath_}."
                     return path
 
                 catch exception
@@ -327,7 +331,8 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
             @getSemanticBindings = =>
                 try
                     semanticBindings = @objectModelDeclaration.semanticBindings
-                    if not (semanticBindings? and semanticBindings) then throw "Object model declaration does not include required semanticBindings namespace."
+                    if not (semanticBindings? and semanticBindings)
+                        Console.message("Returning undefined semantic bindings.")
                     return semanticBindings
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModel failure: #{exception}"

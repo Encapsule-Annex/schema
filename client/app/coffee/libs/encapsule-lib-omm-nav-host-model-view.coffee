@@ -84,13 +84,19 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
 
                 onComponentCreated: (objectStore_, observerId_, namespaceSelector_) =>
                     Console.message("Received onComponentCreated notification from selector store.")
+                    Console.message("... current select is #{objectStore_.getSelector().getHashString()}")
 
                 onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
                     Console.message("Received onComponentUpdated notification from selector store.")
+                    Console.message("... current select is #{objectStore_.getSelector().getHashString()}")
 
             }
 
             @selectorStoreObserverId = @selectorStore.registerModelViewObserver(selectorStoreCallbacks)
+
+            # Test
+            cataloguesSelector = @objectStore.objectModel.createNamespaceSelectorFromPath("schema.client.catalogues")
+            @selectorStore.setSelector(cataloguesSelector)
 
             
 

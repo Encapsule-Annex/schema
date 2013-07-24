@@ -92,9 +92,9 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
     # class Encapsule.code.lib.omm.ObjectStoreNamespace
     internalResolveNamespaceDescriptor: (objectStoreReference_, objectModelDescriptor_, mode_, key_) =>
         try
-            # Console.message("ObjectStoreNamespace.internalResolveNamespaceDescriptor path='#{objectModelDescriptor_.path}'")
-            # Console.message("... mode='#{mode_}'")
-            # Console.message("... key='" + (key_? and key_ or "undefined") + "'")
+            #Console.message("ObjectStoreNamespace.internalResolveNamespaceDescriptor path='#{objectModelDescriptor_.path}'")
+            #Console.message("... mode='#{mode_}'")
+            #Console.message("... key='" + (key_? and key_ or "undefined") + "'")
 
             storeReference = undefined
 
@@ -262,7 +262,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             semanticBindings = @objectStore.objectModel.getSemanticBindings()
 
             # Update this namespace's revision metadata.
-            semanticBindings.update(@objectStoreNamespace)
+            if semanticBindings? and semanticBindings and semanticBindings.update? and semanticBindings.update
+                semanticBindings.update(@objectStoreNamespace)
 
             for observerId, modelViewObserver of @objectStore.modelViewObservers
                 if modelViewObserver.onNamespaceUpdated? and modelViewObserver.onNamespaceUpdated
@@ -279,7 +280,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                 parentNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@objectStore, parentSelector)
 
                 # Update the parent namespace's revision metadata.
-                semanticBindings.update(parentNamespace.objectStoreNamespace)
+                if semanticBindings? and semanticBindings and semanticBindings.update? and semanticBindings.update
+                    semanticBindings.update(parentNamespace.objectStoreNamespace)
 
                 signalComponentUpdated = parentNamespace.objectModelDescriptor.isComponent
 
