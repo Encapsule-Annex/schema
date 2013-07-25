@@ -36,6 +36,26 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
     name: "OMM Navigator"
     initialEnable: false
     splitterStack: [
+        {
+            id: "idOMNavSelectorSplitter"
+            name: "Selector Window Splitter"
+            type: "horizontal"
+            Q1WindowDescriptor: {
+                id: "idOMNavSelectorWindow"
+                name: "Selector Window"
+                initialMode: "min"
+                initialEnable: true
+                overflow: "hide"
+                opacity: 1.0
+                backgroundColor:  "rgba(0, 200, 256, 1.0)"
+                modes: { full: { reserve: 14 }, min: { reserve: 14 } }
+                MVVM: {
+                    modelView: -> Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow
+                    viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorSelectorWindow"
+                }
+            }
+            Q2WindowDescriptor: undefined
+        }
 
         Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom
 

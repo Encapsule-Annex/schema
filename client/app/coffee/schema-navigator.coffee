@@ -31,7 +31,7 @@ Color = net.brehaut.Color
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     jsonTag: "schema"
-    label: "#{appName} Root"
+    label: "#{appName}"
     description: "#{appName} client root."
 
     detailBelowSelectDefault: 1
@@ -155,7 +155,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuHierarchy: [
         {
             jsonTag: "client"
-            label: "#{appName} Client"
+            label: "Client"
             objectDescriptor: {
                 mvvmType: "child"
                 description: "#{appName} client home."

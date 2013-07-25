@@ -84,6 +84,10 @@ class Encapsule.code.app.Schema
 
             omNav = Encapsule.runtime.app.ObjectModelNavigatorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorWindow(objectStore)
 
+            omSelector = Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow()
+
+            omNav.selectorStore.registerModelViewObserver(omSelector.selectorStoreCallbacks)
+
             # Temporary code to test registraton/unregistration and callbacks from object store
 
             ###

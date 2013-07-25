@@ -27,13 +27,6 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
 Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and Encapsule.code.lib.modelview.detail or @Encapsule.code.lib.modelview.detail = {}
 
-Encapsule.code.lib.modelview.detail.SelectorObjectModelDescriptor = {
-    jsonTag: "selector"
-    label: "#{appName} Selector"
-    description: "#{appName} selector root."
-}
-
-
 
 
 
@@ -47,7 +40,12 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
             # Cache the associated objectStore parameter for later use.
             @associatedObjectStore = objectStore_
             # Create an ObjectModel instance from the selector object model declaration.
-            selectorObjectModel = new Encapsule.code.lib.omm.ObjectModel(Encapsule.code.lib.modelview.detail.SelectorObjectModelDescriptor)
+            selectorObjectModel = new Encapsule.code.lib.omm.ObjectModel(
+                {
+                    jsonTag: "selector"
+                    label: "#{appName} Selector"
+                    description: "#{appName} selector root."
+                })
             # Initialize the base ObjectStore class for this SelectorStore
             super(selectorObjectModel)
 
