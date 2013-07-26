@@ -37,7 +37,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     detailBelowSelectDefault: 1
     detailAboveSelectDefault: 1
 
-    initialSelectionPath: "schema.client"
+    initialSelectionPath: "schema"
 
     baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.5}).toCSS()
     baseBackgroundRatioPercentPerLevel: 0

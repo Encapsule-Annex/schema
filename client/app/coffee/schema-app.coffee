@@ -85,7 +85,6 @@ class Encapsule.code.app.Schema
             omNav = Encapsule.runtime.app.ObjectModelNavigatorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorWindow(objectStore)
 
             omSelector = Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow()
-
             omNav.selectorStore.registerModelViewObserver(omSelector.selectorStoreCallbacks)
 
             # Temporary code to test registraton/unregistration and callbacks from object store
@@ -177,12 +176,12 @@ class Encapsule.code.app.Schema
             Encapsule.runtime.app.SchemaRouter.setRoute(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout.initialSelectionPath)
 
 
+            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneOmmNavigator")
             #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
             #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneD3")
-            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootLayoutDebugPlane")
+            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootLayoutDebugPlane")
 
             Encapsule.runtime.app.SchemaD3Main.initializeD3()
-
 
             Encapsule.runtime.boot.phase0.spinner.cancel()
             Console.message("#{appName} main application document.onLoad event handler exit error.")

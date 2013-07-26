@@ -118,7 +118,12 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getHashString failure: #{exception}"
 
-
+            @clone = =>
+                @internalVerifySelector()
+                clonedSelectKeyVector = Encapsule.code.lib.js.clone(@selectKeyVector)
+                clonedSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@objectModel, @pathId, clonedSelectKeyVector)
+                clonedSelector.internalVerifySelector()
+                return clonedSelector
 
             #
             # ============================================================================

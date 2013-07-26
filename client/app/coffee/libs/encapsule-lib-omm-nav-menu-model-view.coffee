@@ -28,11 +28,9 @@ Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.
 class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
       constructor: (objectStore_, objectModelNavigatorWindow_, namespaceSelector_) ->
           # Cache references to this instance's construction parameters.
-          @objectStore = objectStore_
+
           @objectModelNavigatorWindow = objectModelNavigatorWindow_
-          namespaceSelector_.internalVerifySelector()
-          #@namespaceSelector = namespaceSelector_
-          @namespaceSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(namespaceSelector_.pathId, namespaceSelector_.selectKeyVector)
+          @namespaceSelector = namespaceSelector_.clone()
 
           @children = ko.observableArray []
           @isSelected = ko.observable false
@@ -59,15 +57,24 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encaps
         # / END: constructor
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorMenuWindow", ( ->
-    """
-        <div class="classObjectModelNavigatorWindow" data-bind="click: onClick, clickBubble: false">
-            <span data-bind="if: isSelected()">***</span>
-            <span data-bind="text: namespaceSelector.objectModelDescriptor.label"></span>
-            <span data-bind="if: children().length">
-                <div data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: children }"></div>
-            </span>
-        </div>
-    </span>
-    """))
+
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorMenuWindow", ( -> """
+<span data-bind="if: isSelected()">
+    <div class="classObjectModelNavigatorWindow" data-bind="click: onClick, clickBubble: false" style="background-color: rgba(0, 255, 255, 0.2); color: #00FFFF;">
+        <span data-bind="text: namespaceSelector.objectModelDescriptor.label" style="font-weight: bold;"></span>
+        <span data-bind="if: children().length">
+    <div data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: children }"></div>
+</span>
+    </div>
+</span>
+<span data-bind="ifnot: isSelected()">
+    <div class="classObjectModelNavigatorWindow" data-bind="click: onClick, clickBubble: false" style="background-color: rgba(0,200,255,0.1); color: black;">
+        <span data-bind="text: namespaceSelector.objectModelDescriptor.label"></span>
+        <span data-bind="if: children().length">
+    <div data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: children }"></div>
+</span>
+    </div>
+</span>
+"""))
 

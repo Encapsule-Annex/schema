@@ -319,6 +319,10 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
             objectModelNamespaceSelector_.internalVerifySelector()
 
+            storeOM = objectStore_.objectModel.jsonTag
+            selectorOM = objectModelNamespaceSelector_.objectModel.jsonTag
+            if storeOM != selectorOM
+                throw "You cannot use a '#{selectorOM}' selector to open a '#{storeOM}' namespace."
 
             mode = mode_? and mode_ or "bypass"
 
