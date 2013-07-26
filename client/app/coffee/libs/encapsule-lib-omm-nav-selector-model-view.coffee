@@ -30,19 +30,23 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow
             @objectStore = objectStore_
             @pathElementSelector = pathElementSelector_
             depth = pathElementSelector_.objectModelDescriptor.parentPathIdVector.length
-            @label = ko.observable "#{((depth == 1) and "://" or "")}#{((depth > 1) and "/" or "")}#{pathElementSelector_.objectModelDescriptor.label}"
 
-            @onClick = =>
-                @objectStore.setSelector(@pathElementSelector)
+            @labelPrefix = ko.observable ""
+            @labelPrefix(
+                ((depth == 0) and "" or "") +
+                ((depth == 1) and "<strong> :: </strong>" or "") +
+                ((depth > 1) and "<strong> : </strong>" or ""))               
 
+            @label = ko.observable "#{pathElementSelector_.objectModelDescriptor.label}"
 
-        
+            @onClick = => @objectStore.setSelector(@pathElementSelector)
+
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow failure: #{exception}"
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorPathElementWindow", ( -> """
-<span data-bind="event: { click: onClick }"><span data-bind="text: label"></span></span>
+<span data-bind="event: { click: onClick }"><span data-bind="html: labelPrefix" style="color: #666666;"></span><span data-bind="html: label" style="color: #00FFFF; font-weight: bold;"></span></span>
 """))
 
 
@@ -63,8 +67,6 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow
                     pathElementSelectorArray = storeNamespace.objectStoreNamespace.pathElements
                     for pathElementSelector in pathElementSelectorArray
                         @pathElements.push new Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow(objectStore_, observerId_, pathElementSelector)
-                        
-
             }
 
         catch exception

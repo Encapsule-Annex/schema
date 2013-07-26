@@ -43,9 +43,36 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
         try
             #
             # ============================================================================
+            @internalVerifySelector = =>
+                try
+                    if @selectKeyVector.length > @selectKeysRequired
+                        Console.message("Encapsule.code.lib.omm.ObjectModelNamespaceSelector.internalVerifySelector failure!")
+                        Console.message("... OM='#{@objectModel.jsonTag}' path='#{@objectModelDescriptor.path}' id=#{@objectModelDescriptor.id}")
+                        Console.message("... selectKeysRequired=#{@selectKeysRequired} selectKeysProvided=#{@selectKeysProvided} selectKeysReady=#{@selectKeysReady} selectKeyVector.length=#{@selectKeyVector.length}")
+                        message = "... selectKeyVector=["
+                        first = true
+                        for key in @selectKeyVector
+                            if not first
+                                message += ", "
+                            else
+                                first = false
+                            message += "'#{key}'"
+                        message += "]"
+                        Console.message(message)
+
+                        throw "**** Invalid object model namespace selector specifies more select keys than required and cannot be used to create a valid hash string! ***"
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector failure: #{exception}"
+
+
+            #
+            # ============================================================================
             @getSelectKey = (index_) =>
                 try
+                    @internalVerifySelector()
                     if not index_? then throw "Missing index input parameter!"
+
 
                     if (not @selectKeyVector?) or (not @selectKeyVector) or (not @selectKeyVector.length?) or (not @selectKeyVector.length) or (index_ < 0) or (index_ >= @selectKeyVector.length)
                         return undefined
@@ -60,6 +87,7 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             # ============================================================================
             @getComponentKey = =>
                 try
+                    @internalVerifySelector()
                     if not (@selectKeyVector? and @selectKeyVector) then return undefined
                     if not (@selectKeyVector.length? and @selectKeyVector.length) then return undefined
                     return @selectKeyVector[@selectKeyVector.length - 1]
@@ -77,6 +105,7 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             #
             @getHashString = =>
                 try
+                    @internalVerifySelector()
                     if not @selectKeysReady
                         throw "Unable to retrieve namespace selector hash key of abstract selector."
 
@@ -102,23 +131,24 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             @objectModel = objectModel_
             @pathId = pathId_
 
-
             # Get the OM descriptor associated with the specified OM path.
 
             @objectModelDescriptor = @objectModel.objectModelDescriptorById[pathId_]
             if not (@objectModelDescriptor? and @objectModelDescriptor)
                 throw "Unable to resolve object model descriptor for path #{objectModelPath_}"
-               
             
-            @selectKeyVector = selectKeyVector_ # Take a reference
+            @selectKeyVector = selectKeyVector_? and selectKeyVector_ or []
+
+            @selectKeysProvided = @selectKeyVector.length
             @selectKeysRequired = @objectModelDescriptor.parentPathExtensionPoints.length
-            @selectKeysProvided = selectKeyVector_? and selectKeyVector_ and selectKeyVector_.length or 0
-            @selectKeysReady = @selectKeysRequired <= @selectKeysProvided
 
             if @selectKeysProvided > @selectKeysRequired
-                newSelectKeyVector = Encapsule.code.lib.js.clone @selectKeyVector
-                newSelectKeyVector.splice(@selectKeysRequired, @selectKeysProvided - @selectKeysRequired)
-                @selectKeyVector = newSelectKeyVector
+                @selectKeyVector = Encapsule.code.lib.js.clone(selectKeyVector_)
+                @selectKeyVector.splice(@selectKeysRequired, @selectKeysProvided - @selectKeysRequired)
+
+            @selectKeysReady = @selectKeysRequired <= @selectKeysProvided
+            @internalVerifySelector()
+
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector construction fail: #{exception}"

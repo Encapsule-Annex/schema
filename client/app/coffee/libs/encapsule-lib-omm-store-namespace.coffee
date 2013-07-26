@@ -317,11 +317,17 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
             if not (objectStore_? and objectStore_) then throw "Missing object store input parameter!"
             if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_) then throw "Missing object model namespace selector input parameter!"
+            objectModelNamespaceSelector_.internalVerifySelector()
+
 
             mode = mode_? and mode_ or "bypass"
 
             if mode == "strict" and not objectModelNamespaceSelector_.selectKeysReady
                 throw "Object model selector extension key vector is incomplete. Cannot create object store namespace instance."
+
+            if mode_ == "new" and objectModelNamespaceSelector_.selectKeysRequired and objectModelNamespaceSelector_.selectKeysReady
+                Console.message("hey there!")
+
 
             # Save references to this namespace's backing object store and object model descriptor.
             @objectStore = objectStore_ # reference to ObjectStore instance
@@ -354,12 +360,17 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             # Resolve this namespace.
             key = undefined
             if @objectModelDescriptor.mvvmType == "archetype"
-                key = objectModelNamespaceSelector_.getSelectKey(extensionPointIndex++)
+                if not ((mode_ == "new") and (objectModelNamespaceSelector_.selectKeyRequired == extensionPointIndex))
+                    key = objectModelNamespaceSelector_.getSelectKey(extensionPointIndex)
+                extensionPointIndex++
 
             @objectStoreNamespace = @internalResolveNamespaceDescriptor(objectStoreReference, @objectModelDescriptor, mode, key)
 
             if not (@objectStoreNamespace? and @objectStoreNamespace)
                 throw "Unable to instantiate object store namespace."
+
+            if objectModelNamespaceSelector_.selectKeysRequired != @resolvedKeyVector.length
+                throw "Internal select key resolution error!"
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace constructor failed: #{exception}"

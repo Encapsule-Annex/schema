@@ -27,7 +27,19 @@ Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.
 
 class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
       constructor: (objectStore_, objectModelNavigatorWindow_, namespaceSelector_) ->
+          # Cache references to this instance's construction parameters.
+          @objectStore = objectStore_
+          @objectModelNavigatorWindow = objectModelNavigatorWindow_
+          namespaceSelector_.internalVerifySelector()
+          #@namespaceSelector = namespaceSelector_
+          @namespaceSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(namespaceSelector_.pathId, namespaceSelector_.selectKeyVector)
 
+          @children = ko.observableArray []
+          @isSelected = ko.observable false
+          @blipper = Encapsule.runtime.boot.phase0.blipper
+
+          @onClick = =>
+              @objectModelNavigatorWindow.selectorStore.setSelector(@namespaceSelector)
 
 
 class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
@@ -39,15 +51,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encaps
             # \ BEGIN: constructor try scope
             super(objectStore_, objectModelNavigatorWindow_, namespaceSelector_)
 
-            # Cache references to this instance's construction parameters.
-            @objectStore = objectStore_
-            @objectModelNavigatorWindow = objectModelNavigatorWindow_
-            @namespaceSelector = namespaceSelector_
-            @children = ko.observableArray []
-
-            @blipper = Encapsule.runtime.boot.phase0.blipper
-
-
+                
 
             # / END: constructor try scope
         catch exception
@@ -57,10 +61,11 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encaps
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorMenuWindow", ( ->
     """
-        <div class="classObjectModelNavigatorWindow">
+        <div class="classObjectModelNavigatorWindow" data-bind="click: onClick, clickBubble: false">
+            <span data-bind="if: isSelected()">***</span>
             <span data-bind="text: namespaceSelector.objectModelDescriptor.label"></span>
             <span data-bind="if: children().length">
-            <div data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: children }"></div>
+                <div data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: children }"></div>
             </span>
         </div>
     </span>

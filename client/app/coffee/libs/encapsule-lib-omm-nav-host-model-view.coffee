@@ -25,8 +25,6 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
 
 
-
-
 class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
 
     constructor: (objectStore_, initialSelector_) ->
@@ -80,15 +78,65 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
             # Create a SelectorStore instance associated with objectStore_.
             @selectorStore = new Encapsule.code.lib.modelview.SelectorStore(objectStore_, initialSelector_)
 
+            @selectedNamespacesBySelectorHash = {}
+
             selectorStoreCallbacks = {
 
-                onComponentCreated: (objectStore_, observerId_, namespaceSelector_) =>
-                    Console.message("Received onComponentCreated notification from selector store.")
-                    Console.message("... current select is #{objectStore_.getSelector().getHashString()}")
+                onComponentCreated: (objectStore_, observerId_, namespaceSelector_) => selectorStoreCallbacks.onComponentUpdated(objectStore_, observerId_, namespaceSelector_)
 
                 onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
-                    Console.message("Received onComponentUpdated notification from selector store.")
-                    Console.message("... current select is #{objectStore_.getSelector().getHashString()}")
+
+                    Console.message("ObjectModelNavigatorWindow processing selector update for observer #{observerId_}")
+
+                    # First obtain new namespace selector from the selector store.
+                    newObjectStoreSelector = objectStore_.getSelector()
+
+                    if newObjectStoreSelector.selectKeyVector? and newObjectStoreSelector.selectKeyVector
+                        if newObjectStoreSelector.selectKeyVector.length > newObjectStoreSelector.selectKeysRequired
+                            throw "Internal error malformed namespace selector select key array exceeds required number of keys."
+
+                    # Next obtain the namespace selector last selected observer instance.
+                    observerState = objectStore_.openObserverState(observerId_)
+                    if observerState.hash? and observerState.hash
+                        Console.message("... #{observerId_} previously selected #{observerState.hash}")
+                        
+                        selectors = @selectedNamespacesBySelectorHash[observerState.hash]
+                        if not (selectors? and selectors) then throw "Internal error unable to resolve selectors."
+
+                        selectorCount = Encapsule.code.lib.js.dictionaryLength(selectors)
+                        if selectorCount < 1 then throw "Internal error selector count less than one."
+                        if selectorCount == 1
+                            # We're about to remove the last selection request for the current selection.
+                            # Toggle the select flag of the menu model view associated with the current selection.
+                            selector = selectors[observerId_]
+                            if not (selector? and selector) then throw "Internal error unable to resolve selector needed to open outgoing selection's menu model view."
+                            namespaceState = @objectStore.openObserverNamespaceState(@objectStoreObserverId, selector)
+                            if not (namespaceState.menuModelView? and namespaceState.menuModelView) then throw "Internal error unable to resolve menu model view for outgoing selector."
+                            namespaceState.menuModelView.isSelected(false)
+                            delete @selectedNamespacesBySelectorHash[observerState.hash]
+                            Console.message("... #{observerId_} previously selected #{observerState.hash} select state is now FALSE.")
+                        else
+                            delete selectors[observerId_]
+                            Console.message("... #{observerId_} previously selected #{observerState.hash} select state is still TRUE due to other selectors.")
+
+                    observerState.hash = newObjectStoreSelector.getHashString()
+                    Console.message("... #{observerId_} selecting #{observerState.hash}")
+                    
+                    selectors = @selectedNamespacesBySelectorHash[observerState.hash]? and @selectedNamespacesBySelectorHash[oberverState.hash] or @selectedNamespacesBySelectorHash[observerState.hash] = {}
+                    selectors[observerId_] = newObjectStoreSelector
+
+                    selectorCount = Encapsule.code.lib.js.dictionaryLength(selectors)
+                    if selectorCount == 1
+                        # First selector to select this namespace.
+                        # Toggle the select flag of the menu model view associated with the new selection.
+                        namespaceState = @objectStore.openObserverNamespaceState(@objectStoreObserverId, newObjectStoreSelector)
+                        if not (namespaceState.menuModelView? and namespaceState.menuModelView) then throw "Internal error unable to resolve menu model view for new selection."
+                        namespaceState.menuModelView.isSelected(true)
+                        Console.message("... #{observerId_} added to selecting observers list for #{observerState.hash}")
+                        Console.message("... #{observerId_} #{observerState.hash} select state is now TRUE.")
+                    else
+                        Console.message("... #{observerId_} added to selecting observers list for #{observerState.hash}")
+                        Console.message("... #{observerId_} #{observerState.hash} select state was and remains TRUE due to other selectors.")
 
             }
 

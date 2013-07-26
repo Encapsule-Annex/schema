@@ -314,6 +314,7 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
             @createNamespaceSelectorFromPathId = (pathId_, selectKeyVector_) =>
                 try
                     selector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@, pathId_, selectKeyVector_)
+                    selector.internalVerifySelector()
                     return selector
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPathId failed: #{exception}"

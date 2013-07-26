@@ -58,6 +58,7 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
 
             @setSelector = (externalSelector_) =>
                 try
+                    externalSelector_.internalVerifySelector()
                     # Verify that externalSelector_ addresses an actual store namespace.
                     externalStoreNamespace = @associatedObjectStore.openNamespace(externalSelector_)
                     # Save the new external selector.
@@ -72,7 +73,7 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                     @rootNamespace.updateRevision()
 
                 catch exception
-                    throw "Encapsule.code.lib.modelview.SelectorStore.setSelector failure: #{exception}"
+                    Console.messageError "Encapsule.code.lib.modelview.SelectorStore.setSelector failure: #{exception}"
             
             externalSelector = initialObjectStoreSelector_
             if not (externalSelector? and externalSelector)

@@ -36,6 +36,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             # ============================================================================
             @internalReifyStoreComponent = (componentNamespaceSelector_, modelViewObject_, observerId_) =>
                 try
+                    componentNamespaceSelector_.internalVerifySelector()
 
                     # If broadcast (i.e. modelViewObject_ not specified or undefined) AND no observers then return.
                     if ( not (modelViewObserver_? and modelViewObserver_) ) and ( not Object.keys(@modelViewObservers).length )
@@ -73,6 +74,8 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             # ============================================================================
             @internalUnreifyStoreComponent = (componentNamespaceSelector_, modelViewObject_, observerId_) =>
                 try
+                    componentNamespaceSelector_.internalVerifySelector()
+
                     # If broadcast (i.e. modelViewObject_ not specified or undefined) AND no observers then return.
                     if ( not (modelViewObserver_? and modelViewObserver_) ) and ( not Object.keys(@modelViewObservers).length )
                         return
@@ -116,6 +119,8 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             # ============================================================================
             @internalReifyStoreExtensions = (componentNamespaceSelector_, modelViewObject_, observerId_, undoFlag_) =>
                 try
+                    componentNamespaceSelector_.internalVerifySelector()
+
                     # undoFlag indicates that we should reverse a prior reification (e.g. in response to
                     # a component being removed from the store.
                     undoFlag = undoFlag_? and undoFlag_ or false
@@ -148,10 +153,8 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                             subcomponentKey = @objectModel.getSemanticBindings().getUniqueKey(subcomponentObject) # decoupled from scheme employed to identify components uniquely
 
                             subcomponentSelectKeyVector = undefined
-                            if componentNamespaceSelector_.selectKeyVector? and componentNamespaceSelector_.selectKeyVector
-                                subcomponentSelectKeyVector = Encapsule.code.lib.js.clone componentNamespaceSelector_.selectKeyVector
-                            else
-                                subcomponentSelectKeyVector = []
+                            componentNamespaceSelector_.internalVerifySelector()
+                            subcomponentSelectKeyVector = Encapsule.code.lib.js.clone(componentNamespaceSelector_.selectKeyVector)
                             subcomponentSelectKeyVector.push subcomponentKey
                             subcomponentNamespaceSelector = @objectModel.createNamespaceSelectorFromPath(extensionPath, subcomponentSelectKeyVector)
 
@@ -273,12 +276,14 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             #
             # ============================================================================
             @internalOpenObserverComponentState = (observerId_, namespaceSelector_) =>
+                namespaceSelector_.internalVerifySelector()
                 componentSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceSelector_.objectModelDescriptor.componentId, namespaceSelector_.selectKeyVector)
                 return @internalOpenObserverNamespaceState(observerId_, componentSelector)
 
             #
             # ============================================================================
             @internalOpenObserverNamespaceState = (observerId_, namespaceSelector_) =>
+                namespaceSelector_.internalVerifySelector()
                 observerState = @internalOpenObserverState(observerId_)
                 namespaceRecord = observerState[namespaceSelector_.pathId]? and observerState[namespaceSelector_.pathId] or observerState[namespaceSelector_.pathId] = {}
                 componentKey = namespaceSelector_.getComponentKey()
@@ -293,6 +298,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             #
             # ============================================================================
             @internalRemoveObserverNamespaceState = (observerId_, namespaceSelector_) =>
+                namespaceSelector_.internalVerifySelector()
 
                 observerState = @modelViewObserversState[observerId_]
                 if not (observerState? and observerState)
