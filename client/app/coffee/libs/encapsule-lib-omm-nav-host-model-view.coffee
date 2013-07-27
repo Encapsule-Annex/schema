@@ -157,7 +157,9 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorWindow", ( -> """
 <span data-bind="if: rootMenuModelView">
-    <div data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: rootMenuModelView.children }"></div>
+    <div class="classObjectModelNavigatorWindow">
+        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: rootMenuModelView.children }"></span>
+    </div>
 </span>
 """))
 

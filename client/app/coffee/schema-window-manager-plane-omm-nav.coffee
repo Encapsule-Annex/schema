@@ -45,10 +45,10 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 name: "Selector Window"
                 initialMode: "min"
                 initialEnable: true
-                overflow: "hide"
+                overflow: "hidden"
                 opacity: 1.0
                 backgroundColor:  "rgba(0, 200, 256, 1.0)"
-                modes: { full: { reserve: 14 }, min: { reserve: 14 } }
+                modes: { full: { reserve: 18 }, min: { reserve: 18 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow
                     viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorSelectorWindow"

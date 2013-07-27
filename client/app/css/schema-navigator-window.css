@@ -28,15 +28,63 @@ font-family: Arial; font-size: 8pt; font-weight: normal; text-align: center; mar
 -moz-border-radius: 6px; border-radius: 6px;
 }
 
-/* A single level item in the tree-view */
-.classSchemaViewModelNavigatorMenuLevel {
+/* NEW STUFF :: A single level item in the tree-view */
+.classObjectModelNavigatorSelectorWindow {
+border: none;
+}
+
+.classObjectModelNavigatorPathElementWindow {
+font-size: 8pt;
+font-family: Arial, Verdana, Courier;
+font-weight: bold;
+color: #00FFFF;
+}
+
+.classObjectModelNavigatorPathElementPrefix {
+font-size: 10pt;
+font-weight: bold;
+color: #0099FF;
+}
+
+/* Outer navigator window */
+.classObjectModelNavigatorWindow {
+font-family: Arial, Verdana, Courier;
+font-size: 8pt;
+background-color: rgba(0,100,172,1);
+}
+
+/* Inner menu level window contained within an outer navigator window */
+.classObjectModelNavigatorMenuWindow {
 margin-top: 0px;
 margin-bottom: 0x;
 margin-left: 0px;
 margin-right: 0px;
-font-family: Verdana, Arial;
+padding: 2px;
+border: 1px outset rgba(255,255,255,0.2);
 -moz-border-radius: 6px; border-radius: 6px;
 }
+
+.classMenuSelected {
+background-color: rgba(0,200,255,0.4);
+font-weight: bold;
+font-size: 10pt;
+color: #00FFFF;
+}
+
+/* END OF NEW STUFF */
+
+.classMenuUnselected {
+background-color: rgba(0,200,255,0.1);
+font-weight: normal;
+font-size: 8pt;
+color: black;
+}
+
+.classObjectModelNavigatorMenuWindowInner {
+margin: 2px;
+margin-left: 8px;
+}
+
 
 /* Current tree-view selection path + metadata about the currently selected item */
 .classSchemaNavigatorSelectedItemMetaWindow {

@@ -34,8 +34,8 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow
             @labelPrefix = ko.observable ""
             @labelPrefix(
                 ((depth == 0) and "" or "") +
-                ((depth == 1) and "<strong> :: </strong>" or "") +
-                ((depth > 1) and "<strong> : </strong>" or ""))               
+                ((depth == 1) and " // " or "") +
+                ((depth > 1) and " / " or ""))               
 
             @label = ko.observable "#{pathElementSelector_.objectModelDescriptor.label}"
 
@@ -45,9 +45,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow failure: #{exception}"
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorPathElementWindow", ( -> """
-<span data-bind="event: { click: onClick }"><span data-bind="html: labelPrefix" style="color: #666666;"></span><span data-bind="html: label" style="color: #00FFFF; font-weight: bold;"></span></span>
-"""))
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorPathElementWindow", ( -> """<span class="classObjectModelNavigatorPathElementPrefix" data-bind="html: labelPrefix"></span><span class="classObjectModelNavigatorPathElementWindow" data-bind="event: { click: onClick }, html: label"></span>"""))
 
 
 
@@ -73,7 +71,6 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow failure: #{exception}"
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorSelectorWindow", ( -> """
-<div class="classObjectModelNavigatorSelectorWindow">
-    <div class="classObjectModelNavigatorPathElementWindow" data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorPathElementWindow', foreach: pathElements }"></div>
-</div>
-"""))
+<table width="100%" height="100%" style="border: 0px solid white; margin: 0px; padding: 0px;"><tr style="align: center;"><td style="align: center; border: 0px solid black; margin: 0px; padding: 0px;">
+    <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorPathElementWindow', foreach: pathElements }">
+</td></tr></table>"""))
