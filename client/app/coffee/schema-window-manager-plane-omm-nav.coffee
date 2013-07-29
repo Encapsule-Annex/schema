@@ -118,13 +118,10 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 overflow: "auto"
                 backgroundColor:  "rgba(255,255,255,0.1)"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
-                ###
                 MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
-                    # Template defined in encapsule-lib-navigator-item-host-window.coffee
-                    viewModelTemplateId: "idKoTemplate_SchemaNavigatorSelectedItemWindow"
+                    fnModelView: -> Encapsule.runtime.app.ObjectModelNavigatorNamespaceWindow
+                    viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorNamespaceWindow"
                 }
-                ###
             }
 
             Q2WindowDescriptor: undefined

@@ -109,9 +109,14 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                     if not @selectKeysReady
                         throw "Unable to retrieve namespace selector hash key of abstract selector."
 
-                    hashKey = "#{@objectModelDescriptor.idComponent}.#{@objectModelDescriptor.id}"
+                    hashKey = "#{@objectModelDescriptor.id}"
+                    index = 0
                     for selectKey in (@selectKeyVector? and @selectKeyVector or [])
-                        hashKey += ".#{selectKey}"
+                        hashKey += index and " : " or " [ "
+                        hashKey += "#{selectKey}"
+                        index++
+                    if index
+                        hashKey += " ]"
 
                     return hashKey
 

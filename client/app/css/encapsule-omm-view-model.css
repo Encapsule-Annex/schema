@@ -84,5 +84,28 @@ border-right: 1px solid rgba(0,0,0,0.2);
 -moz-border-radius: 8px; border-radius: 8px;
 }
 
+
+
+.classObjectModelNavigatorNamespaceHash {
+font-family: Courier;
+font-size: 8pt;
+margin: 0px;
+padding: 0px;
+border-bottom: 1px solid #999999;
+}
+
+.classObjectModelNavigatorNamespaceTitleBar {
+padding: 10px;
+}
+
+.classObjectModelNavigatorNamespaceTitle {
+font-size: 16pt;
+font-weight: bold;
+}
+
+.classObjectModelNavigatorNamespaceSubTitle {
+font-size: 10pt;
+font-weight: normal;
+}
 /* END OF NEW STUFF */
 
