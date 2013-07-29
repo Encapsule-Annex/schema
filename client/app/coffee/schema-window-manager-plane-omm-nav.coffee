@@ -47,8 +47,8 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 initialEnable: true
                 overflow: "hidden"
                 opacity: 1.0
-                backgroundColor:  "rgba(0, 200, 256, 1.0)"
-                modes: { full: { reserve: 18 }, min: { reserve: 18 } }
+                backgroundColor: "rgba(0,200,255,0.7)"
+                modes: { full: { reserve: 16 }, min: { reserve: 16 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow
                     viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorSelectorWindow"
@@ -70,7 +70,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
-                backgroundColor: "rgba(0, 128, 256, 0.5)"
+                backgroundColor: "rgba(0, 0, 0, 0.1)"
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.ObjectModelNavigatorWindow

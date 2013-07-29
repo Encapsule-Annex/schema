@@ -71,6 +71,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow failure: #{exception}"
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorSelectorWindow", ( -> """
-<table width="100%" height="100%" style="border: 0px solid white; margin: 0px; padding: 0px;"><tr style="align: center;"><td style="align: center; border: 0px solid black; margin: 0px; padding: 0px;">
-    <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorPathElementWindow', foreach: pathElements }">
-</td></tr></table>"""))
+<div class="classObjectModelNavigatorSelectorWindow">
+<span class="classObjectModelNavigatorPathElementPrefix">&gt;&nbsp;</span><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorPathElementWindow', foreach: pathElements }">
+</div>
+"""))

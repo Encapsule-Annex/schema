@@ -61,8 +61,10 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encaps
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorMenuWindow", ( -> """
 <span data-bind="if: isSelected()">
-    <div class="classObjectModelNavigatorMenuWindow classMenuSelected" data-bind="click: onClick, clickBubble: false" >
-        <span data-bind="text: namespaceSelector.objectModelDescriptor.label" ></span>
+    <div class="classObjectModelNavigatorMenuWindow">
+        <div class="classMenuSelected">
+            <span data-bind="text: namespaceSelector.objectModelDescriptor.label" ></span>
+        </div>
         <span data-bind="if: children().length">
             <div class="classObjectModelNavigatorMenuWindowInner">
             <div data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: children }"></div>
@@ -71,8 +73,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
     </div>
 </span>
 <span data-bind="ifnot: isSelected()">
-    <div class="classObjectModelNavigatorMenuWindow classMenuUnselected" data-bind="click: onClick, clickBubble: false" >
-        <span data-bind="text: namespaceSelector.objectModelDescriptor.label"></span>
+    <div class="classObjectModelNavigatorMenuWindow" data-bind="click: onClick, clickBubble: false" >
+        <div class="classMenuUnselected">
+            <span data-bind="text: namespaceSelector.objectModelDescriptor.label"></span>
+        </div>
         <span data-bind="if: children().length">
             <div class="classObjectModelNavigatorMenuWindowInner">
             <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: children }"></span>

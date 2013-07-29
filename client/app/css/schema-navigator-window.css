@@ -15,7 +15,6 @@ opacity: 1.0; z-index: 1;}
 .classObjectModelNavigatorWindow { 
 margin: 1px;
 margin-left: 4px;
-border: 1px solid #0055BB;
 padding: 1px;
 font-family: Verdana, Arial, Courier; 
 opacity: 1.0; z-index: 1;
@@ -30,55 +29,67 @@ font-family: Arial; font-size: 8pt; font-weight: normal; text-align: center; mar
 
 /* NEW STUFF :: A single level item in the tree-view */
 .classObjectModelNavigatorSelectorWindow {
-border: none;
-}
-
-.classObjectModelNavigatorPathElementWindow {
-font-size: 8pt;
-font-family: Arial, Verdana, Courier;
-font-weight: bold;
-color: #00FFFF;
+width: auto;
+height: auto;
+margin-left: 0.5em;
 }
 
 .classObjectModelNavigatorPathElementPrefix {
-font-size: 10pt;
 font-weight: bold;
-color: #0099FF;
+color: white;
+}
+
+.classObjectModelNavigatorPathElementWindow {
+font-weight: bold;
+color: black;
 }
 
 /* Outer navigator window */
 .classObjectModelNavigatorWindow {
 font-family: Arial, Verdana, Courier;
 font-size: 8pt;
-background-color: rgba(0,100,172,1);
+margin: 0px;
 }
 
 /* Inner menu level window contained within an outer navigator window */
 .classObjectModelNavigatorMenuWindow {
-margin-top: 0px;
-margin-bottom: 0x;
-margin-left: 0px;
-margin-right: 0px;
-padding: 2px;
-border: 1px outset rgba(255,255,255,0.2);
--moz-border-radius: 6px; border-radius: 6px;
+margin: 0px;
+border-top: 1px solid rgba(255,255,255,0.1);
+border-left: 1px solid rgba(255,255,255,0.1);
+border-bottom: 1px solid rgba(0,0,0,0.1);
+border-right: 1px solid rgba(0,0,0,0.1);
+-moz-border-radius: 8px; border-radius: 8px;
 }
 
 .classMenuSelected {
-background-color: rgba(0,200,255,0.4);
+background-color: rgba(0,200,255,0.7);
 font-weight: bold;
 font-size: 10pt;
-color: #00FFFF;
+color: black;
+text-decoration: none;
+padding: 0.05em;
+border-top: 1px solid rgba(0,0,0,0.5);
+border-left: 1px solid rgba(0,0,0,0.5);
+border-bottom: 1px solid rgba(255,255,255,0.5);
+border-right: 1px solid rgba(255,255,255,0.5);
+-moz-border-radius: 8px; border-radius: 8px;
+}
+
+.classMenuUnselected {
+font-weight: normal;
+font-size: 10pt;
+color: #CCCCCC;
+text-decoration: none;
+padding: 0.05em;
+border-top: 1px solid rgba(255,255,255,0.2);
+border-left: 1px solid rgba(255,255,255,0.2);
+border-bottom: 1px solid rgba(0,0,0,0.2);
+border-right: 1px solid rgba(0,0,0,0.2);
+-moz-border-radius: 8px; border-radius: 8px;
 }
 
 /* END OF NEW STUFF */
 
-.classMenuUnselected {
-background-color: rgba(0,200,255,0.1);
-font-weight: normal;
-font-size: 8pt;
-color: black;
-}
 
 .classObjectModelNavigatorMenuWindowInner {
 margin: 2px;
