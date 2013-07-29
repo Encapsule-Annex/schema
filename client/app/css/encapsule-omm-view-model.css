@@ -4,6 +4,9 @@
 */
 
 /* NEW STUFF :: A single level item in the tree-view */
+.classObjectModelNavigatorMouseOverCursorPointer { cursor: pointer; }
+
+
 .classObjectModelNavigatorSelectorWindow {
 width: auto;
 height: auto;
@@ -12,13 +15,19 @@ margin-left: 0.5em;
 
 .classObjectModelNavigatorPathElementPrefix {
 font-weight: bold;
+color: #99CCFF;
+}
+
+.classObjectModelNavigatorParentPathElement {
+font-weight: normal;
 color: white;
 }
 
-.classObjectModelNavigatorPathElementWindow {
+.classObjectModelNavigatorSelectedPathElement {
 font-weight: bold;
 color: black;
 }
+
 
 /* Outer navigator window */
 .classObjectModelNavigatorWindow {
@@ -37,6 +46,14 @@ border-right: 1px solid rgba(0,0,0,0.1);
 -moz-border-radius: 8px; border-radius: 8px;
 }
 
+.classMenuSelectedOuter {
+border-bottom: 2px solid rgba(255,255,255,0.3);
+border-right: 2px solid rgba(255,255,255,0.3);
+border-top: 2px solid rgba(0,0,0,0.3);
+border-left: 2px solid rgba(0,0,0,0.3);
+-moz-border-radius: 8px; border-radius: 8px;
+}
+
 .classMenuSelected {
 background-color: rgba(0,200,255,0.7);
 font-weight: bold;
@@ -49,6 +66,9 @@ border-left: 1px solid rgba(0,0,0,0.5);
 border-bottom: 1px solid rgba(255,255,255,0.5);
 border-right: 1px solid rgba(255,255,255,0.5);
 -moz-border-radius: 8px; border-radius: 8px;
+}
+
+.classMenuUnselectedOuter {
 }
 
 .classMenuUnselected {
