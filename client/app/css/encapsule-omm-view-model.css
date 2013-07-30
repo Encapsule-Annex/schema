@@ -39,6 +39,8 @@ margin: 0px;
 /* Inner menu level window contained within an outer navigator window */
 .classObjectModelNavigatorMenuWindow {
 margin: 0px;
+width: 100%;
+overflow: hidden;
 border-top: 1px solid rgba(255,255,255,0.1);
 border-left: 1px solid rgba(255,255,255,0.1);
 border-bottom: 1px solid rgba(0,0,0,0.1);
@@ -47,11 +49,12 @@ border-right: 1px solid rgba(0,0,0,0.1);
 }
 
 .classMenuSelectedOuter {
-border-bottom: 2px solid rgba(255,255,255,0.3);
-border-right: 2px solid rgba(255,255,255,0.3);
-border-top: 2px solid rgba(0,0,0,0.3);
-border-left: 2px solid rgba(0,0,0,0.3);
+border-bottom: 1px solid rgba(255,255,255,0.1);
+border-right: 1px solid rgba(255,255,255,0.1);
+border-top: 1px solid rgba(0,0,0,0.1);
+border-left: 1px solid rgba(0,0,0,0.1);
 -moz-border-radius: 8px; border-radius: 8px;
+background-color: rgba(255,255,255,0.05);
 }
 
 .classMenuSelected {
@@ -117,7 +120,8 @@ color: #CCCCCC;
 }
 
 .classObjectModelNavigatorNamespaceContextPrefix {
-color: black;
+color: white;
+font-weight: bold;
 }
 
 .classObjectModelNavigatorNamespaceTitleBar {

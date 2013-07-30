@@ -103,7 +103,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
                             parentComponentId = parentExtensionPointSelector.objectModelDescriptor.idComponent
                             parentExtensionPointNamespace = objectStore_.associatedObjectStore.openNamespace(parentExtensionPointSelector)
                             parentComponentSelector = objectStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentComponentId, selector.selectKeyVector)
-                            if parentComponentSelector.pathId
+                            if true # parentComponentSelector.pathId
                                 parentComponentNamespace = objectStore_.associatedObjectStore.openNamespace(parentComponentSelector)
                                 prefix = index++ and " : " or undefined
                                 label = "#{parentComponentNamespace.getResolvedLabel()}"
