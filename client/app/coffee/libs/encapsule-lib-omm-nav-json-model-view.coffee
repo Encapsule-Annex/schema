@@ -29,11 +29,28 @@ Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and E
 class Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView
     constructor: ->
         try
+            @title = ko.observable "<not connected>"
+            @jsonString = ko.observable "<not connected>"
+
+            @selectorStoreCallbacks = {
+                onComponentCreated: (objectStore_, observerId_, namespaceSelector_) =>
+                    @selectorStoreCallbacks.onComponentUpdated(objectStore_, observerId_, namespaceSelector_)
+
+                onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
+                    selector = objectStore_.getSelector()
+                    namespace = objectStore_.associatedObjectStore.openNamespace(selector)
+                    @jsonString(namespace.toJSON(undefined, 2))
+                    @title("#{namespace.getResolvedLabel()} JSON")
+
+            }
 
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView failure: #{exception}"
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorJsonModelView", ( -> """
-JSON View Model
+<div class="classObjectModelNavigatorJsonTitle" data-bind="text: title"></div>
+<div class="classObjectModelNavigatorJsonBody">
+    <pre class="classObjectModelNavigatorJsonPreformat" data-bind="text: jsonString"></pre>
+</div>
 """))

@@ -139,5 +139,34 @@ font-size: 10pt;
 font-weight: normal;
 color: #333333;
 }
+
+
+/* title DIV */
+.classObjectModelNavigatorJsonTitle {
+font-size: 10pt;
+font-weight: bold;
+color: #333333;
+padding: 0.25em;
+padding-left: 1em;
+background-color: rgba(0,0,0,0.1);
+border-bottom: 1px solid #CCCCCC;
+}
+
+/* JSON DIV */
+.classObjectModelNavigatorJsonBody {
+}
+
+/* PRE JSON container */
+.classObjectModelNavigatorJsonPreformat {
+font-size: 8pt;
+font-family: Lucica Console, Courier;
+}
+
+
+
+
+
+
+
 /* END OF NEW STUFF */
 

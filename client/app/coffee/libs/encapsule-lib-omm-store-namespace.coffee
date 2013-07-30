@@ -228,6 +228,21 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalResolveNamespaceDescriptor failure for path='#{objectModelDescriptor_.path}' : '#{exception}'"
 
+    #
+    # ============================================================================
+    toJSON: (replacer_, space_) =>
+        try
+            selector = @getResolvedSelector()
+            resultObject = {}
+            resultObject[selector.objectModelDescriptor.jsonTag] = @objectStoreNamespace
+            space = space_? and space_ or 0
+            resultJSON = JSON.stringify(resultObject, replacer_, space)
+            if not (resultJSON? and resultJSON)
+                throw "Cannot serialize Javascript object to JSON!"
+            return resultJSON
+
+         catch exception
+            throw "Encapsule.code.lib.omm.ObjectStoreNamespace.toJSON fail on object store #{@jsonTag} : #{exception}"
 
 
     #
@@ -361,7 +376,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             @resolvedKeyIndexVector = []
 
             # STORE NAMESPACE DATA REFERENCE
-            @objectStoreNamespace = undefined # reference to specific namespace within the object store
+            @objectStoreNamespace = undefined
+            @data = @objectStoreNamespace # alias
 
             # Obtain the target namespace's object model descriptor from the namespace selector.
             @objectModelDescriptor = objectStore_.objectModel.objectModelDescriptorById[objectModelNamespaceSelector_.pathId]
