@@ -94,13 +94,11 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 opacity: CommonSettings.windowOpacityDefault
                 backgroundColor: "rgba(255, 255, 255, 0.5)" # "rgba(0,255,204,0.1)"
                 modes: { full: { reserve: 500 }, min: { reserve: 250 } }
-                ###
                 MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.SchemaScdlNavigatorWindow
-                    viewModelTemplateId: "idKoTemplate_SchemaViewModelNavigatorJSONWindow"
+                    fnModelView: -> Encapsule.runtime.app.ObjectModelNavigatorJsonModelView
+                    viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorJsonModelView"
 
                 }
-                ###
             }
         }   
 

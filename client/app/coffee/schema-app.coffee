@@ -88,8 +88,11 @@ class Encapsule.code.app.Schema
             omNav.selectorStore.registerModelViewObserver(omSelector.selectorStoreCallbacks)
 
             omNavNamespaceWindow = Encapsule.runtime.app.ObjectModelNavigatorNamespaceWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow()
-
             omNav.selectorStore.registerModelViewObserver(omNavNamespaceWindow.selectorStoreCallbacks)
+
+            omNavJsonWindow = Encapsule.runtime.app.ObjectModelNavigatorJsonModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView()
+
+            
 
             # Temporary code to test registraton/unregistration and callbacks from object store
 
