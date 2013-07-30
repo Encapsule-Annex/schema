@@ -29,6 +29,8 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow
         try
             @objectStore = objectStore_
             @pathElementSelector = pathElementSelector_.clone()
+            @pathElementNamespace = objectStore_.associatedObjectStore.openNamespace(@pathElementSelector)
+
             height = pathElementSelector_.objectModelDescriptor.parentPathIdVector.length
             @isSelected = height + 1 == selectorTreeHeight_
 
@@ -43,11 +45,12 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow
                     @prefix += """<span class="classObjectModelNavigatorPathElementPrefix"> / </span>"""
                     break
 
+            resolvedLabel = @pathElementNamespace.getResolvedLabel()
             @label = ""
             if @isSelected
-                @label += """<span class="classObjectModelNavigatorSelectedPathElement">#{pathElementSelector_.objectModelDescriptor.label}</span>"""
+                @label += """<span class="classObjectModelNavigatorSelectedPathElement">#{resolvedLabel}</span>"""
             else
-                @label += """<span class="classObjectModelNavigatorParentPathElement classObjectModelNavigatorMouseOverCursorPointer">#{pathElementSelector_.objectModelDescriptor.label}</span>"""
+                @label += """<span class="classObjectModelNavigatorParentPathElement classObjectModelNavigatorMouseOverCursorPointer">#{resolvedLabel}</span>"""
 
             @onClick = => 
                 if not @isSelected

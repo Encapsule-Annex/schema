@@ -33,8 +33,13 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
           @namespaceSelector = namespaceSelector_.clone()
 
           @children = ko.observableArray []
+
           @isSelected = ko.observable false
+
           @blipper = Encapsule.runtime.boot.phase0.blipper
+
+          namespace = objectStore_.openNamespace(namespaceSelector_)
+          @label = ko.observable namespace.getResolvedLabel()
 
           @onClick = =>
               @objectModelNavigatorWindow.selectorStore.setSelector(@namespaceSelector)
@@ -62,9 +67,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encaps
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorMenuWindow", ( -> """
 <span data-bind="if: isSelected()">
     <div class="classObjectModelNavigatorMenuWindow classMenuSelectedOuter">
-        <div class="classMenuSelected">
-            <span data-bind="text: namespaceSelector.objectModelDescriptor.label" ></span>
-        </div>
+        <div class="classMenuSelected" data-bind="text: label" ></div>
         <span data-bind="if: children().length">
             <div class="classObjectModelNavigatorMenuWindowInner">
                 <div data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: children }"></div>
@@ -74,9 +77,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 </span>
 <span data-bind="ifnot: isSelected()">
     <div class="classObjectModelNavigatorMenuWindow classObjectModelNavigatorMouseOverCursorPointer" data-bind="click: onClick, clickBubble: false" >
-        <div class="classMenuUnselected">
-            <span data-bind="text: namespaceSelector.objectModelDescriptor.label"></span>
-        </div>
+        <div class="classMenuUnselected" data-bind="text: label"></div>
         <span data-bind="if: children().length">
             <div class="classObjectModelNavigatorMenuWindowInner">
                 <div data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: children }"></div>

@@ -32,6 +32,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
 
             @objectStoreName = ko.observable "<not connected>"
             @hashString = ko.observable "<not connected>"
+
             @title = ko.observable "<not connected>"
             @subtitle = ko.observable "<not connected>"
 
@@ -43,13 +44,14 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
 
                 onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
                     # Get the new selector
+                    selector = objectStore_.getSelector()
+                    selectedNamespace = objectStore_.associatedObjectStore.openNamespace(selector)
 
                     @objectStoreName = objectStore_.associatedObjectStore.jsonTag
+                    @hashString(selector.getHashString())
 
-                    objectStoreNamespaceSelector = objectStore_.getSelector()
-                    @hashString(objectStoreNamespaceSelector.getHashString())
-                    @title(objectStoreNamespaceSelector.objectModelDescriptor.label)
-                    @subtitle(objectStoreNamespaceSelector.objectModelDescriptor.description)
+                    @title(selectedNamespace.getResolvedLabel())
+                    @subtitle(selector.objectModelDescriptor.description)
 
             }
 
@@ -59,7 +61,10 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceWindow", ( -> """
-<div class="classObjectModelNavigatorNamespaceHash"><span data-bind="text: objectStoreName"></span> [ <span data-bind="text: hashString"></span> ]</div>
+<div class="classObjectModelNavigatorNamespaceHash">
+    <span data-bind="text: objectStoreName"></span> [ <span data-bind="text: hashString"></span> ]
+</div>
+
 <div class="classObjectModelNavigatorNamespaceTitleBar">
     <span class="classObjectModelNavigatorNamespaceTitle" data-bind="text: title"></span>
     <span class="classObjectModelNavigatorNamespaceSubtitle" data-bind="text: subtitle"></span>

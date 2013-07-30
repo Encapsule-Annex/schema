@@ -240,6 +240,28 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace.getResolvedSelector failure: #{exception}"
 
+
+    #
+    # ============================================================================
+    # class Encapsule.code.lib.omm.ObjectStoreNamespace.getResolvedLabel
+    # Returns the most descriptive label string for the namespace by considering multiple
+    # sources in order of priority.
+    getResolvedLabel: =>
+
+        if @objectModelDescriptor.id == 0
+            return "#{@objectModelDescriptor.label}"
+
+        if @objectStoreNamespace.name? and @objectStoreNamespace.name and @objectStoreNamespace.name.length
+            return "#{objectModelDescriptor.label}: #{@objectStoreNamespace.name}"
+
+        key = @objectStore.objectModel.getSemanticBindings().getUniqueKey(@objectStoreNamespace)
+        if key? and key
+            return "#{@objectModelDescriptor.label}: #{key}"
+
+        resolvedSelector = @getResolvedSelector()
+        return "#{@objectModelDescriptor.label}"
+        
+
     #
     # ============================================================================
     # class Encapsule.code.lib.omm.ObjectStoreNamespace
