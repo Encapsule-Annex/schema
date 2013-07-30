@@ -252,13 +252,12 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             return "#{@objectModelDescriptor.label}"
 
         if @objectStoreNamespace.name? and @objectStoreNamespace.name and @objectStoreNamespace.name.length
-            return "#{objectModelDescriptor.label}: #{@objectStoreNamespace.name}"
+            return "#{objectModelDescriptor.label} #{@objectStoreNamespace.name}"
 
         key = @objectStore.objectModel.getSemanticBindings().getUniqueKey(@objectStoreNamespace)
         if key? and key
-            return "#{@objectModelDescriptor.label}: #{key}"
+            return "#{@objectModelDescriptor.label} #{key}"
 
-        resolvedSelector = @getResolvedSelector()
         return "#{@objectModelDescriptor.label}"
         
 

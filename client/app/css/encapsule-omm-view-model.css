@@ -95,16 +95,34 @@ border-right: 1px solid rgba(0,0,0,0.2);
 
 
 .classObjectModelNavigatorNamespaceHash {
+background-color: rgba(0,0,0,0.1);
 font-family: Courier;
 font-size: 6pt;
 margin: 0px;
-padding: 0px;
+padding: 4px;
+height: 1em;
+display: none;
+}
+
+.classObjectModelNavigatorNamespaceContext {
+padding: 4px;
+padding-left: 10px;
+font-size: 10pt;
+background-color: rgba(0,0,0,0.05);
 border-bottom: 1px solid #999999;
 }
 
+.classObjectModelNavigatorNamespaceContextLabel {
+color: #CCCCCC;
+}
+
+.classObjectModelNavigatorNamespaceContextPrefix {
+color: black;
+}
+
 .classObjectModelNavigatorNamespaceTitleBar {
-padding: 10px;
-padding-top: 5px;
+padding: 4px;
+padding-left: 10px;
 }
 
 .classObjectModelNavigatorNamespaceTitle {
@@ -112,9 +130,10 @@ font-size: 16pt;
 font-weight: bold;
 }
 
-.classObjectModelNavigatorNamespaceSubTitle {
+.classObjectModelNavigatorNamespaceSubtitle {
 font-size: 10pt;
 font-weight: normal;
+color: #333333;
 }
 /* END OF NEW STUFF */
 
