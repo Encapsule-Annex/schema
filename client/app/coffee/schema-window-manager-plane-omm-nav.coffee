@@ -47,7 +47,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 initialEnable: true
                 overflow: "hidden"
                 opacity: 1.0
-                backgroundColor: "rgba(0,200,255,0.7)"
+                backgroundColor: "rgba(0,200,255,0.5)"
                 modes: { full: { reserve: 64 }, min: { reserve: 16 } }
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow
@@ -91,8 +91,8 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 initialMode: "full"
                 initialEnable: true
                 overflow: "auto"
-                opacity: CommonSettings.windowOpacityDefault
-                backgroundColor: "rgba(255, 255, 255, 0.5)" # "rgba(0,255,204,0.1)"
+                opacity: 1.0
+                backgroundColor: "rgba(255,255,255,0.1)"
                 modes: { full: { reserve: 500 }, min: { reserve: 250 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.ObjectModelNavigatorJsonModelView
@@ -112,7 +112,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 name: "Schema Navigator Selected Item"                               
                 initialMode: "full"
                 initialEnable: true
-                opacity: CommonSettings.windowOpacityDefault
+                opacity: 1.0
                 overflow: "auto"
                 backgroundColor:  "rgba(255,255,255,0.1)"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }

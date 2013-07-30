@@ -40,7 +40,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView
                     selector = objectStore_.getSelector()
                     namespace = objectStore_.associatedObjectStore.openNamespace(selector)
                     @jsonString(namespace.toJSON(undefined, 2))
-                    @title("#{namespace.getResolvedLabel()} JSON")
+                    @title("<strong>#{namespace.getResolvedLabel()}</strong> JSON")
 
             }
 
@@ -49,8 +49,8 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorJsonModelView", ( -> """
-<div class="classObjectModelNavigatorJsonTitle" data-bind="text: title"></div>
+<div class="classObjectModelNavigatorJsonTitle" data-bind="html: title"></div>
 <div class="classObjectModelNavigatorJsonBody">
-    <pre class="classObjectModelNavigatorJsonPreformat" data-bind="text: jsonString"></pre>
+    <pre class="classObjectModelNavigatorJsonPreformat" data-bind="html: jsonString"></pre>
 </div>
 """))

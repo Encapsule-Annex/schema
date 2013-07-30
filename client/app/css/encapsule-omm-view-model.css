@@ -144,12 +144,11 @@ color: #333333;
 /* title DIV */
 .classObjectModelNavigatorJsonTitle {
 font-size: 10pt;
-font-weight: bold;
 color: #333333;
-padding: 0.25em;
-padding-left: 1em;
+padding: 4px;
+padding-left: 10px;
 background-color: rgba(0,0,0,0.1);
-border-bottom: 1px solid #CCCCCC;
+border-bottom: 1px solid #999999;
 }
 
 /* JSON DIV */
@@ -160,6 +159,7 @@ border-bottom: 1px solid #CCCCCC;
 .classObjectModelNavigatorJsonPreformat {
 font-size: 8pt;
 font-family: Lucica Console, Courier;
+color: #333333;
 }
 
 
