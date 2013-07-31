@@ -73,12 +73,34 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
     constructor: (namespace_) ->
         try
+            componentSelector = undefined
+            if namespace_.objectModelDescriptor.isComponent
+                componentSelector = namespace_.getResolvedSelector()
+            else
+                componentSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(
+                    namespace_.objectModelDescriptor.idComponent, namespace_.resolvedKeyVector)
+                
+            @componentDescription = ""
+
+            extensionPointsString = ""
+            @extensionPointsCount = Encapsule.code.lib.js.dictionaryLength(componentSelector.objectModelDescriptor.extensionPoints)
+            for extensionPointPath, extensionPointDescriptor of componentSelector.objectModelDescriptor.extensionPoints
+                extensionPointSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(extensionPointDescriptor.id, namespace_.resolvedKeyVector)
+                extensionPointNamespace = namespace_.objectStore.openNamespace(extensionPointSelector)
+                extensionPointsString += " #{extensionPointNamespace.getResolvedLabel()}<br>"
+
+            @extensionPointsString = ko.observable(extensionPointsString)
+
+
+
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent failure: #{exception}"
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceComponent", ( -> """
-<div class="classObjectModelNavigatorNamespaceSectionTitle">Component</div>
+<div class="classObjectModelNavigatorNamespaceSectionTitle">Extension Points (<span data-bind="text: extensionPointsCount"></span>)</div>
+</div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceComponent">
+<span data-bind="html: extensionPointsString"></span>
 </div>
 """))
 
@@ -95,17 +117,17 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren
                 for descriptor in selector.objectModelDescriptor.children
                     childSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(descriptor.id, selector.selectKeyVector)
                     childNamespace = namespace_.objectStore.openNamespace(childSelector)
-                    childrenString += " #{childNamespace.getResolvedLabel()}"
+                    childrenString += " #{childNamespace.getResolvedLabel()}<br>"
 
-            @childrenString = ko.observable(childrenString)
+            @childrenString = childrenString
                 
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren failure: #{exception}"
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceChildren", ( -> """
-<div class="classObjectModelNavigatorNamespaceSectionTitle">Children</div>
+<div class="classObjectModelNavigatorNamespaceSectionTitle">Child Namespaces (<span data-bind="text: childrenCount"></span>)</div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceChildren">
-<span data-bind="text: childrenString"></span>
+<span data-bind="html: childrenString"></span>
 </div>
 """))
 
@@ -129,7 +151,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
                 elementSelectKeyVector.push elementKey
                 elementSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(elementPathId, elementSelectKeyVector)
                 elementNamespace = namespace_.objectStore.openNamespace(elementSelector)
-                elementsString += " #{elementNamespace.getResolvedLabel()}"
+                elementsString += " #{elementNamespace.getResolvedLabel()}<br>"
 
             @elementsString = ko.observable(elementsString)
                 
@@ -138,10 +160,9 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection failure: #{exception}"
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceCollection", ( -> """
-<div class="classObjectModelNavigatorNamespaceSectionTitle">Collection</div>
+<div class="classObjectModelNavigatorNamespaceSectionTitle">Collection (<span data-bind="text: elementsCount"></span>)</div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceChildren">
-Count: <span data-bind="text: elementsCount"></span>
-<span data-bind="text: elementsString"></span>
+<span data-bind="html: elementsString"></span>
 </div>
 """))
 

@@ -172,6 +172,7 @@ margin-top: 0px;
 margin-left: 10px;
 margin-right: 4px;
 margin-bottom: 10px;
+border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
 .classObjectModelNavigatorNamespaceSectionTitle {
@@ -183,23 +184,28 @@ padding: 4px;
 padding-left: 10px;
 background-color: rgba(0,0,0,0.1);
 color: #999999;
-border-bottom: 1px solid #999999;
+border-bottom: 1px solid #AAAAAA;
+-moz-border-top-left-radius: 8px; border-top-left-radius: 8px;
 }
 
 
 .classObjectModelNavigatorNamespaceImmutable {
 
+
 }
 
 .classObjectModelNavigatorNamespaceMutable {
+
 
 }
 
 .classObjectModelNavigatorNamespaceComponent {
 
+
 }
 
 .classObjectModelNavigatorNamespaceChildren {
+
 
 }
 
