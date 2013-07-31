@@ -181,6 +181,38 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
                         """
                     @subtitle(subtitle)
 
+                    switch mvvmType
+                        when "root"
+                            @modelviewImmutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable())
+                            @modelviewMutable(undefined)
+                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent())
+                            @modelviewChildren(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren())
+                            @modelviewExtensionPoint(undefined)
+                            break
+                        when "child"
+                            @modelviewImmutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable())
+                            @modelviewMutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable())
+                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent())
+                            @modelviewChildren(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren())
+                            @modelviewExtensionPoint(undefined)
+                            break
+                        when "extension"
+                            @modelviewImmutable(undefined)
+                            @modelviewMutable(undefined)
+                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent())
+                            @modelviewChildren(undefined)
+                            @modelviewExtensionPoint(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceExtensionPoint())
+                            break
+                        when "archetype"
+                            @modelviewImmutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable())
+                            @modelviewMutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable())
+                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent())
+                            @modelviewChildren(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren())
+                            @modelviewExtensionPoint(undefined)
+                            break
+                        else
+                            throw "Unrecognized MVVM type in request."
+
             }
 
 
@@ -220,19 +252,19 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 
 <span data-bind="if: modelviewComponent">
     <div class="classObjectModelNavigatorNamespaceSectionTitle">Component summary</div>
-    <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceComponent" data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceComponent", with: modelviewComponent }">
+    <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceComponent" data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceComponent', with: modelviewComponent }">
     </div>
 </span>
 
 <span data-bind="if: modelviewChildren">
     <div class="classObjectModelNavigatorNamespaceSectionTitle">Children</div>
-    <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceChildren" data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceChildren", with: modelviewChildren }">
+    <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceChildren" data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceChildren', with: modelviewChildren }">
     </div>
 </span>
 
 <span data-bind="if: modelviewExtensionPoint">
     <div class="classObjectModelNavigatorNamespaceSectionTitle">Extension point</div>
-    <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceExtensionPoint" data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceExtensionPoint", with: modelviewExtensionPoint }">
+    <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceExtensionPoint" data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceExtensionPoint', with: modelviewExtensionPoint }">
     </div>
 </span>
 
