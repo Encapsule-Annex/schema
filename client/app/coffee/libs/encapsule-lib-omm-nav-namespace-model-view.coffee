@@ -26,6 +26,8 @@ Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.
 Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and Encapsule.code.lib.modelview.detail or @Encapsule.code.lib.modelview.detail = {}
 
 
+#
+# ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement
     constructor: (prefix_, label_, selector_, selectorStore_, options_) ->
         try
@@ -42,6 +44,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement failure: #{exception}"
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceContextElement", ( -> """
 <span data-bind="if: prefix"><span class="classObjectModelNavigatorNamespaceContextPrefix" data-bind="html: prefix"></span></span>
 <span data-bind="ifnot: optionsNoLink">
@@ -54,12 +57,15 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 """))
 
 
+#
+# ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable
     constructor: (namespace_) ->
         try
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable failure: #{exception}"
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceImmutable", ( -> """
 <div class="classObjectModelNavigatorNamespaceSectionTitle">Immutable Properties</div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceImmutable">
@@ -67,18 +73,23 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 """))
 
 
+#
+# ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable
     constructor: (namespace_) ->
         try
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable failure: #{exception}"
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceMutable", ( -> """
 <div class="classObjectModelNavigatorNamespaceSectionTitle">Mutable Properties</div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceMutable">
 </div>
 """))
 
+#
+# ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
     constructor: (namespace_, selectorStore_) ->
         try
@@ -115,6 +126,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent failure: #{exception}"
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceComponent", ( -> """
 
 <span data-bind="if: extensionPointModelViewArray.length">
@@ -124,13 +136,18 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
         </span>
         Extension Points (<span data-bind="text: extensionPointModelViewArray.length"></span>)
     </div>
+    <span data-bind="ifnot: extensionPointModelViewArray.length"><i>Extension point contains no subcomponents.</i></span>
+    <span data-bind="if: extensionPointModelViewArray.length">
     <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceComponent">
         <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement', foreach: extensionPointModelViewArray }"></span>
     </div>
+    </span>
 </span>
 """))
 
 
+#
+# ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren
     constructor: (namespace_) ->
         try
@@ -150,6 +167,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren failure: #{exception}"
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceChildren", ( -> """
 <div class="classObjectModelNavigatorNamespaceSectionTitle">Child Namespaces (<span data-bind="text: childrenCount"></span>)</div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceChildren">
@@ -158,6 +176,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 """))
 
 
+#
+# ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
     constructor: (namespace_, selectorStore_) ->
         try
@@ -187,14 +207,20 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection failure: #{exception}"
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceCollection", ( -> """
 <div class="classObjectModelNavigatorNamespaceSectionTitle">Subcomponent Collection (<span data-bind="text: subcomponentModelViews.length"></span>)</div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceChildren">
+<span data-bind="ifnot: subcomponentModelViews.length"><i>No subcomponents in extension point collection.</i></span>
+<span data-bind="if: subcomponentModelViews.length">
 <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement', foreach: subcomponentModelViews }"></span>
+</span>
 </div>
 """))
 
 
+#
+# ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
     constructor: (namespace_, selectorStore_) ->
         try
@@ -260,6 +286,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary failure: #{exception}"
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceSummary", ( -> """
     <div class="classObjectModelNavigatorNamespaceSectionTitle">Namespace Summary</div>
     <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceSummary">
@@ -398,6 +425,8 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow construction failure: #{exception}"
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceWindow", ( -> """
 
     <div class="classObjectModelNavigatorNamespaceHash">
