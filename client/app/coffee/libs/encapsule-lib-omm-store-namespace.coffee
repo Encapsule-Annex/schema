@@ -274,6 +274,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             return "#{@objectModelDescriptor.label} #{key}"
 
         return "#{@objectModelDescriptor.label}"
+
         
 
     #

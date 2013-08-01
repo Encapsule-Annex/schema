@@ -122,7 +122,7 @@ color: #99CCFF;
 }
 
 .classObjectModelNavigatorNamespaceContextLabelNoLink {
-color: black;
+color: #444444;
 font-weight: bold;
 }
 
@@ -170,14 +170,17 @@ color: #333333;
 }
 
 .classObjectModelNavigatorNamespaceSectionCommon {
-background-color: rgba(255,255,255,0.1);
+background-color: rgba(0,0,0,0.1);
 padding: 4px;
 padding-left: 10px;
 margin-top: 0px;
 margin-left: 10px;
 margin-right: 4px;
 margin-bottom: 10px;
-border-bottom: 1px solid rgba(0,0,0,0.1);
+border-top: 1px solid rgba(255,255,255,0.21);
+border-bottom: 1px solid rgba(0,0,0,0.21);
+border-right: 1px solid rgba(255,255,255,0.21);
+border-left: 1px solid rgba(0,0,0,0.21);
 -moz-border-bottom-right-radius: 8px; border-bottom-right-radius: 8px;
 }
 
@@ -188,9 +191,12 @@ margin-right: 4px;
 margin-bottom: 0px;
 padding: 4px;
 padding-left: 10px;
-background-color: rgba(0,0,0,0.1);
+background-color: rgba(0,0,0,0.2);
 color: #999999;
-border-bottom: 1px solid #AAAAAA;
+border-bottom: 1px solid rgba(0,0,0,0.21);
+border-right: 1px solid rgba(255,255,255,0.21);
+border-left: 1px solid rgba(0,0,0,0.21);
+border-top: 1px solid rgba(0,0,0,0.21);
 -moz-border-top-left-radius: 8px; border-top-left-radius: 8px;
 }
 

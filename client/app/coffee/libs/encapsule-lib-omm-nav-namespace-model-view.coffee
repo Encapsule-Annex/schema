@@ -29,12 +29,13 @@ Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and E
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement
     constructor: (prefix_, label_, selector_, selectorStore_, options_) ->
         try
-            @selector = selector_.clone()
-            @selectorStore = selectorStore_
+            @prefix = prefix_? and prefix_ or ""
+            @label = label_? and label_ or "<no label provided>"
+            @selector = selector_? and selector_ and selector_.clone() or throw "Missing selector input parameter."
+            @selectorStore = selectorStore_? and selectorStore_ or throw "Missing selector store input parameter."
             options = options_? and options_ or {}
             @optionsNoLink = options.noLink? and options.noLink or false
-            @prefix = prefix_
-            @label = label_
+
             @onClick = =>
                 @selectorStore.setSelector(@selector)
 
@@ -42,12 +43,12 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement failure: #{exception}"
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceContextElement", ( -> """
-<span data-bind="if: prefix"><span class="classObjectModelNavigatorNamespaceContextPrefix" data-bind="text: prefix"></span></span>
+<span data-bind="if: prefix"><span class="classObjectModelNavigatorNamespaceContextPrefix" data-bind="html: prefix"></span></span>
 <span data-bind="ifnot: optionsNoLink">
-    <span class="classObjectModelNavigatorNamespaceContextLabel classObjectModelNavigatorMouseOverCursorPointer" data-bind="text: label, click: onClick"></span>
+    <span class="classObjectModelNavigatorNamespaceContextLabel classObjectModelNavigatorMouseOverCursorPointer" data-bind="html: label, click: onClick"></span>
 </span>
 <span data-bind="if: optionsNoLink">
-    <span class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="text: label"></span>
+    <span class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: label"></span>
 </span>
 
 """))
@@ -91,7 +92,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
                     namespace_.objectModelDescriptor.idComponent, namespace_.resolvedKeyVector)
 
             componentNamespace = selectorStore_.associatedObjectStore.openNamespace(componentSelector)
-                
+
             @componentModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(
                 "", componentNamespace.getResolvedLabel(), componentSelector, selectorStore_, { noLink: namespace_.objectModelDescriptor.isComponent} )
 
@@ -103,7 +104,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
                 extensionPointNamespace = namespace_.objectStore.openNamespace(extensionPointSelector)
                 noLinkFlag = namespaceSelectorHash == extensionPointSelector.getHashString()
                 prefix = undefined
-                if index++ then prefix = " : "
+                if index++ then prefix = " &bull; "
                 @extensionPointModelViewArray.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(
                     prefix, extensionPointNamespace.getResolvedLabel(), extensionPointSelector, selectorStore_, { noLink: noLinkFlag })
 
@@ -111,13 +112,17 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent failure: #{exception}"
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceComponent", ( -> """
+
 <span data-bind="if: extensionPointModelViewArray.length">
-<div class="classObjectModelNavigatorNamespaceSectionTitle">
-    <span data-bind="with: componentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span> Extension Points (<span data-bind="text: extensionPointModelViewArray.length"></span>)</div>
-</div>
-<div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceComponent">
-<span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement', foreach: extensionPointModelViewArray }"></span>
-</div>
+    <div class="classObjectModelNavigatorNamespaceSectionTitle">
+        <span data-bind="with: componentModelView">
+            <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span>
+        </span>
+        Extension Points (<span data-bind="text: extensionPointModelViewArray.length"></span>)
+    </div>
+    <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceComponent">
+        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement', foreach: extensionPointModelViewArray }"></span>
+    </div>
 </span>
 """))
 
@@ -177,13 +182,103 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection failure: #{exception}"
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceCollection", ( -> """
-<div class="classObjectModelNavigatorNamespaceSectionTitle">Collection (<span data-bind="text: elementsCount"></span>)</div>
+<div class="classObjectModelNavigatorNamespaceSectionTitle">Subcomponent Collection (<span data-bind="text: elementsCount"></span>)</div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceChildren">
 <span data-bind="html: elementsString"></span>
 </div>
 """))
 
 
+class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
+    constructor: (namespace_, selectorStore_) ->
+        try
+            objectStore = selectorStore_.associatedObjectStore
+
+            mvvmToNamespaceIndefiniteArticle = {
+                "root": "an"
+                "child": "a"
+                "extension": "an"
+                "archetype": "a"
+            }
+
+            mvvmToNamespaceType = {
+                "root": "object store"
+                "child": "subnamespace"
+                "extension": "extension point"
+                "archetype": "component"
+            }
+
+
+            @namespaceLabel = namespace_.getResolvedLabel()
+            namespaceMvvmType = namespace_.objectModelDescriptor.mvvmType
+            @namespaceType = "#{mvvmToNamespaceIndefiniteArticle[namespaceMvvmType]} <strong>#{mvvmToNamespaceType[namespaceMvvmType]}</strong>"
+
+
+            componentId = namespace_.objectModelDescriptor.idComponent
+            isRootNamespace = componentId == namespace_.objectModelDescriptor.id
+            isStoreComponent = componentId == 0
+
+            @displayComponent = false
+            @componentModelView = undefined
+            @componentType = undefined
+
+            @displayExtension = false
+            @extendedComponentModelView = undefined
+            @extendedComponentType = undefined
+            @extensionPointModelView = undefined
+            @extensionPointType = undefined
+
+            if not isRootNamespace
+                componentSelector = objectStore.objectModel.createNamespaceSelectorFromPathId(componentId, namespace_.resolvedKeyVector)
+                componentNamespace = objectStore.openNamespace(componentSelector)
+                @componentModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement("", componentNamespace.getResolvedLabel(), componentSelector, selectorStore_)
+                @componentType = mvvmToNamespaceType[componentSelector.objectModelDescriptor.mvvmType]
+                @displayComponent = true
+
+            else if not isStoreComponent
+                parentId = namespace_.objectModelDescriptor.parent.id
+                parentSelector = objectStore.objectModel.createNamespaceSelectorFromPathId(parentId, namespace_.resolvedKeyVector)
+                parentNamespace = objectStore.openNamespace(parentSelector)
+                parentComponentId = parentSelector.objectModelDescriptor.idComponent
+                parentComponentSelector = objectStore.objectModel.createNamespaceSelectorFromPathId(parentComponentId, namespace_.resolvedKeyVector)
+                parentComponentNamespace = objectStore.openNamespace(parentComponentSelector)
+                @extendedComponentType = mvvmToNamespaceType[parentComponentSelector.objectModelDescriptor.mvvmType]
+                @extendedComponentModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement("", parentComponentNamespace.getResolvedLabel(), parentComponentSelector, selectorStore_)
+                @extensionPointType = mvvmToNamespaceType[parentSelector.objectModelDescriptor.mvvmType]
+                @extensionPointModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement("", parentNamespace.getResolvedLabel(), parentSelector, selectorStore_)
+                @displayExtension = true
+
+
+                
+
+        catch exception
+            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary failure: #{exception}"
+
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceSummary", ( -> """
+    <div class="classObjectModelNavigatorNamespaceSectionTitle">Namespace Summary</div>
+    <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceSummary">
+        <span class="classObjectModelNavigatorNamespaceContextLabelNoLink"><span data-bind="html: namespaceLabel"></span></span>
+        is <span data-bind="html: namespaceType"></span><span data-bind="ifnot: displayComponent">.</span>
+        <span data-bind="if: displayComponent">
+            of the
+            <span data-bind="with: componentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
+            <span data-bind="html: componentType"></span>.
+        </span>
+        <span data-bind="if: displayExtension">
+            <br>Extends
+            <span data-bind="with: extendedComponentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
+            <span data-bind="html: extendedComponentType"></span>
+            via
+            <span data-bind="with: extensionPointModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
+            <span data-bind="html: extensionPointType"></span>.
+        </span>
+    </div>
+"""))
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
     constructor: ->
@@ -196,6 +291,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
             @subtitle = ko.observable "<not connected>"
             @context = ko.observableArray []
 
+            @modelviewSummary = ko.observable undefined
             @modelviewImmutable = ko.observable undefined
             @modelviewMutable = ko.observable undefined
             @modelviewComponent = ko.observable undefined
@@ -252,6 +348,8 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
                     subtitle = """#{selector.objectModelDescriptor.description}"""
                     @subtitle(subtitle)
 
+                    @modelviewSummary(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary(selectedNamespace, objectStore_))
+
                     switch mvvmType
                         when "root"
                             @modelviewImmutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable(selectedNamespace))
@@ -264,7 +362,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
                         when "child"
                             @modelviewImmutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable(selectedNamespace))
                             @modelviewMutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable(selectedNamespace))
-                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
+                            @modelviewComponent(undefined)
                             newModelViewChildren = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren(selectedNamespace)
                             @modelviewChildren(newModelViewChildren.childrenCount and newModelViewChildren or undefined)                            
                             @modelviewCollection(undefined)
@@ -310,11 +408,12 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
     <span class="classObjectModelNavigatorNamespaceSubtitle" data-bind="html: subtitle"></span>
 </div>
 
+<span data-bind="if: modelviewSummary"><span data-bind="with: modelviewSummary"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceSummary'}"></span></span></span>
 
 <span data-bind="if: modelviewImmutable"><span data-bind="with: modelviewImmutable"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceImmutable' }"></span></span></span>
 <span data-bind="if: modelviewMutable"><span data-bind="with: modelviewMutable"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceMutable'}"></span></span></span>
 <span data-bind="if: modelviewChildren"><span data-bind="with: modelviewChildren"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceChildren'}"></span></span></span>
-<span data-bind="if: modelviewCollection"><span data-bind="with: modelviewCollection"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCollection'}"></span></span></span>
 <span data-bind="if: modelviewComponent"><span data-bind="with: modelviewComponent"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceComponent'}"></span></span></span>
+<span data-bind="if: modelviewCollection"><span data-bind="with: modelviewCollection"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCollection'}"></span></span></span>
 
 """))
