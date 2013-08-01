@@ -446,9 +446,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 
 <div class="classObjectModelNavigatorNamespaceTitleBar">
     <span class="classObjectModelNavigatorNamespaceTitle" data-bind="html: title"></span><br>
-    <span class="classObjectModelNavigatorNamespaceSubtitle">
-        <span data-bind="html: subtitle"></span> (<span data-bind="html: hashString"></span>)
-    <span>
+    <span class="classObjectModelNavigatorNamespaceSubtitle"><span data-bind="html: subtitle"></span><span>
 </div>
 
 <span data-bind="if: modelviewSummary"><span data-bind="with: modelviewSummary"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceSummary'}"></span></span></span>
