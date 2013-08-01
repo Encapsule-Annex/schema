@@ -27,11 +27,13 @@ Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and E
 
 
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement
-    constructor: (prefix_, label_, selector_, selectorStore_) ->
+    constructor: (prefix_, label_, selector_, selectorStore_, options_) ->
         try
             @selector = selector_.clone()
             @selectorStore = selectorStore_
-            @prefix= prefix_
+            options = options_? and options_ or {}
+            @optionsNoLink = options.noLink? and options.noLink or false
+            @prefix = prefix_
             @label = label_
             @onClick = =>
                 @selectorStore.setSelector(@selector)
@@ -40,8 +42,14 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement failure: #{exception}"
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceContextElement", ( -> """
-<span class="classObjectModelNavigatorNamespaceContextPrefix" data-bind="text: prefix"></span>
-<span class="classObjectModelNavigatorNamespaceContextLabel classObjectModelNavigatorMouseOverCursorPointer" data-bind="text: label, click: onClick"></span>
+<span data-bind="if: prefix"><span class="classObjectModelNavigatorNamespaceContextPrefix" data-bind="text: prefix"></span></span>
+<span data-bind="ifnot: optionsNoLink">
+    <span class="classObjectModelNavigatorNamespaceContextLabel classObjectModelNavigatorMouseOverCursorPointer" data-bind="text: label, click: onClick"></span>
+</span>
+<span data-bind="if: optionsNoLink">
+    <span class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="text: label"></span>
+</span>
+
 """))
 
 
@@ -71,37 +79,46 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 """))
 
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
-    constructor: (namespace_) ->
+    constructor: (namespace_, selectorStore_) ->
         try
+            namespaceSelector = namespace_.getResolvedSelector()
+            namespaceSelectorHash = namespaceSelector.getHashString()
             componentSelector = undefined
             if namespace_.objectModelDescriptor.isComponent
-                componentSelector = namespace_.getResolvedSelector()
+                componentSelector = namespaceSelector
             else
                 componentSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(
                     namespace_.objectModelDescriptor.idComponent, namespace_.resolvedKeyVector)
-                
-            @componentDescription = ""
 
-            extensionPointsString = ""
-            @extensionPointsCount = Encapsule.code.lib.js.dictionaryLength(componentSelector.objectModelDescriptor.extensionPoints)
+            componentNamespace = selectorStore_.associatedObjectStore.openNamespace(componentSelector)
+                
+            @componentModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(
+                "", componentNamespace.getResolvedLabel(), componentSelector, selectorStore_, { noLink: namespace_.objectModelDescriptor.isComponent} )
+
+            @extensionPointModelViewArray = []
+
+            index = 0
             for extensionPointPath, extensionPointDescriptor of componentSelector.objectModelDescriptor.extensionPoints
                 extensionPointSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(extensionPointDescriptor.id, namespace_.resolvedKeyVector)
                 extensionPointNamespace = namespace_.objectStore.openNamespace(extensionPointSelector)
-                extensionPointsString += " #{extensionPointNamespace.getResolvedLabel()}<br>"
-
-            @extensionPointsString = ko.observable(extensionPointsString)
-
-
+                noLinkFlag = namespaceSelectorHash == extensionPointSelector.getHashString()
+                prefix = undefined
+                if index++ then prefix = " : "
+                @extensionPointModelViewArray.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(
+                    prefix, extensionPointNamespace.getResolvedLabel(), extensionPointSelector, selectorStore_, { noLink: noLinkFlag })
 
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent failure: #{exception}"
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceComponent", ( -> """
-<div class="classObjectModelNavigatorNamespaceSectionTitle">Extension Points (<span data-bind="text: extensionPointsCount"></span>)</div>
+<span data-bind="if: extensionPointModelViewArray.length">
+<div class="classObjectModelNavigatorNamespaceSectionTitle">
+    <span data-bind="with: componentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span> Extension Points (<span data-bind="text: extensionPointModelViewArray.length"></span>)</div>
 </div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceComponent">
-<span data-bind="html: extensionPointsString"></span>
+<span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement', foreach: extensionPointModelViewArray }"></span>
 </div>
+</span>
 """))
 
 
@@ -223,37 +240,23 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
                             parentComponentSelector = objectStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentComponentId, selector.selectKeyVector)
                             if true # parentComponentSelector.pathId
                                 parentComponentNamespace = objectStore_.associatedObjectStore.openNamespace(parentComponentSelector)
-                                prefix = index++ and " : " or "^ "
+                                prefix = index++ and " < " or ""
                                 labelLast = parentComponentNamespace.objectModelDescriptor.label
                                 label = "#{parentComponentNamespace.getResolvedLabel()}"
                                 @context.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(prefix, label, parentComponentNamespace.getResolvedSelector(), objectStore_)
 
-                    if @context().length
-                        @title("#{labelLast} : #{resolvedLabel}")
-                    else
-                        @title("#{resolvedLabel}")
-
-                    mvvmTypeToNamespaceTypeMap = {
-                        "root": "Object Store"
-                        "child": "Namespace"
-                        "extension": "Collection"
-                        "archetype": "Component"
-                    }
 
                     mvvmType = selector.objectModelDescriptor.mvvmType
 
-                    subtitle = """
-                        Type: <strong>#{mvvmTypeToNamespaceTypeMap[mvvmType]}</strong>
-                        //
-                        Description: <strong>#{selector.objectModelDescriptor.description}</strong>
-                        """
+                    @title("""<strong>#{resolvedLabel}</strong>""")
+                    subtitle = """#{selector.objectModelDescriptor.description}"""
                     @subtitle(subtitle)
 
                     switch mvvmType
                         when "root"
                             @modelviewImmutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable(selectedNamespace))
                             @modelviewMutable(undefined)
-                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace))
+                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
                             newModelViewChildren = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren(selectedNamespace)
                             @modelviewChildren(newModelViewChildren.childrenCount and newModelViewChildren or undefined)
                             @modelviewCollection(undefined)
@@ -261,7 +264,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
                         when "child"
                             @modelviewImmutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable(selectedNamespace))
                             @modelviewMutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable(selectedNamespace))
-                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace))
+                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
                             newModelViewChildren = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren(selectedNamespace)
                             @modelviewChildren(newModelViewChildren.childrenCount and newModelViewChildren or undefined)                            
                             @modelviewCollection(undefined)
@@ -269,14 +272,14 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
                         when "extension"
                             @modelviewImmutable(undefined)
                             @modelviewMutable(undefined)
-                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace))
+                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
                             @modelviewChildren(undefined)
                             @modelviewCollection(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection(selectedNamespace))
                             break
                         when "archetype"
                             @modelviewImmutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable(selectedNamespace))
                             @modelviewMutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable(selectedNamespace))
-                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace))
+                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
                             newModelViewChildren = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren(selectedNamespace)
                             @modelviewChildren(newModelViewChildren.childrenCount and newModelViewChildren or undefined)
                             @modelviewCollection(undefined)
@@ -303,7 +306,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 
 
 <div class="classObjectModelNavigatorNamespaceTitleBar">
-    <span class="classObjectModelNavigatorNamespaceTitle" data-bind="html: title"></span><br>
+    <span class="classObjectModelNavigatorNamespaceTitle" data-bind="html: title"></span>
     <span class="classObjectModelNavigatorNamespaceSubtitle" data-bind="html: subtitle"></span>
 </div>
 
