@@ -62,13 +62,61 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable
     constructor: (namespace_) ->
         try
+            @propertyModelViews = []
+
+            namespaceSelector = namespace_.getResolvedSelector()
+            namespaceDescriptor = namespaceSelector.objectModelDescriptor
+            namespaceStoreData = namespace_.objectStoreNamespace
+
+            # TODO: change namespaceDescriptor to namespaceDeclaration in descriptor
+            namespaceDeclaration = namespaceDescriptor.namespaceDescriptor
+
+            if not (namespaceDeclaration? and namespaceDeclaration)
+                throw "Cannot resolve namespace declaration for selection."
+
+            namespaceDeclarationImmutable = namespaceDeclaration.userImmutable? and namespaceDeclaration.userImmutable or undefined
+
+            if not (namespaceDeclarationImmutable? and namespaceDeclarationImmutable)
+                return
+
+            # Enumerate the object model's declaration of this namespace's immutable properties.
+            for name, value of namespaceDeclarationImmutable
+                propertyDescriptor =
+                    immutable: true
+                    declaration:
+                        property: name
+                        members: value
+                    store:
+                        value: namespaceStoreData[name]
+
+                @propertyModelViews.push propertyDescriptor
+
+
+
+
+
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceImmutable", ( -> """
-<div class="classObjectModelNavigatorNamespaceSectionTitle">Immutable Properties</div>
+<div class="classObjectModelNavigatorNamespaceSectionTitle">
+    Immutable Properties (<span data-bind="text: propertyModelViews.length"></span>)
+</div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceImmutable">
+    <span data-bind="if: propertyModelViews.length">
+        <div class="classObjectModelNavigatorNamespaceProperties">
+            <span data-bind="foreach: propertyModelViews">
+                <span class="name"><span class="immutable" data-bind="text: declaration.property"></span></span>
+                (<span class="type" data-bind="text: declaration.members.type"></span>)
+                <span class="value"><span class="immutable" data-bind="text: store.value"></span></span>
+                <br>
+            </span>
+        </div>
+    </span>
+    <span data-bind="ifnot: propertyModelViews.length">
+        <i>This namespace has no immutable properties.</i>
+    </span>
 </div>
 """))
 
@@ -78,13 +126,58 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable
     constructor: (namespace_) ->
         try
+            @propertyModelViews = []
+
+            namespaceSelector = namespace_.getResolvedSelector()
+            namespaceDescriptor = namespaceSelector.objectModelDescriptor
+            namespaceStoreData = namespace_.objectStoreNamespace
+
+            # TODO: change namespaceDescriptor to namespaceDeclaration in descriptor
+            namespaceDeclaration = namespaceDescriptor.namespaceDescriptor
+
+            if not (namespaceDeclaration? and namespaceDeclaration)
+                throw "Cannot resolve namespace declaration for selection."
+
+            namespaceDeclarationMutable = namespaceDeclaration.userMutable? and namespaceDeclaration.userMutable or undefined
+
+            if not (namespaceDeclarationMutable? and namespaceDeclarationMutable)
+                return
+
+            # Enumerate the object model's declaration of this namespace's mutable properties.
+            for name, value of namespaceDeclarationMutable
+                propertyDescriptor =
+                    immutable: false
+                    declaration:
+                        property: name
+                        members: value
+                    store:
+                        value: namespaceStoreData[name]
+
+                @propertyModelViews.push propertyDescriptor
+
+
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceMutable", ( -> """
-<div class="classObjectModelNavigatorNamespaceSectionTitle">Mutable Properties</div>
-<div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceMutable">
+<div class="classObjectModelNavigatorNamespaceSectionTitle">
+    Mutable Properties (<span data-bind="text: propertyModelViews.length"></span>)
+</div>
+<div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceImmutable">
+    <span data-bind="if: propertyModelViews.length">
+        <div class="classObjectModelNavigatorNamespaceProperties">
+            <span data-bind="foreach: propertyModelViews">
+                <span class="name" data-bind="text: declaration.property"></span>
+                (<span class="type" data-bind="text: declaration.members.type"></span>)
+                <span class="value" data-bind="text: store.value"></span>
+                <br>
+            </span>
+        </div>
+    </span>
+    <span data-bind="ifnot: propertyModelViews.length">
+        <i>This namespace has no mutable properties.</i>
+    </span>
 </div>
 """))
 
@@ -241,7 +334,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
 
             mvvmToNamespaceType = {
                 "root": "object store"
-                "child": "subnamespace"
+                "child": "namespace"
                 "extension": "extension point"
                 "archetype": "component"
             }
@@ -249,7 +342,8 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
 
             @namespaceLabel = namespace_.getResolvedLabel()
             namespaceMvvmType = namespace_.objectModelDescriptor.mvvmType
-            @namespaceType = "#{mvvmToNamespaceIndefiniteArticle[namespaceMvvmType]} <strong>#{mvvmToNamespaceType[namespaceMvvmType]}</strong>"
+            @namespaceTypePlain = mvvmToNamespaceType[namespaceMvvmType]
+            @namespaceType = "#{mvvmToNamespaceIndefiniteArticle[namespaceMvvmType]} <strong>#{@namespaceTypePlain}</strong>"
 
 
             componentId = namespace_.objectModelDescriptor.idComponent
@@ -296,15 +390,24 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceSummary", ( -> """
     <div class="classObjectModelNavigatorNamespaceSectionTitle">Namespace Summary</div>
     <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceSummary">
-        <span class="classObjectModelNavigatorNamespaceContextLabelNoLink"><span data-bind="html: namespaceLabel"></span></span>
-        is <span data-bind="html: namespaceType"></span><span data-bind="ifnot: displayComponent || displayExtension">.</span>
+
+        <span data-bind="ifnot: displayComponent || displayExtension">
+            <span class="classObjectModelNavigatorNamespaceContextLabelNoLink"><span data-bind="html: namespaceLabel"></span></span>
+            is <span data-bind="html: namespaceType"></span>.
+        </span>
+
         <span data-bind="if: displayComponent">
-            of the
+            <span class="classObjectModelNavigatorNamespaceContextLabelNoLink"><span data-bind="html: namespaceLabel"></span></span>
+            <span data-bind="html: namespaceTypePlain"></span>
+            is part of the
             <span data-bind="with: componentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
             <span data-bind="html: componentType"></span>.
         </span>
+
         <span data-bind="if: displayExtension">
-            that extends the
+            <span class="classObjectModelNavigatorNamespaceContextLabelNoLink"><span data-bind="html: namespaceLabel"></span></span>
+            <span data-bind="html: namespaceTypePlain"></span>
+            extends the
             <span data-bind="with: extendedComponentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
             <span data-bind="html: extendedComponentType"></span>
             via its

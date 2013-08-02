@@ -183,17 +183,17 @@ color: #333333;
 }
 
 .classObjectModelNavigatorNamespaceSectionCommon {
-background-color: rgba(0,0,0,0.1);
+background-color: rgba(0,0,0,0.05);
 padding: 4px;
 padding-left: 10px;
 margin-top: 0px;
 margin-left: 10px;
 margin-right: 4px;
 margin-bottom: 10px;
-border-top: 1px solid rgba(255,255,255,0.21);
-border-bottom: 1px solid rgba(0,0,0,0.21);
-border-right: 1px solid rgba(255,255,255,0.21);
-border-left: 1px solid rgba(0,0,0,0.21);
+border-bottom: 1px solid rgba(0,0,0,0.11);
+border-top: 1px solid rgba(255,255,255,0.11);
+border-left: 1px solid rgba(255,255,255,0.11);
+border-right: 1px solid rgba(0,0,0,0.11);
 -moz-border-bottom-right-radius: 8px; border-bottom-right-radius: 8px;
 }
 
@@ -208,14 +208,37 @@ margin-right: 4px;
 margin-bottom: 0px;
 padding: 2px;
 padding-left: 10px;
-background-color: rgba(0,0,0,0.2);
-border-bottom: 1px solid rgba(0,0,0,0.21);
-border-right: 1px solid rgba(255,255,255,0.21);
-border-left: 1px solid rgba(0,0,0,0.21);
-border-top: 1px solid rgba(0,0,0,0.21);
+background-color: rgba(0,0,0,0.1);
 -moz-border-top-left-radius: 8px; border-top-left-radius: 8px;
 }
 
+
+.classObjectModelNavigatorNamespaceProperties {
+font-family: Courier;
+font-size: 9pt;
+color: #999999;
+}
+
+.classObjectModelNavigatorNamespaceProperties .name {
+color: #CCCCCC;
+}
+
+.classObjectModelNavigatorNamespaceProperties .name .immutable {
+color: #999999;
+}
+
+
+.classObjectModelNavigatorNamespaceProperties .type {
+color: #FF9900;
+}
+
+.classObjectModelNavigatorNamespaceProperties .value {
+color: white;
+}
+
+.classObjectModelNavigatorNamespaceProperties .value .immutable {
+color: #444444;
+}
 
 .classObjectModelNavigatorNamespaceImmutable {
 

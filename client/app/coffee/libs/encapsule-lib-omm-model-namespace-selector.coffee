@@ -45,26 +45,36 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             # ============================================================================
             @internalVerifySelector = =>
                 try
-                    if @selectKeyVector.length > @selectKeysRequired
-                        Console.message("Encapsule.code.lib.omm.ObjectModelNamespaceSelector.internalVerifySelector failure!")
-                        Console.message("... OM='#{@objectModel.jsonTag}' path='#{@objectModelDescriptor.path}' id=#{@objectModelDescriptor.id}")
-                        Console.message("... selectKeysRequired=#{@selectKeysRequired} selectKeysProvided=#{@selectKeysProvided} selectKeysReady=#{@selectKeysReady} selectKeyVector.length=#{@selectKeyVector.length}")
-                        message = "... selectKeyVector=["
-                        first = true
-                        for key in @selectKeyVector
-                            if not first
-                                message += ", "
-                            else
-                                first = false
-                            message += "'#{key}'"
-                        message += "]"
-                        Console.message(message)
 
-                        throw "**** Invalid object model namespace selector specifies more select keys than required and cannot be used to create a valid hash string! ***"
+                    if not (@objectModelDescriptor? and @objectModelDescriptor)
+                        throw "**** Missing cached object model descriptor ****"
+
+                    if not (@objectModelDescriptor.namespaceDescriptor? and @objectModelDescriptor.namespaceDescriptor)
+                        throw "**** Missing cached namespace declaration ****"
+
+                    if @selectKeyVector.length > @selectKeysRequired
+                        throw "**** Invalid object model namespace selector specifies more select keys than required ****"
+
+
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector failure: #{exception}"
 
+                    Console.message("Encapsule.code.lib.omm.ObjectModelNamespaceSelector.internalVerifySelector failure!")
+                    Console.message("... OM='#{@objectModel.jsonTag}' path='#{@objectModelDescriptor.path}' id=#{@objectModelDescriptor.id}")
+                    Console.message("... selectKeysRequired=#{@selectKeysRequired} selectKeysProvided=#{@selectKeysProvided} selectKeysReady=#{@selectKeysReady} selectKeyVector.length=#{@selectKeyVector.length}")
+                    message = "... selectKeyVector=["
+                    first = true
+                    for key in @selectKeyVector
+                        if not first
+                            message += ", "
+                        else
+                            first = false
+                        message += "'#{key}'"
+                    message += "]"
+                    Console.message(message)
+    
+                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector failure: #{exception}"
+    
 
             #
             # ============================================================================
@@ -144,8 +154,12 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             # Get the OM descriptor associated with the specified OM path.
 
             @objectModelDescriptor = @objectModel.objectModelDescriptorById[pathId_]
+
             if not (@objectModelDescriptor? and @objectModelDescriptor)
                 throw "Unable to resolve object model descriptor for path #{objectModelPath_}"
+
+            if not (@objectModelDescriptor.namespaceDescriptor? and @objectModelDescriptor.namespaceDescriptor)
+                Console.message "Object descriptor appears corrupt missing namespace descriptor"
             
             @selectKeyVector = selectKeyVector_? and selectKeyVector_ or []
 

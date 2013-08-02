@@ -52,6 +52,14 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encaps
         # \ BEGIN: constructor scope
         try
             # \ BEGIN: constructor try scope
+            if not (objectStore_? and objectStore_)
+                throw "Missing object store input parameter."
+            if not (objectModelNavigatorWindow_? and objectModelNavigatorWindow_)
+                throw "Missing parent object model navigator window input parameter."
+            if not (namespaceSelector_? and namespaceSelector_)
+                throw "Missing namespace selector input parameter."
+
+
             super(objectStore_, objectModelNavigatorWindow_, namespaceSelector_)
 
                 

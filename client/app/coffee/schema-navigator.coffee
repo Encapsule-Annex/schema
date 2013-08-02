@@ -191,6 +191,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                         mvvmType: "extension"
                         description: "SCDL catalogue object collection."
                         archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype
+                        namespaceDescriptor: {
+                        }
                     }
                 }
 

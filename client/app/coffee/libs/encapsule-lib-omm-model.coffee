@@ -97,6 +97,8 @@ class Encapsule.code.lib.omm.ObjectModelBase
                     extensionDescriptor = objectModelLayoutObject_.objectDescriptor.archetype # may be undefined
                     extensionPathId = -1
 
+                    namespaceDeclaration = objectModelLayoutObject_.objectDescriptor.namespaceDescriptor? and objectModelLayoutObject_.objectDescriptor.namespaceDescriptor or {}
+
                     # Build this descriptor and add it to the OM's descriptor array.
                     thisDescriptor = @objectModelDescriptorById[id] = {
                         "id": id
@@ -107,7 +109,7 @@ class Encapsule.code.lib.omm.ObjectModelBase
                         "path":  path
                         "label": objectModelLayoutObject_.label
                         "description": objectModelLayoutObject_.objectDescriptor.description
-                        "namespaceDescriptor": objectModelLayoutObject_.objectDescriptor.namespaceDescriptor
+                        "namespaceDescriptor": namespaceDeclaration
                         "mvvmType": mvvmType
                         "archetypePathId": -1           
                         "parent": parentDescriptor_
