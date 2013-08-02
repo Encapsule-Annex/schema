@@ -297,17 +297,17 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
     <div class="classObjectModelNavigatorNamespaceSectionTitle">Namespace Summary</div>
     <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceSummary">
         <span class="classObjectModelNavigatorNamespaceContextLabelNoLink"><span data-bind="html: namespaceLabel"></span></span>
-        is <span data-bind="html: namespaceType"></span><span data-bind="ifnot: displayComponent">.</span>
+        is <span data-bind="html: namespaceType"></span><span data-bind="ifnot: displayComponent || displayExtension">.</span>
         <span data-bind="if: displayComponent">
             of the
             <span data-bind="with: componentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
             <span data-bind="html: componentType"></span>.
         </span>
         <span data-bind="if: displayExtension">
-            <br>Extends
+            that extends the
             <span data-bind="with: extendedComponentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
             <span data-bind="html: extendedComponentType"></span>
-            via
+            via its
             <span data-bind="with: extensionPointModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
             <span data-bind="html: extensionPointType"></span>.
         </span>
@@ -446,7 +446,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 
 <div class="classObjectModelNavigatorNamespaceTitleBar">
     <span class="classObjectModelNavigatorNamespaceTitle" data-bind="html: title"></span><br>
-    <span class="classObjectModelNavigatorNamespaceSubtitle"><span data-bind="html: subtitle"></span><span>
+    <span class="classObjectModelNavigatorNamespaceSubtitle"><span data-bind="html: subtitle"></span><span><br><br>
 </div>
 
 <span data-bind="if: modelviewSummary"><span data-bind="with: modelviewSummary"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceSummary'}"></span></span></span>

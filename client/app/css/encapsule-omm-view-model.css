@@ -46,6 +46,7 @@ border-left: 1px solid rgba(255,255,255,0.1);
 border-bottom: 1px solid rgba(0,0,0,0.1);
 border-right: 1px solid rgba(0,0,0,0.1);
 -moz-border-radius: 8px; border-radius: 8px;
+background-color: rgba(0,0,0,0.05);
 }
 
 .classMenuSelectedOuter {
@@ -54,11 +55,11 @@ border-right: 1px solid rgba(255,255,255,0.1);
 border-top: 1px solid rgba(0,0,0,0.1);
 border-left: 1px solid rgba(0,0,0,0.1);
 -moz-border-radius: 8px; border-radius: 8px;
-background-color: rgba(255,255,255,0.05);
+background-color: rgba(0,200,255,0.1);
 }
 
 .classMenuSelected {
-background-color: rgba(0,200,255,0.7);
+background-color: rgba(0,200,255,0.5);
 font-weight: bold;
 font-size: 10pt;
 color: black;
@@ -66,7 +67,6 @@ text-decoration: none;
 padding: 0.05em;
 white-space: nowrap;
 width: auto;
-margin-left: 4px;
 overflow: hidden;
 text-overflow: ellipsis;
 border-top: 1px solid rgba(0,0,0,0.5);
@@ -77,9 +77,11 @@ border-right: 1px solid rgba(255,255,255,0.5);
 }
 
 .classMenuUnselectedOuter {
+background-color: rgba(0,0,0,0.1);
 }
 
 .classMenuUnselected {
+background-color: rgba(255,255,255,0.05);
 font-weight: normal;
 font-size: 10pt;
 color: #CCCCCC;
@@ -87,7 +89,6 @@ text-decoration: none;
 padding: 0.05em;
 white-space: nowrap;
 width: auto;
-margin-left: 4px;
 overflow: hidden;
 text-overflow: ellipsis;
 border-top: 1px solid rgba(255,255,255,0.2);
@@ -120,12 +121,18 @@ border-bottom: 1px solid rgba(0,0,0,0.2);
 .classObjectModelNavigatorNamespaceContextLabel {
 color: #99CCFF;
 font-style: normal;
+font-family: Verdana, Arial;
+font-size: 10pt;
+font-weight: normal;
+text-decoration: underline;
 }
 
 .classObjectModelNavigatorNamespaceContextLabelNoLink {
 color: #444444;
 font-weight: bold;
 font-style: normal;
+font-family: Verdana, Arial;
+font-size: 10pt;
 }
 
 .classObjectModelNavigatorNamespaceContextPrefix {
@@ -140,11 +147,15 @@ padding-left: 10px;
 
 .classObjectModelNavigatorNamespaceTitle {
 font-size: 16pt;
+font-weight: bold;
+font-family: Verdana, Arial;
+color: black;
+text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
 }
 
 .classObjectModelNavigatorNamespaceSubtitle {
-font-size: 8pt;
-font-weight: normal;
+font-size: 10pt;
+font-weight: bold;
 font-family: Courier;
 color: #444444;
 }
@@ -187,14 +198,17 @@ border-left: 1px solid rgba(0,0,0,0.21);
 }
 
 .classObjectModelNavigatorNamespaceSectionTitle {
+font-size: 10pt;
+font-weight: bold;
+font-family: Verdana, Arial;
+color: #CCCCCC;
 margin-top: 0px;
 margin-left: 10px;
 margin-right: 4px;
 margin-bottom: 0px;
-padding: 4px;
+padding: 2px;
 padding-left: 10px;
 background-color: rgba(0,0,0,0.2);
-color: #999999;
 border-bottom: 1px solid rgba(0,0,0,0.21);
 border-right: 1px solid rgba(255,255,255,0.21);
 border-left: 1px solid rgba(0,0,0,0.21);
