@@ -155,14 +155,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                             objectDescriptor: {
                                 mvvmType: "extension"
                                 description: "SCDL person models."
-                                archetype: {
-                                    jsonTag: "person"
-                                    label: "Person"
-                                    objectDescriptor: {
-                                        mvvmType: "archetype"
-                                        description: "SCDL person model."
-                                    } # person objectDescriptor
-                                } # person archetype
+                                archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPersonArchetype
                             } # people objectDescriptor
                         } # people
                         {
@@ -171,14 +164,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                             objectDescriptor: {
                                 mvvmType: "extension"
                                 description: "SCDL organization models."
-                                archetype: {
-                                    jsonTag: "organization"
-                                    label: "Organization"
-                                    objectDescriptor: {
-                                        mvvmType: "archetype"
-                                        description: "SCDL organization model."
-                                    } # organization objectDescriptor
-                                } # organization archetype
+                                archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOrganizationArchetype
                             } # organizations objectDescriptor
                         } # organizations
                         {
@@ -187,14 +173,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                             objectDescriptor: {
                                 mvvmType: "extension"
                                 description: "SCDL license models."
-                                archetype: {
-                                    jsonTag: "license"
-                                    label: "License"
-                                    objectDescriptor: {
-                                        mvvmType: "archetype"
-                                        description: "SCDL license model."
-                                    } # license objectDescriptor
-                                } # license archetype
+                                archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutLicenseArchetype
                             } # licenses objectDescriptor
                         } # licenses
                         {
@@ -203,14 +182,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                             objectDescriptor: {
                                 mvvmType: "extension"
                                 description: "SCDL copyright models."
-                                archetype: {
-                                    jsonTag: "copyright"
-                                    label: "Copyright"
-                                    objectDescriptor: {
-                                        mvvmType: "archetype"
-                                        description: "SCDL copyright model."
-                                    } # copyright objectDescriptor
-                                } # copyright archetype
+                                archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCopyrightArchetype
                             } # copyrights objectDescriptor
                         } # copyrights
                     ] # assets submenu

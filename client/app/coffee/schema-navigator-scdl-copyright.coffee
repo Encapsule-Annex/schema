@@ -24,3 +24,14 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
+Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCopyrightArchetype = {
+    jsonTag: "copyright"
+    label: "Copyright"
+    objectDescriptor: {
+        mvvmType: "archetype"
+        description: "SCDL copyright model."
+        namespaceDescriptor: {
+            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        }
+    } 
+}
