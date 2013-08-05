@@ -96,10 +96,11 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             #Console.message("... mode='#{mode_}'")
             #Console.message("... key='" + (key_? and key_ or "undefined") + "'")
 
-            storeReference = undefined
-
             if not (mode_? and mode_) then throw "Missing required mode input parameter value!"
             mode = mode_
+
+            storeReference = undefined
+            semanticBindings = @objectStore.objectModel.getSemanticBindings()
 
             switch objectModelDescriptor_.mvvmType
                 when "root"
@@ -178,7 +179,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                             namespace = elementObject[objectModelDescriptor_.jsonTag]
 
                             # Get the namespace's key actual
-                            namespaceKey = @objectStore.objectModel.getSemanticBindings().getUniqueKey(namespace)
+                            namespaceKey = semanticBindings.getUniqueKey(namespace)
                         
                             if namespaceKey == key_
                                 storeReference = namespace
@@ -203,7 +204,9 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                                 break
                             storeReference = {}
                             @internalInitializeNamespaceMembers(storeReference, objectModelDescriptor_.namespaceDescriptor)
-                            key_ = storeReference.uuid
+                            key_ = semanticBindings.getUniqueKey(storeReference)
+                            if not (key_? and key_)
+                                throw "Component does not correctly initialize its root namespace. Unable to obtain unique ID for new component."
                             objectReference = {}
                             objectReference[objectModelDescriptor_.jsonTag] = storeReference
                             objectStoreReference_.push objectReference
