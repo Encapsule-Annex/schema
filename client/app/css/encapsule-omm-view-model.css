@@ -46,7 +46,7 @@ border-left: 1px solid rgba(255,255,255,0.1);
 border-bottom: 1px solid rgba(0,0,0,0.1);
 border-right: 1px solid rgba(0,0,0,0.1);
 -moz-border-radius: 8px; border-radius: 8px;
-background-color: rgba(0,0,0,0.05);
+background-color: rgba(0,0,0,0.02);
 }
 
 .classMenuSelectedOuter {
@@ -119,7 +119,7 @@ border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
 .classObjectModelNavigatorNamespaceContextLabel {
-color: #99CCFF;
+color: #00FF00;
 font-style: normal;
 font-family: Verdana, Arial;
 font-size: 10pt;
@@ -129,7 +129,7 @@ text-decoration: underline;
 
 .classObjectModelNavigatorNamespaceContextLabelNoLink {
 color: #444444;
-font-weight: bold;
+font-weight: normal;
 font-style: normal;
 font-family: Verdana, Arial;
 font-size: 10pt;
@@ -137,8 +137,21 @@ font-size: 10pt;
 
 .classObjectModelNavigatorNamespaceContextPrefix {
 color: white;
-font-weight: bold;
+font-weight: normal;
 }
+
+
+.classObjectModelNavigatorNamespaceCallbackLink {
+}
+.classObjectModelNavigatorNamespaceCallbackLink .prefix {
+}
+.classObjectModelNavigatorNamespaceCallbackLink .link {
+color: #000099;
+text-decoration: underline;
+}
+.classObjectModelNavigatorNamespaceCallbackLink .nolink {
+}
+
 
 .classObjectModelNavigatorNamespaceTitleBar {
 padding: 4px;
@@ -156,8 +169,8 @@ text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
 .classObjectModelNavigatorNamespaceSubtitle {
 font-size: 10pt;
 font-weight: bold;
-font-family: Courier;
-color: #444444;
+font-family: Arial;
+color: white;
 }
 
 
@@ -182,21 +195,6 @@ font-family: Lucica Console, Courier;
 color: #333333;
 }
 
-.classObjectModelNavigatorNamespaceSectionCommon {
-background-color: rgba(0,0,0,0.05);
-padding: 4px;
-padding-left: 10px;
-margin-top: 0px;
-margin-left: 10px;
-margin-right: 4px;
-margin-bottom: 10px;
-border-bottom: 1px solid rgba(0,0,0,0.11);
-border-top: 1px solid rgba(255,255,255,0.11);
-border-left: 1px solid rgba(255,255,255,0.11);
-border-right: 1px solid rgba(0,0,0,0.11);
--moz-border-bottom-right-radius: 8px; border-bottom-right-radius: 8px;
-}
-
 .classObjectModelNavigatorNamespaceSectionTitle {
 font-size: 10pt;
 font-weight: bold;
@@ -208,9 +206,41 @@ margin-right: 4px;
 margin-bottom: 0px;
 padding: 2px;
 padding-left: 10px;
-background-color: rgba(0,0,0,0.1);
+background-color: rgba(255,255,255, 0.1);
 -moz-border-top-left-radius: 8px; border-top-left-radius: 8px;
 }
+
+.classObjectModelNavigatorNamespaceSectionCommon {
+background-color: rgba(255,255,255,0.2);
+padding: 4px;
+padding-left: 10px;
+margin-top: 0px;
+margin-left: 10px;
+margin-right: 4px;
+margin-bottom: 10px;
+border-bottom: 1px solid rgba(0,0,0,0.11);
+border-top: 1px solid rgba(255,255,255,0.11);
+border-left: 1px solid rgba(255,255,255,0.11);
+border-right: 1px solid rgba(255,255,255,0.2);
+-moz-border-bottom-right-radius: 8px; border-bottom-right-radius: 8px;
+}
+
+.classObjectModelNavigatorNamespaceSummary {
+
+}
+
+.classObjectModelNavigatorNamespaceSummary TABLE {
+border: none;
+margin: 0px;
+padding: 0px;
+width: 0%;
+}
+
+.classObjectModelNavigatorNamespaceSummary TABLE TD {
+color: black;
+border: none;
+}
+
 
 
 .classObjectModelNavigatorNamespaceProperties {
@@ -221,15 +251,17 @@ color: #999999;
 
 .classObjectModelNavigatorNamespaceProperties .name {
 color: #CCCCCC;
+font-weight: bold;
 }
 
 .classObjectModelNavigatorNamespaceProperties .name .immutable {
-color: #999999;
+color: #666666;
+font-weight: bold;
 }
 
 
 .classObjectModelNavigatorNamespaceProperties .type {
-color: #FF9900;
+color: #006699;
 }
 
 .classObjectModelNavigatorNamespaceProperties .value {
