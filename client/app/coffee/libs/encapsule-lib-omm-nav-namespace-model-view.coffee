@@ -229,8 +229,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
                 if index++ then prefix = " &bull; "
                 label = "#{extensionPointNamespace.getResolvedLabel()}"
                 subcomponentCount = extensionPointNamespace.objectStoreNamespace.length
-                if subcomponentCount
-                    label += " (#{subcomponentCount})"
+                label += " (#{subcomponentCount})"
                 @extensionPointModelViewArray.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(
                     prefix, label, extensionPointSelector, selectorStore_, { noLink: noLinkFlag })
 
@@ -266,11 +265,13 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren
                 index = 0
                 for descriptor in selector.objectModelDescriptor.children
                     childSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(descriptor.id, selector.selectKeyVector)
-                    if childSelector.objectModelDescriptor.mvvmType != "extension"
-                        childNamespace = namespace_.objectStore.openNamespace(childSelector)
-                        prefix = "#{index++ + 1}: "
-                        label =  "#{childNamespace.getResolvedLabel()}<br>"
-                        @childModelViews.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(prefix, label, childSelector, selectorStore_)
+                    childNamespace = namespace_.objectStore.openNamespace(childSelector)
+                    prefix = "#{index++ + 1}: "
+                    label =  "#{childNamespace.getResolvedLabel()}"
+                    if childSelector.objectModelDescriptor.mvvmType == "extension"
+                        label += " (#{childNamespace.objectStoreNamespace.length})"
+                    label += "<br>"
+                    @childModelViews.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(prefix, label, childSelector, selectorStore_)
                 
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren failure: #{exception}"
@@ -291,6 +292,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
     constructor: (namespace_, selectorStore_) ->
         try
+            @blipper = Encapsule.runtime.boot.phase0.blipper
             @namespaceLabel = namespace_.objectModelDescriptor.label
             semanticBindings = namespace_.objectStore.objectModel.getSemanticBindings()
             elementPathId = namespace_.objectModelDescriptor.archetypePathId
@@ -308,9 +310,10 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
             @onClickAddElement = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
                     componentNamespace = selectorStore_.associatedObjectStore.createComponent(selector_)
+                    @blipper.blip("17")
                     setTimeout( ( =>
                         selectorStore_.setSelector(componentNamespace.getResolvedSelector())
-                        ), 100)
+                        ), 0)
                         
                 catch exception
                     Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection.onClickAddElement failure: #{exception}")

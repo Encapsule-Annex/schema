@@ -49,6 +49,8 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
             # Initialize the base ObjectStore class for this SelectorStore
             super(selectorObjectModel)
 
+            @blipper = Encapsule.runtime.boot.phase0.blipper
+
             @getSelector = =>
                 try
                     selector = @rootNamespace.objectStoreNamespace.pathElements[@rootNamespace.objectStoreNamespace.pathElements.length - 1]
@@ -70,6 +72,7 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                         pathElementsArray.push parentSelector
                     pathElementsArray.push externalSelector_
                     
+                    @blipper.blip("21") # double click sound
                     @rootNamespace.updateRevision()
 
                 catch exception
