@@ -63,6 +63,7 @@ background-color: rgba(0,255,0,0.5);
 font-weight: bold;
 font-size: 10pt;
 color: black;
+text-shadow: 0.1em 0.1em 0.1em rgba(255,255,255,0.5);
 text-decoration: none;
 padding: 0.05em;
 white-space: nowrap;
@@ -86,6 +87,7 @@ font-weight: normal;
 font-size: 10pt;
 color: #CCCCCC;
 text-decoration: none;
+text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
 padding: 0.05em;
 white-space: nowrap;
 width: auto;
@@ -125,6 +127,7 @@ font-family: Verdana, Arial;
 font-size: 10pt;
 font-weight: normal;
 text-decoration: underline;
+text-shadow: 0.1em 0.1em 0.1em rgba(0,128,0,1);
 }
 
 .classObjectModelNavigatorNamespaceContextLabelNoLink {
