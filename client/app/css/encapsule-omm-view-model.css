@@ -55,11 +55,11 @@ border-right: 1px solid rgba(255,255,255,0.1);
 border-top: 1px solid rgba(0,0,0,0.1);
 border-left: 1px solid rgba(0,0,0,0.1);
 -moz-border-radius: 8px; border-radius: 8px;
-background-color: rgba(0,200,255,0.1);
+background-color: rgba(0,255,0,0.1);
 }
 
 .classMenuSelected {
-background-color: rgba(0,200,255,0.5);
+background-color: rgba(0,255,0,0.5);
 font-weight: bold;
 font-size: 10pt;
 color: black;
@@ -221,7 +221,7 @@ margin-bottom: 10px;
 border-bottom: 1px solid rgba(0,0,0,0.11);
 border-top: 1px solid rgba(255,255,255,0.11);
 border-left: 1px solid rgba(255,255,255,0.11);
-border-right: 1px solid rgba(255,255,255,0.2);
+border-right: 1px solid rgba(0,0,0,0.11);
 -moz-border-bottom-right-radius: 8px; border-bottom-right-radius: 8px;
 }
 
@@ -246,7 +246,7 @@ border: none;
 .classObjectModelNavigatorNamespaceProperties {
 font-family: Courier;
 font-size: 9pt;
-color: #999999;
+color: #444444;
 }
 
 .classObjectModelNavigatorNamespaceProperties .name {

@@ -266,10 +266,11 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren
                 index = 0
                 for descriptor in selector.objectModelDescriptor.children
                     childSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(descriptor.id, selector.selectKeyVector)
-                    childNamespace = namespace_.objectStore.openNamespace(childSelector)
-                    prefix = "#{index++ + 1}:"
-                    label =  "#{childNamespace.getResolvedLabel()}<br>"
-                    @childModelViews.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(prefix, label, childSelector, selectorStore_)
+                    if childSelector.objectModelDescriptor.mvvmType != "extension"
+                        childNamespace = namespace_.objectStore.openNamespace(childSelector)
+                        prefix = "#{index++ + 1}: "
+                        label =  "#{childNamespace.getResolvedLabel()}<br>"
+                        @childModelViews.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(prefix, label, childSelector, selectorStore_)
                 
         catch exception
             throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren failure: #{exception}"
@@ -306,7 +307,11 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
 
             @onClickAddElement = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
-                    selectorStore_.associatedObjectStore.createComponent(selector_)
+                    componentNamespace = selectorStore_.associatedObjectStore.createComponent(selector_)
+                    setTimeout( ( =>
+                        selectorStore_.setSelector(componentNamespace.getResolvedSelector())
+                        ), 100)
+                        
                 catch exception
                     Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection.onClickAddElement failure: #{exception}")
 

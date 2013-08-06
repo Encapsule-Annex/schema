@@ -84,6 +84,43 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
             
             @setSelector(externalSelector)
 
+            @objectStoreCallbacks = {
+
+                # In general seek to minimize the number of times the current selector is reset.
+                # Respond to component-level callbacks primarily (low frequency) and leverage
+                # namespace-level callbacks only to handle point updates to the current selection.
+                #
+
+                # onComponentCreated: (objectStore_, observerId_, namespaceSelector_) =>
+                # onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
+                # onChildComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
+                # onComponentRemoved: (objectStore_, observerId_, namespaceSelector_) =>
+                # onNamespaceCreated: (objectStore_, observerId_, namespaceSelector_) =>
+
+                onNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
+                    selector = @getSelector()
+                    if selector.getHashString() == namespaceSelector_.getHashString()
+                        @setSelector(@getSelector())
+
+                onChildNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
+                    selector = @getSelector()
+                    if selector.getHashString() == namespaceSelector_.getHashString()
+                        @setSelector(@getSelector())
+
+                # onParentNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
+
+                onNamespaceRemoved: (objectStore_, observerId_, namespaceSelector_) =>
+                    currentSelector = @getSelector()
+                    if currentSelector.getHashString() == namespaceSelector_.getHashString()
+                        parentId = currentSelector.objectModelDescriptor.parent.id
+                        parentSelector = @associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentId, currentSelector.resolvedKeyVector)
+                        @setSelector(parentSelector)
+                    return
+
+            }
+
+            @associatedObjectStore.registerModelViewObserver(@objectStoreCallbacks)
+
 
         catch exception
             throw "Encapsule.code.lib.omm.SelectorStore failure: #{exception}"
