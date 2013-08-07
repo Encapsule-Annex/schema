@@ -66,7 +66,20 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
                         if parentDescriptor? and parentDescriptor
                             parentSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(parentDescriptor.id, namespaceSelector_.selectKeyVector)
                             parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
-                            parentNamespaceState.menuModelView.children.splice(namespaceState.indexInParentChildArray, 1)
+
+                            parentChildMenuArray = parentNamespaceState.menuModelView.children()
+                            spliceIndex = namespaceState.indexInParentChildArray
+
+                            parentChildMenuArray.splice(spliceIndex, 1)
+
+                            while spliceIndex < parentChildMenuArray.length
+                                tailChildMenuModelView = parentChildMenuArray[spliceIndex]
+                                tailChildMenuModelViewSelector = tailChildMenuModelView.namespaceSelector
+                                tailChildMenuNamespaceState = objectStore_.openObserverNamespaceState(observerId_, tailChildMenuModelViewSelector)
+                                tailChildMenuNamespaceState.indexInParentChildArray = spliceIndex++
+
+                            parentNamespaceState.menuModelView.children(parentChildMenuArray)
+
                             return true
 
                     catch exception

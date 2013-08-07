@@ -121,12 +121,12 @@ border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
 .classObjectModelNavigatorNamespaceContextLabel {
-color: #66FF66;
-text-shadow: 1px 1px 1px #006600;
+color: rgba(0, 0, 255, 1.0);
+text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
 font-style: normal;
 font-family: Verdana, Arial;
 font-size: 10pt;
-font-weight: bold;
+font-weight: normal;
 text-decoration: underline;
 }
 
@@ -147,16 +147,22 @@ font-weight: normal;
 
 .classObjectModelNavigatorNamespaceCallbackLink {
 }
+
 .classObjectModelNavigatorNamespaceCallbackLink .prefix {
 }
+
 .classObjectModelNavigatorNamespaceCallbackLink .link {
-color: #99CCFF;
+color: #FFCC00;
 font-weight: bold;
-text-decoration: underline;
-text-shadow: 1px 1px 3px black;
+text-shadow: 0.1em 0.1em 0.1em #330000;
+text-decoration: none;
 }
+
 .classObjectModelNavigatorNamespaceCallbackLink .nolink {
 }
+
+
+
 
 
 .classObjectModelNavigatorNamespaceTitleBar {
