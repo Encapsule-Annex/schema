@@ -58,6 +58,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink
             @selectorStore = selectorStore_? and selectorStore_ or throw "Missing selector store input parameter."
             @options = options_? and options_ or {}
             @optionsNoLink = @options.noLink? and @options.noLink or false
+            @optionsStyleClass = @options.styleClass? and @options.styleClass or undefined
             @callback = callback_
 
             @onClick = =>
@@ -71,10 +72,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 <span class="classObjectModelNavigatorNamespaceCallbackLink">
 <span data-bind="if: prefix"><span class="prefix" data-bind="html: prefix"></span></span>
 <span data-bind="ifnot: optionsNoLink">
-    <span class="link classObjectModelNavigatorMouseOverCursorPointer" data-bind="html: label, click: onClick"></span>
+    <span class="link classObjectModelNavigatorMouseOverCursorPointer" data-bind="html: label, click: onClick, css: optionsStyleClass"></span>
 </span>
 <span data-bind="if: optionsNoLink">
-    <span class="nolink" data-bind="html: label"></span>
+    <span class="nolink" data-bind="html: label, css: optionsStyleClass"></span>
 </span>
 </span>
 """))
@@ -155,13 +156,14 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                     # add
                     archetypeSelector = selectorStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(
                         namespace_.objectModelDescriptor.archetypePathId, namespace_.resolvedKeyVector)
+                    archetypeLabel = archetypeSelector.objectModelDescriptor.label
                     @callbackLinkAddSubcomponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
-                        "", "Add Subcomponent", archetypeSelector, selectorStore_, undefined, @onClickAddSubcomponent)
+                        "", "Add #{archetypeLabel} Subcomponent", archetypeSelector, selectorStore_, { styleClass: "classActionAdd" }, @onClickAddSubcomponent)
 
                     # remove if subcomponents
                     @callbackLinkRemoveAllSubcomponents = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
-                        " &bull; ", "Remove All Subcomponents", namespace_.getResolvedSelector(), selectorStore_,
-                        { noLink: namespace_.objectStoreNamespace.length == 0 }, @onClickRemoveAllSubcomponents
+                        "&nbsp;", "Remove All #{archetypeLabel} Subcomponents", namespace_.getResolvedSelector(), selectorStore_,
+                        { noLink: namespace_.objectStoreNamespace.length == 0, styleClass: namespace_.objectStoreNamespace.length != 0 and "classActionRemoveAll" or undefined }, @onClickRemoveAllSubcomponents
                         )
 
                     @actionsForNamespace = true
@@ -175,7 +177,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
 
                     # remove
                     @callbackLinkRemoveComponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
-                        "", "Remove Component", componentSelector, selectorStore_, undefined, @onClickRemoveComponent)
+                        "", "Remove #{componentSelector.objectModelDescriptor.label} Component", componentSelector, selectorStore_, { styleClass: "classActionRemove" }, @onClickRemoveComponent)
 
                     @actionsForNamespace = true
                     break
@@ -192,6 +194,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 </div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceActions">
     <span data-bind="if: actionsForNamespace">
+        <div>
+
         <span data-bind="if: callbackLinkAddSubcomponent">
             <span data-bind="with: callbackLinkAddSubcomponent">
                 <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
@@ -207,6 +211,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
                 <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
             </span>
         </span>
+        </div>
     </span>
     <span data-bind="ifnot: actionsForNamespace">
         <i>No actions defined for this namespace.</i>

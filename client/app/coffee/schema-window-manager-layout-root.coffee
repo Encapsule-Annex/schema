@@ -46,7 +46,7 @@ try
         # The color of the page background may optionally be set via bodyPageBackgroundColor and will be visible
         # if glassMargin > 0 or glassOpacity < 1
         #
-        pageBackgroundColor: "#999999" # (defaults to "white" if undefined)
+        pageBackgroundColor: undefined
 
         #
         # WINDOW MANAGER "GLASS" ATTRIBUTES
@@ -55,11 +55,12 @@ try
         # Note that setting glassBackgroundImage will occlude glassBackgroundColor if specified. You can however
         # acheive splendid blending effects by setting bodyPageBackgroundColor and glassOpacity.
         #        
-        glassOpacity: 1 # defaults to 1 if undefined
+        glassOpacity: 0.4 # defaults to 1 if undefined
         glassBackgroundColor: undefined
         glassMargin: 0 # document edge to glass edge (default is 10)
-        glassBackgroundImage: "brushed-metal-1920x1080.jpg" # (default is undefined)
+        # glassBackgroundImage: "brushed-metal-1920x1080.jpg" # (default is undefined)
         # glassBackgroundImage: "background_linen.jpg" # (default is undefined)
+        glassBackgroundImage: "cdr-lillies-1920x1440.jpg" # (default is undefined)
 
     
         #
