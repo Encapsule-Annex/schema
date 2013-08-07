@@ -153,8 +153,8 @@ font-weight: normal;
 
 .classObjectModelNavigatorNamespaceCallbackLink .link {
 color: #FFCC00;
-font-weight: bold;
-text-shadow: 0.1em 0.1em 0.1em #330000;
+font-weight: normal;
+text-shadow: 0.1em 0.1em 0.15em black;
 text-decoration: none;
 }
 
