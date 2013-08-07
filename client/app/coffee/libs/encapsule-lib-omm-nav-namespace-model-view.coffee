@@ -94,10 +94,12 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
 
             @onClickAddSubcomponent = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
+                    Console.message("ObjectModelNavigatorNamespaceActions.onClickAddSubcomponent starting...")
                     componentNamespace = selectorStore_.associatedObjectStore.createComponent(selector_)
                     @blipper.blip("17")
                     setTimeout( ( =>
                         selectorStore_.setSelector(componentNamespace.getResolvedSelector())
+                        Console.message("... Success. A new component has been added and selected.")
                         ), 350)
                 catch exception
                     Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions.onClickAddSubcomponent failure: #{exception}")
@@ -109,7 +111,9 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
 
             @onClickRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
+                    Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
                     selectorStore_.associatedObjectStore.removeComponent(selector_)
+                    Console.message("... Success. The component has been removed.")
 
                 catch exception
                     Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions.onClickRemoveComponent failure: #{exception}")
@@ -136,10 +140,16 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                     break
 
                 when "archetype"
-                    # remove
+                    # This namespace is a root of a component object. Ensure the namespace selector passed to the callback
+                    # link constructor is valid.
 
+                    componentSelector = namespace_.getResolvedSelector()
+
+                    
+
+                    # remove
                     @callbackLinkRemoveComponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
-                        "", "Remove Component", namespace_.getResolvedSelector(), selectorStore_, undefined, @onClickRemoveComponent)
+                        "", "Remove Component", componentSelector, selectorStore_, undefined, @onClickRemoveComponent)
 
                     @actionsForNamespace = true
                     break

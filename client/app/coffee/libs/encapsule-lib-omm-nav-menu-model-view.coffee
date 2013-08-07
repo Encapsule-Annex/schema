@@ -27,22 +27,29 @@ Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.
 
 class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
       constructor: (objectStore_, objectModelNavigatorWindow_, namespaceSelector_) ->
-          # Cache references to this instance's construction parameters.
+          try
+              # Cache references to this instance's construction parameters.
 
-          @objectModelNavigatorWindow = objectModelNavigatorWindow_
-          @namespaceSelector = namespaceSelector_.clone()
+              @objectModelNavigatorWindow = objectModelNavigatorWindow_
+              @namespaceSelector = namespaceSelector_.clone()
 
-          @children = ko.observableArray []
+              @children = ko.observableArray []
 
-          @isSelected = ko.observable false
+              @isSelected = ko.observable false
 
-          @blipper = Encapsule.runtime.boot.phase0.blipper
+              @blipper = Encapsule.runtime.boot.phase0.blipper
 
-          namespace = objectStore_.openNamespace(namespaceSelector_)
-          @label = ko.observable namespace.getResolvedLabel()
+              namespace = objectStore_.openNamespace(namespaceSelector_)
+              @label = ko.observable namespace.getResolvedLabel()
 
-          @onClick = =>
-              @objectModelNavigatorWindow.selectorStore.setSelector(@namespaceSelector)
+              @onClick = =>
+                  try
+                      @objectModelNavigatorWindow.selectorStore.setSelector(@namespaceSelector)
+                  catch exception
+                      Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome.onClick failure: #{exception}")
+
+          catch exception
+              throw "Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome failure: #{exception}"
 
 
 class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
@@ -59,10 +66,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encaps
             if not (namespaceSelector_? and namespaceSelector_)
                 throw "Missing namespace selector input parameter."
 
-
             super(objectStore_, objectModelNavigatorWindow_, namespaceSelector_)
-
-                
 
             # / END: constructor try scope
         catch exception

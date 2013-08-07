@@ -76,7 +76,7 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                     @rootNamespace.updateRevision()
 
                 catch exception
-                    Console.messageError "Encapsule.code.lib.modelview.SelectorStore.setSelector failure: #{exception}"
+                    throw "Encapsule.code.lib.modelview.SelectorStore.setSelector failure: #{exception}"
             
             externalSelector = initialObjectStoreSelector_
             if not (externalSelector? and externalSelector)
@@ -101,24 +101,33 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                 # onNamespaceCreated: (objectStore_, observerId_, namespaceSelector_) =>
 
                 onNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
-                    selector = @getSelector()
-                    if selector.getHashString() == namespaceSelector_.getHashString()
-                        @setSelector(@getSelector())
+                    try
+                        selector = @getSelector()
+                        if selector.getHashString() == namespaceSelector_.getHashString()
+                            @setSelector(@getSelector())
+                    catch exception
+                        throw "Encapsule.code.lib.modelview.SelectorStore.objectStoreCallbacks.onNamespaceUpdated failure: #{exception}"
 
                 onChildNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
-                    selector = @getSelector()
-                    if selector.getHashString() == namespaceSelector_.getHashString()
-                        @setSelector(@getSelector())
+                    try
+                        selector = @getSelector()
+                        if selector.getHashString() == namespaceSelector_.getHashString()
+                            @setSelector(@getSelector())
+                    catch exception
+                        throw "Encapsule.code.lib.modelview.SelectorStore.objectStoreCallbacks.onChildNamespaceUpdated failure: #{exception}"
 
                 # onParentNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
 
                 onNamespaceRemoved: (objectStore_, observerId_, namespaceSelector_) =>
-                    currentSelector = @getSelector()
-                    if currentSelector.getHashString() == namespaceSelector_.getHashString()
-                        parentId = currentSelector.objectModelDescriptor.parent.id
-                        parentSelector = @associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentId, currentSelector.resolvedKeyVector)
-                        @setSelector(parentSelector)
-                    return
+                    try
+                        currentSelector = @getSelector()
+                        if currentSelector.getHashString() == namespaceSelector_.getHashString()
+                            parentId = currentSelector.objectModelDescriptor.parent.id
+                            parentSelector = @associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentId, currentSelector.selectKeyVector)
+                            @setSelector(parentSelector)
+                        return
+                    catch exception
+                        throw "Encapsule.code.lib.modelview.SelectorStore.objectStoreCallbacks.onNamespaceRemoved failure: #{exception}"
 
             }
 
@@ -126,6 +135,6 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
 
 
         catch exception
-            throw "Encapsule.code.lib.omm.SelectorStore failure: #{exception}"
+            throw "Encapsule.code.lib.modelview.SelectorStore failure: #{exception}"
 
 
