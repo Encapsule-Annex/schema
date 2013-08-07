@@ -84,13 +84,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
     constructor: (namespace_, selectorStore_) ->
         try
-            @blipper = Encapsule.runtime.boot.phase0.blipper
-
-            @actionsForNamespace = false
-
-            @callbackLinkAddSubcomponent = undefined
-            @callbackLinkRemoveAllSubcomponents = undefined
-            @callbackLinkRemoveComponent = undefined
 
             @onClickAddSubcomponent = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
@@ -106,17 +99,49 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
 
             @onClickRemoveAllSubcomponents = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
+                    Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
+                    @blipper.blip("23")
+                    @blipper.blip("27")
+
+                    archetypePathId = namespace_.objectModelDescriptor.archetypePathId
+                    archetypeSelector = selectorStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(archetypePathId)
+                    archetypeJsonTag = archetypeSelector.objectModelDescriptor.jsonTag
+                    semanticBindings = selectorStore_.associatedObjectStore.objectModel.getSemanticBindings()
+                    extensionPointNamespace = selectorStore_.associatedObjectStore.openNamespace(selector_)
+
+                    subcomponentSelectorVector = []
+                    for subcomponentStoreNamespaceRecord in extensionPointNamespace.objectStoreNamespace
+                        subcomponentStoreNamespace = subcomponentStoreNamespaceRecord[archetypeJsonTag]
+                        subcomponentKeyVector = Encapsule.code.lib.js.clone(extensionPointNamespace.resolvedKeyVector)
+                        subcomponentKeyVector.push semanticBindings.getUniqueKey(subcomponentStoreNamespace)
+                        subcomponentSelector = selectorStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(archetypePathId, subcomponentKeyVector)
+                        subcomponentSelectorVector.push subcomponentSelector
+
+                    for subcomponentSelector in subcomponentSelectorVector
+                        selectorStore_.associatedObjectStore.removeComponent(subcomponentSelector)
+
+
                 catch exception
                     Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions.onClickRemoveAllSubcomponents failure: #{exception}")
 
             @onClickRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
                     Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
+                    @blipper.blip("23")
                     selectorStore_.associatedObjectStore.removeComponent(selector_)
                     Console.message("... Success. The component has been removed.")
 
                 catch exception
                     Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions.onClickRemoveComponent failure: #{exception}")
+
+
+            #
+            # ==============================================================================
+            @blipper = Encapsule.runtime.boot.phase0.blipper
+            @actionsForNamespace = false
+            @callbackLinkAddSubcomponent = undefined
+            @callbackLinkRemoveAllSubcomponents = undefined
+            @callbackLinkRemoveComponent = undefined
 
             switch namespace_.objectModelDescriptor.mvvmType
                 when "root"
@@ -126,15 +151,18 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                     break
 
                 when "extension"
-                    # add, remove all
+
+                    # add
                     archetypeSelector = selectorStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(
                         namespace_.objectModelDescriptor.archetypePathId, namespace_.resolvedKeyVector)
-
                     @callbackLinkAddSubcomponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
                         "", "Add Subcomponent", archetypeSelector, selectorStore_, undefined, @onClickAddSubcomponent)
 
+                    # remove if subcomponents
                     @callbackLinkRemoveAllSubcomponents = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
-                        " &bull; ", "Remove All Subcomponents", namespace_.getResolvedSelector(), selectorStore_, undefined, @onClickRemoveAllSubcomponents)
+                        " &bull; ", "Remove All Subcomponents", namespace_.getResolvedSelector(), selectorStore_,
+                        { noLink: namespace_.objectStoreNamespace.length == 0 }, @onClickRemoveAllSubcomponents
+                        )
 
                     @actionsForNamespace = true
                     break
@@ -144,8 +172,6 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                     # link constructor is valid.
 
                     componentSelector = namespace_.getResolvedSelector()
-
-                    
 
                     # remove
                     @callbackLinkRemoveComponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
@@ -327,7 +353,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
             componentNamespace = selectorStore_.associatedObjectStore.openNamespace(componentSelector)
 
             @componentModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(
-                "", componentNamespace.getResolvedLabel(), componentSelector, selectorStore_, { noLink: namespace_.objectModelDescriptor.isComponent} )
+                "", componentNamespace.getResolvedLabel(), componentSelector, selectorStore_, { noLink: namespace_.objectModelDescriptor.isComponent } )
 
             @extensionPointModelViewArray = []
 
