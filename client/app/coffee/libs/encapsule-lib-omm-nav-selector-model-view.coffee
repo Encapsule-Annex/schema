@@ -39,18 +39,21 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow
                 when 0
                     break
                 when 1
-                    @prefix += """<span class="classObjectModelNavigatorPathElementPrefix"> // </span>"""
+                    @prefix += """ :: """
                     break
                 else
-                    @prefix += """<span class="classObjectModelNavigatorPathElementPrefix"> / </span>"""
+                    @prefix += """ / """
                     break
+
+            if @prefix.length
+                @prefix = """<span class="prefix">""" + @prefix + """</span>"""
 
             resolvedLabel = @pathElementNamespace.getResolvedLabel()
             @label = ""
             if @isSelected
-                @label += """<span class="classObjectModelNavigatorSelectedPathElement">#{resolvedLabel}</span>"""
+                @label += """<span class="selected">#{resolvedLabel}</span>"""
             else
-                @label += """<span class="classObjectModelNavigatorParentPathElement classObjectModelNavigatorMouseOverCursorPointer">#{resolvedLabel}</span>"""
+                @label += """<span class="parent classObjectModelNavigatorMouseOverCursorPointer">#{resolvedLabel}</span>"""
 
             @onClick = => 
                 if not @isSelected
@@ -61,7 +64,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorPathElementWindow", ( -> """
-<span data-bind="html: prefix"></span><span data-bind="html: label, click: onClick"></span>
+<span class="classObjectModelNavigatorSelectorPathElement"><span data-bind="html: prefix"></span><span data-bind="html: label, click: onClick"></span></span>
 """))
 
 
@@ -92,6 +95,6 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorSelectorWindow", ( -> """
 <div class="classObjectModelNavigatorSelectorWindow">
-<span class="classObjectModelNavigatorPathElementPrefix">&gt;&nbsp;</span><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorPathElementWindow', foreach: pathElements }">
+<span class="classObjectModelNavigatorPathElementPrefix"></span><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorPathElementWindow', foreach: pathElements }">
 </div>
 """))

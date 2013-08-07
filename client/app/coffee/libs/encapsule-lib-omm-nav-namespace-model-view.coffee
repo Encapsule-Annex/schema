@@ -552,20 +552,15 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceSummary", ( -> """
     <div class="classObjectModelNavigatorNamespaceSectionTitle">Context</div>
     <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceSummary">
-
-<table>
-    <tr>
-        <td><span data-bind="html: namespaceTypePlain"></span></td>
-        <td>
-            <span data-bind="if: displayComponent">
-                of <span data-bind="with: componentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
-            </span>
-            <span data-bind="if: displayExtension">extends <span data-bind="with: extendedComponentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }">
-            </span></span> via <span data-bind="with: extensionPointModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span></span>
-        </td>
-    </tr>
-</table>
-</div>
+        <span data-bind="html: namespaceTypePlain"></span>
+        <span data-bind="if: displayComponent">
+            of <span data-bind="with: componentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
+        </span>
+        <span data-bind="if: displayExtension">
+            extends <span data-bind="with: extendedComponentModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
+            via <span data-bind="with: extensionPointModelView"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
+        </span>
+    </div>
 """))
 
 # ******************************************************************************
@@ -628,9 +623,10 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
                             parentComponentId = parentExtensionPointSelector.objectModelDescriptor.idComponent
                             parentExtensionPointNamespace = objectStore_.associatedObjectStore.openNamespace(parentExtensionPointSelector)
                             parentComponentSelector = objectStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentComponentId, selector.selectKeyVector)
-                            if true # parentComponentSelector.pathId
+                            if true # (i.e. include the root) # parentComponentSelector.pathId
                                 parentComponentNamespace = objectStore_.associatedObjectStore.openNamespace(parentComponentSelector)
-                                prefix = index++ and " < " or ""
+                                prefix = (index and (((index == 1) and " :: ") or " : ")) or ""
+                                index++
                                 labelLast = parentComponentNamespace.objectModelDescriptor.label
                                 label = "#{parentComponentNamespace.getResolvedLabel()}"
                                 @context.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(prefix, label, parentComponentNamespace.getResolvedSelector(), objectStore_)

@@ -114,7 +114,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 initialEnable: true
                 opacity: 1.0
                 overflow: "auto"
-                backgroundColor:  "rgba(255,255,255,0.1)"
+                backgroundColor:  "rgba(255,255,255,0.4)"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.ObjectModelNavigatorNamespaceWindow

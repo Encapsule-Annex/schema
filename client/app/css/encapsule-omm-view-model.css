@@ -10,20 +10,26 @@
 .classObjectModelNavigatorSelectorWindow {
 width: auto;
 height: auto;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 margin-left: 0.5em;
 }
 
-.classObjectModelNavigatorPathElementPrefix {
-font-weight: bold;
-color: white;
+.classObjectModelNavigatorSelectorPathElement {
 }
 
-.classObjectModelNavigatorParentPathElement {
+.classObjectModelNavigatorSelectorPathElement .prefix {
+font-weight: bold;
+color: rgba(0,0,0,0.3);
+}
+
+.classObjectModelNavigatorSelectorPathElement .parent {
 font-weight: normal;
 color: #99CCFF;
 }
 
-.classObjectModelNavigatorSelectedPathElement {
+.classObjectModelNavigatorSelectorPathElement .selected {
 font-weight: bold;
 color: black;
 }
@@ -131,8 +137,8 @@ text-decoration: underline;
 }
 
 .classObjectModelNavigatorNamespaceContextLabelNoLink {
-color: black;
-text-shadow: 1px 1px 1px rgba(0,255,0, 0.3);
+color: rgba(0,0,0,0.4);
+text-shadow: 1px 1px 1px rgba(255,255,255,0.4);
 font-weight: bold;
 font-style: normal;
 font-family: Verdana, Arial;
@@ -140,8 +146,8 @@ font-size: 10pt;
 }
 
 .classObjectModelNavigatorNamespaceContextPrefix {
-color: white;
-font-weight: normal;
+color: rgba(0,0,0,0.4);
+font-weight: bold;
 }
 
 
@@ -224,7 +230,7 @@ color: #333333;
 font-size: 10pt;
 font-weight: bold;
 font-family: Verdana, Arial;
-color: #CCCCCC;
+color: rgba(0,0,0,0.3);
 margin-top: 0px;
 margin-left: 10px;
 margin-right: 4px;
@@ -268,12 +274,16 @@ background-color: #FF0000;
 border: none;
 margin: 0px;
 padding: 0px;
-width: 0%;
+width: 100%;
 }
 
 .classObjectModelNavigatorNamespaceSummary TABLE TD {
 color: black;
 border: none;
+width: 50%;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 
@@ -328,7 +338,6 @@ color: #444444;
 }
 
 .classObjectModelNavigatorNamespaceCollection {
-
 }
 
 
