@@ -158,11 +158,11 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                         namespace_.objectModelDescriptor.archetypePathId, namespace_.resolvedKeyVector)
                     archetypeLabel = archetypeSelector.objectModelDescriptor.label
                     @callbackLinkAddSubcomponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
-                        "", "Add #{archetypeLabel} Subcomponent", archetypeSelector, selectorStore_, { styleClass: "classActionAdd" }, @onClickAddSubcomponent)
+                        "", "Add #{archetypeLabel}", archetypeSelector, selectorStore_, { styleClass: "classActionAdd" }, @onClickAddSubcomponent)
 
                     # remove if subcomponents
                     @callbackLinkRemoveAllSubcomponents = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
-                        "&nbsp;", "Remove All #{archetypeLabel} Subcomponents", namespace_.getResolvedSelector(), selectorStore_,
+                        "&nbsp;", "Remove All #{namespace_.objectModelDescriptor.label}", namespace_.getResolvedSelector(), selectorStore_,
                         { noLink: namespace_.objectStoreNamespace.length == 0, styleClass: namespace_.objectStoreNamespace.length != 0 and "classActionRemoveAll" or undefined }, @onClickRemoveAllSubcomponents
                         )
 
@@ -177,7 +177,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
 
                     # remove
                     @callbackLinkRemoveComponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
-                        "", "Remove #{componentSelector.objectModelDescriptor.label} Component", componentSelector, selectorStore_, { styleClass: "classActionRemove" }, @onClickRemoveComponent)
+                        "", "Remove #{componentSelector.objectModelDescriptor.label}", componentSelector, selectorStore_, { styleClass: "classActionRemove" }, @onClickRemoveComponent)
 
                     @actionsForNamespace = true
                     break
