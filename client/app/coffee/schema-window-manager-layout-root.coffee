@@ -46,7 +46,7 @@ try
         # The color of the page background may optionally be set via bodyPageBackgroundColor and will be visible
         # if glassMargin > 0 or glassOpacity < 1
         #
-        pageBackgroundColor: undefined
+        pageBackgroundColor: "white"
 
         #
         # WINDOW MANAGER "GLASS" ATTRIBUTES
@@ -96,8 +96,8 @@ try
 
         planes: [
             Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator
-            Encapsule.code.app.winmgr.layout.root.PlaneAdvanced # DEPRECATED NAVIGATOR LIBRARY MVVM WINDOW
-            Encapsule.code.app.winmgr.layout.root.SchemaD3 
+            # Encapsule.code.app.winmgr.layout.root.PlaneAdvanced # DEPRECATED NAVIGATOR LIBRARY MVVM WINDOW
+            # Encapsule.code.app.winmgr.layout.root.SchemaD3 
             Encapsule.code.app.winmgr.layout.root.PlaneDebug # Now "About"
             ]
         }

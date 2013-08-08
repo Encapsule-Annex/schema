@@ -266,27 +266,6 @@ background-color: #CC0000;
 background-color: #FF0000;
 }
 
-.classObjectModelNavigatorNamespaceSummary {
-
-}
-
-.classObjectModelNavigatorNamespaceSummary TABLE {
-border: none;
-margin: 0px;
-padding: 0px;
-width: 100%;
-}
-
-.classObjectModelNavigatorNamespaceSummary TABLE TD {
-color: black;
-border: none;
-width: 50%;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
-}
-
-
 
 .classObjectModelNavigatorNamespaceProperties {
 font-family: Courier;

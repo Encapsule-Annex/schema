@@ -39,143 +39,32 @@ class Encapsule.code.app.Schema
 
             Encapsule.runtime.app.SchemaSession = new Encapsule.code.app.SchemaSession()
 
-            Console.messageRaw("<h3>INITIALIZING #{appName} MODEL VIEW</h3>")
+            Console.messageRaw("<h3>INITIALIZING #{appName} OBJECT MODEL MANAGER</h3>")
 
-            # ==============================================================================
-            # OMM experiments.
-
-            objectModel = 
-                Encapsule.runtime.app.SchemaObjectModel =
-                new Encapsule.code.lib.omm.ObjectModel(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
-
-            objectStore = 
-                Encapsule.runtime.app.SchemaObjectStore =
-                new Encapsule.code.lib.omm.ObjectStore(objectModel)
-
-            jsonStoreDefault = objectStore.toJSON()
-
-            selectorCatalogues = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues")
-            namespaceCatalogues = objectStore.openNamespace(selectorCatalogues)
-
-            selectorCatalogueUnresolved = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue")
-            namespaceCatalogue = objectStore.createComponent(selectorCatalogueUnresolved)
-            selectorCatalogueResolved = namespaceCatalogue.getResolvedSelector()
-
-            namespaceCatalogueTest = objectStore.openNamespace(selectorCatalogueResolved)
-
-            saveStore = objectStore.toJSON()
-
-            reconstitutedStore = new Encapsule.code.lib.omm.ObjectStore(objectModel, saveStore)
-
-            scdlMachineSelectorUnresolved = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue.models.machines.machine")
-            scdlMachineNamespace = reconstitutedStore.createComponent(scdlMachineSelectorUnresolved)
-            scdlMachineSelectorResolved = scdlMachineNamespace.getResolvedSelector()
-
-            selectorHashKey = scdlMachineSelectorResolved.getHashString()
-
-            reconstitutedStore.removeComponent(scdlMachineSelectorResolved)
-
-            jsonFinal = reconstitutedStore.toJSON(undefined, 4)
-            Console.messageRaw("<pre>#{jsonFinal}</pre>")
-
-
-            # ==============================================================================
-            # Object Model Navigator (Navigator refactored to leverage OMM library)
-
-            omNav = Encapsule.runtime.app.ObjectModelNavigatorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorWindow(objectStore)
-
-            omSelector = Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow()
-            omNav.selectorStore.registerModelViewObserver(omSelector.selectorStoreCallbacks)
-
-            omNavNamespaceWindow = Encapsule.runtime.app.ObjectModelNavigatorNamespaceWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow()
-            omNav.selectorStore.registerModelViewObserver(omNavNamespaceWindow.selectorStoreCallbacks)
-
-            omNavJsonWindow = Encapsule.runtime.app.ObjectModelNavigatorJsonModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView()
-            omNav.selectorStore.registerModelViewObserver(omNavJsonWindow.selectorStoreCallbacks)
-
-            
-
-            # Temporary code to test registraton/unregistration and callbacks from object store
-
-            ###
-            omNav.onComponentCreated = (observerId_, namespaceSelector_) ->
-                Console.message("onComponentCreated observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
-
-            omNav.onComponentUpdated = (observerId_, namespaceSelector_) ->
-                Console.message("onComponentUpdated observerId='#{observerId_}' path=#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
-
-            omNav.onChildComponentUpdated = (observerId_, namespaceSelector_) ->
-                Console.message("onChildComponentUpdated observerId='#{observerId_}' path=#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
-
-            omNav.onComponentRemoved = (observerId_, namespaceSelector_) ->
-                Console.message("onComponentRemoved observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
-
-            omNav.onNamespaceCreated = (observerId_, namespaceSelector_) ->
-                Console.message("onNamespaceCreated observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
-
-            omNav.onNamespaceUpdated = (observerId_, namespaceSelector_) ->
-                Console.message("onNamespaceUpdated observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
-
-            omNav.onChildNamespaceUpdated = (observerId_, namespaceSelector_) ->
-                Console.message("onChildNamespaceUpdated observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
-
-            omNav.onParentNamespaceUpdated = (observerId_, namespaceSelector_) ->
-                Console.message("onParentNamespaceUpdated observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
-
-            omNav.onNamespaceRemoved = (observerId_, namespaceSelector_) ->
-                Console.message("onNamespaceRemoved observerId='#{observerId_}' path='#{namespaceSelector_.objectModelDescriptor.path}' selector='#{namespaceSelector_.getHashString()}'")
-
-            ###
-
-
-            # Console.message("*** REGISTER MODEL VIEW")
-
-            Console.message("*** CREATE A NEW SCDL MACHINE MODEL WITH AN OBSERVER REGISTERED")
-            machineSelector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue.models.machines.machine")
-            machineNamespace = objectStore.createComponent(machineSelector)
-
-            Console.message("*** REVISE THE MACHINE NAMESPACE")
-            machineSelector = machineNamespace.getResolvedSelector()
-            machineNamespace.updateRevision()
-
-            # Console.message("*** REMOVE THE SCDL MACHINE MODEL WITH AN OBSERVER REGISTERED")
-            catalogueSelector = objectModel.createNamespaceSelectorFromPath("schema.client.catalogues.catalogue", machineSelector.selectKeyVector)
-            # reconstitutedStore.removeComponent(machineSelector)
-            # reconstitutedStore.removeComponent(catalogueSelector)
-
-            
-            # Just for grins, re-register the same model view so we get two notifation callback streams
-            # when we unregister below.
-
-            # Console.message("*** ATTACH ANOTHER MODEL VIEW OBSERVER TO THE STORE")
-            # id2 = reconstitutedStore.registerModelViewObserver(omNav)
-
-            jsonFinal = objectStore.toJSON(undefined, 4)
-            Console.messageRaw("<pre>#{jsonFinal}</pre>")
-
-
-            # Console.message("*** UNREGISTER MODEL VIEWS")
-            # reconstitutedStore.unregisterModelViewObserver(omNavObserverId)
-            # reconstitutedStore.unregisterModelViewObserver(id2)
-            
-
+            objectModel = Encapsule.runtime.app.SchemaObjectModel = new Encapsule.code.lib.omm.ObjectModel(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
+            objectStore = Encapsule.runtime.app.SchemaObjectStore = new Encapsule.code.lib.omm.ObjectStore(objectModel)
+            objectModelNavigatorWindow = Encapsule.runtime.app.ObjectModelNavigatorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorWindow(objectStore)
+            objectModelNavigatorSelectorWindow = Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow()
+            objectModelNavigatorWindow.selectorStore.registerModelViewObserver(objectModelNavigatorSelectorWindow.selectorStoreCallbacks)
+            objectModelNavigatorNamespaceWindow = Encapsule.runtime.app.ObjectModelNavigatorNamespaceWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow()
+            objectModelNavigatorWindow.selectorStore.registerModelViewObserver(objectModelNavigatorNamespaceWindow.selectorStoreCallbacks)
+            objectModelNavigatorJsonWindow = Encapsule.runtime.app.ObjectModelNavigatorJsonModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView()
+            objectModelNavigatorWindow.selectorStore.registerModelViewObserver(objectModelNavigatorJsonWindow.selectorStoreCallbacks)
             # ==============================================================================
 
 
-            navigatorWindow = Encapsule.runtime.app.SchemaScdlNavigatorWindow = new Encapsule.code.lib.modelview.NavigatorWindow(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
-
-            #observerId = reconstitutedStore.registerModelViewObserver(navigatorWindow)
-
-
-
-            Encapsule.runtime.app.SchemaTitlebarWindow = new Encapsule.code.app.modelview.SchemaTitleBarWindow()
             Encapsule.runtime.app.SchemaBootInfoWindow = new Encapsule.code.app.modelview.SchemaBootInfoWindow()
 
+            # Encapsule.runtime.app.SchemaTitlebarWindow = new Encapsule.code.app.modelview.SchemaTitleBarWindow()
+            # Encapsule.runtime.app.SchemaD3Main = new Encapsule.code.app.SchemaViewModelSvgPlane()
 
-            Encapsule.runtime.app.SchemaD3Main = new Encapsule.code.app.SchemaViewModelSvgPlane()
-
+            # Initialize the Encapsule Window Manager library.
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager(Encapsule.code.app.winmgr.layout.root.Layout)
 
+            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneOmmNavigator")
+            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
+            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneD3")
+            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootLayoutDebugPlane")
 
             Console.message "Initializing local URI routing:"
             Encapsule.runtime.app.SchemaRouter = new Encapsule.code.app.SchemaRouter()
@@ -183,17 +72,12 @@ class Encapsule.code.app.Schema
             Console.message( Encapsule.runtime.app.SchemaRouter.getRoute() )
             Encapsule.runtime.app.SchemaRouter.setRoute(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout.initialSelectionPath)
 
-
-            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneOmmNavigator")
-            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
-            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneD3")
-            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootLayoutDebugPlane")
-
-            Encapsule.runtime.app.SchemaD3Main.initializeD3()
+            # Encapsule.runtime.app.SchemaD3Main.initializeD3()
 
             Encapsule.runtime.boot.phase0.spinner.cancel()
             Console.message("#{appName} main application document.onLoad event handler exit error.")
             Encapsule.runtime.boot.phase0.blipper.blip "system-normal"
+
 
         catch exception
             Console.messageError """#{appPackagePublisher} #{appName} v#{appVersion} APP INIT FAIL:: #{exception}"""

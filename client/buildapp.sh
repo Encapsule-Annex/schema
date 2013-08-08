@@ -17,7 +17,7 @@ app_package_publisher="Encapsule Project"
 app_package_publisher_url="http://www.encapsule.org"
 
 # THIS CHANGES ALL THE TIME
-app_version="0.914"
+app_version="0.915"
 # 
 
 app_name="Schema"
@@ -147,8 +147,8 @@ echo "var appBuilder = \""$app_builder_email"\";" >> $build_id_js
 echo "var appBuildTime = \""$app_build_date"\";" >> $build_id_js
 echo "var appCacheManifestUrl = \"schema.appcache\";" >> $build_id_js
 echo "var appCopyright = \"2013 Encapsule Project\";" >> $build_id_js
-echo "var appLicense = \"Boost Software License v1.0\";" >> $build_id_js
-echo "var appLicenseUrl = \"http://www.boost.org/LICENSE_1_0.txt\";" >> $build_id_js
+echo "var appLicense = \"The MIT License (MIT)\";" >> $build_id_js
+echo "var appLicenseUrl = \"http://opensource.org/licenses/MIT\";" >> $build_id_js
 echo "var appGitHubRepoName = \"encapsule/schema\";" >> $build_id_js
 echo "var appGitHubRepoUrl = \"https://github.com/Encapsule/schema\";" >> $build_id_js
 echo "var appBlogName = \"Encapsule Project Blog\";" >> $build_id_js
