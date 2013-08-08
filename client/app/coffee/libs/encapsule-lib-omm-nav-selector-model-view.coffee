@@ -53,7 +53,10 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow
             if @isSelected
                 @label += """<span class="selected">#{resolvedLabel}</span>"""
             else
-                @label += """<span class="parent classObjectModelNavigatorMouseOverCursorPointer">#{resolvedLabel}</span>"""
+                styleClasses = "parent classObjectModelNavigatorMouseOverCursorPointer"
+                if pathElementSelector_.objectModelDescriptor.isComponent
+                    styleClasses += " component"
+                @label += """<span class="#{styleClasses}">#{resolvedLabel}</span>"""
 
             @onClick = => 
                 if not @isSelected

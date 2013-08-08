@@ -29,9 +29,15 @@ font-weight: normal;
 color: #99CCFF;
 }
 
+.classObjectModelNavigatorSelectorPathElement .component {
+font-weight: bold;
+color: #CCCCFF;
+}
+
+
 .classObjectModelNavigatorSelectorPathElement .selected {
 font-weight: bold;
-color: black;
+color: #00FF00;
 }
 
 

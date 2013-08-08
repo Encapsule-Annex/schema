@@ -90,7 +90,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                 try
                     Console.message("ObjectModelNavigatorNamespaceActions.onClickAddSubcomponent starting...")
                     componentNamespace = selectorStore_.associatedObjectStore.createComponent(selector_)
-                    @blipper.blip("17")
+                    @blipper.blip("23")
                     setTimeout( ( =>
                         selectorStore_.setSelector(componentNamespace.getResolvedSelector())
                         Console.message("... Success. A new component has been added and selected.")
@@ -101,7 +101,6 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
             @onClickRemoveAllSubcomponents = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
                     Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
-                    @blipper.blip("23")
                     @blipper.blip("27")
 
                     archetypePathId = namespace_.objectModelDescriptor.archetypePathId
@@ -128,7 +127,8 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
             @onClickRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
                     Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
-                    @blipper.blip("23")
+                    @blipper.blip("27")
+
                     selectorStore_.associatedObjectStore.removeComponent(selector_)
                     Console.message("... Success. The component has been removed.")
 
