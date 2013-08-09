@@ -278,10 +278,29 @@ border-right: 1px solid rgba(0,0,0,0.11);
 background-color: #00CC00;
 }
 .classActionRemove {
-background-color: #CC0000;
+background-color: #FF0000;
 }
 .classActionRemoveAll {
-background-color: #FF0000;
+background-color: #FF6600;
+}
+
+.classActionConfirmation {
+margin: 10px;
+margin-right: 20px;
+padding: 10px;
+border: 1px solid black;
+background-color: #FFFF00;
+color: black;
+box-shadow: 0.5em 0.5em 0.5em rgba(0,0,0,0.5);
+}
+
+.classActionConfirm {
+background-color: #FF6699;
+float: right;
+}
+
+.classActionCancel {
+background-color: #00CC00;
 }
 
 

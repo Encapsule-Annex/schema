@@ -54,8 +54,8 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink
         try
             @prefix = prefix_? and prefix_ or ""
             @label = label_? and label_ or "<no label provided>"
-            @selector = selector_? and selector_ and selector_.clone() or throw "Missing selector input parameter."
-            @selectorStore = selectorStore_? and selectorStore_ or throw "Missing selector store input parameter."
+            @selector = selector_? and selector_ and selector_.clone() or undefined
+            @selectorStore = selectorStore_? and selectorStore_ or undefined
             @options = options_? and options_ or {}
             @optionsNoLink = @options.noLink? and @options.noLink or false
             @optionsStyleClass = @options.styleClass? and @options.styleClass or undefined
@@ -98,7 +98,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                 catch exception
                     Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions.onClickAddSubcomponent failure: #{exception}")
 
-            @onClickRemoveAllSubcomponents = (prefix_, label_, selector_, selectorStore_, options_) =>
+            @onDoRemoveAllSubcomponents = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
                     Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
                     @blipper.blip("27")
@@ -120,11 +120,10 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                     for subcomponentSelector in subcomponentSelectorVector
                         selectorStore_.associatedObjectStore.removeComponent(subcomponentSelector)
 
-
                 catch exception
                     Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions.onClickRemoveAllSubcomponents failure: #{exception}")
 
-            @onClickRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
+            @onDoRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
                     Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
                     @blipper.blip("27")
@@ -136,13 +135,40 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                     Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions.onClickRemoveComponent failure: #{exception}")
 
 
+            @onClickRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
+                @blipper.blip("15")
+                @showConfirmRemove(true)
+
+            @onClickRemoveAllSubcomponents = (prefix_, label_, selector_, selectorStore_, options_) =>
+                @blipper.blip("15")
+                @showConfirmRemoveAll(true)
+
+            @onClickCancelActionRequest  = (prefix_, label_, selector_, selectorStore_, options_) =>
+                @showConfirmRemoveAll(false)
+                @showConfirmRemove(false)
+
+
+
+
             #
             # ==============================================================================
             @blipper = Encapsule.runtime.boot.phase0.blipper
             @actionsForNamespace = false
+
             @callbackLinkAddSubcomponent = undefined
+
+            @callbackLinkRequestRemoveAllSubcomponents = undefined
             @callbackLinkRemoveAllSubcomponents = undefined
+
+            @callbackLinkRequestRemoveComponent = undefined
             @callbackLinkRemoveComponent = undefined
+
+            @callbackLinkCancelActionRequest = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
+                "", "Cancel Request", undefined, undefined, { styleClass: "classActionCancel" }, @onClickCancelActionRequest
+                )
+
+            @showConfirmRemove = ko.observable(false)
+            @showConfirmRemoveAll = ko.observable(false)
 
             switch namespace_.objectModelDescriptor.mvvmType
                 when "root"
@@ -160,10 +186,16 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                     @callbackLinkAddSubcomponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
                         "", "Add #{archetypeLabel}", archetypeSelector, selectorStore_, { styleClass: "classActionAdd" }, @onClickAddSubcomponent)
 
-                    # remove if subcomponents
-                    @callbackLinkRemoveAllSubcomponents = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
-                        "&nbsp;", "Remove All #{namespace_.objectModelDescriptor.label}", namespace_.getResolvedSelector(), selectorStore_,
+                    # remove all subcomponents
+
+                    @callbackLinkRequestRemoveAllSubcomponents = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
+                        "", "Remove All #{namespace_.objectModelDescriptor.label}", undefined, undefined,
                         { noLink: namespace_.objectStoreNamespace.length == 0, styleClass: namespace_.objectStoreNamespace.length != 0 and "classActionRemoveAll" or undefined }, @onClickRemoveAllSubcomponents
+                        )
+
+                    @callbackLinkRemoveAllSubcomponents = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
+                        "", "Proceed with Remove All", namespace_.getResolvedSelector(), selectorStore_,
+                        { noLink: namespace_.objectStoreNamespace.length == 0, styleClass: namespace_.objectStoreNamespace.length != 0 and "classActionConfirm" or undefined }, @onDoRemoveAllSubcomponents
                         )
 
                     @actionsForNamespace = true
@@ -176,8 +208,11 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                     componentSelector = namespace_.getResolvedSelector()
 
                     # remove
+                    @callbackLinkRequestRemoveComponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
+                        "", "Remove #{componentSelector.objectModelDescriptor.label}", undefined, undefined, { styleClass: "classActionRemove" }, @onClickRemoveComponent)
+
                     @callbackLinkRemoveComponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
-                        "", "Remove #{componentSelector.objectModelDescriptor.label}", componentSelector, selectorStore_, { styleClass: "classActionRemove" }, @onClickRemoveComponent)
+                        "", "Proceed with Remove", componentSelector, selectorStore_, { styleClass: "classActionConfirm" }, @onDoRemoveComponent)
 
                     @actionsForNamespace = true
                     break
@@ -195,22 +230,46 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceActions">
     <span data-bind="if: actionsForNamespace">
         <div>
+            <span data-bind="if: callbackLinkAddSubcomponent">
+                <span data-bind="with: callbackLinkAddSubcomponent">
+                    <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                </span>
+            </span>
+            <span data-bind="if: callbackLinkRequestRemoveAllSubcomponents">
+                <span data-bind="with: callbackLinkRequestRemoveAllSubcomponents">
+                    <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                </span>
+            </span>
+            <span data-bind="if: callbackLinkRequestRemoveComponent">
+                <span data-bind="with: callbackLinkRequestRemoveComponent">
+                    <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                </span>
+            </span>
 
-        <span data-bind="if: callbackLinkAddSubcomponent">
-            <span data-bind="with: callbackLinkAddSubcomponent">
-                <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+            <span data-bind="if: showConfirmRemove">
+                <div class="classActionConfirmation">
+                    Please confirm <strong><span data-bind="text: callbackLinkRequestRemoveComponent.label"></span></span></strong> request.<br><br>
+                    <span data-bind="with: callbackLinkCancelActionRequest">
+                        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                    </span>
+                    <span data-bind="with: callbackLinkRemoveComponent">
+                        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                    </span>
+                </div>
             </span>
-        </span>
-        <span data-bind="if: callbackLinkRemoveAllSubcomponents">
-            <span data-bind="with: callbackLinkRemoveAllSubcomponents">
-                <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+
+            <span data-bind="if: showConfirmRemoveAll">
+                <div class="classActionConfirmation">
+                    Please confirm <strong><span data-bind="text: callbackLinkRequestRemoveAllSubcomponents.label"></span></span></strong> request.<br><br>
+                    <span data-bind="with: callbackLinkCancelActionRequest">
+                        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                    </span>
+                    <span data-bind="with: callbackLinkRemoveAllSubcomponents">
+                        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                    </span>
+                </div>
             </span>
-        </span>
-        <span data-bind="if: callbackLinkRemoveComponent">
-            <span data-bind="with: callbackLinkRemoveComponent">
-                <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
-            </span>
-        </span>
+
         </div>
     </span>
     <span data-bind="ifnot: actionsForNamespace">
