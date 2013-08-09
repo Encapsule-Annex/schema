@@ -485,6 +485,7 @@ Subcomponents (<span data-bind="text: subcomponentModelViews.length"></span>)
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
     constructor: (namespace_, selectorStore_) ->
         try
+            ###
             mvvmToNamespaceIndefiniteArticle = {
                 "root": "an"
                 "child": "a"
@@ -498,6 +499,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
                 "extension": "extension point"
                 "archetype": "component"
             }
+            ###
 
             # aliases
             objectStore = selectorStore_.associatedObjectStore
@@ -506,24 +508,15 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
 
             # model view members
 
-            namespaceLabel = namespaceDescriptor.label
             @namespaceLabelResolved = namespace_.getResolvedLabel()
-            namespaceType = mvvmToNamespaceType[namespaceDescriptor.mvvmType]
-            namespaceTypeDecorated = "#{mvvmToNamespaceIndefiniteArticle[namespaceDescriptor.mvvmType]} #{namespaceType}"
 
             displayComponent = false
             componentPathId = undefined
-            componentLabel = undefined
             @componentLabelResolved = undefined
-            componentType = undefined
-            componentTypeDecorated = undefined
             @componentSuffixString = undefined # set to ':' or '::' based on if the component represents the store
 
             displayExtensionPoint = false
             @extensionPointLabel = undefined
-            extensionPointLabelDecorated = undefined
-            extensionPointType = undefined
-            extensionPointTypeDecorated = undefined
 
 
             if namespaceDescriptor.id != 0
@@ -546,13 +539,9 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
                 componentSelector = objectStore.objectModel.createNamespaceSelectorFromPathId(componentPathId, namespace_.resolvedKeyVector)
                 componentDescriptor = componentSelector.objectModelDescriptor
                 componentNamespace = objectStore.openNamespace(componentSelector)
-
                 @componentSuffixString = componentDescriptor.id and ":" or "::"
-
-                componentLabel = componentDescriptor.label
                 @componentLabelResolved = componentNamespace.getResolvedLabel()
-                componentType = mvvmToNamespaceType[componentDescriptor.mvvmType]
-                componentTypeDecorated = "#{mvvmToNamespaceIndefiniteArticle[componentDescriptor.mvvmType]} #{componentType}"
+
                 
 
             if namespaceDescriptor.mvvmType == "archetype"
@@ -561,12 +550,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceSummary
 
                 extensionPointSelector = objectStore.objectModel.createNamespaceSelectorFromPathId(namespaceDescriptor.parent.id, namespace_.resolvedKeyVector)
                 extensionPointDescriptor = extensionPointSelector.objectModelDescriptor
-                extensionPointNamespace = objectStore.openNamespace(extensionPointSelector)
-
                 @extensionPointLabel = extensionPointDescriptor.label
-                extensionPointLabelResovled = extensionPointNamespace.getResolvedLabel()
-                extensionPointType = mvvmToNamespaceType["extension"]
-                extensionPointTypeDecorated = "#{mvvmToNamespaceIndefiniteArticle["extension"]} #{extensionPointType}"
 
             @templateName = undefined
 
@@ -661,29 +645,6 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
                         parentComponentSelector = objectStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentComponentId, selector.selectKeyVector)
                         parentExtensionPointPathIds = Encapsule.code.lib.js.clone(parentComponentSelector.objectModelDescriptor.parentPathExtensionPoints)
                         parentExtensionPointPathIds.push parentComponentSelector.pathId
-
-
-                    ###
-                    @context.removeAll()
-                    labelLast = ""
-                    if parentExtensionPointPathIds? and parentExtensionPointPathIds and parentExtensionPointPathIds.length
-                        index = 0
-                        for parentExtensionPointPathId in parentExtensionPointPathIds
-
-                            parentExtensionPointSelector = objectStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentExtensionPointPathId, selector.selectKeyVector)
-                            parentComponentId = parentExtensionPointSelector.objectModelDescriptor.idComponent
-                            parentExtensionPointNamespace = objectStore_.associatedObjectStore.openNamespace(parentExtensionPointSelector)
-                            parentComponentSelector = objectStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentComponentId, selector.selectKeyVector)
-                            if true # (i.e. include the root) # parentComponentSelector.pathId
-                                parentComponentNamespace = objectStore_.associatedObjectStore.openNamespace(parentComponentSelector)
-                                prefix = (index and (((index == 1) and " :: ") or " : ")) or ""
-                                index++
-                                labelLast = parentComponentNamespace.objectModelDescriptor.label
-                                label = "#{parentComponentNamespace.getResolvedLabel()}"
-                                @context.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(prefix, label, parentComponentNamespace.getResolvedSelector(), objectStore_)
-
-                    ###
-
 
                     mvvmType = selector.objectModelDescriptor.mvvmType
 
