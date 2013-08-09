@@ -190,17 +190,33 @@ box-shadow: 0em 0.5em 1em rgba(0,0,0,0.1) inset;
 
 
 
+
+
 .classObjectModelNavigatorNamespaceTitleBar {
 padding: 4px;
 padding-left: 10px;
 }
 
 .classObjectModelNavigatorNamespaceTitle {
-font-size: 16pt;
+font-size: 12pt;
 font-weight: bold;
 font-family: Verdana, Arial;
 color: black;
 text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
+}
+
+.classObjectModelNavigatorNamespaceTitle .selected {
+color: #00FF00;
+text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
+}
+
+.classObjectModelNavigatorNamespaceTitle .separator {
+}
+
+.classObjectModelNavigatorNamespaceTitle .component {
+}
+
+.classObjectModelNavigatorNamespaceTitle .ep {
 }
 
 .classObjectModelNavigatorNamespaceSubtitle {
