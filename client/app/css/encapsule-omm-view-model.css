@@ -38,6 +38,7 @@ color: #CCCCFF;
 .classObjectModelNavigatorSelectorPathElement .selected {
 font-weight: bold;
 color: #00FF00;
+text-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.75);
 }
 
 
@@ -211,7 +212,7 @@ text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
 
 .classObjectModelNavigatorNamespaceTitle .selected {
 color: #00FF00;
-text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
+text-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.75);
 font-size: 14pt;
 font-weight: bold;
 }

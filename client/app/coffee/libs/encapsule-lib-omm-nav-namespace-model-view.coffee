@@ -261,7 +261,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceImmutable", ( -> """
 <div class="classObjectModelNavigatorNamespaceSectionTitle">
-    Immutable Properties (<span data-bind="text: propertyModelViews.length"></span>)
+    Immutable Properties (<span data-bind="text: propertyModelViews.length"></span>):
 </div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceImmutable">
     <span data-bind="if: propertyModelViews.length">
@@ -322,7 +322,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceMutable", ( -> """
 <div class="classObjectModelNavigatorNamespaceSectionTitle">
-    Mutable Properties (<span data-bind="text: propertyModelViews.length"></span>)
+    Mutable Properties (<span data-bind="text: propertyModelViews.length"></span>):
 </div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceImmutable">
     <span data-bind="if: propertyModelViews.length">
@@ -383,7 +383,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 
 <span data-bind="if: extensionPointModelViewArray.length">
     <div class="classObjectModelNavigatorNamespaceSectionTitle">
-        Extension Points (<span data-bind="text: extensionPointModelViewArray.length"></span>)
+        Extension Points (<span data-bind="text: extensionPointModelViewArray.length"></span>):
     </div>
     <span data-bind="ifnot: extensionPointModelViewArray.length"><i>Extension point contains no subcomponents.</i></span>
     <span data-bind="if: extensionPointModelViewArray.length">
@@ -421,7 +421,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceChildren", ( -> """
 <span data-bind="if: childModelViews.length">
-    <div class="classObjectModelNavigatorNamespaceSectionTitle">Child Namespaces (<span data-bind="text: childModelViews.length"></span>)</div>
+    <div class="classObjectModelNavigatorNamespaceSectionTitle">Child Namespaces (<span data-bind="text: childModelViews.length"></span>):</div>
     <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceChildren">
         <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement', foreach: childModelViews }"></span>
     </div>
@@ -466,7 +466,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceCollection", ( -> """
 <div class="classObjectModelNavigatorNamespaceSectionTitle">
 <span class="class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: elementSelector.objectModelDescriptor.label"></span>
-Subcomponents (<span data-bind="text: subcomponentModelViews.length"></span>)
+Subcomponents (<span data-bind="text: subcomponentModelViews.length"></span>):
 </div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceCollection">
 <span data-bind="ifnot: subcomponentModelViews.length">
