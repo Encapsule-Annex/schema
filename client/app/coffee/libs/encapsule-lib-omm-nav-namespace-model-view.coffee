@@ -267,11 +267,11 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
     <span data-bind="if: propertyModelViews.length">
         <div class="classObjectModelNavigatorNamespaceProperties">
             <span data-bind="foreach: propertyModelViews">
-                <span class="name"><span class="immutable" data-bind="text: declaration.property"></span></span>
-                (<span class="type" data-bind="text: declaration.members.type"></span>)
-                <span class="value"><span class="immutable" data-bind="text: store.value"></span></span>
-                <br>
-            </span>
+                <div class="name"><span class="immutable" data-bind="text: declaration.property"></span></div>
+                <div class="type" data-bind="text: declaration.members.type"></div>
+                <div class="value"><span class="immutable" data-bind="text: store.value"></span></div>
+                <div style="clear: both;" />
+            </div>
         </div>
     </span>
     <span data-bind="ifnot: propertyModelViews.length">
@@ -328,11 +328,11 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
     <span data-bind="if: propertyModelViews.length">
         <div class="classObjectModelNavigatorNamespaceProperties">
             <span data-bind="foreach: propertyModelViews">
-                <span class="name" data-bind="text: declaration.property"></span>
-                (<span class="type" data-bind="text: declaration.members.type"></span>)
-                <span class="value" data-bind="text: store.value"></span>
-                <br>
-            </span>
+                <div class="name" data-bind="text: declaration.property"></div>
+                <div class="type" data-bind="text: declaration.members.type"></div>
+                <div class="value" data-bind="text: store.value"></div>
+                <div style="clear: both;" />
+            </div>
         </div>
     </span>
     <span data-bind="ifnot: propertyModelViews.length">

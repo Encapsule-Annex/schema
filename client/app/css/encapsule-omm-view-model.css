@@ -287,13 +287,18 @@ background-color: #FF0000;
 
 .classObjectModelNavigatorNamespaceProperties {
 font-family: Courier;
-font-size: 9pt;
+font-size: 10pt;
 color: #444444;
 }
 
 .classObjectModelNavigatorNamespaceProperties .name {
-color: #CCCCCC;
+color: black;
+background-color: rgba(0,255,0,0.1);
 font-weight: bold;
+float: left;
+width: 172px;
+border-bottom: 1px solid rgba(0,0,0,0.2);
+padding-left: 0.25em;
 }
 
 .classObjectModelNavigatorNamespaceProperties .name .immutable {
@@ -304,14 +309,27 @@ font-weight: bold;
 
 .classObjectModelNavigatorNamespaceProperties .type {
 color: #006699;
+float: left;
+width: 128px;
+text-align: center;
+background-color: rgba(0,200,255,0.1);
+border-bottom: 1px solid rgba(0,0,0,0.2);
+overflow: hidden;
 }
 
 .classObjectModelNavigatorNamespaceProperties .value {
 color: white;
+text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
+float: left;
+width: auto;
+background-color: rgba(255,255,255,0.1);
+border-bottom: 1px solid rgba(0,0,0,0.2);
+padding-left: 0.25em;
 }
 
 .classObjectModelNavigatorNamespaceProperties .value .immutable {
-color: #444444;
+color: #666666;
+text-shadow: none;
 }
 
 .classObjectModelNavigatorNamespaceImmutable {
