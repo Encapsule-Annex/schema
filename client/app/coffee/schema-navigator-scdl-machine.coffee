@@ -129,7 +129,6 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype = {
                                 } # transition archetype
                             } # transitions objectDescriptor
                         } # Transitions
-
                     ] # state subMenus
                 } # state archetype
             } # states objectDescriptor
