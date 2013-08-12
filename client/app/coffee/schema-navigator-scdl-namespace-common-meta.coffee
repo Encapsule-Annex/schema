@@ -35,6 +35,11 @@ Encapsule.code.app.modelview.ScdlNamespaceCommonMeta = {
         fnCreate: -> uuid.v4()
         fnReinitialize: undefined
     }
+    uuidRevision: {
+        type: "uuid"
+        fnCreate: -> uuid.v4()
+        fnReinitialize: -> uuid.v4()
+    }
     revision: {
         type: "revision"
         fnCreate: -> 0

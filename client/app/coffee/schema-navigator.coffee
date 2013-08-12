@@ -109,13 +109,12 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     semanticBindings: {
         update: (namespaceObjectReference_) ->
-            revision = namespaceObjectReference_["revision"]
-            updateTime = namespaceObjectReference_["updateTime"]
-            revision++
-            if revision? and revision
-                namespaceObjectReference_["revision"] = revision
-            if updateTime? and updateTime
-                namespaceObjectReference_["updateTime"] =  Encapsule.code.lib.util.getEpochTime()
+            if namespaceObjectReference_.revision?
+                namespaceObjectReference_.revision++
+            if namespaceObjectReference_.updateTime?
+                namespaceObjectReference_.updateTime = Encapsule.code.lib.util.getEpochTime()
+            if namespaceObjectReference_.uuidRevision?
+                namespaceObjectReference_.uuidRevision = uuid.v4()
             return true
 
         getLabel: (namespaceObjectReference_) ->
