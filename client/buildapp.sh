@@ -115,7 +115,15 @@ mkdir $schema_deploy_client_html_img
 mkdir $schema_deploy_client_html_js
 mkdir $schema_deploy_client_html_nocache
 
-cp -rv $schema_client_lib/* $schema_deploy_client_html/
+# cp -rv $schema_client_lib/* $schema_deploy_client_html/
+cp -rv $schema_client_lib/audio/ $schema_deploy_client_html/
+cp -rv $schema_client_lib/css/ $schema_deploy_client_html/
+cp -rv $schema_client_lib/img/ $schema_deploy_client_html/
+cp -rv $schema_client_lib/js/ $schema_deploy_client_html/
+cp -rv $schema_client_lib/scdl/ $schema_deploy_client_html/
+
+
+
 cp -v $schema_client_app/*.html $schema_deploy_client_html/
 cp -v $schema_client_app/.htaccess $schema_deploy_client_html/
 cp -v $schema_client_app_css/*.css $schema_deploy_client_html_css/

@@ -88,7 +88,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
             Q2WindowDescriptor: {                                            
                 id: "idScdlNavigatorMenuItemJSONWindow"                                                
                 name: "SCDL Catalogue Item JSON View"                                        
-                initialMode: "full"
+                initialMode: "min"
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0

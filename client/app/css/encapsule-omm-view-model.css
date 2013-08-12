@@ -224,16 +224,34 @@ color: rgba(0,0,0,0.5);
 
 /* title DIV */
 .classObjectModelNavigatorJsonTitle {
-font-size: 10pt;
+font-size: 12pt;
 color: #333333;
 padding: 4px;
 padding-left: 10px;
+background-color: rgba(255,255,255,0.2);
+border-bottom: 1px solid rgba(0,0,0,0.4);
+}
+
+.classObjectModelNavigatorJsonTitle .titleString {
+color: #00FF00;
+text-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.5);
+font-weight: bold;
+float: bottom;
+}
+
+
+/* selector hash string (mainly for debugging) */
+.classObjectModelNavigatorJsonSelectorHash {
+font-size: 8pt;
+font-family: Courier;
+color: black;
 background-color: rgba(0,0,0,0.1);
-border-bottom: 1px solid #999999;
+border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 /* JSON DIV */
 .classObjectModelNavigatorJsonBody {
+background-color: rgba(0,200,255,0.1);
 }
 
 /* PRE JSON container */

@@ -122,11 +122,11 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                     hashKey = "#{@objectModelDescriptor.id}"
                     index = 0
                     for selectKey in (@selectKeyVector? and @selectKeyVector or [])
-                        hashKey += index and " : " or " [ "
+                        hashKey += index and ":" or "::"
                         hashKey += "#{selectKey}"
                         index++
                     if index
-                        hashKey += " ]"
+                        hashKey += ""
 
                     return hashKey
 

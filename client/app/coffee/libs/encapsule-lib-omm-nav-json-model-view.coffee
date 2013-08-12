@@ -30,7 +30,14 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView
     constructor: ->
         try
             @title = ko.observable "<not connected>"
+            @selectorHash = ko.observable "<not connected>"
             @jsonString = ko.observable "<not connected>"
+
+            @saveJSONAsLinkHtml = ko.computed =>
+                # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
+                html = """<a href=\"data:text/json;base64,#{window.btoa(@jsonString())}\" target=\"_blank\" title="Open raw JSON in new tab..."> 
+                    <img src="./img/json_file-48x48.png" style="width: 24px; heigh: 24px; border: 0px solid black; vertical-align: middle;" ></a>"""
+
 
             @selectorStoreCallbacks = {
                 onComponentCreated: (objectStore_, observerId_, namespaceSelector_) =>
@@ -39,8 +46,9 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView
                 onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
                     selector = objectStore_.getSelector()
                     namespace = objectStore_.associatedObjectStore.openNamespace(selector)
+                    @title(namespace.getResolvedLabel())
+                    @selectorHash("Selector: <strong>#{selector.getHashString()}</strong>")
                     @jsonString(namespace.toJSON(undefined, 2))
-                    @title("<strong>#{namespace.getResolvedLabel()}</strong> JSON")
 
             }
 
@@ -49,7 +57,11 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorJsonModelView", ( -> """
-<div class="classObjectModelNavigatorJsonTitle" data-bind="html: title"></div>
+<div class="classObjectModelNavigatorJsonTitle">
+    <span data-bind="html: saveJSONAsLinkHtml"></span>
+    <span class="titleString" data-bind="html: title"></span>
+</div>
+<div class="classObjectModelNavigatorJsonSelectorHash" data-bind="html: selectorHash"></div>
 <div class="classObjectModelNavigatorJsonBody">
     <pre class="classObjectModelNavigatorJsonPreformat" data-bind="html: jsonString"></pre>
 </div>
