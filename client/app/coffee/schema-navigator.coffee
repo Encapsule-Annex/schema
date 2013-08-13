@@ -30,14 +30,19 @@ Color = net.brehaut.Color
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
+
     jsonTag: "schema"
     label: "#{appName}"
     description: "#{appName} client root."
 
+    initialSelectionPath: "schema"
+
+    ###
+    For now all these style declarations used by the v1 navigator library are disabled
+    as the new v2 OMM's MVVM classes leverage CSS exclusively.
+
     detailBelowSelectDefault: 1
     detailAboveSelectDefault: 1
-
-    initialSelectionPath: "schema"
 
     baseBackgroundColor: Color({ hue: 190, saturation: 1, value: 0.5}).toCSS()
     baseBackgroundRatioPercentPerLevel: 0
@@ -99,6 +104,12 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     menuLevelBoxShadowMouseOverSelected: { type: "inset", x: 0, y: 0, blur: 0 } 
 
 
+    # Left over from v1 navigator library. Kept for reference. We're not going to couple object model
+    # declaration with any sort of routing behavior (local or otherwise). The concepts are orthogonal
+    # generally as in non-trivial apps it's possible that several different OMM instances are active
+    # and the notion of addressable state is thus a higher-level concept than any specific OMM instance
+    # is able to manage.
+
     externalIntegration: {
         fnNotifyPathChange: (navigatorContainer_, path_) ->
             # We currently instantiate the SchemaRouter after the navigator. The first selection change
@@ -106,6 +117,9 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
             if Encapsule.runtime.app.SchemaRouter? and Encapsule.runtime.app.SchemaRouter
                 Encapsule.runtime.app.SchemaRouter.setRoute(path_)
     }
+
+    ###
+
 
     semanticBindings: {
         update: (namespaceObjectReference_) ->
@@ -129,12 +143,14 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     }
 
 
+    # TODO: Update these comments for OMM lib.
+    #
     # There are two separate namespace hierarchies defined here:
     #
     # The outer, or the navigator namespace, is comprised of a singly
     # rooted tree (the root is defined implicitly and auto-generated).
     # Each menu item in the navigator namespace is given an ID string.
-    # The ID's of sibling menu items must be distinct to ensure that each
+    # The ID's of sibling menu items must be unique to ensure that each
     # menu item is addressable withing the navigator namespace. Other than
     # this stipulation, menu ID's do not need to be unique as references to
     # a menu item are specified by its full navigator namespace path. (This
@@ -152,6 +168,69 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
 
     menuHierarchy: [
+
+        # OMM testing
+        {
+            jsonTag: "omm"
+            label: "OMM Lib Test"
+            objectDescriptor: {
+                mvvmType: "child"
+                description: "Encapsule Project Object Model Manager (OMM) library test & demo."
+                namespaceDescriptor: {
+                    userImmutable: {
+                        uuid: {
+                            type: "uuid"
+                            fnCreate: -> uuid.v4()
+                            fnReinitialize: undefined
+                        } # uuid
+                    } # userImmutable
+                } # namespaceDescriptor
+            } # obejctDescriptor
+            subMenus: [
+                {
+                    jsonTag: "extensionPointA"
+                    label: "Extension Point A"
+                    objectDescriptor: {
+                        mvvmType: "extension"
+                        description: "This is a simple extension point that allows extension of this component by additional/removal of non-recursively-declared subobject(s)."
+                        archetype: {
+                            jsonTag: "extensionA"
+                            label: "Subcomponent A"
+                            objectDescriptor: {
+                                mvvmType: "archetype"
+                                description: "This is an instance of trivial subcomponent A"
+                                namespaceDescriptor: {
+                                    userImmutable: {
+                                        uuid: {
+                                            type: "uuid"
+                                            fnCreate: -> uuid.v4()
+                                            fnReinitialize: undefined
+                                        } # uuid
+                                    } # userImmutable
+                                } # namespaceDescriptor
+                            } # objectDescriptor
+                        } # archetype
+                    } # extensionPointA objectDescriptor
+                } # extensionPointA object
+
+                {
+                    jsonTag: "extensionPointB"
+                    label: "Extension Point B"
+                    objectDescriptor: {
+                        mvvmType: "extension"
+                        description: "This is a more complex extension point that allows recursive extension of this component."
+                        archetypeReference: "schema.omm"
+                    }
+
+                } # extensionPointB object
+
+
+            ] # omm (child) subMenus
+        } # omm (child) object
+
+
+
+
         {
             jsonTag: "client"
             label: "Client"
@@ -162,7 +241,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
                     userImmutable: {
                         clientDeployment: {
                             type: "uuid"
-                            fnCreate: -> uuid.v4() # TODO: from indexdb
+                            fnCreate: -> uuid.v4()
                             fnReinitialize: undefined
                         } # clientDeployment
                         localSession: {

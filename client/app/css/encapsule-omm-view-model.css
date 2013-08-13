@@ -244,9 +244,9 @@ float: bottom;
 .classObjectModelNavigatorJsonSelectorHash {
 font-size: 8pt;
 font-family: Courier;
-color: black;
-background-color: rgba(0,0,0,0.1);
-border-bottom: 1px solid rgba(255,255,255,0.1);
+color: rgba(255,255,255,0.4);
+margin-top: 1em;
+margin-bottom: 1em;
 }
 
 /* JSON DIV */
