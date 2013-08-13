@@ -168,68 +168,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
 
     menuHierarchy: [
-
-        # OMM testing
-        {
-            jsonTag: "omm"
-            label: "OMM Lib Test"
-            objectDescriptor: {
-                mvvmType: "child"
-                description: "Encapsule Project Object Model Manager (OMM) library test & demo."
-                namespaceDescriptor: {
-                    userImmutable: {
-                        uuid: {
-                            type: "uuid"
-                            fnCreate: -> uuid.v4()
-                            fnReinitialize: undefined
-                        } # uuid
-                    } # userImmutable
-                } # namespaceDescriptor
-            } # obejctDescriptor
-            subMenus: [
-                {
-                    jsonTag: "extensionPointA"
-                    label: "Extension Point A"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "This is a simple extension point that allows extension of this component by additional/removal of non-recursively-declared subobject(s)."
-                        archetype: {
-                            jsonTag: "extensionA"
-                            label: "Subcomponent A"
-                            objectDescriptor: {
-                                mvvmType: "archetype"
-                                description: "This is an instance of trivial subcomponent A"
-                                namespaceDescriptor: {
-                                    userImmutable: {
-                                        uuid: {
-                                            type: "uuid"
-                                            fnCreate: -> uuid.v4()
-                                            fnReinitialize: undefined
-                                        } # uuid
-                                    } # userImmutable
-                                } # namespaceDescriptor
-                            } # objectDescriptor
-                        } # archetype
-                    } # extensionPointA objectDescriptor
-                } # extensionPointA object
-
-                {
-                    jsonTag: "extensionPointB"
-                    label: "Extension Point B"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "This is a more complex extension point that allows recursive extension of this component."
-                        archetypeReference: "schema.omm"
-                    }
-
-                } # extensionPointB object
-
-
-            ] # omm (child) subMenus
-        } # omm (child) object
-
-
-
+    
+        # Encapsule.code.app.modelview.OMMDeclarationTest
 
         {
             jsonTag: "client"
