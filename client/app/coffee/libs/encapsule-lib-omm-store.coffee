@@ -419,7 +419,7 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                         throw "Missing object model namespace selector input parameter!"
 
                     if objectModelNamespaceSelector_.selectKeysReady
-                        throw "Invalid resolved namespace selector in request."
+                        throw "Invalid resolved namespace selector: the namespace selector specified is resolved to an existing object and cannot be used to create a new component in the object store."
 
                     if not objectModelNamespaceSelector_.objectModelDescriptor.isComponent
                         throw "Invalid selector specifies non-component root namespace."

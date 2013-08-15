@@ -85,7 +85,7 @@ class Encapsule.code.lib.omm.ObjectModelBase
                     path = path_? and path_ and "#{path_}.#{tag}" or tag
 
                     id = @countDescriptors
-                    @countDescriptors++ # set up for the next invocation of this function (use the id var locally)
+                    @countDescriptors++ # set up for the next invocation of this function (used the id var locally)
 
                     parentPathExtensionPoints = undefined
                     if parentPathExtensionPointIdVector_? and parentPathExtensionPointIdVector_
@@ -94,8 +94,8 @@ class Encapsule.code.lib.omm.ObjectModelBase
                         parentPathExtensionPoints = []
 
                     mvvmType = objectModelLayoutObject_.objectDescriptor.mvvmType
-                    extensionDescriptor = objectModelLayoutObject_.objectDescriptor.archetype # may be undefined
-                    extensionPathId = -1
+
+                    # 
 
                     namespaceDeclaration = objectModelLayoutObject_.objectDescriptor.namespaceDescriptor? and objectModelLayoutObject_.objectDescriptor.namespaceDescriptor or {}
 
@@ -138,13 +138,33 @@ class Encapsule.code.lib.omm.ObjectModelBase
                             thisDescriptor.idComponent = thisDescriptor.parent.idComponent
                             componentDescriptor = componentDescriptor_
                             componentDescriptor.extensionPoints[path] = thisDescriptor
-                            if not (extensionDescriptor? and extensionDescriptor)
-                                throw "Cannot resolve extension object descriptor."
+
+                            processArchetypeDeclaration = undefined
+                            archetypeDescriptor = undefined
+                            if objectModelLayoutObject_.objectDescriptor.archetype? and objectModelLayoutObject_.objectDescriptor.archetype
+                                processArchetypeDeclaration = true
+                                archetypeDescriptor = objectModelLayoutObject_.objectDescriptor.archetype # may be undefined
+                            else if objectModelLayoutObject_.objectDescriptor.archetypeReference? and objectModelLayoutObject_.objectDescriptor.archetypeReference
+                                processArchetypeDeclaration = false
+                                pathReference = objectModelLayoutObject_.objectDescriptor.archetypeReference
+                                objectModelDescriptorReference = @objectModelPathMap[pathReference]
+                                if not (objectModelDescriptorReference? and objectModelDescriptorReference)
+                                    throw "Cannot process extension point declaration because its corresponding archetype reference '#{pathReference}' is not defined."
+                                if objectModelDescriptorReference.mvvmType != "archetype"
+                                    throw "Cannot process extension point declaration becuase it's corresponding archetype reference '#{pathReference}' does not refer to an 'archetype' namespace."
+                                thisDescriptor.archetypePathId = objectModelDescriptorReference.id
+                                @countExtensionReferences++
+                            else
+                                throw "Cannot process extension point declaration because its corresponding extension archetype is missing from the object model declaration."
+
                             updatedParentPathExtensionPointIdVector = Encapsule.code.lib.js.clone parentPathExtensionPoints
                             updatedParentPathExtensionPointIdVector.push id
                             @countExtensionPoints++
-                            # *** RECURSION
-                            buildOMDescriptorFromLayout(extensionDescriptor, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, updatedParentPathExtensionPointIdVector)
+
+                            # *** RECURSION (conditionally based on if the extension point defines its own archetype or referes to another by its path string)
+                            if processArchetypeDeclaration
+                                buildOMDescriptorFromLayout(archetypeDescriptor, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, updatedParentPathExtensionPointIdVector)
+
                             break
 
                         when "archetype"
@@ -215,13 +235,14 @@ class Encapsule.code.lib.omm.ObjectModelBase
             if not (@objectModelDeclaration? and @objectModelDeclaration)
                 throw "Failed to clone source object model declaration."
 
-            # Note that we patch our _copy_ of the declaration leaving the original declaration unchanged.
+            # Note that we patch our _copy_ of the declaration in order to splice in the
+            # auto-generated root namespace leaving the original declaration unchanged.
             @objectModelDeclaration.menuHierarchy = [ rootObjectDescriptor ]
 
             #
             # objectModelDescriptor = (required) reference to OM layout declaration object
             # path = (optional/used in recursion) parent descriptor's OM path (defaults to jsonTag if undefined)
-            # rank = (optional/used in recursion) directed graph rank (aka level - a zero-based count of tree depth)
+            # rank = (optional/used in recursion) directed graph rank (aka level - a zero-based count of tree height)
             # parentDescriptor_ = (optional/used in recursion) 
             #
             # buildOMDescriptorFromLayout additionally depends on the following class members
@@ -234,6 +255,7 @@ class Encapsule.code.lib.omm.ObjectModelBase
             @countComponents = 0
             @countExtensionPoints = 0
             @countExtensions = 0
+            @countExtensionReferences = 0
             @countChildren = 0
             @rankMax = 0
 
@@ -243,17 +265,18 @@ class Encapsule.code.lib.omm.ObjectModelBase
             # Some basic consistency checks to ensure that completely screwed up declaratons
             # aren't foisted upon unsuspecting observers.
 
-            if @countExtensionPoints != @countExtensions
+            if @countExtensionPoints != @countExtensions + @countExtensionReferences
                 throw "Layout declaration error: extension point and extension descriptor counts do not match. countExtensionPoints=#{@countExtensionPoints} countExtensions=#{@countExtensions}"
 
-            if @countComponents != @countExtensionPoints + 1
-                throw "Layout declaration error: component count should be extension count + 1. componentCount=#{@componentCount} countExtensions=#{@countExtensions}"
+            if @countComponents != @countExtensionPoints + 1 - @countExtensionReferences
+                throw "Layout declaration error: component count should be extension count + 1 - extension references. componentCount=#{@countComponents} countExtensions=#{@countExtensions} extensionReferences=#{@countExtensionReferences}"
 
             # Debug summary output.
             Console.message("... '#{@jsonTag}' root descriptor")
             Console.message("... #{@countChildren} child descriptor(s)")
             Console.message("... #{@countExtensionPoints} extension point descriptor(s)")
             Console.message("... #{@countExtensions} extension descriptor(s)")
+            Console.message("... #{@countExtensionReferences} extension reference(s)")
             Console.message("... <strong>#{@countDescriptors} total namespace declarations processed.</strong>")
             Console.message("... ... #{@countComponents} composable components / tallest leaf = rank #{@rankMax}")
 
@@ -272,6 +295,21 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
     constructor: (objectModelDeclaration_) ->
         try
             super(objectModelDeclaration_)
+
+            # --------------------------------------------------------------------------
+            @getNamespaceDescriptorFromPathId = (pathId_) =>
+                try
+                    if not (pathId_?) then throw "Missing path ID parameter!"
+                    if (pathId_ < 0) or (pathId_ >= @objectModelDescriptorById.length)
+                        throw "Out of range path ID '#{pathId_} cannot be resolved."
+                    objectModelDescriptor = @objectModelDescriptorById[pathId_]
+                    if not (objectModelDescriptor? and objectModelDescriptor)
+                        throw "Internal error getting namespace descriptor for path ID=#{pathId}!"
+                    return objectModelDescriptor
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectModel.getNamespaceDescriptorFromPathId failure: #{exception}"
+                
 
 
             # --------------------------------------------------------------------------
@@ -296,11 +334,7 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
             # --------------------------------------------------------------------------
             @getPathFromPathId = (pathId_) =>
                 try
-                    if not (pathId_?) then throw "Missing path ID parameter!"
-                    if (pathId_ < 0) or (pathId_ >= @objectModelDescriptorById.length)
-                        throw "Out of range path ID '#{pathId_} cannot be resolved."
-
-                    objectModelDescriptor = @objectModelDescriptorById[pathId_]
+                    objectModelDescriptor = @getNamespaceDescriptorFromPathId(pathId_)
                     if not (objectModelDescriptor? and objectModelDescriptor)
                         throw "Internal error: Can't find object descriptor for valid path ID '#{pathId_}."
                     path = objectModelDescriptor.path
@@ -313,19 +347,19 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
 
 
             # --------------------------------------------------------------------------
-            @createNamespaceSelectorFromPathId = (pathId_, selectKeyVector_) =>
+            @createNamespaceSelectorFromPathId = (pathId_, selectKeyVector_, secondaryKeyVector_) =>
                 try
-                    selector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@, pathId_, selectKeyVector_)
+                    selector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@, pathId_, selectKeyVector_, secondaryKeyVector_)
                     selector.internalVerifySelector()
                     return selector
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPathId failed: #{exception}"
 
             # --------------------------------------------------------------------------
-            @createNamespaceSelectorFromPath = (path_, selectKeyVector_) =>
+            @createNamespaceSelectorFromPath = (path_, selectKeyVector_, secondaryKeyVector_) =>
                 try
                     pathId = @getPathIdFromPath(path_)
-                    selector = @createNamespaceSelectorFromPathId(pathId, selectKeyVector_)
+                    selector = @createNamespaceSelectorFromPathId(pathId, selectKeyVector_, secondaryKeyVector_)
                     return selector
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPath failed: #{exception}"
@@ -334,8 +368,6 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
             @getSemanticBindings = =>
                 try
                     semanticBindings = @objectModelDeclaration.semanticBindings
-                    if not (semanticBindings? and semanticBindings)
-                        Console.message("Returning undefined semantic bindings.")
                     return semanticBindings
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModel failure: #{exception}"

@@ -90,14 +90,13 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
     #
     # ============================================================================
     # class Encapsule.code.lib.omm.ObjectStoreNamespace
-    internalResolveNamespaceDescriptor: (objectStoreReference_, objectModelDescriptor_, mode_, key_) =>
+    internalResolveNamespaceDescriptor: (objectStoreReference_, objectModelDescriptor_, mode_, key_, isSecondaryKey_) =>
         try
             #Console.message("ObjectStoreNamespace.internalResolveNamespaceDescriptor path='#{objectModelDescriptor_.path}'")
             #Console.message("... mode='#{mode_}'")
             #Console.message("... key='" + (key_? and key_ or "undefined") + "'")
 
             if not (mode_? and mode_) then throw "Missing required mode input parameter value!"
-            mode = mode_
 
             storeReference = undefined
             semanticBindings = @objectStore.objectModel.getSemanticBindings()
@@ -107,7 +106,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                     if not (@objectStore.objectStore? and @objectStore.objectStore)
                         throw "Error - root object store is undefined."
                     storeReference = @objectStore.objectStore
-                    switch mode
+                    switch mode_
                         when "bypass"
                             if not (storeReference? and storeReference)
                                 throw "Error - unable to resolve root namespace."
@@ -128,7 +127,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                     if not (objectStoreReference_? and objectStoreReference_)
                         throw "Error - no parent namespace provided to resolve child namespace!"
                     storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
-                    switch mode
+                    switch mode_
                         when "bypass"
                             if not (storeReference? and storeReference)
                                 throw "Error - unable to resolve child namespace."
@@ -149,7 +148,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
                 when "extension"
                     storeReference = objectStoreReference_[objectModelDescriptor_.jsonTag]
-                    switch mode
+                    switch mode_
                         when "bypass"
                             if not (storeReference? and storeReference)
                                 throw "Error - unable to resolve extension point namespace."
@@ -192,7 +191,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                        # / END: if key_? and key
 
                     # Now decide what to do based on the mode
-                    switch mode
+                    switch mode_
                         when "bypass"
                             # "bypass" mode minimally ensures the existence of the storeReference
                             if not (storeReference? and storeReference)
@@ -369,9 +368,10 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             if mode == "strict" and not objectModelNamespaceSelector_.selectKeysReady
                 throw "Object model selector extension key vector is incomplete. Cannot create object store namespace instance."
 
+            # TODO: This check was put in place hunting down a subtle bug in namespace selectors.
+            # Investigate this further to ensure that hitting this condition is expected (I believe yes).
             if mode_ == "new" and objectModelNamespaceSelector_.selectKeysRequired and objectModelNamespaceSelector_.selectKeysReady
                 Console.message("hey there!")
-
 
             # Save references to this namespace's backing object store and object model descriptor.
             @objectStore = objectStore_ # reference to ObjectStore instance
@@ -379,12 +379,14 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             @resolvedKeyVector = []
             @resolvedKeyIndexVector = []
 
+            @secondaryResolvedKeyVector = []
+            @secondaryResolvedIndexVector = []
+
             # STORE NAMESPACE DATA REFERENCE
             @objectStoreNamespace = undefined
-            @data = @objectStoreNamespace # alias
 
             # Obtain the target namespace's object model descriptor from the namespace selector.
-            @objectModelDescriptor = objectStore_.objectModel.objectModelDescriptorById[objectModelNamespaceSelector_.pathId]
+            @objectModelDescriptor = objectStore_.objectModel.getNamespaceDescriptorFromPathId(objectModelNamespaceSelector_.pathId)
 
             # Prepare to resolve parent namespaces.
             objectModel = objectStore_.objectModel # alias
@@ -397,7 +399,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                 parentObjectModelDescriptor = objectModel.objectModelDescriptorById[parentPathId]
                 if parentObjectModelDescriptor.mvvmType == "archetype"
                     key = objectModelNamespaceSelector_.getSelectKey(extensionPointIndex++)
-                objectStoreReference = @internalResolveNamespaceDescriptor(objectStoreReference, parentObjectModelDescriptor, mode, key)
+                objectStoreReference = @internalResolveNamespaceDescriptor(objectStoreReference, parentObjectModelDescriptor, mode, key, false) # process primary key
 
             if @objectModelDescriptor.parentPathIdVector.length and not (objectStoreReference? and objectStoreReference)
                 throw "Unable to resolve parent namespace(s)"
@@ -405,17 +407,41 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             # Resolve this namespace.
             key = undefined
             if @objectModelDescriptor.mvvmType == "archetype"
-                if not ((mode_ == "new") and (objectModelNamespaceSelector_.selectKeyRequired == extensionPointIndex))
+                if not ((mode_ == "new") and (objectModelNamespaceSelector_.selectKeysRequired == extensionPointIndex))
                     key = objectModelNamespaceSelector_.getSelectKey(extensionPointIndex)
                 extensionPointIndex++
 
-            @objectStoreNamespace = @internalResolveNamespaceDescriptor(objectStoreReference, @objectModelDescriptor, mode, key)
+            objectStoreReference = @internalResolveNamespaceDescriptor(objectStoreReference, @objectModelDescriptor, mode, key, false) # process primary key
 
-            if not (@objectStoreNamespace? and @objectStoreNamespace)
+            # At this point we're in one of two states:
+            # Resolved to the parent of the requested namespace OR resolved to the base component of a recursive hierarchy.
+            # Which depends on if there's a secondary select key vector or not.
+
+            for selectObject in objectModelNamespaceSelector_.secondaryKeyVector
+
+                extensionPointDescriptor = objectStore_.objectModel.getNamespaceDescriptorFromPathId(selectObject.idExtensionPoint)
+                extensionPointHeightOverBase = extensionPointDescriptor.parentPathIdVector.length - @objectModelDescriptor.parentPathIdVector.length
+
+                parentPathIdsYetToResolve = extensionPointDescriptor.parentPathIdVector.slice(
+                    extensionPointDescriptor.parentPathIdVector.length - extensionPointHeightOverBase, extensionPointHeightOverBase - 1)
+
+                for parentPathId in parentPathIdsYetToResolve
+                    parentObjectModelDescriptor = objectModel.objectModelDescriptorById[parentPathId]
+                    objectStoreReference = @internalResolveNamespaceDescriptor(objectStoreReference, parentObjectModelDescriptor, mode, undefined, false) # keys not involved within a component
+
+                # Now resolve the parent extension point.
+                objectStoreReference = @internalResolveNamespaceDescriptor(objectStoreReference, extensionPointDescriptor, mode, undefined, false) # keys not involved within component
+
+                # Finally resolve the contained recursively declared component.
+                objectStoreReference = @internalResolveNamespaceDescriptor(objectStoreReference, @objectModelDescriptor, mode, selectObject.selectKey, true) # process secondary key
+
+            if not (objectStoreReference? and objectStoreReference)
                 throw "Unable to instantiate object store namespace."
 
             if objectModelNamespaceSelector_.selectKeysRequired != @resolvedKeyVector.length
                 throw "Internal select key resolution error!"
+
+            @objectStoreNamespace = objectStoreReference
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace constructor failed: #{exception}"

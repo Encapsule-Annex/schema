@@ -31,22 +31,15 @@ Encapsule.code.app.modelview.OMMDeclarationTest = {
         mvvmType: "child"
         description: "Encapsule Project Object Model Manager (OMM) library test & demo."
         namespaceDescriptor: {
-            userImmutable: {
-                uuid: {
-                    type: "uuid"
-                    fnCreate: -> uuid.v4()
-                    fnReinitialize: undefined
-                } # uuid
-            } # userImmutable
         } # namespaceDescriptor
     } # obejctDescriptor
     subMenus: [
         {
-            jsonTag: "extensionPointA"
-            label: "Extension Point A"
+            jsonTag: "extensionPointSimple"
+            label: "Simple Object Extension Point"
             objectDescriptor: {
                 mvvmType: "extension"
-                description: "This is a simple extension point that allows extension of this component by additional/removal of non-recursively-declared subobject(s)."
+                description: "Simple (non-recurring) extension point."
                 archetype: {
                     jsonTag: "extensionA"
                     label: "Subcomponent A"
@@ -65,15 +58,42 @@ Encapsule.code.app.modelview.OMMDeclarationTest = {
                     } # objectDescriptor
                 } # archetype
             } # extensionPointA objectDescriptor
-        } # extensionPointA object
+        } # extensionPointSimple object
         {
             jsonTag: "extensionPointB"
-            label: "Extension Point B"
+            label: "Recurring Object Extension Point"
             objectDescriptor: {
                 mvvmType: "extension"
                 description: "This is a more complex extension point that allows recursive extension of this component."
-                archetypeReference: "schema.omm"
-            }
+                archetype: {
+                    jsonTag: "recursiveObject"
+                    label: "Recursive Object"
+                    objectDescriptor: {
+                        mvvmType: "archetype"
+                        description: "This object contains an extension point extended by instances of itself."
+                        namespaceDescriptor: {
+                            userImmutable: {
+                                uuid: {
+                                    type: "uuid"
+                                    fnCreate: -> uuid.v4()
+                                    fnReinitialize: undefined
+                                } # uuid
+                            } # userImmutable
+                        } # namespaceDescriptor
+                    } # objectDescriptor
+                    subMenus: [
+                        {
+                            jsonTag: "extensionPointC"
+                            label: "Extension Point"
+                            objectDescriptor: {
+                                mvvmType: "extension"
+                                description: "This extension point is extended by new instances of Recursive Object"
+                                archetypeReference: "schema.omm.extensionPointB.recursiveObject"
+                            }
+                        }
+                    ]
+                } # archetype
+            } # objectDescriptor
         } # extensionPointB object
     ] # omm (child) subMenus
 } # omm (child) object

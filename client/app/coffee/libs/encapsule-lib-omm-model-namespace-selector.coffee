@@ -36,10 +36,21 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 #     with the existence or size of this array here; undefined or length = 0 are
 #     both taken as "no keys provided" (i.e. okay for pathId's corresponding to
 #     OM paths that do not have embedded extension points).
+# secondaryKeyVector_ = orderred array of objects specifying (a) an extension
+#     point (by its ID) and a single select key. Each element of the secondary
+#     key vector is used to resolve the address of an instance of a recursive
+#     component owned by the component resolved by use of the primary key
+#     vector. Note that in a recurisve component, the component itself is
+#     specified (by reference) as the archetype or one or more of the component's
+#     extension points. Thus, in order to resolve a specific instance of a
+#     recursive component we need to know where the recursion starts (deduced
+#     from the path ID and primary key vector, and then be able to step through
+#     each sub-extension point, using the secondary vector element's EP ID/select
+#     key pair to resolve each successive level.
 #
 # ****************************************************************************
 class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
-    constructor: (objectModel_, pathId_, selectKeyVector_) ->
+    constructor: (objectModel_, pathId_, selectKeyVector_, secondaryKeyVector_) ->
         try
             #
             # ============================================================================
@@ -54,8 +65,6 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
 
                     if @selectKeyVector.length > @selectKeysRequired
                         throw "**** Invalid object model namespace selector specifies more select keys than required ****"
-
-
 
                 catch exception
 
@@ -115,6 +124,9 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             #
             @getHashString = =>
                 try
+                    if @hashString? and @hashString
+                        return @hashString
+
                     @internalVerifySelector()
                     if not @selectKeysReady
                         throw "Unable to retrieve namespace selector hash key of abstract selector."
@@ -128,6 +140,7 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                     if index
                         hashKey += ""
 
+                    @hashString = hashKey
                     return hashKey
 
                 catch exception
@@ -136,7 +149,8 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
             @clone = =>
                 @internalVerifySelector()
                 clonedSelectKeyVector = Encapsule.code.lib.js.clone(@selectKeyVector)
-                clonedSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@objectModel, @pathId, clonedSelectKeyVector)
+                clonedSecondaryKeyVector = Encapsule.code.lib.js.clone(@secondaryKeyVector)
+                clonedSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@objectModel, @pathId, clonedSelectKeyVector, clonedSecondaryKeyVector)
                 clonedSelector.internalVerifySelector()
                 return clonedSelector
 
@@ -162,6 +176,15 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                 Console.message "Object descriptor appears corrupt missing namespace descriptor"
             
             @selectKeyVector = selectKeyVector_? and selectKeyVector_ or []
+            @secondaryKeyVector = secondaryKeyVector_? and secondaryKeyVector_ or []
+
+            @secondaryKeyVectorResolved = true
+            for keyObject in @secondaryKeyVector
+                extensionPointDescriptor = objectModel_.getNamespaceDescriptorFromPathId(keyObject.idExtensionPoint)
+                if extensionPointDescriptor.mvvmType != "extension"
+                    throw "Error validating secondary key vector: key object specifies a non-extension point namespace path."
+                if not (keyObject.selectKey? and keyObject.selectKey)
+                    @secondaryKeyVectorResolved = false
 
             @selectKeysProvided = @selectKeyVector.length
             @selectKeysRequired = @objectModelDescriptor.parentPathExtensionPoints.length
@@ -170,7 +193,7 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                 @selectKeyVector = Encapsule.code.lib.js.clone(selectKeyVector_)
                 @selectKeyVector.splice(@selectKeysRequired, @selectKeysProvided - @selectKeysRequired)
 
-            @selectKeysReady = @selectKeysRequired <= @selectKeysProvided
+            @selectKeysReady = (@selectKeysRequired <= @selectKeysProvided) and @secondaryKeyVectorResolved
             @internalVerifySelector()
 
 

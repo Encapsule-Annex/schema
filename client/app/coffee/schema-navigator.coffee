@@ -169,7 +169,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     menuHierarchy: [
     
-        # Encapsule.code.app.modelview.OMMDeclarationTest
+        Encapsule.code.app.modelview.OMMDeclarationTest
 
         {
             jsonTag: "client"

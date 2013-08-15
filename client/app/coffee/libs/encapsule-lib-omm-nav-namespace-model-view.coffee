@@ -180,8 +180,32 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                 when "extension"
 
                     # add
+
+                    # Here we need to discriminate between a component archetype that was declared as a child of this
+                    # extension point in the OM declaration vs. an archetype that was defined by reference. Note that
+                    # because the declaration is processed depth-first, it's always the case that we can use a simple
+                    # relational operator to make this determination.
+
+                    secondaryKeyVector = undefined
+
+                    if namespace_.objectModelDescriptor.id > namespace_.objectModelDescriptor.archetypePathId
+
+                        # This is the more complex case where the component archetype is declared before the extension
+                        # point in the OM declaration and referred back to by reference. (This is called a
+                        # recursive component as it's extensible by instances of itself).
+                        secondaryKeyVector = namespace_.secondaryResolvedKeyVector? and namespace_.secondaryResolvedKeyVector and
+                            Encapsule.code.lib.js.clone(namespace_.secondaryResolvedKeyVector) or []
+
+                        secondarySelectPair = {
+                            idExtensionPoint: namespace_.pathId
+                            selectKey: undefined # the resulting selector is to be used to create a new component instance
+                            }
+
+                        secondaryKeyVector.push secondarySelectPair
+
                     archetypeSelector = selectorStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(
-                        namespace_.objectModelDescriptor.archetypePathId, namespace_.resolvedKeyVector)
+                        namespace_.objectModelDescriptor.archetypePathId, namespace_.resolvedKeyVector, secondaryKeyVector)
+
                     archetypeLabel = archetypeSelector.objectModelDescriptor.label
                     @callbackLinkAddSubcomponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
                         "", "Add #{archetypeLabel}", archetypeSelector, selectorStore_, { styleClass: "classActionAdd" }, @onClickAddSubcomponent)
@@ -340,6 +364,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 """))
 
 
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 #
 # ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable
@@ -400,6 +428,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 </div>
 """))
 
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 #
 # ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
@@ -454,6 +486,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 """))
 
 
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 #
 # ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren
@@ -488,6 +524,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 """))
 
 
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 #
 # ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
@@ -538,6 +578,10 @@ Subcomponents (<span data-bind="text: subcomponentModelViews.length"></span>):
 """))
 
 
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 #
 # ============================================================================
 class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceTitle
@@ -748,11 +792,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceWindow", ( -> """
-
-    <div class="classObjectModelNavigatorNamespaceHash">
-        <span data-bind="text: objectStoreName"></span>
-    </div>
-
+<div class="classObjectModelNavigatorNamespaceHash"><span data-bind="text: objectStoreName"></span></div>
 <span data-bind="if: modelviewSummary"><span data-bind="with: modelviewSummary"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceTitle' }"></span></span></span>
 <span data-bind="if: modelviewActions"><span data-bind="with: modelviewActions"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceActions' }"></span></span></span>
 <span data-bind="if: modelviewImmutable"><span data-bind="with: modelviewImmutable"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceImmutable' }"></span></span></span>
@@ -760,5 +800,4 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 <span data-bind="if: modelviewCollection"><span data-bind="with: modelviewCollection"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCollection'}"></span></span></span>
 <span data-bind="if: modelviewComponent"><span data-bind="with: modelviewComponent"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceComponent'}"></span></span></span>
 <span data-bind="if: modelviewChildren"><span data-bind="with: modelviewChildren"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceChildren'}"></span></span></span>
-
 """))
