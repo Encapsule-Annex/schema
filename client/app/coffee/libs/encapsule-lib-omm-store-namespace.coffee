@@ -96,10 +96,12 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             #Console.message("... mode='#{mode_}'")
             #Console.message("... key='" + (key_? and key_ or "undefined") + "'")
 
+            if not (objectModelDescriptor_? and objectModelDescriptor_) then throw "Missing required object model descriptor input parameter!"
             if not (mode_? and mode_) then throw "Missing required mode input parameter value!"
+            isSecondaryKey = isSecondaryKey_? and isSecondaryKey_ or false
 
             storeReference = undefined
-            semanticBindings = @objectStore.objectModel.getSemanticBindings()
+            semanticBindings = @objectStore.objectModel.getSemanticBindings() # local convenience alias
 
             switch objectModelDescriptor_.mvvmType
                 when "root"
@@ -182,8 +184,12 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                         
                             if namespaceKey == key_
                                 storeReference = namespace
-                                @resolvedKeyVector.push key_
-                                @resolvedKeyIndexVector.push index
+                                if not isSecondaryKey
+                                    @resolvedKeyVector.push key_
+                                    @resolvedKeyIndexVector.push index
+                                else
+                                    @secondaryResolvedKeyVector.push key_
+                                    @secondaryResolvedIndexVector.push index
                                 break
 
                             index++
@@ -209,9 +215,17 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                             objectReference = {}
                             objectReference[objectModelDescriptor_.jsonTag] = storeReference
                             objectStoreReference_.push objectReference
-                            @resolvedKeyVector.push key_
-                            @resolvedKeyIndexVector.push @resolvedKeyVector.length - 1
+                            if not isSecondaryKey
+                                @resolvedKeyVector.push key_
+                                @resolvedKeyIndexVector.push @resolvedKeyVector.length - 1
+                            else
+                                @secondaryResolvedKeyVector.push key_
+                                @secondaryResolvedIndexVector.push @secondaryResolvedKeyVector.length - 1
+
+                            # Create this component's constituent namespace(s)
+                            # ^^^
                             component = new Encapsule.code.lib.omm.ObjectStoreComponent(@objectStore, @resolvedKeyVector, objectModelDescriptor_.id, "new")
+
                             break
                         when "strict"
                             if not (storeReference? and storeReference)
@@ -373,12 +387,14 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             if mode_ == "new" and objectModelNamespaceSelector_.selectKeysRequired and objectModelNamespaceSelector_.selectKeysReady
                 Console.message("hey there!")
 
-            # Save references to this namespace's backing object store and object model descriptor.
+
             @objectStore = objectStore_ # reference to ObjectStore instance
             @pathId = objectModelNamespaceSelector_.pathId 
+
             @resolvedKeyVector = []
             @resolvedKeyIndexVector = []
 
+            @secondaryExtensionPointPathIdVector = []
             @secondaryResolvedKeyVector = []
             @secondaryResolvedIndexVector = []
 
@@ -433,6 +449,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                 objectStoreReference = @internalResolveNamespaceDescriptor(objectStoreReference, extensionPointDescriptor, mode, undefined, false) # keys not involved within component
 
                 # Finally resolve the contained recursively declared component.
+                @secondaryExtensionPointPathIdVector.push extensionPointDescriptor.id
                 objectStoreReference = @internalResolveNamespaceDescriptor(objectStoreReference, @objectModelDescriptor, mode, selectObject.selectKey, true) # process secondary key
 
             if not (objectStoreReference? and objectStoreReference)

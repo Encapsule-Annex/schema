@@ -25,7 +25,12 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
 class Encapsule.code.lib.omm.ObjectStoreComponent
+
     constructor: (objectStore_, selectKeyVector_, componentPathId_, mode_) ->
+
+#    constructor: (objectStore_, componentRootNamespaceSelector_, mode_) ->
+
+
         try
             if not (objectStore_? and objectStore_) then throw "Missing object store input parameter!"
             if not (mode_? and mode_) then throw "Missing mode input parameter!"

@@ -137,8 +137,11 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                         hashKey += index and ":" or "::"
                         hashKey += "#{selectKey}"
                         index++
-                    if index
-                        hashKey += ""
+
+                    index = 0
+                    for selectObject in (@secondaryKeyVector? and @secondaryKeyVector or [])
+                        hashKey += index and "^" or "*"
+                        hashKey += "#{selectObject.idExtensionPoint}:#{selectObject.selectKey}"
 
                     @hashString = hashKey
                     return hashKey
