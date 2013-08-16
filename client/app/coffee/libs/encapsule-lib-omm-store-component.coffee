@@ -25,24 +25,17 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
 class Encapsule.code.lib.omm.ObjectStoreComponent
-
-    constructor: (objectStore_, selectKeyVector_, componentPathId_, mode_) ->
-
-#    constructor: (objectStore_, componentRootNamespaceSelector_, mode_) ->
-
-
+    constructor: (objectStore_, componentSelector_, mode_) ->
         try
             if not (objectStore_? and objectStore_) then throw "Missing object store input parameter!"
             if not (mode_? and mode_) then throw "Missing mode input parameter!"
-            if not componentPathId_? then throw "Missing component path ID input parameter value!"
+            if not (componentSelector_? and componentSelector_) then throw "Missing component root namespace selector input parameter!"
 
-            componentRootNamespaceSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(componentPathId_, selectKeyVector_)
-            componentObjectModelDescriptor = componentRootNamespaceSelector.objectModelDescriptor
-
-            if not componentObjectModelDescriptor.isComponent
+            componentDescriptor = componentSelector_.objectModelDescriptor
+            if not componentDescriptor.isComponent
                 throw "Specified path ID does not address the root of any known component in this object model."
 
-            componentNamespaceIds = componentRootNamespaceSelector.objectModelDescriptor.componentNamespaceIds
+            componentNamespaceIds = componentDescriptor.componentNamespaceIds
 
             if not (componentNamespaceIds.length? and componentNamespaceIds.length)
                 throw "Internal error: Component namespace ID array should always be one or more elements!"
@@ -50,13 +43,14 @@ class Encapsule.code.lib.omm.ObjectStoreComponent
             @componentStoreNamespace = undefined
 
             for id in componentNamespaceIds
-                componentNamespaceSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(id, selectKeyVector_)
+
+                componentNamespaceSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(id, componentSelector_.selectKeyVector, componentSelector_.secondaryKeyVector)
                 componentStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(objectStore_, componentNamespaceSelector, mode_)
+
                 if not (@componentStoreNamespace? and @componentStoreNamespace)
                     @componentStoreNamespace = componentStoreNamespace
 
-            objectStore_.internalReifyStoreComponent(componentRootNamespaceSelector)
-
+            objectStore_.internalReifyStoreComponent(componentSelector_)
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreComponent failure '#{exception}'."

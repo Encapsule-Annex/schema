@@ -347,7 +347,8 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                 Console.message("... Initializing new instance of the '#{@jsonTag}' object model.")
                 @objectStore = {}
                 @objectStoreSource = "new"
-                component = new Encapsule.code.lib.omm.ObjectStoreComponent(@, undefined, @objectModel.getPathIdFromPath(@jsonTag), "new")
+                rootSelector = @objectModel.createNamespaceSelectorFromPathId(0)
+                component = new Encapsule.code.lib.omm.ObjectStoreComponent(@, rootSelector, "new")
 
 
         catch exception

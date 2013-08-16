@@ -235,8 +235,9 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
                             componentSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(objectModelDescriptor_.id, @resolvedKeyVector, secondaryKeyVector)
 
-
-                            component = new Encapsule.code.lib.omm.ObjectStoreComponent(@objectStore, @resolvedKeyVector, objectModelDescriptor_.id, "new")
+                            # component = new Encapsule.code.lib.omm.ObjectStoreComponent(@objectStore, @resolvedKeyVector, objectModelDescriptor_.id, "new")
+                            component = new Encapsule.code.lib.omm.ObjectStoreComponent(@objectStore, componentSelector, "new")
+                            
 
                             break
                         when "strict"
