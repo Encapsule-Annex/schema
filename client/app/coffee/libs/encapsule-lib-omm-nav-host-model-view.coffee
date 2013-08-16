@@ -45,11 +45,12 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
                         Console.message("ObjectModelNavigatorWindowBase.onNamespaceCreated observerId=#{observerId_}")
                         namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
                         namespaceState.menuModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow(objectStore_, @, namespaceSelector_)
+
                         if namespaceSelector_.pathId == 0
                             @rootMenuModelView = namespaceState.menuModelView
-                        parentDescriptor = namespaceSelector_.objectModelDescriptor.parent? and namespaceSelector_.objectModelDescriptor.parent or undefined
-                        if parentDescriptor? and parentDescriptor
-                            parentSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(parentDescriptor.id, namespaceSelector_.selectKeyVector)
+
+                        parentSelector = namespaceSelector_.createParentSelector()
+                        if parentSelector? and parentSelector
                             parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
                             parentNamespaceState.menuModelView.children.push namespaceState.menuModelView
                             namespaceState.indexInParentChildArray = parentNamespaceState.menuModelView.children().length - 1
@@ -60,11 +61,12 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
                     try
                         Console.message("ObjectModelNavigatorWindowBase.onNamespaceRemoved observerId=#{observerId_}")
                         namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
+
                         if namespaceSelector_.pathId == 0
                             @rootMenuModelView = undefined
-                        parentDescriptor = namespaceSelector_.objectModelDescriptor.parent? and namespaceSelector_.objectModelDescriptor.parent or undefined
-                        if parentDescriptor? and parentDescriptor
-                            parentSelector = objectStore_.objectModel.createNamespaceSelectorFromPathId(parentDescriptor.id, namespaceSelector_.selectKeyVector)
+
+                        parentSelector = namespaceSelector_.createParentSelector()
+                        if parentSelector? and parentSelector
                             parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
 
                             parentChildMenuArray = parentNamespaceState.menuModelView.children()

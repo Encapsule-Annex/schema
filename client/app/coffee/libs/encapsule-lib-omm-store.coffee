@@ -271,9 +271,6 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     throw "Encapsule.code.lib.omm.ObjectStoreBase.internalUnregisterModelViewObserver failure: #{exception}"
 
 
-
-
-
             #
             # ============================================================================
             @internalOpenObserverState = (observerId_) =>
@@ -288,39 +285,33 @@ class Encapsule.code.lib.omm.ObjectStoreBase
             #
             # ============================================================================
             @internalOpenObserverComponentState = (observerId_, namespaceSelector_) =>
-                namespaceSelector_.internalVerifySelector()
-                componentSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceSelector_.objectModelDescriptor.componentId, namespaceSelector_.selectKeyVector)
+                componentSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceSelector_.objectModelDescriptor.componentId, namespaceSelector_.selectKeyVector, namespaceSelector_.secondaryKeyVector)
                 return @internalOpenObserverNamespaceState(observerId_, componentSelector)
 
             #
             # ============================================================================
             @internalOpenObserverNamespaceState = (observerId_, namespaceSelector_) =>
-                namespaceSelector_.internalVerifySelector()
+
                 observerState = @internalOpenObserverState(observerId_)
-                namespaceRecord = observerState[namespaceSelector_.pathId]? and observerState[namespaceSelector_.pathId] or observerState[namespaceSelector_.pathId] = {}
-                componentKey = namespaceSelector_.getComponentKey()
-                namespaceState = undefined
-                if componentKey? and componentKey
-                    namespaceState = namespaceRecord[componentKey]? and namespaceRecord[componentKey] or namespaceRecord[componentKey] = {}
-                else
-                    namespaceState = namespaceRecord
+                pathRecord = observerState[namespaceSelector_.pathId]? and observerState[namespaceSelector_.pathId] or observerState[namespaceSelector_.pathId] = {}
+                namespaceHash = namespaceSelector_.getHashString()
+                namespaceState = pathRecord[namespaceHash]? and pathRecord[namespaceHash] or pathRecord[namespaceHash] = {}
                 return namespaceState
 
 
             #
             # ============================================================================
             @internalRemoveObserverNamespaceState = (observerId_, namespaceSelector_) =>
-                namespaceSelector_.internalVerifySelector()
 
                 observerState = @modelViewObserversState[observerId_]
                 if not (observerState? and observerState)
                     return @
-                namespaceRecord = observerState[namespaceSelector_.pathId]
-                if not (namespaceRecord? and namespaceRecord)
+                pathRecord = observerState[namespaceSelector_.pathId]
+                if not (pathRecord? and pathRecord)
                     return @
-                componentKey = namespaceSelector_.getComponentKey()
-                delete namespaceRecord[componentKey]
-                if Encapsule.code.lib.js.dictionaryLength(namespaceRecord) == 0
+                namespaceHash = namespaceSelector_.getHashString()
+                delete pathRecord[namespaceHash]
+                if Encapsule.code.lib.js.dictionaryLength(pathRecord) == 0
                     delete observerState[namespaceSelector_.pathId]
                 return @
 

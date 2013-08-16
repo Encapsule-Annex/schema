@@ -104,18 +104,6 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
 
             #
             # ============================================================================
-            @getComponentKey = =>
-                try
-                    @internalVerifySelector()
-                    if not (@selectKeyVector? and @selectKeyVector) then return undefined
-                    if not (@selectKeyVector.length? and @selectKeyVector.length) then return undefined
-                    return @selectKeyVector[@selectKeyVector.length - 1]
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getSelectKey failure: #{exception}"
-
-            #
-            # ============================================================================
             # Iff the namespace selector is complete (i.e. @selectKeysReady == true)
             # then return a unique string created by concatenating the selector's path ID
             # and the select keys. Model-view classes (e.g. classes that leverage Knockout.js
@@ -149,12 +137,35 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                 catch exception
                     throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelector.getHashString failure: #{exception}"
 
+            #
+            # ============================================================================
             @clone = =>
                 @internalVerifySelector()
                 clonedSelectKeyVector = Encapsule.code.lib.js.clone(@selectKeyVector)
                 clonedSecondaryKeyVector = Encapsule.code.lib.js.clone(@secondaryKeyVector)
                 clonedSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@objectModel, @pathId, clonedSelectKeyVector, clonedSecondaryKeyVector)
                 return clonedSelector
+
+            #
+            # ============================================================================
+            @createParentSelector = =>
+                parentSelector = undefined
+                parentDescriptor = @objectModelDescriptor.parent
+                if parentDescriptor? and parentDescriptor
+
+                    if @objectModelDescriptor.mvvmType != "archetype"
+                        parentSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@objectModel, parentDescriptor.id, @selectKeyVector, @secondaryKeyVector)
+
+                    else
+                        if not @secondaryKeyVector.length
+                            selectKeyVector = @selectKeyVector.slice(0, @selectKeyVector.length - 1)
+                            parentSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@objectModel, parentDescriptor.id, selectKeyVector, undefined)
+                        else
+                            parentExtensionPointPathId = @secondaryKeyVector[@secondaryKeyVector.length - 1].idExtensionPoint
+                            secondaryKeyVector = @secondaryKeyVector.slice(0, @secondaryKeyVector.length - 1)
+                            parentSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@objectModel, parentExtensionPointPathId, @selectKeyVector, secondaryKeyVector)
+                return parentSelector
+
 
             #
             # ============================================================================
