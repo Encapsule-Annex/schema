@@ -55,7 +55,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     # MODEL VIEW OBSERVER CALLBACK ORIGIN: onNamespaceCreate
                     # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
                     for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds
-                        namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
+                        namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector, componentNamespaceSelector_.secondaryKeyVector)
                         if modelViewObject_? and modelViewObject_
                             if modelViewObject_.onNamespaceCreated? and modelViewObject_.onNamespaceCreated
                                 modelViewObject_.onNamespaceCreated(@, observerId_, namespaceSelector)
@@ -63,7 +63,6 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                             for observerId, modelViewObject of @modelViewObservers
                                 if modelViewObject.onNamespaceCreated? and modelViewObject.onNamespaceCreated
                                     modelViewObject.onNamespaceCreated(@, observerId, namespaceSelector)
-
                     true
 
                 catch exception
@@ -83,10 +82,10 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     # MODEL VIEW OBSERVER CALLBACK ORIGIN: onNamespaceRemoved
                     # Invoke the model view object's onNamespaceRemoved callback for each namespace in the root component.
                     # (reverse order - children first, then parent(s))
-                    componentNamespaceIdsReverse = Encapsule.code.lib.js.clone componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds
+                    componentNamespaceIdsReverse = Encapsule.code.lib.js.clone(componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds)
                     componentNamespaceIdsReverse.reverse()
                     for namespaceId in componentNamespaceIdsReverse
-                        namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector)
+                        namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector, componentNamespaceSelector_.secondaryKeyVector)
                         if modelViewObject_? and modelViewObject_
                             if modelViewObject_.onNamespaceRemoved? and modelViewObject_.onNamespaceRemoved
                                 modelViewObject_.onNamespaceRemoved(@, observerId_, namespaceSelector)
@@ -136,7 +135,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     for path, namespaceDescriptor of componentExtensionPointMap
 
                         # Use the extension point's ID obtained from namespace descriptor to create an object model namespace selector for the extension point.
-                        extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceDescriptor.id, componentNamespaceSelector_.selectKeyVector)
+                        extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceDescriptor.id, componentNamespaceSelector_.selectKeyVector, componentNamespaceSelector_.secondaryKeyVector)
 
                         # Create a new store namespace object to gain access to the extension point array data.
                         extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector, "bypass")
@@ -146,23 +145,36 @@ class Encapsule.code.lib.omm.ObjectStoreBase
 
                         extensionJsonTag = namespaceDescriptor.children[0].jsonTag
                         extensionPath = "#{namespaceDescriptor.path}.#{extensionJsonTag}"
+                        recursivelyDeclaredExtensionPoint = namespaceDescriptor.id > namespaceDescriptor.idArchetype
 
                         for component in extensionPointArray
 
                             subcomponentObject = component[extensionJsonTag]
-                            subcomponentKey = @objectModel.getSemanticBindings().getUniqueKey(subcomponentObject) # decoupled from scheme employed to identify components uniquely
+                            subcomponentKey = @objectModel.getSemanticBindings().getUniqueKey(subcomponentObject)
 
                             subcomponentSelectKeyVector = undefined
-                            componentNamespaceSelector_.internalVerifySelector()
-                            subcomponentSelectKeyVector = Encapsule.code.lib.js.clone(componentNamespaceSelector_.selectKeyVector)
-                            subcomponentSelectKeyVector.push subcomponentKey
-                            subcomponentNamespaceSelector = @objectModel.createNamespaceSelectorFromPath(extensionPath, subcomponentSelectKeyVector)
+                            subcomponentSecondaryKeyVector = undefined
+
+                            if not recursivelyDeclaredExtensionPoint
+                                subcomponentSelectKeyVector = Encapsule.code.lib.js.clone(componentNamespaceSelector_.selectKeyVector)
+                                subcomponentSelectKeyVector.push subcomponentKey
+                                subcomponentSecondaryKeyVector = []
+                            else
+                                subcomponentSelectKeyVector = componentNamespaceSelector_.selectKeyVector
+                                subcomponentSecondaryKeyVector = Encapsule.code.lib.js.clone(componentNamespaceSelector_.secondaryKeyVector)
+                                subcomponentSecondaryKeyVector.push({
+                                    idExtensionPoint: namespaceDescriptor.id
+                                    selectKey: subcomponentKey
+                                    })
+
+                            subcomponentNamespaceSelector = @objectModel.createNamespaceSelectorFromPath(extensionPath, subcomponentSelectKeyVector, subcomponentSecondaryKeyVector)
 
                             if not undoFlag
                                 # Note that when we're reifying (i.e. reflecting the contents of the store out to the model view)
-                                # that we proceed top-down. The protocol is that namespaces are "created" parent-first and then
-                                # the component is "created", and finally the component's sub-components are evaluated until all
-                                # leaf components have been processed and the entire store has been traversed.
+                                # that we proceed bottom-up (i.e. from root up towards leaves). The protocol is that namespaces are
+                                # "created" parent-first and then the component is "created", and finally the component's 
+                                # sub-components are evaluated until all leaf components have been processed and the entire branch
+                                # or the store has been traversed.
 
                                 # Reify the store subcomponent to the model view object.                                
                                 @internalReifyStoreComponent(subcomponentNamespaceSelector, modelViewObject_, observerId_)
@@ -172,12 +184,12 @@ class Encapsule.code.lib.omm.ObjectStoreBase
 
                             else
                                 # Note that when we're unreifying (i.e. undoing the a prior reification) that we proceed
-                                # bottom-up. Subcomponents are always evaluated prior to their parent components. When a
-                                # leaf component is discovered, it is "removed". The protocol is that the component is
-                                # "removed" first, and then the namespaces are "removed" in the reverse order they were
-                                # "created" during reification. Parent components are "removed" via the same protocol only
-                                # after all their sub-components have been "removed" until the root component (which cannot
-                                # be removed because it's not an extension) is reached.
+                                # top-down (i.e. from the leaves down towards the root). Subcomponents are always evaluated 
+                                # prior to their parent components. When a leaf component is discovered, it is "removed".
+                                # The protocol is that the component is "removed" first, and then the namespaces are "removed"
+                                # in the reverse order they were "created" during reification. Parent components are "removed"
+                                # via the same protocol only after all their sub-components have been "removed" until the root
+                                # component (which cannot be removed because it's not an extension) is reached.
                             
                                 # *** RECURSION
                                 @internalReifyStoreExtensions(subcomponentNamespaceSelector, modelViewObject_, observerId_, true)

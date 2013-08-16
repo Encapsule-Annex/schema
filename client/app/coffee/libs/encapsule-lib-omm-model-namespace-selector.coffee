@@ -154,7 +154,6 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
                 clonedSelectKeyVector = Encapsule.code.lib.js.clone(@selectKeyVector)
                 clonedSecondaryKeyVector = Encapsule.code.lib.js.clone(@secondaryKeyVector)
                 clonedSelector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@objectModel, @pathId, clonedSelectKeyVector, clonedSecondaryKeyVector)
-                clonedSelector.internalVerifySelector()
                 return clonedSelector
 
             #

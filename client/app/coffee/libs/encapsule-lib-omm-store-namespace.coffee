@@ -223,21 +223,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                                 @secondaryResolvedIndexVector.push @secondaryResolvedKeyVector.length - 1
 
                             # Create this component's constituent namespace(s)
-
-                            secondaryKeyVector = []
-                            index = 0
-                            while index < @secondaryExtensionPointPathIdVector.length
-                                secondaryKeyVector.push {
-                                    idExtensionPoint: @secondaryExtensionPointPathIdVector[index]
-                                    selectKey: @secondaryResolvedKeyVector[index]
-                                }
-                                index++
-
-                            componentSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(objectModelDescriptor_.id, @resolvedKeyVector, secondaryKeyVector)
-
-                            # component = new Encapsule.code.lib.omm.ObjectStoreComponent(@objectStore, @resolvedKeyVector, objectModelDescriptor_.id, "new")
-                            component = new Encapsule.code.lib.omm.ObjectStoreComponent(@objectStore, componentSelector, "new")
-                            
+                            component = new Encapsule.code.lib.omm.ObjectStoreComponent(@objectStore, @getResolvedSelector(), "new")
 
                             break
                         when "strict"
@@ -279,7 +265,15 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
     # class Encapsule.code.lib.omm.ObjectStoreNamespace
     getResolvedSelector: =>
         try
-            objectModelNamespaceSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(@pathId, @resolvedKeyVector)
+            secondaryKeyVector = []
+            index = 0
+            while index < @secondaryExtensionPointPathIdVector.length
+                secondaryKeyVector.push({
+                    idExtensionPoint: @secondaryExtensionPointPathIdVector[index]
+                    selectKey: @secondaryResolvedKeyVector[index]
+                    })
+                index++
+            objectModelNamespaceSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(@pathId, @resolvedKeyVector, secondaryKeyVector)
             return objectModelNamespaceSelector
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespace.getResolvedSelector failure: #{exception}"
