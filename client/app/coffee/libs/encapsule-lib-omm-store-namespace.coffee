@@ -223,7 +223,19 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                                 @secondaryResolvedIndexVector.push @secondaryResolvedKeyVector.length - 1
 
                             # Create this component's constituent namespace(s)
-                            # ^^^
+
+                            secondaryKeyVector = []
+                            index = 0
+                            while index < @secondaryExtensionPointPathIdVector.length
+                                secondaryKeyVector.push {
+                                    idExtensionPoint: @secondaryExtensionPointPathIdVector[index]
+                                    selectKey: @secondaryResolvedKeyVector[index]
+                                }
+                                index++
+
+                            componentSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(objectModelDescriptor_.id, @resolvedKeyVector, secondaryKeyVector)
+
+
                             component = new Encapsule.code.lib.omm.ObjectStoreComponent(@objectStore, @resolvedKeyVector, objectModelDescriptor_.id, "new")
 
                             break
