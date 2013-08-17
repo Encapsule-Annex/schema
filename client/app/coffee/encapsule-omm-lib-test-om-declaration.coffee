@@ -91,6 +91,16 @@ Encapsule.code.app.modelview.OMMDeclarationTest = {
                                 archetypeReference: "schema.omm.extensionPointB.recursiveObject"
                             }
                         }
+                        {
+                            jsonTag: "someOtherNamespace"
+                            label: "Some Other Namespace"
+                            objectDescriptor: {
+                                mvvmType: "child"
+                                description: "Some other subnamespace of recursively declared component."
+                                namespaceDescriptor: {
+                                }
+                            }
+                        }
                     ]
                 } # archetype
             } # objectDescriptor

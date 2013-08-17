@@ -117,7 +117,7 @@ class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
 
                     @internalVerifySelector()
                     if not @selectKeysReady
-                        throw "Unable to retrieve namespace selector hash key of abstract selector."
+                        throw "A request has been made for the hash string of an unresolved selector. Only fully resolved selectors have valid hash strings!"
 
                     hashKey = "#{@objectModelDescriptor.id}"
                     index = 0

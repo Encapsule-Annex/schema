@@ -85,9 +85,9 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow
                 onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
 
                     storeNamespace = objectStore_.openNamespace(namespaceSelector_)
-                    selectorTreeHeight = storeNamespace.objectStoreNamespace.pathElements.length
+                    selectorTreeHeight = storeNamespace.objectStoreNamespace.parentSelectorVector.length
                     
-                    pathElementSelectorArray = storeNamespace.objectStoreNamespace.pathElements
+                    pathElementSelectorArray = storeNamespace.objectStoreNamespace.parentSelectorVector
                     @pathElements.removeAll()
                     for pathElementSelector in pathElementSelectorArray
                         @pathElements.push new Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow(objectStore_, observerId_, pathElementSelector, selectorTreeHeight)

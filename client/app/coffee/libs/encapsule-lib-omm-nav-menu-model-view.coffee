@@ -28,11 +28,13 @@ Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.
 class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
       constructor: (objectStore_, objectModelNavigatorWindow_, namespaceSelector_) ->
           try
+              if not namespaceSelector_.selectKeysReady
+                  throw "Internal error: unresolved namespace selector received in OMM store observer callback!"
+
               # Cache references to this instance's construction parameters.
 
               @objectModelNavigatorWindow = objectModelNavigatorWindow_
               @namespaceSelector = namespaceSelector_.clone()
-
               @children = ko.observableArray []
 
               @isSelected = ko.observable false

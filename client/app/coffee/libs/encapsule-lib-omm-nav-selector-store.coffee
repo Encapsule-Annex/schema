@@ -36,6 +36,48 @@ Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and E
 class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.ObjectStore
     constructor: (objectStore_, initialObjectStoreSelector_) ->
         try
+            #
+            # ============================================================================
+            @getSelector = =>
+                try
+                    selector = @rootNamespace.objectStoreNamespace.parentSelectorVector[@rootNamespace.objectStoreNamespace.parentSelectorVector.length - 1]
+                    return selector
+                catch exception
+                    throw "Encapsule.code.lib.modelview.SelectorStore.getSelector failure: #{exception}"
+
+            #
+            # ============================================================================
+            @setSelector = (externalSelector_) =>
+                try
+                    externalSelector_.internalVerifySelector()
+
+                    # Verify that externalSelector_ addresses an actual store namespace.
+                    externalStoreNamespace = @associatedObjectStore.openNamespace(externalSelector_)
+
+                    parentSelectorVector = 
+                        @rootNamespace.objectStoreNamespace.parentSelectorVector? and 
+                        @rootNamespace.objectStoreNamespace.parentSelectorVector or
+                        @rootNamespace.objectStoreNamespace.parentSelectorVector = []
+
+                    parentSelectorVector.splice(0, parentSelectorVector.length)
+                    parentSelectorVector.push externalSelector_
+                    selector = externalSelector_.createParentSelector()
+                    while selector? and selector
+                        parentSelectorVector.push selector
+                        selector = selector.createParentSelector()
+                    parentSelectorVector.reverse()
+                    @blipper.blip("21") # double click sound
+                    @rootNamespace.updateRevision()
+
+                catch exception
+                    throw "Encapsule.code.lib.modelview.SelectorStore.setSelector failure: #{exception}"
+
+
+            #
+            # ============================================================================
+            # constructor
+            #
+
             if not (objectStore_? and objectStore_) then throw "Missing object store input parameter. Unable to determine external selector type."
             # Cache the associated objectStore parameter for later use.
             @associatedObjectStore = objectStore_
@@ -46,38 +88,12 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                     label: "#{appName} Selector"
                     description: "#{appName} selector root."
                 })
+
             # Initialize the base ObjectStore class for this SelectorStore
             super(selectorObjectModel)
 
             @blipper = Encapsule.runtime.boot.phase0.blipper
 
-            @getSelector = =>
-                try
-                    selector = @rootNamespace.objectStoreNamespace.pathElements[@rootNamespace.objectStoreNamespace.pathElements.length - 1]
-                    return selector
-                catch exception
-                    throw "Encapsule.code.lib.modelview.SelectorStore.getSelector failure: #{exception}"
-
-            @setSelector = (externalSelector_) =>
-                try
-                    externalSelector_.internalVerifySelector()
-                    # Verify that externalSelector_ addresses an actual store namespace.
-                    externalStoreNamespace = @associatedObjectStore.openNamespace(externalSelector_)
-                    # Save the new external selector.
-                    pathElementsArray = @rootNamespace.objectStoreNamespace.pathElements? and @rootNamespace.objectStoreNamespace.pathElements or @rootNamespace.objectStoreNamespace.pathElements = []
-                    pathElementsArray.splice(0, pathElementsArray.length)
-                    parentPathIdVector = externalSelector_.objectModelDescriptor.parentPathIdVector
-                    for parentPathId in parentPathIdVector
-                        parentSelector = @associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentPathId, externalSelector_.selectKeyVector)
-                        pathElementsArray.push parentSelector
-                    pathElementsArray.push externalSelector_
-                    
-                    @blipper.blip("21") # double click sound
-                    @rootNamespace.updateRevision()
-
-                catch exception
-                    throw "Encapsule.code.lib.modelview.SelectorStore.setSelector failure: #{exception}"
-            
             externalSelector = initialObjectStoreSelector_
             if not (externalSelector? and externalSelector)
                 externalSelector = @associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(0)
@@ -104,6 +120,16 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                     try
                         selector = @getSelector()
                         if selector.getHashString() == namespaceSelector_.getHashString()
+                            # TODO:
+                            # This is _convenient_ as it automatically keeps hits observers
+                            # with a callback when the currently selected store namespace
+                            # is modified. But this is actually sort of wrong...
+                            # We really don't want the selector involved in this detail because
+                            # it's the business of whoever is doing the observing to decide
+                            # what they want to watch. It's far better to foist the additional
+                            # complexity on observers than to OR the two disjoint concepts
+                            # together (and provide no way to discriminate between the two
+                            # cases). Simle fix.
                             @setSelector(@getSelector())
                     catch exception
                         throw "Encapsule.code.lib.modelview.SelectorStore.objectStoreCallbacks.onNamespaceUpdated failure: #{exception}"
@@ -112,6 +138,7 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                     try
                         selector = @getSelector()
                         if selector.getHashString() == namespaceSelector_.getHashString()
+                            # TODO: same as above
                             @setSelector(@getSelector())
                     catch exception
                         throw "Encapsule.code.lib.modelview.SelectorStore.objectStoreCallbacks.onChildNamespaceUpdated failure: #{exception}"
@@ -123,7 +150,7 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                         currentSelector = @getSelector()
                         if currentSelector.getHashString() == namespaceSelector_.getHashString()
                             parentId = currentSelector.objectModelDescriptor.parent.id
-                            parentSelector = @associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentId, currentSelector.selectKeyVector)
+                            parentSelector = currentSelector.createParentSelector()
                             @setSelector(parentSelector)
                         return
                     catch exception
@@ -133,6 +160,7 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
 
             @associatedObjectStore.registerModelViewObserver(@objectStoreCallbacks)
 
+            
 
         catch exception
             throw "Encapsule.code.lib.modelview.SelectorStore failure: #{exception}"

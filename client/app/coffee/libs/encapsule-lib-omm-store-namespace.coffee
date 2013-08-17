@@ -268,10 +268,11 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             secondaryKeyVector = []
             index = 0
             while index < @secondaryExtensionPointPathIdVector.length
-                secondaryKeyVector.push({
-                    idExtensionPoint: @secondaryExtensionPointPathIdVector[index]
+                secondaryKeyObject = {
+                    idExtensionPoint: @secondaryResolvedKeyVector[index]
                     selectKey: @secondaryResolvedKeyVector[index]
-                    })
+                }
+                secondaryKeyVector.push secondaryKeyObject
                 index++
             objectModelNamespaceSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(@pathId, @resolvedKeyVector, secondaryKeyVector)
             return objectModelNamespaceSelector
@@ -325,6 +326,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             if semanticBindings? and semanticBindings and semanticBindings.update? and semanticBindings.update
                 semanticBindings.update(@objectStoreNamespace)
 
+            # Notify registered observers that we've updated this namespace.
             for observerId, modelViewObserver of @objectStore.modelViewObservers
                 if modelViewObserver.onNamespaceUpdated? and modelViewObserver.onNamespaceUpdated
                     modelViewObserver.onNamespaceUpdated(@objectStore, observerId, revisedNamespaceSelector)
@@ -332,11 +334,8 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                     if modelViewObserver.onComponentUpdated? and modelViewObserver.onComponentUpdated
                         modelViewObserver.onComponentUpdated(@objectStore, observerId, revisedNamespaceSelector)
 
-            parentPathIdsReverse = Encapsule.code.lib.js.clone @objectModelDescriptor.parentPathIdVector
-            parentPathIdsReverse.reverse()
-
-            for parentPathId in parentPathIdsReverse
-                parentSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(parentPathId, revisedNamespaceSelector.selectKeyVector)
+            parentSelector = revisedNamespaceSelector.createParentSelector()
+            while parentSelector? and parentSelector
                 parentNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@objectStore, parentSelector)
 
                 # Update the parent namespace's revision metadata.
@@ -352,9 +351,12 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
                         if modelViewObserver.onChildComponentUpdated? and modelViewObserver.onChildComponentUpdated
                             modelViewObserver.onChildComponentUpdated(@objectStore_, observerId, parentSelector)
 
+                # Now evaluate the parent of the parent...
+                parentSelector = parentSelector.createParentSelector()
+
             if not (@objectModelDescriptor.mvvmType == "extension")
                 for childNamespaceDescriptor in @objectModelDescriptor.children
-                    childSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(childNamespaceDescriptor.id, revisedNamespaceSelector.selectKeyVector)
+                    childSelector = @objectStore.objectModel.createNamespaceSelectorFromPathId(childNamespaceDescriptor.id, revisedNamespaceSelector.selectKeyVector, revisedNamespaceSelector.secondaryKeyVector)
                     for observerId, modelViewObserver of @objectStore.modelViewObservers
                         if modelViewObserver.onParentNamespaceUpdated? and modelViewObserver.onParentNamespaceUpdated
                             modelViewObserver.onParentNamespaceUpdated(@objectStore, observerId, childSelector)
