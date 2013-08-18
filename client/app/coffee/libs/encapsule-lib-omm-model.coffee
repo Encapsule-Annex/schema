@@ -302,9 +302,10 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
                     if not (pathId_?) then throw "Missing path ID parameter!"
                     if (pathId_ < 0) or (pathId_ >= @objectModelDescriptorById.length)
                         throw "Out of range path ID '#{pathId_} cannot be resolved."
+
                     objectModelDescriptor = @objectModelDescriptorById[pathId_]
                     if not (objectModelDescriptor? and objectModelDescriptor)
-                        throw "Internal error getting namespace descriptor for path ID=#{pathId}!"
+                        throw "Internal error getting namespace descriptor for path ID=#{pathId_}!"
                     return objectModelDescriptor
 
                 catch exception
