@@ -26,7 +26,9 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
-Encapsule.code.lib.omm.implementation = Encapsule.code.lib.omm.implementation? and Encapsule.code.lib.omm.implementation or @Encapsule.code.lib.omm.implementation = {}
+
+
+
 
 
 # An ObjectStoreNamespace represents an addressed sub-object within an ObjectStore instance
@@ -98,6 +100,9 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
 
             if not (objectModelDescriptor_? and objectModelDescriptor_) then throw "Missing required object model descriptor input parameter!"
             if not (mode_? and mode_) then throw "Missing required mode input parameter value!"
+
+
+
 
             isSecondaryKey = isSecondaryKey_? and isSecondaryKey_ or false
 
@@ -400,12 +405,13 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace
             if mode == "strict" and not objectModelNamespaceSelector_.selectKeysReady
                 throw "Cannot create object store namespace in strict mode call given an unresolved namespace selector."
 
-            # TODO: This check was put in place hunting down a subtle bug in namespace selectors.
-            # Investigate this further to ensure that hitting this condition is expected (I believe yes).
-            if mode_ == "new" and objectModelNamespaceSelector_.selectKeysRequired and objectModelNamespaceSelector_.selectKeysReady
-                Console.message("hey there!")
-
             @objectStore = objectStore_ # reference to ObjectStore instance
+
+
+            # New selector format
+
+            @resolvedSelectKeys = []
+
             @pathId = objectModelNamespaceSelector_.pathId 
 
             @resolvedKeyVector = []

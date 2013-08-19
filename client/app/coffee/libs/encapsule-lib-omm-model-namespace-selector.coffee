@@ -27,6 +27,59 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
 
+class Encapsule.code.lib.omm.ObjectModelSelectKey
+
+    instance:
+        parent:
+            idExtensionPoint: -1
+        select:
+            key: undefined
+            idComponent: -1
+            idNamespace: -1
+
+    clone: =>
+        return new Encapsule.code.lib.omm.ObjectModelSelectKey(@instance.parent.idExtensionPoint, @instance.select.key, @instance.select.idComponent, @instance.select.idNamespace)
+
+    isResolved: =>
+        try
+            if (@instance.select.idComponent == -1) or (@instance.select.idNamespace == -1)
+                throw "Cannot determine the resolution status of an uninitialized select key!"
+
+            if (@instance.select.idComponent == 0) or (@instance.select.idComponent != @instance.select.idNamespace)
+                return true
+
+            # Check
+            if @instance.parent.idExtensionPoint < 1
+                throw "Cannot determine the resolution status of this select key because it specifies an invalid parent extension point."
+
+            # Return boolean
+            return @instance.select.key? and true or false
+
+
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectModelSelectKey failure: #{exception}"
+
+
+    constructor: (idExtensionPoint_, key_, idComponent_, idNamespace_) ->
+        try
+            if idExtenstionPoint_? and idExtensionPoint_
+                @instance.parent.idExtensionPoint = idExtensionPoint_
+
+            if key_?
+                @instance.select.key = key_
+
+            if idComponent_? and (idComponent_ >= 0)
+                @instance.select.idComponent = idComponent_
+
+            if idNamespace_? and (idNamespace_ >= 0)
+                @instance.select.idNamespace = idNamespace_
+            else
+                @instance.select.idNamespace = @instance.select.idComponent
+
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelectorDescriptor failure: #{exception}"
+
+
 
 #
 # An OM selector represents a unique object namespace within the space defined
