@@ -54,6 +54,20 @@ class Encapsule.code.app.Schema
             objectModelNavigatorWindow.selectorStore.registerModelViewObserver(objectModelNavigatorJsonWindow.selectorStoreCallbacks)
             # ==============================================================================
 
+            # Some experimental stuff
+
+            selectKey = new Encapsule.code.lib.omm.ObjectModelSelectKey(objectModel, 0,0, undefined) # root selector
+
+            keyResolver = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, undefined, selectKey, "new")
+
+
+            selectKey = new Encapsule.code.lib.omm.ObjectModelSelectKey(objectModel, 0, 3, undefined) # some other selector
+            keyResolver = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, undefined, selectKey, "new")
+
+
+
+
+            # ==============================================================================
 
             Encapsule.runtime.app.SchemaBootInfoWindow = new Encapsule.code.app.modelview.SchemaBootInfoWindow()
 

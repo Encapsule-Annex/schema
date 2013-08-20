@@ -36,6 +36,45 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver
 
     #
     # ============================================================================
+    constructor: (store_, parentDataReference_, modelSelectKey_, mode_) ->
+        try
+
+            if not (modelSelectKey_? and modelSelectKey_) then throw "Missing object model select key object input parameter."
+            if not (mode_? and mode_) then throw "Missing mode input parameter."
+
+            parentDataReference = (parentDataReference_? and parentDataReference_) or (store_.dataReference? and store_.dataReference or store_.dataReference = {})
+
+            @resolvedSelectKey = modelSelectKey_.clone()
+
+            objectModel = store_.objectModel
+
+            targetNamespaceDescriptor = modelSelectKey_.namespaceDescriptor
+            targetComponentDescriptor = modelSelectKey_.componentDescriptor
+
+            resolveResult = @internalResolveNamespaceDescriptor(store_, parentDataReference, targetComponentDescriptor, modelSelectKey_.key, mode_)
+
+            if targetNamespaceDescriptor.isComponent
+                if resolveResult.newSelectKey then @resolvedSelectKey.key = resolveResult.key
+                @dataReference = resolveResult.dataReference
+                return
+
+            # Resolve the target namespace relative to its component root.
+            targetNamespaceHeightOverComponent = targetNamespaceDescriptor.parentPathIdVector.length - targetComponentDescriptor.parentPathIdVector.length - 1
+            pathIdsToProcess = targetNamespaceDescriptor.parentPathIdVector.slice(-targetNamespaceHeightOverComponent)
+
+            for pathId in pathIdsToProcess
+                descriptor = objectModel.getNamespaceDescriptorFromPathId(pathId)
+                resolveResult = @internalResolveNamespaceDescriptor(store_, resolveResult.dataReference, descriptor, undefined, mode_)
+            resolveResult = @internalResolveNamespaceDescriptor(store_, resolveResult.dataReference, targetNamespaceDescriptor, undefined, mode_)
+            @dataReference = resolveResult.dataReference
+            return
+
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver failure: #{exception}"
+
+
+    #
+    # ============================================================================
     internalResolveNamespaceDescriptor: (store_, parentDataReference_, objectModelDescriptor_, key_, mode_) ->
         try
 
@@ -53,8 +92,9 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver
             namespaceKey = ((objectModelDescriptor_.mvvmType != "archetype") and objectModelDescriptor_.jsonTag) or key_ or undefined
 
             result = {
-                key: namespaceKey
+                key: undefined
                 dataReference: namespaceKey? and namespaceKey and parentDataReference_[namespaceKey] or undefined
+                newSelectKey: false
             }
 
             switch mode_
@@ -66,8 +106,11 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver
                     if not (result.dataReference? and result.dataReference)
                         namespaceObject = {}
                         namespaceActions.initialize(namespaceObject, objectModelDescriptor_.namespaceDescriptor)
-                        if objectModelDescriptor_.mvvmType = "archetype"
-                            result.key = namespaceActions.getUniqueKey(namespaceObject)
+                        if objectModelDescriptor_.mvvmType == "archetype"
+                            namespaceKey = result.key = namespaceActions.getUniqueKey(namespaceObject)
+                            if not (namespaceKey? and namespaceKey)
+                                throw "Error obtaining a unique ID for this component."
+                            result.newSelectKey = true
                         result.dataReference =  parentDataReference_[namespaceKey] = namespaceObject
                     break
                 when "strict"
@@ -85,30 +128,11 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver
 
 
 
-    #
-    # ============================================================================
-    constructor: (store_, parentDataReference_, modelSelectKey_, mode_) ->
-        try
-            if not (store_? and store_) then throw "Missing object store input parameter."
-            @dataReference = store_.dataReference? and store_.dataReference or store_.dataReference = {}
-            if not (modelSelectKey_? and modelSelectKey_) then throw "Missing object model select key object input parameter."
-            if not (mode_? and mode_) then throw "Missing mode input parameter."
-
-            @resolvedSelectKey = modelSelectKey_.clone()
-
-            objectModel = objectStore_.objectModel
-
-            targetNamespaceDescriptor = objectModel.getNamespaceDescriptorFromPathId(modelSelectKey_.select.idNamespace)
 
 
 
 
 
-
-
-
-        catch exception
-            throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver failure: #{exception}"
 
 
 

@@ -29,55 +29,39 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 
 class Encapsule.code.lib.omm.ObjectModelSelectKey
 
-    instance:
-        parent:
-            idExtensionPoint: -1
-        select:
-            key: undefined
-            idComponent: -1
-            idNamespace: -1
-
     clone: =>
-        return new Encapsule.code.lib.omm.ObjectModelSelectKey(@instance.parent.idExtensionPoint, @instance.select.key, @instance.select.idComponent, @instance.select.idNamespace)
+        extensionPointId = @extensionPointDescriptor? and @extensionPointDescriptor and @extensionPointDescriptor.id or -1
+        namespaceId = @namespaceDescriptor.id
+        return new Encapsule.code.lib.omm.ObjectModelSelectKey(@objectModel, extensionPointId, namespaceId, @key)
 
     isResolved: =>
         try
-            if (@instance.select.idComponent == -1) or (@instance.select.idNamespace == -1)
-                throw "Cannot determine the resolution status of an uninitialized select key!"
+            throw "Not implemented."
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectModelSelectKey.isResolved failure: #{exception}"
 
-            if (@instance.select.idComponent == 0) or (@instance.select.idComponent != @instance.select.idNamespace)
-                return true
+    constructor: (objectModel_, idExtensionPoint_, idNamespace_, key_) ->
+        try
+            if not (objectModel_? and objectModel_) then throw "Missing object model input parameter."
+            @objectModel = objectModel_
+            @namespaceDescriptor = objectModel_.getNamespaceDescriptorFromPathId(idNamespace_)
+            @componentDescriptor = @namespaceDescriptor.isComponent and @namespaceDescriptor or objectModel_.getNamespaceDescriptorFromPathId(@namespaceDescriptor.idComponent)
+            @extensionPointDescriptor = (idExtensionPoint_? and idExtensionPoint_ and (idExtensionPoint_ > 0) and objectModel_.getNamespaceDescriptorFromPathId(idExtensionPoint_)) or undefined
 
-            # Check
-            if @instance.parent.idExtensionPoint < 1
-                throw "Cannot determine the resolution status of this select key because it specifies an invalid parent extension point."
+            # Throw on validation error.
+            extensionPointResolutionRequired = @componentDescriptor.id > 0
+            if extensionPointResolutionRequired
+                if not (@extensionPointDescriptor? and @extensionPointDescriptor)
+                    throw "Invalid selector key object does not specify required parent extension point path ID. Missing parameter."
+                if @extensionPointDescriptor.mvvmType != "extension"
+                    throw "Invalid selector key object specifies an invalid parent extension point ID. Not an extension point."
+                if @extensionPointDescriptor.archetypePathId != @componentDescriptor.pathId
+                    throw "Invalid selector key object specifies unsupported extension point / component ID pair."
 
-            # Return boolean
-            return @instance.select.key? and true or false
-
+            @key =  key_? and key_ or undefined
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModelSelectKey failure: #{exception}"
-
-
-    constructor: (idExtensionPoint_, key_, idComponent_, idNamespace_) ->
-        try
-            if idExtenstionPoint_? and idExtensionPoint_
-                @instance.parent.idExtensionPoint = idExtensionPoint_
-
-            if key_?
-                @instance.select.key = key_
-
-            if idComponent_? and (idComponent_ >= 0)
-                @instance.select.idComponent = idComponent_
-
-            if idNamespace_? and (idNamespace_ >= 0)
-                @instance.select.idNamespace = idNamespace_
-            else
-                @instance.select.idNamespace = @instance.select.idComponent
-
-        catch exception
-            throw "Encapsule.code.lib.omm.ObjectModelNamespaceSelectorDescriptor failure: #{exception}"
 
 
 
