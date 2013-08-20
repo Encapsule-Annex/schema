@@ -26,65 +26,91 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
-
+#
+#
+# ****************************************************************************
+# ****************************************************************************
 class Encapsule.code.lib.omm.ObjectModelSelectKey
-
-    clone: =>
-        extensionPointId = @extensionPointDescriptor? and @extensionPointDescriptor and @extensionPointDescriptor.id or -1
-        namespaceId = @namespaceDescriptor.id
-        return new Encapsule.code.lib.omm.ObjectModelSelectKey(@objectModel, extensionPointId, namespaceId, @key)
-
-    isResolved: =>
+    constructor: (objectModel_, idExtensionPoint_, key_, idNamespace_) ->
         try
-            throw "Not implemented."
-        catch exception
-            throw "Encapsule.code.lib.omm.ObjectModelSelectKey.isResolved failure: #{exception}"
+            @objectModel = objectModel_? and objectModel_ or throw "Missing object model input parameter."
+            @extensionPointDescriptor = undefined
+            if not idNamespace_? then throw "Missing target namespace path ID input parameter."
+            idNamespace = idNamespace_
+            @namespaceDescriptor = objectModel_.getNamespaceDescriptorFromPathId(idNamespace)
+            idComponent = @namespaceDescriptor.idComponent
+            @componentDescriptor = @namespaceDescriptor.isComponent and @namespaceDescriptor or objectModel_.getNamespaceDescriptorFromPathId(idComponent)
+            @key =  (@componentDescriptor.id > 0) and key_? and key_ or undefined
+            @keyRequired = false
 
-    constructor: (objectModel_, idExtensionPoint_, idNamespace_, key_) ->
-        try
-            if not (objectModel_? and objectModel_) then throw "Missing object model input parameter."
-            @objectModel = objectModel_
-            @namespaceDescriptor = objectModel_.getNamespaceDescriptorFromPathId(idNamespace_)
-            @componentDescriptor = @namespaceDescriptor.isComponent and @namespaceDescriptor or objectModel_.getNamespaceDescriptorFromPathId(@namespaceDescriptor.idComponent)
-            @extensionPointDescriptor = (idExtensionPoint_? and idExtensionPoint_ and (idExtensionPoint_ > 0) and objectModel_.getNamespaceDescriptorFromPathId(idExtensionPoint_)) or undefined
 
-            # Throw on validation error.
-            extensionPointResolutionRequired = @componentDescriptor.id > 0
-            if extensionPointResolutionRequired
-                if not (@extensionPointDescriptor? and @extensionPointDescriptor)
-                    throw "Invalid selector key object does not specify required parent extension point path ID. Missing parameter."
-                if @extensionPointDescriptor.mvvmType != "extension"
-                    throw "Invalid selector key object specifies an invalid parent extension point ID. Not an extension point."
-                if @extensionPointDescriptor.archetypePathId != @componentDescriptor.pathId
-                    throw "Invalid selector key object specifies unsupported extension point / component ID pair."
+            # The namespace specified by idNamespace is contained within a component.
+            # If the component ID greater than zero, then not root component.
+            # If not the root component, component is child of parent extension point.
+            # This means that in order to resolve the root namespace of the component
+            # we require (a) the identity of the parent extension point (b) a unique
+            # key for the component.
 
-            @key =  key_? and key_ or undefined
+            if @componentDescriptor.id == 0
+                return;
+
+            # Parent extension point must be resolved.
+            @keyRequired = true
+
+            idExtensionPoint = idExtensionPoint_? and idExtensionPoint_ or -1
+
+            if idExtensionPoint == -1
+
+                if not @componentDescriptor.extensionPointReferenceIds.length
+                    idExtensionPoint = @componentDescriptor.parent.id
+                else
+                    throw "You must explicitly specify the parent extension point's path ID to create a select key addressing a '#{@componentDescriptor.path}' component namespace."
+
+            @extensionPointDescriptor = objectModel_.getNamespaceDescriptorFromPathId(idExtensionPoint)
+
+            if not (@extensionPointDescriptor? and @extensionPointDescriptor)
+                throw "Internal error: unable to obtain extension point object model descriptor in request."
+
+            if @extensionPointDescriptor.mvvmType != "extension"
+                throw "Invalid selector key object specifies an invalid parent extension point ID. Not an extension point."
+
+            if @extensionPointDescriptor.archetypePathId != @componentDescriptor.id
+                throw "Invalid selector key object specifies unsupported extension point / component ID pair."
+
+            return
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModelSelectKey failure: #{exception}"
 
+    #
+    # ============================================================================
+    clone: => new Encapsule.code.lib.omm.ObjectModelSelectKey(
+        @objectModel
+        @extensionPointDescriptor? and @extensionPointDescriptor and @extensionPointDescriptor.id or -1
+        @key
+        @namespaceDescriptor.id
+        )
+
+    #
+    # ============================================================================
+    keyReady: => 
+        (not @keyRequired and true) or (@key? and @key and true) or false
+
+
+
+# ****************************************************************************
+# ****************************************************************************
+#
+#
+
+
+
+
 
 
 #
-# An OM selector represents a unique object namespace within the space defined
-# by the object model parameter.
-# pathId_ = zero-based index of OM path
-# selectKeyVector_ = orderred array of extension array keys (we're concerned only
-#     with the existence or size of this array here; undefined or length = 0 are
-#     both taken as "no keys provided" (i.e. okay for pathId's corresponding to
-#     OM paths that do not have embedded extension points).
-# secondaryKeyVector_ = orderred array of objects specifying (a) an extension
-#     point (by its ID) and a single select key. Each element of the secondary
-#     key vector is used to resolve the address of an instance of a recursive
-#     component owned by the component resolved by use of the primary key
-#     vector. Note that in a recurisve component, the component itself is
-#     specified (by reference) as the archetype or one or more of the component's
-#     extension points. Thus, in order to resolve a specific instance of a
-#     recursive component we need to know where the recursion starts (deduced
-#     from the path ID and primary key vector, and then be able to step through
-#     each sub-extension point, using the secondary vector element's EP ID/select
-#     key pair to resolve each successive level.
 #
+# ****************************************************************************
 # ****************************************************************************
 class Encapsule.code.lib.omm.ObjectModelNamespaceSelector
     constructor: (objectModel_, pathId_, selectKeyVector_, secondaryKeyVector_) ->

@@ -56,13 +56,14 @@ class Encapsule.code.app.Schema
 
             # Some experimental stuff
 
-            selectKey = new Encapsule.code.lib.omm.ObjectModelSelectKey(objectModel, 0,0, undefined) # root selector
+            selectKeyTest01 = new Encapsule.code.lib.omm.ObjectModelSelectKey(objectModel, undefined, undefined, 2) # root selector
+            keyResolver01 = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, undefined, selectKeyTest01, "new")
 
-            keyResolver = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, undefined, selectKey, "new")
+            selectKeyTest02 = new Encapsule.code.lib.omm.ObjectModelSelectKey(objectModel, 2, undefined, 3) # Should be okay.
+            keyResolver02 = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, keyResolver01.dataReference, selectKeyTest02, "new")
 
-
-            selectKey = new Encapsule.code.lib.omm.ObjectModelSelectKey(objectModel, 0, 3, undefined) # some other selector
-            keyResolver = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, undefined, selectKey, "new")
+            selectKeyTest03 = new Encapsule.code.lib.omm.ObjectModelSelectKey(objectModel, undefined, undefined, 3) # Should be okay.
+            keyResolver = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, undefined, selectKeyTest02, "new")
 
 
 

@@ -101,21 +101,24 @@ class Encapsule.code.lib.omm.ObjectModelBase
 
                     # Build this descriptor and add it to the OM's descriptor array.
                     thisDescriptor = @objectModelDescriptorById[id] = {
+                        # valid only if mvvmType == "extension" (set to ID of extension point's corresponding archetype)
+                        "archetypePathId": -1           
+                        "children": []
+                        "componentNamespaceIds": []
+                        "description": objectModelLayoutObject_.objectDescriptor.description
+                        # valid only if mvvmType == "archetype" (populated with extension point ID's that specify this archetype by reference)
+                        "extensionPointReferenceIds": []
                         "id": id
                         "idComponent": id
                         "isComponent": false
-                        "componentNamespaceIds": []
                         "jsonTag": tag
-                        "path":  path
                         "label": objectModelLayoutObject_.label
-                        "description": objectModelLayoutObject_.objectDescriptor.description
-                        "namespaceDescriptor": namespaceDeclaration
                         "mvvmType": mvvmType
-                        "archetypePathId": -1           
+                        "namespaceDescriptor": namespaceDeclaration
                         "parent": parentDescriptor_
+                        "parentPathExtensionPoints": parentPathExtensionPoints # self-extensible objects makes this superfluous I think
                         "parentPathIdVector": []
-                        "parentPathExtensionPoints": parentPathExtensionPoints
-                        "children": []
+                        "path":  path
                          }
 
                     # Add this descriptor to the OM intance's path map for fast look-up based on path.
@@ -152,8 +155,14 @@ class Encapsule.code.lib.omm.ObjectModelBase
                                     throw "Cannot process extension point declaration because its corresponding archetype reference '#{pathReference}' is not defined."
                                 if objectModelDescriptorReference.mvvmType != "archetype"
                                     throw "Cannot process extension point declaration becuase it's corresponding archetype reference '#{pathReference}' does not refer to an 'archetype' namespace."
+                                # Add the extension point ID to the archetype's list of extension points
+                                # that specify it by reference.
+                                objectModelDescriptorReference.extensionPointReferenceIds.push thisDescriptor.id
+
+                                # Add the archetype's ID to this extension point's descriptor.
                                 thisDescriptor.archetypePathId = objectModelDescriptorReference.id
                                 @countExtensionReferences++
+
                             else
                                 throw "Cannot process extension point declaration because its corresponding extension archetype is missing from the object model declaration."
 
