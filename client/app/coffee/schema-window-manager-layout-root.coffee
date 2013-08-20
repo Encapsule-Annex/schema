@@ -37,7 +37,8 @@ try
         #
         id: "idSchemaWindowManager"
         name: "#{appName} v#{appVersion} Window Manager"
-        fadeInTimeMs: undefined # 250 # (defaults to 1500ms if undefined)
+        # (defaults to 1500ms if undefined)
+        fadeInTimeMs: undefined
 
         #
         # BODY PAGE ATTRIBUTES

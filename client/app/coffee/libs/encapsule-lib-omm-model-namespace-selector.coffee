@@ -26,10 +26,10 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
-#
-#
 # ****************************************************************************
 # ****************************************************************************
+#
+#
 class Encapsule.code.lib.omm.ObjectModelSelectKey
     constructor: (objectModel_, idExtensionPoint_, key_, idNamespace_) ->
         try
@@ -93,18 +93,75 @@ class Encapsule.code.lib.omm.ObjectModelSelectKey
 
     #
     # ============================================================================
-    keyReady: => 
+    isReady: => 
         (not @keyRequired and true) or (@key? and @key and true) or false
 
+#
+#
+# ****************************************************************************
+# ****************************************************************************
 
 
 # ****************************************************************************
 # ****************************************************************************
 #
 #
+class Encapsule.code.lib.omm.ObjectModelSelectKeyVector
+
+    constructor: (objectModel_, selectKeyVector_) ->
+        try
+            @objectModel = objectModel_? and objectModel_ or throw "Missing required object model input parameter."
+            @selectKeyVector = selectKeyVector_? and selectKeyVector_ and selectKeyVector_.length and selectKeyVector_.slice(0, selectKeyVector_.length) or []
+
+            selectIndex = 0
+            while selectIndex < @selectKeyVector.length - 1
+                parentSelectKey = @selectKeyVector[selectIndex]
+                childSelectKey = @selectKeyVector[selectIndex + 1]
+                @validateSelectKeyPair(parentSelectKey, childSelectKey)
+                selectIndex++
+
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectModelSelectKeyVector invalid select key vector: #{exception}"
+
+    #
+    # ============================================================================
+    validateSelectKeyPair: (parentSelectKey_, childSelectKey_) ->
+        try
+            if not (parentSelectKey_? and parentSelectKey_ and childSelectKey_? and childSelectKey_)
+                throw "Internal error: input parameters are not correct."
+
+            if not childSelectKey_.keyRequired
+                throw "Child select key does not require resolution yet is child."
+
+            if parentSelectKey_.namespaceDescriptor.id != childSelectKey_.extensionPointDescriptor.id
+                throw "Child select key is invalid because parent select key does not specifiy the expected extension point."
+
+            if not parentSelectKey_.isReady() and childSelectKey_.isReady()
+                throw "Parent select key specifies a new instance yet child select key specifies a key."
+
+            true
+
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectModelSelectorVector.validateSelectKeyPair failure: #{exception}"
+
+    #
+    # ============================================================================
+    pushSelectKey: (selectKey_) =>
+        try
+            if @selectKeyVector.length
+                parentSelectKey = @selectKeyVector[@selectKeyVector.length - 1]
+                @validateSelectKeyPair(parentSelectKey, selectKey_)
+            @selectKeyVector.push selectKey_
+
+        catch exception
+            throw "Encapsule.code.lib.omm.ObjectModelSelectorVector.pushSelectKey failure: #{exception}"
 
 
 
+#
+#
+# ****************************************************************************
+# ****************************************************************************
 
 
 

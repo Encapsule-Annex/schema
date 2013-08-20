@@ -63,9 +63,11 @@ class Encapsule.code.app.Schema
             keyResolver02 = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, keyResolver01.dataReference, selectKeyTest02, "new")
 
             selectKeyTest03 = new Encapsule.code.lib.omm.ObjectModelSelectKey(objectModel, undefined, undefined, 3) # Should be okay.
-            keyResolver = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, undefined, selectKeyTest02, "new")
+            keyResolver = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, keyResolver01.dataReference, selectKeyTest02, "new")
 
-
+            selectKeyVector01 = new Encapsule.code.lib.omm.ObjectModelSelectKeyVector(objectModel)
+            selectKeyVector01.pushSelectKey selectKeyTest01
+            selectKeyVector01.pushSelectKey selectKeyTest02
 
 
             # ==============================================================================
