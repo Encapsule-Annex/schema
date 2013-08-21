@@ -30,23 +30,17 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 
 class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
 
-    store: undefined
-    resolvedSelectKey: undefined
-    dataReference: undefined
-
     #
     # ============================================================================
     constructor: (store_, parentDataReference_, modelSelectKey_, mode_) ->
         try
-
+            @store = store_? and store_ or throw "Missing object store input parameter."
+            objectModel = store_.objectModel
+            parentDataReference = parentDataReference_? and parentDataReference_ or throw "Missing parent data reference input parameter."
             if not (modelSelectKey_? and modelSelectKey_) then throw "Missing object model select key object input parameter."
             if not (mode_? and mode_) then throw "Missing mode input parameter."
-
-            parentDataReference = (parentDataReference_? and parentDataReference_) or (store_.dataReference? and store_.dataReference or store_.dataReference = {})
-
+            @dataReference = undefined
             @resolvedSelectKey = modelSelectKey_.clone()
-
-            objectModel = store_.objectModel
 
             targetNamespaceDescriptor = modelSelectKey_.namespaceDescriptor
             targetComponentDescriptor = modelSelectKey_.componentDescriptor

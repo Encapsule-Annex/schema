@@ -525,7 +525,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace2
                 throw "The specified select key vector does not resolve to an existing object store namespace."
 
             # The actual store data.
-            @dataReference = undefined
+            @dataReference = objectStore_.dataReference? and objectStore_.dataReference or objectStore_.dataReference = {}
 
             @resolvedSelectKeys = []
             @resolvedSelectKey = undefined
