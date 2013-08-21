@@ -112,13 +112,14 @@ class Encapsule.code.lib.omm.ObjectModelSelectKeyVector
         try
             @objectModel = objectModel_? and objectModel_ or throw "Missing required object model input parameter."
             @selectKeyVector = selectKeyVector_? and selectKeyVector_ and selectKeyVector_.length and selectKeyVector_.slice(0, selectKeyVector_.length) or []
+            @parentExtensionPointId = -1
+            @rooted = false
+            @keysRequired = false
+            @keysSpecified = true
 
-            selectIndex = 0
-            while selectIndex < @selectKeyVector.length - 1
-                parentSelectKey = @selectKeyVector[selectIndex]
-                childSelectKey = @selectKeyVector[selectIndex + 1]
-                @validateSelectKeyPair(parentSelectKey, childSelectKey)
-                selectIndex++
+            # Performs cloning and validation
+            for selectKey in @selectKeyVector
+                @addSelectKey(selectKey)
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModelSelectKeyVector invalid select key vector: #{exception}"
@@ -151,7 +152,17 @@ class Encapsule.code.lib.omm.ObjectModelSelectKeyVector
             if @selectKeyVector.length
                 parentSelectKey = @selectKeyVector[@selectKeyVector.length - 1]
                 @validateSelectKeyPair(parentSelectKey, selectKey_)
-            @selectKeyVector.push selectKey_
+
+            @selectKeyVector.push selectKey_.clone()
+
+            if selectKey_.componentDescriptor.id == 0
+                @rooted = true
+
+            if selectKey_.keyRequired
+                @keysRequired = true
+
+            if not selectKey_.isReady()
+                @keysSpecified = false
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModelSelectorVector.pushSelectKey failure: #{exception}"

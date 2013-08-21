@@ -57,17 +57,19 @@ class Encapsule.code.app.Schema
             # Some experimental stuff
 
             selectKeyTest01 = new Encapsule.code.lib.omm.ObjectModelSelectKey(objectModel, undefined, undefined, 2) # root selector
-            keyResolver01 = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, undefined, selectKeyTest01, "new")
+            #keyResolver01 = new Encapsule.code.lib.omm.ObjectStoreNamespaceResolver(objectStore, undefined, selectKeyTest01, "new")
 
             selectKeyTest02 = new Encapsule.code.lib.omm.ObjectModelSelectKey(objectModel, 2, undefined, 3) # Should be okay.
-            keyResolver02 = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, keyResolver01.dataReference, selectKeyTest02, "new")
+            #keyResolver02 = new Encapsule.code.lib.omm.ObjectStoreNamespaceResolver(objectStore, keyResolver01.dataReference, selectKeyTest02, "new")
 
             selectKeyTest03 = new Encapsule.code.lib.omm.ObjectModelSelectKey(objectModel, undefined, undefined, 3) # Should be okay.
-            keyResolver = new Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver(objectStore, keyResolver01.dataReference, selectKeyTest02, "new")
+            #keyResolver = new Encapsule.code.lib.omm.ObjectStoreNamespaceResolver(objectStore, keyResolver01.dataReference, selectKeyTest02, "new")
 
             selectKeyVector01 = new Encapsule.code.lib.omm.ObjectModelSelectKeyVector(objectModel)
             selectKeyVector01.pushSelectKey selectKeyTest01
             selectKeyVector01.pushSelectKey selectKeyTest02
+
+            namespace2Test01 = new Encapsule.code.lib.omm.ObjectStoreNamespace2(objectStore, selectKeyVector01, "new")
 
 
             # ==============================================================================

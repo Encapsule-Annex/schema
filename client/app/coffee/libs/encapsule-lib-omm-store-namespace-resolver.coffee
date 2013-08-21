@@ -28,7 +28,7 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 
 
 
-class Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver
+class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
 
     store: undefined
     resolvedSelectKey: undefined
@@ -124,15 +124,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver
             return result
 
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectStoreNamespaceKeyResolver.internalResolveNamespaceDescriptor failure: #{exception}"
-
-
-
-
-
-
-
-
+            throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.internalResolveNamespaceDescriptor failure: #{exception}"
 
 
 
