@@ -24,23 +24,22 @@ namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
-Encapsule.code.lib.omm.core = Encapsule.code.lib.omm.core? and Encapsule.code.lib.omm.core or @Encapsule.code.lib.omm.core = {}
 
 
 # ****************************************************************************
 # ****************************************************************************
 #
 #
-class Encapsule.code.lib.omm.ObjectModelSelectKey
-    constructor: (objectModel_, idExtensionPoint_, key_, idNamespace_) ->
+class Encapsule.code.lib.omm.AddressToken
+    constructor: (model_, idExtensionPoint_, key_, idNamespace_) ->
         try
-            @objectModel = objectModel_? and objectModel_ or throw "Missing object model input parameter."
+            @model = model_? and model_ or throw "Missing object model input parameter."
             @extensionPointDescriptor = undefined
             if not idNamespace_? then throw "Missing target namespace path ID input parameter."
             idNamespace = idNamespace_
-            @namespaceDescriptor = objectModel_.getNamespaceDescriptorFromPathId(idNamespace)
+            @namespaceDescriptor = model_.getNamespaceDescriptorFromPathId(idNamespace)
             idComponent = @namespaceDescriptor.idComponent
-            @componentDescriptor = @namespaceDescriptor.isComponent and @namespaceDescriptor or objectModel_.getNamespaceDescriptorFromPathId(idComponent)
+            @componentDescriptor = @namespaceDescriptor.isComponent and @namespaceDescriptor or model_.getNamespaceDescriptorFromPathId(idComponent)
             @key =  (@componentDescriptor.id > 0) and key_? and key_ or undefined
             @keyRequired = false
 
@@ -63,11 +62,16 @@ class Encapsule.code.lib.omm.ObjectModelSelectKey
             if idExtensionPoint == -1
 
                 if not @componentDescriptor.extensionPointReferenceIds.length
+                    # We can auto-resolve the extension point ID because for this component
+                    # there are no cyclic references defined and thus the mapping of component
+                    # to extension point ID's is 1:1 (child to parent respectively).
                     idExtensionPoint = @componentDescriptor.parent.id
                 else
-                    throw "You must explicitly specify the parent extension point's path ID to create a select key addressing a '#{@componentDescriptor.path}' component namespace."
+                    # This component is a valid extension of more than one extension point.
+                    # Thus we must have the ID of the parent extension point in order to disambiguate.
+                    throw "You must specify the ID of the parent extension point when creating a token addressing a '#{@componentDescriptor.path}' component namespace."
 
-            @extensionPointDescriptor = objectModel_.getNamespaceDescriptorFromPathId(idExtensionPoint)
+            @extensionPointDescriptor = model_.getNamespaceDescriptorFromPathId(idExtensionPoint)
 
             if not (@extensionPointDescriptor? and @extensionPointDescriptor)
                 throw "Internal error: unable to obtain extension point object model descriptor in request."
@@ -81,16 +85,17 @@ class Encapsule.code.lib.omm.ObjectModelSelectKey
             return
 
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectModelSelectKey failure: #{exception}"
+            throw "Encapsule.code.lib.omm.AddressToken failure: #{exception}"
 
     #
     # ============================================================================
-    clone: => new Encapsule.code.lib.omm.ObjectModelSelectKey(
-        @objectModel
-        @extensionPointDescriptor? and @extensionPointDescriptor and @extensionPointDescriptor.id or -1
-        @key
-        @namespaceDescriptor.id
-        )
+    clone: =>
+        new Encapsule.code.lib.omm.AddressToken(
+            @model
+            @extensionPointDescriptor? and @extensionPointDescriptor and @extensionPointDescriptor.id or -1
+            @key
+            @namespaceDescriptor.id
+            )
 
     #
     # ============================================================================

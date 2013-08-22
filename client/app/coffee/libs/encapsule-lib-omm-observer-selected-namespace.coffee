@@ -16,7 +16,7 @@
 
 ###
 #
-# encapsule-lib-omm-nav-namespace-model-view.coffee
+# encapsule-lib-omm-observer-selected-namespace.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}

@@ -15,7 +15,7 @@
   Visit http://www.encapsule.org for more information and happy hacking.
 
 ###
-# encapsule-lib-omm-nav-selector-model-view.coffee
+# encapsule-lib-omm-observer-selected-path.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}

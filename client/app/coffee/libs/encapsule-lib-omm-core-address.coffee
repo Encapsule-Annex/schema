@@ -30,66 +30,66 @@ Encapsule.code.lib.omm.core = Encapsule.code.lib.omm.core? and Encapsule.code.li
 # ****************************************************************************
 #
 #
-class Encapsule.code.lib.omm.ObjectModelSelectKeyVector
+class Encapsule.code.lib.omm.Address
 
-    constructor: (objectModel_, selectKeyVector_) ->
+    constructor: (objectModel_, addressTokenVector_) ->
         try
             @objectModel = objectModel_? and objectModel_ or throw "Missing required object model input parameter."
-            @selectKeyVector = selectKeyVector_? and selectKeyVector_ and selectKeyVector_.length and selectKeyVector_.slice(0, selectKeyVector_.length) or []
+            @addressTokenVector = []
             @parentExtensionPointId = -1
             @rooted = false
             @keysRequired = false
             @keysSpecified = true
 
             # Performs cloning and validation
-            for selectKey in @selectKeyVector
-                @addSelectKey(selectKey)
+            for token in addressTokenVector_? and addressTokenVector_ or []
+                @pushToken token
 
         catch exception
             throw "Encapsule.code.lib.omm.ObjectModelSelectKeyVector invalid select key vector: #{exception}"
 
     #
     # ============================================================================
-    validateSelectKeyPair: (parentSelectKey_, childSelectKey_) ->
+    pushToken: (token_) =>
         try
-            if not (parentSelectKey_? and parentSelectKey_ and childSelectKey_? and childSelectKey_)
+            if @addressTokenVector.length
+                parentToken = @addressTokenVector[@addressTokenVector.length - 1]
+                @validateSelectKeyPair(parentToken, token_)
+
+            @addressTokenVector.push token_.clone()
+
+            if token_.componentDescriptor.id == 0
+                @rooted = true
+
+            if token_.keyRequired
+                @keysRequired = true
+
+            if not token_.isReady()
+                @keysSpecified = false
+
+        catch exception
+            throw "Encapsule.code.lib.omm.Address.pushToken failure: #{exception}"
+
+    #
+    # ============================================================================
+    validateSelectKeyPair: (parentToken_, childToken_) ->
+        try
+            if not (parentToken_? and parentToken_ and childToken_? and childToken_)
                 throw "Internal error: input parameters are not correct."
 
-            if not childSelectKey_.keyRequired
+            if not childToken_.keyRequired
                 throw "Child select key does not require resolution yet is child."
 
-            if parentSelectKey_.namespaceDescriptor.id != childSelectKey_.extensionPointDescriptor.id
+            if parentToken_.namespaceDescriptor.id != childToken_.extensionPointDescriptor.id
                 throw "Child select key is invalid because parent select key does not specifiy the expected extension point."
 
-            if not parentSelectKey_.isReady() and childSelectKey_.isReady()
+            if not parentToken_.isReady() and childToken_.isReady()
                 throw "Parent select key specifies a new instance yet child select key specifies a key."
 
             true
 
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectModelSelectorVector.validateSelectKeyPair failure: #{exception}"
-
-    #
-    # ============================================================================
-    pushSelectKey: (selectKey_) =>
-        try
-            if @selectKeyVector.length
-                parentSelectKey = @selectKeyVector[@selectKeyVector.length - 1]
-                @validateSelectKeyPair(parentSelectKey, selectKey_)
-
-            @selectKeyVector.push selectKey_.clone()
-
-            if selectKey_.componentDescriptor.id == 0
-                @rooted = true
-
-            if selectKey_.keyRequired
-                @keysRequired = true
-
-            if not selectKey_.isReady()
-                @keysSpecified = false
-
-        catch exception
-            throw "Encapsule.code.lib.omm.ObjectModelSelectorVector.pushSelectKey failure: #{exception}"
+            throw "Encapsule.code.lib.omm.Address.validateSelectKeyPair failure: #{exception}"
 
     #
     # ============================================================================

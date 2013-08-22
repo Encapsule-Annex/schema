@@ -16,7 +16,7 @@
 
 ###
 #
-# encapsule-lib-omm-nav-selector-store.coffee
+# encapsule-lib-omm-core-store-selector.coffee
 #
 # Encapsulates the creation of an Encapsule.code.lib.omm.ObjectStore
 # instance using the "selector" object model.
@@ -26,8 +26,6 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
 Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and Encapsule.code.lib.modelview.detail or @Encapsule.code.lib.modelview.detail = {}
-
-
 
 
 # customized for the Encapsule.code.lib.modelview.detail.SelectorObjectModelDescriptor

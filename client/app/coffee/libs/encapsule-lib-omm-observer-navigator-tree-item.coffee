@@ -16,7 +16,7 @@
 
 ###
 #
-# encapsule-lib-navigator-window.coffee
+# encapsule-lib-omm-observer-navigator-tree-item.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
