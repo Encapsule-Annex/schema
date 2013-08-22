@@ -29,11 +29,103 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 
 
 class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
-
-    #
-    # ============================================================================
     constructor: (store_, parentDataReference_, modelSelectKey_, mode_) ->
         try
+
+            # ----------------------------------------------------------------------------
+            localInitializeNamespaceMembers = (data_, descriptor_) ->
+                try
+                    if not (data_? and data_ and descriptor_? and descriptor_)
+                        throw "Attempt to initialize namespace members with invalid data reference or namespace descriptor."
+
+                    if descriptor_.userImmutable? and namespaceDescriptor_.userImmutable
+                        for memberName, functions of descriptor_.userImmutable
+                            if functions.fnCreate? and functions.fnCreate
+                                data_[memberName] = functions.fnCreate()
+
+                    if descriptor_.userMutable? and namespaceDescriptor_.userMutable
+                        for memberName, functions of descriptor_.userMutable
+                            if functions.fnCreate? and functions.fnCreate
+                                data_[memberName] = functions.fnCreate()
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalInitializeNamespaceMembers failure '#{exception}'."
+
+            # ----------------------------------------------------------------------------
+            localVerifyNamespaceMembers = (data_, descriptor_) ->
+                try
+                    if not (data_? and data_ and descriptor_? and descriptor_)
+                        return
+                    if descriptor_.userImmutable? and descriptor_.userImmutable
+                        for memberName, functions of descriptor_.userImmutable
+                            memberReference = data_[memberName]
+                            if not memberReference?
+                                throw "Expected immutable member '#{memberName}' not found."
+                    if descriptor_.userMutable? and descriptor_.userMutable
+                        for memberName, functions of descriptor_.userMutable
+                            memberReference = data_[memberName]
+                            if not memberReference?
+                                throw "Expected mutable member '#{memberName}' not found."
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalVerifyNamespaceMembers failure '#{exception}'."
+
+            # ----------------------------------------------------------------------------
+            localResolveNamespaceDescriptor = (store_, data_, descriptor_, key_, mode_) ->
+                try
+
+                    if not (data_? and data_) then throw "Internal error: missing parent data reference input parameter."
+                    if not (descriptor_? and descriptor_) then throw "Internal error: missing object model descriptor input parameter."
+                    if not (mode_? and mode_) then throw "Internal error: missing mode input parameter."
+
+                    # Mock these for now
+                    namespaceActions = {
+                        initialize: (dataReference_, descriptor_) ->
+                        verify: (dataReference_, descriptor_) ->
+                        getUniqueKey: -> uuid.v4()
+                    }
+
+                    namespaceKey = ((descriptor_.mvvmType != "archetype") and descriptor_.jsonTag) or key_ or undefined
+
+                    result = {
+                        key: undefined
+                        dataReference: namespaceKey? and namespaceKey and data_[namespaceKey] or undefined
+                        newSelectKey: false
+                    }
+
+                    switch mode_
+                        when "bypass"
+                            if not (result.dataReference? and result.dataReference)
+                                throw "Internal error: Unable to resolve #{descriptor_.mvvmType} namespace descriptor in bypass mode."
+                            break
+                        when "new"
+                            if not (result.dataReference? and result.dataReference)
+                                namespaceObject = {}
+                                namespaceActions.initialize(namespaceObject, descriptor_.namespaceDescriptor)
+                                if descriptor_.mvvmType == "archetype"
+                                    namespaceKey = result.key = namespaceActions.getUniqueKey(namespaceObject)
+                                    if not (namespaceKey? and namespaceKey)
+                                        throw "Error obtaining a unique ID for this component."
+                                    result.newSelectKey = true
+                                result.dataReference =  data_[namespaceKey] = namespaceObject
+                            break
+                        when "strict"
+                            if not (result.dataReference? and result.dataReference)
+                                throw "Internal error: Unable to resolve  #{descriptor_.mvvmType} namespace descriptor in strict mode."
+                            namespaceActions.verify(result.dataReference, descriptor_.namespaceDescriptor)
+                            break
+                        else
+                            throw "Unrecognized mode parameter value."
+
+                    return result
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.internalResolveNamespaceDescriptor failure: #{exception}"
+
+
+            # ----------------------------------------------------------------------------
+            # ----------------------------------------------------------------------------
+            # ----------------------------------------------------------------------------
+
             @store = store_? and store_ or throw "Missing object store input parameter."
             objectModel = store_.objectModel
             parentDataReference = parentDataReference_? and parentDataReference_ or throw "Missing parent data reference input parameter."
@@ -45,7 +137,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
             targetNamespaceDescriptor = modelSelectKey_.namespaceDescriptor
             targetComponentDescriptor = modelSelectKey_.componentDescriptor
 
-            resolveResult = @internalResolveNamespaceDescriptor(store_, parentDataReference, targetComponentDescriptor, modelSelectKey_.key, mode_)
+            resolveResult = localResolveNamespaceDescriptor(store_, parentDataReference, targetComponentDescriptor, modelSelectKey_.key, mode_)
 
             if targetNamespaceDescriptor.isComponent
                 if resolveResult.newSelectKey then @resolvedSelectKey.key = resolveResult.key
@@ -58,69 +150,16 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
 
             for pathId in pathIdsToProcess
                 descriptor = objectModel.getNamespaceDescriptorFromPathId(pathId)
-                resolveResult = @internalResolveNamespaceDescriptor(store_, resolveResult.dataReference, descriptor, undefined, mode_)
-            resolveResult = @internalResolveNamespaceDescriptor(store_, resolveResult.dataReference, targetNamespaceDescriptor, undefined, mode_)
+                resolveResult = localResolveNamespaceDescriptor(store_, resolveResult.dataReference, descriptor, undefined, mode_)
+            resolveResult = localResolveNamespaceDescriptor(store_, resolveResult.dataReference, targetNamespaceDescriptor, undefined, mode_)
             @dataReference = resolveResult.dataReference
             return
 
+            # ----------------------------------------------------------------------------
+            # ----------------------------------------------------------------------------
+            # ----------------------------------------------------------------------------
+
         catch exception
             throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver failure: #{exception}"
-
-
-    #
-    # ============================================================================
-    internalResolveNamespaceDescriptor: (store_, parentDataReference_, objectModelDescriptor_, key_, mode_) ->
-        try
-
-            if not (parentDataReference_? and parentDataReference_) then throw "Internal error: missing parent data reference input parameter."
-            if not (objectModelDescriptor_? and objectModelDescriptor_) then throw "Internal error: missing object model descriptor input parameter."
-            if not (mode_? and mode_) then throw "Internal error: missing mode input parameter."
-
-            # Mock these for now
-            namespaceActions = {
-                initialize: (dataReference_, namespaceDescriptor_) ->
-                verify: (dataReference_, namespaceDescriptor_) ->
-                getUniqueKey: -> uuid.v4()
-            }
-
-            namespaceKey = ((objectModelDescriptor_.mvvmType != "archetype") and objectModelDescriptor_.jsonTag) or key_ or undefined
-
-            result = {
-                key: undefined
-                dataReference: namespaceKey? and namespaceKey and parentDataReference_[namespaceKey] or undefined
-                newSelectKey: false
-            }
-
-            switch mode_
-                when "bypass"
-                    if not (result.dataReference? and result.dataReference)
-                        throw "Internal error: Unable to resolve #{objectModelDescriptor_.mvvmType} namespace descriptor in bypass mode."
-                    break
-                when "new"
-                    if not (result.dataReference? and result.dataReference)
-                        namespaceObject = {}
-                        namespaceActions.initialize(namespaceObject, objectModelDescriptor_.namespaceDescriptor)
-                        if objectModelDescriptor_.mvvmType == "archetype"
-                            namespaceKey = result.key = namespaceActions.getUniqueKey(namespaceObject)
-                            if not (namespaceKey? and namespaceKey)
-                                throw "Error obtaining a unique ID for this component."
-                            result.newSelectKey = true
-                        result.dataReference =  parentDataReference_[namespaceKey] = namespaceObject
-                    break
-                when "strict"
-                    if not (result.dataReference? and result.dataReference)
-                        throw "Internal error: Unable to resolve  #{objectModelDescriptor_.mvvmType} namespace descriptor in strict mode."
-                    namespaceActions.verify(result.dataReference, objectModelDescriptor_.namespaceDescriptor)
-                    break
-                else
-                    throw "Unrecognized mode parameter value."
-
-            return result
-
-        catch exception
-            throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.internalResolveNamespaceDescriptor failure: #{exception}"
-
-
-
 
 
