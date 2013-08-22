@@ -29,68 +29,101 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 
 
 class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
-    constructor: (store_, parentDataReference_, modelSelectKey_, mode_) ->
+    constructor: (store_, parentDataReference_, modelSelectKey_, mode_, dataReferenceAsComponentRoot_) ->
         try
 
             # ----------------------------------------------------------------------------
             localInitializeNamespaceMembers = (data_, descriptor_) ->
                 try
-                    if not (data_? and data_ and descriptor_? and descriptor_)
-                        throw "Attempt to initialize namespace members with invalid data reference or namespace descriptor."
+                    if not (data_? and data_) then throw "Missing data reference input parameter."
+                    if not (descriptor_? and descriptor_) then throw "Missing descriptor input parameter."
 
-                    if descriptor_.userImmutable? and namespaceDescriptor_.userImmutable
+                    if descriptor_.userImmutable? and descriptor_.userImmutable
                         for memberName, functions of descriptor_.userImmutable
                             if functions.fnCreate? and functions.fnCreate
                                 data_[memberName] = functions.fnCreate()
 
-                    if descriptor_.userMutable? and namespaceDescriptor_.userMutable
+                    if descriptor_.userMutable? and descriptor_.userMutable
                         for memberName, functions of descriptor_.userMutable
                             if functions.fnCreate? and functions.fnCreate
                                 data_[memberName] = functions.fnCreate()
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalInitializeNamespaceMembers failure '#{exception}'."
+                    throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.localInitializeNamespaceMembers failure #{exception}."
 
             # ----------------------------------------------------------------------------
             localVerifyNamespaceMembers = (data_, descriptor_) ->
                 try
-                    if not (data_? and data_ and descriptor_? and descriptor_)
-                        return
+                    if not (data_? and data_) then throw "Missing data reference input parameter."
+                    if not (descriptor_? and descriptor_) then throw "Missing descriptor input parameter."
+
                     if descriptor_.userImmutable? and descriptor_.userImmutable
                         for memberName, functions of descriptor_.userImmutable
                             memberReference = data_[memberName]
                             if not memberReference?
                                 throw "Expected immutable member '#{memberName}' not found."
+
                     if descriptor_.userMutable? and descriptor_.userMutable
                         for memberName, functions of descriptor_.userMutable
                             memberReference = data_[memberName]
                             if not memberReference?
                                 throw "Expected mutable member '#{memberName}' not found."
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreNamespace.internalVerifyNamespaceMembers failure '#{exception}'."
+                    throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.localVerifyNamespaceMembers failure #{exception}."
+
 
             # ----------------------------------------------------------------------------
-            localResolveNamespaceDescriptor = (store_, data_, descriptor_, key_, mode_) ->
+            localInitializeComponent = (store_, data_, descriptor_, extensionPointId_) ->
+                try
+                    if not (data_? and data_) then throw "Missing data reference input parameter."
+                    if not (descriptor_? and descriptor_) then throw "Missing descriptor input parameter."
+                    if not descriptor_.isComponent then throw "Input descriptor does not specifiy a component in this object model."
+                    if not (extensionPointId_? and extensionPointId_) then throw "Missing extension point ID input parameter."
+
+                    for pathId in descriptor_.componentNamespaceIds
+                        if pathId == descriptor_.id then continue
+                        selectKey = new Encapsule.code.lib.omm.ObjectModelSelectKey(store_.objectModel, extensionPointId_, undefined, pathId)
+                        resolvedNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespaceResolver(store_, data_, selectKey, "new", true)
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.localInitializeComponent failure: #{exception}."
+
+
+
+            # ----------------------------------------------------------------------------
+            localVerifyComponent = (store_, data_, descriptor_, extensionPointId_) ->
+                try
+                    if not (data_? and data_) then throw "Missing data reference input parameter."
+                    if not (descriptor_? and descriptor_) then throw "Missing descriptor input parameter."
+
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.localVerifyComponent failure: #{exception}."
+
+
+
+
+
+
+            # ----------------------------------------------------------------------------
+            localResolveNamespaceDescriptor = (resolveActions_, store_, data_, descriptor_, key_, mode_) ->
                 try
 
+                    if not (resolveActions_? and resolveActions_) then throw "Internal error: missing resolve actions structure input parameter."
                     if not (data_? and data_) then throw "Internal error: missing parent data reference input parameter."
                     if not (descriptor_? and descriptor_) then throw "Internal error: missing object model descriptor input parameter."
                     if not (mode_? and mode_) then throw "Internal error: missing mode input parameter."
 
-                    # Mock these for now
-                    namespaceActions = {
-                        initialize: (dataReference_, descriptor_) ->
-                        verify: (dataReference_, descriptor_) ->
-                        getUniqueKey: -> uuid.v4()
-                    }
-
-                    namespaceKey = ((descriptor_.mvvmType != "archetype") and descriptor_.jsonTag) or key_ or undefined
+                    jsonTag = ((descriptor_.mvvmType != "archetype") and descriptor_.jsonTag) or key_ or undefined
 
                     result = {
-                        key: undefined
-                        dataReference: namespaceKey? and namespaceKey and data_[namespaceKey] or undefined
-                        newSelectKey: false
+                        jsonTag: jsonTag
+                        dataReference: undefined
+                        created: false
+                        newKey: undefined
                     }
+
+                    result.dataReference = jsonTag? and jsonTag and data_[jsonTag] or undefined
 
                     switch mode_
                         when "bypass"
@@ -100,18 +133,18 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
                         when "new"
                             if not (result.dataReference? and result.dataReference)
                                 namespaceObject = {}
-                                namespaceActions.initialize(namespaceObject, descriptor_.namespaceDescriptor)
+                                resolveActions_.initializeNamespace(namespaceObject, descriptor_.namespaceDescriptor)
                                 if descriptor_.mvvmType == "archetype"
-                                    namespaceKey = result.key = namespaceActions.getUniqueKey(namespaceObject)
-                                    if not (namespaceKey? and namespaceKey)
+                                    jsonTag = result.jsonTag = result.newKey = resolveActions_.getUniqueKey(namespaceObject)
+                                    if not (jsonTag? and jsonTag)
                                         throw "Error obtaining a unique ID for this component."
-                                    result.newSelectKey = true
-                                result.dataReference =  data_[namespaceKey] = namespaceObject
+                                result.dataReference =  data_[jsonTag] = namespaceObject
+                                result.created = true
                             break
                         when "strict"
                             if not (result.dataReference? and result.dataReference)
                                 throw "Internal error: Unable to resolve  #{descriptor_.mvvmType} namespace descriptor in strict mode."
-                            namespaceActions.verify(result.dataReference, descriptor_.namespaceDescriptor)
+                            resolveActions_.verifyNamespace(result.dataReference, descriptor_.namespaceDescriptor)
                             break
                         else
                             throw "Unrecognized mode parameter value."
@@ -128,30 +161,51 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
 
             @store = store_? and store_ or throw "Missing object store input parameter."
             objectModel = store_.objectModel
-            parentDataReference = parentDataReference_? and parentDataReference_ or throw "Missing parent data reference input parameter."
+            @parentDataReference = parentDataReference_? and parentDataReference_ or throw "Missing parent data reference input parameter."
             if not (modelSelectKey_? and modelSelectKey_) then throw "Missing object model select key object input parameter."
             if not (mode_? and mode_) then throw "Missing mode input parameter."
             @dataReference = undefined
+            @dataReferenceAsComponentRoot = dataReferenceAsComponentRoot_? and dataReferenceAsComponentRoot_ or false
+
             @resolvedSelectKey = modelSelectKey_.clone()
 
             targetNamespaceDescriptor = modelSelectKey_.namespaceDescriptor
             targetComponentDescriptor = modelSelectKey_.componentDescriptor
 
-            resolveResult = localResolveNamespaceDescriptor(store_, parentDataReference, targetComponentDescriptor, modelSelectKey_.key, mode_)
+            resolveActions = {
+                initializeNamespace: localInitializeNamespaceMembers
+                verifyNamespace: localVerifyNamespaceMembers
+                getUniqueKey: objectModel.getSemanticBindings().getUniqueKey
+            }
 
-            if targetNamespaceDescriptor.isComponent
-                if resolveResult.newSelectKey then @resolvedSelectKey.key = resolveResult.key
-                @dataReference = resolveResult.dataReference
-                return
+            resolveResult = {}
+            if not @dataReferenceAsComponentRoot
+
+                resolveResult = localResolveNamespaceDescriptor(resolveActions, store_, @parentDataReference, targetComponentDescriptor, modelSelectKey_.key, mode_)
+
+                extensionPointId = modelSelectKey_.extensionPointDescriptor? and modelSelectKey_.extensionPointDescriptor or -1
+
+                if mode_ == "new" and resolveResult.created
+                    localInitializeComponent(store_, resolveResult.dataReference, targetComponentDescriptor, extensionPointId)
+
+                if mode_ == "strict"
+                    localVerifyComponent(store_, resolveResult.dataReference, targetComponentDescriptor, extensionPointId)            
+
+                if targetNamespaceDescriptor.isComponent
+                    if resolveResult.newKey? and resolveResult.newKey then @resolvedSelectKey.key = resolveResult.newKey
+                    @dataReference = resolveResult.dataReference
+                    return
+            else
+                resolveResult.dataReference = @parentDataReference
 
             # Resolve the target namespace relative to its component root.
             targetNamespaceHeightOverComponent = targetNamespaceDescriptor.parentPathIdVector.length - targetComponentDescriptor.parentPathIdVector.length - 1
-            pathIdsToProcess = targetNamespaceDescriptor.parentPathIdVector.slice(-targetNamespaceHeightOverComponent)
+            pathIdsToProcess = targetNamespaceHeightOverComponent and targetNamespaceDescriptor.parentPathIdVector.slice(-targetNamespaceHeightOverComponent) or []
 
             for pathId in pathIdsToProcess
                 descriptor = objectModel.getNamespaceDescriptorFromPathId(pathId)
-                resolveResult = localResolveNamespaceDescriptor(store_, resolveResult.dataReference, descriptor, undefined, mode_)
-            resolveResult = localResolveNamespaceDescriptor(store_, resolveResult.dataReference, targetNamespaceDescriptor, undefined, mode_)
+                resolveResult = localResolveNamespaceDescriptor(resolveActions, store_, resolveResult.dataReference, descriptor, undefined, mode_)
+            resolveResult = localResolveNamespaceDescriptor(resolveActions, store_, resolveResult.dataReference, targetNamespaceDescriptor, undefined, mode_)
             @dataReference = resolveResult.dataReference
             return
 
