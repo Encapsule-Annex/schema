@@ -16,7 +16,7 @@
 
 ###
 #
-# encapsule-lib-omm-object-model.coffee
+# encapsule-lib-omm-core-model.coffee
 #
 # OMM stands for Object Model Manager
 
