@@ -68,7 +68,7 @@ Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory = (jsonTag_, l
 #
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.ObjectModelBase
+class Encapsule.code.lib.omm.ModelBase
     constructor: (objectModelDeclaration_) ->
         try
 
@@ -216,7 +216,7 @@ class Encapsule.code.lib.omm.ObjectModelBase
             # / END: buildOMDesriptorFromLayout
 
             # --------------------------------------------------------------------------
-            Console.message("Encapsule.code.lib.omm.ObjectModel: Processing object model declaration '#{objectModelDeclaration_.jsonTag}'")
+            Console.message("Encapsule.code.lib.omm.Model: Processing object model declaration '#{objectModelDeclaration_.jsonTag}'")
 
             if not (objectModelDeclaration_? and objectModelDeclaration_)
                 throw "Missing object model delcaration input parameter!"
@@ -276,7 +276,9 @@ class Encapsule.code.lib.omm.ObjectModelBase
                 throw "Layout declaration error: extension point and extension descriptor counts do not match. countExtensionPoints=#{@countExtensionPoints} countExtensions=#{@countExtensions}"
 
             if @countComponents != @countExtensionPoints + 1 - @countExtensionReferences
-                throw "Layout declaration error: component count should be extension count + 1 - extension references. componentCount=#{@countComponents} countExtensions=#{@countExtensions} extensionReferences=#{@countExtensionReferences}"
+                throw "Layout declaration error: component count should be " +
+                     "extension count + 1 - extension references. componentCount=#{@countComponents} " +
+                     " countExtensions=#{@countExtensions} extensionReferences=#{@countExtensionReferences}"
 
             # Debug summary output.
             Console.message("... '#{@jsonTag}' root descriptor")
@@ -289,7 +291,7 @@ class Encapsule.code.lib.omm.ObjectModelBase
 
 
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectModelBase.construction failure: #{exception}"
+            throw "Encapsule.code.lib.omm.ModelBase failure: #{exception}"
 
 # ****************************************************************************
 #
@@ -298,7 +300,7 @@ class Encapsule.code.lib.omm.ObjectModelBase
 #
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectModelBase
+class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.ModelBase
     constructor: (objectModelDeclaration_) ->
         try
             super(objectModelDeclaration_)
@@ -316,7 +318,7 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
                     return objectModelDescriptor
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModel.getNamespaceDescriptorFromPathId failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.Model.getNamespaceDescriptorFromPathId failure: #{exception}"
                 
 
 
@@ -336,7 +338,7 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
                     return objectModelPathId
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModel.getPathIdFromPath fail: #{exception}"
+                    throw "Encapsule.code.lib.omm.Model.getPathIdFromPath fail: #{exception}"
 
 
             # --------------------------------------------------------------------------
@@ -351,7 +353,7 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
                     return path
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModel.getPathFromPathId fail: #{exception}"
+                    throw "Encapsule.code.lib.omm.Model.getPathFromPathId fail: #{exception}"
 
 
             # --------------------------------------------------------------------------
@@ -361,7 +363,7 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
                     selector.internalVerifySelector()
                     return selector
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPathId failed: #{exception}"
+                    throw "Encapsule.code.lib.omm.Model.createNamespaceSelectorFromPathId failed: #{exception}"
 
             # --------------------------------------------------------------------------
             @createNamespaceSelectorFromPath = (path_, selectKeyVector_, secondaryKeyVector_) =>
@@ -370,7 +372,7 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
                     selector = @createNamespaceSelectorFromPathId(pathId, selectKeyVector_, secondaryKeyVector_)
                     return selector
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModel.createNamespaceSelectorFromPath failed: #{exception}"
+                    throw "Encapsule.code.lib.omm.Model.createNamespaceSelectorFromPath failed: #{exception}"
 
             # --------------------------------------------------------------------------
             @getSemanticBindings = =>
@@ -378,13 +380,11 @@ class Encapsule.code.lib.omm.ObjectModel extends Encapsule.code.lib.omm.ObjectMo
                     semanticBindings = @objectModelDeclaration.semanticBindings
                     return semanticBindings
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectModel failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.Model failure: #{exception}"
 
 
             # CONSTRUCT THE ROOT OBJECT DESCRIPTOR FROM THE SPECIFIED OBJECT MODEL LAYOUT 
             # **************************************************************************
 
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectModel construction fail: #{exception}"
-# ****************************************************************************
-#
+            throw "Encapsule.code.lib.omm.Model construction fail: #{exception}"

@@ -28,7 +28,7 @@ Encapsule.code.lib.omm.core = Encapsule.code.lib.omm.core? and Encapsule.code.li
 
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.ObjectStoreBase
+class Encapsule.code.lib.omm.StoreBase
     constructor: (objectModel_, initialStateJSON_) ->
         try
 
@@ -66,7 +66,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     true
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalReifyStoreComponent failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.StoreBase.internalReifyStoreComponent failure: #{exception}"
 
 
             # 
@@ -111,7 +111,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     true
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalUnreifyStoreComponent failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.StoreBase.internalUnreifyStoreComponent failure: #{exception}"
 
 
             # 
@@ -206,7 +206,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     # extensionPointStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointNamespaceSelector_, "bypass")
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalReifyStoreExtensions failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.StoreBase.internalReifyStoreExtensions failure: #{exception}"
 
 
             # 
@@ -245,7 +245,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     return observerIdCode
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalRegisterModelViewObserver failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.StoreBase.internalRegisterModelViewObserver failure: #{exception}"
 
 
             #
@@ -268,7 +268,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
                     @modelViewObservers[observerIdCode_] = undefined
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreBase.internalUnregisterModelViewObserver failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.StoreBase.internalUnregisterModelViewObserver failure: #{exception}"
 
 
             #
@@ -317,7 +317,7 @@ class Encapsule.code.lib.omm.ObjectStoreBase
 
             #
             # ============================================================================
-            Console.message("Encapsule.code.lib.omm.ObjectStore: Creating memory store instance for object model '#{objectModel_.jsonTag}'")
+            Console.message("Encapsule.code.lib.omm.StoreBase: Creating memory store instance for object model '#{objectModel_.jsonTag}'")
 
             # Validate parameters.
             if not (objectModel_? and objectModel_) then throw "Missing object model parameter!"
@@ -355,11 +355,11 @@ class Encapsule.code.lib.omm.ObjectStoreBase
 
 
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectStoreBase constructor failed: #{exception}"
+            throw "Encapsule.code.lib.omm.StoreBase constructor failed: #{exception}"
 
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectStoreBase
+class Encapsule.code.lib.omm.Store extends Encapsule.code.lib.omm.StoreBase
     constructor: (objectModel_, initialStateJSON_) ->
         try
             super(objectModel_, initialStateJSON_)
@@ -385,7 +385,7 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     return @internalRegisterModelViewObserver(modelViewObject_)
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.registerModelViewObserver failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.Store.registerModelViewObserver failure: #{exception}"
 
             #
             # ============================================================================
@@ -395,7 +395,7 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     @internalUnregisterModelViewObserver(observerIdCode_)
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.unregisterModelViewObserver failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.Store.unregisterModelViewObserver failure: #{exception}"
 
 
 
@@ -412,7 +412,7 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     return resultJSON
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.toJSON fail on object store #{@jsonTag} : #{exception}"
+                    throw "Encapsule.code.lib.omm.Store.toJSON fail on object store #{@jsonTag} : #{exception}"
 
 
             #
@@ -444,7 +444,7 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
 
                 catch exception
 
-                    throw "Encapsule.code.lib.omm.ObjectStore.createComponent failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.Store.createComponent failure: #{exception}"
 
             #
             # ============================================================================
@@ -481,7 +481,7 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     return objectStoreNamespace
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.removeComponent failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.Store.removeComponent failure: #{exception}"
 
 
             #
@@ -503,7 +503,7 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     return objectStoreNamespace
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.openNamespace failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.Store.openNamespace failure: #{exception}"
                 
 
 
@@ -514,7 +514,7 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
                     return @internalOpenObserverState(observerId_)
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.openObserverStateObject failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.Store.openObserverStateObject failure: #{exception}"
 
             #
             # ============================================================================
@@ -524,7 +524,7 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     if not (namespaceSelector_? and namespaceSelector_) then throw "Missing namespace selector parameter!"
                     return @internalOpenObserverComponentState(observerId_, namespaceSelector_)
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.openObserverComponentState failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.Store.openObserverComponentState failure: #{exception}"
 
 
             #
@@ -535,12 +535,12 @@ class Encapsule.code.lib.omm.ObjectStore extends Encapsule.code.lib.omm.ObjectSt
                     if not (namespaceSelector_? and namespaceSelector_) then throw "Missing namespace selector parameter!"
                     return @internalOpenObserverNamespaceState(observerId_, namespaceSelector_)
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStore.openObserverNamespaceState failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.Store.openObserverNamespaceState failure: #{exception}"
 
 
 
         catch exception
-            throw "Encapsule.code.lib.omm.Object construction failed: #{exception}"
+            throw "Encapsule.code.lib.omm.Store failure: #{exception}"
 
 
         

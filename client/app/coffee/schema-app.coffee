@@ -41,7 +41,20 @@ class Encapsule.code.app.Schema
 
             Console.messageRaw("<h3>INITIALIZING #{appName} OBJECT MODEL MANAGER</h3>")
 
-            objectModel = Encapsule.runtime.app.SchemaObjectModel = new Encapsule.code.lib.omm.ObjectModel(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
+            OMM = Encapsule.code.lib.omm
+            schemaRuntime = Encapsule.runtime.app
+            
+
+            schemaRuntime.model = OMM.Model(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
+
+            schemaRuntime.store = OMM.Store(schemaObjectModel)
+
+
+
+
+
+
+            objectModel = Encapsule.runtime.app.SchemaObjectModel = new Encapsule.code.lib.omm.ObjectModel()
             objectStore = Encapsule.runtime.app.SchemaObjectStore = new Encapsule.code.lib.omm.ObjectStore(objectModel)
             objectModelNavigatorWindow = Encapsule.runtime.app.ObjectModelNavigatorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorWindow(objectStore)
             objectModelNavigatorSelectorWindow = Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow()

@@ -16,7 +16,7 @@
 
 ###
 #
-# encapsule-lib-omm-core-binder.coffee
+# encapsule-lib-omm-core-address-binder.coffee
 #
 
 
@@ -28,7 +28,7 @@ Encapsule.code.lib.omm.core = Encapsule.code.lib.omm.core? and Encapsule.code.li
 
 
 
-class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
+class Encapsule.code.lib.omm.AddressTokenBinder
     constructor: (store_, parentDataReference_, modelSelectKey_, mode_, dataReferenceAsComponentRoot_) ->
         try
 
@@ -49,7 +49,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
                                 data_[memberName] = functions.fnCreate()
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.localInitializeNamespaceMembers failure #{exception}."
+                    throw "Encapsule.code.lib.omm.AddressTokenBinder.localInitializeNamespaceMembers failure #{exception}."
 
             # ----------------------------------------------------------------------------
             localVerifyNamespaceMembers = (data_, descriptor_) ->
@@ -69,7 +69,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
                             if not memberReference?
                                 throw "Expected mutable member '#{memberName}' not found."
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.localVerifyNamespaceMembers failure #{exception}."
+                    throw "Encapsule.code.lib.omm.AddressTokenBinder.localVerifyNamespaceMembers failure #{exception}."
 
 
             # ----------------------------------------------------------------------------
@@ -86,7 +86,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
                         resolvedNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespaceResolver(store_, data_, selectKey, "new", true)
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.localInitializeComponent failure: #{exception}."
+                    throw "Encapsule.code.lib.omm.AddressTokenBinder.localInitializeComponent failure: #{exception}."
 
 
 
@@ -98,7 +98,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
 
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.localVerifyComponent failure: #{exception}."
+                    throw "Encapsule.code.lib.omm.AddressTokenBinder.localVerifyComponent failure: #{exception}."
 
 
 
@@ -152,7 +152,7 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
                     return result
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver.internalResolveNamespaceDescriptor failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.AddressTokenBinder.internalResolveNamespaceDescriptor failure: #{exception}"
 
 
             # ----------------------------------------------------------------------------
@@ -214,6 +214,6 @@ class Encapsule.code.lib.omm.ObjectStoreNamespaceResolver
             # ----------------------------------------------------------------------------
 
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectStoreNamespaceResolver failure: #{exception}"
+            throw "Encapsule.code.lib.omm.AddressTokenBinder failure: #{exception}"
 
 
