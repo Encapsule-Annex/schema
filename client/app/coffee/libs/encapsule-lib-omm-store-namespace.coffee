@@ -511,29 +511,32 @@ class Encapsule.code.lib.omm.ObjectStoreNamespace2
             if not (selectKeyVector_? and selectKeyVector_ and selectKeyVector_.selectKeyVector.length)
                 throw "Missing or zero-length object model select key vector input parameter."
 
+            # Ensure that the select key vector and object store were both created using the same object model.
             objectModelNameStore = objectStore_.objectModel.jsonTag
             objectModelNameKeys = selectKeyVector_.objectModel.jsonTag
             if objectModelNameStore != objectModelNameKeys
                 throw "You cannot create a '#{objectModelNameStore}' store namespace with a '#{objectModelNameKeys}' select key vector."
 
+            # First select key in the vector specifies a root component namespace?
             if not selectKeyVector_.rooted
                 throw "Sorry. You can only resolve rooted select key vectors currently."
 
             mode = mode_? and mode_ or "bypass"
 
             if (mode != "new") and selectKeyVector_.keysRequired and not selectKeyVector_.keysSpecified
-                throw "The specified select key vector does not resolve to an existing object store namespace."
+                throw "The specified select key vector does not resolve to an existing store namespace."
 
             # The actual store data.
+
             @dataReference = objectStore_.dataReference? and objectStore_.dataReference or objectStore_.dataReference = {}
+            @resolvedSelectKey = undefined
 
             @resolvedSelectKeys = []
-            @resolvedSelectKey = undefined
 
             for selectKey in selectKeyVector_.selectKeyVector
                 @resolvedSelectKey = new Encapsule.code.lib.omm.ObjectStoreNamespaceResolver(objectStore_, @dataReference, selectKey, mode)
-                @resolvedSelectKeys.push @resolvedSelectKey
                 @dataReference = @resolvedSelectKey.dataReference
+                @resolvedSelectKeys.push @resolvedSelectKey
 
 
         catch exception
