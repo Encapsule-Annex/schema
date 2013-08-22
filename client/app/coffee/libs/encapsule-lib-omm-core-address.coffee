@@ -16,16 +16,14 @@
 
 ###
 #
-# encapsule-lib-omm-object-selector.coffee
+# encapsule-lib-omm-core-address.coffee
 #
-# OMM stands for Object Model Manager
-
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
-
+Encapsule.code.lib.omm.core = Encapsule.code.lib.omm.core? and Encapsule.code.lib.omm.core or @Encapsule.code.lib.omm.core = {}
 
 
 # ****************************************************************************

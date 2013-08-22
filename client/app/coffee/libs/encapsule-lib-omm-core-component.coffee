@@ -16,7 +16,7 @@
 
 ###
 #
-# encapsule-lib-omm-object-store-component.coffee
+# encapsule-lib-omm-core-component.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
