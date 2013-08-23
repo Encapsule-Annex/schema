@@ -85,11 +85,6 @@ class Encapsule.code.lib.omm.observers.NavigatorModelView
                     catch exception
                         throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindow.onNamespaceRemoved failure: #{exception}"
 
-            # Register this ObjectModelNavigatorWindow object as an observer of the objectStore_
-            @objectStoreObserverId = objectStore_.registerModelViewObserver(objectStoreObserverCallbacks)
-
-            # Create a SelectorStore instance associated with objectStore_.
-            @selectorStore = new Encapsule.code.lib.modelview.SelectorStore(objectStore_, initialSelector_)
 
             @selectedNamespacesBySelectorHash = {}
 
@@ -153,11 +148,6 @@ class Encapsule.code.lib.omm.observers.NavigatorModelView
 
             }
 
-            @selectorStoreObserverId = @selectorStore.registerModelViewObserver(selectorStoreCallbacks)
-
-            # Test
-            cataloguesSelector = @objectStore.objectModel.createNamespaceSelectorFromPath("schema.client.catalogues")
-            @selectorStore.setSelector(cataloguesSelector)
 
             
 
