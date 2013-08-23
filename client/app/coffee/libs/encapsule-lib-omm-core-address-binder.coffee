@@ -24,11 +24,14 @@ namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
-Encapsule.code.lib.omm.core = Encapsule.code.lib.omm.core? and Encapsule.code.lib.omm.core or @Encapsule.code.lib.omm.core = {}
+Encapsule.code.lib.omm.implementation = Encapsule.code.lib.omm.implementation? and Encapsule.code.lib.omm.implementation or @Encapsule.code.lib.omm.implementation = {}
 
+###
+Encapsule.code.lib.omm.AddressTokenBinder is an internal implementation class of the OMM library.
+You should avoid this class unless you're extending the core OMM library classes or fixing a bug.
+###
 
-
-class Encapsule.code.lib.omm.AddressTokenBinder
+class Encapsule.code.lib.omm.implementation.AddressTokenBinder
     constructor: (store_, parentDataReference_, token_, mode_, dataReferenceAsComponentRoot_) ->
         try
 
@@ -49,7 +52,7 @@ class Encapsule.code.lib.omm.AddressTokenBinder
                                 data_[memberName] = functions.fnCreate()
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.AddressTokenBinder.localInitializeNamespaceMembers failure #{exception}."
+                    throw "Encapsule.code.lib.omm.implementation.AddressTokenBinder.localInitializeNamespaceMembers failure #{exception}."
 
             # ----------------------------------------------------------------------------
             localVerifyNamespaceMembers = (data_, descriptor_) ->
@@ -69,7 +72,7 @@ class Encapsule.code.lib.omm.AddressTokenBinder
                             if not memberReference?
                                 throw "Expected mutable member '#{memberName}' not found."
                 catch exception
-                    throw "Encapsule.code.lib.omm.AddressTokenBinder.localVerifyNamespaceMembers failure #{exception}."
+                    throw "Encapsule.code.lib.omm.implementation.AddressTokenBinder.localVerifyNamespaceMembers failure #{exception}."
 
 
             # ----------------------------------------------------------------------------
@@ -83,10 +86,11 @@ class Encapsule.code.lib.omm.AddressTokenBinder
                     for pathId in descriptor_.componentNamespaceIds
                         if pathId == descriptor_.id then continue
                         addressToken = new Encapsule.code.lib.omm.AddressToken(store_.objectModel, extensionPointId_, undefined, pathId)
-                        resolvedNamespace = new Encapsule.code.lib.omm.AddressTokenBinder(store_, data_, addressToken, "new", true)
+                        # Note the special-case use of the dataReferenceAsComponentRoot_ flag in this case.
+                        resolvedNamespace = new Encapsule.code.lib.omm.implementation.AddressTokenBinder(store_, data_, addressToken, "new", true)
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.AddressTokenBinder.localInitializeComponent failure: #{exception}."
+                    throw "Encapsule.code.lib.omm.implementation.AddressTokenBinder.localInitializeComponent failure: #{exception}."
 
 
             # ----------------------------------------------------------------------------
@@ -97,7 +101,7 @@ class Encapsule.code.lib.omm.AddressTokenBinder
 
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.AddressTokenBinder.localVerifyComponent failure: #{exception}."
+                    throw "Encapsule.code.lib.omm.implementation.AddressTokenBinder.localVerifyComponent failure: #{exception}."
 
 
             # ----------------------------------------------------------------------------
@@ -147,7 +151,7 @@ class Encapsule.code.lib.omm.AddressTokenBinder
                     return result
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.AddressTokenBinder.internalResolveNamespaceDescriptor failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.implementatin.AddressTokenBinder.localResolveNamespaceDescriptor failure: #{exception}"
 
 
             # ----------------------------------------------------------------------------
@@ -209,6 +213,6 @@ class Encapsule.code.lib.omm.AddressTokenBinder
             # ----------------------------------------------------------------------------
 
         catch exception
-            throw "Encapsule.code.lib.omm.AddressTokenBinder failure: #{exception}"
+            throw "Encapsule.code.lib.omm.implementation.AddressTokenBinder failure: #{exception}"
 
 

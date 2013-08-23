@@ -66,7 +66,7 @@ Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory = (jsonTag_, l
 #
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.ModelBase
+class Encapsule.code.lib.omm.implementation.ModelBase
     constructor: (objectModelDeclaration_) ->
         try
 
@@ -298,7 +298,7 @@ class Encapsule.code.lib.omm.ModelBase
 #
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.ModelBase
+class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.implementation.ModelBase
     constructor: (objectModelDeclaration_) ->
         try
             super(objectModelDeclaration_)
