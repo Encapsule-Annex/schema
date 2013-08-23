@@ -54,10 +54,10 @@ class Encapsule.code.app.Schema
             ommRuntime.observers = {}
             ommObservers = ommRuntime.observers
 
-            ommObservers = new Encapsule.code.lib.omm.observers.NavigatorModelView()
+            ommObservers.navigator = new Encapsule.code.lib.omm.observers.NavigatorModelView()
 
 
-
+            ###
 
             objectModelNavigatorWindow = Encapsule.runtime.app.ObjectModelNavigatorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorWindow(objectStore)
             objectModelNavigatorSelectorWindow = Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow()
@@ -84,6 +84,7 @@ class Encapsule.code.app.Schema
 
             namespace2Test01 = new Encapsule.code.lib.omm.ObjectStoreNamespace2(objectStore, address02, "new")
 
+            ###
 
 
             # ==============================================================================

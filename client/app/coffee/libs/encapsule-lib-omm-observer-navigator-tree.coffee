@@ -158,7 +158,7 @@ class Encapsule.code.lib.omm.observers.NavigatorModelView
         # / END: constructor
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorWindow", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_OmmObserverNavigatorViewModel", ( -> """
 <span data-bind="if: rootMenuModelView">
     <div class="classObjectModelNavigatorWindow">
         <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: rootMenuModelView.children }"></span>

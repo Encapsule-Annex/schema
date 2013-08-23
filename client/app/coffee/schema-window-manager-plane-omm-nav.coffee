@@ -44,15 +44,17 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 id: "idOMNavSelectorWindow"
                 name: "Selector Window"
                 initialMode: "min"
-                initialEnable: true
+                initialEnable: false
                 overflow: "hidden"
                 opacity: 1.0
                 backgroundColor: "rgba(0,255,0, 0.2)"
                 modes: { full: { reserve: 64 }, min: { reserve: 16 } }
+                ###
                 MVVM: {
                     modelView: -> Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow
                     viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorSelectorWindow"
                 }
+                ###
             }
             Q2WindowDescriptor: undefined
         }
@@ -73,8 +75,8 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 backgroundColor: undefined
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
                 MVVM: {
-                    modelView: -> Encapsule.runtime.app.ObjectModelNavigatorWindow
-                    viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorWindow"
+                    modelView: -> Encapsule.runtime.app.omm.observers.navigator
+                    viewModelTemplateId: "idKoTemplate_OmmObserverNavigatorViewModel"
                 }
             }                                                            
             Q2WindowDescriptor: undefined                                    
@@ -89,16 +91,18 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 id: "idScdlNavigatorMenuItemJSONWindow"                                                
                 name: "SCDL Catalogue Item JSON View"                                        
                 initialMode: "min"
-                initialEnable: true
+                initialEnable: false
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "rgba(255,255,255,0.1)"
                 modes: { full: { reserve: 500 }, min: { reserve: 250 } }
+                ###
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.ObjectModelNavigatorJsonModelView
                     viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorJsonModelView"
 
                 }
+                ###
             }
         }   
 
@@ -111,15 +115,17 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 id: "idSchemaNavigatorSelectedItemWindow"                                     
                 name: "Schema Navigator Selected Item"                               
                 initialMode: "full"
-                initialEnable: true
+                initialEnable: false
                 opacity: 1.0
                 overflow: "auto"
                 backgroundColor:  "rgba(255,255,255,0.4)"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
+                ###
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.ObjectModelNavigatorNamespaceWindow
                     viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorNamespaceWindow"
                 }
+                ###
             }
 
             Q2WindowDescriptor: undefined
