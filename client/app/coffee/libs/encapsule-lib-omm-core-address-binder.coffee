@@ -82,8 +82,8 @@ class Encapsule.code.lib.omm.AddressTokenBinder
 
                     for pathId in descriptor_.componentNamespaceIds
                         if pathId == descriptor_.id then continue
-                        selectKey = new Encapsule.code.lib.omm.ObjectModelSelectKey(store_.objectModel, extensionPointId_, undefined, pathId)
-                        resolvedNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespaceResolver(store_, data_, selectKey, "new", true)
+                        addressToken = new Encapsule.code.lib.omm.AddressToken(store_.objectModel, extensionPointId_, undefined, pathId)
+                        resolvedNamespace = new Encapsule.code.lib.omm.AddressTokenBinder(store_, data_, addressToken, "new", true)
 
                 catch exception
                     throw "Encapsule.code.lib.omm.AddressTokenBinder.localInitializeComponent failure: #{exception}."

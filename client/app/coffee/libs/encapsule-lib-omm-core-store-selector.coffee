@@ -31,7 +31,7 @@ Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and E
 # customized for the Encapsule.code.lib.modelview.detail.SelectorObjectModelDescriptor
 # object model (declaration above). 
 
-class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.ObjectStore
+class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.Store
     constructor: (objectStore_, initialObjectStoreSelector_) ->
         try
             #

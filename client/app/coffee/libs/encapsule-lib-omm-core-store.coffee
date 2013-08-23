@@ -330,6 +330,9 @@ class Encapsule.code.lib.omm.StoreBase
             @description = objectModel_.description
 
             @objectStore = undefined # THE ACTUAL DATA
+
+            @dataReference = undefined # the new store actual
+
             @objectStoreSource = undefined # this is flag indicating if the store was created from a JSON string
 
             # We use a map to store registered model view observers. 
@@ -346,10 +349,15 @@ class Encapsule.code.lib.omm.StoreBase
                     throw "Cannot deserialize specified JSON string!"
                 @objectStoreSource = "json"
                 Console.message("... Store initialized from deserialized JSON string.")
+                
             else
                 Console.message("... Initializing new instance of the '#{@jsonTag}' object model.")
-                @objectStore = {}
+                @dataReference = {}
                 @objectStoreSource = "new"
+
+                token = new Encapsule.code.lib.omm.AddressToken(objectModel_, undefined, undefined, 0)
+                restoken = new Encapsule.code.lib.omm.AddressTokenBinder(@, @dataReference, token, "new")
+
                 rootSelector = @objectModel.createNamespaceSelectorFromPathId(0)
                 component = new Encapsule.code.lib.omm.ObjectStoreComponent(@, rootSelector, "new")
 
