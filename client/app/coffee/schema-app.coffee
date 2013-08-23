@@ -45,8 +45,16 @@ class Encapsule.code.app.Schema
 
 
             ommRuntime = Encapsule.runtime.app.omm = {}
-            ommRuntime.model = new ommLib.Model(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
+            ommRuntime.declaration = Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
+
+            ommRuntime.model = new ommLib.Model(ommRuntime.declaration)
+
             ommRuntime.store = new ommLib.Store(ommRuntime.model)
+
+            ommRuntime.observers = {}
+            ommObservers = ommRuntime.observers
+
+            ommObservers = new Encapsule.code.lib.omm.observers.NavigatorModelView()
 
 
 
@@ -75,6 +83,7 @@ class Encapsule.code.app.Schema
             address02 = new Encapsule.code.lib.omm.Address objectModel, [ token01, token03 ]
 
             namespace2Test01 = new Encapsule.code.lib.omm.ObjectStoreNamespace2(objectStore, address02, "new")
+
 
 
             # ==============================================================================

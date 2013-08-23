@@ -22,20 +22,18 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
-Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
+Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
+Encapsule.code.lib.omm.observers = Encapsule.code.lib.omm.observers? and Encapsule.code.lib.omm.observers or @Encapsule.code.lib.omm.observers = {}
 
 
-class Encapsule.code.lib.modelview.ObjectModelNavigatorWindow
-
-    constructor: (objectStore_, initialSelector_) ->
+class Encapsule.code.lib.omm.observers.NavigatorModelView
+    constructor: ->
         # \ BEGIN: constructor
         try
-            if not (objectStore_? and objectStore_) then throw "Missing required object store input parameter."
-            if not (objectStore_.jsonTag == "schema") then throw "Specified object store has unexpected JSON tag. Expected 'schema' found '#{objectStore_.jsonTag}'"
 
             @blipper = Encapsule.runtime.boot.phase0.blipper
-            @objectStore = objectStore_            
 
+            @objectStore = undefined
             @rootMenuModelView = undefined
 
             objectStoreObserverCallbacks =
