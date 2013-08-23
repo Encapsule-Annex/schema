@@ -35,6 +35,7 @@ class Encapsule.code.lib.omm.AddressToken
         try
             @model = model_? and model_ or throw "Missing object model input parameter."
             @extensionPointDescriptor = undefined
+            @idExtensionPoint = idExtensionPoint_? and idExtensionPoint_ or -1
             if not idNamespace_? then throw "Missing target namespace path ID input parameter."
             idNamespace = idNamespace_
             @namespaceDescriptor = model_.getNamespaceDescriptorFromPathId(idNamespace)
@@ -57,21 +58,19 @@ class Encapsule.code.lib.omm.AddressToken
             # Parent extension point must be resolved.
             @keyRequired = true
 
-            idExtensionPoint = idExtensionPoint_? and idExtensionPoint_ or -1
-
-            if idExtensionPoint == -1
+            if @idExtensionPoint == -1
 
                 if not @componentDescriptor.extensionPointReferenceIds.length
                     # We can auto-resolve the extension point ID because for this component
                     # there are no cyclic references defined and thus the mapping of component
                     # to extension point ID's is 1:1 (child to parent respectively).
-                    idExtensionPoint = @componentDescriptor.parent.id
+                    @idExtensionPoint = @componentDescriptor.parent.id
                 else
                     # This component is a valid extension of more than one extension point.
                     # Thus we must have the ID of the parent extension point in order to disambiguate.
                     throw "You must specify the ID of the parent extension point when creating a token addressing a '#{@componentDescriptor.path}' component namespace."
 
-            @extensionPointDescriptor = model_.getNamespaceDescriptorFromPathId(idExtensionPoint)
+            @extensionPointDescriptor = model_.getNamespaceDescriptorFromPathId(@idExtensionPoint)
 
             if not (@extensionPointDescriptor? and @extensionPointDescriptor)
                 throw "Internal error: unable to obtain extension point object model descriptor in request."

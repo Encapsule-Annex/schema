@@ -26,45 +26,49 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
 
-class Encapsule.code.lib.omm.ObjectStoreNamespace2
-    constructor: (objectStore_, selectKeyVector_, mode_) ->
+class Encapsule.code.lib.omm.Namespace
+    constructor: (objectStore_, address_, mode_) ->
         try
-            if not (objectStore_? and objectStore_)
-                throw "Missing object store input parameter."
+            if not (objectStore_? and objectStore_) then throw "Missing object store input parameter."
 
-            if not (selectKeyVector_? and selectKeyVector_ and selectKeyVector_.selectKeyVector.length)
-                throw "Missing or zero-length object model select key vector input parameter."
+            # As a matter of policy, if no address is specified or if a zero-length address is specified, open the root namespace.
+            address = undefined
+            if not (address_? and address_ and address_.tokenVector.length)
+                objectModel = objectStore_.objectModel
+                address = new Encapsule.code.lib.omm.Address(objectModel, [ new Encapsule.code.lib.omm.AddressToken(objectModel, undefined, undefined, 0) ] )
+            else
+                address = address_
+            
 
             # Ensure that the select key vector and object store were both created using the same object model.
             objectModelNameStore = objectStore_.objectModel.jsonTag
-            objectModelNameKeys = selectKeyVector_.objectModel.jsonTag
+            objectModelNameKeys = address.objectModel.jsonTag
             if objectModelNameStore != objectModelNameKeys
                 throw "You cannot create a '#{objectModelNameStore}' store namespace with a '#{objectModelNameKeys}' select key vector."
 
             # First select key in the vector specifies a root component namespace?
-            if not selectKeyVector_.rooted
-                throw "Sorry. You can only resolve rooted select key vectors currently."
+            if not address.rooted then throw "Specified address is invalid because the first address token does not specify the object store's root component."
 
             mode = mode_? and mode_ or "bypass"
 
-            if (mode != "new") and selectKeyVector_.keysRequired and not selectKeyVector_.keysSpecified
-                throw "The specified select key vector does not resolve to an existing store namespace."
+            if (mode != "new") and address.keysRequired and not address.keysSpecified
+                throw "Specified address is invalid because it is not fully-qualified and the mode flag is #{mode} (i.e. not new)."
 
             # The actual store data.
+            @dataReferences = []
+            dataReference = objectStore_.dataReference? and objectStore_.dataReference or throw "Cannot resolve object store's root data reference."
+            @dataReferences.push dataReference
+            
+            @addressTokenBinders = for addressToken in address.tokenVector
+                tokenBinder = new Encapsule.code.lib.omm.implementation.AddressTokenBinder(objectStore_, dataReference, addressToken, mode)
+                dataReference = tokenBinder.dataReference
+                @dataReferences.push dataReference
+                tokenBinder
 
-            @dataReference = objectStore_.dataReference? and objectStore_.dataReference or objectStore_.dataReference = {}
-            @resolvedSelectKey = undefined
-
-            @resolvedSelectKeys = []
-
-            for selectKey in selectKeyVector_.selectKeyVector
-                @resolvedSelectKey = new Encapsule.code.lib.omm.ObjectStoreNamespaceResolver(objectStore_, @dataReference, selectKey, mode)
-                @dataReference = @resolvedSelectKey.dataReference
-                @resolvedSelectKeys.push @resolvedSelectKey
-
+            
 
         catch exception
-            throw "Encapsule.code.lib.omm.ObjectStoreNamespace2 failure: #{exception}"
+            throw "Encapsule.code.lib.omm.Namespace failure: #{exception}"
 
 
 

@@ -69,6 +69,8 @@ class Encapsule.code.lib.omm.Address
         catch exception
             throw "Encapsule.code.lib.omm.Address.pushToken failure: #{exception}"
 
+
+
     #
     # ============================================================================
     validateSelectKeyPair: (parentToken_, childToken_) ->
@@ -118,4 +120,51 @@ class Encapsule.code.lib.omm.Address
 #
 # ****************************************************************************
 # ****************************************************************************
+
+Encapsule.code.lib.omm.address = {}
+
+Encapsule.code.lib.omm.address.FromPath = (model_, path_) ->
+    try
+        if not (model_? and model_) then throw "Missing object model input parameter."
+        if not (path_? and path_) then throw "Missing path input parameter."
+        pathId = model_.getPathIdFromPath(path_)
+        addressToken = new Encapsule.code.lib.omm.AddressToken(model_, undefined, undefined, pathId)
+        new Encapsule.code.lib.omm.Address(model_, [ addressToken ])
+
+    catch exception
+        throw "Encapsule.code.lib.omm.address.FromPath failure: #{exception}"
+
+Encapsule.code.lib.omm.address.Parent = (address_, generations_) ->
+    try
+        if not (address_? and address_) then throw "Missing address input parameter."
+        if not address_.tokenVector.length then "Invalid address contains no address tokens."
+        generations = generations_? and generations_ or 1
+
+        sourceTokenIndex = address_.tokenVector.length - 1
+        token = address_.tokenVector[sourceTokenIndex--]
+
+        while generations
+            descriptor = token.namespaceDescriptor
+            if descriptor.id == 0 then break
+            if descriptor.mvvmType != "archetype"
+                token = new Encapsule.code.lib.omm.AddressToken(token.model, token.idExtensionPoint, token.key, descriptor.parent.id)
+            else
+                token = sourceTokenIndex and address_.tokenVector[sourceTokenIndex--] or new Encapsule.code.lib.omm.AddressToken(token.model)
+            generations--
+                
+        newTokenVector = sourceTokenIndex > 0 and address_.tokenVector.slice(0, sourceTokenIndex) or []
+        newAddress = new Encapsule.code.lib.omm.Address(token.model, newTokenVector)
+        newAddress.pushToken(token)
+        return newAddress
+
+    catch exception
+        throw "Encapsule.code.lib.omm.address.Parent failure: #{exception}"
+
+
+Encapsule.code.lib.omm.address.ChildFromPath = (address_, subPath_) ->
+    try
+
+    catch exception
+        throw "Encapsule.code.lib.omm.address.ChildFromPath failure: #{exception}"
+
 
