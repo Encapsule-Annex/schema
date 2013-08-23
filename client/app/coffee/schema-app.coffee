@@ -45,16 +45,12 @@ class Encapsule.code.app.Schema
 
 
             ommRuntime = Encapsule.runtime.app.omm = {}
-            ommRuntime.model = new ommLib.Model Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
-            ommRuntime.store = new ommLib.Store ommRuntime.model
+            ommRuntime.model = new ommLib.Model(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout)
+            ommRuntime.store = new ommLib.Store(ommRuntime.model)
 
 
 
 
-
-
-            objectModel = Encapsule.runtime.app.SchemaObjectModel = new Encapsule.code.lib.omm.ObjectModel()
-            objectStore = Encapsule.runtime.app.SchemaObjectStore = new Encapsule.code.lib.omm.ObjectStore(objectModel)
             objectModelNavigatorWindow = Encapsule.runtime.app.ObjectModelNavigatorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorWindow(objectStore)
             objectModelNavigatorSelectorWindow = Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow()
             objectModelNavigatorWindow.selectorStore.registerModelViewObserver(objectModelNavigatorSelectorWindow.selectorStoreCallbacks)

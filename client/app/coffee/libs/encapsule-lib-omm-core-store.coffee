@@ -356,11 +356,7 @@ class Encapsule.code.lib.omm.StoreBase
                 @objectStoreSource = "new"
 
                 token = new Encapsule.code.lib.omm.AddressToken(objectModel_, undefined, undefined, 0)
-                restoken = new Encapsule.code.lib.omm.AddressTokenBinder(@, @dataReference, token, "new")
-
-                rootSelector = @objectModel.createNamespaceSelectorFromPathId(0)
-                component = new Encapsule.code.lib.omm.ObjectStoreComponent(@, rootSelector, "new")
-
+                tokenBinder = new Encapsule.code.lib.omm.AddressTokenBinder(@, @dataReference, token, "new")
 
         catch exception
             throw "Encapsule.code.lib.omm.StoreBase constructor failed: #{exception}"
