@@ -318,8 +318,6 @@ class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.ModelBase
                 catch exception
                     throw "Encapsule.code.lib.omm.Model.getNamespaceDescriptorFromPathId failure: #{exception}"
                 
-
-
             # --------------------------------------------------------------------------
             @getPathIdFromPath = (objectModelPath_) =>
                 try
@@ -338,7 +336,6 @@ class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.ModelBase
                 catch exception
                     throw "Encapsule.code.lib.omm.Model.getPathIdFromPath fail: #{exception}"
 
-
             # --------------------------------------------------------------------------
             @getPathFromPathId = (pathId_) =>
                 try
@@ -355,24 +352,6 @@ class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.ModelBase
 
 
             # --------------------------------------------------------------------------
-            @createNamespaceSelectorFromPathId = (pathId_, selectKeyVector_, secondaryKeyVector_) =>
-                try
-                    selector = new Encapsule.code.lib.omm.ObjectModelNamespaceSelector(@, pathId_, selectKeyVector_, secondaryKeyVector_)
-                    selector.internalVerifySelector()
-                    return selector
-                catch exception
-                    throw "Encapsule.code.lib.omm.Model.createNamespaceSelectorFromPathId failed: #{exception}"
-
-            # --------------------------------------------------------------------------
-            @createNamespaceSelectorFromPath = (path_, selectKeyVector_, secondaryKeyVector_) =>
-                try
-                    pathId = @getPathIdFromPath(path_)
-                    selector = @createNamespaceSelectorFromPathId(pathId, selectKeyVector_, secondaryKeyVector_)
-                    return selector
-                catch exception
-                    throw "Encapsule.code.lib.omm.Model.createNamespaceSelectorFromPath failed: #{exception}"
-
-            # --------------------------------------------------------------------------
             @getSemanticBindings = =>
                 try
                     semanticBindings = @objectModelDeclaration.semanticBindings
@@ -381,8 +360,6 @@ class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.ModelBase
                     throw "Encapsule.code.lib.omm.Model failure: #{exception}"
 
 
-            # CONSTRUCT THE ROOT OBJECT DESCRIPTOR FROM THE SPECIFIED OBJECT MODEL LAYOUT 
-            # **************************************************************************
 
         catch exception
             throw "Encapsule.code.lib.omm.Model construction fail: #{exception}"
