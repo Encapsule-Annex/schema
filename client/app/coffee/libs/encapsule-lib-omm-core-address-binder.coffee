@@ -29,7 +29,7 @@ Encapsule.code.lib.omm.core = Encapsule.code.lib.omm.core? and Encapsule.code.li
 
 
 class Encapsule.code.lib.omm.AddressTokenBinder
-    constructor: (store_, parentDataReference_, modelSelectKey_, mode_, dataReferenceAsComponentRoot_) ->
+    constructor: (store_, parentDataReference_, token_, mode_, dataReferenceAsComponentRoot_) ->
         try
 
             # ----------------------------------------------------------------------------
@@ -89,7 +89,6 @@ class Encapsule.code.lib.omm.AddressTokenBinder
                     throw "Encapsule.code.lib.omm.AddressTokenBinder.localInitializeComponent failure: #{exception}."
 
 
-
             # ----------------------------------------------------------------------------
             localVerifyComponent = (store_, data_, descriptor_, extensionPointId_) ->
                 try
@@ -99,10 +98,6 @@ class Encapsule.code.lib.omm.AddressTokenBinder
 
                 catch exception
                     throw "Encapsule.code.lib.omm.AddressTokenBinder.localVerifyComponent failure: #{exception}."
-
-
-
-
 
 
             # ----------------------------------------------------------------------------
@@ -162,15 +157,15 @@ class Encapsule.code.lib.omm.AddressTokenBinder
             @store = store_? and store_ or throw "Missing object store input parameter."
             objectModel = store_.objectModel
             @parentDataReference = parentDataReference_? and parentDataReference_ or throw "Missing parent data reference input parameter."
-            if not (modelSelectKey_? and modelSelectKey_) then throw "Missing object model select key object input parameter."
+            if not (token_? and token_) then throw "Missing object model select key object input parameter."
             if not (mode_? and mode_) then throw "Missing mode input parameter."
             @dataReference = undefined
             @dataReferenceAsComponentRoot = dataReferenceAsComponentRoot_? and dataReferenceAsComponentRoot_ or false
 
-            @resolvedSelectKey = modelSelectKey_.clone()
+            @resolvedToken = token_.clone()
 
-            targetNamespaceDescriptor = modelSelectKey_.namespaceDescriptor
-            targetComponentDescriptor = modelSelectKey_.componentDescriptor
+            targetNamespaceDescriptor = token_.namespaceDescriptor
+            targetComponentDescriptor = token_.componentDescriptor
 
             resolveActions = {
                 initializeNamespace: localInitializeNamespaceMembers
@@ -181,9 +176,9 @@ class Encapsule.code.lib.omm.AddressTokenBinder
             resolveResult = {}
             if not @dataReferenceAsComponentRoot
 
-                resolveResult = localResolveNamespaceDescriptor(resolveActions, store_, @parentDataReference, targetComponentDescriptor, modelSelectKey_.key, mode_)
+                resolveResult = localResolveNamespaceDescriptor(resolveActions, store_, @parentDataReference, targetComponentDescriptor, token_.key, mode_)
 
-                extensionPointId = modelSelectKey_.extensionPointDescriptor? and modelSelectKey_.extensionPointDescriptor or -1
+                extensionPointId = token_.extensionPointDescriptor? and token_.extensionPointDescriptor or -1
 
                 if mode_ == "new" and resolveResult.created
                     localInitializeComponent(store_, resolveResult.dataReference, targetComponentDescriptor, extensionPointId)
@@ -192,7 +187,7 @@ class Encapsule.code.lib.omm.AddressTokenBinder
                     localVerifyComponent(store_, resolveResult.dataReference, targetComponentDescriptor, extensionPointId)            
 
                 if targetNamespaceDescriptor.isComponent
-                    if resolveResult.newKey? and resolveResult.newKey then @resolvedSelectKey.key = resolveResult.newKey
+                    if resolveResult.newKey? and resolveResult.newKey then @resolvedToken.key = resolveResult.newKey
                     @dataReference = resolveResult.dataReference
                     return
             else

@@ -32,17 +32,17 @@ Encapsule.code.lib.omm.core = Encapsule.code.lib.omm.core? and Encapsule.code.li
 #
 class Encapsule.code.lib.omm.Address
 
-    constructor: (objectModel_, addressTokenVector_) ->
+    constructor: (objectModel_, tokenVector_) ->
         try
             @objectModel = objectModel_? and objectModel_ or throw "Missing required object model input parameter."
-            @addressTokenVector = []
+            @tokenVector = []
             @parentExtensionPointId = -1
             @rooted = false
             @keysRequired = false
             @keysSpecified = true
 
             # Performs cloning and validation
-            for token in addressTokenVector_? and addressTokenVector_ or []
+            for token in tokenVector_? and tokenVector_ or []
                 @pushToken token
 
         catch exception
@@ -52,11 +52,11 @@ class Encapsule.code.lib.omm.Address
     # ============================================================================
     pushToken: (token_) =>
         try
-            if @addressTokenVector.length
-                parentToken = @addressTokenVector[@addressTokenVector.length - 1]
+            if @tokenVector.length
+                parentToken = @tokenVector[@tokenVector.length - 1]
                 @validateSelectKeyPair(parentToken, token_)
 
-            @addressTokenVector.push token_.clone()
+            @tokenVector.push token_.clone()
 
             if token_.componentDescriptor.id == 0
                 @rooted = true
