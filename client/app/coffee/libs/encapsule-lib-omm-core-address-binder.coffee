@@ -161,7 +161,7 @@ class Encapsule.code.lib.omm.implementation.AddressTokenBinder
             @store = store_? and store_ or throw "Missing object store input parameter."
             objectModel = store_.objectModel
             @parentDataReference = parentDataReference_? and parentDataReference_ or throw "Missing parent data reference input parameter."
-            if not (token_? and token_) then throw "Missing object model select key object input parameter."
+            if not (token_? and token_) then throw "Missing object model address token object input parameter."
             if not (mode_? and mode_) then throw "Missing mode input parameter."
             @dataReference = undefined
             @dataReferenceAsComponentRoot = dataReferenceAsComponentRoot_? and dataReferenceAsComponentRoot_ or false

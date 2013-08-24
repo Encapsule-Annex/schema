@@ -40,13 +40,13 @@ class Encapsule.code.lib.omm.Namespace
                 address = address_
             
 
-            # Ensure that the select key vector and object store were both created using the same object model.
+            # Ensure that address and store objects were both created using the same model.
             objectModelNameStore = objectStore_.objectModel.jsonTag
             objectModelNameKeys = address.objectModel.jsonTag
             if objectModelNameStore != objectModelNameKeys
                 throw "You cannot create a '#{objectModelNameStore}' store namespace with a '#{objectModelNameKeys}' select key vector."
 
-            # First select key in the vector specifies a root component namespace?
+            # Token in the address specifies a root component namespace?
             if not address.rooted then throw "Specified address is invalid because the first address token does not specify the object store's root component."
 
             mode = mode_? and mode_ or "bypass"
@@ -64,8 +64,6 @@ class Encapsule.code.lib.omm.Namespace
                 dataReference = tokenBinder.dataReference
                 @dataReferences.push dataReference
                 tokenBinder
-
-            
 
         catch exception
             throw "Encapsule.code.lib.omm.Namespace failure: #{exception}"
