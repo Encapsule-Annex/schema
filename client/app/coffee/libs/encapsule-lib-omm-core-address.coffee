@@ -163,7 +163,7 @@ Encapsule.code.lib.omm.address.FromPath = (model_, path_) ->
 Encapsule.code.lib.omm.address.Parent = (address_, generations_) ->
     try
         if not (address_? and address_) then throw "Missing address input parameter."
-        if not address_.tokenVector.length then "Invalid address contains no address tokens."
+        if not address_.tokenVector.length then throw "Invalid address contains no address tokens."
 
         generations = generations_? and generations_ or 1
         tokenSourceIndex = address_.tokenVector.length - 1
