@@ -56,8 +56,8 @@ class Encapsule.code.app.Schema
             namespace = new ommLib.Namespace(ommRuntime.store)
 
             address = ommLib.address.FromPath(ommRuntime.model, "schema.omm")
-            address2 = ommLib.address.FromPath(ommRuntime.model, "schema.client.catalogues.catalogue.models.machines")
-            address3 = ommLib.address.Parent(address2 ,2,3)
+            address2 = ommLib.address.FromPath(ommRuntime.model, "schema.client.catalogues.catalogue.models.machines.machine.states.state.transitions.transition")
+            address3 = ommLib.address.Parent(address2, 2)
             address = ommLib.address.Parent(address)
             address = ommLib.address.Parent(address, 5)
             address = ommLib.address.ChildFromPath(address, "extensionPointA")

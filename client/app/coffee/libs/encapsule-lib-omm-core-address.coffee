@@ -123,36 +123,80 @@ class Encapsule.code.lib.omm.Address
 
 Encapsule.code.lib.omm.address = {}
 
-Encapsule.code.lib.omm.address.FromPath = (model_, path_) ->
+#
+# ============================================================================
+# Builds a rooted, non-recursive, unqualified, address to the subnamespace indicated
+# by pathId_ in the namespace indicated by model_.
+
+Encapsule.code.lib.omm.address.FromPathId = (model_, pathId_) ->
     try
         if not (model_? and model_) then throw "Missing object model input parameter."
-        if not (path_? and path_) then throw "Missing path input parameter."
-        pathId = model_.getPathIdFromPath(path_)
-        addressToken = new Encapsule.code.lib.omm.AddressToken(model_, undefined, undefined, pathId)
-        new Encapsule.code.lib.omm.Address(model_, [ addressToken ])
-
+        if not pathId_? then throw "Missing path input parameter."
+        targetDescriptor = model_.getNamespaceDescriptorFromPathId(pathId_)
+        newAddress = new Encapsule.code.lib.omm.Address(model_)
+        token = undefined
+        pathIds = Encapsule.code.lib.js.clone(targetDescriptor.parentPathIdVector)
+        pathIds.push(targetDescriptor.id)
+        for parentPathId in pathIds
+            descriptor = model_.getNamespaceDescriptorFromPathId(parentPathId)
+            if descriptor.mvvmType == "archetype"
+                newAddress.pushToken token
+            token = new Encapsule.code.lib.omm.AddressToken(model_, descriptor.idExtensionPoint, undefined, descriptor.id)
+        newAddress.pushToken(token)
+        return newAddress
     catch exception
         throw "Encapsule.code.lib.omm.address.FromPath failure: #{exception}"
 
+#
+# ============================================================================
+Encapsule.code.lib.omm.address.FromPath = (model_, path_) ->
+    try
+        pathId = model_.getPathIdFromPath(path_)
+        newAddress = Encapsule.code.lib.omm.address.FromPathId(model_, pathId)
+        return newAddress
+    catch exception
+        throw "Encapsule.code.lib.omm.address.FromPath failure: #{exception}"
+
+
+#
+# ============================================================================
 Encapsule.code.lib.omm.address.Parent = (address_, generations_) ->
     try
         if not (address_? and address_) then throw "Missing address input parameter."
         if not address_.tokenVector.length then "Invalid address contains no address tokens."
-        generations = generations_? and generations_ or 1
 
-        sourceTokenIndex = address_.tokenVector.length - 1
-        token = address_.tokenVector[sourceTokenIndex--]
+        generations = generations_? and generations_ or 1
+        tokenSourceIndex = address_.tokenVector.length - 1
+        token = address_.tokenVector[tokenSourceIndex--]
 
         while generations
             descriptor = token.namespaceDescriptor
-            if descriptor.id == 0 then break
+
+            # If we have reached the root descriptor we're done regardless of the number
+            # of generations the caller requested.
+
+            if descriptor.id == 0
+                break
+
+            # If the current descriptor is within a component (i.e. not the component root)
+            # then descriptor.parent.id indicates its parent ID from which we can trivially
+            # update the current address token.
+            #
+            # However, if the current descriptor is the root of a component then its parent
+            # is by definition an extension point. What makes this complicated is that 
+            # the mapping of extension point ID to component ID is 1:1 but the converse is not
+            # necessarily true. Component ID to containing extension point ID is 1:N potentially
+            # because ONM allows extension points to specify the actual component declaration
+            # or to specify a reference to some other component.
+
             if descriptor.mvvmType != "archetype"
                 token = new Encapsule.code.lib.omm.AddressToken(token.model, token.idExtensionPoint, token.key, descriptor.parent.id)
             else
-                token = sourceTokenIndex and address_.tokenVector[sourceTokenIndex--] or new Encapsule.code.lib.omm.AddressToken(token.model)
+                token = tokenSourceIndex and address_.tokenVector[tokenSourceIndex--] or new Encapsule.code.lib.omm.AddressToken(token.model)
+
             generations--
                 
-        newTokenVector = sourceTokenIndex > 0 and address_.tokenVector.slice(0, sourceTokenIndex) or []
+        newTokenVector = (tokenSourceIndex > 0) and address_.tokenVector.slice(0, tokenSourceIndex + 1) or []
         newAddress = new Encapsule.code.lib.omm.Address(token.model, newTokenVector)
         newAddress.pushToken(token)
         return newAddress
@@ -161,6 +205,8 @@ Encapsule.code.lib.omm.address.Parent = (address_, generations_) ->
         throw "Encapsule.code.lib.omm.address.Parent failure: #{exception}"
 
 
+#
+# ============================================================================
 Encapsule.code.lib.omm.address.ChildFromPath = (address_, subPath_) ->
     try
 

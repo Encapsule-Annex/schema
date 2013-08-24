@@ -1,24 +1,46 @@
 ###
 
-  http://schema.encapsule.org/
+  The MIT License (MIT)
+  
+  Copyright (c) 2013 Christopher D. Russell, Encapsule Project
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
 
-  A single-page HTML5 application for creating, visualizing, and editing
-  JSON-encoded Soft Circuit Description Language (SCDL) models.
+  ----------------------------------------------------------------------------
 
-  Copyright 2013 Encapsule Project, Copyright 2013 Chris Russell
+  encapsule-lib-omm-core-address-token.js
 
-  Distributed under the terms of the Boost Software License Version 1.0
-  See included license.txt or http://www.boost.org/LICENSE_1_0.txt
 
-  Sources on GitHub: https://github.com/Encapsule-Project/schema
+  ----------------------------------------------------------------------------
 
-  Visit http://www.encapsule.org for more information and happy hacking.
+  >>>> Encapsule Project :: Build better software with circuit models.
+
+  Please support the Encapsule Project, free and open software, and the quest
+  to build a better world where information and the software that is required
+  to make sense of it are open, free, and accessible to everyone.
+
+  http://encapsule.org * https://twitter.com/Encapsule * https://github.com/Encapsule
 
 ###
 #
-# encapsule-lib-omm-core-address-token.coffee
 #
-
+#
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
@@ -34,16 +56,22 @@ class Encapsule.code.lib.omm.AddressToken
     constructor: (model_, idExtensionPoint_, key_, idNamespace_) ->
         try
             @model = model_? and model_ or throw "Missing object model input parameter."
-            @extensionPointDescriptor = undefined
+
             @idExtensionPoint = idExtensionPoint_? and idExtensionPoint_ or -1
-            if not idNamespace_? then throw "Missing target namespace path ID input parameter."
-            idNamespace = idNamespace_
-            @namespaceDescriptor = model_.getNamespaceDescriptorFromPathId(idNamespace)
-            idComponent = @namespaceDescriptor.idComponent
-            @componentDescriptor = @namespaceDescriptor.isComponent and @namespaceDescriptor or model_.getNamespaceDescriptorFromPathId(idComponent)
+            @extensionPointDescriptor = undefined
+
+            @idComponent = 0
+            @componentDescriptor = undefined
+
+            if not idNamespace_? then throw "Missing target namespace ID input parameter."
+            @idNamespace = idNamespace_
+            @namespaceDescriptor = model_.getNamespaceDescriptorFromPathId(idNamespace_)
+
+            @idComponent = @namespaceDescriptor.idComponent
+            @componentDescriptor = @namespaceDescriptor.isComponent and @namespaceDescriptor or @model.getNamespaceDescriptorFromPathId(@idComponent)
+
             @key =  (@componentDescriptor.id > 0) and key_? and key_ or undefined
             @keyRequired = false
-
 
             # The namespace specified by idNamespace is contained within a component.
             # If the component ID greater than zero, then not root component.
