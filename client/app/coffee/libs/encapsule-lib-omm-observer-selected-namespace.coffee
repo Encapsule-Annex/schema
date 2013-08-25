@@ -1,27 +1,49 @@
 ###
+------------------------------------------------------------------------------
 
-  http://schema.encapsule.org/
+The MIT License (MIT)
 
-  A single-page HTML5 application for creating, visualizing, and editing
-  JSON-encoded Soft Circuit Description Language (SCDL) models.
+Copyright (c) 2013 Encapsule Project
+  
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-  Copyright 2013 Encapsule Project, Copyright 2013 Chris Russell
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-  Distributed under the terms of the Boost Software License Version 1.0
-  See included license.txt or http://www.boost.org/LICENSE_1_0.txt
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
-  Sources on GitHub: https://github.com/Encapsule-Project/schema
+**** Encapsule Project :: Build better software with circuit models ****
 
-  Visit http://www.encapsule.org for more information and happy hacking.
+OPEN SOURCES: http://github.com/Encapsule HOMEPAGE: http://Encapsule.org
+BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
+
+------------------------------------------------------------------------------
+
+
+
+------------------------------------------------------------------------------
 
 ###
 #
-# encapsule-lib-omm-observer-selected-namespace.coffee
+#
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
+Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
+
 Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
 Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and Encapsule.code.lib.modelview.detail or @Encapsule.code.lib.modelview.detail = {}
 
