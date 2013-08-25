@@ -30,7 +30,6 @@ Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Enc
 
 
 
-
 class Encapsule.code.app.Schema
 
     constructor: ->
@@ -41,27 +40,43 @@ class Encapsule.code.app.Schema
 
             Console.messageRaw("<h3>INITIALIZING #{appName} OBJECT MODEL MANAGER</h3>")
 
-            ommLib = Encapsule.code.lib.omm
-            ommRuntime = Encapsule.runtime.app.omm = {}
-            ommRuntime.declaration = Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
-            ommRuntime.model = new ommLib.Model(ommRuntime.declaration)
-            ommRuntime.store = new ommLib.Store(ommRuntime.model)
-            ommRuntime.observers = {}
-            ommObservers = ommRuntime.observers
-            ommObservers.navigator = new Encapsule.code.lib.omm.observers.NavigatorModelView()
+
+            ONMjs = Encapsule.code.lib.omm
+
+            # ONMjs Object Namespace Schema (ONS) declaration.
+            # ONMjs is currently parsing a really really old declaration.
+            # Semantically there's nothing wrong with this declaration; it captures all relevant information
+            # required to correctly initialize an ONMjs.Model object. However the concepts exposed by the
+            # ONMjs have evolved to the point where this declaration no longer makes a ton of sense given
+            # current ONMjs naming conventions.
+
+            schemaRuntime = Encapsule.runtime.app
+
+            # The Object Namespace Schema declaration below is very dated with respect to ONMjs.
+            # Semantically the file is correct but the syntax needs a major scrubbing.
+            # Once ONMjs core is stable, I'll use ONMjs to model its own input and refine the
+            # syntax in a tight loop. This will initially require that I hand-author a schema
+            # for ONMjs itself. But this effort will be well worth it :-)
+            #
+            schemaRuntime.ONMjs = {} 
+            schemaRuntime.ONMjs.schema = Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
+            model = schemaRuntime.ONMjs.model = new ONMjs.Model(schemaRuntime.ONMjs.schema)
+            store = schemaRuntime.ONMjs.store = new ONMjs.Store(schemaRuntime.ONMjs.model)
+            schemaRuntime.ONMjs.observers = {}
+            navigator = schemaRuntime.ONMjs.observers.navigator = new ONMjs.observers.NavigatorModelView()
 
             # Some temporary test code for bringing up the new store addressing model.
 
             # Open the object store's root namespace.
-            namespace = new ommLib.Namespace(ommRuntime.store)
+            namespace = new ONMjs.Namespace(store)
 
-            address = ommLib.address.FromPath(ommRuntime.model, "schema.omm")
-            address2 = ommLib.address.FromPath(ommRuntime.model, "schema.client.catalogues.catalogue.models.machines.machine.states.state.transitions.transition")
-            address3 = ommLib.address.Parent(address2, 2)
-            address = ommLib.address.Parent(address)
-            address = ommLib.address.Parent(address, 5)
-            address = ommLib.address.ChildFromPath(address, "extensionPointA")
-            address = ommLib.address.ChildFromPath(address, "extensionPointA.foobar")
+            address = ONMjs.address.FromPath(model, "schema.omm")
+            address2 = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue.models.machines.machine.states.state.transitions.transition")
+            address3 = ONMjs.address.Parent(address2, 2)
+            address = ONMjs.address.Parent(address)
+            address = ONMjs.address.Parent(address, 5)
+            address = ONMjs.address.ChildFromPath(address, "extensionPointA")
+            address = ONMjs.address.ChildFromPath(address, "extensionPointA.foobar")
 
 
             ###

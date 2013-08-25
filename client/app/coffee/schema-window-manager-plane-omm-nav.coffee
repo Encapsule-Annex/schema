@@ -75,7 +75,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 backgroundColor: undefined
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
                 MVVM: {
-                    modelView: -> Encapsule.runtime.app.omm.observers.navigator
+                    modelView: -> Encapsule.runtime.app.ONMjs.observers.navigator
                     viewModelTemplateId: "idKoTemplate_OmmObserverNavigatorViewModel"
                 }
             }                                                            
