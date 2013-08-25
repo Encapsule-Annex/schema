@@ -87,5 +87,15 @@ class Encapsule.code.lib.omm.Namespace
         catch exception
             throw "Encapsule.code.lib.omm.Namespace failure: #{exception}"
 
+    data: =>
+        try
+            dataReferences = @dataReferences.length
+            if not dataReferences
+                throw "Internal error: Unable to retrieve data reference from Namespace object."
+            dataReference = @dataReferences[dataReferences - 1]
+
+        catch exception
+            throw "Encapsule.code.lib.omm.Namespace.data failure: #{exception}"
+
 
 

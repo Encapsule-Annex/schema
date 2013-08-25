@@ -43,97 +43,46 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
+ONMjs = Encapsule.code.lib.omm
 
-
-class Encapsule.code.lib.omm.SelectorStore extends Encapsule.code.lib.omm.Store
-    constructor: (objectStore_, address_) ->
+class ONMjs.CachedAddress extends ONMjs.Store
+    constructor: (referenceStore_, address_) ->
         try
-            #
-            # ============================================================================
-            @getSelector = =>
-                try
-                    selector = @rootNamespace.objectStoreNamespace.parentSelectorVector[@rootNamespace.objectStoreNamespace.parentSelectorVector.length - 1]
-                    return selector
-                catch exception
-                    throw "Encapsule.code.lib.omm.SelectorStore.getSelector failure: #{exception}"
 
-            #
-            # ============================================================================
-            @setSelector = (externalSelector_) =>
-                try
-                    externalSelector_.internalVerifySelector()
+            if not (referenceStore_? and referenceStore_) then throw "Missing object store input parameter. Unable to determine external selector type."
+            @referenceStore = referenceStore_
 
-                    # Verify that externalSelector_ addresses an actual store namespace.
-                    externalStoreNamespace = @associatedObjectStore.openNamespace(externalSelector_)
-
-                    parentSelectorVector = 
-                        @rootNamespace.objectStoreNamespace.parentSelectorVector? and 
-                        @rootNamespace.objectStoreNamespace.parentSelectorVector or
-                        @rootNamespace.objectStoreNamespace.parentSelectorVector = []
-
-                    parentSelectorVector.splice(0, parentSelectorVector.length)
-                    parentSelectorVector.push externalSelector_
-                    selector = externalSelector_.createParentSelector()
-                    while selector? and selector
-                        parentSelectorVector.push selector
-                        selector = selector.createParentSelector()
-                    parentSelectorVector.reverse()
-                    @blipper.blip("21") # double click sound
-                    @rootNamespace.updateRevision()
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.SelectorStore.setSelector failure: #{exception}"
-
-
-            #
-            # ============================================================================
-            # constructor
-            #
-
-            if not (objectStore_? and objectStore_) then throw "Missing object store input parameter. Unable to determine external selector type."
-            # Cache the associated objectStore parameter for later use.
-            @associatedObjectStore = objectStore_
             # Create an ObjectModel instance from the selector object model declaration.
-            selectorObjectModel = new Encapsule.code.lib.omm.ObjectModel(
+            selectorModel = new ONMjs.Model(
                 {
-                    jsonTag: "selector"
-                    label: "#{appName} Selector"
-                    description: "#{appName} selector root."
+                    jsonTag: "addressSelectorselector"
+                    label: "#{referenceStore_.objectModel.jsonTag} Address Selector"
+                    description: "#{referenceStore_.objectModel.label} address selector"
                 })
 
-            # Initialize the base ObjectStore class for this SelectorStore
-            super(selectorObjectModel)
+            # Initialize the base ONMjs.Store class.
+            super(selectorModel)
 
+            selectorAddress = new ONMjs.address.FromPathId(selectorModel, 0)
+            @selectorNamespace = new ONMjs.Namespace(@, selectorAddress)
+            @selectorNamespaceData = @selectorNamespace.data()
+            @selectorNamespaceData.selectedNamespace = undefined
+
+            # local alias
             @blipper = Encapsule.runtime.boot.phase0.blipper
 
-            externalSelector = initialObjectStoreSelector_
-            if not (externalSelector? and externalSelector)
-                externalSelector = @associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(0)
-            
-            rootSelector = selectorObjectModel.createNamespaceSelectorFromPath("selector")
-            @rootNamespace = @openNamespace(rootSelector)
-            
-            @setSelector(externalSelector)
+            @setAddress(address_)
+
+
 
             @objectStoreCallbacks = {
-
-                # In general seek to minimize the number of times the current selector is reset.
-                # Respond to component-level callbacks primarily (low frequency) and leverage
-                # namespace-level callbacks only to handle point updates to the current selection.
-                #
-
-                # onComponentCreated: (objectStore_, observerId_, namespaceSelector_) =>
-                # onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
-                # onChildComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
-                # onComponentRemoved: (objectStore_, observerId_, namespaceSelector_) =>
-                # onNamespaceCreated: (objectStore_, observerId_, namespaceSelector_) =>
 
                 onNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
                     try
                         selector = @getSelector()
                         if selector.getHashString() == namespaceSelector_.getHashString()
                             # TODO:
-                            # This is _convenient_ as it automatically keeps hits observers
+                            # This is _convenient_ as it automatically hits observers
                             # with a callback when the currently selected store namespace
                             # is modified. But this is actually sort of wrong...
                             # We really don't want the selector involved in this detail because
@@ -142,6 +91,12 @@ class Encapsule.code.lib.omm.SelectorStore extends Encapsule.code.lib.omm.Store
                             # complexity on observers than to OR the two disjoint concepts
                             # together (and provide no way to discriminate between the two
                             # cases). Simle fix.
+                            #
+
+                            # GOING TO TAKE THIS FIX WHILE RE-WORKING THIS CLASS FOR ADDRESS SUPPORT.
+                            # WILL BE TEARING ALL THE OBSERVERS APART ANYWAY...
+
+                            # POSSIBLE.
                             @setSelector(@getSelector())
                     catch exception
                         throw "Encapsule.code.lib.omm.SelectorStore.objectStoreCallbacks.onNamespaceUpdated failure: #{exception}"
@@ -151,6 +106,7 @@ class Encapsule.code.lib.omm.SelectorStore extends Encapsule.code.lib.omm.Store
                         selector = @getSelector()
                         if selector.getHashString() == namespaceSelector_.getHashString()
                             # TODO: same as above
+                            # !!!! NO NO NO - WE DON'T WANT TO DO THIS. SEE COMMENTS ABOVE.
                             @setSelector(@getSelector())
                     catch exception
                         throw "Encapsule.code.lib.omm.SelectorStore.objectStoreCallbacks.onChildNamespaceUpdated failure: #{exception}"
@@ -163,10 +119,11 @@ class Encapsule.code.lib.omm.SelectorStore extends Encapsule.code.lib.omm.Store
                         if currentSelector.getHashString() == namespaceSelector_.getHashString()
                             parentId = currentSelector.objectModelDescriptor.parent.id
                             parentSelector = currentSelector.createParentSelector()
+                            # !!! AUDIT THIS BUT WITHOUT LOOKING IT SEEMS LIKE IT'S THE RIGHT THING?
                             @setSelector(parentSelector)
                         return
                     catch exception
-                        throw "Encapsule.code.lib.omm.SelectorStore.objectStoreCallbacks.onNamespaceRemoved failure: #{exception}"
+                        throw "Encapsule.code.lib.omm.CachedAddress.objectStoreCallbacks.onNamespaceRemoved failure: #{exception}"
 
             }
 
@@ -175,6 +132,33 @@ class Encapsule.code.lib.omm.SelectorStore extends Encapsule.code.lib.omm.Store
             
 
         catch exception
-            throw "Encapsule.code.lib.omm.SelectorStore failure: #{exception}"
+            throw "Encapsule.code.lib.omm.CachedAddress failure: #{exception}"
+
+
+    #
+    # ============================================================================
+    getAddress: =>
+        try
+            return @selectorNamespaceData.selectedNamespace? and @selectorNamespaceData.selectedNamespace and @selectedNamespaceData.selectedNamespace.address() or undefined
+        catch exception
+            throw "Encapsule.code.lib.omm.SelectorStore.getSelector failure: #{exception}"
+
+
+
+
+    #
+    # ============================================================================
+    setAddress: (address_) =>
+        try
+            if not (address_ and address_) 
+                @selectorNamespaceData.selectedNamespace = undefined
+            else
+                @selectorNamespaceData.selectedNamespace = new ONMjs.Namespace(@referenceStore, address_)
+
+            @blipper.blip("21") # double click sound
+            @selectorNamespace.update()
+
+        catch exception
+            throw "Encapsule.code.lib.omm.SelectorStore.setSelector failure: #{exception}"
 
 

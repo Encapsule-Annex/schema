@@ -153,6 +153,8 @@ class Encapsule.code.lib.omm.implementation.AddressTokenBinder
                                 namespaceObject = {}
                                 resolveActions_.initializeNamespace(namespaceObject, descriptor_.namespaceDescriptor)
                                 if descriptor_.mvvmType == "archetype"
+                                    if not (resolveActions_.getUniqueKey? and resolveActions_.getUniqueKey)
+                                        throw "The specified component address cannot be resolved because your Object Namespace Schema declaration does not define semantic binding function getUniqueKey."
                                     jsonTag = result.jsonTag = result.newKey = resolveActions_.getUniqueKey(namespaceObject)
                                     if not (jsonTag? and jsonTag)
                                         throw "Error obtaining a unique ID for this component."
@@ -190,10 +192,14 @@ class Encapsule.code.lib.omm.implementation.AddressTokenBinder
             targetNamespaceDescriptor = token_.namespaceDescriptor
             targetComponentDescriptor = token_.componentDescriptor
 
+            semanticBindings = objectModel.getSemanticBindings()
+            getUniqueKeyFunction = semanticBindings? and semanticBindings and semanticBindings.getUniqueKey? and semanticBindings.getUniqueKey or undefined
+
+
             resolveActions = {
                 initializeNamespace: localInitializeNamespaceMembers
                 verifyNamespace: localVerifyNamespaceMembers
-                getUniqueKey: objectModel.getSemanticBindings().getUniqueKey
+                getUniqueKey: getUniqueKeyFunction
             }
 
             resolveResult = {}
