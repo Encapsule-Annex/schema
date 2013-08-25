@@ -66,12 +66,12 @@ class Encapsule.code.lib.omm.Namespace
                 throw "You cannot create a '#{objectModelNameStore}' store namespace with a '#{objectModelNameKeys}' select key vector."
 
             # Token in the address specifies a root component namespace?
-            if not address.rooted then throw "Specified address is invalid because the first address token does not specify the object store's root component."
+            if not address.isComplete() then throw "Specified address is invalid because the first address token does not specify the object store's root component."
 
             mode = mode_? and mode_ or "bypass"
 
-            if (mode != "new") and address.keysRequired and not address.keysSpecified
-                throw "Specified address is invalid because it is not fully-qualified and the mode flag is #{mode} (i.e. not new)."
+            if (mode != "new") and not address.isResolvable()
+                throw "Specified address is unresolvable in #{mode} mode."
 
             # The actual store data.
             @dataReferences = []

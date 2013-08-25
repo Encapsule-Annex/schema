@@ -57,9 +57,32 @@ class Encapsule.code.lib.omm.Address
             @objectModel = objectModel_? and objectModel_ or throw "Missing required object model input parameter."
             @tokenVector = []
             @parentExtensionPointId = -1
-            @rooted = false
+
+            # Addresses are said to be either complete or partial.
+            # A complete address has one or more tokens and the first token refers to the root component.
+            # A partial address has one or more tokens and the first token refers to a non-root component.
+            @complete = false # set true iff first token refers to the root component
+            @isComplete = => @complete
+
+            # Addresses are said to be either qualified or unqualified.
+            # A qualified address contains tokens that all specifiy a key (if required). Qualified addresses
+            # may be resolved against a Store object when they're also complete addresses.
+            # An unqualified address contains one or more tokens that do not specify a key (where required).
+            # Unqualified addresses may only be used to create new components within a Store instance.
+
             @keysRequired = false
             @keysSpecified = true
+            @isQualified = => not @keysRequired or @keysSpecified
+
+            # Addresses are said to be resolvable, creatable, or unresolvable
+            # A resolvable address is both complete and qualified meaning that it specifies both a complete
+            # and unambiguous chain of tokens leading to the addressed namespace. A creatable address is
+            # a complete but unqualified address. A creatable address may be used to create a component but
+            # cannot be used to open a namespace. All incomplete addresses are by definition unresolvable;
+            # because both namespace create and open operations performed by an object store must be able
+            # to verify the entire path to the target namespace and this cannot be done if the first token
+            # in an address does not address the store's root component.
+            @isResolvable = => @isComplete() and @isQualified()
 
             # Performs cloning and validation
             for token in tokenVector_? and tokenVector_ or []
@@ -79,7 +102,7 @@ class Encapsule.code.lib.omm.Address
             @tokenVector.push token_.clone()
 
             if token_.componentDescriptor.id == 0
-                @rooted = true
+                @complete = true
 
             if token_.keyRequired
                 @keysRequired = true

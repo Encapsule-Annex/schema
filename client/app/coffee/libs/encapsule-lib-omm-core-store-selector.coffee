@@ -31,7 +31,6 @@ BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
 ------------------------------------------------------------------------------
 
 
-
 ------------------------------------------------------------------------------
 
 ###
@@ -46,24 +45,8 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 
 
 
-
-# encapsule-lib-omm-core-store-selector.coffee
-#
-# Encapsulates the creation of an Encapsule.code.lib.omm.ObjectStore
-# instance using the "selector" object model.
-
-namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
-Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
-Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
-Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
-Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and Encapsule.code.lib.modelview.detail or @Encapsule.code.lib.modelview.detail = {}
-
-
-# customized for the Encapsule.code.lib.modelview.detail.SelectorObjectModelDescriptor
-# object model (declaration above). 
-
-class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.Store
-    constructor: (objectStore_, initialObjectStoreSelector_) ->
+class Encapsule.code.lib.omm.SelectorStore extends Encapsule.code.lib.omm.Store
+    constructor: (objectStore_, address_) ->
         try
             #
             # ============================================================================
@@ -72,7 +55,7 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                     selector = @rootNamespace.objectStoreNamespace.parentSelectorVector[@rootNamespace.objectStoreNamespace.parentSelectorVector.length - 1]
                     return selector
                 catch exception
-                    throw "Encapsule.code.lib.modelview.SelectorStore.getSelector failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.SelectorStore.getSelector failure: #{exception}"
 
             #
             # ============================================================================
@@ -99,7 +82,7 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                     @rootNamespace.updateRevision()
 
                 catch exception
-                    throw "Encapsule.code.lib.modelview.SelectorStore.setSelector failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.SelectorStore.setSelector failure: #{exception}"
 
 
             #
@@ -161,7 +144,7 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                             # cases). Simle fix.
                             @setSelector(@getSelector())
                     catch exception
-                        throw "Encapsule.code.lib.modelview.SelectorStore.objectStoreCallbacks.onNamespaceUpdated failure: #{exception}"
+                        throw "Encapsule.code.lib.omm.SelectorStore.objectStoreCallbacks.onNamespaceUpdated failure: #{exception}"
 
                 onChildNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
                     try
@@ -170,7 +153,7 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                             # TODO: same as above
                             @setSelector(@getSelector())
                     catch exception
-                        throw "Encapsule.code.lib.modelview.SelectorStore.objectStoreCallbacks.onChildNamespaceUpdated failure: #{exception}"
+                        throw "Encapsule.code.lib.omm.SelectorStore.objectStoreCallbacks.onChildNamespaceUpdated failure: #{exception}"
 
                 # onParentNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
 
@@ -183,15 +166,15 @@ class Encapsule.code.lib.modelview.SelectorStore extends Encapsule.code.lib.omm.
                             @setSelector(parentSelector)
                         return
                     catch exception
-                        throw "Encapsule.code.lib.modelview.SelectorStore.objectStoreCallbacks.onNamespaceRemoved failure: #{exception}"
+                        throw "Encapsule.code.lib.omm.SelectorStore.objectStoreCallbacks.onNamespaceRemoved failure: #{exception}"
 
             }
 
-            @associatedObjectStore.registerModelViewObserver(@objectStoreCallbacks)
+            @associatedObjectStore.registerOmmObserver(@objectStoreCallbacks)
 
             
 
         catch exception
-            throw "Encapsule.code.lib.modelview.SelectorStore failure: #{exception}"
+            throw "Encapsule.code.lib.omm.SelectorStore failure: #{exception}"
 
 
