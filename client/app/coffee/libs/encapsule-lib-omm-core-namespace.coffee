@@ -97,5 +97,12 @@ class Encapsule.code.lib.omm.Namespace
         catch exception
             throw "Encapsule.code.lib.omm.Namespace.data failure: #{exception}"
 
+    update: =>
+        try
+            return
+
+        catch exception
+            throw "Encapsule.code.lib.omm.Namespace.update failure: #{exception}"
+
 
 

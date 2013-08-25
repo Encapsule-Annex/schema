@@ -127,9 +127,6 @@ class ONMjs.CachedAddress extends ONMjs.Store
 
             }
 
-            @associatedObjectStore.registerOmmObserver(@objectStoreCallbacks)
-
-            
 
         catch exception
             throw "Encapsule.code.lib.omm.CachedAddress failure: #{exception}"
@@ -141,9 +138,7 @@ class ONMjs.CachedAddress extends ONMjs.Store
         try
             return @selectorNamespaceData.selectedNamespace? and @selectorNamespaceData.selectedNamespace and @selectedNamespaceData.selectedNamespace.address() or undefined
         catch exception
-            throw "Encapsule.code.lib.omm.SelectorStore.getSelector failure: #{exception}"
-
-
+            throw "Encapsule.code.lib.omm.CachedAddress.getSelector failure: #{exception}"
 
 
     #
@@ -159,6 +154,5 @@ class ONMjs.CachedAddress extends ONMjs.Store
             @selectorNamespace.update()
 
         catch exception
-            throw "Encapsule.code.lib.omm.SelectorStore.setSelector failure: #{exception}"
-
+            throw "Encapsule.code.lib.omm.CachedAddress.setAddress failure: #{exception}"
 
