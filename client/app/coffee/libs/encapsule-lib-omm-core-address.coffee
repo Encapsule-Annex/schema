@@ -44,13 +44,13 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
-
+ONMjs = Encapsule.code.lib.omm
 
 # ****************************************************************************
 # ****************************************************************************
 #
 #
-class Encapsule.code.lib.omm.Address
+class ONMjs.Address
 
     constructor: (objectModel_, tokenVector_) ->
         try
@@ -165,14 +165,21 @@ class Encapsule.code.lib.omm.Address
 # ****************************************************************************
 # ****************************************************************************
 
-Encapsule.code.lib.omm.address = {}
+ONMjs.address = {}
 
+#
+# ============================================================================
+ONMjs.address.RootAddress = (model_) ->
+   try
+       return new ONMjs.Address(model_, [ new ONMjs.AddressToken(model_, undefined, undefined, 0) ])
+   catch exception
+       throw "Encapsule.code.lib.omm.address.RootAddress failure: #{exception}"
 #
 # ============================================================================
 # Builds a rooted, non-recursive, unqualified, address to the subnamespace indicated
 # by pathId_ in the namespace indicated by model_.
 
-Encapsule.code.lib.omm.address.FromPathId = (model_, pathId_) ->
+ONMjs.address.FromPathId = (model_, pathId_) ->
     try
         if not (model_? and model_) then throw "Missing object model input parameter."
         if not pathId_? then throw "Missing path input parameter."
@@ -193,7 +200,7 @@ Encapsule.code.lib.omm.address.FromPathId = (model_, pathId_) ->
 
 #
 # ============================================================================
-Encapsule.code.lib.omm.address.FromPath = (model_, path_) ->
+ONMjs.address.FromPath = (model_, path_) ->
     try
         pathId = model_.getPathIdFromPath(path_)
         newAddress = Encapsule.code.lib.omm.address.FromPathId(model_, pathId)
@@ -204,7 +211,7 @@ Encapsule.code.lib.omm.address.FromPath = (model_, path_) ->
 
 #
 # ============================================================================
-Encapsule.code.lib.omm.address.Parent = (address_, generations_) ->
+ONMjs.address.Parent = (address_, generations_) ->
     try
         if not (address_? and address_) then throw "Missing address input parameter."
         if not address_.tokenVector.length then throw "Invalid address contains no address tokens."
@@ -251,7 +258,7 @@ Encapsule.code.lib.omm.address.Parent = (address_, generations_) ->
 
 #
 # ============================================================================
-Encapsule.code.lib.omm.address.ChildFromPath = (address_, subPath_) ->
+ONMjs.address.ChildFromPath = (address_, subPath_) ->
     try
 
     catch exception

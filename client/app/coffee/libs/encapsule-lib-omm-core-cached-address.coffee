@@ -75,59 +75,6 @@ class ONMjs.CachedAddress extends ONMjs.Store
 
 
 
-            @objectStoreCallbacks = {
-
-                onNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
-                    try
-                        selector = @getSelector()
-                        if selector.getHashString() == namespaceSelector_.getHashString()
-                            # TODO:
-                            # This is _convenient_ as it automatically hits observers
-                            # with a callback when the currently selected store namespace
-                            # is modified. But this is actually sort of wrong...
-                            # We really don't want the selector involved in this detail because
-                            # it's the business of whoever is doing the observing to decide
-                            # what they want to watch. It's far better to foist the additional
-                            # complexity on observers than to OR the two disjoint concepts
-                            # together (and provide no way to discriminate between the two
-                            # cases). Simle fix.
-                            #
-
-                            # GOING TO TAKE THIS FIX WHILE RE-WORKING THIS CLASS FOR ADDRESS SUPPORT.
-                            # WILL BE TEARING ALL THE OBSERVERS APART ANYWAY...
-
-                            # POSSIBLE.
-                            @setSelector(@getSelector())
-                    catch exception
-                        throw "Encapsule.code.lib.omm.SelectorStore.objectStoreCallbacks.onNamespaceUpdated failure: #{exception}"
-
-                onChildNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
-                    try
-                        selector = @getSelector()
-                        if selector.getHashString() == namespaceSelector_.getHashString()
-                            # TODO: same as above
-                            # !!!! NO NO NO - WE DON'T WANT TO DO THIS. SEE COMMENTS ABOVE.
-                            @setSelector(@getSelector())
-                    catch exception
-                        throw "Encapsule.code.lib.omm.SelectorStore.objectStoreCallbacks.onChildNamespaceUpdated failure: #{exception}"
-
-                # onParentNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
-
-                onNamespaceRemoved: (objectStore_, observerId_, namespaceSelector_) =>
-                    try
-                        currentSelector = @getSelector()
-                        if currentSelector.getHashString() == namespaceSelector_.getHashString()
-                            parentId = currentSelector.objectModelDescriptor.parent.id
-                            parentSelector = currentSelector.createParentSelector()
-                            # !!! AUDIT THIS BUT WITHOUT LOOKING IT SEEMS LIKE IT'S THE RIGHT THING?
-                            @setSelector(parentSelector)
-                        return
-                    catch exception
-                        throw "Encapsule.code.lib.omm.CachedAddress.objectStoreCallbacks.onNamespaceRemoved failure: #{exception}"
-
-            }
-
-
         catch exception
             throw "Encapsule.code.lib.omm.CachedAddress failure: #{exception}"
 
@@ -156,3 +103,55 @@ class ONMjs.CachedAddress extends ONMjs.Store
         catch exception
             throw "Encapsule.code.lib.omm.CachedAddress.setAddress failure: #{exception}"
 
+
+
+    #
+    # ============================================================================
+    objectStoreCallbacks: {
+
+        onNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
+            try
+                selector = @getSelector()
+                if selector.getHashString() == namespaceSelector_.getHashString()
+                    # TODO:
+                    # This is _convenient_ as it automatically hits observers
+                    # with a callback when the currently selected store namespace
+                    # is modified. But this is actually sort of wrong...
+                    # We really don't want the selector involved in this detail because
+                    # it's the business of whoever is doing the observing to decide
+                    # what they want to watch. It's far better to foist the additional
+                    # complexity on observers than to OR the two disjoint concepts
+                    # together (and provide no way to discriminate between the two
+                    # cases). Simle fix.
+                    #
+                     # GOING TO TAKE THIS FIX WHILE RE-WORKING THIS CLASS FOR ADDRESS SUPPORT.
+                    # WILL BE TEARING ALL THE OBSERVERS APART ANYWAY...
+                     # POSSIBLE.
+                    @setSelector(@getSelector())
+            catch exception
+                throw "Encapsule.code.lib.omm.SelectorStore.objectStoreCallbacks.onNamespaceUpdated failure: #{exception}"
+
+        onChildNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
+            try
+                selector = @getSelector()
+                if selector.getHashString() == namespaceSelector_.getHashString()
+                    # TODO: same as above
+                    # !!!! NO NO NO - WE DON'T WANT TO DO THIS. SEE COMMENTS ABOVE.
+                    @setSelector(@getSelector())
+            catch exception
+                throw "Encapsule.code.lib.omm.SelectorStore.objectStoreCallbacks.onChildNamespaceUpdated failure: #{exception}"
+
+
+        onNamespaceRemoved: (objectStore_, observerId_, namespaceSelector_) =>
+            try
+                currentSelector = @getSelector()
+                if currentSelector.getHashString() == namespaceSelector_.getHashString()
+                    parentId = currentSelector.objectModelDescriptor.parent.id
+                    parentSelector = currentSelector.createParentSelector()
+                    # !!! AUDIT THIS BUT WITHOUT LOOKING IT SEEMS LIKE IT'S THE RIGHT THING?
+                    @setSelector(parentSelector)
+                return
+            catch exception
+                throw "Encapsule.code.lib.omm.CachedAddress.objectStoreCallbacks.onNamespaceRemoved failure: #{exception}"
+
+    } # objectStoreCallbacks

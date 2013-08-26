@@ -64,6 +64,9 @@ class Encapsule.code.app.Schema
             model = schemaRuntime.ONMjs.model = new ONMjs.Model(schemaRuntime.ONMjs.schema)
             store = schemaRuntime.ONMjs.store = new ONMjs.Store(schemaRuntime.ONMjs.model)
             selectedAddress = schemaRuntime.ONMjs.selectedAddress = new ONMjs.CachedAddress(store)
+            
+            selectAddressObserverId = store.registerObserver(selectedAddress.objectStoreCallbacks)
+
 
 
             schemaRuntime.ONMjs.observers = {}

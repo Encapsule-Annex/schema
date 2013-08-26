@@ -43,15 +43,18 @@ namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
-
 Encapsule.code.lib.omm.implementation = Encapsule.code.lib.omm.implementation? and Encapsule.code.lib.omm.implementation or @Encapsule.code.lib.omm.implementation = {}
+
+ONMjs = Encapsule.code.lib.omm
 
 #
 # ****************************************************************************
 
-class Encapsule.code.lib.omm.implementation.StoreBase
-    constructor: (objectModel_, initialStateJSON_) ->
+class ONMjs.implementation.StoreReifier
+    constructor: (objectStore_) ->
         try
+
+            @objectStore = objectStore_
 
             # 
             # ============================================================================
@@ -133,7 +136,6 @@ class Encapsule.code.lib.omm.implementation.StoreBase
 
                 catch exception
                     throw "Encapsule.code.lib.omm.StoreBase.internalUnreifyStoreComponent failure: #{exception}"
-
 
             # 
             # ============================================================================
@@ -229,112 +231,15 @@ class Encapsule.code.lib.omm.implementation.StoreBase
                 catch exception
                     throw "Encapsule.code.lib.omm.StoreBase.internalReifyStoreExtensions failure: #{exception}"
 
+        catch exception
+            throw "Encapsule.code.lib.omm.StoreBase constructor failed: #{exception}"
 
-            # 
-            # ============================================================================
-            @internalRegisterModelViewObserver = (modelViewObject_) =>
-                try
-                    # Test modelViewObject_ interface for compatibility.
-
-                    # Create a new observer ID code (UUID because multiple registrations allowed).
-                    observerIdCode = uuid.v4()
-                    # Affect the registration using the observer ID as the key and the caller's modelViewObject_ by reference.
-                    @modelViewObservers[observerIdCode] = modelViewObject_
-
-
-                    # The root namespace of an object store always exists and comprises the base of the root component -
-                    # a hierarchy of sub-namespaces defined as the set of all descendents excluding extension namespaces
-                    # and their descendents.
-
-                    # Create a namespace selector that references the root namespace of the store.
-                    rootNamespaceSelector = @objectModel.createNamespaceSelectorFromPathId(0)
-
-                    # Reflect the root component to the model view object.
-                    @internalReifyStoreComponent(rootNamespaceSelector, modelViewObject_, observerIdCode)
-
-                    # Now kick off the recursive process of enumerating the stores extension points
-                    # and registering sub-components found to exist in the store with the newly registered
-                    # model view object. This process additionally registers each enumerated component's
-                    # associated namespaces with the model view object.
-                    #
-                    # After the initial registration "catch-up", the model view object subsequently
-                    # tracks changes to the store state via discrete component/namespace create,
-                    # update, and remove callback notifications issued by the store.
-
-                    @internalReifyStoreExtensions(rootNamespaceSelector, modelViewObject_, observerIdCode)
-
-                    return observerIdCode
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.StoreBase.internalRegisterModelViewObserver failure: #{exception}"
-
-
-            #
-            # ============================================================================
-            @internalUnregisterModelViewObserver = (observerIdCode_) =>
-                try
-                    registeredObserver = @modelViewObservers[observerIdCode_]
-
-                    if not (registeredObserver? and registeredObserver)
-                        throw "Unknown observer ID code provided. No registration to remove."
-
-                    # Unreify the contents of the store before removing the registration.
-                    rootSelector = @objectModel.createNamespaceSelectorFromPathId(0)
-                    @internalReifyStoreExtensions(rootSelector, registeredObserver, observerIdCode_, true)
-                    @internalUnreifyStoreComponent(rootSelector, registeredObserver, observerIdCode_)
-
-                    @internalRemoveObserverState(observerIdCode_)
-
-                    # Remove the registration.
-                    @modelViewObservers[observerIdCode_] = undefined
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.StoreBase.internalUnregisterModelViewObserver failure: #{exception}"
-
-
-            #
-            # ============================================================================
-            @internalOpenObserverState = (observerId_) =>
-                return @modelViewObserversState[observerId_]? and @modelViewObserversState[observerId_] or @modelViewObserversState[observerId_] = []
-
-            #
-            # ============================================================================
-            @internalRemoveObserverState = (observerId_) =>
-                delete @modelViewObserversState[observerId_]
-                @
-
-            #
-            # ============================================================================
-            @internalOpenObserverComponentState = (observerId_, namespaceSelector_) =>
-                componentSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceSelector_.objectModelDescriptor.componentId, namespaceSelector_.selectKeyVector, namespaceSelector_.secondaryKeyVector)
-                return @internalOpenObserverNamespaceState(observerId_, componentSelector)
-
-            #
-            # ============================================================================
-            @internalOpenObserverNamespaceState = (observerId_, namespaceSelector_) =>
-
-                observerState = @internalOpenObserverState(observerId_)
-                pathRecord = observerState[namespaceSelector_.pathId]? and observerState[namespaceSelector_.pathId] or observerState[namespaceSelector_.pathId] = {}
-                namespaceHash = namespaceSelector_.getHashString()
-                namespaceState = pathRecord[namespaceHash]? and pathRecord[namespaceHash] or pathRecord[namespaceHash] = {}
-                return namespaceState
-
-
-            #
-            # ============================================================================
-            @internalRemoveObserverNamespaceState = (observerId_, namespaceSelector_) =>
-
-                observerState = @modelViewObserversState[observerId_]
-                if not (observerState? and observerState)
-                    return @
-                pathRecord = observerState[namespaceSelector_.pathId]
-                if not (pathRecord? and pathRecord)
-                    return @
-                namespaceHash = namespaceSelector_.getHashString()
-                delete pathRecord[namespaceHash]
-                if Encapsule.code.lib.js.dictionaryLength(pathRecord) == 0
-                    delete observerState[namespaceSelector_.pathId]
-                return @
+#
+# ****************************************************************************
+class ONMjs.Store
+    constructor: (objectModel_, initialStateJSON_) ->
+        try
+            @storeReifier = new ONMjs.implementation.StoreReifier(@)
 
             #
             # ============================================================================
@@ -349,8 +254,6 @@ class Encapsule.code.lib.omm.implementation.StoreBase
             @jsonTag = objectModel_.jsonTag
             @label = objectModel_.label
             @description = objectModel_.description
-
-            @objectStore = undefined # THE ACTUAL DATA
 
             @dataReference = undefined # the new store actual
 
@@ -379,66 +282,6 @@ class Encapsule.code.lib.omm.implementation.StoreBase
                 token = new Encapsule.code.lib.omm.AddressToken(objectModel_, undefined, undefined, 0)
                 tokenBinder = new Encapsule.code.lib.omm.implementation.AddressTokenBinder(@, @dataReference, token, "new")
 
-        catch exception
-            throw "Encapsule.code.lib.omm.StoreBase constructor failed: #{exception}"
-
-#
-# ****************************************************************************
-class Encapsule.code.lib.omm.Store extends Encapsule.code.lib.omm.implementation.StoreBase
-    constructor: (objectModel_, initialStateJSON_) ->
-        try
-            super(objectModel_, initialStateJSON_)
-            
-            #
-            # ============================================================================
-            # A model view object may be registered with the OM store object to receive
-            # callbacks when the contents of the store is modified. In the context of
-            # registration, the observer will receive series of callbacks (one per store
-            # namespace) that the model view class leverages to initialize its internal
-            # state. Subsequently, mutation of the store will generate additional callback(s)
-            # specifying the namespace(s) that have been modified. Any number of model view
-            # object may be registered with the store. Upon successful registration, this
-            # method returns an "observer ID code" that the observer should cache. An
-            # observer can be unregistered by calling unregisterModelViewObserver providing
-            # the "observer ID code" received when it was registered.
-
-            #
-            # ============================================================================
-            @registerModelViewObserver = (modelViewObject_) =>
-                try
-                    if not (modelViewObject_? and modelViewObject_) then throw "Missing model view object input parameter!"
-                    return @internalRegisterModelViewObserver(modelViewObject_)
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.Store.registerModelViewObserver failure: #{exception}"
-
-            #
-            # ============================================================================
-            @unregisterModelViewObserver = (observerIdCode_) =>
-                try
-                    if not (observerIdCode_? and observerIdCode_) then throw "Missing observer ID code input parameter!"
-                    @internalUnregisterModelViewObserver(observerIdCode_)
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.Store.unregisterModelViewObserver failure: #{exception}"
-
-
-
-            #
-            # ============================================================================
-            @toJSON = (replacer_, space_) =>
-                try
-                    resultObject = {}
-                    resultObject[@jsonTag] = @objectStore
-                    space = space_? and space_ or 0
-                    resultJSON = JSON.stringify(resultObject, replacer_, space)
-                    if not (resultJSON? and resultJSON)
-                        throw "Cannot serialize Javascript object to JSON!"
-                    return resultJSON
-
-                catch exception
-                    throw "Encapsule.code.lib.omm.Store.toJSON fail on object store #{@jsonTag} : #{exception}"
-
 
             #
             # ============================================================================
@@ -465,7 +308,6 @@ class Encapsule.code.lib.omm.Store extends Encapsule.code.lib.omm.implementation
                     extensionPointNamespace.updateRevision()
 
                     return objectStoreNamespace
-
 
                 catch exception
 
@@ -531,15 +373,126 @@ class Encapsule.code.lib.omm.Store extends Encapsule.code.lib.omm.implementation
                     throw "Encapsule.code.lib.omm.Store.openNamespace failure: #{exception}"
                 
 
+            #
+            # ============================================================================
+            @toJSON = (replacer_, space_) =>
+                try
+                    resultObject = {}
+                    resultObject[@jsonTag] = @objectStore
+                    space = space_? and space_ or 0
+                    resultJSON = JSON.stringify(resultObject, replacer_, space)
+                    if not (resultJSON? and resultJSON)
+                        throw "Cannot serialize Javascript object to JSON!"
+                    return resultJSON
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.Store.toJSON fail on object store #{@jsonTag} : #{exception}"
+
+
+
+
+
+
+
+
+
+            # 
+            # ============================================================================
+            # A model view object may be registered with the OM store object to receive
+            # callbacks when the contents of the store is modified. In the context of
+            # registration, the observer will receive series of callbacks (one per store
+            # namespace) that the model view class leverages to initialize its internal
+            # state. Subsequently, mutation of the store will generate additional callback(s)
+            # specifying the namespace(s) that have been modified. Any number of model view
+            # object may be registered with the store. Upon successful registration, this
+            # method returns an "observer ID code" that the observer should cache. An
+            # observer can be unregistered by calling unregisterModelViewObserver providing
+            # the "observer ID code" received when it was registered.
+            #
+            @registerObserver = (observerCallbackInterface_) =>
+                try
+                    if not (observerCallbackInterface_? and observerCallbackInterface_) then throw "Missing model view object input parameter!"
+
+                    # Create a new observer ID code (UUID because multiple registrations allowed).
+                    observerIdCode = uuid.v4()
+
+                    # Affect the registration using the observer ID as the key and the caller's modelViewObject_ by reference.
+                    @modelViewObservers[observerIdCode] = observerCallbackInterface_
+
+                    # The root namespace of an object store always exists and comprises the base of the root component -
+                    # a hierarchy of sub-namespaces defined as the set of all descendents including extension point
+                    # collections but excluding the components contained with child extension poitns.
+
+                    # Get the store's root address.
+                    rootAddress = ONMjs.address.RootAddress(@objectModel)
+
+                    ###
+                    THE BATTLE FRONT
+
+                    # Reflect the root component to the model view object.
+                    @internalReifyStoreComponent(rootNamespaceSelector, modelViewObject_, observerIdCode)
+
+                    # Now kick off the recursive process of enumerating the stores extension points
+                    # and registering sub-components found to exist in the store with the newly registered
+                    # model view object. This process additionally registers each enumerated component's
+                    # associated namespaces with the model view object.
+                    #
+                    # After the initial registration "catch-up", the model view object subsequently
+                    # tracks changes to the store state via discrete component/namespace create,
+                    # update, and remove callback notifications issued by the store.
+
+                    @internalReifyStoreExtensions(rootNamespaceSelector, modelViewObject_, observerIdCode)
+
+                    ###
+
+                    return observerIdCode
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.StoreBase.internalRegisterModelViewObserver failure: #{exception}"
+
+            #
+            # ============================================================================
+            @unregisterModelViewObserver = (observerIdCode_) =>
+                try
+                    if not (observerIdCode_? and observerIdCode_) then throw "Missing observer ID code input parameter!"
+
+                    registeredObserver = @modelViewObservers[observerIdCode_]
+
+                    if not (registeredObserver? and registeredObserver)
+                        throw "Unknown observer ID code provided. No registration to remove."
+
+                    # Unreify the contents of the store before removing the registration.
+                    rootSelector = @objectModel.createNamespaceSelectorFromPathId(0)
+                    @internalReifyStoreExtensions(rootSelector, registeredObserver, observerIdCode_, true)
+                    @internalUnreifyStoreComponent(rootSelector, registeredObserver, observerIdCode_)
+
+                    @internalRemoveObserverState(observerIdCode_)
+
+                    # Remove the registration.
+                    @modelViewObservers[observerIdCode_] = undefined
+
+                catch exception
+                    throw "Encapsule.code.lib.omm.StoreBase.internalUnregisterModelViewObserver failure: #{exception}"
 
             #
             # ============================================================================
             @openObserverState = (observerId_) =>
                 try
                     if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
-                    return @internalOpenObserverState(observerId_)
+                    observerState = @modelViewObserversState[observerId_]? and @modelViewObserversState[observerId_] or @modelViewObserversState[observerId_] = []
+                    return observerState                    
+
                 catch exception
                     throw "Encapsule.code.lib.omm.Store.openObserverStateObject failure: #{exception}"
+
+            #
+            # ============================================================================
+            @removeObserverState = (observerId_) =>
+                if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
+                observerState = @openObserverState(observerId_)
+                if observerState? and observerState
+                    delete @modelViewObserverState[observerId_]
+                @
 
             #
             # ============================================================================
@@ -547,10 +500,12 @@ class Encapsule.code.lib.omm.Store extends Encapsule.code.lib.omm.implementation
                 try
                     if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
                     if not (namespaceSelector_? and namespaceSelector_) then throw "Missing namespace selector parameter!"
-                    return @internalOpenObserverComponentState(observerId_, namespaceSelector_)
+                    componentSelector = @objectModel.createNamespaceSelectorFromPathId(
+                        namespaceSelector_.objectModelDescriptor.componentId, namespaceSelector_.selectKeyVector, namespaceSelector_.secondaryKeyVector)
+                    return @internalOpenObserverNamespaceState(observerId_, componentSelector)
+
                 catch exception
                     throw "Encapsule.code.lib.omm.Store.openObserverComponentState failure: #{exception}"
-
 
             #
             # ============================================================================
@@ -558,10 +513,30 @@ class Encapsule.code.lib.omm.Store extends Encapsule.code.lib.omm.implementation
                 try
                     if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
                     if not (namespaceSelector_? and namespaceSelector_) then throw "Missing namespace selector parameter!"
-                    return @internalOpenObserverNamespaceState(observerId_, namespaceSelector_)
+                    observerState = @internalOpenObserverState(observerId_)
+                    pathRecord = observerState[namespaceSelector_.pathId]? and observerState[namespaceSelector_.pathId] or observerState[namespaceSelector_.pathId] = {}
+                    namespaceHash = namespaceSelector_.getHashString()
+                    namespaceState = pathRecord[namespaceHash]? and pathRecord[namespaceHash] or pathRecord[namespaceHash] = {}
+                    return namespaceState
+
                 catch exception
                     throw "Encapsule.code.lib.omm.Store.openObserverNamespaceState failure: #{exception}"
 
+            #
+            # ============================================================================
+            @removeObserverNamespaceState = (observerId_, namespaceSelector_) =>
+
+                observerState = @modelViewObserversState[observerId_]
+                if not (observerState? and observerState)
+                    return @
+                pathRecord = observerState[namespaceSelector_.pathId]
+                if not (pathRecord? and pathRecord)
+                    return @
+                namespaceHash = namespaceSelector_.getHashString()
+                delete pathRecord[namespaceHash]
+                if Encapsule.code.lib.js.dictionaryLength(pathRecord) == 0
+                    delete observerState[namespaceSelector_.pathId]
+                return @
 
 
         catch exception
