@@ -71,10 +71,10 @@ class ONMjs.Store
             @objectStoreSource = undefined # this is flag indicating if the store was created from a JSON string
 
             # We use a map to store registered model view observers. 
-            @modelViewObservers = {}
+            @observers = {}
 
             # Private (and opaque) state managed on behalf of registered model view observers.
-            @modelViewObserversState = {}
+            @observersState = {}
 
             if initialStateJSON_? and initialStateJSON_
                 Console.message("... deserializing from JSON string")
@@ -228,7 +228,7 @@ class ONMjs.Store
                     observerIdCode = uuid.v4()
 
                     # Affect the registration using the observer ID as the key and the caller's modelViewObject_ by reference.
-                    @modelViewObservers[observerIdCode] = observerCallbackInterface_
+                    @observers[observerIdCode] = observerCallbackInterface_
 
                     # The root namespace of an object store always exists and comprises the base of the root component -
                     # a hierarchy of sub-namespaces defined as the set of all descendents including extension point
@@ -242,12 +242,10 @@ class ONMjs.Store
                     @reifier.reifyStoreComponent(rootAddress, observerCallbackInterface_, observerIdCode)
 
                     # Enumerate and reify this component's subcomponents contained in its extension points.
-                    # Note that this process is "recursive" in that it repeats for every component discovered
-                    # until all descendant subcomponents of the specified component have been enumerated and
-                    # reified in the eye of the observer.
+                    # Note that this process is repeated for every component discovered until all descendant
+                    # subcomponents of the specified component have been enumerated and reified in the eye
+                    # of the observer.
                     @reifier.reifyStoreExtensions(rootAddress, observerCallbackInterface_, observerIdCode)
-
-
 
                     return observerIdCode
 
@@ -260,7 +258,7 @@ class ONMjs.Store
                 try
                     if not (observerIdCode_? and observerIdCode_) then throw "Missing observer ID code input parameter!"
 
-                    registeredObserver = @modelViewObservers[observerIdCode_]
+                    registeredObserver = @observers[observerIdCode_]
 
                     if not (registeredObserver? and registeredObserver)
                         throw "Unknown observer ID code provided. No registration to remove."
@@ -273,7 +271,7 @@ class ONMjs.Store
                     @internalRemoveObserverState(observerIdCode_)
 
                     # Remove the registration.
-                    @modelViewObservers[observerIdCode_] = undefined
+                    @observers[observerIdCode_] = undefined
 
                 catch exception
                     throw "Encapsule.code.lib.omm.StoreBase.internalUnregisterModelViewObserver failure: #{exception}"
@@ -283,7 +281,7 @@ class ONMjs.Store
             @openObserverState = (observerId_) =>
                 try
                     if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
-                    observerState = @modelViewObserversState[observerId_]? and @modelViewObserversState[observerId_] or @modelViewObserversState[observerId_] = []
+                    observerState = @observersState[observerId_]? and @modelViewObserversState[observerId_] or @modelViewObserversState[observerId_] = []
                     return observerState                    
 
                 catch exception

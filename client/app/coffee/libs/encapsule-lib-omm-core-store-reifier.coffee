@@ -30,7 +30,7 @@ BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
 
 ------------------------------------------------------------------------------
 
-
+encapsule-lib-omm-core-store-reifier.coffee
 
 ------------------------------------------------------------------------------
 
@@ -54,27 +54,42 @@ class ONMjs.implementation.StoreReifier
     constructor: (objectStore_) ->
         try
 
-            @objectStore = objectStore_
+            @store = objectStore_
+
 
             # 
             # ============================================================================
-            @reifyStoreComponent = (componentNamespaceSelector_, modelViewObject_, observerId_) =>
+            @dispatchCallback = (address_, callbackName_, observerId_) =>
                 try
-                    componentNamespaceSelector_.internalVerifySelector()
-
-                    # If broadcast (i.e. modelViewObject_ not specified or undefined) AND no observers then return.
-                    if ( not (modelViewObserver_? and modelViewObserver_) ) and ( not Object.keys(@modelViewObservers).length )
-                        return
-
-                    # MODEL VIEW OBSERVER CALLBACK ORIGIN: onComponentCreated
-                    # Invoke the model view object's onComponentCreate callback.
-                    if modelViewObject_? and modelViewObject_
-                        if (modelViewObject_.onComponentCreated? and modelViewObject_.onComponentCreated)
-                            modelViewObject_.onComponentCreated(@, observerId_, componentNamespaceSelector_)
+                    if observerId_? and observerId_
+                        # Use the specified observer ID to obtain the callback interface  registered with the
+                        # store and then dispatch the specified callback on that interface only.
+                        callbackInterface = @store.observers[observerId_]
+                        if not (callbackInterface? and callbackInterface)
+                            throw "Internal error: unable to resolve observer ID to obtain callback interface."
+                        callbackFunction = callbackInterface[callbackName_]
+                        if callbackFunction? and callbackFunction
+                            callbackFunction(@store, observerId_, address_)
                     else
-                        for observerId, modelViewObject of @modelViewObservers
-                            if modelViewObject.onComponentCreated? and modelViewObject.onComponentCreated
-                                modelViewObject.onComponentCreated(@, observerId, componentNamespaceSelector_)
+                        for observerId, callbackInterface of @store.observers
+                            callbackFunction = callbackInterface[callbackName_]
+                            if callbackFunction? and callbackFunction
+                                callbackFunction(@store, observerId_, address_)
+
+                catch exception
+                    throw "ONMjs.implementation.StoreRefier.dispatchCallback failure: #{exception}"
+
+
+            # 
+            # ============================================================================
+            @reifyStoreComponent = (address_, observerId_) =>
+                try
+                    if not (address_? and address_) then throw "Internal error: Missing address input parameter."
+
+                    # Return immediately if there are no observers registered.
+                    if not @store.observers.length return
+
+                    @dispatchCallback(address_, "onComponentCreated", observerId_)
 
                     # MODEL VIEW OBSERVER CALLBACK ORIGIN: onNamespaceCreate
                     # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
@@ -158,7 +173,8 @@ class ONMjs.implementation.StoreReifier
                     for path, namespaceDescriptor of componentExtensionPointMap
 
                         # Use the extension point's ID obtained from namespace descriptor to create an object model namespace selector for the extension point.
-                        extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceDescriptor.id, componentNamespaceSelector_.selectKeyVector, componentNamespaceSelector_.secondaryKeyVector)
+                        extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(
+                            namespaceDescriptor.id, componentNamespaceSelector_.selectKeyVector, componentNamespaceSelector_.secondaryKeyVector)
 
                         # Create a new store namespace object to gain access to the extension point array data.
                         extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector, "bypass")

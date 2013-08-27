@@ -88,6 +88,16 @@ class ONMjs.Address
             for token in tokenVector_? and tokenVector_ or []
                 @pushToken token
 
+            # The following globals are used to cache namesapce traversal paths
+            # on the first call to the related vistor function. Subsequent calls
+            # on the same address object do not incur the overhead of recalculation.
+            @parentAddressesAscending = undefined
+            @parentAddressesDescending = undefined
+            @subnamespaceAddressesAscending = undefined
+            @subnamespaceAddressesDescending = undefined
+            @subcomponentAddressesAscending = undefined
+            @subcomponentsAddressesDescending = undefined
+
         catch exception
             throw "Encapsule.code.lib.omm.Address error: #{exception}"
 
@@ -112,8 +122,6 @@ class ONMjs.Address
 
         catch exception
             throw "Encapsule.code.lib.omm.Address.pushToken failure: #{exception}"
-
-
 
     #
     # ============================================================================
@@ -148,16 +156,35 @@ class ONMjs.Address
 
     #
     # ============================================================================
-    getParent: =>
+    visitParentNamespacesAscending: =>
+
+    visitParentNamespacesDescending: =>
+        try
+            if not (@parentAddressesDesending? and @parentAddressesDesceding)
+                @parentAddressesDescending = []
+                traverse = true
+                parent = @
+                while traverse
+                    parent = ONMjs.address.parent(parent)
+                    @parentAddressesDesending.push parent
+                    traverse = not parent.isRoot()
 
 
-    #
-    # ============================================================================
+
+        catch
+
+    visitSubnamespacesAscending: =>
+
+    visitSubnamespacesDescending: =>
+
+    visitSubcomponentsAscending: =>
+
+    visitSubcomponentsDescending: =>
 
 
 
-    #
-    # ============================================================================
+
+
 
 
 #
@@ -256,12 +283,42 @@ ONMjs.address.Parent = (address_, generations_) ->
         throw "Encapsule.code.lib.omm.address.Parent failure: #{exception}"
 
 
+
+
+
 #
 # ============================================================================
-ONMjs.address.ChildFromPath = (address_, subPath_) ->
+# Given a source address, generate a new address to another namespace within
+# the component specified by the source address.
+
+
+ONMjs.address.NewAddressSameComponent = (address_, pathId_) ->
     try
 
+        if not (address_? and address_) then throw "Missing address input parameter."
+        if not (pathId_? and pathId_) then throw "Missing namespace path ID input parameter."
+        addressedComponentToken = address_.tokenVector[address_.tokenVector.length - 1]
+        addressedComponentDescriptor = addressedComponentToken.componentDescriptor
+
+        targetNamespaceDescriptor = address_.model.getNamespaceDescriptorFromPathId(pathId_)
+        if targetNamespaceDescriptor.idComponent != addressedComponentDescriptor.id
+            throw "Invalid path ID specified does not resolve to a namespace in the same component as the source address."
+
+        newToken = ONMjs.implementation.AddressToken(address_.model, addressedComponentToken.idExtension, addressedComponentToken.idComponent, pathId_)
+
+        newTokenVector = address_.tokenVector.slice(0, address_.tokenVector.length - 1)
+        newTokenVector.push new Token
+        newAddress = ONMjs.Address(address_.model, newTokenVector)
+
+        return newAddress
+
     catch exception
-        throw "Encapsule.code.lib.omm.address.ChildFromPath failure: #{exception}"
+        throw "ONMjs.address failure: #{exception}"
 
+# Allows for efficient modification of the specified address' namespace ID relative to the
+# component that it addresses. 
 
+ONMjs.address.ModifyAddressNamespace = (address_, pathId_) ->
+    try
+    catch exception
+        throw "ONMjs.address.SameAddressNewComponentNamespace failure: #{exception}"
