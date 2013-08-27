@@ -239,13 +239,13 @@ class ONMjs.Store
 
                     # Reify the store's root component in the eye of the observer. Not that this function
                     # also reifieis all of the component's descendant namespaces as well.
-                    @reifier.reifyStoreComponent(rootAddress, observerCallbackInterface_, observerIdCode)
+                    @reifier.reifyStoreComponent(rootAddress, observerIdCode)
 
                     # Enumerate and reify this component's subcomponents contained in its extension points.
                     # Note that this process is repeated for every component discovered until all descendant
                     # subcomponents of the specified component have been enumerated and reified in the eye
                     # of the observer.
-                    @reifier.reifyStoreExtensions(rootAddress, observerCallbackInterface_, observerIdCode)
+                    @reifier.reifyStoreExtensions(rootAddress, observerIdCode)
 
                     return observerIdCode
 

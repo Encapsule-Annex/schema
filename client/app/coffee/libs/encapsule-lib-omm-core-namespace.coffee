@@ -58,10 +58,9 @@ class Encapsule.code.lib.omm.Namespace
             else
                 address = address_
             
-
             # Ensure that address and store objects were both created using the same model.
             objectModelNameStore = objectStore_.objectModel.jsonTag
-            objectModelNameKeys = address.objectModel.jsonTag
+            objectModelNameKeys = address.model.jsonTag
             if objectModelNameStore != objectModelNameKeys
                 throw "You cannot create a '#{objectModelNameStore}' store namespace with a '#{objectModelNameKeys}' select key vector."
 

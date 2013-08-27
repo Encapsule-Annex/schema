@@ -87,10 +87,11 @@ class ONMjs.implementation.StoreReifier
                     if not (address_? and address_) then throw "Internal error: Missing address input parameter."
 
                     # Return immediately if there are no observers registered.
-                    if not @store.observers.length then return
+                    if not Encapsule.code.lib.js.dictionaryLength(@store.observers) then return
 
-                    @dispatchCallback(address_, "onComponentCreated", observerId_)
-                    address_.visitSubnamespacesAscending( (address__) -> @dispatchCallback(address__, "onNamespaceCreated", observerId_) )
+                    dispatchCallback = @dispatchCallback
+                    dispatchCallback(address_, "onComponentCreated", observerId_)
+                    address_.visitSubnamespacesAscending( (address__) -> dispatchCallback(address__, "onNamespaceCreated", observerId_) )
 
                     true # that
 

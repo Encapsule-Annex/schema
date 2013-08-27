@@ -52,9 +52,9 @@ ONMjs = Encapsule.code.lib.omm
 #
 class ONMjs.Address
 
-    constructor: (objectModel_, tokenVector_) ->
+    constructor: (model_, tokenVector_) ->
         try
-            @objectModel = objectModel_? and objectModel_ or throw "Missing required object model input parameter."
+            @model = model_? and model_ or throw "Missing required object model input parameter."
             @tokenVector = []
             @parentExtensionPointId = -1
 
@@ -209,10 +209,10 @@ class ONMjs.Address
             if not (@subnamespaceAddressesAscending? and @subnamespaceAddressesAscending)
                 @subnamespaceAddressesAscending = []
                 namespaceDescriptor = @getLastToken().namespaceDescriptor
-                for subnamespaceId in namespaceDescriptor.componentNamespaceIds
+                for subnamespacePathId in namespaceDescriptor.componentNamespaceIds
                     subnamespaceAddress = ONMjs.address.NewAddressSameComponent(@, subnamespacePathId)
-                    @subnamespceAddressesAscending.push subnamespaceAddress
-            while address in @subnamespaceAddressesAscending
+                    @subnamespaceAddressesAscending.push subnamespaceAddress
+            for address in @subnamespaceAddressesAscending
                 callback_(address)
             true # that
         catch exception
@@ -367,7 +367,7 @@ ONMjs.address.NewAddressSameComponent = (address_, pathId_) ->
     try
 
         if not (address_? and address_) then throw "Missing address input parameter."
-        if not (pathId_? and pathId_) then throw "Missing namespace path ID input parameter."
+        if not (pathId_?  and pathId_ > -1) then throw "Missing namespace path ID input parameter."
         addressedComponentToken = address_.getLastToken()
         addressedComponentDescriptor = addressedComponentToken.componentDescriptor
 
@@ -375,21 +375,18 @@ ONMjs.address.NewAddressSameComponent = (address_, pathId_) ->
         if targetNamespaceDescriptor.idComponent != addressedComponentDescriptor.id
             throw "Invalid path ID specified does not resolve to a namespace in the same component as the source address."
 
-        newToken = ONMjs.implementation.AddressToken(address_.model, addressedComponentToken.idExtension, addressedComponentToken.idComponent, pathId_)
+        newToken = new ONMjs.AddressToken(address_.model, addressedComponentToken.idExtensionPoint, addressedComponentToken.idComponent, pathId_)
 
-        newTokenVector = address_.tokenVector.slice(0, address_.tokenVector.length - 1)
-        newTokenVector.push new Token
-        newAddress = ONMjs.Address(address_.model, newTokenVector)
+        newTokenVector = address_.tokenVector.length > 0 and address_.tokenVector.slice(0, address_.tokenVector.length - 1) or []
+        newTokenVector.push newToken
+        newAddress = new ONMjs.Address(address_.model, newTokenVector)
 
         return newAddress
 
     catch exception
         throw "ONMjs.address failure: #{exception}"
 
-# Allows for efficient modification of the specified address' namespace ID relative to the
-# component that it addresses. 
 
-ONMjs.address.ModifyAddressNamespace = (address_, pathId_) ->
-    try
-    catch exception
-        throw "ONMjs.address.SameAddressNewComponentNamespace failure: #{exception}"
+
+
+
