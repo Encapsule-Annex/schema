@@ -87,25 +87,15 @@ class ONMjs.implementation.StoreReifier
                     if not (address_? and address_) then throw "Internal error: Missing address input parameter."
 
                     # Return immediately if there are no observers registered.
-                    if not @store.observers.length return
+                    if not @store.observers.length then return
 
                     @dispatchCallback(address_, "onComponentCreated", observerId_)
+                    address_.visitSubnamespacesAscending( (address__) -> @dispatchCallback(address__, "onNamespaceCreated", observerId_) )
 
-                    # MODEL VIEW OBSERVER CALLBACK ORIGIN: onNamespaceCreate
-                    # Invoke the model view object's onNamespaceCreate callback for each namespace in the root component.
-                    for namespaceId in componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds
-                        namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector, componentNamespaceSelector_.secondaryKeyVector)
-                        if modelViewObject_? and modelViewObject_
-                            if modelViewObject_.onNamespaceCreated? and modelViewObject_.onNamespaceCreated
-                                modelViewObject_.onNamespaceCreated(@, observerId_, namespaceSelector)
-                        else
-                            for observerId, modelViewObject of @modelViewObservers
-                                if modelViewObject.onNamespaceCreated? and modelViewObject.onNamespaceCreated
-                                    modelViewObject.onNamespaceCreated(@, observerId, namespaceSelector)
-                    true
+                    true # that
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.StoreBase.internalReifyStoreComponent failure: #{exception}"
+                    throw "Encapsule.code.lib.omm.StoreBase.reifyStoreComponent failure: #{exception}"
 
 
             # 

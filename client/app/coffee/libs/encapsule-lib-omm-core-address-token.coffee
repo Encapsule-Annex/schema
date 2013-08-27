@@ -30,7 +30,7 @@ BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
 
 ------------------------------------------------------------------------------
 
-
+encapsule-lib-omm-core-address-token.coffee
 
 ------------------------------------------------------------------------------
 
@@ -45,6 +45,7 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
 
+ONMjs = Encapsule.code.lib.omm
 
 
 
@@ -52,60 +53,65 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 # ****************************************************************************
 #
 #
-class Encapsule.code.lib.omm.AddressToken
+class ONMjs.AddressToken
     constructor: (model_, idExtensionPoint_, key_, idNamespace_) ->
         try
+            # Save a reference to the specified model.
             @model = model_? and model_ or throw "Missing object model input parameter."
 
-            @idExtensionPoint = idExtensionPoint_? and idExtensionPoint_ or -1
-            @extensionPointDescriptor = undefined
+            # Now we work through the remaining parameters in reverse order.
 
-            @idComponent = 0
-            @componentDescriptor = undefined
-
+            # Resolve the specified namespace's object model descriptor.
             if not idNamespace_? then throw "Missing target namespace ID input parameter."
             @idNamespace = idNamespace_
             @namespaceDescriptor = model_.getNamespaceDescriptorFromPathId(idNamespace_)
 
-            @idComponent = @namespaceDescriptor.idComponent
-            @componentDescriptor = @namespaceDescriptor.isComponent and @namespaceDescriptor or @model.getNamespaceDescriptorFromPathId(@idComponent)
-
             @key =  (@componentDescriptor.id > 0) and key_? and key_ or undefined
-            @keyRequired = false
+            @keyRequired = false # may be overridden later in the constructor
 
-            # The namespace specified by idNamespace is contained within a component.
-            # If the component ID greater than zero, then not root component.
-            # If not the root component, component is child of parent extension point.
-            # This means that in order to resolve the root namespace of the component
-            # we require (a) the identity of the parent extension point (b) a unique
-            # key for the component.
+            # Resolve the specified namespace's component object model descriptor.
+            @idComponent = @namespaceDescriptor.idComponent
+            @componentDescriptor = model_.getNamespaceDescriptorFromPathId(@idComponent)
 
-            if @componentDescriptor.id == 0
-                return;
+            # If the token specifies the root component namespace, or any of the root component's subnamespaces
+            # then @idExtensionPoint == -1 and @extensionPointDescriptor == undefined.
+            @idExtensionPoint = idExtensionPoint_? and idExtensionPoint_ or -1
+            @extensionPointDescriptor = undefined
 
-            # Parent extension point must be resolved.
+            # If the AddressToken refers to the root component namespace, or any of its subnamespaces
+            # it does not require a key to resolve because by definition it is unambiguously owned by
+            # ONMjs.Store. 
+            if @componentDescriptor.id == 0 then return
+
+            # In all other cases the AddressToken refers to a namespace in an application component.
+            # Application components are resolved via key lookup in the extension point collection specified
+            # by @extensionPointId.
             @keyRequired = true
 
-            if @idExtensionPoint == -1
+            # As a matter of policy we allow AddressToken to be constructed without explicit specification
+            # of the containing application component's extension point ID iff it can be trivially deduced.
+            if @idExtensionPoint == -1 and not @componentDescriptor.extensionPointReferenceIds.length
+                # We can deduce the extension point ID because for this component there are no cyclic references
+                # defined and thus the mapping of component to extension point ID's is 1:1 (child to parent respectively).
+                @idExtensionPoint = @componentDescriptor.parent.id
 
-                if not @componentDescriptor.extensionPointReferenceIds.length
-                    # We can auto-resolve the extension point ID because for this component
-                    # there are no cyclic references defined and thus the mapping of component
-                    # to extension point ID's is 1:1 (child to parent respectively).
-                    @idExtensionPoint = @componentDescriptor.parent.id
-                else
-                    # This component is a valid extension of more than one extension point.
-                    # Thus we must have the ID of the parent extension point in order to disambiguate.
-                    throw "You must specify the ID of the parent extension point when creating a token addressing a '#{@componentDescriptor.path}' component namespace."
+            if not @idExtensionPoint
+                # This component is a valid extension of more than one extension point.
+                # Thus we must have the ID of the parent extension point in order to disambiguate.
+                throw "You must specify the ID of the parent extension point when creating a token addressing a '#{@componentDescriptor.path}' component namespace."
 
-            @extensionPointDescriptor = model_.getNamespaceDescriptorFromPathId(@idExtensionPoint)
+            # Resolve the extension point's object model descriptor.
+            @extensionPointDescriptor = @model.getNamespaceDescriptorForPathId(@idExtensionPoint)
 
+            # Exists.
             if not (@extensionPointDescriptor? and @extensionPointDescriptor)
-                throw "Internal error: unable to obtain extension point object model descriptor in request."
+                throw "Internal error: unable to resolve extension point object model descriptor in request."
 
+            # Is an extension point.
             if @extensionPointDescriptor.mvvmType != "extension"
                 throw "Invalid selector key object specifies an invalid parent extension point ID. Not an extension point."
 
+            # Is an extension point that contains the correct application component type.
             if @extensionPointDescriptor.archetypePathId != @componentDescriptor.id
                 throw "Invalid selector key object specifies unsupported extension point / component ID pair."
 
@@ -126,8 +132,19 @@ class Encapsule.code.lib.omm.AddressToken
 
     #
     # ============================================================================
-    isReady: => 
-        (not @keyRequired and true) or (@key? and @key and true) or false
+    # DEPRECATED
+    isReady: =>
+        Console.message("ONMjs.AddressToken.isReady is deprecated. Call isQualified.")
+        @isQualified()
+
+    #
+    # ============================================================================
+    isQualified: => not @keyRequired or (@key? and @key) or false
+
+
+    #
+    # ============================================================================
+    isRoot: => not @componentId
 
 #
 #

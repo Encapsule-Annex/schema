@@ -30,7 +30,7 @@ BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
 
 ------------------------------------------------------------------------------
 
-
+encapsule-lib-omm-core-address.coffee
 
 ------------------------------------------------------------------------------
 
@@ -107,7 +107,7 @@ class ONMjs.Address
         try
             if @tokenVector.length
                 parentToken = @tokenVector[@tokenVector.length - 1]
-                @validateSelectKeyPair(parentToken, token_)
+                @validateTokenPair(parentToken, token_)
 
             @tokenVector.push token_.clone()
 
@@ -125,7 +125,7 @@ class ONMjs.Address
 
     #
     # ============================================================================
-    validateSelectKeyPair: (parentToken_, childToken_) ->
+    validateTokenPair: (parentToken_, childToken_) ->
         try
             if not (parentToken_? and parentToken_ and childToken_? and childToken_)
                 throw "Internal error: input parameters are not correct."
@@ -142,24 +142,49 @@ class ONMjs.Address
             true
 
         catch exception
-            throw "Encapsule.code.lib.omm.Address.validateSelectKeyPair failure: #{exception}"
+            throw "Encapsule.code.lib.omm.Address.validateTokenPair failure: #{exception}"
 
     #
     # ============================================================================
     getHashString: =>
-
-
-    #
-    # ============================================================================
-    # clone: =>
-
+        throw "Not implemented!"
 
     #
     # ============================================================================
-    visitParentNamespacesAscending: =>
-
-    visitParentNamespacesDescending: =>
+    clone: => 
         try
+            new ONMjs.Address(@model, @tokenVector)
+        catch exception
+            throw "ONMjs.Address.clone failure: #{exception}"
+        
+    #
+    # ============================================================================
+    getLastToken: =>
+        try
+            @tokenVector.length and @tokenVector[@tokenVector.length - 1] or throw "Internal error: unable to resolve last token in ONMjs.Address."
+        catch exception
+            throw "ONMjs.Address.getLastToken failure: #{exception}"
+
+    #
+    # ============================================================================
+    visitParentNamespacesAscending: (callback_) =>
+        try
+            if not (callback_? and callback_) then return false
+            if not (@parentAddressesAscending? and @parentAddressesAscending)
+                @visitParentNamespacesDescending( (address__) => @parentAddressesAscending.push(address__) )
+                @parentAddressesAscensing.reverse()
+            if not @parentAddressesAscending.length then return false
+            for address in @parentAddressesAscending
+                callback_(address)
+            true # that
+        catch exception
+            throw "ONMjs.Address.visitParentNamespacesAscending failure: #{exception}"
+        
+    #
+    # ============================================================================
+    visitParentNamespacesDescending: (callback_) =>
+        try
+            if not (callback_? and callback_) then return false
             if not (@parentAddressesDesending? and @parentAddressesDesceding)
                 @parentAddressesDescending = []
                 traverse = true
@@ -168,18 +193,64 @@ class ONMjs.Address
                     parent = ONMjs.address.parent(parent)
                     @parentAddressesDesending.push parent
                     traverse = not parent.isRoot()
+            if not @parentAddressesDescending.length then return false
+            for address in @parentAddressesDescending
+                callback_(address)
+            true # that
+
+        catch exception
+            throw "ONMjs.Address.visitParentNamespaceDescending failure: #{exception}"
+
+    #
+    # ============================================================================
+    visitSubnamespacesAscending: (callback_) =>
+        try
+            if not (callback_? and callback_) then return false
+            if not (@subnamespaceAddressesAscending? and @subnamespaceAddressesAscending)
+                @subnamespaceAddressesAscending = []
+                namespaceDescriptor = @getLastToken().namespaceDescriptor
+                for subnamespaceId in namespaceDescriptor.componentNamespaceIds
+                    subnamespaceAddress = ONMjs.address.NewAddressSameComponent(@, subnamespacePathId)
+                    @subnamespceAddressesAscending.push subnamespaceAddress
+            while address in @subnamespaceAddressesAscending
+                callback_(address)
+            true # that
+        catch exception
+            throw "ONMjs.Address.visitSubnamespacesAscending failure: #{exception}"
+
+    #
+    # ============================================================================
+    visitSubnamespacesDescending: (callback_) =>
+        try
+            if not (callback_ and callback_) then return false
+            if not (@subnamespaceAddressesDescending? and @subnamespaceAddressesDescending)
+                @subnamespaceAddressesDescending = []
+                @vistiSubnamespacesAscending( (address__) => @subnamespaceAddressesDescending.push address__ )
+                @subnamespaceAddressesDescending.reverse()
+            for address in @subnamespaceAddressesDesending
+                callback_(address)
+            true # that
+        catch exception
+            throw "ONMjs.Address.visitSubnamespacesAscending failure: #{exception}"
+
+    #
+    # ============================================================================
+    visitExtensionPoints: (callback_) =>
+        try
+            if not (callback_? and callback_) then return false
+            if not (@extensionPointAddresses? and @extensionPointAddresses)
+                @extensionPointAddresses = []
+                namespaceDescriptor = @getLastToken().namespaceDescriptor
+                for path, extensionPointDescriptor of namespaceDescriptor.extensionPoints
+                    extensionPointAddress = ONMjs.address.NewAddressSameComponent(@, extensionPointDescriptor.id)
+                    @extensionPointAddresses.push extensionPointAddress
+            for address in @extensionPointAddresses
+                callback_(address)
+            true # that
+        catch exception
+            throw "ONMjs.Address.visitExtensionPoints failure: #{exception}"
 
 
-
-        catch
-
-    visitSubnamespacesAscending: =>
-
-    visitSubnamespacesDescending: =>
-
-    visitSubcomponentsAscending: =>
-
-    visitSubcomponentsDescending: =>
 
 
 
@@ -297,7 +368,7 @@ ONMjs.address.NewAddressSameComponent = (address_, pathId_) ->
 
         if not (address_? and address_) then throw "Missing address input parameter."
         if not (pathId_? and pathId_) then throw "Missing namespace path ID input parameter."
-        addressedComponentToken = address_.tokenVector[address_.tokenVector.length - 1]
+        addressedComponentToken = address_.getLastToken()
         addressedComponentDescriptor = addressedComponentToken.componentDescriptor
 
         targetNamespaceDescriptor = address_.model.getNamespaceDescriptorFromPathId(pathId_)
