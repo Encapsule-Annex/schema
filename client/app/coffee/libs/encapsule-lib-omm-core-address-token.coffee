@@ -66,12 +66,12 @@ class ONMjs.AddressToken
             @idNamespace = idNamespace_
             @namespaceDescriptor = model_.getNamespaceDescriptorFromPathId(idNamespace_)
 
-            @key =  (@componentDescriptor.id > 0) and key_? and key_ or undefined
-            @keyRequired = false # may be overridden later in the constructor
-
             # Resolve the specified namespace's component object model descriptor.
             @idComponent = @namespaceDescriptor.idComponent
             @componentDescriptor = model_.getNamespaceDescriptorFromPathId(@idComponent)
+
+            @key =  (@componentDescriptor.id > 0) and key_? and key_ or undefined
+            @keyRequired = false # may be overridden later in the constructor
 
             # If the token specifies the root component namespace, or any of the root component's subnamespaces
             # then @idExtensionPoint == -1 and @extensionPointDescriptor == undefined.
