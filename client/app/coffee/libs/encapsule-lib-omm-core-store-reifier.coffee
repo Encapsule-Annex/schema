@@ -56,7 +56,6 @@ class ONMjs.implementation.StoreReifier
 
             @store = objectStore_
 
-
             # 
             # ============================================================================
             @dispatchCallback = (address_, callbackName_, observerId_) =>
@@ -91,7 +90,7 @@ class ONMjs.implementation.StoreReifier
 
                     dispatchCallback = @dispatchCallback
                     dispatchCallback(address_, "onComponentCreated", observerId_)
-                    address_.visitSubnamespacesAscending( (address__) -> dispatchCallback(address__, "onNamespaceCreated", observerId_) )
+                    address_.visitSubnamespacesAscending( (addressSubnamespace_) -> dispatchCallback(addressSubnamespace_, "onNamespaceCreated", observerId_) )
 
                     true # that
 
@@ -101,8 +100,20 @@ class ONMjs.implementation.StoreReifier
 
             # 
             # ============================================================================
-            @unreifyStoreComponent = (componentNamespaceSelector_, modelViewObject_, observerId_) =>
+            @unreifyStoreComponent = (address_, observerId_) =>
                 try
+
+                    if not (address_? and address_) then throw "Internal error: Missing address input parameter."
+
+                    # Return immediately if there are no observers registered.
+                    if not Encapsule.code.lib.js.dictionaryLength(@store.observers) then return
+
+
+                    throw "Whoops you just stepped on a pile of shit."
+                    if not (address_? and address_) then throw "Internal error: Missing address input parameter."
+
+
+
                     componentNamespaceSelector_.internalVerifySelector()
 
                     # If broadcast (i.e. modelViewObject_ not specified or undefined) AND no observers then return.
@@ -145,95 +156,28 @@ class ONMjs.implementation.StoreReifier
 
             # 
             # ============================================================================
-            @reifyStoreExtensions = (componentNamespaceSelector_, modelViewObject_, observerId_, undoFlag_) =>
+            @reifyStoreExtensions = (address_, observerId_, undoFlag_) =>
                 try
-                    componentNamespaceSelector_.internalVerifySelector()
+                    if not (address_? and address_) then throw "Internal error: Missing address input parameter."
 
-                    # undoFlag indicates that we should reverse a prior reification (e.g. in response to
-                    # a component being removed from the store.
-                    undoFlag = undoFlag_? and undoFlag_ or false
+                    # Return immediately if there are no observers registered.
+                    if not Encapsule.code.lib.js.dictionaryLength(@store.observers) then return
 
-                    # Dereference the component's object model descriptor and find its extension points.
-                    componentObjectModelDescriptor = componentNamespaceSelector_.objectModelDescriptor
+                    dispatchCallback = @dispatchCallback
 
-                    if not componentObjectModelDescriptor.isComponent 
-                        throw "Invalid namespace selector does not correspond to a component in this object model."
-
-                    componentExtensionPointMap = componentNamespaceSelector_.objectModelDescriptor.extensionPoints
-
-                    for path, namespaceDescriptor of componentExtensionPointMap
-
-                        # Use the extension point's ID obtained from namespace descriptor to create an object model namespace selector for the extension point.
-                        extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(
-                            namespaceDescriptor.id, componentNamespaceSelector_.selectKeyVector, componentNamespaceSelector_.secondaryKeyVector)
-
-                        # Create a new store namespace object to gain access to the extension point array data.
-                        extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector, "bypass")
-
-                        extensionPointArray = extensionPointNamespace.objectStoreNamespace
-                        if not (extensionPointArray.length?) then throw "Expected extension point array to support length property."
-
-                        extensionJsonTag = namespaceDescriptor.children[0].jsonTag
-                        extensionPath = "#{namespaceDescriptor.path}.#{extensionJsonTag}"
-                        recursivelyDeclaredExtensionPoint = namespaceDescriptor.id > namespaceDescriptor.idArchetype
-
-                        for component in extensionPointArray
-
-                            subcomponentObject = component[extensionJsonTag]
-                            subcomponentKey = @objectModel.getSemanticBindings().getUniqueKey(subcomponentObject)
-
-                            subcomponentSelectKeyVector = undefined
-                            subcomponentSecondaryKeyVector = undefined
-
-                            if not recursivelyDeclaredExtensionPoint
-                                subcomponentSelectKeyVector = Encapsule.code.lib.js.clone(componentNamespaceSelector_.selectKeyVector)
-                                subcomponentSelectKeyVector.push subcomponentKey
-                                subcomponentSecondaryKeyVector = []
+                    address_.visitExtensionPoints( (addressExtensionPoint_) =>
+                        extensionPointNamespace = new ONMjs.Namespace(@store, addressExtensionPoint_)
+                        extensionPointNamespace.visitExtensionPointSubcomponents( (addressSubcomponent_) =>
+                            if not undoFlag_
+                                @reifyStoreComponent(addressSubcomponent_, observerId_)
+                                @reifyStoreExtensions(addressSubcomponent_, observerId_, false)
                             else
-                                subcomponentSelectKeyVector = componentNamespaceSelector_.selectKeyVector
-                                subcomponentSecondaryKeyVector = Encapsule.code.lib.js.clone(componentNamespaceSelector_.secondaryKeyVector)
-                                subcomponentSecondaryKeyVector.push({
-                                    idExtensionPoint: namespaceDescriptor.id
-                                    selectKey: subcomponentKey
-                                    })
-
-                            subcomponentNamespaceSelector = @objectModel.createNamespaceSelectorFromPath(extensionPath, subcomponentSelectKeyVector, subcomponentSecondaryKeyVector)
-
-                            if not undoFlag
-                                # Note that when we're reifying (i.e. reflecting the contents of the store out to the model view)
-                                # that we proceed bottom-up (i.e. from root up towards leaves). The protocol is that namespaces are
-                                # "created" parent-first and then the component is "created", and finally the component's 
-                                # sub-components are evaluated until all leaf components have been processed and the entire branch
-                                # or the store has been traversed.
-
-                                # Reify the store subcomponent to the model view object.                                
-                                @internalReifyStoreComponent(subcomponentNamespaceSelector, modelViewObject_, observerId_)
-
-                                # *** RECURSION
-                                @internalReifyStoreExtensions(subcomponentNamespaceSelector, modelViewObject_, observerId_, false)
-
-                            else
-                                # Note that when we're unreifying (i.e. undoing the a prior reification) that we proceed
-                                # top-down (i.e. from the leaves down towards the root). Subcomponents are always evaluated 
-                                # prior to their parent components. When a leaf component is discovered, it is "removed".
-                                # The protocol is that the component is "removed" first, and then the namespaces are "removed"
-                                # in the reverse order they were "created" during reification. Parent components are "removed"
-                                # via the same protocol only after all their sub-components have been "removed" until the root
-                                # component (which cannot be removed because it's not an extension) is reached.
-                            
-                                # *** RECURSION
-                                @internalReifyStoreExtensions(subcomponentNamespaceSelector, modelViewObject_, observerId_, true)
-                                
-                                # Unreify the store subcomponent to the model view object.
-                                @internalUnreifyStoreComponent(subcomponentNamespaceSelector, modelViewObject_, observerId_)
-
+                                @reifyStoreExtensions(addressSubcomponent_, observerId_, true)
+                                @unreifyStoreComponent(addressSubcomponent_, observerId_)
                             true
-
-                            # END: for component in...
-
-                        # END: for path, namespaceDescriptor of...
-
-                    # extensionPointStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointNamespaceSelector_, "bypass")
+                        )
+                        true
+                    )
 
                 catch exception
                     throw "Encapsule.code.lib.omm.StoreBase.internalReifyStoreExtensions failure: #{exception}"

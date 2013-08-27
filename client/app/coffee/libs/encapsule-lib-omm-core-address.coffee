@@ -117,7 +117,7 @@ class ONMjs.Address
             if token_.keyRequired
                 @keysRequired = true
 
-            if not token_.isReady()
+            if not token_.isQualified()
                 @keysSpecified = false
 
         catch exception
@@ -136,7 +136,7 @@ class ONMjs.Address
             if parentToken_.namespaceDescriptor.id != childToken_.extensionPointDescriptor.id
                 throw "Child select key is invalid because parent select key does not specifiy the expected extension point."
 
-            if not parentToken_.isReady() and childToken_.isReady()
+            if not parentToken_.isQualified() and childToken_.isQualified()
                 throw "Parent select key specifies a new instance yet child select key specifies a key."
 
             true

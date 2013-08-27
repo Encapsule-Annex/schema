@@ -86,6 +86,8 @@ class Encapsule.code.lib.omm.Namespace
         catch exception
             throw "Encapsule.code.lib.omm.Namespace failure: #{exception}"
 
+    #
+    # ============================================================================
     data: =>
         try
             dataReferences = @dataReferences.length
@@ -96,12 +98,32 @@ class Encapsule.code.lib.omm.Namespace
         catch exception
             throw "Encapsule.code.lib.omm.Namespace.data failure: #{exception}"
 
+    #
+    # ============================================================================
     update: =>
         try
-            return
+            Console.message("ONMjs.Namespace.update not implemented.")
 
         catch exception
             throw "Encapsule.code.lib.omm.Namespace.update failure: #{exception}"
 
+
+
+    #
+    # ============================================================================
+    getLastBinder: => @addressTokenBinders.length and @addressTokenBinders[@addressTokenBinders.length - 1] or throw "Internal error: unable to retrieve the last token binder for this namespace."
+
+    #
+    # ============================================================================
+    visitExtensionPointSubcomponents: (callback_) =>
+        try
+            binder = @getLastBinder()
+
+            
+
+
+        catch exception
+            throw "ONMjs.Namepsace.visitExtensionPointSubcomponents failure: #{exception}"
+    # ============================================================================
 
 

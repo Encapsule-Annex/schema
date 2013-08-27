@@ -101,7 +101,7 @@ class ONMjs.AddressToken
                 throw "You must specify the ID of the parent extension point when creating a token addressing a '#{@componentDescriptor.path}' component namespace."
 
             # Resolve the extension point's object model descriptor.
-            @extensionPointDescriptor = @model.getNamespaceDescriptorForPathId(@idExtensionPoint)
+            @extensionPointDescriptor = @model.getNamespaceDescriptorFromPathId(@idExtensionPoint)
 
             # Exists.
             if not (@extensionPointDescriptor? and @extensionPointDescriptor)

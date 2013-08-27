@@ -82,8 +82,7 @@ class Encapsule.code.app.Schema
             address3 = ONMjs.address.Parent(address2, 2)
             address = ONMjs.address.Parent(address)
             address = ONMjs.address.Parent(address, 5)
-            address = ONMjs.address.ChildFromPath(address, "extensionPointA")
-            address = ONMjs.address.ChildFromPath(address, "extensionPointA.foobar")
+
 
 
             ###
