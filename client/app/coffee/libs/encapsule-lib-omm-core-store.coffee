@@ -226,7 +226,7 @@ class ONMjs.Store
             @registerObserver = (observerCallbackInterface_, observingEntityReference_) =>
                 try
                     if not (observerCallbackInterface_? and observerCallbackInterface_) then throw "Missing callback interface namespace input parameter.."
-                    observerCallbackInterface_.observingEntity = observerCallbackInterface_
+                    observerCallbackInterface_.observingEntity = observingEntityReference_
 
                     # Create a new observer ID code (UUID because multiple registrations allowed).
                     observerIdCode = uuid.v4()

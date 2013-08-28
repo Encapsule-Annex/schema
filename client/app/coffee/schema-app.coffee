@@ -50,32 +50,53 @@ class Encapsule.code.app.Schema
             # ONMjs have evolved to the point where this declaration no longer makes a ton of sense given
             # current ONMjs naming conventions.
 
+
+            # Local alias of app state root.
             schemaRuntime = Encapsule.runtime.app
 
-            # The Object Namespace Schema declaration below is very dated with respect to ONMjs.
-            # Semantically the file is correct but the syntax needs a major scrubbing.
-            # Once ONMjs core is stable, I'll use ONMjs to model its own input and refine the
-            # syntax in a tight loop. This will initially require that I hand-author a schema
-            # for ONMjs itself. But this effort will be well worth it :-)
-            #
-            schemaRuntime.ONMjs = {} 
-            schemaRuntime.ONMjs.schema = Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
-
-            model = schemaRuntime.ONMjs.model = new ONMjs.Model(schemaRuntime.ONMjs.schema)
-            store = schemaRuntime.ONMjs.store = new ONMjs.Store(schemaRuntime.ONMjs.model)
-
-            selectedAddress = schemaRuntime.ONMjs.selectedAddress = new ONMjs.CachedAddress(store)
-            selectAddressObserverId = store.registerObserver(selectedAddress.objectStoreCallbacks, selectedAddress)
-
-
+            # Namespace for ONMjs-related objects.
+            schemaRuntime.ONMjs = {}
             schemaRuntime.ONMjs.observers = {}
-            navigator = schemaRuntime.ONMjs.observers.navigator = new ONMjs.observers.NavigatorModelView()
 
+
+            # The Schema application state model codified as an ONMjs Object Model Schema.
+            schema = schemaRuntime.ONMjs.schema = Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
+
+            # Initialize the Schema application's ONMjs runtime state model.
+            model = schemaRuntime.ONMjs.model = new ONMjs.Model(schema)
+
+            # Initialize the Schema application's ONMjs runtime state store.
+            store = schemaRuntime.ONMjs.store = new ONMjs.Store(model)
+
+            # Create an instance of "canary" - an ONMjs observer. Canary "sings" to the console log.
             canary = schemaRuntime.ONMjs.observers.canary = new ONMjs.test.observers.Canary()
+
+            # Attach the canary to the store via ONMjs.Store.registerObserver.
             canaryStoreObserverId = store.registerObserver(canary.callbackInterface, canary)
 
+            # Detach the canary from the store via ONMjs.Store.unregisterObserver.
             store.unregisterObserver(canaryStoreObserverId)
 
+            # The above attach/detach should produce corresponding callback notifications logged
+            # in the Schema debug console window.
+
+            # Initialize an ONMjs.CachedAddress object associated with the store.
+            # Cached address objects are specializations of ONMjs.Store (i.e. they're observable)
+            # and are specialized storage objects for holding ONMjs.Address objects. Cached addresses
+            # have a wide variety of different uses. Here we leverage a cached address to represent
+            # the currently selected namespace in the store.
+            selectedAddress = schemaRuntime.ONMjs.selectedAddress = new ONMjs.CachedAddress(store)
+
+            # Attach the selected address store to the actual store. 
+            # Cached address monitors the store and if cached namespace removed, it vectors to the
+            # parent directory and signals update to its observers (separate than the main store).
+            selectedAddressObserverId = store.registerObserver(selectedAddress.objectStoreCallbacks, selectedAddress)
+
+            # Create the "navigator" ONMjs observer responsible for rendering the tree view.
+            navigator = schemaRuntime.ONMjs.observers.navigator = new ONMjs.observers.NavigatorModelView()
+
+            # Attach it to the store.
+            navigatorObserverId = store.registerObserver(navigator.objectStoreObserverCallbacks, navigator);
 
             # Some temporary test code for bringing up the new store addressing model.
 
