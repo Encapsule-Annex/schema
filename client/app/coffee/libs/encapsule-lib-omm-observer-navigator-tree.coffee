@@ -71,10 +71,10 @@ class ONMjs.observers.NavigatorModelView
                             @rootMenuModelView = namespaceState.menuModelView
 
                         parentAddress = ONMjs.address.Parent(address_)
-                        if parentAddress? and parentAddress
+                        if parentAddress? and parentAddress?
                             parentNamespaceState = store_.openObserverNamespaceState(observerId_, parentAddress)
                             parentNamespaceState.menuModelView.children.push namespaceState.menuModelView
-                            namspaceState.indexInParentChildArray = parentNamespaceState.menuModeView.children.length - 1
+                            namespaceState.indexInParentChildArray = parentNamespaceState.menuModelView.children.length - 1
 
                     catch exception
                         throw "ONMjs.observers.NavigatorModelView failure: #{exception}"

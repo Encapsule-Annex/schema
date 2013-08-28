@@ -175,6 +175,13 @@ class ONMjs.Address
 
     #
     # ============================================================================
+    isRoot: =>
+        token = @getLastToken()
+        root = token.idNamespace == 0 and true or false
+        return root
+
+    #
+    # ============================================================================
     clone: => 
         try
             new ONMjs.Address(@model, @tokenVector)
@@ -341,6 +348,9 @@ ONMjs.address.Parent = (address_, generations_) ->
         generations = generations_? and generations_ or 1
         tokenSourceIndex = address_.tokenVector.length - 1
         token = address_.tokenVector[tokenSourceIndex--]
+
+        if token.namespaceDescriptor.id == 0
+            return undefined
 
         while generations
             descriptor = token.namespaceDescriptor

@@ -173,7 +173,7 @@ class ONMjs.Store
             @openNamespace = (address_) =>
                 try
                     if not (address_ and address_) then throw "Missing address input parameter."
-                    namespace = ONMjs.Namespace(@, address_, "bypass")
+                    namespace = new ONMjs.Namespace(@, address_, "bypass")
                     return namespace
 
                 catch exception
@@ -326,7 +326,7 @@ class ONMjs.Store
                     namespacePathId = token.namespaceDescriptor.id
                     namespacePathState = observerState[namespacePathId]? and observerState[namespacePathId] or observerState[namespacePathId] = {}
                     namespaceURN = address_.getHashString()
-                    namespaceState = namespacePathState[namespaceURN]? and namespacePathStae[namespaceURN] or namespacePathState[namespaceURN] = {}
+                    namespaceState = namespacePathState[namespaceURN]? and namespacePathState[namespaceURN] or namespacePathState[namespaceURN] = {}
                     return namespaceState
 
                 catch exception

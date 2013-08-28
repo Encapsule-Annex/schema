@@ -103,6 +103,16 @@ class Encapsule.code.lib.omm.Namespace
 
     #
     # ============================================================================
+    getResolvedLabel: =>
+        try
+            resolvedDescriptor = @getLastBinder().resolvedToken.namespaceDescriptor
+            return resolvedDescriptor.label
+            
+        catch exception
+            throw "ONMjs.Namespace.getResolvedLabel failure: #{exception}"
+
+    #
+    # ============================================================================
     data: =>
         try
             dataReferences = @dataReferences.length
