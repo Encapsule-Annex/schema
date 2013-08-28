@@ -126,10 +126,11 @@ class ONMjs.observers.NavigatorModelView
             # ============================================================================
             # ONMjs.Store OBSERVER INTERFACE
             #
-            @objectStoreObserverCallbacks =
+            @objectStoreObserverCallbacks = {
 
                 onObserverAttachBegin: (store_, observerId_) =>
                     try
+                        Console.message("ONMjs.observer.NavigatorModelview is now observing ONMjs.Store.")
                         if @storeObserverId? and @storeObserverId
                             throw "This navigator instance is already observing an ONMjs.Store."
                         @storeObserverId = observerId_
@@ -137,8 +138,10 @@ class ONMjs.observers.NavigatorModelView
                     catch exception
                         throw "ONMjs.observers.NavigatorModelView.objectStoreObserverCallbacks.onObserverAttach failure: #{exception}"
 
+
                 onObserverDetachEnd: (store_, observerId_) =>
                     try
+                        Console.message("ONMjs.observers.NavigatorModelView is no longer observing ONMjs.Store.")
                         if not (@storeObserverId? and @storeObserverId)
                             throw "Internal error: received detach callback but it doesn't apprear we're attached?"
                         if @storeObserverId != observerId_
@@ -149,9 +152,10 @@ class ONMjs.observers.NavigatorModelView
                     catch exception
                         throw "ONMjs.observers.NavigatorModelView.objectStoreObserverCallbacks.onObserverDetach failure: #{exception}"
 
+
                 onNamespaceCreated: (store_, observerId_, address_) =>
                     try
-                        Console.message("ObjectModelNavigatorWindowBase.onNamespaceCreated")
+                        Console.message("ONMjs.observersNavigatorModelView.onNamespaceCreated")
                         if @storeObserverId != observerId_ then throw "Unrecognized observer ID."
                         namespaceState = store_.openObserverNamespaceState(observerId_, address_)
                         namespaceState.description = "Hey this is the ONMjs.observers.NavigatorModelView class saving some submenu state."
@@ -164,43 +168,42 @@ class ONMjs.observers.NavigatorModelView
                         if parentAddress? and parentAddress?
                             parentNamespaceState = store_.openObserverNamespaceState(observerId_, parentAddress)
                             parentNamespaceState.menuModelView.children.push namespaceState.menuModelView
-                            namespaceState.indexInParentChildArray = parentNamespaceState.menuModelView.children.length - 1
+                            namespaceState.indexInParentChildArray = parentNamespaceState.menuModelView.children().length - 1
 
                     catch exception
                         throw "ONMjs.observers.NavigatorModelView failure: #{exception}"
         
-                onNamespaceRemoved: (objectStore_, observerId_, namespaceSelector_) =>
-                    try
-                        Console.message("ObjectModelNavigatorWindowBase.onNamespaceRemoved observerId=#{observerId_}")
-                        if @storeObserverId != observerId_ then throw "Unrecognized observer ID."
-                        namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
 
-                        if namespaceSelector_.pathId == 0
+                onNamespaceRemoved: (store_, observerId_, address_) =>
+                    try
+                        Console.message("ONMjs.observers.NavigatorModelView.onNamespaceRemoved")
+                        if @storeObserverId != observerId_ then throw "Unrecognized observer ID."
+                        namespaceState = store_.openObserverNamespaceState(observerId_, address_)
+
+                        if address_.isRoot()
                             @rootMenuModelView = undefined
 
-                        parentSelector = namespaceSelector_.createParentSelector()
-                        if parentSelector? and parentSelector
-                            parentNamespaceState = objectStore_.openObserverNamespaceState(observerId_, parentSelector)
-
-                            parentChildMenuArray = parentNamespaceState.menuModelView.children()
+                        parentAddress = ONMjs.address.Parent(address_)
+                        if parentAddress? and parentAddress
+                            parentNamespaceState = store_.openObserverNamespaceState(observerId_, parentAddress)
+                            parentChildItemArray = parentNamespaceState.menuModelView.children()
                             spliceIndex = namespaceState.indexInParentChildArray
+                            parentChildItemArray.splice(spliceIndex, 1)
 
-                            parentChildMenuArray.splice(spliceIndex, 1)
+                            while spliceIndex < parentChildItemArray.length
+                                item = parentChildItemArray[spliceIndex]
+                                itemAddress = item.address
+                                itemState = store_.openObserverNamespaceState(observerId, itemAddress)
+                                itemState.indexInParentChildArray = spliceIndex++
 
-                            while spliceIndex < parentChildMenuArray.length
-                                tailChildMenuModelView = parentChildMenuArray[spliceIndex]
-                                tailChildMenuModelViewSelector = tailChildMenuModelView.namespaceSelector
-                                tailChildMenuNamespaceState = objectStore_.openObserverNamespaceState(observerId_, tailChildMenuModelViewSelector)
-                                tailChildMenuNamespaceState.indexInParentChildArray = spliceIndex++
-
-                            parentNamespaceState.menuModelView.children(parentChildMenuArray)
+                            parentNamespaceState.menuModelView.children(parentChildItemArray)
 
                             return true
 
                     catch exception
                         throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindow.onNamespaceRemoved failure: #{exception}"
 
-
+            }
 
             @selectedNamespacesBySelectorHash = {}
 
