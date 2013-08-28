@@ -44,53 +44,43 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
-Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or Encapsule.code.lib.modelview = {}
+ONMjs = Encapsule.code.lib.omm
+ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observer = {}
 
 
-class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
-      constructor: (objectStore_, objectModelNavigatorWindow_, namespaceSelector_) ->
-          try
-              if not namespaceSelector_.selectKeysReady
-                  throw "Internal error: unresolved namespace selector received in OMM store observer callback!"
+class ONMjs.observers.NavigatorItemModelView
+
+    constructor: (store_, navigatorModelView_, address_) ->
+
+        # \ BEGIN: constructor scope
+        try
+            # \ BEGIN: constructor try scope
+            if not (store_? and store_)
+                throw "Missing object store input parameter."
+            if not (navigatorModelView_? and navigatorModelView_)
+                throw "Missing parent object model navigator window input parameter."
+            if not (address_? and address_)
+                throw "Missing address input parameter."
 
               # Cache references to this instance's construction parameters.
+              @store = store_
+              @navigatorModelView = navigatorModelView_
+              @address = address_
 
-              @objectModelNavigatorWindow = objectModelNavigatorWindow_
-              @namespaceSelector = namespaceSelector_.clone()
               @children = ko.observableArray []
 
               @isSelected = ko.observable false
 
               @blipper = Encapsule.runtime.boot.phase0.blipper
 
-              namespace = objectStore_.openNamespace(namespaceSelector_)
-              @label = ko.observable namespace.getResolvedLabel()
+              namespace = store_.openNamespace(address_)
+              @label = ko.observable(namespace.getResolvedLabel())
 
               @onClick = =>
                   try
                       @objectModelNavigatorWindow.selectorStore.setSelector(@namespaceSelector)
                   catch exception
                       Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome.onClick failure: #{exception}")
-
-          catch exception
-              throw "Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome failure: #{exception}"
-
-
-class Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow extends Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome
-
-    constructor: (objectStore_, objectModelNavigatorWindow_, namespaceSelector_) ->
-
-        # \ BEGIN: constructor scope
-        try
-            # \ BEGIN: constructor try scope
-            if not (objectStore_? and objectStore_)
-                throw "Missing object store input parameter."
-            if not (objectModelNavigatorWindow_? and objectModelNavigatorWindow_)
-                throw "Missing parent object model navigator window input parameter."
-            if not (namespaceSelector_? and namespaceSelector_)
-                throw "Missing namespace selector input parameter."
-
-            super(objectStore_, objectModelNavigatorWindow_, namespaceSelector_)
 
             # / END: constructor try scope
         catch exception

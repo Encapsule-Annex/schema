@@ -65,7 +65,7 @@ class ONMjs.observers.NavigatorModelView
                         Console.message("ObjectModelNavigatorWindowBase.onNamespaceCreated")
                         namespaceState = store_.openObserverNamespaceState(observerId_, address_)
                         namespaceState.description = "Hey this is the ONMjs.observers.NavigatorModelView class saving some submenu state."
-                        namespaceState.menuModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindow(objectStore_, @, address_)
+                        namespaceState.menuModelView = new ONMjs.observers.NavigatorItemModelView(store_, @, address_)
 
                         if address_.isRoot()
                             @rootMenuModelView = namespaceState.menuModelView

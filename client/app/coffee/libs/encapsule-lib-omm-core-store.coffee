@@ -170,18 +170,11 @@ class ONMjs.Store
             # Assumes the existence of the namespace indicated by the specified selector.
             # Throws if the selector cannot be resolved against the contents of the store.
             #
-            @openNamespace = (objectModelNamespaceSelector_) =>
+            @openNamespace = (address_) =>
                 try
-                    if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_)
-                        throw "Missing object model namespace selector input parameter!"
-
-                    if not objectModelNamespaceSelector_.selectKeysReady
-                        throw "Invalid unresolved namespace selector in request."
-
-                    # Leverage default "bypass" mode (i.e. no validation, no creation, throw if not exist)
-                    objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, "bypass")
-
-                    return objectStoreNamespace
+                    if not (address_ and address_) then throw "Missing address input parameter."
+                    namespace = ONMjs.Namespace(@, address_, "bypass")
+                    return namespace
 
                 catch exception
                     throw "Encapsule.code.lib.omm.Store.openNamespace failure: #{exception}"
