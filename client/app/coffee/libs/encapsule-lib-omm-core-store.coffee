@@ -48,23 +48,26 @@ Encapsule.code.lib.omm.implementation = Encapsule.code.lib.omm.implementation? a
 ONMjs = Encapsule.code.lib.omm
 
 class ONMjs.Store
-    constructor: (objectModel_, initialStateJSON_) ->
+    constructor: (model_, initialStateJSON_) ->
         try
+            # Reifer "makes real" the contents of the store in the eye of the beholder (i.e. registered observers).
+            # In other words, reifier traverses the contents of the stores and calls specific methods on registered
+            # observer interfaces in response to various ONMjs.Store observable state change events. 
             @reifier = new ONMjs.implementation.StoreReifier(@)
 
             #
             # ============================================================================
-            Console.message("Encapsule.code.lib.omm.StoreBase: Creating memory store instance for object model '#{objectModel_.jsonTag}'")
+            Console.message("Encapsule.code.lib.omm.StoreBase: Creating memory store instance for object model '#{model_.jsonTag}'")
 
             # Validate parameters.
-            if not (objectModel_? and objectModel_) then throw "Missing object model parameter!"
+            if not (model_? and model_) then throw "Missing object model parameter!"
 
             # Keep a reference to this object store's associated object model.
-            @objectModel = objectModel_
+            @model = model_
 
-            @jsonTag = objectModel_.jsonTag
-            @label = objectModel_.label
-            @description = objectModel_.description
+            @jsonTag = model_.jsonTag
+            @label = model_.label
+            @description = model_.description
 
             @dataReference = undefined # the new store actual
 
@@ -90,7 +93,7 @@ class ONMjs.Store
                 @dataReference = {}
                 @objectStoreSource = "new"
 
-                token = new Encapsule.code.lib.omm.AddressToken(objectModel_, undefined, undefined, 0)
+                token = new Encapsule.code.lib.omm.AddressToken(model_, undefined, undefined, 0)
                 tokenBinder = new Encapsule.code.lib.omm.implementation.AddressTokenBinder(@, @dataReference, token, "new")
 
 
@@ -114,7 +117,7 @@ class ONMjs.Store
                     objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, "new")
 
                     extensionPointId = objectModelNamespaceSelector_.objectModelDescriptor.parent.id
-                    extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(extensionPointId, objectStoreNamespace.resolvedKeyVector)
+                    extensionPointSelector = @model.createNamespaceSelectorFromPathId(extensionPointId, objectStoreNamespace.resolvedKeyVector)
                     extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector)
                     extensionPointNamespace.updateRevision()
 
@@ -149,7 +152,7 @@ class ONMjs.Store
                     objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
                     arrayIndexToRemove = objectStoreNamespace.resolvedKeyIndexVector[objectStoreNamespace.resolvedKeyIndexVector.length - 1]
 
-                    extensionPointSelector = @objectModel.createNamespaceSelectorFromPathId(objectModelNamespaceSelector_.objectModelDescriptor.parent.id, objectModelNamespaceSelector_.selectKeyVector)
+                    extensionPointSelector = @model.createNamespaceSelectorFromPathId(objectModelNamespaceSelector_.objectModelDescriptor.parent.id, objectModelNamespaceSelector_.selectKeyVector)
 
                     extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector)
                     extensionPointNamespace.objectStoreNamespace.splice(arrayIndexToRemove, 1)
@@ -236,7 +239,7 @@ class ONMjs.Store
                     # collections but excluding the components contained with child extension points.
 
                     # Get the store's root address.
-                    rootAddress = ONMjs.address.RootAddress(@objectModel)
+                    rootAddress = ONMjs.address.RootAddress(@model)
 
                     @reifier.dispatchCallback(undefined, "onObserverAttachBegin", observerIdCode)
 
@@ -271,7 +274,7 @@ class ONMjs.Store
                     @reifier.dispatchCallback(undefined, "onObserverDetachBegin", observerIdCode_)
 
                     # Get the store's root address.
-                    rootAddress = ONMjs.address.RootAddress(@objectModel)
+                    rootAddress = ONMjs.address.RootAddress(@model)
 
                     @reifier.reifyStoreExtensions(rootAddress, observerIdCode_, true)
                     @reifier.unreifyStoreComponent(rootAddress, observerIdCode_)
@@ -312,7 +315,7 @@ class ONMjs.Store
                 try
                     if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
                     if not (namespaceSelector_? and namespaceSelector_) then throw "Missing namespace selector parameter!"
-                    componentSelector = @objectModel.createNamespaceSelectorFromPathId(
+                    componentSelector = @model.createNamespaceSelectorFromPathId(
                         namespaceSelector_.objectModelDescriptor.componentId, namespaceSelector_.selectKeyVector, namespaceSelector_.secondaryKeyVector)
                     return @internalOpenObserverNamespaceState(observerId_, componentSelector)
 

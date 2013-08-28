@@ -46,20 +46,21 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 
 
 class Encapsule.code.lib.omm.Namespace
-    constructor: (objectStore_, address_, mode_) ->
+    constructor: (store_, address_, mode_) ->
         try
-            if not (objectStore_? and objectStore_) then throw "Missing object store input parameter."
+            if not (store_? and store_) then throw "Missing object store input parameter."
+            @store = store_
 
             # As a matter of policy, if no address is specified or if a zero-length address is specified, open the root namespace.
             address = undefined
             if not (address_? and address_ and address_.tokenVector.length)
-                objectModel = objectStore_.objectModel
+                objectModel = store_.model
                 address = new Encapsule.code.lib.omm.Address(objectModel, [ new Encapsule.code.lib.omm.AddressToken(objectModel, undefined, undefined, 0) ] )
             else
                 address = address_
             
             # Ensure that address and store objects were both created using the same model.
-            objectModelNameStore = objectStore_.objectModel.jsonTag
+            objectModelNameStore = store_.model.jsonTag
             objectModelNameKeys = address.model.jsonTag
             if objectModelNameStore != objectModelNameKeys
                 throw "You cannot create a '#{objectModelNameStore}' store namespace with a '#{objectModelNameKeys}' select key vector."
@@ -74,11 +75,11 @@ class Encapsule.code.lib.omm.Namespace
 
             # The actual store data.
             @dataReferences = []
-            dataReference = objectStore_.dataReference? and objectStore_.dataReference or throw "Cannot resolve object store's root data reference."
+            dataReference = store_.dataReference? and store_.dataReference or throw "Cannot resolve object store's root data reference."
             @dataReferences.push dataReference
             
             @addressTokenBinders = for addressToken in address.tokenVector
-                tokenBinder = new Encapsule.code.lib.omm.implementation.AddressTokenBinder(objectStore_, dataReference, addressToken, mode)
+                tokenBinder = new Encapsule.code.lib.omm.implementation.AddressTokenBinder(store_, dataReference, addressToken, mode)
                 dataReference = tokenBinder.dataReference
                 @dataReferences.push dataReference
                 tokenBinder
@@ -116,8 +117,43 @@ class Encapsule.code.lib.omm.Namespace
     # ============================================================================
     update: =>
         try
-            Console.message("ONMjs.Namespace.update not implemented.")
+            # First update the store namespace data and all its parents.
+            # Note the search direction is fixed but the callback is defined in the
+            # object model declaration (or not).
 
+            semanticBindings = @store.model.getSemanticBindings()
+            updateAction = semanticActions? and semanticActions and semanticActions.update? and semanticActions.update or undefined
+
+            # Update all the parent namespaces. (may mutate store data depending on updateAction implementation)
+            if updateAction? and updateAction
+                ### Does this need to be reversed? ###
+                for dataReference in @dataReferences
+                    updateAction(dataReference)
+
+            # Now we need to generate some observer notification.
+            address = @address()
+            count = 0
+            containingComponentNotified = false
+            while address? and address
+                token = address.getLastToken()
+                descriptor = token.namespaceDescriptor
+                if count == 0
+                    @store.reify.dispatchCallback(address, "onNamespaceUpdated", undefined)
+                else
+                    @store.reify.dispatchCallback(address, "onSubnamespaceUpdated", undefined)
+
+                if descriptor.mvvmType == "archetype" or descriptor.mvvmType == "root"
+                   if not containingComponentNotified
+                       @store.reifier.dispatchCallback(address, "onComponentUpdated", undefined)
+                       containingComponentNotified = true
+                   else
+                       @store.reifier.dispatchCallback(address, "onSubcomponentUpdated", undefined)
+
+                if address.isRoot()
+                    break
+
+                ONMjs.address.Parent(address)
+            
         catch exception
             throw "Encapsule.code.lib.omm.Namespace.update failure: #{exception}"
 
@@ -125,6 +161,7 @@ class Encapsule.code.lib.omm.Namespace
 
     #
     # ============================================================================
+    # This is pretty low-level for a public-facing API?
     getLastBinder: => @addressTokenBinders.length and @addressTokenBinders[@addressTokenBinders.length - 1] or throw "Internal error: unable to retrieve the last token binder for this namespace."
 
     #

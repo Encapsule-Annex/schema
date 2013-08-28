@@ -104,7 +104,7 @@ class Encapsule.code.lib.omm.implementation.AddressTokenBinder
 
                     for pathId in descriptor_.componentNamespaceIds
                         if pathId == descriptor_.id then continue
-                        addressToken = new Encapsule.code.lib.omm.AddressToken(store_.objectModel, extensionPointId_, undefined, pathId)
+                        addressToken = new Encapsule.code.lib.omm.AddressToken(store_.model, extensionPointId_, undefined, pathId)
                         # Note the special-case use of the dataReferenceAsComponentRoot_ flag in this case.
                         resolvedNamespace = new Encapsule.code.lib.omm.implementation.AddressTokenBinder(store_, data_, addressToken, "new", true)
 
@@ -180,7 +180,7 @@ class Encapsule.code.lib.omm.implementation.AddressTokenBinder
             # ----------------------------------------------------------------------------
 
             @store = store_? and store_ or throw "Missing object store input parameter."
-            objectModel = store_.objectModel
+            model = store_.model
             @parentDataReference = parentDataReference_? and parentDataReference_ or throw "Missing parent data reference input parameter."
             if not (token_? and token_) then throw "Missing object model address token object input parameter."
             if not (mode_? and mode_) then throw "Missing mode input parameter."
@@ -192,7 +192,7 @@ class Encapsule.code.lib.omm.implementation.AddressTokenBinder
             targetNamespaceDescriptor = token_.namespaceDescriptor
             targetComponentDescriptor = token_.componentDescriptor
 
-            semanticBindings = objectModel.getSemanticBindings()
+            semanticBindings = model.getSemanticBindings()
             getUniqueKeyFunction = semanticBindings? and semanticBindings and semanticBindings.getUniqueKey? and semanticBindings.getUniqueKey or undefined
 
 
@@ -227,7 +227,7 @@ class Encapsule.code.lib.omm.implementation.AddressTokenBinder
             pathIdsToProcess = targetNamespaceHeightOverComponent and targetNamespaceDescriptor.parentPathIdVector.slice(-targetNamespaceHeightOverComponent) or []
 
             for pathId in pathIdsToProcess
-                descriptor = objectModel.getNamespaceDescriptorFromPathId(pathId)
+                descriptor = model.getNamespaceDescriptorFromPathId(pathId)
                 resolveResult = localResolveNamespaceDescriptor(resolveActions, store_, resolveResult.dataReference, descriptor, undefined, mode_)
             resolveResult = localResolveNamespaceDescriptor(resolveActions, store_, resolveResult.dataReference, targetNamespaceDescriptor, undefined, mode_)
             @dataReference = resolveResult.dataReference
