@@ -291,7 +291,7 @@ class ONMjs.Store
             @openObserverState = (observerId_) =>
                 try
                     if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
-                    observerState = @observersState[observerId_]? and @modelViewObserversState[observerId_] or @modelViewObserversState[observerId_] = []
+                    observerState = @observersState[observerId_]? and @observersState[observerId_] or @observersState[observerId_] = []
                     return observerState                    
 
                 catch exception
@@ -301,9 +301,9 @@ class ONMjs.Store
             # ============================================================================
             @removeObserverState = (observerId_) =>
                 if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
-                observerState = @openObserverState(observerId_)
                 if observerState? and observerState
-                    delete @modelViewObserverState[observerId_]
+                    if @observerState[observerId_]? and @observerState[observerId_]
+                        delete @observerState[observerId_]
                 @
 
             #
