@@ -58,11 +58,101 @@ class ONMjs.observers.NavigatorModelView
             @objectStore = undefined
             @rootMenuModelView = undefined
 
+            # Navigator may be attached to a single ONMjs.Store object as an observer. Once registered as an
+            # ONMjs.Store observer, Navigator will throw an exception if it receives callbacks from the same
+            # or other store using an unknown observerId.
+
+            # Navigator may observe a single ONMjs.Store instance.
+            @store = undefined
+            @storeObserverId = undefined
+
+            # User click events write a new selection address to a ONMjs.CachedAddress.
+            # Which CachedAddress to write is selected by @currentlySelectedCachedAddress.
+            @selectedCachedAddressSinkStore = undefined
+
+            #
+            # ============================================================================
+            @attachToStore = (store_) =>
+                try
+                    if not (store_? and store_) then throw "Missing store input parameter."
+                    if @storeObserverId? and @storeObserverId then throw "This navigator instance is already observing an ONMjs.Store instance."
+                    @store = store_
+                    @storeObserverId = store_.registerObserver(@objectStoreObserverCallbacks, @)
+                catch exception
+                   throw "ONMjs.observers.NavigatorModelView.attachToStore failure: #{exception}"
+
+            #
+            # ============================================================================
+            @detachFromStore = =>
+                try
+                    if not @storeObserverId? and @storeObserverId then throw "This navigator instance is not attached to an ONMjs.Store instance."
+                    @store.unregisterObserver(@storeObserverId)
+                    @storeObserverId = undefined
+                catch exception
+                    throw "ONMjs.observers.NavigatorModelView.detachFromStore failure: #{exception}"
+
+            #
+            # ============================================================================
+            @attachToCachedAddress = (cachedAddress_) =>
+                try
+                    if not (cachedAddress_? and cachedAddress_) then throw "Missing cached address input parameter."
+                    observerId = cachedAddress_.registerObserver(@selectorStoreCallbacks, @)
+                    return observerId
+                catch exception
+                    throw "ONMjs.observers.NavigatorModelView.attachToCachedAddress failure: #{excpetion}"
+
+            #
+            # ============================================================================
+            @detachFromCachedAddress = (cachedAddres_, observerId_) =>
+                try
+                    if not (cachedAddress_? and cachedAddres_) then throw "Missing cached address input parameter."
+                    if not (observerId_? and observerId_) then throw "Missing observer ID input parameter."
+                    cachedAddress_.unregisterObserver(observerId_)
+                catch exception
+                    throw "ONMjs.observers.NavigatorModelView.detachFromCachedAddress failure: #{exception}"
+
+            #
+            # ============================================================================
+            @setCachedAddressSinkStore = (cachedAddress_) =>
+                try
+                    if not (cachedAddress_? and cachedAddress_) then throw "Missing cached address input parameter."
+                    @selectedCachedAddressSinkStore = cachedAddress_
+
+                catch exception
+                    throw "ONMjs.observers.NavigatorModelView.setCachedAddressSinkStore failure: #{exception}"
+
+
+            #
+            # ============================================================================
+            # ONMjs.Store OBSERVER INTERFACE
+            #
             @objectStoreObserverCallbacks =
+
+                onObserverAttachBegin: (store_, observerId_) =>
+                    try
+                        if @storeObserverId? and @storeObserverId
+                            throw "This navigator instance is already observing an ONMjs.Store."
+                        @storeObserverId = observerId_
+                        true
+                    catch exception
+                        throw "ONMjs.observers.NavigatorModelView.objectStoreObserverCallbacks.onObserverAttach failure: #{exception}"
+
+                onObserverDetachEnd: (store_, observerId_) =>
+                    try
+                        if not (@storeObserverId? and @storeObserverId)
+                            throw "Internal error: received detach callback but it doesn't apprear we're attached?"
+                        if @storeObserverId != observerId_
+                            throw "Internal error: received detach callback for un unrecognized observer ID?"
+                        @storeObserverId = undefined
+                        true
+
+                    catch exception
+                        throw "ONMjs.observers.NavigatorModelView.objectStoreObserverCallbacks.onObserverDetach failure: #{exception}"
 
                 onNamespaceCreated: (store_, observerId_, address_) =>
                     try
                         Console.message("ObjectModelNavigatorWindowBase.onNamespaceCreated")
+                        if @storeObserverId != observerId_ then throw "Unrecognized observer ID."
                         namespaceState = store_.openObserverNamespaceState(observerId_, address_)
                         namespaceState.description = "Hey this is the ONMjs.observers.NavigatorModelView class saving some submenu state."
                         namespaceState.menuModelView = new ONMjs.observers.NavigatorItemModelView(store_, @, address_)
@@ -82,6 +172,7 @@ class ONMjs.observers.NavigatorModelView
                 onNamespaceRemoved: (objectStore_, observerId_, namespaceSelector_) =>
                     try
                         Console.message("ObjectModelNavigatorWindowBase.onNamespaceRemoved observerId=#{observerId_}")
+                        if @storeObserverId != observerId_ then throw "Unrecognized observer ID."
                         namespaceState = objectStore_.openObserverNamespaceState(observerId_, namespaceSelector_)
 
                         if namespaceSelector_.pathId == 0
@@ -110,7 +201,12 @@ class ONMjs.observers.NavigatorModelView
                         throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindow.onNamespaceRemoved failure: #{exception}"
 
 
+
             @selectedNamespacesBySelectorHash = {}
+
+            #
+            # ============================================================================
+            # ONMjs.CachedAddress OBSERVER INTERFACE
 
             @selectorStoreCallbacks = {
 

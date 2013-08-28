@@ -176,9 +176,30 @@ class ONMjs.Address
     #
     # ============================================================================
     isRoot: =>
-        token = @getLastToken()
-        root = token.idNamespace == 0 and true or false
-        return root
+        try
+            token = @getLastToken()
+            root = token.idNamespace == 0 and true or false
+            return root
+        catch exception
+            throw "CNMjs.Address.isRoot failure: #{exception}"
+
+    #
+    # ============================================================================
+    isEqual: (address_) =>
+        try
+            if not (address_? and address_) then throw "Missing address input parameter."
+            if @tokenVector.length != address_.tokenVector.length then return false
+            result = true
+            index = 0
+            while index < @tokenVector.length
+                tokenA = @tokenVector[index]
+                tokenB = address_.tokenVector[index]
+                if not tokenA.isEqual(tokenB)
+                    result = false
+                    break
+            return result
+        catch exception
+            throw "ONMjs.Address.isEqual failure: #{exception}"
 
     #
     # ============================================================================
@@ -195,6 +216,8 @@ class ONMjs.Address
             @tokenVector.length and @tokenVector[@tokenVector.length - 1] or throw "Internal error: unable to resolve last token in ONMjs.Address."
         catch exception
             throw "ONMjs.Address.getLastToken failure: #{exception}"
+
+    
 
     #
     # ============================================================================

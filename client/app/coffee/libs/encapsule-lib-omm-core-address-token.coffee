@@ -130,12 +130,22 @@ class ONMjs.AddressToken
             @namespaceDescriptor.id
             )
 
+
     #
     # ============================================================================
-    # DEPRECATED
-    isReady: =>
-        Console.message("ONMjs.AddressToken.isReady is deprecated. Call isQualified.")
-        @isQualified()
+    isEqual: (token_) =>
+        try
+            if not (token_? and token_) then throw "Missing token input parameter."
+            result = false
+            while true
+                if @idNamespace != token_.idNamespace then break
+                if @key != token_.key then break
+                if @idExtensionPoint != token_.idExtensionPoint then break
+                result true
+            return result
+
+        catch exception
+            throw "ONMjs.AddressToken.isEqual failure: #{exception}"
 
     #
     # ============================================================================

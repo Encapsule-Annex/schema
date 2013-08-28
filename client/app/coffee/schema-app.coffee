@@ -58,7 +58,6 @@ class Encapsule.code.app.Schema
             schemaRuntime.ONMjs = {}
             schemaRuntime.ONMjs.observers = {}
 
-
             # The Schema application state model codified as an ONMjs Object Model Schema.
             schema = schemaRuntime.ONMjs.schema = Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
 
@@ -96,7 +95,9 @@ class Encapsule.code.app.Schema
             navigator = schemaRuntime.ONMjs.observers.navigator = new ONMjs.observers.NavigatorModelView()
 
             # Attach it to the store.
-            navigatorObserverId = store.registerObserver(navigator.objectStoreObserverCallbacks, navigator);
+            navigator.attachToStore(store)
+            navigator.detachFromStore()
+
 
             # Some temporary test code for bringing up the new store addressing model.
 
