@@ -60,7 +60,7 @@ class ONMjs.observers.NavigatorModelView
 
             @objectStoreObserverCallbacks =
 
-                onNamespaceCreated: (store_, address_, observerId_) =>
+                onNamespaceCreated: (store_, observerId_, address_) =>
                     try
                         Console.message("ObjectModelNavigatorWindowBase.onNamespaceCreated")
                         namespaceState = store_.openObserverNamespaceState(observerId_, address_)

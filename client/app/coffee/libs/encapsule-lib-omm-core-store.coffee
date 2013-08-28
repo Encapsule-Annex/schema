@@ -311,27 +311,29 @@ class ONMjs.Store
 
             #
             # ============================================================================
-            @openObserverComponentState = (observerId_, namespaceSelector_) =>
+            @openObserverComponentState = (observerId_, address_) =>
                 try
-                    if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
-                    if not (namespaceSelector_? and namespaceSelector_) then throw "Missing namespace selector parameter!"
-                    componentSelector = @model.createNamespaceSelectorFromPathId(
-                        namespaceSelector_.objectModelDescriptor.componentId, namespaceSelector_.selectKeyVector, namespaceSelector_.secondaryKeyVector)
-                    return @internalOpenObserverNamespaceState(observerId_, componentSelector)
-
+                    if not (observerId_? and observerId_) then throw "Missing observer ID parameter."
+                    if not (address_? and address_) then throw "Missing address input parameter."
+                    token = address_.getLastToken()
+                    componentNamespaceId = token.componentDescriptor.id
+                    componentAddress = ONMjs.address.newAddressSameComponent(address_, componentNamespaceId)
+                    return @openObserverNamespaceState(observerId_, componentAddress)
                 catch exception
                     throw "Encapsule.code.lib.omm.Store.openObserverComponentState failure: #{exception}"
 
             #
             # ============================================================================
-            @openObserverNamespaceState = (observerId_, namespaceSelector_) =>
+            @openObserverNamespaceState = (observerId_, address_) =>
                 try
-                    if not (observerId_? and observerId_) then throw "Missing observer ID parameter!"
-                    if not (namespaceSelector_? and namespaceSelector_) then throw "Missing namespace selector parameter!"
-                    observerState = @internalOpenObserverState(observerId_)
-                    pathRecord = observerState[namespaceSelector_.pathId]? and observerState[namespaceSelector_.pathId] or observerState[namespaceSelector_.pathId] = {}
-                    namespaceHash = namespaceSelector_.getHashString()
-                    namespaceState = pathRecord[namespaceHash]? and pathRecord[namespaceHash] or pathRecord[namespaceHash] = {}
+                    if not (observerId_? and observerId_) then throw "Missing observer ID parameter."
+                    if not (address_? and address_) then throw "Missing address input parameter."
+                    observerState = @openObserverState(observerId_)
+                    token = address_.getLastToken()
+                    namespacePathId = token.namespaceDescriptor.id
+                    namespacePathState = observerState[namespacePathId]? and observerState[namespacePathId] or observerState[namespacePathId] = {}
+                    namespaceURN = address_.getHashString()
+                    namespaceState = namespacePathState[namespaceURN]? and namespacePathStae[namespaceURN] or namespacePathState[namespaceURN] = {}
                     return namespaceState
 
                 catch exception
@@ -339,7 +341,7 @@ class ONMjs.Store
 
             #
             # ============================================================================
-            @removeObserverNamespaceState = (observerId_, namespaceSelector_) =>
+            @removeObserverNamespaceState = (observerId_, address_) =>
 
                 observerState = @modelViewObserversState[observerId_]
                 if not (observerState? and observerState)

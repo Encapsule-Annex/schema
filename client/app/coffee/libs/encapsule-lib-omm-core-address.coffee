@@ -147,7 +147,31 @@ class ONMjs.Address
     #
     # ============================================================================
     getHashString: =>
-        throw "Not implemented!"
+        try
+            index = 0
+            hashString = ""
+
+            for token in @tokenVector
+                if not index
+                    hashString += "#{token.model.jsonTag}:"
+                else
+                    hashString += "."
+                if token.idExtensionPoint != -1
+                    hashString += "#{token.idExtensionPoint}"
+                if token.key? and token.key
+                    hashString += "[#{token.key}]"
+                else
+                    if token.idExtensionPoint > 0
+                        hashString += "[*]"
+                    
+                hashString += "#{token.idNamespace}"
+                index++
+
+            return hashString
+
+            
+        catch exception
+            throw "ONMjs.Address.getHashString failure: #{exception}"
 
     #
     # ============================================================================
