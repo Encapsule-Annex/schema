@@ -63,14 +63,19 @@ class Encapsule.code.app.Schema
 
             model = schemaRuntime.ONMjs.model = new ONMjs.Model(schemaRuntime.ONMjs.schema)
             store = schemaRuntime.ONMjs.store = new ONMjs.Store(schemaRuntime.ONMjs.model)
-            selectedAddress = schemaRuntime.ONMjs.selectedAddress = new ONMjs.CachedAddress(store)
-            
-            selectAddressObserverId = store.registerObserver(selectedAddress.objectStoreCallbacks)
 
+            selectedAddress = schemaRuntime.ONMjs.selectedAddress = new ONMjs.CachedAddress(store)
+            selectAddressObserverId = store.registerObserver(selectedAddress.objectStoreCallbacks, selectedAddress)
 
 
             schemaRuntime.ONMjs.observers = {}
             navigator = schemaRuntime.ONMjs.observers.navigator = new ONMjs.observers.NavigatorModelView()
+
+            canary = schemaRuntime.ONMjs.observers.canary = new ONMjs.test.observers.Canary()
+            canaryStoreObserverId = store.registerObserver(canary.callbackInterface, canary)
+
+            store.unregisterObserver(canaryStoreObserverId)
+
 
             # Some temporary test code for bringing up the new store addressing model.
 

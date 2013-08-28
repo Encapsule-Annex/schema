@@ -108,48 +108,11 @@ class ONMjs.implementation.StoreReifier
                     # Return immediately if there are no observers registered.
                     if not Encapsule.code.lib.js.dictionaryLength(@store.observers) then return
 
+                    dispatchCallback = @dispatchCallback
+                    address_.visitSubnamespacesDescending( (addressSubnamespace_) -> dispatchCallback(addressSubnamespace_, "onNamespaceRemoved", observerId_) )
+                    dispatchCallback(address_, "onComponentRemoved", observerId_)
 
-                    throw "Whoops you just stepped on a pile of shit."
-                    if not (address_? and address_) then throw "Internal error: Missing address input parameter."
-
-
-
-                    componentNamespaceSelector_.internalVerifySelector()
-
-                    # If broadcast (i.e. modelViewObject_ not specified or undefined) AND no observers then return.
-                    if ( not (modelViewObserver_? and modelViewObserver_) ) and ( not Object.keys(@modelViewObservers).length )
-                        return
-
-                    # MODEL VIEW OBSERVER CALLBACK ORIGIN: onNamespaceRemoved
-                    # Invoke the model view object's onNamespaceRemoved callback for each namespace in the root component.
-                    # (reverse order - children first, then parent(s))
-                    componentNamespaceIdsReverse = Encapsule.code.lib.js.clone(componentNamespaceSelector_.objectModelDescriptor.componentNamespaceIds)
-                    componentNamespaceIdsReverse.reverse()
-                    for namespaceId in componentNamespaceIdsReverse
-                        namespaceSelector = @objectModel.createNamespaceSelectorFromPathId(namespaceId, componentNamespaceSelector_.selectKeyVector, componentNamespaceSelector_.secondaryKeyVector)
-                        if modelViewObject_? and modelViewObject_
-                            if modelViewObject_.onNamespaceRemoved? and modelViewObject_.onNamespaceRemoved
-                                modelViewObject_.onNamespaceRemoved(@, observerId_, namespaceSelector)
-                        else
-                            for observerId, modelViewObject of @modelViewObservers
-                                if modelViewObject.onNamespaceRemoved? and modelViewObject.onNamespaceRemoved
-                                    modelViewObject.onNamespaceRemoved(@, observerId, namespaceSelector)
-                        @internalRemoveObserverNamespaceState(observerId, namespaceSelector)
-
-
-                    # MODEL VIEW OBSERVER CALLBACK ORIGIN: onComponentRemoved
-                    # Invoke the model view object's onComponentRemoved callback.
-                    if modelViewObject_? and modelViewObject_
-                        if modelViewObject_.onComponentRemoved? and modelViewObject_.onComponentRemoved
-                            modelViewObject_.onComponentRemoved(@, observerId_, componentNamespaceSelector_)
-                    else
-                        for observerId, modelViewObject of @modelViewObservers
-                            if modelViewObject.onComponentRemoved? and modelViewObject.onComponentRemoved
-                                modelViewObject.onComponentRemoved(@, observerId, componentNamespaceSelector_)
-
-                    @internalRemoveObserverNamespaceState(observerId, componentNamespaceSelector_)
-
-                    true
+                    true # that
 
                 catch exception
                     throw "Encapsule.code.lib.omm.StoreBase.internalUnreifyStoreComponent failure: #{exception}"

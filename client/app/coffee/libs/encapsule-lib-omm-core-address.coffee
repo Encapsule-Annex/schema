@@ -225,9 +225,9 @@ class ONMjs.Address
             if not (callback_ and callback_) then return false
             if not (@subnamespaceAddressesDescending? and @subnamespaceAddressesDescending)
                 @subnamespaceAddressesDescending = []
-                @vistiSubnamespacesAscending( (address__) => @subnamespaceAddressesDescending.push address__ )
+                @visitSubnamespacesAscending( (address__) => @subnamespaceAddressesDescending.push address__ )
                 @subnamespaceAddressesDescending.reverse()
-            for address in @subnamespaceAddressesDesending
+            for address in @subnamespaceAddressesDescending
                 callback_(address)
             true # that
         catch exception

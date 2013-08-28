@@ -220,9 +220,10 @@ class ONMjs.Store
             # observer can be unregistered by calling unregisterModelViewObserver providing
             # the "observer ID code" received when it was registered.
             #
-            @registerObserver = (observerCallbackInterface_) =>
+            @registerObserver = (observerCallbackInterface_, observingEntityReference_) =>
                 try
-                    if not (observerCallbackInterface_? and observerCallbackInterface_) then throw "Missing model view object input parameter!"
+                    if not (observerCallbackInterface_? and observerCallbackInterface_) then throw "Missing callback interface namespace input parameter.."
+                    observerCallbackInterface_.observingEntity = observerCallbackInterface_
 
                     # Create a new observer ID code (UUID because multiple registrations allowed).
                     observerIdCode = uuid.v4()
@@ -232,10 +233,12 @@ class ONMjs.Store
 
                     # The root namespace of an object store always exists and comprises the base of the root component -
                     # a hierarchy of sub-namespaces defined as the set of all descendents including extension point
-                    # collections but excluding the components contained with child extension poitns.
+                    # collections but excluding the components contained with child extension points.
 
                     # Get the store's root address.
                     rootAddress = ONMjs.address.RootAddress(@objectModel)
+
+                    @reifier.dispatchCallback(undefined, "onObserverAttachBegin", observerIdCode)
 
                     # Reify the store's root component in the eye of the observer. Not that this function
                     # also reifieis all of the component's descendant namespaces as well.
@@ -247,6 +250,8 @@ class ONMjs.Store
                     # of the observer.
                     @reifier.reifyStoreExtensions(rootAddress, observerIdCode)
 
+                    @reifier.dispatchCallback(undefined, "onObserverAttachEnd", observerIdCode)
+
                     return observerIdCode
 
                 catch exception
@@ -254,7 +259,7 @@ class ONMjs.Store
 
             #
             # ============================================================================
-            @unregisterModelViewObserver = (observerIdCode_) =>
+            @unregisterObserver = (observerIdCode_) =>
                 try
                     if not (observerIdCode_? and observerIdCode_) then throw "Missing observer ID code input parameter!"
 
@@ -263,12 +268,17 @@ class ONMjs.Store
                     if not (registeredObserver? and registeredObserver)
                         throw "Unknown observer ID code provided. No registration to remove."
 
-                    # Unreify the contents of the store before removing the registration.
-                    rootSelector = @objectModel.createNamespaceSelectorFromPathId(0)
-                    @internalReifyStoreExtensions(rootSelector, registeredObserver, observerIdCode_, true)
-                    @internalUnreifyStoreComponent(rootSelector, registeredObserver, observerIdCode_)
+                    @reifier.dispatchCallback(undefined, "onObserverDetachBegin", observerIdCode_)
 
-                    @internalRemoveObserverState(observerIdCode_)
+                    # Get the store's root address.
+                    rootAddress = ONMjs.address.RootAddress(@objectModel)
+
+                    @reifier.reifyStoreExtensions(rootAddress, observerIdCode_, true)
+                    @reifier.unreifyStoreComponent(rootAddress, observerIdCode_)
+
+                    @reifier.dispatchCallback(undefined, "onObserverDetachEnd", observerIdCode_)
+
+                    @removeObserverState(observerIdCode_)
 
                     # Remove the registration.
                     @observers[observerIdCode_] = undefined

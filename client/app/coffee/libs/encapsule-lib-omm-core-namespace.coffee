@@ -88,6 +88,20 @@ class Encapsule.code.lib.omm.Namespace
 
     #
     # ============================================================================
+    address: =>
+        try
+            if not (@address? and @address)
+                resolvedTokenVector = for addressTokenBinder in @addressTokenBinders
+                    addressTokenBinder.resolvedToken
+                newAddress = @address = new ONMjs.Address(@model, resolvedTokenVector)
+                return newAddress
+
+        catch exception
+            throw "ONMjs.Namespace.address failure: #{exception}"
+
+
+    #
+    # ============================================================================
     data: =>
         try
             dataReferences = @dataReferences.length
@@ -117,10 +131,19 @@ class Encapsule.code.lib.omm.Namespace
     # ============================================================================
     visitExtensionPointSubcomponents: (callback_) =>
         try
-            binder = @getLastBinder()
+            resolvedToken = @getLastBinder().resolvedToken
+            if not (resolvedToken? and resolvedToken) then throw "Internal error: unable to resolve token."
 
-            
+            if resolvedToken.namespaceDescriptor.mvvmType != "extension"
+                throw "You may only visit the subcomponents of an extension point namespace."
 
+            for key, object of @data()
+                address = @address()
+                token = ONMjs.AddressToken(@model, resolvedToken.namespaceDescriptor.id, key, resolvedToken.namespaceDescriptor.idArchetype)
+                address.pushToken(token)
+                callback_(address)
+
+            true
 
         catch exception
             throw "ONMjs.Namepsace.visitExtensionPointSubcomponents failure: #{exception}"
