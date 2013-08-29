@@ -104,6 +104,11 @@ class Encapsule.code.app.Schema
             jsonView.attachToCachedAddress(selectedAddress)
 
 
+            pathView = schemaRuntime.ONMjs.observers.path = new ONMjs.observers.SelectedPathModelView()
+
+            pathView.attachToCachedAddress(selectedAddress)
+
+
             #---
             # TEST CODE
             # Manually create a new ONMjs.Address object.
@@ -135,15 +140,12 @@ class Encapsule.code.app.Schema
 
             ###
 
-            objectModelNavigatorWindow = Encapsule.runtime.app.ObjectModelNavigatorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorWindow(objectStore)
             objectModelNavigatorSelectorWindow = Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow()
-            objectModelNavigatorWindow.selectorStore.registerModelViewObserver(objectModelNavigatorSelectorWindow.selectorStoreCallbacks)
+
 
             objectModelNavigatorNamespaceWindow = Encapsule.runtime.app.ObjectModelNavigatorNamespaceWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow()
             objectModelNavigatorWindow.selectorStore.registerModelViewObserver(objectModelNavigatorNamespaceWindow.selectorStoreCallbacks)
 
-            objectModelNavigatorJsonWindow = Encapsule.runtime.app.ObjectModelNavigatorJsonModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView()
-            objectModelNavigatorWindow.selectorStore.registerModelViewObserver(objectModelNavigatorJsonWindow.selectorStoreCallbacks)
             # ==============================================================================
 
             # Some experimental stuff

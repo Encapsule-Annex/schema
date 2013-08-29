@@ -44,21 +44,21 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
-Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
-Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and Encapsule.code.lib.modelview.detail or @Encapsule.code.lib.modelview.detail = {}
+ONMjs = Encapsule.code.lib.omm
+ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
+ONMjs.observers.implementation = ONMjs.observers.implementation? and ONMjs.observers.implementation or ONMjs.observers.implementation = {}
 
-class Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow
-    constructor: (objectStore_, obsererId_, pathElementSelector_, selectorTreeHeight_) ->
+class ONMjs.observers.implementation.PathElementModelView
+    constructor: (addressCache_, count_, objectStoreAddress_) ->
         try
-            @objectStore = objectStore_
-            @pathElementSelector = pathElementSelector_.clone()
-            @pathElementNamespace = objectStore_.associatedObjectStore.openNamespace(@pathElementSelector)
-
-            height = pathElementSelector_.objectModelDescriptor.parentPathIdVector.length
-            @isSelected = height + 1 == selectorTreeHeight_
+            @addressCacheStore = addressCache_
+            @objectStoreAddress = objectStoreAddress_
+            objectStoreNamespace = addressCache_.referenceStore.openNamespace(objectStoreAddress_)
+            objectStoreDescriptor = objectStoreNamespace.getLastBinder().resolvedToken.namespaceDescriptor
+            resolvedLabel = objectStoreNamespace.getResolvedLabel()
 
             @prefix = ""
-            switch height
+            switch count_
                 when 0
                     break
                 when 1
@@ -71,13 +71,12 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow
             if @prefix.length
                 @prefix = """<span class="prefix">""" + @prefix + """</span>"""
 
-            resolvedLabel = @pathElementNamespace.getResolvedLabel()
             @label = ""
             if @isSelected
                 @label += """<span class="selected">#{resolvedLabel}</span>"""
             else
                 styleClasses = "parent classObjectModelNavigatorMouseOverCursorPointer"
-                if pathElementSelector_.objectModelDescriptor.isComponent
+                if objectStoreDescriptor.isComponent
                     styleClasses += " component"
                 @label += """<span class="#{styleClasses}">#{resolvedLabel}</span>"""
 
@@ -86,7 +85,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow
                     @objectStore.setSelector(@pathElementSelector)
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow failure: #{exception}"
+            throw "ONMjs.observers.PathElementModelView failure: #{exception}"
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorPathElementWindow", ( -> """
@@ -95,32 +94,70 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 
 
 
-class Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow
+class ONMjs.observers.SelectedPathModelView
     constructor: ->
         try
+
+            @myTest = "what the fuck is going on here?"
+
             @pathElements = ko.observableArray []
+            @cachedAddressStore = undefined
+            @cachedAddressStoreObserverId = undefined
 
-            @selectorStoreCallbacks =
+            @attachToCachedAddress = (cachedAddress_) =>
+                try
+                    if not (cachedAddress_? and cachedAddress_) then throw "Missing cached address input parameter."
+                    if @cachedAddressStore? and @cachedAddressStore then throw "Already attached to an ONMjs.CachedAddress object."
+                    @cachedAddressStore = cachedAddress_
+                    @cachedAddressStoreObserverId = cachedAddress_.registerObserver(@cachedAddressObserverInterface, @)
+                    true
+                catch exception
+                    throw "ONMjs.observers.SelectedPathModelView.attachToCachedAddress failure: #{exception}"
+
+            @detachFromCachedAddress = =>
+                try
+                    if not (@cachedAddressStoreObserverId? and @cachedAddressStoreObserverId) then throw "Not attached to an ONMjs.CachedAddress object."
+                    @cachedAddressStore.unregisterObserver(@cachedAddressStoreObserverId)
+                    @cachedAddressStore = undefined
+                    @cachedAddressStoreObserverId = undefined
+                    true
+                catch exception
+                    throw "ONMjs.observers.SelectedPathModelView.detachFromCachedAddress failure: #{exception}"
+
+
+            @cachedAddressObserverInterface =
             {
-                onComponentCreated: (objectStore_, observerId_, namespaceSelector_) =>
-                    @selectorStoreCallbacks.onComponentUpdated(objectStore_, observerId_, namespaceSelector_)
+                onComponentCreated: (store_, observerId_, address_) =>
+                    try
+                        @cachedAddressObserverInterface.onComponentUpdated(store_, observerId_, address_)
+                    catch exception
+                        "ONMjs.observers.SelectedPathModelView.cachedAddressObserverInterface.onComponentCreated failure: #{exception}"
 
-                onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
+                onComponentUpdated: (store_, observerId_, address_) =>
+                    try
+                        selectedAddress = store_.getAddress()
+                        @pathElements.removeAll()
+                        if not (selectedAddress? and selectedAddress) then return true
+                        count = 0 
+                        selectedAddress.visitParentNamespacesAscending( (address__) =>
+                            @pathElements.push new ONMjs.observers.implementation.PathElementModelView(store_, count++, address__)
+                            )
+                        @pathElements.push new ONMjs.observers.implementation.PathElementModelView(store_, count++, selectedAddress)
+                        true
 
-                    storeNamespace = objectStore_.openNamespace(namespaceSelector_)
-                    selectorTreeHeight = storeNamespace.objectStoreNamespace.parentSelectorVector.length
-                    
-                    pathElementSelectorArray = storeNamespace.objectStoreNamespace.parentSelectorVector
-                    @pathElements.removeAll()
-                    for pathElementSelector in pathElementSelectorArray
-                        @pathElements.push new Encapsule.code.lib.modelview.ObjectModelNavigatorPathElementWindow(objectStore_, observerId_, pathElementSelector, selectorTreeHeight)
+                    catch exception
+                        throw "OMNjs.observers.SelectedPathModelView.cachedAddressObserverInterface.onComponentUpdated failure: #{exception}"
+
+
             }
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow failure: #{exception}"
+            throw "ONMjs.observers.SelectedPathModelView construction failure: #{exception}"
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorSelectorWindow", ( -> """
 <div class="classObjectModelNavigatorSelectorWindow">
-<span class="classObjectModelNavigatorPathElementPrefix"></span><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorPathElementWindow', foreach: pathElements }">
+<span data-bind="text: myTest"></span>
 </div>
 """))
+
+# <span class="classObjectModelNavigatorPathElementPrefix"></span><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorPathElementWindow', foreach: pathElements }">

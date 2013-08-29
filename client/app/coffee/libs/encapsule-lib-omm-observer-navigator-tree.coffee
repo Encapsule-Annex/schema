@@ -178,7 +178,7 @@ class ONMjs.observers.NavigatorModelView
                         if @storeObserverId != observerId_ then throw "Unrecognized observer ID."
                         namespaceState = store_.openObserverNamespaceState(observerId_, address_)
                         namespaceState.description = "Hey this is the ONMjs.observers.NavigatorModelView class saving some submenu state."
-                        namespaceState.itemModelView = new ONMjs.observers.NavigatorItemModelView(store_, @, address_)
+                        namespaceState.itemModelView = new ONMjs.observers.implementation.NavigatorItemModelView(store_, @, address_)
 
                         if address_.isRoot()
                             @rootMenuModelView = namespaceState.itemModelView

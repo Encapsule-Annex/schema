@@ -225,8 +225,9 @@ class ONMjs.Address
         try
             if not (callback_? and callback_) then return false
             if not (@parentAddressesAscending? and @parentAddressesAscending)
-                @visitParentNamespacesDescending( (address__) => @parentAddressesAscending.push(address__) )
-                @parentAddressesAscensing.reverse()
+                @parentAddressesAscending = []
+                @visitParentNamespacesDescending( (address__) => @parentAddressesAscending.push(address__); true )
+                @parentAddressesAscending.reverse()
             if not @parentAddressesAscending.length then return false
             for address in @parentAddressesAscending
                 callback_(address)
@@ -244,8 +245,8 @@ class ONMjs.Address
                 traverse = true
                 parent = @
                 while traverse
-                    parent = ONMjs.address.parent(parent)
-                    @parentAddressesDesending.push parent
+                    parent = ONMjs.address.Parent(parent)
+                    @parentAddressesDescending.push parent
                     traverse = not parent.isRoot()
             if not @parentAddressesDescending.length then return false
             for address in @parentAddressesDescending

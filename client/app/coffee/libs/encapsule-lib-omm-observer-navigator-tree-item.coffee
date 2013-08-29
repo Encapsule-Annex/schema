@@ -46,9 +46,10 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 
 ONMjs = Encapsule.code.lib.omm
 ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observer = {}
+ONMjs.observers.implementation = ONMjs.observers.implementation? and ONMjs.observers.implementation or ONMjs.observers.implementation = {}
 
 
-class ONMjs.observers.NavigatorItemModelView
+class ONMjs.observers.implementation.NavigatorItemModelView
 
     constructor: (store_, navigatorModelView_, address_) ->
 
@@ -80,7 +81,7 @@ class ONMjs.observers.NavigatorItemModelView
                 try
                     @navigatorModelView.routeUserSelectAddressRequest(@address)
                 catch exception
-                    Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome.onClick failure: #{exception}")
+                    Console.messageError("ONMjs.observers.implementation.PathElementModelView.onClick failure: #{exception}")
 
 
             #
@@ -91,7 +92,7 @@ class ONMjs.observers.NavigatorItemModelView
                     @selectionsByObserverId[observerId_] = true
                     @isSelected(true)
                 catch exception
-                    throw "ONMjs.observers.addSelection failure: #{exception}"
+                    throw "ONMjs.observers.implementation.PathElementModelView.addSelection failure: #{exception}"
 
 
             #
@@ -102,13 +103,13 @@ class ONMjs.observers.NavigatorItemModelView
                     delete @selectionsByObserverId[observerId_]
                     @isSelected( Encapsule.code.lib.js.dictionaryLength(@selectionsByObserverId) and true or false )
                 catch exception
-                    throw "ONMjs.observers.removeSelection failure: #{exception}"
+                    throw "ONMjs.observers.implementation.PathElementModelView.removeSelection failure: #{exception}"
 
 
 
             # / END: constructor try scope
         catch exception
-            throw "Encapsule.code.lib.modelview.NavigatorWindowMenuLevel failure: : #{exception}"
+            throw "ONMjs.observers.implementation.PathElementModelView construction failure: : #{exception}"
         # / END: constructor
 
 
