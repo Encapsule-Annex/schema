@@ -71,7 +71,7 @@ class ONMjs.implementation.StoreReifier
                             try
                                 callbackFunction(@store, observerId_, address_)
                             catch exception
-                                throw "Error occurred during execution of externally registerd observer callback function."
+                                throw "An error occurred in the '#{callbackName_}' method of your observer interface: #{exception}"
                     else
                         for observerId, callbackInterface of @store.observers
                             callbackFunction = callbackInterface[callbackName_]
@@ -79,7 +79,7 @@ class ONMjs.implementation.StoreReifier
                                 try
                                     callbackFunction(@store, observerId, address_)
                                 catch exception
-                                    throw "Error occurred during execution of externally registered observer callback function."
+                                    throw "An error occurred in the '#{callbackName_}' method of your observer interface: #{exception}"
 
                 catch exception
                     exceptionMessage = "ONMjs.implementation.StoreRefier.dispatchCallback failure while processing " +
@@ -103,7 +103,7 @@ class ONMjs.implementation.StoreReifier
                     true # that
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.StoreBase.reifyStoreComponent failure: #{exception}"
+                    throw "ONMjs.implementation.StoreReifier failure: #{exception}"
 
 
             # 
@@ -123,7 +123,7 @@ class ONMjs.implementation.StoreReifier
                     true # that
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.StoreBase.internalUnreifyStoreComponent failure: #{exception}"
+                    throw "ONMjs.implementation.StoreReifier failure: #{exception}"
 
             # 
             # ============================================================================
@@ -151,8 +151,8 @@ class ONMjs.implementation.StoreReifier
                     )
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.StoreBase.internalReifyStoreExtensions failure: #{exception}"
+                    throw "ONMjs.implementation.StoreReifier failure: #{exception}"
 
         catch exception
-            throw "Encapsule.code.lib.omm.StoreBase constructor failed: #{exception}"
+            throw "ONMjs.implementation.StoreReifier constructor failed: #{exception}"
 

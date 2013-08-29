@@ -55,9 +55,9 @@ class ONMjs.CachedAddress extends ONMjs.Store
             # Create an ObjectModel instance from the selector object model declaration.
             selectorModel = new ONMjs.Model(
                 {
-                    jsonTag: "addressSelectorselector"
-                    label: "#{referenceStore_.model.jsonTag} Address Selector"
-                    description: "#{referenceStore_.model.label} address selector"
+                    jsonTag: "cachedAddress"
+                    label: "#{referenceStore_.model.jsonTag} Address Cache"
+                    description: "#{referenceStore_.model.label} observable address cache."
                 })
 
             # Initialize the base ONMjs.Store class.

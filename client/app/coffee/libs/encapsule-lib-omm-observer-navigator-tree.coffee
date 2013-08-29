@@ -286,7 +286,7 @@ class ONMjs.observers.NavigatorModelView
 
 
         catch exception
-            throw " ONMjs.observers.NavigatorModelView consruction failure: #{exception}"
+            throw " ONMjs.observers.NavigatorModelView consructor failure: #{exception}"
 
         # / END: constructor
 

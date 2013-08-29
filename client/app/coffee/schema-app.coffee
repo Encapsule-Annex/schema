@@ -70,40 +70,54 @@ class Encapsule.code.app.Schema
             # Create an instance of "canary" - an ONMjs observer. Canary "sings" to the console log.
             canary = schemaRuntime.ONMjs.observers.canary = new ONMjs.test.observers.Canary()
 
+            #---
+            # TEST CODE
             # Attach the canary to the store via ONMjs.Store.registerObserver.
             canaryStoreObserverId = store.registerObserver(canary.callbackInterface, canary)
-
             # Detach the canary from the store via ONMjs.Store.unregisterObserver.
             store.unregisterObserver(canaryStoreObserverId)
+            # TEST CODE
+            #---
 
-            # The above attach/detach should produce corresponding callback notifications logged
+            # The above attach/detach should produce corresponding callback notifications logged.
             # in the Schema debug console window.
 
-            # Initialize an ONMjs.CachedAddress object associated with the store.
-            # Cached address objects are specializations of ONMjs.Store (i.e. they're observable)
-            # and are specialized storage objects for holding ONMjs.Address objects. Cached addresses
-            # have a wide variety of different uses. Here we leverage a cached address to represent
-            # the currently selected namespace in the store.
+            # Create a ONMjs.CachedAddress object associated with the store.
             selectedAddress = schemaRuntime.ONMjs.selectedAddress = new ONMjs.CachedAddress(store)
 
-            # Attach the selected address store to the actual store. 
-            # Cached address monitors the store and if cached namespace removed, it vectors to the
-            # parent directory and signals update to its observers (separate than the main store).
+            # Attach the CachedAddress as an observer of the store.
             selectedAddressObserverId = store.registerObserver(selectedAddress.objectStoreCallbacks, selectedAddress)
 
-            # Create the "navigator" ONMjs observer responsible for rendering the tree view.
+            # Create an ONMjs.observers.NavigatorModelView object (responsible for rendering the treeview).
             navigator = schemaRuntime.ONMjs.observers.navigator = new ONMjs.observers.NavigatorModelView()
 
-            # Attach the navigator to the store as an observer.
+            # Attach the navigator as an observer of the store.
             navigator.attachToStore(store)
-            # navigator.detachFromStore()
 
+            # Attach the navigator as an observer of the currently selected address.
             navigator.attachToCachedAddress(selectedAddress)
 
-            newAddress = ONMjs.address.FromPath(model, "schema.client")
-            selectedAddress.setAddress(newAddress)
+            # Initialize an ONMjs.observable.SelectedJsonModelView object.
+            jsonView = schemaRuntime.ONMjs.observers.json = new ONMjs.observers.SelectedJsonModelView()
 
+            # Attach the JSON viewer as an obsever of the selected address.
+            jsonView.attachToCachedAddress(selectedAddress)
+
+
+            #---
+            # TEST CODE
+            # Manually create a new ONMjs.Address object.
+            newAddress = ONMjs.address.FromPath(model, "schema.client")
+            # Manually set the selected address.
+            selectedAddress.setAddress(newAddress)
+            # TEST CODE
+            #---
+
+            # Tell the navigator which CachedAddress to route user address selections to.
             navigator.setCachedAddressSinkStore(selectedAddress)
+
+
+
 
 
             # Some temporary test code for bringing up the new store addressing model.

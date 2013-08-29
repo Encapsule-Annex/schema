@@ -91,18 +91,16 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 id: "idScdlNavigatorMenuItemJSONWindow"                                                
                 name: "SCDL Catalogue Item JSON View"                                        
                 initialMode: "min"
-                initialEnable: false
+                initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "rgba(255,255,255,0.1)"
                 modes: { full: { reserve: 500 }, min: { reserve: 250 } }
-                ###
                 MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.ObjectModelNavigatorJsonModelView
+                    fnModelView: -> Encapsule.runtime.app.ONMjs.observers.json
                     viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorJsonModelView"
 
                 }
-                ###
             }
         }   
 

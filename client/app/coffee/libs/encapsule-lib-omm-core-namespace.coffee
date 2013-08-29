@@ -64,7 +64,7 @@ class ONMjs.Namespace
             objectModelNameStore = store_.model.jsonTag
             objectModelNameKeys = address.model.jsonTag
             if objectModelNameStore != objectModelNameKeys
-                throw "You cannot create a '#{objectModelNameStore}' store namespace with a '#{objectModelNameKeys}' select key vector."
+                throw "You cannot access a '#{objectModelNameStore}' store namespace with a '#{objectModelNameKeys}' object model address!"
 
             # Token in the address specifies a root component namespace?
             if not address.isComplete() then throw "Specified address is invalid because the first address token does not specify the object store's root component."
@@ -121,6 +121,24 @@ class ONMjs.Namespace
 
         catch exception
             throw "ONMjs.Namespace.data failure: #{exception}"
+
+    #
+    # ============================================================================
+    toJSON: (replacer_, space_) =>
+        try
+            namespaceDescriptor = @getLastBinder().resolvedToken.namespaceDescriptor
+            resultObject = {}
+            resultObject[namespaceDescriptor.jsonTag] = @data()
+            space = space_? and space_ or 0
+            resultJSON = JSON.stringify(resultObject, replacer_, space)
+            if not (resultJSON? and resultJSON)
+                throw "Cannot serialize Javascript object to JSON!"
+            return resultJSON
+
+        catch exception
+            throw "ONMjs.Namespace.toJSON failure: #{exception}"
+
+
 
     #
     # ============================================================================

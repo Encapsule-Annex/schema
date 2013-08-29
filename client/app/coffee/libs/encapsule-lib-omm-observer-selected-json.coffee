@@ -44,16 +44,17 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
-Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
-Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and Encapsule.code.lib.modelview.detail or @Encapsule.code.lib.modelview.detail = {}
+ONMjs = Encapsule.code.lib.omm
 
 
-class Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView
+class ONMjs.observers.SelectedJsonModelView
     constructor: ->
         try
             @title = ko.observable "<not connected>"
             @selectorHash = ko.observable "<not connected>"
             @jsonString = ko.observable "<not connected>"
+            @cachedAddressStore = undefined
+            @cahcedAddressStoreObserverId = undefined
 
             @saveJSONAsLinkHtml = ko.computed =>
                 # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
@@ -61,21 +62,55 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView
                     <img src="./img/json_file-48x48.png" style="width: 24px; heigh: 24px; border: 0px solid black; vertical-align: middle;" ></a>"""
 
 
-            @selectorStoreCallbacks = {
-                onComponentCreated: (objectStore_, observerId_, namespaceSelector_) =>
-                    @selectorStoreCallbacks.onComponentUpdated(objectStore_, observerId_, namespaceSelector_)
+            @attachToCachedAddress = (cachedAddress_) =>
+                try
+                    if not (cachedAddress_? and cachedAddress_) then throw "Missing cached address store input parameter."
+                    if @cachedAddressStore? and @cachedAddressStore then throw "Already attached to an ONMjs.CachedAddress object."
+                    @cachedAddressStore = cachedAddress_
+                    @storeObserverId = cachedAddress_.registerObserver(@cachedAddressCallbackInterface, @)
+                    true
+                catch exception
+                    throw "ONMjs.observers.SelectedJsonModelView.attachToCachedAddress failure: #{exception}."
 
-                onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
-                    selector = objectStore_.getSelector()
-                    namespace = objectStore_.associatedObjectStore.openNamespace(selector)
-                    @title(namespace.getResolvedLabel())
-                    @selectorHash("Selector: <strong>#{selector.getHashString()}</strong>")
-                    @jsonString(namespace.toJSON(undefined, 2))
+            @detachFromCachedAddress = () =>
+                try
+                    if not (@cachedAddressStoreObserverId? and @cachedAddressStoreObserverId) then throw "Not attached to an ONMjs.CachedAddress object."
+                    @cachedAddressStore.unregisterObserver(@cachedAddressStoreObserverId)
+                    @cachedAddressStore = undefined
+                    @cachedAddressStoreObserverId = undefined
+                    true
+                catch exception
+                    throw "ONMjs.observers.SelectedJsonModelView.detachFromCachedAddress failure: #{exception}."
+
+
+            @cachedAddressCallbackInterface = {
+
+                onComponentCreated: (store_, observerId_, address_) =>
+                    try
+                        @cachedAddressCallbackInterface.onComponentUpdated(store_, observerId_, address_)
+                    catch exception
+                        throw "ONMjs.observers.SelectedJsonModelView.cachedAddressCallbackInterface.onComponentCreated failure: #{exception}"
+
+                onComponentUpdated: (store_, observerId_, address_) =>
+                    try
+                        storeAddress = store_.getAddress()
+                        if not (storeAddress? and storeAddress)
+                            @title("<no selected address>")
+                            @selectorHash("Address: <no selected address>")
+                            @jsonString("<undefined>")
+                            return true
+                        selectedNamespace = store_.referenceStore.openNamespace(storeAddress)
+                        @title(selectedNamespace.getResolvedLabel())
+                        @selectorHash("Address: <strong>#{selectedNamespace.getResolvedAddress().getHashString()}</strong>")
+                        @jsonString(selectedNamespace.toJSON(undefined, 2))
+                        true
+                    catch exception
+                        throw "ONMjs.observers.SelectedJsonModelView.cachedAddressCallbackInterface.onComponentUpdated failure: #{exception}"
 
             }
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorJsonModelView failure: #{exception}"
+            throw "ONMjs.observers.SelectedJsonModelView construction failure: #{exception}"
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorJsonModelView", ( -> """
