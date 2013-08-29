@@ -57,7 +57,7 @@ class ONMjs.Store
 
             #
             # ============================================================================
-            Console.message("Encapsule.code.lib.omm.StoreBase: Creating memory store instance for object model '#{model_.jsonTag}'")
+            Console.message("ONMjs.Store: Creating memory store instance for object model '#{model_.jsonTag}'")
 
             # Validate parameters.
             if not (model_? and model_) then throw "Missing object model parameter!"
@@ -93,8 +93,8 @@ class ONMjs.Store
                 @dataReference = {}
                 @objectStoreSource = "new"
 
-                token = new Encapsule.code.lib.omm.AddressToken(model_, undefined, undefined, 0)
-                tokenBinder = new Encapsule.code.lib.omm.implementation.AddressTokenBinder(@, @dataReference, token, "new")
+                token = new ONMjs.AddressToken(model_, undefined, undefined, 0)
+                tokenBinder = new ONMjs.implementation.AddressTokenBinder(@, @dataReference, token, "new")
 
 
             #
@@ -114,18 +114,18 @@ class ONMjs.Store
                         throw "Invalid selector specifies root component which cannot be removed."
 
                     # Creating the root namespace of a component automatically creates all its sub-namespaces as well.
-                    objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_, "new")
+                    objectStoreNamespace = new ONMjs.ObjectStoreNamespace(@, objectModelNamespaceSelector_, "new")
 
                     extensionPointId = objectModelNamespaceSelector_.objectModelDescriptor.parent.id
                     extensionPointSelector = @model.createNamespaceSelectorFromPathId(extensionPointId, objectStoreNamespace.resolvedKeyVector)
-                    extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector)
+                    extensionPointNamespace = new ONMjs.ObjectStoreNamespace(@, extensionPointSelector)
                     extensionPointNamespace.updateRevision()
 
                     return objectStoreNamespace
 
                 catch exception
 
-                    throw "Encapsule.code.lib.omm.Store.createComponent failure: #{exception}"
+                    throw "ONMjs.Store.createComponent failure: #{exception}"
 
             #
             # ============================================================================
@@ -149,12 +149,12 @@ class ONMjs.Store
                     @storeReifier.internalReifyStoreExtensions(objectModelNamespaceSelector_, undefined, undefined, true)
                     @storeReifier.internalUnreifyStoreComponent(objectModelNamespaceSelector_)
 
-                    objectStoreNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
+                    objectStoreNamespace = new ONMjs.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
                     arrayIndexToRemove = objectStoreNamespace.resolvedKeyIndexVector[objectStoreNamespace.resolvedKeyIndexVector.length - 1]
 
                     extensionPointSelector = @model.createNamespaceSelectorFromPathId(objectModelNamespaceSelector_.objectModelDescriptor.parent.id, objectModelNamespaceSelector_.selectKeyVector)
 
-                    extensionPointNamespace = new Encapsule.code.lib.omm.ObjectStoreNamespace(@, extensionPointSelector)
+                    extensionPointNamespace = new ONMjs.ObjectStoreNamespace(@, extensionPointSelector)
                     extensionPointNamespace.objectStoreNamespace.splice(arrayIndexToRemove, 1)
 
                     extensionPointNamespace.updateRevision()
@@ -162,7 +162,7 @@ class ONMjs.Store
                     return objectStoreNamespace
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.Store.removeComponent failure: #{exception}"
+                    throw "ONMjs.Store.removeComponent failure: #{exception}"
 
 
             #
@@ -177,31 +177,19 @@ class ONMjs.Store
                     return namespace
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.Store.openNamespace failure: #{exception}"
+                    throw "ONMjs.Store.openNamespace failure: #{exception}"
                 
 
             #
             # ============================================================================
             @toJSON = (replacer_, space_) =>
                 try
-                    resultObject = {}
-                    resultObject[@jsonTag] = @objectStore
-                    space = space_? and space_ or 0
-                    resultJSON = JSON.stringify(resultObject, replacer_, space)
-                    if not (resultJSON? and resultJSON)
-                        throw "Cannot serialize Javascript object to JSON!"
+                    rootNamespace = @openNamespace(ONMjs.address.RootAddress())
+                    resultJSON = rootNamespace.toJSON(replacer_, space_)
                     return resultJSON
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.Store.toJSON fail on object store #{@jsonTag} : #{exception}"
-
-
-
-
-
-
-
-
+                    throw "ONMjs.Store.toJSON fail on object store #{@jsonTag} : #{exception}"
 
             # 
             # ============================================================================
@@ -251,7 +239,7 @@ class ONMjs.Store
                     return observerIdCode
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.StoreBase.internalRegisterModelViewObserver failure: #{exception}"
+                    throw "ONMjs.Store.registerObserver failure: #{exception}"
 
             #
             # ============================================================================
@@ -280,7 +268,7 @@ class ONMjs.Store
                     @observers[observerIdCode_] = undefined
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.StoreBase.internalUnregisterModelViewObserver failure: #{exception}"
+                    throw "ONMjs.Store.unregisterObserver failure: #{exception}"
 
             #
             # ============================================================================
@@ -291,7 +279,7 @@ class ONMjs.Store
                     return observerState                    
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.Store.openObserverStateObject failure: #{exception}"
+                    throw "ONMjs.Store.openObserverStateObject failure: #{exception}"
 
             #
             # ============================================================================
@@ -313,7 +301,7 @@ class ONMjs.Store
                     componentAddress = ONMjs.address.newAddressSameComponent(address_, componentNamespaceId)
                     return @openObserverNamespaceState(observerId_, componentAddress)
                 catch exception
-                    throw "Encapsule.code.lib.omm.Store.openObserverComponentState failure: #{exception}"
+                    throw "ONMjs.Store.openObserverComponentState failure: #{exception}"
 
             #
             # ============================================================================
@@ -330,7 +318,7 @@ class ONMjs.Store
                     return namespaceState
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.Store.openObserverNamespaceState failure: #{exception}"
+                    throw "ONMjs.Store.openObserverNamespaceState failure: #{exception}"
 
             #
             # ============================================================================
@@ -350,7 +338,7 @@ class ONMjs.Store
 
 
         catch exception
-            throw "Encapsule.code.lib.omm.Store failure: #{exception}"
+            throw "ONMjs.Store failure: #{exception}"
 
 
         
