@@ -62,25 +62,49 @@ class ONMjs.observers.NavigatorItemModelView
             if not (address_? and address_)
                 throw "Missing address input parameter."
 
-              # Cache references to this instance's construction parameters.
-              @store = store_
-              @navigatorModelView = navigatorModelView_
-              @address = address_
+            # Cache references to this instance's construction parameters.
+            @store = store_
+            @navigatorModelView = navigatorModelView_
+            @address = address_
+            @children = ko.observableArray []
+            @isSelected = ko.observable false
+            @selectionsByObserverId = {}
+            @blipper = Encapsule.runtime.boot.phase0.blipper
 
-              @children = ko.observableArray []
+            namespace = store_.openNamespace(address_)
+            @label = ko.observable(namespace.getResolvedLabel())
 
-              @isSelected = ko.observable false
+            #
+            # ----------------------------------------------------------------------------
+            @onClick = =>
+                try
+                    @navigatorModelView.routeUserSelectAddressRequest(@address)
+                catch exception
+                    Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome.onClick failure: #{exception}")
 
-              @blipper = Encapsule.runtime.boot.phase0.blipper
 
-              namespace = store_.openNamespace(address_)
-              @label = ko.observable(namespace.getResolvedLabel())
+            #
+            # ----------------------------------------------------------------------------
+            @addSelection = (observerId_) =>
+                try
+                    if not (observerId_? and observerId_) then throw "Missing observer ID input parameter."
+                    @selectionsByObserverId[observerId_] = true
+                    @isSelected(true)
+                catch exception
+                    throw "ONMjs.observers.addSelection failure: #{exception}"
 
-              @onClick = =>
-                  try
-                      @objectModelNavigatorWindow.selectorStore.setSelector(@namespaceSelector)
-                  catch exception
-                      Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorMenuWindowChrome.onClick failure: #{exception}")
+
+            #
+            # ----------------------------------------------------------------------------
+            @removeSelection = (observerId_) =>
+                try
+                    if not (observerId_? and observerId_) then throw "Missing observer ID input parameter."
+                    delete @selectionsByObserverId[observerId_]
+                    @isSelected( Encapsule.code.lib.js.dictionaryLength(@selectionsByObserverId) and true or false )
+                catch exception
+                    throw "ONMjs.observers.removeSelection failure: #{exception}"
+
+
 
             # / END: constructor try scope
         catch exception

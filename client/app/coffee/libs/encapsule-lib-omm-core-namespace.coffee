@@ -44,8 +44,9 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
+ONMjs = Encapsule.code.lib.omm
 
-class Encapsule.code.lib.omm.Namespace
+class ONMjs.Namespace
     constructor: (store_, address_, mode_) ->
         try
             if not (store_? and store_) then throw "Missing object store input parameter."
@@ -55,7 +56,7 @@ class Encapsule.code.lib.omm.Namespace
             address = undefined
             if not (address_? and address_ and address_.tokenVector.length)
                 objectModel = store_.model
-                address = new Encapsule.code.lib.omm.Address(objectModel, [ new Encapsule.code.lib.omm.AddressToken(objectModel, undefined, undefined, 0) ] )
+                address = new ONMjs.Address(objectModel, [ new ONMjs.AddressToken(objectModel, undefined, undefined, 0) ] )
             else
                 address = address_
             
@@ -79,24 +80,22 @@ class Encapsule.code.lib.omm.Namespace
             @dataReferences.push dataReference
             
             @addressTokenBinders = for addressToken in address.tokenVector
-                tokenBinder = new Encapsule.code.lib.omm.implementation.AddressTokenBinder(store_, dataReference, addressToken, mode)
+                tokenBinder = new ONMjs.implementation.AddressTokenBinder(store_, dataReference, addressToken, mode)
                 dataReference = tokenBinder.dataReference
                 @dataReferences.push dataReference
                 tokenBinder
 
         catch exception
-            throw "Encapsule.code.lib.omm.Namespace failure: #{exception}"
+            throw "ONMjs.Namespace failure: #{exception}"
 
     #
     # ============================================================================
-    address: =>
+    getResolvedAddress: =>
         try
-            if not (@address? and @address)
-                resolvedTokenVector = for addressTokenBinder in @addressTokenBinders
-                    addressTokenBinder.resolvedToken
-                newAddress = @address = new ONMjs.Address(@model, resolvedTokenVector)
-                return newAddress
-
+            resolvedTokenVector = for addressTokenBinder in @addressTokenBinders
+                addressTokenBinder.resolvedToken
+            resolvedAddress = new ONMjs.Address(@store.model, resolvedTokenVector)
+            return resolvedAddress
         catch exception
             throw "ONMjs.Namespace.address failure: #{exception}"
 
@@ -121,7 +120,7 @@ class Encapsule.code.lib.omm.Namespace
             dataReference = @dataReferences[dataReferences - 1]
 
         catch exception
-            throw "Encapsule.code.lib.omm.Namespace.data failure: #{exception}"
+            throw "ONMjs.Namespace.data failure: #{exception}"
 
     #
     # ============================================================================
@@ -141,16 +140,16 @@ class Encapsule.code.lib.omm.Namespace
                     updateAction(dataReference)
 
             # Now we need to generate some observer notification.
-            address = @address()
+            address = @getResolvedAddress()
             count = 0
             containingComponentNotified = false
             while address? and address
                 token = address.getLastToken()
                 descriptor = token.namespaceDescriptor
                 if count == 0
-                    @store.reify.dispatchCallback(address, "onNamespaceUpdated", undefined)
+                    @store.reifier.dispatchCallback(address, "onNamespaceUpdated", undefined)
                 else
-                    @store.reify.dispatchCallback(address, "onSubnamespaceUpdated", undefined)
+                    @store.reifier.dispatchCallback(address, "onSubnamespaceUpdated", undefined)
 
                 if descriptor.mvvmType == "archetype" or descriptor.mvvmType == "root"
                    if not containingComponentNotified
@@ -165,7 +164,7 @@ class Encapsule.code.lib.omm.Namespace
                 ONMjs.address.Parent(address)
             
         catch exception
-            throw "Encapsule.code.lib.omm.Namespace.update failure: #{exception}"
+            throw "ONMjs.Namespace.update failure: #{exception}"
 
 
 

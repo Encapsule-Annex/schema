@@ -77,7 +77,7 @@ class ONMjs.observers.NavigatorModelView
                     if not (store_? and store_) then throw "Missing store input parameter."
                     if @storeObserverId? and @storeObserverId then throw "This navigator instance is already observing an ONMjs.Store instance."
                     @store = store_
-                    @storeObserverId = store_.registerObserver(@objectStoreObserverCallbacks, @)
+                    @storeObserverId = store_.registerObserver(@objectStoreObserverInterface, @)
                 catch exception
                    throw "ONMjs.observers.NavigatorModelView.attachToStore failure: #{exception}"
 
@@ -96,7 +96,7 @@ class ONMjs.observers.NavigatorModelView
             @attachToCachedAddress = (cachedAddress_) =>
                 try
                     if not (cachedAddress_? and cachedAddress_) then throw "Missing cached address input parameter."
-                    observerId = cachedAddress_.registerObserver(@selectorStoreCallbacks, @)
+                    observerId = cachedAddress_.registerObserver(@cachedAddressObserverInterface, @)
                     return observerId
                 catch exception
                     throw "ONMjs.observers.NavigatorModelView.attachToCachedAddress failure: #{excpetion}"
@@ -124,10 +124,27 @@ class ONMjs.observers.NavigatorModelView
 
             #
             # ============================================================================
+            @routeUserSelectAddressRequest = (address_) =>
+                try
+                    if @selectedCachedAddressSinkStore? and @selectedCachedAddressSinkStore
+                        @selectedCachedAddressSinkStore.setAddress(address_)
+                        return
+                    message = "ONMjs.obsevers.NavigatorModelView.routeUserSelectAddressRequest for address  '#{address_.getHashString()}'failed. " +
+                        "setCachedAddressSinkStore method must be called to set the routing destination."
+                    alert(message)
+                    
+                
+                catch exception
+                    throw "ONMjs.observers.NavigatorModelView.routeUserSelectAddressRequest failure: #{exception}"
+
+            #
+            # ============================================================================
             # ONMjs.Store OBSERVER INTERFACE
             #
-            @objectStoreObserverCallbacks = {
+            @objectStoreObserverInterface = {
 
+                #
+                # ----------------------------------------------------------------------------
                 onObserverAttachBegin: (store_, observerId_) =>
                     try
                         Console.message("ONMjs.observer.NavigatorModelview is now observing ONMjs.Store.")
@@ -138,7 +155,8 @@ class ONMjs.observers.NavigatorModelView
                     catch exception
                         throw "ONMjs.observers.NavigatorModelView.objectStoreObserverCallbacks.onObserverAttach failure: #{exception}"
 
-
+                #
+                # ----------------------------------------------------------------------------
                 onObserverDetachEnd: (store_, observerId_) =>
                     try
                         Console.message("ONMjs.observers.NavigatorModelView is no longer observing ONMjs.Store.")
@@ -152,28 +170,30 @@ class ONMjs.observers.NavigatorModelView
                     catch exception
                         throw "ONMjs.observers.NavigatorModelView.objectStoreObserverCallbacks.onObserverDetach failure: #{exception}"
 
-
+                #
+                # ----------------------------------------------------------------------------
                 onNamespaceCreated: (store_, observerId_, address_) =>
                     try
                         Console.message("ONMjs.observersNavigatorModelView.onNamespaceCreated")
                         if @storeObserverId != observerId_ then throw "Unrecognized observer ID."
                         namespaceState = store_.openObserverNamespaceState(observerId_, address_)
                         namespaceState.description = "Hey this is the ONMjs.observers.NavigatorModelView class saving some submenu state."
-                        namespaceState.menuModelView = new ONMjs.observers.NavigatorItemModelView(store_, @, address_)
+                        namespaceState.itemModelView = new ONMjs.observers.NavigatorItemModelView(store_, @, address_)
 
                         if address_.isRoot()
-                            @rootMenuModelView = namespaceState.menuModelView
+                            @rootMenuModelView = namespaceState.itemModelView
 
                         parentAddress = ONMjs.address.Parent(address_)
                         if parentAddress? and parentAddress?
                             parentNamespaceState = store_.openObserverNamespaceState(observerId_, parentAddress)
-                            parentNamespaceState.menuModelView.children.push namespaceState.menuModelView
-                            namespaceState.indexInParentChildArray = parentNamespaceState.menuModelView.children().length - 1
+                            parentNamespaceState.itemModelView.children.push namespaceState.itemModelView
+                            namespaceState.indexInParentChildArray = parentNamespaceState.itemModelView.children().length - 1
 
                     catch exception
                         throw "ONMjs.observers.NavigatorModelView failure: #{exception}"
         
-
+                #
+                # ----------------------------------------------------------------------------
                 onNamespaceRemoved: (store_, observerId_, address_) =>
                     try
                         Console.message("ONMjs.observers.NavigatorModelView.onNamespaceRemoved")
@@ -186,7 +206,7 @@ class ONMjs.observers.NavigatorModelView
                         parentAddress = ONMjs.address.Parent(address_)
                         if parentAddress? and parentAddress
                             parentNamespaceState = store_.openObserverNamespaceState(observerId_, parentAddress)
-                            parentChildItemArray = parentNamespaceState.menuModelView.children()
+                            parentChildItemArray = parentNamespaceState.itemModelView.children()
                             spliceIndex = namespaceState.indexInParentChildArray
                             parentChildItemArray.splice(spliceIndex, 1)
 
@@ -196,7 +216,7 @@ class ONMjs.observers.NavigatorModelView
                                 itemState = store_.openObserverNamespaceState(observerId, itemAddress)
                                 itemState.indexInParentChildArray = spliceIndex++
 
-                            parentNamespaceState.menuModelView.children(parentChildItemArray)
+                            parentNamespaceState.itemModelView.children(parentChildItemArray)
 
                             return true
 
@@ -211,69 +231,62 @@ class ONMjs.observers.NavigatorModelView
             # ============================================================================
             # ONMjs.CachedAddress OBSERVER INTERFACE
 
-            @selectorStoreCallbacks = {
+            @cachedAddressObserverInterface = {
 
-                onComponentCreated: (objectStore_, observerId_, namespaceSelector_) => selectorStoreCallbacks.onComponentUpdated(objectStore_, observerId_, namespaceSelector_)
+                #
+                # ----------------------------------------------------------------------------
+                # Called when the Navigator is attached to a ONMjs.CachedAddress instance.
+                onComponentCreated: (store_, observerId_, address_) => 
+                    try
+                        # Simply forward to onComponentUpdated - we don't have create/update cases seperately.
+                        @cachedAddressObserverInterface.onComponentUpdated(store_, observerId_, address_)
+                    catch exception
+                        throw "ONMjs.observers.NavigatorModelView.cachedAddressObserverInterface.onComponentCreated failure: #{exception}"
 
-                onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
+                #
+                # ----------------------------------------------------------------------------
+                # Called whenever any entity calls ONMjs.CachedAddress.setAddress.
+                onComponentUpdated: (store_, observerId_, address_) =>
+                    try
+                        # The ONMjs.Address held by ONMjs.CachedAddress has been updated.
+                        # Note that the address_ parameter species a namespace in the CachedAddress store
+                        # that contains the actual cahced reference to ONMjs.Address. We don't leverage
+                        # address_ parameter here because CachedSchema's object model schema declaration
+                        # defines only a single namespace (that address_ always refers to).
 
-                    Console.message("ObjectModelNavigatorWindow processing selector update for observer #{observerId_}")
+                        # Obtain this observer's unique state from the store.
+                        observerState = store_.openObserverState(observerId_)
 
-                    # First obtain new namespace selector from the selector store.
-                    newObjectStoreSelector = objectStore_.getSelector()
+                        # Has this observer previously marked a sub-item as selected?
+                        # If yes, inform the currently selected item that this particular CachedAddress no longer
+                        # wishes it to be selected (this allows for multi-selection support via multiple attached
+                        # CachedAddresses) as the selection state of an item is a reference count - not a boolean.
+                        #
+                        if observerState.itemModelView? and observerState.itemModelView
+                            observerState.itemModelView.removeSelection(observerId_)
 
-                    if newObjectStoreSelector.selectKeyVector? and newObjectStoreSelector.selectKeyVector
-                        if newObjectStoreSelector.selectKeyVector.length > newObjectStoreSelector.selectKeysRequired
-                            throw "Internal error malformed namespace selector select key array exceeds required number of keys."
+                        # Get the newly-selected ONMjs.Address from the ONMjs.CachedAddress store.
+                        cachedAddress = store_.getAddress()
 
-                    # Next obtain the namespace selector last selected observer instance.
-                    observerState = objectStore_.openObserverState(observerId_)
-                    if observerState.hash? and observerState.hash
-                        Console.message("... #{observerId_} previously selected #{observerState.hash}")
-                        
-                        selectors = @selectedNamespacesBySelectorHash[observerState.hash]
-                        if not (selectors? and selectors) then throw "Internal error unable to resolve selectors."
+                        # It's possible that the cached address is undefined indicating that this CachedAddress
+                        # no longer holds a valid cached address.
 
-                        selectorCount = Encapsule.code.lib.js.dictionaryLength(selectors)
-                        if selectorCount < 1 then throw "Internal error selector count less than one."
-                        if selectorCount == 1
-                            # We're about to remove the last selection request for the current selection.
-                            # Toggle the select flag of the menu model view associated with the current selection.
-                            selector = selectors[observerId_]
-                            if not (selector? and selector) then throw "Internal error unable to resolve selector needed to open outgoing selection's menu model view."
-                            namespaceState = @objectStore.openObserverNamespaceState(@objectStoreObserverId, selector)
-                            if not (namespaceState.menuModelView? and namespaceState.menuModelView) then throw "Internal error unable to resolve menu model view for outgoing selector."
-                            namespaceState.menuModelView.isSelected(false)
-                            delete @selectedNamespacesBySelectorHash[observerState.hash]
-                            Console.message("... #{observerId_} previously selected #{observerState.hash} select state is now FALSE.")
-                        else
-                            delete selectors[observerId_]
-                            Console.message("... #{observerId_} previously selected #{observerState.hash} select state is still TRUE due to other selectors.")
+                        if cachedAddress? and cachedAddress
+                            # Now find the item model view associated with the address.
+                            namespaceState = @store.openObserverNamespaceState(@storeObserverId, cachedAddress)
+                            namespaceState.itemModelView.addSelection(observerId_)
 
-                    observerState.hash = newObjectStoreSelector.getHashString()
-                    Console.message("... #{observerId_} selecting #{observerState.hash}")
-                    
-                    selectors = @selectedNamespacesBySelectorHash[observerState.hash]? and @selectedNamespacesBySelectorHash[oberverState.hash] or @selectedNamespacesBySelectorHash[observerState.hash] = {}
-                    selectors[observerId_] = newObjectStoreSelector
+                            # Finally, save a reference to the item model view in the
+                            observerState.itemModelView = namespaceState.itemModelView
 
-                    selectorCount = Encapsule.code.lib.js.dictionaryLength(selectors)
-                    if selectorCount == 1
-                        # First selector to select this namespace.
-                        # Toggle the select flag of the menu model view associated with the new selection.
-                        namespaceState = @objectStore.openObserverNamespaceState(@objectStoreObserverId, newObjectStoreSelector)
-                        if not (namespaceState.menuModelView? and namespaceState.menuModelView) then throw "Internal error unable to resolve menu model view for new selection."
-                        namespaceState.menuModelView.isSelected(true)
-                        Console.message("... #{observerId_} added to selecting observers list for #{observerState.hash}")
-                        Console.message("... #{observerId_} #{observerState.hash} select state is now TRUE.")
-                    else
-                        Console.message("... #{observerId_} added to selecting observers list for #{observerState.hash}")
-                        Console.message("... #{observerId_} #{observerState.hash} select state was and remains TRUE due to other selectors.")
+                    catch exception
+                        throw "ONMjs.observers.NavigatorModelView.cachedAddressObserverInterface.onComponentUpdated failure: #{exception}"
 
             }
 
 
         catch exception
-            throw " Encapsule.code.lib.modelview.ObjectModelNavigatorWindowBase constructor failure: #{exception}"
+            throw " ONMjs.observers.NavigatorModelView consruction failure: #{exception}"
 
         # / END: constructor
 

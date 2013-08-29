@@ -94,9 +94,16 @@ class Encapsule.code.app.Schema
             # Create the "navigator" ONMjs observer responsible for rendering the tree view.
             navigator = schemaRuntime.ONMjs.observers.navigator = new ONMjs.observers.NavigatorModelView()
 
-            # Attach it to the store.
+            # Attach the navigator to the store as an observer.
             navigator.attachToStore(store)
-            navigator.detachFromStore()
+            # navigator.detachFromStore()
+
+            navigator.attachToCachedAddress(selectedAddress)
+
+            newAddress = ONMjs.address.FromPath(model, "schema.client")
+            selectedAddress.setAddress(newAddress)
+
+            navigator.setCachedAddressSinkStore(selectedAddress)
 
 
             # Some temporary test code for bringing up the new store addressing model.

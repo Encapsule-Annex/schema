@@ -68,15 +68,23 @@ class ONMjs.implementation.StoreReifier
                             throw "Internal error: unable to resolve observer ID to obtain callback interface."
                         callbackFunction = callbackInterface[callbackName_]
                         if callbackFunction? and callbackFunction
-                            callbackFunction(@store, observerId_, address_)
+                            try
+                                callbackFunction(@store, observerId_, address_)
+                            catch exception
+                                throw "Error occurred during execution of externally registerd observer callback function."
                     else
                         for observerId, callbackInterface of @store.observers
                             callbackFunction = callbackInterface[callbackName_]
                             if callbackFunction? and callbackFunction
-                                callbackFunction(@store, observerId_, address_)
+                                try
+                                    callbackFunction(@store, observerId, address_)
+                                catch exception
+                                    throw "Error occurred during execution of externally registered observer callback function."
 
                 catch exception
-                    throw "ONMjs.implementation.StoreRefier.dispatchCallback failure: #{exception}"
+                    exceptionMessage = "ONMjs.implementation.StoreRefier.dispatchCallback failure while processing " +
+                        "address='#{address_.getHashString()}', callback='#{callbackName_}', observer='#{observerId_? and observerId_ or "[broadcast all]"}': #{exception}"
+                    throw exceptionMessage
 
 
             # 

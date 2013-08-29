@@ -83,7 +83,10 @@ class ONMjs.CachedAddress extends ONMjs.Store
     # ============================================================================
     getAddress: =>
         try
-            return @selectorNamespaceData.selectedNamespace? and @selectorNamespaceData.selectedNamespace and @selectedNamespaceData.selectedNamespace.address() or undefined
+            namespace = @selectorNamespaceData.selectedNamespace
+            if not (namespace? and namespace) then return undefined
+            return namespace.getResolvedAddress()
+
         catch exception
             throw "Encapsule.code.lib.omm.CachedAddress.getSelector failure: #{exception}"
 
