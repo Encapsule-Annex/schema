@@ -72,10 +72,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 opacity: 1.0
                 backgroundColor: undefined
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
+
                 MVVM: {
                     fnModelView: -> Encapsule.runtime.app.ONMjs.observers.navigator
                     viewModelTemplateId: "idKoTemplate_OmmObserverNavigatorViewModel"
                 }
+
             }                                                            
             Q2WindowDescriptor: undefined                                    
         }

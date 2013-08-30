@@ -3,7 +3,7 @@
 
 The MIT License (MIT)
 
-Copyright (c) 2013 Christopher D. Russell, Encapsule Project
+Copyright (c) 2013 Encapsule Project
   
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -242,12 +242,11 @@ class ONMjs.Address
             if not (callback_? and callback_) then return false
             if not (@parentAddressesDesending? and @parentAddressesDesceding)
                 @parentAddressesDescending = []
-                traverse = true
-                parent = @
-                while traverse
-                    parent = ONMjs.address.Parent(parent)
+
+                parent = ONMjs.address.Parent(@)
+                while parent
                     @parentAddressesDescending.push parent
-                    traverse = not parent.isRoot()
+                    parent = ONMjs.address.Parent(parent)
             if not @parentAddressesDescending.length then return false
             for address in @parentAddressesDescending
                 callback_(address)

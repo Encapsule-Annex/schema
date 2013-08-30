@@ -49,10 +49,10 @@ ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
 ONMjs.observers.implementation = ONMjs.observers.implementation? and ONMjs.observers.implementation or ONMjs.observers.implementation = {}
 
 
-class ONMjs.observers.implementation.PathElementModelView
+class ONMjs.observers.implementation.SelectedPathElementModelView
     constructor: (addressCache_, count_, selectedCount_, objectStoreAddress_) ->
         try
-            @addressCacheStore = addressCache_
+            @cachedAddressStore = addressCache_
             @objectStoreAddress = objectStoreAddress_
             @isSelected = (count_ == selectedCount_)
             objectStoreNamespace = addressCache_.referenceStore.openNamespace(objectStoreAddress_)
@@ -83,14 +83,20 @@ class ONMjs.observers.implementation.PathElementModelView
                 @label += """<span class="#{styleClasses}">#{resolvedLabel}</span>"""
 
             @onClick = => 
-                if not @isSelected
-                    @objectStore.setSelector(@pathElementSelector)
+                try
+                    if not @isSelected
+                        @cachedAddressStore.setAddress(@objectStoreAddress)
+                catch exception
+                    Console.messageError("ONMjs.observers.implementation.SelectedPathElementModelView.onClick failure: #{exception}")
 
         catch exception
-            throw "ONMjs.observers.PathElementModelView failure: #{exception}"
+            throw "ONMjs.observers.SelectedPathElementModelView failure: #{exception}"
 
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_PathElementViewModel", ( -> """<span class="classObjectModelNavigatorSelectorPathElement"><span data-bind="html: prefix"></span><span data-bind="html: label, click: onClick"></span></span>"""))
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedPathElementViewModel", ( -> """
+<span class="classObjectModelNavigatorSelectorPathElement"><span data-bind="html: prefix"></span><span data-bind="html: label, click: onClick"></span></span>
+"""))
+
 
 
 
@@ -118,8 +124,6 @@ class ONMjs.observers.SelectedPathModelView
                 try
                     if not (@cachedAddressStoreObserverId? and @cachedAddressStoreObserverId) then throw "Not attached to an ONMjs.CachedAddress object."
                     @cachedAddressStore.unregisterObserver(@cachedAddressStoreObserverId)
-                    @cachedAddressStore = undefined
-                    @cachedAddressStoreObserverId = undefined
                     true
                 catch exception
                     throw "ONMjs.observers.SelectedPathModelView.detachFromCachedAddress failure: #{exception}"
@@ -127,6 +131,15 @@ class ONMjs.observers.SelectedPathModelView
 
             @cachedAddressObserverInterface =
             {
+                onAttachEnd: (store_, observerId_) =>
+                    Console.message("ONMjs.observers.SelectedPathModelView has attached to and is observing in ONMjs.CachedAddress instance.")
+
+                onDetachEnd: (store_, observerId_) =>
+                    @pathElements.removeAll()
+                    @cachedAddress = undefined
+                    @cachedAddressStoreObserverId = undefined
+                    Console.message("ONMjs.observers.SelectedPathModelView has detached from and is no longer observing an ONMjs.CachedAddress instance.")
+
                 onComponentCreated: (store_, observerId_, address_) =>
                     try
                         @cachedAddressObserverInterface.onComponentUpdated(store_, observerId_, address_)
@@ -138,19 +151,21 @@ class ONMjs.observers.SelectedPathModelView
                         selectedAddress = store_.getAddress()
                         if not (selectedAddress? and selectedAddress) then return true
                         addresses = []
-                        selectedAddress.visitParentNamespacesAscending( (address__) => addresses.push address__ )
+                        selectedAddress.visitParentNamespacesAscending( (address__) => 
+                            addresses.push address__ )
                         addresses.push selectedAddress
                         count = 0
                         selectedCount = addresses.length - 1
                         @pathElements.removeAll()
+
                         for address in addresses
-                            pathElementObject = new ONMjs.observers.implementation.PathElementModelView(store_, count++, selectedCount, address)
+                            pathElementObject = new ONMjs.observers.implementation.SelectedPathElementModelView(store_, count++, selectedCount, address)
                             @pathElements.push pathElementObject
+
                         true
 
                     catch exception
                         throw "OMNjs.observers.SelectedPathModelView.cachedAddressObserverInterface.onComponentUpdated failure: #{exception}"
-
 
             }
             # / END: try
@@ -161,6 +176,6 @@ class ONMjs.observers.SelectedPathModelView
         # / END: connstructor
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedPathViewModel", ( -> """
-Sup: <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorMenuWindow', foreach: pathElements }"></span>
+<span data-bind="template: { name: 'idKoTemplate_SelectedPathElementViewModel', foreach: pathElements }"></span>
 """))
 

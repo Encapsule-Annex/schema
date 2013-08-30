@@ -17,7 +17,7 @@ app_package_publisher="Encapsule Project"
 app_package_publisher_url="http://www.encapsule.org"
 
 # THIS CHANGES ALL THE TIME
-app_version="0.920"
+app_version="0.921"
 # 
 
 app_name="Schema"
@@ -31,7 +31,7 @@ app_uuid="56611225-be91-40cf-b9b8-5c7b8a6c6f3d"
 
 app_release_name="ONMjs library dev/test build"
 app_release_fun_url="https://twitter.com/encapsule"
-app_version_uuid="42c28c61-da0d-4abd-9821-86e57c129239"
+app_version_uuid="7a147010-10c8-4d48-aa96-8a745e18f315"
 app_release_phase="unreleased prototype"
 
 app_builder_email=$*
