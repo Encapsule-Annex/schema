@@ -50,7 +50,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 backgroundColor: "rgba(0,255,0, 0.2)"
                 modes: { full: { reserve: 64 }, min: { reserve: 16 } }
                 MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.ONMjs.observers.pathBOGUS
+                    fnModelView: -> Encapsule.runtime.app.ONMjs.observers.path
                     viewModelTemplateId: "idKoTemplate_SelectedPathViewModel"
                 }
             }
