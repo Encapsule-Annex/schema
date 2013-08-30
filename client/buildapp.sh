@@ -25,7 +25,7 @@ app_uuid="56611225-be91-40cf-b9b8-5c7b8a6c6f3d"
 
 # These should be tweaked prior to deployment. Note that the appcache
 # manifest contains the date stamp of the execution of this script and
-# thus always ensures a appcache refresh. However, these contants should
+# thus always ensures an appcache refresh. However, these contants should
 # be refreshed in order to provide meaning to server logfiles (please).
 #
 
