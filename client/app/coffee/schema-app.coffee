@@ -105,7 +105,6 @@ class Encapsule.code.app.Schema
 
 
             pathView = schemaRuntime.ONMjs.observers.path = new ONMjs.observers.SelectedPathModelView()
-
             pathView.attachToCachedAddress(selectedAddress)
 
 
