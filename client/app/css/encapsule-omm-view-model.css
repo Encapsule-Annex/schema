@@ -84,10 +84,10 @@ white-space: nowrap;
 width: auto;
 overflow: hidden;
 text-overflow: ellipsis;
-border-top: 1px solid rgba(0,0,0,0.5);
-border-left: 1px solid rgba(0,0,0,0.5);
-border-bottom: 1px solid rgba(255,255,255,0.5);
-border-right: 1px solid rgba(255,255,255,0.5);
+box-shadow: 0em 0.5em 1em rgba(0,0,0,0.5) inset;
+padding-left: 0.4em;
+padding-top: 0.1em;
+padding-bottom: 0.1em;
 -moz-border-radius: 8px; border-radius: 8px;
 }
 
@@ -107,10 +107,10 @@ white-space: nowrap;
 width: auto;
 overflow: hidden;
 text-overflow: ellipsis;
-border-top: 1px solid rgba(255,255,255,0.2);
-border-left: 1px solid rgba(255,255,255,0.2);
-border-bottom: 1px solid rgba(0,0,0,0.2);
-border-right: 1px solid rgba(0,0,0,0.2);
+box-shadow: 0em 0.5em 1em rgba(255,255,255,0.2) inset;
+padding-left: 0.4em;
+padding-top: 0.1em;
+padding-bottom: 0.1em;
 -moz-border-radius: 8px; border-radius: 8px;
 }
 
