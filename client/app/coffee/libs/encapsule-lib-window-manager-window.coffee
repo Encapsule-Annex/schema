@@ -72,9 +72,14 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
 
                 if MVVM.modelView
                     hostedModelView = new sourceDescriptor_.MVVM.modelView
+                    if not (hostedModelView? and hostedModelView)
+                        throw "Check your MVVM.modelView declaration. We tried to new the object you specified but it didn't work."
 
                 if MVVM.fnModelView
                     hostedModelView = MVVM.fnModelView()
+                    if not (hostedModelView? and hostedModelView)
+                        throw "Check your MVVM.fnModelView declaration. We called the function you specified but it returned an undefined result."
+                    
 
                 if not hostedModelView? or not hostedModelView
                     throw "Unable to obtain object instance of the specified observable class to host in this window."

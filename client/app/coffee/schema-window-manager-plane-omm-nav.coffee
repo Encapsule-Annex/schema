@@ -49,12 +49,10 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 opacity: 1.0
                 backgroundColor: "rgba(0,255,0, 0.2)"
                 modes: { full: { reserve: 64 }, min: { reserve: 16 } }
-                ###
                 MVVM: {
-                    modelView: -> Encapsule.runtime.app.ONMjs.observers.path
+                    fnModelView: -> Encapsule.runtime.app.ONMjs.observers.pathBOGUS
                     viewModelTemplateId: "idKoTemplate_SelectedPathViewModel"
                 }
-                ###
             }
             Q2WindowDescriptor: undefined
         }
@@ -75,7 +73,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 backgroundColor: undefined
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
                 MVVM: {
-                    modelView: -> Encapsule.runtime.app.ONMjs.observers.navigator
+                    fnModelView: -> Encapsule.runtime.app.ONMjs.observers.navigator
                     viewModelTemplateId: "idKoTemplate_OmmObserverNavigatorViewModel"
                 }
             }                                                            
