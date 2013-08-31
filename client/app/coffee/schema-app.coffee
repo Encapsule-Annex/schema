@@ -28,6 +28,13 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runtime = {}
 Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
 
+# Local alias of app state root.
+schemaRuntime = Encapsule.runtime.app
+
+# Namespace for ONMjs-related objects.
+ONMjsRuntime = schemaRuntime.ONMjs? and schemaRuntime.ONMjs or schemaRuntime.ONMjs = {}
+ONMjsRuntime.observers = ONMjsRuntime.observers? and ONMjsRuntime.observers or ONMjsRuntime.observers = {}
+
 
 
 class Encapsule.code.app.Schema
@@ -40,7 +47,6 @@ class Encapsule.code.app.Schema
 
             Console.messageRaw("<h3>INITIALIZING #{appName} OBJECT MODEL MANAGER</h3>")
 
-
             ONMjs = Encapsule.code.lib.omm
 
             # ONMjs Object Namespace Schema (ONS) declaration.
@@ -50,44 +56,36 @@ class Encapsule.code.app.Schema
             # ONMjs have evolved to the point where this declaration no longer makes a ton of sense given
             # current ONMjs naming conventions.
 
-
-            # Local alias of app state root.
-            schemaRuntime = Encapsule.runtime.app
-
-            # Namespace for ONMjs-related objects.
-            schemaRuntime.ONMjs = {}
-            schemaRuntime.ONMjs.observers = {}
-
             # CONSTRUCT ONMjs CORE
 
             # The Schema application state model codified as an ONMjs Object Model Declaration.
-            schema = schemaRuntime.ONMjs.schema = Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
+            schema = ONMjsRuntime.schema = Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
 
             # Initialize the Schema application's ONMjs runtime state model.
-            model = schemaRuntime.ONMjs.model = new ONMjs.Model(schema)
+            model = ONMjsRuntime.model = new ONMjs.Model(schema)
 
             # Initialize the Schema application's ONMjs runtime state store.
-            store = schemaRuntime.ONMjs.store = new ONMjs.Store(model)
+            store = ONMjsRuntime.store = new ONMjs.Store(model)
 
             # Create a ONMjs.CachedAddress object associated with the store.
-            selectedAddress = schemaRuntime.ONMjs.selectedAddress = new ONMjs.CachedAddress(store)
+            selectedAddress = ONMjsRuntime.selectedAddress = new ONMjs.CachedAddress(store)
 
             # CONSTRUCT ONMjs OBSERVERS
 
-            # Create an instance of ONMjs.observers.SelectedPathModelView (displays the currently selected address)
-            pathView = schemaRuntime.ONMjs.observers.path = new ONMjs.observers.SelectedPathModelView()
+            # Path (address) view window.
+            pathView = ONMjsRuntime.observers.path = new ONMjs.observers.SelectedPathModelView()
 
-            # Create an ONMjs.observers.NavigatorModelView object (displays the treeview).
-            navigator = schemaRuntime.ONMjs.observers.navigator = new ONMjs.observers.NavigatorModelView()
+            # Navigator (treeview) view window.
+            navigatorView = ONMjsRuntime.observers.navigator = new ONMjs.observers.NavigatorModelView()
 
-            # Create an ONMjs.observers.SelectedNamespaceModelView object (namespace data view/edit).
-            #namespaceView = schemaRuntime.ONMjs.observers.namespace = new ONMjs.observers.SelectedNamespaceModelView()
+            # Namespace view/edit view window.
+            #namespaceView = ONMjsRuntime.observers.namespace = new ONMjs.observers.SelectedNamespaceModelView()
 
-            # Create an ONMjs.observable.SelectedJsonModelView object. (displays JSON of current namespace selection).
-            jsonView = schemaRuntime.ONMjs.observers.json = new ONMjs.observers.SelectedJsonModelView()
+            # JSON view window.
+            jsonView = ONMjsRuntime.observers.json = new ONMjs.observers.SelectedJsonModelView()
 
             # TEST:: Create an instance of "canary" - an ONMjs observer. Canary "sings" to the console log.
-            canary = schemaRuntime.ONMjs.observers.canary = new ONMjs.test.observers.Canary()
+            canaryMonitor = ONMjsRuntime.observers.canary = new ONMjs.test.observers.Canary()
 
             # REGISTER ONMjs OBSERVERS (i.e. ATTACH)
 
@@ -102,15 +100,19 @@ class Encapsule.code.app.Schema
 
             # Attach the navigator as an observer of the store so that it can populate its tree view with
             # a visual representation of the store's contents.
-            navigator.attachToStore(store)
+            navigatorView.attachToStore(store)
 
             # Attach the navigator as an observer of the currently selected address so that it can respond to
             # changes in the selected namespace.
-            navigator.attachToCachedAddress(selectedAddress)
+            navigatorView.attachToCachedAddress(selectedAddress)
 
             # Attach the JSON viewer as an obsever of the selected address so that it can display the serialized
             # JSON of the currently selected namespace.
             jsonView.attachToCachedAddress(selectedAddress)
+
+            # Tell the navigator which CachedAddress to route user address selections to.
+            navigatorView.setCachedAddressSinkStore(selectedAddress)
+
 
 
 
@@ -118,7 +120,7 @@ class Encapsule.code.app.Schema
             #---
             # TEST CODE
             # Attach the canary to the store via ONMjs.Store.registerObserver.
-            canaryStoreObserverId = store.registerObserver(canary.callbackInterface, canary)
+            canaryStoreObserverId = store.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
             # Detach the canary from the store via ONMjs.Store.unregisterObserver.
             store.unregisterObserver(canaryStoreObserverId)
             # The above attach/detach should produce corresponding callback notifications logged.
@@ -135,10 +137,6 @@ class Encapsule.code.app.Schema
             selectedAddress.setAddress(newAddress)
             # TEST CODE
             #---
-
-            # Tell the navigator which CachedAddress to route user address selections to.
-            navigator.setCachedAddressSinkStore(selectedAddress)
-
 
 
 

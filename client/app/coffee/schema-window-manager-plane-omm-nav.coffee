@@ -28,9 +28,15 @@ Encapsule.code.app.winmgr.layout.root = Encapsule.code.app.winmgr.layout.root? a
 
 CommonSettings = Encapsule.code.app.winmgr.layout.CommonSettings
 
+Encapsule.runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runtime = {}
+Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
+schemaRuntime = Encapsule.runtime.app
+ONMjsRuntime = schemaRuntime.ONMjs? and schemaRuntime.ONMjs or schemaRuntime.ONMjs = {}
+ONMjsRuntime.observers = ONMjsRuntime.observers? and ONMjsRuntime.observers or ONMjsRuntime.observers = {}
+
+
+
 Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
-
-
 
     id: "idSchemaPlaneOmmNavigator"
     name: "OMM Navigator"
@@ -50,7 +56,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 backgroundColor: "rgba(0,255,0, 0.2)"
                 modes: { full: { reserve: 64 }, min: { reserve: 16 } }
                 MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.ONMjs.observers.path
+                    fnModelView: -> ONMjsRuntime.observers.path
                     viewModelTemplateId: "idKoTemplate_SelectedPathViewModel"
                 }
             }
@@ -74,7 +80,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
 
                 MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.ONMjs.observers.navigator
+                    fnModelView: -> ONMjsRuntime.observers.navigator
                     viewModelTemplateId: "idKoTemplate_OmmObserverNavigatorViewModel"
                 }
 
@@ -97,7 +103,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 backgroundColor: "rgba(255,255,255,0.1)"
                 modes: { full: { reserve: 500 }, min: { reserve: 250 } }
                 MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.ONMjs.observers.json
+                    fnModelView: -> ONMjsRuntime.observers.json
                     viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorJsonModelView"
 
                 }
