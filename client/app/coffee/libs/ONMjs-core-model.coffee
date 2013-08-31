@@ -95,7 +95,7 @@ class ONMjs.implementation.ModelBase
             # --------------------------------------------------------------------------
             buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, parentDescriptor_, componentDescriptor_, parentPathIdVector_, parentPathExtensionPointIdVector_) =>
                 try
-                    if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter!"
+                    if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter! Typically this happens if you declare the object model namespace with an unresolvable reference (e.g. to an object you defined previously for re-use) as opposed to declaring inline in your object model declaration."
 
                     # Local variables used to construct this descriptor.
                     tag = objectModelLayoutObject_.jsonTag
@@ -311,7 +311,7 @@ class ONMjs.implementation.ModelBase
 
 
         catch exception
-            throw "ONMjs.ModelBase failure: #{exception}"
+            throw "ONMjs.ModelBase object model declaration parse failure: #{exception}. Check your ONMjs object model declaration carefully for error(s)."
 
 # ****************************************************************************
 #
