@@ -3,7 +3,7 @@
 
 The MIT License (MIT)
 
-Copyright (c) 2013 Christopher D. Russell, Encapsule Project
+Copyright (c) 2013 Encapsule Project
   
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -44,11 +44,12 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
+ONMjs = Encapsule.code.lib.omm
+ONMjs.implementation = ONMjs.implementation? and ONMjs.implementation or ONMjs.implementation = {}
 
 #
 # ****************************************************************************
-Encapsule.code.lib.omm.implementation = Encapsule.code.lib.omm.implementation? and Encapsule.code.lib.omm.implementation or @Encapsule.code.lib.omm.implementation = {}
-Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory = (jsonTag_, label_, description_, menuHierarchy_) ->
+ONMjs.implementation.RootObjectDescriptorFactory = (jsonTag_, label_, description_, menuHierarchy_) ->
     try
         rootObjectDescriptor = {
             jsonTag: jsonTag_
@@ -80,14 +81,14 @@ Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory = (jsonTag_, l
         return rootObjectDescriptor
 
     catch exception
-        throw "Encapsule.code.lib.omm.implementation.RooObjectDescriptorFactor function failed: #{exception}"
+        throw "ONMjs.implementation.RooObjectDescriptorFactor function failed: #{exception}"
 # ****************************************************************************
 #
 
 #
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.implementation.ModelBase
+class ONMjs.implementation.ModelBase
     constructor: (objectModelDeclaration_) ->
         try
 
@@ -235,7 +236,7 @@ class Encapsule.code.lib.omm.implementation.ModelBase
             # / END: buildOMDesriptorFromLayout
 
             # --------------------------------------------------------------------------
-            Console.message("Encapsule.code.lib.omm.Model: Processing object model declaration '#{objectModelDeclaration_.jsonTag}'")
+            Console.message("ONMjs.Model: Processing object model declaration '#{objectModelDeclaration_.jsonTag}'")
 
             if not (objectModelDeclaration_? and objectModelDeclaration_)
                 throw "Missing object model delcaration input parameter!"
@@ -248,7 +249,7 @@ class Encapsule.code.lib.omm.implementation.ModelBase
             # instances of ObjectModel. The namespace is reserved for use by OMM itself and cannot be
             # accessed via the object model layout declaration object.
 
-            rootObjectDescriptor = Encapsule.code.lib.omm.implementation.RootObjectDescriptorFactory(
+            rootObjectDescriptor = ONMjs.implementation.RootObjectDescriptorFactory(
                 @jsonTag
                 @label
                 @description
@@ -310,7 +311,7 @@ class Encapsule.code.lib.omm.implementation.ModelBase
 
 
         catch exception
-            throw "Encapsule.code.lib.omm.ModelBase failure: #{exception}"
+            throw "ONMjs.ModelBase failure: #{exception}"
 
 # ****************************************************************************
 #
@@ -319,7 +320,7 @@ class Encapsule.code.lib.omm.implementation.ModelBase
 #
 #
 # ****************************************************************************
-class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.implementation.ModelBase
+class ONMjs.Model extends ONMjs.implementation.ModelBase
     constructor: (objectModelDeclaration_) ->
         try
             super(objectModelDeclaration_)
@@ -337,7 +338,7 @@ class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.implementation
                     return objectModelDescriptor
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.Model.getNamespaceDescriptorFromPathId failure: #{exception}"
+                    throw "ONMjs.Model.getNamespaceDescriptorFromPathId failure: #{exception}"
                 
             # --------------------------------------------------------------------------
             @getPathIdFromPath = (objectModelPath_) =>
@@ -355,7 +356,7 @@ class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.implementation
                     return objectModelPathId
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.Model.getPathIdFromPath fail: #{exception}"
+                    throw "ONMjs.Model.getPathIdFromPath fail: #{exception}"
 
             # --------------------------------------------------------------------------
             @getPathFromPathId = (pathId_) =>
@@ -369,7 +370,7 @@ class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.implementation
                     return path
 
                 catch exception
-                    throw "Encapsule.code.lib.omm.Model.getPathFromPathId fail: #{exception}"
+                    throw "ONMjs.Model.getPathFromPathId fail: #{exception}"
 
 
             # --------------------------------------------------------------------------
@@ -378,9 +379,9 @@ class Encapsule.code.lib.omm.Model extends Encapsule.code.lib.omm.implementation
                     semanticBindings = @objectModelDeclaration.semanticBindings
                     return semanticBindings
                 catch exception
-                    throw "Encapsule.code.lib.omm.Model failure: #{exception}"
+                    throw "ONMjs.Model failure: #{exception}"
 
 
 
         catch exception
-            throw "Encapsule.code.lib.omm.Model construction fail: #{exception}"
+            throw "ONMjs.Model construction fail: #{exception}"

@@ -45,7 +45,8 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
 ONMjs = Encapsule.code.lib.omm
-ONMjs.observers = Encapsule.code.lib.omm.observers? and Encapsule.code.lib.omm.observers or @Encapsule.code.lib.omm.observers = {}
+ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
+
 
 
 class ONMjs.observers.NavigatorModelView

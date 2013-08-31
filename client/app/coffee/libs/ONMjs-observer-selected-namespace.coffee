@@ -44,13 +44,14 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
 
-Encapsule.code.lib.modelview = Encapsule.code.lib.modelview? and Encapsule.code.lib.modelview or @Encapsule.code.lib.modelview = {}
-Encapsule.code.lib.modelview.detail = Encapsule.code.lib.modelview.detail? and Encapsule.code.lib.modelview.detail or @Encapsule.code.lib.modelview.detail = {}
+ONMjs = Encapsule.code.lib.omm
+ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
+
 
 
 #
 # ============================================================================
-class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement
+class ONMjs.observers.ObjectModelNavigatorNamespaceContextElement
     constructor: (prefix_, label_, selector_, selectorStore_, options_) ->
         try
             @prefix = prefix_? and prefix_ or ""
@@ -64,14 +65,14 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement
                 @selectorStore.setSelector(@selector)
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement failure: #{exception}"
+            throw "ONMjs.observers.ObjectModelNavigatorNamespaceContextElement failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceContextElement", ( -> """<span data-bind="if: prefix"><span class="classObjectModelNavigatorNamespaceContextPrefix" data-bind="html: prefix"></span></span><span data-bind="ifnot: optionsNoLink"><span class="classObjectModelNavigatorNamespaceContextLabel classObjectModelNavigatorMouseOverCursorPointer" data-bind="html: label, click: onClick"></span></span><span data-bind="if: optionsNoLink"><span class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: label"></span></span>"""))
 
 #
 # ============================================================================
-class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink
+class ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink
     constructor: (prefix_, label_, selector_, selectorStore_, options_, callback_) ->
         try
             @prefix = prefix_? and prefix_ or ""
@@ -87,7 +88,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink
                 @callback(@prefix, @label, @selector, @selectorStore, @options)
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink failure: #{exception}"
+            throw "ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink", ( -> """
@@ -104,7 +105,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 
 #
 # ============================================================================
-class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
+class ONMjs.observers.ObjectModelNavigatorNamespaceActions
     constructor: (namespace_, selectorStore_) ->
         try
 
@@ -118,7 +119,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                         Console.message("... Success. A new component has been added and selected.")
                         ), 350)
                 catch exception
-                    Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions.onClickAddSubcomponent failure: #{exception}")
+                    Console.messageError("ONMjs.observers.ObjectModelNavigatorNamespaceActions.onClickAddSubcomponent failure: #{exception}")
 
             @onDoRemoveAllSubcomponents = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
@@ -143,7 +144,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                         selectorStore_.associatedObjectStore.removeComponent(subcomponentSelector)
 
                 catch exception
-                    Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions.onClickRemoveAllSubcomponents failure: #{exception}")
+                    Console.messageError("ONMjs.observers.ObjectModelNavigatorNamespaceActions.onClickRemoveAllSubcomponents failure: #{exception}")
 
             @onDoRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
@@ -154,7 +155,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                     Console.message("... Success. The component has been removed.")
 
                 catch exception
-                    Console.messageError("Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions.onClickRemoveComponent failure: #{exception}")
+                    Console.messageError("ONMjs.observers.ObjectModelNavigatorNamespaceActions.onClickRemoveComponent failure: #{exception}")
 
 
             @onClickRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
@@ -185,7 +186,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
             @callbackLinkRequestRemoveComponent = undefined
             @callbackLinkRemoveComponent = undefined
 
-            @callbackLinkCancelActionRequest = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
+            @callbackLinkCancelActionRequest = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
                 "", "Cancel Request", undefined, undefined, { styleClass: "classActionCancel" }, @onClickCancelActionRequest
                 )
 
@@ -229,17 +230,17 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                         namespace_.objectModelDescriptor.archetypePathId, namespace_.resolvedKeyVector, secondaryKeyVector)
 
                     archetypeLabel = archetypeSelector.objectModelDescriptor.label
-                    @callbackLinkAddSubcomponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
+                    @callbackLinkAddSubcomponent = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
                         "", "Add #{archetypeLabel}", archetypeSelector, selectorStore_, { styleClass: "classActionAdd" }, @onClickAddSubcomponent)
 
                     # remove all subcomponents
 
-                    @callbackLinkRequestRemoveAllSubcomponents = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
+                    @callbackLinkRequestRemoveAllSubcomponents = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
                         "", "Remove All #{namespace_.objectModelDescriptor.label}", undefined, undefined,
                         { noLink: namespace_.objectStoreNamespace.length == 0, styleClass: namespace_.objectStoreNamespace.length != 0 and "classActionRemoveAll" or undefined }, @onClickRemoveAllSubcomponents
                         )
 
-                    @callbackLinkRemoveAllSubcomponents = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
+                    @callbackLinkRemoveAllSubcomponents = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
                         "", "Proceed with Remove All", namespace_.getResolvedSelector(), selectorStore_,
                         { noLink: namespace_.objectStoreNamespace.length == 0, styleClass: namespace_.objectStoreNamespace.length != 0 and "classActionConfirm" or undefined }, @onDoRemoveAllSubcomponents
                         )
@@ -254,10 +255,10 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
                     componentSelector = namespace_.getResolvedSelector()
 
                     # remove
-                    @callbackLinkRequestRemoveComponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
+                    @callbackLinkRequestRemoveComponent = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
                         "", "Remove #{componentSelector.objectModelDescriptor.label}", undefined, undefined, { styleClass: "classActionRemove" }, @onClickRemoveComponent)
 
-                    @callbackLinkRemoveComponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
+                    @callbackLinkRemoveComponent = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
                         "", "Proceed with Remove", componentSelector, selectorStore_, { styleClass: "classActionConfirm" }, @onDoRemoveComponent)
 
                     @actionsForNamespace = true
@@ -266,7 +267,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions
 
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions #{exception}"
+            throw "ONMjs.observers.ObjectModelNavigatorNamespaceActions #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceActions", ( -> """
@@ -328,7 +329,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 
 #
 # ============================================================================
-class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable
+class ONMjs.observers.ObjectModelNavigatorNamespaceImmutable
     constructor: (namespace_) ->
         try
             @propertyModelViews = []
@@ -361,7 +362,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable
                 @propertyModelViews.push propertyDescriptor
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable failure: #{exception}"
+            throw "ONMjs.observers.ObjectModelNavigatorNamespaceImmutable failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceImmutable", ( -> """
@@ -392,7 +393,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 # ******************************************************************************
 #
 # ============================================================================
-class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable
+class ONMjs.observers.ObjectModelNavigatorNamespaceMutable
     constructor: (namespace_) ->
         try
             @propertyModelViews = []
@@ -426,7 +427,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable
 
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable failure: #{exception}"
+            throw "ONMjs.observers.ObjectModelNavigatorNamespaceMutable failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceMutable", ( -> """
@@ -456,7 +457,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 # ******************************************************************************
 #
 # ============================================================================
-class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
+class ONMjs.observers.ObjectModelNavigatorNamespaceComponent
     constructor: (namespace_, selectorStore_) ->
         try
             namespaceSelector = namespace_.getResolvedSelector()
@@ -470,7 +471,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
 
             componentNamespace = selectorStore_.associatedObjectStore.openNamespace(componentSelector)
 
-            @componentModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(
+            @componentModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(
                 "", componentNamespace.getResolvedLabel(), componentSelector, selectorStore_, { noLink: namespace_.objectModelDescriptor.isComponent } )
 
             @extensionPointModelViewArray = []
@@ -485,11 +486,11 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent
                 label = "#{extensionPointNamespace.getResolvedLabel()}"
                 subcomponentCount = extensionPointNamespace.objectStoreNamespace.length
                 label += " (#{subcomponentCount})"
-                @extensionPointModelViewArray.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(
+                @extensionPointModelViewArray.push new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(
                     prefix, label, extensionPointSelector, selectorStore_, { noLink: noLinkFlag })
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent failure: #{exception}"
+            throw "ONMjs.observers.ObjectModelNavigatorNamespaceComponent failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceComponent", ( -> """
@@ -514,7 +515,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 # ******************************************************************************
 #
 # ============================================================================
-class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren
+class ONMjs.observers.ObjectModelNavigatorNamespaceChildren
     constructor: (namespace_, selectorStore_) ->
         try
             selector = namespace_.getResolvedSelector()
@@ -530,10 +531,10 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren
                     if childSelector.objectModelDescriptor.mvvmType == "extension"
                         label += " (#{childNamespace.objectStoreNamespace.length})"
                     label += "<br>"
-                    @childModelViews.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(prefix, label, childSelector, selectorStore_)
+                    @childModelViews.push new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(prefix, label, childSelector, selectorStore_)
                 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren failure: #{exception}"
+            throw "ONMjs.observers.ObjectModelNavigatorNamespaceChildren failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceChildren", ( -> """
@@ -552,7 +553,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 # ******************************************************************************
 #
 # ============================================================================
-class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
+class ONMjs.observers.ObjectModelNavigatorNamespaceCollection
     constructor: (namespace_, selectorStore_) ->
         try
             @namespaceLabel = namespace_.objectModelDescriptor.label
@@ -564,7 +565,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
 
             @subcomponentModelViews = []
 
-            @addElementCallbackLink = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCallbackLink(
+            @addElementCallbackLink = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
                 "", "add", @elementSelector, selectorStore_, undefined, @onClickAddElement)
 
             index = 0
@@ -577,11 +578,11 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection
                 elementNamespace = namespace_.objectStore.openNamespace(elementSelector)
                 prefix = "#{index++ + 1}: "
                 label = "#{elementNamespace.getResolvedLabel()}<br>"
-                @subcomponentModelViews.push new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(
+                @subcomponentModelViews.push new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(
                     prefix, label, elementSelector, selectorStore_)
                 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection failure: #{exception}"
+            throw "ONMjs.observers.ObjectModelNavigatorNamespaceCollection failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceCollection", ( -> """
@@ -606,7 +607,7 @@ Subcomponents (<span data-bind="text: subcomponentModelViews.length"></span>):
 # ******************************************************************************
 #
 # ============================================================================
-class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceTitle
+class ONMjs.observers.ObjectModelNavigatorNamespaceTitle
     constructor: (namespace_, selectorStore_) ->
         try
             # aliases
@@ -652,7 +653,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceTitle
                 componentNamespace = objectStore.openNamespace(componentSelector)
                 @componentSuffixString = componentDescriptor.id and ":" or "::"
                 componentLabelResolved = componentNamespace.getResolvedLabel()
-                @contextLinkModelViewComponent = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(
+                @contextLinkModelViewComponent = new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(
                     "", componentLabelResolved, componentSelector, selectorStore_)
 
             if namespaceDescriptor.mvvmType == "archetype"
@@ -661,7 +662,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceTitle
 
                 extensionPointSelector = objectStore.objectModel.createNamespaceSelectorFromPathId(namespaceDescriptor.parent.id, namespace_.resolvedKeyVector)
                 extensionPointDescriptor = extensionPointSelector.objectModelDescriptor
-                @contextLinkModelViewExtensionPoint = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceContextElement(
+                @contextLinkModelViewExtensionPoint = new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(
                     "", extensionPointDescriptor.label, extensionPointSelector, selectorStore_)
 
             @templateName = undefined
@@ -679,7 +680,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceTitle
                 @templateName = "idKoTemplate_ObjectModelNavigatorNamespaceTitleComponent"
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceTitle failure: #{exception}"
+            throw "ONMjs.observers.ObjectModelNavigatorNamespaceTitle failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -713,7 +714,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 # ******************************************************************************
 # ******************************************************************************
 
-class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
+class ONMjs.observers.ObjectModelNavigatorNamespaceWindow
     constructor: ->
         try
 
@@ -762,42 +763,42 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
                     subtitle = """#{selector.objectModelDescriptor.description}"""
                     @subtitle(subtitle)
 
-                    @modelviewSummary(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceTitle(selectedNamespace, objectStore_))
-                    @modelviewActions(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceActions(selectedNamespace, objectStore_))
+                    @modelviewSummary(new ONMjs.observers.ObjectModelNavigatorNamespaceTitle(selectedNamespace, objectStore_))
+                    @modelviewActions(new ONMjs.observers.ObjectModelNavigatorNamespaceActions(selectedNamespace, objectStore_))
 
                     switch mvvmType
                         when "root"
-                            @modelviewImmutable(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable(selectedNamespace))
+                            @modelviewImmutable(new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(selectedNamespace))
                             @modelviewMutable(undefined)
-                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
-                            newModelViewChildren = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren(selectedNamespace, objectStore_)
+                            @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
+                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(selectedNamespace, objectStore_)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
                             @modelviewCollection(undefined)
                             break
                         when "child"
-                            immutableModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable(selectedNamespace)
+                            immutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(selectedNamespace)
                             @modelviewImmutable(immutableModelView.propertyModelViews.length and immutableModelView or undefined)
-                            mutableModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable(selectedNamespace)
+                            mutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceMutable(selectedNamespace)
                             @modelviewMutable(mutableModelView.propertyModelViews.length and mutableModelView or undefined)
                             @modelviewComponent(undefined)
-                            newModelViewChildren = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren(selectedNamespace, objectStore_)
+                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(selectedNamespace, objectStore_)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)                            
                             @modelviewCollection(undefined)
                             break
                         when "extension"
                             @modelviewImmutable(undefined)
                             @modelviewMutable(undefined)
-                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
+                            @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
                             @modelviewChildren(undefined)
-                            @modelviewCollection(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceCollection(selectedNamespace, objectStore_))
+                            @modelviewCollection(new ONMjs.observers.ObjectModelNavigatorNamespaceCollection(selectedNamespace, objectStore_))
                             break
                         when "archetype"
-                            immutableModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceImmutable(selectedNamespace)
+                            immutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(selectedNamespace)
                             @modelviewImmutable(immutableModelView.propertyModelViews.length and immutableModelView or undefined)
-                            mutableModelView = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceMutable(selectedNamespace)
+                            mutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceMutable(selectedNamespace)
                             @modelviewMutable(mutableModelView.propertyModelViews.length and mutableModelView or undefined)
-                            @modelviewComponent(new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
-                            newModelViewChildren = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceChildren(selectedNamespace, objectStore_)
+                            @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
+                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(selectedNamespace, objectStore_)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
                             @modelviewCollection(undefined)
                             break
@@ -808,7 +809,7 @@ class Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow
 
 
         catch exception
-            throw "Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow construction failure: #{exception}"
+            throw "ONMjs.observers.ObjectModelNavigatorNamespaceWindow construction failure: #{exception}"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
