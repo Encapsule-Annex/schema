@@ -79,7 +79,7 @@ class Encapsule.code.app.Schema
             navigatorView = ONMjsRuntime.observers.navigator = new ONMjs.observers.NavigatorModelView()
 
             # Namespace view/edit view window.
-            #namespaceView = ONMjsRuntime.observers.namespace = new ONMjs.observers.SelectedNamespaceModelView()
+            namespaceView = ONMjsRuntime.observers.namespace = new ONMjs.observers.SelectedNamespaceModelView()
 
             # JSON view window.
             jsonView = ONMjsRuntime.observers.json = new ONMjs.observers.SelectedJsonModelView()
