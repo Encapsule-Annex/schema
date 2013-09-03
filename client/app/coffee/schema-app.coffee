@@ -98,13 +98,16 @@ class Encapsule.code.app.Schema
             # the selection.
             pathView.attachToCachedAddress(selectedAddress)
 
-            # Attach the navigator as an observer of the store so that it can populate its tree view with
-            # a visual representation of the store's contents.
+            # Attach the navigator as an observer of the main object store.
             navigatorView.attachToStore(store)
 
             # Attach the navigator as an observer of the currently selected address so that it can respond to
             # changes in the selected namespace.
             navigatorView.attachToCachedAddress(selectedAddress)
+
+            # Attach the namespace viewer to the selcted address so it can respond to changes in the selected namespace.
+            namespaceView.attachToCachedAddress(selectedAddress)
+            
 
             # Attach the JSON viewer as an obsever of the selected address so that it can display the serialized
             # JSON of the currently selected namespace.

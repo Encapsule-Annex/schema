@@ -79,6 +79,7 @@ class ONMjs.observers.NavigatorModelView
                     if @storeObserverId? and @storeObserverId then throw "This navigator instance is already observing an ONMjs.Store instance."
                     @store = store_
                     @storeObserverId = store_.registerObserver(@objectStoreObserverInterface, @)
+                    true
                 catch exception
                    throw "ONMjs.observers.NavigatorModelView.attachToStore failure: #{exception}"
 
@@ -89,6 +90,7 @@ class ONMjs.observers.NavigatorModelView
                     if not @storeObserverId? and @storeObserverId then throw "This navigator instance is not attached to an ONMjs.Store instance."
                     @store.unregisterObserver(@storeObserverId)
                     @storeObserverId = undefined
+                    true
                 catch exception
                     throw "ONMjs.observers.NavigatorModelView.detachFromStore failure: #{exception}"
 
@@ -109,6 +111,7 @@ class ONMjs.observers.NavigatorModelView
                     if not (cachedAddress_? and cachedAddres_) then throw "Missing cached address input parameter."
                     if not (observerId_? and observerId_) then throw "Missing observer ID input parameter."
                     cachedAddress_.unregisterObserver(observerId_)
+                    true
                 catch exception
                     throw "ONMjs.observers.NavigatorModelView.detachFromCachedAddress failure: #{exception}"
 

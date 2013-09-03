@@ -60,51 +60,80 @@ class ONMjs.observers.SelectedNamespaceModelView
         try
 
             @objectStoreName = ko.observable "<not connected>"
-            @hashString = ko.observable "<not connected>"
+
 
             @title = ko.observable "<not connected>"
             @subtitle = ko.observable "<not connected>"
-            # @context = ko.observableArray []
 
             @modelviewActions = ko.observable undefined
-            @modelviewSummary = ko.observable undefined
+            @modelviewTitle = ko.observable undefined
             @modelviewImmutable = ko.observable undefined
             @modelviewMutable = ko.observable undefined
             @modelviewComponent = ko.observable undefined
             @modelviewChildren = ko.observable undefined
             @modelviewCollection = ko.observable undefined
 
-            @selectorStoreCallbacks = {
+            @cachedAddressStore = undefined
+            @cachedAddressStoreObserverId = undefined
 
-                onComponentCreated: (objectStore_, observerId_, namespaceSelector_) =>
-                    @selectorStoreCallbacks.onComponentUpdated(objectStore_, observerId_, namespaceSelector_)
+            #
+            # ============================================================================
+            @attachToCachedAddress = (cachedAddress_) =>
+                try
+                    if not (cachedAddress_? and cachedAddress_) then throw "Missing cached address input parameter."
+                    if @cachedAddressStore? and @cachedAddressStore then throw "This namespace observer is already attached to a selected address store."
+                    @cachedAddressStore = cachedAddress_
+                    @cachedAddressStoreObserverId = cachedAddress_.registerObserver(@cachedAddressObserverInterface, @)
+                    true
+                catch exception
+                    throw "ONMjs.observers.SelectedNamespaceModelView.attachToCachedAddress failure: #{exception}"
+
+            #
+            # ============================================================================
+            @detachFromCachedAddress = =>
+                try
+                    if not (@cachedAddressStoreObserverId and @cachedAddressStoreObserverId) then throw "This namespace observer is not currently attached to a cached address store."
+                    @cachedAddressStore.unregisterObserver(@cachedAddressStoreObserverId)
+                    @cachedAddressStore = undefined
+                    @cachedAddressStoreObserverId = undefined
+                    true
+                catch exception
+                    throw "ONMjs.observers.SelectedNamespaceModelView.detachFromCachedAddress failure: #{exception}"
+
+            #
+            # ============================================================================
+            @cachedAddressObserverInterface = {
 
 
-                onComponentUpdated: (objectStore_, observerId_, namespaceSelector_) =>
 
-                    # Get the new selector
-                    selector = objectStore_.getSelector()
-                    selectedNamespace = objectStore_.associatedObjectStore.openNamespace(selector)
+                #
+                # ----------------------------------------------------------------------------
+                onComponentCreated: (cachedAddressStore_, observerId_, address_) =>
+                    @cachedAddressObserverInterface.onComponentUpdated(cachedAddressStore_, observerId_, address_)
 
-                    @objectStoreName = objectStore_.associatedObjectStore.jsonTag
-                    @hashString(selector.getHashString())
+                #
+                # ----------------------------------------------------------------------------
+                onComponentUpdated: (cachedAddressStore_, observerId_, address_) =>
 
-                    resolvedLabel = selectedNamespace.getResolvedLabel() or "<unresolved label>"
+                    objectStore = cachedAddressStore_.referenceStore
+                    selectedAddress = cachedAddressStore_.getAddress()
 
-                    if selector.objectModelDescriptor.isComponent
-                        parentExtensionPointPathIds = Encapsule.code.lib.js.clone(selector.objectModelDescriptor.parentPathExtensionPoints)
-                    else
-                        parentComponentId = selector.objectModelDescriptor.idComponent
-                        parentComponentSelector = objectStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(parentComponentId, selector.selectKeyVector)
-                        parentExtensionPointPathIds = Encapsule.code.lib.js.clone(parentComponentSelector.objectModelDescriptor.parentPathExtensionPoints)
-                        parentExtensionPointPathIds.push parentComponentSelector.pathId
+                    if not (selectedAddress and selectedAddress)
+                        # The contained cached address may be undefined indicating no current seletion
+                        return true
 
-                    mvvmType = selector.objectModelDescriptor.mvvmType
+                    selectedNamespace = objectStore.openNamespace(selectedAddress)
+                    selectedNamespaceDescriptor = selectedAddress.getDescriptor()
 
-                    subtitle = """#{selector.objectModelDescriptor.description}"""
-                    @subtitle(subtitle)
+                    @objectStoreName = objectStore.jsonTag
+                    @subtitle("""#{selectedNamespaceDescriptor.description}""")
 
-                    @modelviewSummary(new ONMjs.observers.ObjectModelNavigatorNamespaceTitle(selectedNamespace, objectStore_))
+                    mvvmType = selectedNamespaceDescriptor.mvvmType
+
+                    return true
+
+
+                    @modelviewTitle(new ONMjs.observers.ObjectModelNavigatorNamespaceTitle(selectedNamespace, objectStore_))
                     @modelviewActions(new ONMjs.observers.ObjectModelNavigatorNamespaceActions(selectedNamespace, objectStore_))
 
                     switch mvvmType
@@ -150,14 +179,14 @@ class ONMjs.observers.SelectedNamespaceModelView
 
 
         catch exception
-            throw "ONMjs.observers.ObjectModelNavigatorNamespaceWindow construction failure: #{exception}"
+            throw "ONMjs.observers.SelectedNamespaceModelView construction failure: #{exception}"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceWindow", ( -> """
 <div class="classObjectModelNavigatorNamespaceHash"><span data-bind="text: objectStoreName"></span></div>
-<span data-bind="if: modelviewSummary"><span data-bind="with: modelviewSummary"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceTitle' }"></span></span></span>
+<span data-bind="if: modelviewTitle"><span data-bind="with: modelviewTitle"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceTitle' }"></span></span></span>
 <span data-bind="if: modelviewActions"><span data-bind="with: modelviewActions"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceActions' }"></span></span></span>
 <span data-bind="if: modelviewImmutable"><span data-bind="with: modelviewImmutable"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceImmutable' }"></span></span></span>
 <span data-bind="if: modelviewMutable"><span data-bind="with: modelviewMutable"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceMutable'}"></span></span></span>

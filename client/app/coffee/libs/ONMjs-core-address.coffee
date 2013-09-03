@@ -218,6 +218,14 @@ class ONMjs.Address
             throw "ONMjs.Address.getLastToken failure: #{exception}"
 
     
+    #
+    # ============================================================================
+    getDescriptor: =>
+        try
+            return @getLastToken().namespaceDescriptor
+
+        catch exception
+            throw "ONMjs.Address.getDescriptor failure: #{exception}"
 
     #
     # ============================================================================
