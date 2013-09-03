@@ -49,14 +49,9 @@ ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
 
 #
 # ============================================================================
-class ONMjs.observers.ObjectModelNavigatorNamespaceTitle
+class ONMjs.observers.SelectedNamespaceTitleModelView
     constructor: (namespace_, selectorStore_) ->
         try
-            # aliases
-            objectStore = selectorStore_.associatedObjectStore
-            namespaceDescriptor = namespace_.objectModelDescriptor
-
-            # model view members
 
             @namespaceLabelResolved = namespace_.getResolvedLabel()
             @namespaceDescription = namespaceDescriptor.description

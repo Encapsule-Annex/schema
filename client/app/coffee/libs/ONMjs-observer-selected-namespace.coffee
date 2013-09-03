@@ -63,6 +63,8 @@ class ONMjs.observers.SelectedNamespaceModelView
 
 
             @title = ko.observable "<not connected>"
+
+            # DO WE ACTUALLY NEED THIS?
             @subtitle = ko.observable "<not connected>"
 
             @modelviewActions = ko.observable undefined
@@ -126,54 +128,64 @@ class ONMjs.observers.SelectedNamespaceModelView
                     selectedNamespaceDescriptor = selectedAddress.getDescriptor()
 
                     @objectStoreName = objectStore.jsonTag
+
+                    # ACTUALLY NEEDED?
                     @subtitle("""#{selectedNamespaceDescriptor.description}""")
 
                     mvvmType = selectedNamespaceDescriptor.mvvmType
 
-                    return true
+                    # Gather up all the references required to construct the child model views.
+                    childParams = {
+                        objectStore: objectStore
+                        selectedAddress: selectedAddress
+                        selectedNamespace: selectedNamespace
+                        selectedNamespaceDescriptor: selectedNamespaceDescriptor
+                    }
 
 
-                    @modelviewTitle(new ONMjs.observers.ObjectModelNavigatorNamespaceTitle(selectedNamespace, objectStore_))
-                    @modelviewActions(new ONMjs.observers.ObjectModelNavigatorNamespaceActions(selectedNamespace, objectStore_))
+
+                    @modelviewTitle(new ONMjs.observers.SelectedNamespaceTitleModelView(childParams))
+                    @modelviewActions(new ONMjs.observers.ObjectModelNavigatorNamespaceActions(childParams))
 
                     switch mvvmType
                         when "root"
-                            @modelviewImmutable(new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(selectedNamespace))
+                            @modelviewImmutable(new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(childParams))
                             @modelviewMutable(undefined)
-                            @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
-                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(selectedNamespace, objectStore_)
+                            @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(childParams))
+                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(childParams)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
                             @modelviewCollection(undefined)
                             break
                         when "child"
-                            immutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(selectedNamespace)
+                            immutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(childParams)
                             @modelviewImmutable(immutableModelView.propertyModelViews.length and immutableModelView or undefined)
-                            mutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceMutable(selectedNamespace)
+                            mutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceMutable(chldParams)
                             @modelviewMutable(mutableModelView.propertyModelViews.length and mutableModelView or undefined)
                             @modelviewComponent(undefined)
-                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(selectedNamespace, objectStore_)
+                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(childParams)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)                            
                             @modelviewCollection(undefined)
                             break
                         when "extension"
                             @modelviewImmutable(undefined)
                             @modelviewMutable(undefined)
-                            @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
+                            @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(childParams))
                             @modelviewChildren(undefined)
-                            @modelviewCollection(new ONMjs.observers.ObjectModelNavigatorNamespaceCollection(selectedNamespace, objectStore_))
+                            @modelviewCollection(new ONMjs.observers.ObjectModelNavigatorNamespaceCollection(childParams))
                             break
                         when "archetype"
-                            immutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(selectedNamespace)
+                            immutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(childParams)
                             @modelviewImmutable(immutableModelView.propertyModelViews.length and immutableModelView or undefined)
-                            mutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceMutable(selectedNamespace)
+                            mutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceMutable(childParams)
                             @modelviewMutable(mutableModelView.propertyModelViews.length and mutableModelView or undefined)
-                            @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(selectedNamespace, objectStore_))
-                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(selectedNamespace, objectStore_)
+                            @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(childParams))
+                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(childParams)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
                             @modelviewCollection(undefined)
                             break
                         else
                             throw "Unrecognized MVVM type in request."
+
 
             }
 
@@ -186,6 +198,7 @@ class ONMjs.observers.SelectedNamespaceModelView
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceWindow", ( -> """
 <div class="classObjectModelNavigatorNamespaceHash"><span data-bind="text: objectStoreName"></span></div>
+
 <span data-bind="if: modelviewTitle"><span data-bind="with: modelviewTitle"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceTitle' }"></span></span></span>
 <span data-bind="if: modelviewActions"><span data-bind="with: modelviewActions"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceActions' }"></span></span></span>
 <span data-bind="if: modelviewImmutable"><span data-bind="with: modelviewImmutable"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceImmutable' }"></span></span></span>
