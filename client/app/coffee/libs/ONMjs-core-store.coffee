@@ -109,8 +109,8 @@ class ONMjs.Store
 
                     # Creating the root namespace of a component automatically creates all its sub-namespaces as well.
                     componentNamespace = new ONMjs.Namespace(@, address_, "new")
-
                     resolvedAddress = componentNamespace.getResolvedAddress()
+                    @reifier.reifyStoreComponent(resolvedAddress)
 
                     extensionPointAddress = ONMjs.address.Parent(resolvedAddress);
                     extensionPointNamespace = new ONMjs.Namespace(@, extensionPointAddress, "bypass")

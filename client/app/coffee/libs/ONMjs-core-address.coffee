@@ -439,7 +439,7 @@ ONMjs.address.NewAddressSameComponent = (address_, pathId_) ->
         if targetNamespaceDescriptor.idComponent != addressedComponentDescriptor.id
             throw "Invalid path ID specified does not resolve to a namespace in the same component as the source address."
 
-        newToken = new ONMjs.AddressToken(address_.model, addressedComponentToken.idExtensionPoint, addressedComponentToken.idComponent, pathId_)
+        newToken = new ONMjs.AddressToken(address_.model, addressedComponentToken.idExtensionPoint, addressedComponentToken.key, pathId_)
 
         newTokenVector = address_.tokenVector.length > 0 and address_.tokenVector.slice(0, address_.tokenVector.length - 1) or []
         newTokenVector.push newToken

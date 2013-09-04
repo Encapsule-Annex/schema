@@ -278,6 +278,8 @@ class ONMjs.observers.NavigatorModelView
                         if cachedAddress? and cachedAddress
                             # Now find the item model view associated with the address.
                             namespaceState = @store.openObserverNamespaceState(@storeObserverId, cachedAddress)
+                            if not (namespaceState.itemModelView? and namespaceState.itemModelView)
+                                throw "Internal error: namespace state cache for this namespace is not initialized."
                             namespaceState.itemModelView.addSelection(observerId_)
 
                             # Finally, save a reference to the item model view in the
