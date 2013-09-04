@@ -112,8 +112,6 @@ class ONMjs.CachedAddress extends ONMjs.Store
     # ============================================================================
     objectStoreCallbacks: {
 
-        observerReference: @
-
         onNamespaceUpdated: (objectStore_, observerId_, namespaceSelector_) =>
             try
                 selector = @getSelector()

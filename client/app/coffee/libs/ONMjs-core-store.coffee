@@ -260,7 +260,7 @@ class ONMjs.Store
                     @removeObserverState(observerIdCode_)
 
                     # Remove the registration.
-                    @observers[observerIdCode_] = undefined
+                    delete @observers[observerIdCode_]
 
                 catch exception
                     throw "ONMjs.Store.unregisterObserver failure: #{exception}"
