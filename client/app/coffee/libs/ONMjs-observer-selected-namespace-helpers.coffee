@@ -63,7 +63,10 @@ class ONMjs.observers.helpers.AddressSelectionLinkModelView
             @optionsNoLink = options.noLink? and options.noLink or false
 
             @onClick = =>
-                @selectorStore.setAddress(@address)
+                try
+                    @selectorStore.setAddress(@address)
+                catch exception
+                    Console.messageError("ONMjs.observers.helpers.AddressSelectionLinkModelView.onClick failure: #{exception}")
 
         catch exception
             throw "ONMjs.observers.helpers.AddressSelectionLinkModelView failure: #{exception}"
@@ -86,7 +89,10 @@ class ONMjs.observers.helpers.CallbackLinkModelView
             @callback = callback_
 
             @onClick = =>
-                @callback(@prefix, @label, @address, @selectorStore, @options)
+                try
+                    @callback(@prefix, @label, @address, @selectorStore, @options)
+                catch exception
+                    Console.errorMessage("ONMjs.observers.helpers.CallbackLinkModelView.onClick failure: #{exception}")
 
         catch exception
             throw "ONMjs.observers.helpers.CallbackLinkModelView failure: #{exception}"

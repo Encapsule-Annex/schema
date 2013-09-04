@@ -62,8 +62,11 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
                     componentNamespace = selectorStore_.referenceStore.createComponent(address_)
                     @blipper.blip("23")
                     setTimeout( ( =>
-                        selectorStore_.setAddress(componentNamespace.getResolvedAddress())
-                        Console.message("... Success. A new component has been added and selected.")
+                        try
+                            selectorStore_.setAddress(componentNamespace.getResolvedAddress())
+                            Console.message("... Success. A new component has been added and selected.")
+                        catch exception
+                            Console.messageError("ONMjs.observers.SelectedNamespaceActionsModelView.onClickAddSubcomponent failure: #{exception}")
                         ), 350)
                 catch exception
                     Console.messageError("ONMjs.observers.SelectedNamespaceActionsModelView.onClickAddSubcomponent failure: #{exception}")
