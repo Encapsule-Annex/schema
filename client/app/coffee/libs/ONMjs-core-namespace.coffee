@@ -162,8 +162,7 @@ class ONMjs.Namespace
             count = 0
             containingComponentNotified = false
             while address? and address
-                token = address.getLastToken()
-                descriptor = token.namespaceDescriptor
+                descriptor = address.getDescriptor()
                 if count == 0
                     @store.reifier.dispatchCallback(address, "onNamespaceUpdated", undefined)
                 else
@@ -176,10 +175,8 @@ class ONMjs.Namespace
                    else
                        @store.reifier.dispatchCallback(address, "onSubcomponentUpdated", undefined)
 
-                if address.isRoot()
-                    break
-
-                ONMjs.address.Parent(address)
+                address = ONMjs.address.Parent(address) # returns undefined if address == root namespace of the store
+                count++
             
         catch exception
             throw "ONMjs.Namespace.update failure: #{exception}"
