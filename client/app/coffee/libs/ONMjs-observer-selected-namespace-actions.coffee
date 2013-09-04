@@ -50,22 +50,57 @@ ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
 
 #
 # ============================================================================
-class ONMjs.observers.ObjectModelNavigatorNamespaceActions
-    constructor: (namespace_, selectorStore_) ->
+class ONMjs.observers.SelectedNamespaceActionsModelView
+    constructor: (params_) ->
         try
 
-            @onClickAddSubcomponent = (prefix_, label_, selector_, selectorStore_, options_) =>
+            #
+            # ============================================================================
+            @onClickAddSubcomponent = (prefix_, label_, address_, selectorStore_, options_) =>
                 try
                     Console.message("ObjectModelNavigatorNamespaceActions.onClickAddSubcomponent starting...")
-                    componentNamespace = selectorStore_.associatedObjectStore.createComponent(selector_)
+                    componentNamespace = selectorStore_.referenceStore.createComponent(address_)
                     @blipper.blip("23")
                     setTimeout( ( =>
-                        selectorStore_.setSelector(componentNamespace.getResolvedSelector())
+                        selectorStore_.setAddress(componentNamespace.getResolvedAddress())
                         Console.message("... Success. A new component has been added and selected.")
                         ), 350)
                 catch exception
-                    Console.messageError("ONMjs.observers.ObjectModelNavigatorNamespaceActions.onClickAddSubcomponent failure: #{exception}")
+                    Console.messageError("ONMjs.observers.SelectedNamespaceActionsModelView.onClickAddSubcomponent failure: #{exception}")
 
+            #
+            # ============================================================================
+            @onClickRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
+                try
+                    @blipper.blip("15")
+                    @showConfirmRemove(true)
+                catch exception
+                    throw "ONMjs.observers.SelectedNamespaceActionsModelView.onClickRemoveComponent failure: #{exception}"
+
+            #
+            # ============================================================================
+            @onDoRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
+                try
+                    Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
+                    @blipper.blip("27")
+
+                    selectorStore_.associatedObjectStore.removeComponent(selector_)
+                    Console.message("... Success. The component has been removed.")
+
+                catch exception
+                    Console.messageError("ONMjs.observers.SelectedNamespaceActionsModelView.onClickRemoveComponent failure: #{exception}")
+
+            #
+            # ============================================================================
+            @onClickRemoveAllSubcomponents = (prefix_, label_, selector_, selectorStore_, options_) =>
+                try
+                    @blipper.blip("15")
+                    @showConfirmRemoveAll(true)
+                catch exception
+                    throw "ONMjs.observers.SelectedNamespaceActionsModelView.onClickRemoveAllSubcomponents failure: #{exception}"
+
+            #
+            # ============================================================================
             @onDoRemoveAllSubcomponents = (prefix_, label_, selector_, selectorStore_, options_) =>
                 try
                     Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
@@ -89,32 +124,16 @@ class ONMjs.observers.ObjectModelNavigatorNamespaceActions
                         selectorStore_.associatedObjectStore.removeComponent(subcomponentSelector)
 
                 catch exception
-                    Console.messageError("ONMjs.observers.ObjectModelNavigatorNamespaceActions.onClickRemoveAllSubcomponents failure: #{exception}")
+                    Console.messageError("ONMjs.observers.SelectedNamespaceActionsModelView.onClickRemoveAllSubcomponents failure: #{exception}")
 
-            @onDoRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
-                try
-                    Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
-                    @blipper.blip("27")
-
-                    selectorStore_.associatedObjectStore.removeComponent(selector_)
-                    Console.message("... Success. The component has been removed.")
-
-                catch exception
-                    Console.messageError("ONMjs.observers.ObjectModelNavigatorNamespaceActions.onClickRemoveComponent failure: #{exception}")
-
-
-            @onClickRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
-                @blipper.blip("15")
-                @showConfirmRemove(true)
-
-            @onClickRemoveAllSubcomponents = (prefix_, label_, selector_, selectorStore_, options_) =>
-                @blipper.blip("15")
-                @showConfirmRemoveAll(true)
-
+            #
+            # ============================================================================
             @onClickCancelActionRequest  = (prefix_, label_, selector_, selectorStore_, options_) =>
-                @showConfirmRemoveAll(false)
-                @showConfirmRemove(false)
-
+                try
+                    @showConfirmRemoveAll(false)
+                    @showConfirmRemove(false)
+                catch exception
+                    throw "ONMjs.observers.SelectedNamespaceActionsModelView.onClickCancelActionRequest failure: #{exception}"
 
 
 
@@ -131,14 +150,14 @@ class ONMjs.observers.ObjectModelNavigatorNamespaceActions
             @callbackLinkRequestRemoveComponent = undefined
             @callbackLinkRemoveComponent = undefined
 
-            @callbackLinkCancelActionRequest = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
+            @callbackLinkCancelActionRequest = new ONMjs.observers.helpers.CallbackLinkModelView(
                 "", "Cancel Request", undefined, undefined, { styleClass: "classActionCancel" }, @onClickCancelActionRequest
                 )
 
             @showConfirmRemove = ko.observable(false)
             @showConfirmRemoveAll = ko.observable(false)
 
-            switch namespace_.objectModelDescriptor.mvvmType
+            switch params_.selectedNamespaceDescriptor.mvvmType
                 when "root"
                     break
 
@@ -147,59 +166,36 @@ class ONMjs.observers.ObjectModelNavigatorNamespaceActions
 
                 when "extension"
 
-                    # add
+                    # ACTION: add
 
-                    # Here we need to discriminate between a component archetype that was declared as a child of this
-                    # extension point in the OM declaration vs. an archetype that was defined by reference. Note that
-                    # because the declaration is processed depth-first, it's always the case that we can use a simple
-                    # relational operator to make this determination.
+                    extensionAddress = params_.selectedAddress.clone()
+                    token = new ONMjs.AddressToken(params_.objectStore.model, params_.selectedNamespaceDescriptor.id, undefined, params_.selectedNamespaceDescriptor.archetypePathId)
+                    extensionAddress.pushToken(token)
+                    archetypeLabel = token.namespaceDescriptor.label
+                    
+                    @callbackLinkAddSubcomponent = new ONMjs.observers.helpers.CallbackLinkModelView(
+                        "", "Add #{archetypeLabel}", extensionAddress, params_.cachedAddressStore, { styleClass: "classActionAdd" }, @onClickAddSubcomponent)
 
-                    secondaryKeyVector = undefined
+                    # ACTION: remove all subcomponents
 
-                    if namespace_.objectModelDescriptor.id > namespace_.objectModelDescriptor.archetypePathId
+                    subcomponentCount = Encapsule.code.lib.js.dictionaryLength(params_.selectedNamespace.data())
 
-                        # This is the more complex case where the component archetype is declared before the extension
-                        # point in the OM declaration and referred back to by reference. (This is called a
-                        # recursive component as it's extensible by instances of itself).
-                        secondaryKeyVector = namespace_.secondaryResolvedKeyVector? and namespace_.secondaryResolvedKeyVector and
-                            Encapsule.code.lib.js.clone(namespace_.secondaryResolvedKeyVector) or []
-
-                        secondarySelectPair = {
-                            idExtensionPoint: namespace_.pathId
-                            selectKey: undefined # the resulting selector is to be used to create a new component instance
-                            }
-
-                        secondaryKeyVector.push secondarySelectPair
-
-                    archetypeSelector = selectorStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(
-                        namespace_.objectModelDescriptor.archetypePathId, namespace_.resolvedKeyVector, secondaryKeyVector)
-
-                    archetypeLabel = archetypeSelector.objectModelDescriptor.label
-                    @callbackLinkAddSubcomponent = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
-                        "", "Add #{archetypeLabel}", archetypeSelector, selectorStore_, { styleClass: "classActionAdd" }, @onClickAddSubcomponent)
-
-                    # remove all subcomponents
-
-                    @callbackLinkRequestRemoveAllSubcomponents = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
-                        "", "Remove All #{namespace_.objectModelDescriptor.label}", undefined, undefined,
-                        { noLink: namespace_.objectStoreNamespace.length == 0, styleClass: namespace_.objectStoreNamespace.length != 0 and "classActionRemoveAll" or undefined }, @onClickRemoveAllSubcomponents
+                    @callbackLinkRequestRemoveAllSubcomponents = new ONMjs.observers.helpers.CallbackLinkModelView(
+                        "", "Remove All #{params_.selectedNamespaceDescriptor.label}", undefined, undefined,
+                        { noLink: subcomponentCount == 0, styleClass: subcomponentCount != 0 and "classActionRemoveAll" or undefined }, @onClickRemoveAllSubcomponents
                         )
 
-                    @callbackLinkRemoveAllSubcomponents = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
-                        "", "Proceed with Remove All", namespace_.getResolvedSelector(), selectorStore_,
-                        { noLink: namespace_.objectStoreNamespace.length == 0, styleClass: namespace_.objectStoreNamespace.length != 0 and "classActionConfirm" or undefined }, @onDoRemoveAllSubcomponents
+                    @callbackLinkRemoveAllSubcomponents = new ONMjs.observers.helpers.CallbackLinkModelView(
+                        "", "Proceed with Remove All", params_.selectedAddress, params_.cachedAddressStore,
+                        { noLink: subcomponentCount == 0, styleClass: subcomponentCount != 0 and "classActionConfirm" or undefined }, @onDoRemoveAllSubcomponents
                         )
 
                     @actionsForNamespace = true
                     break
 
                 when "archetype"
-                    # This namespace is a root of a component object. Ensure the namespace selector passed to the callback
-                    # link constructor is valid.
 
-                    componentSelector = namespace_.getResolvedSelector()
-
-                    # remove
+                    # ACTION: remove
                     @callbackLinkRequestRemoveComponent = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
                         "", "Remove #{componentSelector.objectModelDescriptor.label}", undefined, undefined, { styleClass: "classActionRemove" }, @onClickRemoveComponent)
 
@@ -212,10 +208,10 @@ class ONMjs.observers.ObjectModelNavigatorNamespaceActions
 
 
         catch exception
-            throw "ONMjs.observers.ObjectModelNavigatorNamespaceActions #{exception}"
+            throw "ONMjs.observers.SelectedNamespaceActions construction failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceActions", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceActionsViewModel", ( -> """
 <div class="classObjectModelNavigatorNamespaceSectionTitle">
     Actions:
 </div>
@@ -224,17 +220,17 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
         <div>
             <span data-bind="if: callbackLinkAddSubcomponent">
                 <span data-bind="with: callbackLinkAddSubcomponent">
-                    <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                    <span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span>
                 </span>
             </span>
             <span data-bind="if: callbackLinkRequestRemoveAllSubcomponents">
                 <span data-bind="with: callbackLinkRequestRemoveAllSubcomponents">
-                    <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                    <span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span>
                 </span>
             </span>
             <span data-bind="if: callbackLinkRequestRemoveComponent">
                 <span data-bind="with: callbackLinkRequestRemoveComponent">
-                    <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                    <span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span>
                 </span>
             </span>
 
@@ -242,10 +238,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
                 <div class="classActionConfirmation">
                     Please confirm <strong><span data-bind="text: callbackLinkRequestRemoveComponent.label"></span></span></strong> request.<br><br>
                     <span data-bind="with: callbackLinkCancelActionRequest">
-                        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                        <span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span>
                     </span>
                     <span data-bind="with: callbackLinkRemoveComponent">
-                        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                        <span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span>
                     </span>
                 </div>
             </span>
@@ -254,10 +250,10 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
                 <div class="classActionConfirmation">
                     Please confirm <strong><span data-bind="text: callbackLinkRequestRemoveAllSubcomponents.label"></span></span></strong> request.<br><br>
                     <span data-bind="with: callbackLinkCancelActionRequest">
-                        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                        <span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span>
                     </span>
                     <span data-bind="with: callbackLinkRemoveAllSubcomponents">
-                        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink' }"></span>
+                        <span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span>
                     </span>
                 </div>
             </span>

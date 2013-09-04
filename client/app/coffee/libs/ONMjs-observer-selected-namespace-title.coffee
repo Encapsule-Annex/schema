@@ -91,7 +91,7 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
                 @componentSuffixString = componentDescriptor.id and ":" or "::"
                 componentLabelResolved = componentNamespace.getResolvedLabel()
 
-                @componentClickableLink = new ONMjs.observers.AddressSelectionLinkModelView(
+                @componentClickableLink = new ONMjs.observers.helpers.AddressSelectionLinkModelView(
                     "", componentLabelResolved, componentAddress, params_.cachedAddressStore)
 
             if params_.selectedNamespaceDescriptor.mvvmType == "archetype"
@@ -103,7 +103,7 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
                     
                 extensionPointDescriptor = extensionPointAddress.getDescriptor()
 
-                @extensionPointClickableLink = new ONMjs.observers.AddressSelectionLinkModelView(
+                @extensionPointClickableLink = new ONMjs.observers.helpers.AddressSelectionLinkModelView(
                     "", extensionPointDescriptor.label, extensionPointSelector, selectorStore_)
 
             @templateName = undefined
@@ -125,7 +125,7 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceTitleRoot", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceTitleViewModel", ( -> """
 <span class="selected" data-bind="html: namespaceLabelResolved"></span>
 """))
 

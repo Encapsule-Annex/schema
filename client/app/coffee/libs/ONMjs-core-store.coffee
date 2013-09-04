@@ -99,29 +99,24 @@ class ONMjs.Store
 
             #
             # ============================================================================
-            @createComponent = (objectModelNamespaceSelector_) =>
+            @createComponent = (address_) =>
                 try
-                    if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_)
-                        throw "Missing object model namespace selector input parameter!"
-
-                    if objectModelNamespaceSelector_.selectKeysReady
-                        throw "Invalid resolved namespace selector: the namespace selector specified is resolved to an existing object and cannot be used to create a new component in the object store."
-
-                    if not objectModelNamespaceSelector_.objectModelDescriptor.isComponent
-                        throw "Invalid selector specifies non-component root namespace."
-
-                    if objectModelNamespaceSelector_.pathId == 0
-                        throw "Invalid selector specifies root component which cannot be removed."
+                    if not (address_? and address_) then throw "Missing object model namespace selector input parameter!"
+                    if address_.isQualified() then throw "The specified address is qualified and may only be used to specify existing objects in the store."
+                    descriptor = address_.getDescriptor()
+                    if not descriptor.isComponent then throw "The specified address does not specify the root of a component."
+                    if descriptor.mvvmType == "root" then throw "The specified address refers to the root namespace of the store which is created automatically."
 
                     # Creating the root namespace of a component automatically creates all its sub-namespaces as well.
-                    objectStoreNamespace = new ONMjs.ObjectStoreNamespace(@, objectModelNamespaceSelector_, "new")
+                    componentNamespace = new ONMjs.Namespace(@, address_, "new")
 
-                    extensionPointId = objectModelNamespaceSelector_.objectModelDescriptor.parent.id
-                    extensionPointSelector = @model.createNamespaceSelectorFromPathId(extensionPointId, objectStoreNamespace.resolvedKeyVector)
-                    extensionPointNamespace = new ONMjs.ObjectStoreNamespace(@, extensionPointSelector)
-                    extensionPointNamespace.updateRevision()
+                    resolvedAddress = componentNamespace.getResolvedAddress()
 
-                    return objectStoreNamespace
+                    extensionPointAddress = ONMjs.address.Parent(resolvedAddress);
+                    extensionPointNamespace = new ONMjs.Namespace(@, extensionPointAddress, "bypass")
+                    extensionPointNamespace.update()
+
+                    return componentNamespace
 
                 catch exception
 

@@ -108,7 +108,6 @@ class Encapsule.code.app.Schema
             # Attach the namespace viewer to the selcted address so it can respond to changes in the selected namespace.
             namespaceView.attachToCachedAddress(selectedAddress)
             
-
             # Attach the JSON viewer as an obsever of the selected address so that it can display the serialized
             # JSON of the currently selected namespace.
             jsonView.attachToCachedAddress(selectedAddress)

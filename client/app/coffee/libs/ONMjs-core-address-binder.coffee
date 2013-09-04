@@ -207,7 +207,7 @@ class Encapsule.code.lib.omm.implementation.AddressTokenBinder
 
                 resolveResult = localResolveNamespaceDescriptor(resolveActions, store_, @parentDataReference, targetComponentDescriptor, token_.key, mode_)
 
-                extensionPointId = token_.extensionPointDescriptor? and token_.extensionPointDescriptor or -1
+                extensionPointId = token_.extensionPointDescriptor? and token_.extensionPointDescriptor and token_.extensionPointDescriptor.id or -1
 
                 if mode_ == "new" and resolveResult.created
                     localInitializeComponent(store_, resolveResult.dataReference, targetComponentDescriptor, extensionPointId)

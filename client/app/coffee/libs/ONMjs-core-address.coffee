@@ -406,7 +406,7 @@ ONMjs.address.Parent = (address_, generations_) ->
             if descriptor.mvvmType != "archetype"
                 token = new Encapsule.code.lib.omm.AddressToken(token.model, token.idExtensionPoint, token.key, descriptor.parent.id)
             else
-                token = tokenSourceIndex and address_.tokenVector[tokenSourceIndex--] or new Encapsule.code.lib.omm.AddressToken(token.model)
+                token = (tokenSourceIndex != -1) and address_.tokenVector[tokenSourceIndex--] or throw "Internal error: exhausted token stack."
 
             generations--
                 

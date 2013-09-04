@@ -46,12 +46,13 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 
 ONMjs = Encapsule.code.lib.omm
 ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
+ONMjs.observers.helpers = ONMjs.observers.helpers? and ONMjs.observers.helpers or ONMjs.observers.helpers = {}
 
 
 
 #
 # ============================================================================
-class ONMjs.observers.AddressSelectionLinkModelView
+class ONMjs.observers.helpers.AddressSelectionLinkModelView
     constructor: (prefix_, label_, address_, selectorStore_, options_) ->
         try
             @prefix = prefix_? and prefix_ or ""
@@ -65,19 +66,19 @@ class ONMjs.observers.AddressSelectionLinkModelView
                 @selectorStore.setAddress(@address)
 
         catch exception
-            throw "ONMjs.observers.AddressSelectionLinkModelView failure: #{exception}"
+            throw "ONMjs.observers.helpers.AddressSelectionLinkModelView failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_AddressSelectionLinkViewModel", ( -> """<span data-bind="if: prefix"><span class="classObjectModelNavigatorNamespaceContextPrefix" data-bind="html: prefix"></span></span><span data-bind="ifnot: optionsNoLink"><span class="classObjectModelNavigatorNamespaceContextLabel classObjectModelNavigatorMouseOverCursorPointer" data-bind="html: label, click: onClick"></span></span><span data-bind="if: optionsNoLink"><span class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: label"></span></span>"""))
 
 #
 # ============================================================================
-class ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink
-    constructor: (prefix_, label_, selector_, selectorStore_, options_, callback_) ->
+class ONMjs.observers.helpers.CallbackLinkModelView
+    constructor: (prefix_, label_, address_, selectorStore_, options_, callback_) ->
         try
             @prefix = prefix_? and prefix_ or ""
             @label = label_? and label_ or "<no label provided>"
-            @selector = selector_? and selector_ and selector_.clone() or undefined
+            @address = address_? and address_.clone() or undefined
             @selectorStore = selectorStore_? and selectorStore_ or undefined
             @options = options_? and options_ or {}
             @optionsNoLink = @options.noLink? and @options.noLink or false
@@ -85,21 +86,21 @@ class ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink
             @callback = callback_
 
             @onClick = =>
-                @callback(@prefix, @label, @selector, @selectorStore, @options)
+                @callback(@prefix, @label, @address, @selectorStore, @options)
 
         catch exception
-            throw "ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink failure: #{exception}"
+            throw "ONMjs.observers.helpers.CallbackLinkModelView failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceCallbackLink", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_CallbackLinkViewModel", ( -> """
 <span class="classObjectModelNavigatorNamespaceCallbackLink">
-<span data-bind="if: prefix"><span class="prefix" data-bind="html: prefix"></span></span>
-<span data-bind="ifnot: optionsNoLink">
-    <span class="link classObjectModelNavigatorMouseOverCursorPointer" data-bind="html: label, click: onClick, css: optionsStyleClass"></span>
-</span>
-<span data-bind="if: optionsNoLink">
-    <span class="nolink" data-bind="html: label, css: optionsStyleClass"></span>
-</span>
+    <span data-bind="if: prefix"><span class="prefix" data-bind="html: prefix"></span></span>
+    <span data-bind="ifnot: optionsNoLink">
+        <span class="link classObjectModelNavigatorMouseOverCursorPointer" data-bind="html: label, click: onClick, css: optionsStyleClass"></span>
+    </span>
+    <span data-bind="if: optionsNoLink">
+        <span class="nolink" data-bind="html: label, css: optionsStyleClass"></span>
+    </span>
 </span>
 """))
 

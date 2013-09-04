@@ -30,7 +30,7 @@ BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
 
 ------------------------------------------------------------------------------
 
-encapsule-lib-omm-core-address-token.coffee
+
 
 ------------------------------------------------------------------------------
 
