@@ -51,24 +51,24 @@ ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
 
 #
 # ============================================================================
-class ONMjs.observers.ObjectModelNavigatorNamespaceContextElement
-    constructor: (prefix_, label_, selector_, selectorStore_, options_) ->
+class ONMjs.observers.AddressSelectionLinkModelView
+    constructor: (prefix_, label_, address_, selectorStore_, options_) ->
         try
             @prefix = prefix_? and prefix_ or ""
             @label = label_? and label_ or "<no label provided>"
-            @selector = selector_? and selector_ and selector_.clone() or throw "Missing selector input parameter."
+            @address = address_? and address_ and address_.clone() or throw "Missing address input parameter."
             @selectorStore = selectorStore_? and selectorStore_ or throw "Missing selector store input parameter."
             options = options_? and options_ or {}
             @optionsNoLink = options.noLink? and options.noLink or false
 
             @onClick = =>
-                @selectorStore.setSelector(@selector)
+                @selectorStore.setAddress(@address)
 
         catch exception
-            throw "ONMjs.observers.ObjectModelNavigatorNamespaceContextElement failure: #{exception}"
+            throw "ONMjs.observers.AddressSelectionLinkModelView failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceContextElement", ( -> """<span data-bind="if: prefix"><span class="classObjectModelNavigatorNamespaceContextPrefix" data-bind="html: prefix"></span></span><span data-bind="ifnot: optionsNoLink"><span class="classObjectModelNavigatorNamespaceContextLabel classObjectModelNavigatorMouseOverCursorPointer" data-bind="html: label, click: onClick"></span></span><span data-bind="if: optionsNoLink"><span class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: label"></span></span>"""))
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_AddressSelectionLinkViewModel", ( -> """<span data-bind="if: prefix"><span class="classObjectModelNavigatorNamespaceContextPrefix" data-bind="html: prefix"></span></span><span data-bind="ifnot: optionsNoLink"><span class="classObjectModelNavigatorNamespaceContextLabel classObjectModelNavigatorMouseOverCursorPointer" data-bind="html: label, click: onClick"></span></span><span data-bind="if: optionsNoLink"><span class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: label"></span></span>"""))
 
 #
 # ============================================================================

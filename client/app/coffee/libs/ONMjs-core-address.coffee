@@ -427,7 +427,6 @@ ONMjs.address.Parent = (address_, generations_) ->
 # Given a source address, generate a new address to another namespace within
 # the component specified by the source address.
 
-
 ONMjs.address.NewAddressSameComponent = (address_, pathId_) ->
     try
 

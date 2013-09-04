@@ -136,6 +136,7 @@ class ONMjs.observers.SelectedNamespaceModelView
 
                     # Gather up all the references required to construct the child model views.
                     childParams = {
+                        cachedAddressStore: cachedAddressStore_
                         objectStore: objectStore
                         selectedAddress: selectedAddress
                         selectedNamespace: selectedNamespace
@@ -145,6 +146,9 @@ class ONMjs.observers.SelectedNamespaceModelView
 
 
                     @modelviewTitle(new ONMjs.observers.SelectedNamespaceTitleModelView(childParams))
+
+                    return true
+
                     @modelviewActions(new ONMjs.observers.ObjectModelNavigatorNamespaceActions(childParams))
 
                     switch mvvmType
@@ -196,7 +200,7 @@ class ONMjs.observers.SelectedNamespaceModelView
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceWindow", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceViewModel", ( -> """
 <div class="classObjectModelNavigatorNamespaceHash"><span data-bind="text: objectStoreName"></span></div>
 
 <span data-bind="if: modelviewTitle"><span data-bind="with: modelviewTitle"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceTitle' }"></span></span></span>

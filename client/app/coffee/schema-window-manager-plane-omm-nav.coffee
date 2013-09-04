@@ -119,17 +119,15 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
                 id: "idSchemaNavigatorSelectedItemWindow"                                     
                 name: "Schema Navigator Selected Item"                               
                 initialMode: "full"
-                initialEnable: false
+                initialEnable: true
                 opacity: 1.0
                 overflow: "auto"
                 backgroundColor:  "rgba(255,255,255,0.4)"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
-                ###
                 MVVM: {
-                    fnModelView: -> Encapsule.runtime.app.ObjectModelNavigatorNamespaceWindow
-                    viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorNamespaceWindow"
+                    fnModelView: -> ONMjsRuntime.observers.namespace
+                    viewModelTemplateId: "idKoTemplate_SelectedNamespaceViewModel"
                 }
-                ###
             }
 
             Q2WindowDescriptor: undefined

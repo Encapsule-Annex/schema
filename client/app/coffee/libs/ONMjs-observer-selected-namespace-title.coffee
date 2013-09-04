@@ -50,17 +50,17 @@ ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
 #
 # ============================================================================
 class ONMjs.observers.SelectedNamespaceTitleModelView
-    constructor: (namespace_, selectorStore_) ->
+    constructor: (params_) ->
         try
 
-            @namespaceLabelResolved = namespace_.getResolvedLabel()
-            @namespaceDescription = namespaceDescriptor.description
+            @namespaceLabelResolved = params_.selectedNamespace.getResolvedLabel()
+            @namespaceDescription = params_.selectedNamespaceDescriptor.description
 
             displayComponent = false
             componentPathId = undefined
             componentSelector = undefined
             componentLabelResolved = undefined
-            @componentSuffixString = undefined # set to ':' or '::' based on if the component represents the store
+            @componentSuffixString = undefined # is set to ':' or '::' based on if the component represents the store
 
             displayExtensionPoint = false
             extensionPointLabel = undefined
@@ -68,38 +68,42 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
             @contextLinkModelViewComponent = undefined
             @contextLinkModelViewExtensionPoint = undefined
 
-            if namespaceDescriptor.id != 0
-                # We'll need the owning component's label and type information.
+            # If the selected namespace isn't the root namespace, by definition it is owned by a component:
+            # may be a subnamespace of a component or the root namespace of an extension component.
+
+            componentAddress = undefined
+            componentDescriptor = undefined
+            extensionPointAddress = undefined
+
+            if params_.selectedNamespaceDescriptor.id != 0 # i.e. mvvmType != "root"
                 displayComponent = true
+                if params_.selectedNamespaceDescriptor.mvvmType != "archetype"
+                    # The selected namespace is a subnamespace of a component.
+                    componentAddress = ONMjs.address.NewAddressSameComponent(params_.selectedAddress, params_.selectedNamespaceDescriptor.idComponent)
+                else
+                    # The selected namespace is the root of an extension component.
+                    extensionPointAddress = ONMjs.address.Parent(params_.selectedAddress)
+                    componentAddress = ONMjs.address.newAddressSameComponent(extensionPointAddress, extensionPointAddress.getDescriptor().idComponent)
 
-                switch namespaceDescriptor.mvvmType
-                    when "child"
-                        componentPathId = namespaceDescriptor.idComponent
-                        break
-                    when "extension"
-                        componentPathId = namespaceDescriptor.idComponent
-                        break
-                    when "archetype"
-                        componentPathId = namespaceDescriptor.parent.idComponent
-                        break
-                    else
-                        throw "Unexpected MVVM type in switch."
+                componentNamespace = params_.objectStore.openNamespace(componentAddress)
+                componentDescriptor = componentAddress.getDescriptor()
 
-                componentSelector = objectStore.objectModel.createNamespaceSelectorFromPathId(componentPathId, namespace_.resolvedKeyVector)
-                componentDescriptor = componentSelector.objectModelDescriptor
-                componentNamespace = objectStore.openNamespace(componentSelector)
                 @componentSuffixString = componentDescriptor.id and ":" or "::"
                 componentLabelResolved = componentNamespace.getResolvedLabel()
-                @contextLinkModelViewComponent = new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(
-                    "", componentLabelResolved, componentSelector, selectorStore_)
 
-            if namespaceDescriptor.mvvmType == "archetype"
+                @componentClickableLink = new ONMjs.observers.AddressSelectionLinkModelView(
+                    "", componentLabelResolved, componentAddress, params_.cachedAddressStore)
+
+            if params_.selectedNamespaceDescriptor.mvvmType == "archetype"
                 # We'll need the owning extension point's label and type information.
                 displayExtensionPoint = true
 
-                extensionPointSelector = objectStore.objectModel.createNamespaceSelectorFromPathId(namespaceDescriptor.parent.id, namespace_.resolvedKeyVector)
-                extensionPointDescriptor = extensionPointSelector.objectModelDescriptor
-                @contextLinkModelViewExtensionPoint = new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(
+                if not (extensionPointAddress? and extensionPointAddress)
+                    extensionPointAddress = ONMjs.address.Parent(params_.selectedAddress)
+                    
+                extensionPointDescriptor = extensionPointAddress.getDescriptor()
+
+                @extensionPointClickableLink = new ONMjs.observers.AddressSelectionLinkModelView(
                     "", extensionPointDescriptor.label, extensionPointSelector, selectorStore_)
 
             @templateName = undefined
@@ -126,15 +130,15 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 """))
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceTitleChildEP", ( -> """
-<span data-bind="with: contextLinkModelViewComponent"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
+<span data-bind="with: componentClickableLink"><span data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel' }"></span></span>
 <span class="separator" data-bind="html: componentSuffixString"></span>
 <span class="selected" data-bind="html: namespaceLabelResolved"></span>
 """))
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceTitleComponent", ( -> """
-<span data-bind="with: contextLinkModelViewComponent"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
+<span data-bind="with: componentClickableLink"><span data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel' }"></span></span>
 <span class="separator" data-bind="html: componentSuffixString"></span>
-<span data-bind="with: contextLinkModelViewExtensionPoint"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement' }"></span></span>
+<span data-bind="with: extensionPointClickableLink"><span data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel' }"></span></span>
 <span class="separator"> / </span>
 <span class="selected" data-bind="html: namespaceLabelResolved"></span>
 """))
