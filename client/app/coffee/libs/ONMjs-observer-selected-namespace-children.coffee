@@ -49,33 +49,34 @@ ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
 
 #
 # ============================================================================
-class ONMjs.observers.ObjectModelNavigatorNamespaceChildren
-    constructor: (namespace_, selectorStore_) ->
+class ONMjs.observers.SelectedNamespaceChildrenModelView
+    constructor: (params_) ->
         try
-            selector = namespace_.getResolvedSelector()
             @childModelViews = []
 
-            if selector.objectModelDescriptor.children.length
+            descriptor = params_.selectedNamespaceDescriptor
+
+            if descriptor.children.length
                 index = 0
-                for descriptor in selector.objectModelDescriptor.children
-                    childSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(descriptor.id, selector.selectKeyVector)
-                    childNamespace = namespace_.objectStore.openNamespace(childSelector)
+                for descriptor in descriptor.children
+                    childAddress = ONMjs.address.NewAddressSameComponent(params_.selectedAddress, descriptor.id)
+                    childNamespace = params_.cachedAddressStore.referenceStore.openNamespace(childAddress)
                     prefix = "#{index++ + 1}: "
                     label =  "#{childNamespace.getResolvedLabel()}"
-                    if childSelector.objectModelDescriptor.mvvmType == "extension"
-                        label += " (#{childNamespace.objectStoreNamespace.length})"
+                    if descriptor.mvvmType == "extension"
+                        label += " (#{Encapsule.code.lib.js.dictionaryLength(childNamespace.data())})"
                     label += "<br>"
-                    @childModelViews.push new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(prefix, label, childSelector, selectorStore_)
+                    @childModelViews.push new ONMjs.observers.helpers.AddressSelectionLinkModelView(prefix, label, childAddress, params_.cachedAddressStore)
                 
         catch exception
-            throw "ONMjs.observers.ObjectModelNavigatorNamespaceChildren failure: #{exception}"
+            throw "ONMjs.observers.SelectedNamespaceChildrenModelView failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceChildren", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceChildrenViewModel", ( -> """
 <span data-bind="if: childModelViews.length">
     <div class="classObjectModelNavigatorNamespaceSectionTitle">Child Namespaces (<span data-bind="text: childModelViews.length"></span>):</div>
     <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceChildren">
-        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement', foreach: childModelViews }"></span>
+        <span data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel', foreach: childModelViews }"></span>
     </div>
 </span>
 """))

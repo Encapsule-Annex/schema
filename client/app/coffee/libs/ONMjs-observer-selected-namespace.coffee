@@ -146,10 +146,10 @@ class ONMjs.observers.SelectedNamespaceModelView
                         when "root"
                             @modelviewImmutable(new ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView(childParams))
                             @modelviewMutable(undefined)
+                            newModelViewChildren = new ONMjs.observers.SelectedNamespaceChildrenModelView(childParams)
+                            @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
                             break
                             @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(childParams))
-                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(childParams)
-                            @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
                             @modelviewCollection(undefined)
                             break
                         when "child"
@@ -157,18 +157,18 @@ class ONMjs.observers.SelectedNamespaceModelView
                             @modelviewImmutable(immutableModelView.propertyModelViews.length and immutableModelView or undefined)
                             mutableModelView = new ONMjs.observers.SelectedNamespaceMutablePropertiesModelView(childParams)
                             @modelviewMutable(mutableModelView.propertyModelViews.length and mutableModelView or undefined)
+                            newModelViewChildren = new ONMjs.observers.SelectedNamespaceChildrenModelView(childParams)
+                            @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)                            
                             break
                             @modelviewComponent(undefined)
-                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(childParams)
-                            @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)                            
                             @modelviewCollection(undefined)
                             break
                         when "extension"
                             @modelviewImmutable(undefined)
                             @modelviewMutable(undefined)
+                            @modelviewChildren(undefined)
                             break
                             @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(childParams))
-                            @modelviewChildren(undefined)
                             @modelviewCollection(new ONMjs.observers.ObjectModelNavigatorNamespaceCollection(childParams))
                             break
                         when "archetype"
@@ -176,10 +176,10 @@ class ONMjs.observers.SelectedNamespaceModelView
                             @modelviewImmutable(immutableModelView.propertyModelViews.length and immutableModelView or undefined)
                             mutableModelView = new ONMjs.observers.SelectedNamespaceMutablePropertiesModelView(childParams)
                             @modelviewMutable(mutableModelView.propertyModelViews.length and mutableModelView or undefined)
+                            newModelViewChildren = new ONMjs.observers.SelectedNamespaceChildrenModelView(childParams)
+                            @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
                             break
                             @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(childParams))
-                            newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(childParams)
-                            @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
                             @modelviewCollection(undefined)
                             break
                         else
@@ -202,6 +202,6 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
 <span data-bind="if: modelviewMutable"><span data-bind="with: modelviewMutable"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceMutablePropertiesViewModel'}"></span></span></span>
 <span data-bind="if: modelviewCollection"><span data-bind="with: modelviewCollection"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCollection'}"></span></span></span>
 <span data-bind="if: modelviewComponent"><span data-bind="with: modelviewComponent"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceComponent'}"></span></span></span>
-<span data-bind="if: modelviewChildren"><span data-bind="with: modelviewChildren"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceChildren'}"></span></span></span>
+<span data-bind="if: modelviewChildren"><span data-bind="with: modelviewChildren"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceChildrenViewModel'}"></span></span></span>
 """))
 

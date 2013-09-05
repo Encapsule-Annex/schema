@@ -468,7 +468,7 @@ ONMjs.address.NewAddressSameComponent = (address_, pathId_) ->
         return newAddress
 
     catch exception
-        throw "ONMjs.address failure: #{exception}"
+        throw "ONMjs.address.NewAddressSameComponent failure: #{exception}"
 
 
 
