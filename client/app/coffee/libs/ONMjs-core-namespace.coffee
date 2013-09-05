@@ -85,6 +85,8 @@ class ONMjs.Namespace
                 @dataReferences.push dataReference
                 tokenBinder
 
+            @resolvedAddress = undefined
+
         catch exception
             throw "ONMjs.Namespace failure: #{exception}"
 
@@ -92,10 +94,12 @@ class ONMjs.Namespace
     # ============================================================================
     getResolvedAddress: =>
         try
+            if @resolvedAddress? and @resolvedAddress
+                return @resolvedAddress
             resolvedTokenVector = for addressTokenBinder in @addressTokenBinders
                 addressTokenBinder.resolvedToken
-            resolvedAddress = new ONMjs.Address(@store.model, resolvedTokenVector)
-            return resolvedAddress
+            @resolvedAddress = new ONMjs.Address(@store.model, resolvedTokenVector)
+            return @resolvedAddress
         catch exception
             throw "ONMjs.Namespace.address failure: #{exception}"
 
@@ -104,6 +108,9 @@ class ONMjs.Namespace
     # ============================================================================
     getResolvedLabel: =>
         try
+            # TODO: This needs to take advantage of semantic bindings. Currently
+            # this is the unsophisticated version.
+
             resolvedDescriptor = @getLastBinder().resolvedToken.namespaceDescriptor
             return resolvedDescriptor.label
             
@@ -149,7 +156,7 @@ class ONMjs.Namespace
             # object model declaration (or not).
 
             semanticBindings = @store.model.getSemanticBindings()
-            updateAction = semanticActions? and semanticActions and semanticActions.update? and semanticActions.update or undefined
+            updateAction = semanticBindings? and semanticBindings and semanticBindings.update? and semanticBindings.update or undefined
 
             # Update all the parent namespaces. (may mutate store data depending on updateAction implementation)
             if updateAction? and updateAction
