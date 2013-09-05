@@ -161,10 +161,11 @@ class ONMjs.Namespace
 
             # Update all the parent namespaces. (may mutate store data depending on updateAction implementation)
             if updateAction? and updateAction
-                # REPLACE WITH AN visitParentAddressesDescending call.
-                ### Does this need to be reversed? ###
-                for dataReference in @dataReferences
-                    updateAction(dataReference)
+                updateAction(@data())
+                address.visitParentAddressesDescending( (address__) =>
+                    dataReference = @store.openNamespace(address__).data()
+                    updateAction(dataReference))
+
 
             # Now we need to generate some observer notification.
             count = 0
