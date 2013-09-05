@@ -47,31 +47,23 @@ Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @
 ONMjs = Encapsule.code.lib.omm
 ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
 
-
-
-
-
 #
 # ============================================================================
-class ONMjs.observers.ObjectModelNavigatorNamespaceImmutable
-    constructor: (namespace_) ->
+class ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView
+    constructor: (params_) ->
         try
             @propertyModelViews = []
 
-            namespaceSelector = namespace_.getResolvedSelector()
-            namespaceDescriptor = namespaceSelector.objectModelDescriptor
-            namespaceStoreData = namespace_.objectStoreNamespace
-
             # TODO: change namespaceDescriptor to namespaceDeclaration in descriptor
-            namespaceDeclaration = namespaceDescriptor.namespaceDescriptor
-
+            namespaceDeclaration = params_.selectedNamespaceDescriptor.namespaceDescriptor
             if not (namespaceDeclaration? and namespaceDeclaration)
                 throw "Cannot resolve namespace declaration for selection."
 
             namespaceDeclarationImmutable = namespaceDeclaration.userImmutable? and namespaceDeclaration.userImmutable or undefined
-
             if not (namespaceDeclarationImmutable? and namespaceDeclarationImmutable)
                 return
+
+            dataReference = params_.selectedNamespace.data()
 
             # Enumerate the object model's declaration of this namespace's immutable properties.
             for name, value of namespaceDeclarationImmutable
@@ -81,15 +73,14 @@ class ONMjs.observers.ObjectModelNavigatorNamespaceImmutable
                         property: name
                         members: value
                     store:
-                        value: namespaceStoreData[name]
-
+                        value: dataReference[name]
                 @propertyModelViews.push propertyDescriptor
 
         catch exception
-            throw "ONMjs.observers.ObjectModelNavigatorNamespaceImmutable failure: #{exception}"
+            throw "ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceImmutable", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceImmutablePropertiesViewModel", ( -> """
 <div class="classObjectModelNavigatorNamespaceSectionTitle">
     Immutable Properties (<span data-bind="text: propertyModelViews.length"></span>):
 </div>
@@ -117,25 +108,21 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 # ******************************************************************************
 #
 # ============================================================================
-class ONMjs.observers.ObjectModelNavigatorNamespaceMutable
-    constructor: (namespace_) ->
+class ONMjs.observers.SelectedNamespaceMutablePropertiesModelView
+    constructor: (params_) ->
         try
             @propertyModelViews = []
 
-            namespaceSelector = namespace_.getResolvedSelector()
-            namespaceDescriptor = namespaceSelector.objectModelDescriptor
-            namespaceStoreData = namespace_.objectStoreNamespace
-
             # TODO: change namespaceDescriptor to namespaceDeclaration in descriptor
-            namespaceDeclaration = namespaceDescriptor.namespaceDescriptor
-
+            namespaceDeclaration = params_.selectedNamespaceDescriptor.namespaceDescriptor
             if not (namespaceDeclaration? and namespaceDeclaration)
                 throw "Cannot resolve namespace declaration for selection."
 
             namespaceDeclarationMutable = namespaceDeclaration.userMutable? and namespaceDeclaration.userMutable or undefined
-
             if not (namespaceDeclarationMutable? and namespaceDeclarationMutable)
                 return
+
+            dataReference = params_.selectedNamespace.data()
 
             # Enumerate the object model's declaration of this namespace's mutable properties.
             for name, value of namespaceDeclarationMutable
@@ -145,16 +132,16 @@ class ONMjs.observers.ObjectModelNavigatorNamespaceMutable
                         property: name
                         members: value
                     store:
-                        value: namespaceStoreData[name]
+                        value: dataReference[name]
 
                 @propertyModelViews.push propertyDescriptor
 
 
         catch exception
-            throw "ONMjs.observers.ObjectModelNavigatorNamespaceMutable failure: #{exception}"
+            throw "ONMjs.observers.SelectedNamespaceMutablePropertiesModelView failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceMutable", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceMutablePropertiesViewModel", ( -> """
 <div class="classObjectModelNavigatorNamespaceSectionTitle">
     Mutable Properties (<span data-bind="text: propertyModelViews.length"></span>):
 </div>

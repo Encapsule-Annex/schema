@@ -141,22 +141,23 @@ class ONMjs.observers.SelectedNamespaceModelView
 
                     @modelviewTitle(new ONMjs.observers.SelectedNamespaceTitleModelView(childParams))
                     @modelviewActions(new ONMjs.observers.SelectedNamespaceActionsModelView(childParams))
-                    return true
 
                     switch mvvmType
                         when "root"
-                            @modelviewImmutable(new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(childParams))
+                            @modelviewImmutable(new ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView(childParams))
                             @modelviewMutable(undefined)
+                            break
                             @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(childParams))
                             newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(childParams)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
                             @modelviewCollection(undefined)
                             break
                         when "child"
-                            immutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(childParams)
+                            immutableModelView = new ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView(childParams)
                             @modelviewImmutable(immutableModelView.propertyModelViews.length and immutableModelView or undefined)
-                            mutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceMutable(chldParams)
+                            mutableModelView = new ONMjs.observers.SelectedNamespaceMutablePropertiesModelView(childParams)
                             @modelviewMutable(mutableModelView.propertyModelViews.length and mutableModelView or undefined)
+                            break
                             @modelviewComponent(undefined)
                             newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(childParams)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)                            
@@ -165,15 +166,17 @@ class ONMjs.observers.SelectedNamespaceModelView
                         when "extension"
                             @modelviewImmutable(undefined)
                             @modelviewMutable(undefined)
+                            break
                             @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(childParams))
                             @modelviewChildren(undefined)
                             @modelviewCollection(new ONMjs.observers.ObjectModelNavigatorNamespaceCollection(childParams))
                             break
                         when "archetype"
-                            immutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceImmutable(childParams)
+                            immutableModelView = new ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView(childParams)
                             @modelviewImmutable(immutableModelView.propertyModelViews.length and immutableModelView or undefined)
-                            mutableModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceMutable(childParams)
+                            mutableModelView = new ONMjs.observers.SelectedNamespaceMutablePropertiesModelView(childParams)
                             @modelviewMutable(mutableModelView.propertyModelViews.length and mutableModelView or undefined)
+                            break
                             @modelviewComponent(new ONMjs.observers.ObjectModelNavigatorNamespaceComponent(childParams))
                             newModelViewChildren = new ONMjs.observers.ObjectModelNavigatorNamespaceChildren(childParams)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
@@ -195,8 +198,8 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
 <div class="classObjectModelNavigatorNamespaceHash"><span data-bind="text: objectStoreName"></span></div>
 <span data-bind="if: modelviewTitle"><span data-bind="with: modelviewTitle"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceTitleViewModel' }"></span></span></span>
 <span data-bind="if: modelviewActions"><span data-bind="with: modelviewActions"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceActionsViewModel' }"></span></span></span>
-<span data-bind="if: modelviewImmutable"><span data-bind="with: modelviewImmutable"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceImmutable' }"></span></span></span>
-<span data-bind="if: modelviewMutable"><span data-bind="with: modelviewMutable"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceMutable'}"></span></span></span>
+<span data-bind="if: modelviewImmutable"><span data-bind="with: modelviewImmutable"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceImmutablePropertiesViewModel' }"></span></span></span>
+<span data-bind="if: modelviewMutable"><span data-bind="with: modelviewMutable"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceMutablePropertiesViewModel'}"></span></span></span>
 <span data-bind="if: modelviewCollection"><span data-bind="with: modelviewCollection"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCollection'}"></span></span></span>
 <span data-bind="if: modelviewComponent"><span data-bind="with: modelviewComponent"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceComponent'}"></span></span></span>
 <span data-bind="if: modelviewChildren"><span data-bind="with: modelviewChildren"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceChildren'}"></span></span></span>
