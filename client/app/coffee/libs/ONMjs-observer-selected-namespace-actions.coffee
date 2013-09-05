@@ -199,11 +199,11 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
                 when "archetype"
 
                     # ACTION: remove
-                    @callbackLinkRequestRemoveComponent = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
-                        "", "Remove #{componentSelector.objectModelDescriptor.label}", undefined, undefined, { styleClass: "classActionRemove" }, @onClickRemoveComponent)
+                    @callbackLinkRequestRemoveComponent = new ONMjs.observers.helpers.CallbackLinkModelView(
+                        "", "Remove #{params_.selectedNamespaceDescriptor.label}", undefined, undefined, { styleClass: "classActionRemove" }, @onClickRemoveComponent)
 
-                    @callbackLinkRemoveComponent = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
-                        "", "Proceed with Remove", componentSelector, selectorStore_, { styleClass: "classActionConfirm" }, @onDoRemoveComponent)
+                    @callbackLinkRemoveComponent = new ONMjs.observers.helpers.CallbackLinkModelView(
+                        "", "Proceed with Remove", params_.selectedAddress, params_.cachedAddressStore, { styleClass: "classActionConfirm" }, @onDoRemoveComponent)
 
                     @actionsForNamespace = true
                     break

@@ -104,7 +104,7 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
                 extensionPointDescriptor = extensionPointAddress.getDescriptor()
 
                 @extensionPointClickableLink = new ONMjs.observers.helpers.AddressSelectionLinkModelView(
-                    "", extensionPointDescriptor.label, extensionPointSelector, selectorStore_)
+                    "", extensionPointDescriptor.label, extensionPointAddress, params_.cachedAddressStore)
 
             @templateName = undefined
 
