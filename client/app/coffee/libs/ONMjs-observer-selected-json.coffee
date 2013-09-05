@@ -118,8 +118,9 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
     <span data-bind="html: saveJSONAsLinkHtml"></span>
     <span class="titleString" data-bind="html: title"></span>
 </div>
-<div class="classObjectModelNavigatorJsonSelectorHash" data-bind="html: selectorHash"></div>
 <div class="classObjectModelNavigatorJsonBody">
     <pre class="classObjectModelNavigatorJsonPreformat" data-bind="html: jsonString"></pre>
 </div>
+<hr>
+<div class="classObjectModelNavigatorJsonSelectorHash" data-bind="html: selectorHash"></div>
 """))

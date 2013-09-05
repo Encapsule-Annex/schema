@@ -149,24 +149,36 @@ class ONMjs.Address
     getHashString: =>
         try
             index = 0
-            hashString = ""
+            rawHashString = ""
 
             for token in @tokenVector
                 if not index
-                    hashString += "#{token.model.jsonTag}:"
-                else
-                    hashString += "."
-                if token.idExtensionPoint != -1
-                    hashString += "#{token.idExtensionPoint}"
+                    rawHashString += "#{token.model.jsonTag}:"
+
                 if token.key? and token.key
-                    hashString += "[#{token.key}]"
+                    rawHashString += "[#{token.key}]."
                 else
                     if token.idExtensionPoint > 0
-                        hashString += "[*]"
+                        rawHashString += "[*]."
                     
-                hashString += "#{token.idNamespace}"
+                rawHashString += "#{token.idNamespace}"
                 index++
 
+            # Given that an ONMjs object model is a singly-rooted tree structure, the raw
+            # hash strings of different addresses created for the same object model all share
+            # a common string prefix. All the information in the hash string is required to
+            # reconstruct the address if the hash is used as a URN. However, for local in-app
+            # processing, address hash strings are used as dictionary keys typically (e.g.
+            # to open observer state). Speed equality/relational operations on hash string
+            # by reversing the raw string (so that the common prefix appears at the tail
+            # and does not need to evaluated typically). Note that WE DO NOT CARE if we break
+            # Unicode character encoding here; the string is base64 encoded anyway and is
+            # generally meaningless to humans, and the original string may be recovered
+            # by reversing the process. https://github.com/mathiasbynens/esrever is a good
+            # sample of how one should reverse a string if maintaining Unicode is important.
+
+            reversedHashString = rawHashString.split('').reverse().join('')
+            hashString = window.btoa(reversedHashString)
             return hashString
 
             
@@ -410,7 +422,6 @@ ONMjs.address.Parent = (address_, generations_) ->
 
             generations--
                 
-
         newTokenVector = ((tokenSourceIndex < 0) and []) or address_.tokenVector.slice(0, tokenSourceIndex + 1)
         newAddress = new Encapsule.code.lib.omm.Address(token.model, newTokenVector)
         newAddress.pushToken(token)
