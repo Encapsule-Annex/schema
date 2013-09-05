@@ -101,7 +101,7 @@ class ONMjs.observers.SelectedJsonModelView
                             return true
                         selectedNamespace = store_.referenceStore.openNamespace(storeAddress)
                         @title(selectedNamespace.getResolvedLabel())
-                        @selectorHash("""Address hash:<br>#{selectedNamespace.getResolvedAddress().getHashString()}""")
+                        @selectorHash("""urn:ONMjs:#{store_.referenceStore.jsonTag}:#{selectedNamespace.getResolvedAddress().getHashString()}""")
                         @jsonString(selectedNamespace.toJSON(undefined, 2))
                         true
                     catch exception

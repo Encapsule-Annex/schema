@@ -193,7 +193,7 @@ class ONMjs.observers.SelectedNamespaceModelView
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceViewModel", ( -> """
 <div class="classObjectModelNavigatorNamespaceHash"><span data-bind="text: objectStoreName"></span></div>
-<span data-bind="if: modelviewTitle"><span data-bind="with: modelviewTitle"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceTitle' }"></span></span></span>
+<span data-bind="if: modelviewTitle"><span data-bind="with: modelviewTitle"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceTitleViewModel' }"></span></span></span>
 <span data-bind="if: modelviewActions"><span data-bind="with: modelviewActions"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceActionsViewModel' }"></span></span></span>
 <span data-bind="if: modelviewImmutable"><span data-bind="with: modelviewImmutable"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceImmutable' }"></span></span></span>
 <span data-bind="if: modelviewMutable"><span data-bind="with: modelviewMutable"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceMutable'}"></span></span></span>

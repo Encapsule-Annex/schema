@@ -143,7 +143,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
 <span class="selected" data-bind="html: namespaceLabelResolved"></span>
 """))
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceTitle", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceTitleViewModel", ( -> """
 <div class="classObjectModelNavigatorNamespaceTitleBar">
     <span class="classObjectModelNavigatorNamespaceTitle" data-bind="template: { name: function () { return templateName; } }" ></span>
     <div class="description" data-bind="html: namespaceDescription"></div>
