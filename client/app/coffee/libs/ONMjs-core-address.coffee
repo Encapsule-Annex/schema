@@ -98,6 +98,8 @@ class ONMjs.Address
             @subcomponentAddressesAscending = undefined
             @subcomponentsAddressesDescending = undefined
 
+            @hashString = undefined
+
         catch exception
             throw "Encapsule.code.lib.omm.Address error: #{exception}"
 
@@ -119,6 +121,10 @@ class ONMjs.Address
 
             if not token_.isQualified()
                 @keysSpecified = false
+
+            # Pushing a token changes the address so we must clear the cached hash string
+            # so it's recomputed upon request.
+            @hashString = undefined
 
         catch exception
             throw "Encapsule.code.lib.omm.Address.pushToken failure: #{exception}"
@@ -148,6 +154,9 @@ class ONMjs.Address
     # ============================================================================
     getHashString: =>
         try
+            if @hashString? and @hashString
+                return @hashString
+
             index = 0
             rawHashString = ""
 
@@ -178,8 +187,8 @@ class ONMjs.Address
             # sample of how one should reverse a string if maintaining Unicode is important.
 
             reversedHashString = rawHashString.split('').reverse().join('')
-            hashString = window.btoa(reversedHashString)
-            return hashString
+            @hashString = window.btoa(reversedHashString)
+            return @hashString
 
             
         catch exception
