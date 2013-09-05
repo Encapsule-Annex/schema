@@ -241,28 +241,27 @@ class ONMjs.Address
 
     #
     # ============================================================================
-    visitParentNamespacesAscending: (callback_) =>
+    visitParentAddressesAscending: (callback_) =>
         try
             if not (callback_? and callback_) then return false
             if not (@parentAddressesAscending? and @parentAddressesAscending)
                 @parentAddressesAscending = []
-                @visitParentNamespacesDescending( (address__) => @parentAddressesAscending.push(address__); true )
+                @visitParentAddressesDescending( (address__) => @parentAddressesAscending.push(address__); true )
                 @parentAddressesAscending.reverse()
             if not @parentAddressesAscending.length then return false
             for address in @parentAddressesAscending
                 callback_(address)
             true # that
         catch exception
-            throw "ONMjs.Address.visitParentNamespacesAscending failure: #{exception}"
+            throw "ONMjs.Address.visitParentAddressesAscending failure: #{exception}"
         
     #
     # ============================================================================
-    visitParentNamespacesDescending: (callback_) =>
+    visitParentAddressesDescending: (callback_) =>
         try
             if not (callback_? and callback_) then return false
             if not (@parentAddressesDesending? and @parentAddressesDesceding)
                 @parentAddressesDescending = []
-
                 parent = ONMjs.address.Parent(@)
                 while parent
                     @parentAddressesDescending.push parent
@@ -273,11 +272,11 @@ class ONMjs.Address
             true # that
 
         catch exception
-            throw "ONMjs.Address.visitParentNamespaceDescending failure: #{exception}"
+            throw "ONMjs.Address.visitParentAddressesDescending failure: #{exception}"
 
     #
     # ============================================================================
-    visitSubnamespacesAscending: (callback_) =>
+    visitSubaddressesAscending: (callback_) =>
         try
             if not (callback_? and callback_) then return false
             if not (@subnamespaceAddressesAscending? and @subnamespaceAddressesAscending)
@@ -290,26 +289,26 @@ class ONMjs.Address
                 callback_(address)
             true # that
         catch exception
-            throw "ONMjs.Address.visitSubnamespacesAscending failure: #{exception}"
+            throw "ONMjs.Address.visitSubaddressesAscending failure: #{exception}"
 
     #
     # ============================================================================
-    visitSubnamespacesDescending: (callback_) =>
+    visitSubaddressesDescending: (callback_) =>
         try
             if not (callback_ and callback_) then return false
             if not (@subnamespaceAddressesDescending? and @subnamespaceAddressesDescending)
                 @subnamespaceAddressesDescending = []
-                @visitSubnamespacesAscending( (address__) => @subnamespaceAddressesDescending.push address__ )
+                @visitSubaddressesAscending( (address__) => @subnamespaceAddressesDescending.push address__ )
                 @subnamespaceAddressesDescending.reverse()
             for address in @subnamespaceAddressesDescending
                 callback_(address)
             true # that
         catch exception
-            throw "ONMjs.Address.visitSubnamespacesAscending failure: #{exception}"
+            throw "ONMjs.Address.visitSubaddressesAscending failure: #{exception}"
 
     #
     # ============================================================================
-    visitExtensionPoints: (callback_) =>
+    visitExtensionPointAddresses: (callback_) =>
         try
             if not (callback_? and callback_) then return false
             if not (@extensionPointAddresses? and @extensionPointAddresses)
@@ -322,7 +321,7 @@ class ONMjs.Address
                 callback_(address)
             true # that
         catch exception
-            throw "ONMjs.Address.visitExtensionPoints failure: #{exception}"
+            throw "ONMjs.Address.visitExtensionPointAddresses failure: #{exception}"
 
 
 

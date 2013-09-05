@@ -151,7 +151,7 @@ class ONMjs.observers.SelectedPathModelView
                         selectedAddress = store_.getAddress()
                         if not (selectedAddress? and selectedAddress) then return true
                         addresses = []
-                        selectedAddress.visitParentNamespacesAscending( (address__) => 
+                        selectedAddress.visitParentAddressesAscending( (address__) => 
                             addresses.push address__ )
                         addresses.push selectedAddress
                         count = 0

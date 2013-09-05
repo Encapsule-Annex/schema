@@ -155,17 +155,18 @@ class ONMjs.Namespace
             # Note the search direction is fixed but the callback is defined in the
             # object model declaration (or not).
 
+            address = @getResolvedAddress()
             semanticBindings = @store.model.getSemanticBindings()
             updateAction = semanticBindings? and semanticBindings and semanticBindings.update? and semanticBindings.update or undefined
 
             # Update all the parent namespaces. (may mutate store data depending on updateAction implementation)
             if updateAction? and updateAction
+                # REPLACE WITH AN visitParentAddressesDescending call.
                 ### Does this need to be reversed? ###
                 for dataReference in @dataReferences
                     updateAction(dataReference)
 
             # Now we need to generate some observer notification.
-            address = @getResolvedAddress()
             count = 0
             containingComponentNotified = false
             while address? and address

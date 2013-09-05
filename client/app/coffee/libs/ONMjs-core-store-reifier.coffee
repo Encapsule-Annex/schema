@@ -98,7 +98,7 @@ class ONMjs.implementation.StoreReifier
 
                     dispatchCallback = @dispatchCallback
                     dispatchCallback(address_, "onComponentCreated", observerId_)
-                    address_.visitSubnamespacesAscending( (addressSubnamespace_) -> dispatchCallback(addressSubnamespace_, "onNamespaceCreated", observerId_) )
+                    address_.visitSubaddressesAscending( (addressSubnamespace_) -> dispatchCallback(addressSubnamespace_, "onNamespaceCreated", observerId_) )
 
                     true # that
 
@@ -117,7 +117,7 @@ class ONMjs.implementation.StoreReifier
                     if not Encapsule.code.lib.js.dictionaryLength(@store.observers) then return
 
                     dispatchCallback = @dispatchCallback
-                    address_.visitSubnamespacesDescending( (addressSubnamespace_) -> dispatchCallback(addressSubnamespace_, "onNamespaceRemoved", observerId_) )
+                    address_.visitSubaddressesDescending( (addressSubnamespace_) -> dispatchCallback(addressSubnamespace_, "onNamespaceRemoved", observerId_) )
                     dispatchCallback(address_, "onComponentRemoved", observerId_)
 
                     true # that
@@ -136,7 +136,7 @@ class ONMjs.implementation.StoreReifier
 
                     dispatchCallback = @dispatchCallback
 
-                    address_.visitExtensionPoints( (addressExtensionPoint_) =>
+                    address_.visitExtensionPointAddresses( (addressExtensionPoint_) =>
                         extensionPointNamespace = new ONMjs.Namespace(@store, addressExtensionPoint_)
                         extensionPointNamespace.visitExtensionPointSubcomponents( (addressSubcomponent_) =>
                             if not undoFlag_
