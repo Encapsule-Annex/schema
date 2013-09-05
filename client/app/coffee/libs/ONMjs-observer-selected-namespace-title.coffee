@@ -110,32 +110,32 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
 
             if not displayComponent
                 # Root namespace format title.
-                @templateName = "idKoTemplate_ObjectModelNavigatorNamespaceTitleRoot"
+                @templateName = "idKoTemplate_SelectedNamespaceTitleRootViewModel"
 
             else if not displayExtensionPoint
                 # Child or extension point format title
-                @templateName = "idKoTemplate_ObjectModelNavigatorNamespaceTitleChildEP"
+                @templateName = "idKoTemplate_SelectedNamespaceTitleExtensionPointViewModel"
 
             else
                 # Archetype (component) format title
-                @templateName = "idKoTemplate_ObjectModelNavigatorNamespaceTitleComponent"
+                @templateName = "idKoTemplate_SelectedNamespaceTitleComponentViewModel"
 
         catch exception
             throw "ONMjs.observers.ObjectModelNavigatorNamespaceTitle failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceTitleViewModel", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceTitleRootViewModel", ( -> """
 <span class="selected" data-bind="html: namespaceLabelResolved"></span>
 """))
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceTitleChildEP", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceTitleExtensionPointViewModel", ( -> """
 <span data-bind="with: componentClickableLink"><span data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel' }"></span></span>
 <span class="separator" data-bind="html: componentSuffixString"></span>
 <span class="selected" data-bind="html: namespaceLabelResolved"></span>
 """))
 
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceTitleComponent", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceTitleComponentViewModel", ( -> """
 <span data-bind="with: componentClickableLink"><span data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel' }"></span></span>
 <span class="separator" data-bind="html: componentSuffixString"></span>
 <span data-bind="with: extensionPointClickableLink"><span data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel' }"></span></span>

@@ -81,7 +81,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
 
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.observers.navigator
-                    viewModelTemplateId: "idKoTemplate_OmmObserverNavigatorViewModel"
+                    viewModelTemplateId: "idKoTemplate_NavigatorViewModel"
                 }
 
             }                                                            

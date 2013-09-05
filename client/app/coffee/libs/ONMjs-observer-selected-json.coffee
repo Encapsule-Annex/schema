@@ -101,7 +101,7 @@ class ONMjs.observers.SelectedJsonModelView
                             return true
                         selectedNamespace = store_.referenceStore.openNamespace(storeAddress)
                         @title(selectedNamespace.getResolvedLabel())
-                        @selectorHash("Address: <strong>#{selectedNamespace.getResolvedAddress().getHashString()}</strong>")
+                        @selectorHash("""Address hash:<br>#{selectedNamespace.getResolvedAddress().getHashString()}""")
                         @jsonString(selectedNamespace.toJSON(undefined, 2))
                         true
                     catch exception
@@ -121,6 +121,5 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
 <div class="classObjectModelNavigatorJsonBody">
     <pre class="classObjectModelNavigatorJsonPreformat" data-bind="html: jsonString"></pre>
 </div>
-<hr>
 <div class="classObjectModelNavigatorJsonSelectorHash" data-bind="html: selectorHash"></div>
 """))
