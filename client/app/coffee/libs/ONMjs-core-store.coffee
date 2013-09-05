@@ -293,7 +293,7 @@ class ONMjs.Store
                     if not (address_? and address_) then throw "Missing address input parameter."
                     token = address_.getLastToken()
                     componentNamespaceId = token.componentDescriptor.id
-                    componentAddress = ONMjs.address.newAddressSameComponent(address_, componentNamespaceId)
+                    componentAddress = ONMjs.address.NewAddressSameComponent(address_, componentNamespaceId)
                     return @openObserverNamespaceState(observerId_, componentAddress)
                 catch exception
                     throw "ONMjs.Store.openObserverComponentState failure: #{exception}"

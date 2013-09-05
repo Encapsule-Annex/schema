@@ -410,7 +410,8 @@ ONMjs.address.Parent = (address_, generations_) ->
 
             generations--
                 
-        newTokenVector = (tokenSourceIndex > 0) and address_.tokenVector.slice(0, tokenSourceIndex + 1) or []
+
+        newTokenVector = ((tokenSourceIndex < 0) and []) or address_.tokenVector.slice(0, tokenSourceIndex + 1)
         newAddress = new Encapsule.code.lib.omm.Address(token.model, newTokenVector)
         newAddress.pushToken(token)
         return newAddress
