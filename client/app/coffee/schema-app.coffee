@@ -91,7 +91,7 @@ class Encapsule.code.app.Schema
 
             # Attach the CachedAddress as an observer of the store so that it can respond if the component
             # that owns the currently selected namespace is removed.
-            # TEST:::: selectedAddressObserverId = store.registerObserver(selectedAddress.objectStoreCallbacks, selectedAddress)
+            selectedAddressObserverId = store.registerObserver(selectedAddress.objectStoreCallbacks, selectedAddress)
 
             # Attach the path view to the currently selected address so that it can display the currently
             # selected address to the user. Clicking links writes back to the cached address store to update
