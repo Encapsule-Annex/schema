@@ -103,8 +103,6 @@ class ONMjs.observers.SelectedNamespaceModelView
             # ============================================================================
             @cachedAddressObserverInterface = {
 
-
-
                 #
                 # ----------------------------------------------------------------------------
                 onComponentCreated: (cachedAddressStore_, observerId_, address_) =>
@@ -136,8 +134,6 @@ class ONMjs.observers.SelectedNamespaceModelView
                         selectedNamespace: selectedNamespace
                         selectedNamespaceDescriptor: selectedNamespaceDescriptor
                     }
-
-
 
                     @modelviewTitle(new ONMjs.observers.SelectedNamespaceTitleModelView(childParams))
                     @modelviewActions(new ONMjs.observers.SelectedNamespaceActionsModelView(childParams))

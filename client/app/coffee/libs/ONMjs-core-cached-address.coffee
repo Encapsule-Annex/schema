@@ -73,6 +73,16 @@ class ONMjs.CachedAddress extends ONMjs.Store
             @setAddress(address_)
 
             @objectStoreCallbacks = {
+                onNamespaceUpdated: (objectStore_, observerId_, address_) =>
+                    try
+                        cachedAddress = @getAddress()
+                        if cachedAddress.isEqual(address_)
+                            @setAddress(address_)
+
+                    catch exception
+                        throw "ONMjs.CachedAddress.objectStoreCallbacks.onNamespaceUpdated failure: #{exception}"
+
+
                 onNamespaceRemoved: (objectStore_, observerId_, address_) =>
                     try
                         cachedAddress = @getAddress()
