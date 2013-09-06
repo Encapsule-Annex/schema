@@ -136,12 +136,7 @@ class ONMjs.AddressToken
     isEqual: (token_) =>
         try
             if not (token_? and token_) then throw "Missing token input parameter."
-            result = false
-            while true
-                if @idNamespace != token_.idNamespace then break
-                if @key != token_.key then break
-                if @idExtensionPoint != token_.idExtensionPoint then break
-                result true
+            result = (@idNamespace == token_.idNamespace) and (@key == token_.key) and (@idExtensionPoint == token_.idExtensionPoint)
             return result
 
         catch exception

@@ -30,7 +30,7 @@ BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
 
 ------------------------------------------------------------------------------
 
-encapsule-lib-omm-core-address.coffee
+
 
 ------------------------------------------------------------------------------
 
@@ -218,6 +218,7 @@ class ONMjs.Address
                 if not tokenA.isEqual(tokenB)
                     result = false
                     break
+                index++
             return result
         catch exception
             throw "ONMjs.Address.isEqual failure: #{exception}"
@@ -391,6 +392,8 @@ ONMjs.address.FromPath = (model_, path_) ->
 
 #
 # ============================================================================
+# Return the parent address (defaults to a single generation) or undefined
+# if no parent address exists.
 ONMjs.address.Parent = (address_, generations_) ->
     try
         if not (address_? and address_) then throw "Missing address input parameter."
@@ -472,5 +475,21 @@ ONMjs.address.NewAddressSameComponent = (address_, pathId_) ->
 
 
 
+#
+# ============================================================================
+# Given a source address, determine if it specified the root namespame
+# of the store or an extension component. If it does, simply return a reference
+# to the source address. Otherwise, create and return a new address that
+# specifies the source address' owning component address.
 
+ONMjs.address.ComponentAddress = (address_) ->
+    try
+        if not (address_? and address_) then throw "Missing address input parameter."
+        descriptor = address_.getDescriptor()
+        if descriptor.isComponent
+            return address_
+        return ONMjs.address.NewAddressSameComponent(address_, descriptor.idComponent)
+
+    catch excpetion
+        throw "ONMjs.address.ComponentAddress failure: #{exception}"
 

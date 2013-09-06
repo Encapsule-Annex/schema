@@ -49,43 +49,40 @@ ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
 
 #
 # ============================================================================
-class ONMjs.observers.ObjectModelNavigatorNamespaceComponent
-    constructor: (namespace_, selectorStore_) ->
+class ONMjs.observers.SelectedNamespaceComponentModelView
+    constructor: (params_) ->
         try
-            namespaceSelector = namespace_.getResolvedSelector()
-            namespaceSelectorHash = namespaceSelector.getHashString()
-            componentSelector = undefined
-            if namespace_.objectModelDescriptor.isComponent
-                componentSelector = namespaceSelector
-            else
-                componentSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(
-                    namespace_.objectModelDescriptor.idComponent, namespace_.resolvedKeyVector)
 
-            componentNamespace = selectorStore_.associatedObjectStore.openNamespace(componentSelector)
+            componentAddress = ONMjs.address.ComponentAddress(params_.selectedAddress)
+            componentDescriptor = componentAddress.getDescriptor()
+            componentNamespace = params_.cachedAddressStore.referenceStore.openNamespace(componentAddress)
 
-            @componentModelView = new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(
-                "", componentNamespace.getResolvedLabel(), componentSelector, selectorStore_, { noLink: namespace_.objectModelDescriptor.isComponent } )
+            ###
+            @componentModelView = new ONMjs.observers.helers.AddressSelectionLinkModelView(
+                "", componentNamespace.getResolvedLabel(), componentAddress, params_.cachedAddressStore, { noLink: true } )
+            ###
 
             @extensionPointModelViewArray = []
 
             index = 0
-            for extensionPointPath, extensionPointDescriptor of componentSelector.objectModelDescriptor.extensionPoints
-                extensionPointSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(extensionPointDescriptor.id, namespace_.resolvedKeyVector)
-                extensionPointNamespace = namespace_.objectStore.openNamespace(extensionPointSelector)
-                noLinkFlag = namespaceSelectorHash == extensionPointSelector.getHashString()
+            for extensionPointPath, extensionPointDescriptor of componentDescriptor.extensionPoints
+                extensionPointAddress = ONMjs.address.NewAddressSameComponent(componentAddress, extensionPointDescriptor.id)
+                extensionPointNamespace = params_.cachedAddressStore.referenceStore.openNamespace(extensionPointAddress)
+                noLinkFlag = extensionPointAddress.isEqual(params_.selectedAddress)
                 prefix = undefined
                 if index++ then prefix = " &bull; "
                 label = "#{extensionPointNamespace.getResolvedLabel()}"
-                subcomponentCount = extensionPointNamespace.objectStoreNamespace.length
+                subcomponentCount = Encapsule.code.lib.js.dictionaryLength(extensionPointNamespace.data())
                 label += " (#{subcomponentCount})"
-                @extensionPointModelViewArray.push new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(
-                    prefix, label, extensionPointSelector, selectorStore_, { noLink: noLinkFlag })
+
+                @extensionPointModelViewArray.push new ONMjs.observers.helpers.AddressSelectionLinkModelView(
+                    prefix, label, extensionPointAddress, params_.cachedAddressStore, { noLink: noLinkFlag })
 
         catch exception
-            throw "ONMjs.observers.ObjectModelNavigatorNamespaceComponent failure: #{exception}"
+            throw "ONMjs.observers.SelectedNamespaceComponentModelView failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceComponent", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceComponentViewModel", ( -> """
 
 <span data-bind="if: extensionPointModelViewArray.length">
     <div class="classObjectModelNavigatorNamespaceSectionTitle">
@@ -94,7 +91,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectMo
     <span data-bind="ifnot: extensionPointModelViewArray.length"><i>Extension point contains no subcomponents.</i></span>
     <span data-bind="if: extensionPointModelViewArray.length">
     <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceComponent">
-        <span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement', foreach: extensionPointModelViewArray }"></span>
+        <span data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel', foreach: extensionPointModelViewArray }"></span>
     </div>
     </span>
 </span>
