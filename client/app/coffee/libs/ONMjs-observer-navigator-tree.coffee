@@ -217,7 +217,7 @@ class ONMjs.observers.NavigatorModelView
                             while spliceIndex < parentChildItemArray.length
                                 item = parentChildItemArray[spliceIndex]
                                 itemAddress = item.address
-                                itemState = store_.openObserverNamespaceState(observerId, itemAddress)
+                                itemState = store_.openObserverNamespaceState(observerId_, itemAddress)
                                 itemState.indexInParentChildArray = spliceIndex++
 
                             parentNamespaceState.itemModelView.children(parentChildItemArray)
@@ -225,7 +225,7 @@ class ONMjs.observers.NavigatorModelView
                             return true
 
                     catch exception
-                        throw "Encapsule.code.lib.modelview.ObjectModelNavigatorWindow.onNamespaceRemoved failure: #{exception}"
+                        throw "Encapsule.code.lib.modelview.NavigatorModelView.onNamespaceRemoved failure: #{exception}"
 
             }
 
