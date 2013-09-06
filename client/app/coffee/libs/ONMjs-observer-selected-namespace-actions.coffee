@@ -73,7 +73,7 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
 
             #
             # ============================================================================
-            @onClickRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
+            @onClickRemoveComponent = (prefix_, label_, address_, selectorStore_, options_) =>
                 try
                     @blipper.blip("15")
                     @showConfirmRemove(true)
@@ -82,20 +82,17 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
 
             #
             # ============================================================================
-            @onDoRemoveComponent = (prefix_, label_, selector_, selectorStore_, options_) =>
+            @onDoRemoveComponent = (prefix_, label_, address_, selectorStore_, options_) =>
                 try
-                    Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
                     @blipper.blip("27")
-
-                    selectorStore_.associatedObjectStore.removeComponent(selector_)
-                    Console.message("... Success. The component has been removed.")
+                    selectorStore_.referenceStore.removeComponent(address_)
 
                 catch exception
                     Console.messageError("ONMjs.observers.SelectedNamespaceActionsModelView.onClickRemoveComponent failure: #{exception}")
 
             #
             # ============================================================================
-            @onClickRemoveAllSubcomponents = (prefix_, label_, selector_, selectorStore_, options_) =>
+            @onClickRemoveAllSubcomponents = (prefix_, label_, address_, selectorStore_, options_) =>
                 try
                     @blipper.blip("15")
                     @showConfirmRemoveAll(true)
@@ -104,27 +101,15 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
 
             #
             # ============================================================================
-            @onDoRemoveAllSubcomponents = (prefix_, label_, selector_, selectorStore_, options_) =>
+            @onDoRemoveAllSubcomponents = (prefix_, label_, address_, selectorStore_, options_) =>
                 try
-                    Console.message("ObjectModelNavigatorNamespaceActions.onClickRemoveComponent start...")
                     @blipper.blip("27")
-
-                    archetypePathId = namespace_.objectModelDescriptor.archetypePathId
-                    archetypeSelector = selectorStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(archetypePathId)
-                    archetypeJsonTag = archetypeSelector.objectModelDescriptor.jsonTag
-                    semanticBindings = selectorStore_.associatedObjectStore.objectModel.getSemanticBindings()
-                    extensionPointNamespace = selectorStore_.associatedObjectStore.openNamespace(selector_)
-
-                    subcomponentSelectorVector = []
-                    for subcomponentStoreNamespaceRecord in extensionPointNamespace.objectStoreNamespace
-                        subcomponentStoreNamespace = subcomponentStoreNamespaceRecord[archetypeJsonTag]
-                        subcomponentKeyVector = Encapsule.code.lib.js.clone(extensionPointNamespace.resolvedKeyVector)
-                        subcomponentKeyVector.push semanticBindings.getUniqueKey(subcomponentStoreNamespace)
-                        subcomponentSelector = selectorStore_.associatedObjectStore.objectModel.createNamespaceSelectorFromPathId(archetypePathId, subcomponentKeyVector)
-                        subcomponentSelectorVector.push subcomponentSelector
-
-                    for subcomponentSelector in subcomponentSelectorVector
-                        selectorStore_.associatedObjectStore.removeComponent(subcomponentSelector)
+                    store = selectorStore_.referenceStore
+                    namespace = store.openNamespace(address_)
+                    subcomponentAddresses = [] 
+                    namespace.visitExtensionPointSubcomponents( (address__) => subcomponentAddresses.push(address__) )
+                    for address in subcomponentAddresses
+                        store.removeComponent(address)
 
                 catch exception
                     Console.messageError("ONMjs.observers.SelectedNamespaceActionsModelView.onClickRemoveAllSubcomponents failure: #{exception}")

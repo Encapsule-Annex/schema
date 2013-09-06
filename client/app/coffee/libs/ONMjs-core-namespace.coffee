@@ -207,8 +207,6 @@ class ONMjs.Namespace
             if resolvedToken.namespaceDescriptor.mvvmType != "extension"
                 throw "You may only visit the subcomponents of an extension point namespace."
 
-
-
             for key, object of @data()
                 address = @getResolvedAddress().clone()
                 token = new ONMjs.AddressToken(@store.model, resolvedToken.idNamespace, key, resolvedToken.namespaceDescriptor.archetypePathId)
