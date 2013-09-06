@@ -149,7 +149,6 @@ class ONMjs.observers.SelectedNamespaceModelView
                             newModelViewChildren = new ONMjs.observers.SelectedNamespaceChildrenModelView(childParams)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
                             @modelviewComponent(new ONMjs.observers.SelectedNamespaceComponentModelView(childParams))
-                            break
                             @modelviewCollection(undefined)
                             break
                         when "child"
@@ -159,8 +158,7 @@ class ONMjs.observers.SelectedNamespaceModelView
                             @modelviewMutable(mutableModelView.propertyModelViews.length and mutableModelView or undefined)
                             newModelViewChildren = new ONMjs.observers.SelectedNamespaceChildrenModelView(childParams)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)                            
-                            @modelviewComponent(undefined)
-                            break
+                            @modelviewComponent(new ONMjs.observers.SelectedNamespaceComponentModelView(childParams))
                             @modelviewCollection(undefined)
                             break
                         when "extension"
@@ -168,8 +166,7 @@ class ONMjs.observers.SelectedNamespaceModelView
                             @modelviewMutable(undefined)
                             @modelviewChildren(undefined)
                             @modelviewComponent(new ONMjs.observers.SelectedNamespaceComponentModelView(childParams))
-                            break
-                            @modelviewCollection(new ONMjs.observers.ObjectModelNavigatorNamespaceCollection(childParams))
+                            @modelviewCollection(new ONMjs.observers.SelectedNamespaceCollectionModelView(childParams))
                             break
                         when "archetype"
                             immutableModelView = new ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView(childParams)
@@ -179,7 +176,6 @@ class ONMjs.observers.SelectedNamespaceModelView
                             newModelViewChildren = new ONMjs.observers.SelectedNamespaceChildrenModelView(childParams)
                             @modelviewChildren(newModelViewChildren.childModelViews.length and newModelViewChildren or undefined)
                             @modelviewComponent(new ONMjs.observers.SelectedNamespaceComponentModelView(childParams))
-                            break
                             @modelviewCollection(undefined)
                             break
                         else
@@ -200,7 +196,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
 <span data-bind="if: modelviewActions"><span data-bind="with: modelviewActions"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceActionsViewModel' }"></span></span></span>
 <span data-bind="if: modelviewImmutable"><span data-bind="with: modelviewImmutable"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceImmutablePropertiesViewModel' }"></span></span></span>
 <span data-bind="if: modelviewMutable"><span data-bind="with: modelviewMutable"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceMutablePropertiesViewModel'}"></span></span></span>
-<span data-bind="if: modelviewCollection"><span data-bind="with: modelviewCollection"><span data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceCollection'}"></span></span></span>
+<span data-bind="if: modelviewCollection"><span data-bind="with: modelviewCollection"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceCollectionViewModel'}"></span></span></span>
 <span data-bind="if: modelviewComponent"><span data-bind="with: modelviewComponent"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceComponentViewModel'}"></span></span></span>
 <span data-bind="if: modelviewChildren"><span data-bind="with: modelviewChildren"><span data-bind="template: { name: 'idKoTemplate_SelectedNamespaceChildrenViewModel'}"></span></span></span>
 """))

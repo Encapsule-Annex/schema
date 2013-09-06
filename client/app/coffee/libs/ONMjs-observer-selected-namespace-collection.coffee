@@ -49,41 +49,29 @@ ONMjs.observers = ONMjs.observers? and ONMjs.observers or ONMjs.observers = {}
 
 #
 # ============================================================================
-class ONMjs.observers.ObjectModelNavigatorNamespaceCollection
-    constructor: (namespace_, selectorStore_) ->
+class ONMjs.observers.SelectedNamespaceCollectionModelView
+    constructor: (params_) ->
         try
-            @namespaceLabel = namespace_.objectModelDescriptor.label
-
-            semanticBindings = namespace_.objectStore.objectModel.getSemanticBindings()
-            elementPathId = namespace_.objectModelDescriptor.archetypePathId
-            @elementSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(elementPathId, namespace_.resolvedKeyVector)
-            elementJsonTag = @elementSelector.objectModelDescriptor.jsonTag
-
             @subcomponentModelViews = []
+            @namespaceLabel = params_.selectedNamespaceDescriptor.label or "<no label provided>"
 
-            @addElementCallbackLink = new ONMjs.observers.ObjectModelNavigatorNamespaceCallbackLink(
-                "", "add", @elementSelector, selectorStore_, undefined, @onClickAddElement)
-
+            semanticBindings = params_.cachedAddressStore.referenceStore.model.getSemanticBindings()
             index = 0
-            for elementEntry in namespace_.objectStoreNamespace
-                elementData = elementEntry[elementJsonTag]
-                elementKey = semanticBindings.getUniqueKey(elementData)
-                elementSelectKeyVector = Encapsule.code.lib.js.clone(namespace_.resolvedKeyVector)
-                elementSelectKeyVector.push elementKey
-                elementSelector = namespace_.objectStore.objectModel.createNamespaceSelectorFromPathId(elementPathId, elementSelectKeyVector)
-                elementNamespace = namespace_.objectStore.openNamespace(elementSelector)
+
+            params_.selectedNamespace.visitExtensionPointSubcomponents( (address__) =>
+                subcomponentNamespace = params_.cachedAddressStore.referenceStore.openNamespace(address__)
                 prefix = "#{index++ + 1}: "
-                label = "#{elementNamespace.getResolvedLabel()}<br>"
-                @subcomponentModelViews.push new ONMjs.observers.ObjectModelNavigatorNamespaceContextElement(
-                    prefix, label, elementSelector, selectorStore_)
+                label = "#{subcomponentNamespace.getResolvedLabel()}<br>"
+                @subcomponentModelViews.push new ONMjs.observers.helpers.AddressSelectionLinkModelView(prefix, label, address__, params_.cachedAddressStore)
+                )
                 
         catch exception
-            throw "ONMjs.observers.ObjectModelNavigatorNamespaceCollection failure: #{exception}"
+            throw "ONMjs.observers.SelectedNamespaceCollectionModelView failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorNamespaceCollection", ( -> """
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceCollectionViewModel", ( -> """
 <div class="classObjectModelNavigatorNamespaceSectionTitle">
-<span class="class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: elementSelector.objectModelDescriptor.label"></span>
+<span class="class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: namespaceLabel"></span>
 Subcomponents (<span data-bind="text: subcomponentModelViews.length"></span>):
 </div>
 <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceCollection">
@@ -91,7 +79,7 @@ Subcomponents (<span data-bind="text: subcomponentModelViews.length"></span>):
 <i><span class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: namespaceLabel"></span> extension point is empty.</i>
 </span>
 <span data-bind="if: subcomponentModelViews.length">
-<span class="link" data-bind="template: { name: 'idKoTemplate_ObjectModelNavigatorNamespaceContextElement', foreach: subcomponentModelViews }"></span>
+<span class="link" data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel', foreach: subcomponentModelViews }"></span>
 </span>
 </div>
 """))
