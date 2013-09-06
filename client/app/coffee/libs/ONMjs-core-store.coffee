@@ -68,7 +68,7 @@ class ONMjs.Store
             @jsonTag = model_.jsonTag
             @label = model_.label
             @description = model_.description
-
+ 
             @dataReference = undefined # the new store actual
 
             @objectStoreSource = undefined # this is flag indicating if the store was created from a JSON string
@@ -99,9 +99,23 @@ class ONMjs.Store
 
             #
             # ============================================================================
+            # Returns true iff the specified ONMjs.Address and this ONMjs.Store
+            # are both bound to the same ONMjs.Model.
+
+            @validateAddressModel = (address_) =>
+                try
+                    if not (address_? and address_) then throw "Missing address input parameter."
+                    return @model.isEqual(address_.model)
+                catch exception
+                    throw "ONMjs.Store.verifyAddress failure: #{exception}"
+
+
+            #
+            # ============================================================================
             @createComponent = (address_) =>
                 try
-                    if not (address_? and address_) then throw "Missing object model namespace selector input parameter!"
+                    if not (address_? and address_) then throw "Missing object model namespace selector input parameter."
+                    if not @validateAddressModel(address_) then throw "The specified address cannot be used to reference this store because it's not bound to the same model as this store."
                     if address_.isQualified() then throw "The specified address is qualified and may only be used to specify existing objects in the store."
                     descriptor = address_.getDescriptor()
                     if not descriptor.isComponent then throw "The specified address does not specify the root of a component."
@@ -113,7 +127,7 @@ class ONMjs.Store
                     @reifier.reifyStoreComponent(resolvedAddress)
 
                     extensionPointAddress = ONMjs.address.Parent(resolvedAddress);
-                    extensionPointNamespace = new ONMjs.Namespace(@, extensionPointAddress, "bypass")
+                    extensionPointNamespace = @openNamespace(extensionPointAddress)
                     extensionPointNamespace.update()
 
                     return componentNamespace
@@ -124,37 +138,27 @@ class ONMjs.Store
 
             #
             # ============================================================================
-            @removeComponent = (objectModelNamespaceSelector_) =>
+            @removeComponent = (address_) =>
                 try
-                    if not (objectModelNamespaceSelector_? and objectModelNamespaceSelector_)
-                        throw "Missing object model namespace selector input parameter!"
-
-                    if not objectModelNamespaceSelector_.selectKeysReady
-                        throw "Invalid unresolved namespace selector in request."
-
-                    if not objectModelNamespaceSelector_.objectModelDescriptor.isComponent
-                        throw "Invalid selector specifies non-component root namespace."
-
-                    if objectModelNamespaceSelector_.pathId == 0
-                        throw "Invalid selector specifies root component which cannot be removed."
-
+                    if not (address_? and address_) then throw "Missing address input parameter!"
+                    if not @validateAddressModel(address_) then throw "The specified address cannot be used to reference this store because it's not bound to the same model as this store."
+                    if not address_.isQualified() then throw "You cannot use an unqualified address to remove a component."
+                    descriptor = address_.getDescriptor()
+                    if not descriptor.isComponent then throw "The specified address does not specify the root of a component."
+                    if descriptor.mvvmType == "root" then throw "The specified address refers to the root namespace of the store which cannot be removed."
                     # Unrefify the component before actually making any modifications to the store.
                     # modelViewObserver_ == undefined -> broadcast to all registered observers
                     # undoFlag_ == true -> invert namespace traversal order and invoke remove callbacks
-                    @storeReifier.internalReifyStoreExtensions(objectModelNamespaceSelector_, undefined, undefined, true)
-                    @storeReifier.internalUnreifyStoreComponent(objectModelNamespaceSelector_)
-
-                    objectStoreNamespace = new ONMjs.ObjectStoreNamespace(@, objectModelNamespaceSelector_)
-                    arrayIndexToRemove = objectStoreNamespace.resolvedKeyIndexVector[objectStoreNamespace.resolvedKeyIndexVector.length - 1]
-
-                    extensionPointSelector = @model.createNamespaceSelectorFromPathId(objectModelNamespaceSelector_.objectModelDescriptor.parent.id, objectModelNamespaceSelector_.selectKeyVector)
-
-                    extensionPointNamespace = new ONMjs.ObjectStoreNamespace(@, extensionPointSelector)
-                    extensionPointNamespace.objectStoreNamespace.splice(arrayIndexToRemove, 1)
-
-                    extensionPointNamespace.updateRevision()
-
-                    return objectStoreNamespace
+                    @reifier.reifyStoreExtensions(address_, undefined, true)
+                    @reifier.unreifyStoreComponent(address_)
+                    componentNamespace = @openNamespace(address_)
+                    extensionPointAddress = ONMjs.address.Parent(address_)
+                    extensionPointNamespace = @openNamespace(extensionPointAddress)
+                    componentDictionary = extensionPointNamespace.data()
+                    componentKey = address_.getLastToken().key
+                    delete componentDictionary[componentKey]
+                    extensionPointNamespace.update()
+                    return componentNamespace
 
                 catch exception
                     throw "ONMjs.Store.removeComponent failure: #{exception}"
@@ -168,6 +172,7 @@ class ONMjs.Store
             @openNamespace = (address_) =>
                 try
                     if not (address_ and address_) then throw "Missing address input parameter."
+                    if not @validateAddressModel(address_) then throw "The specified address cannot be used to reference this store because it's not bound to the same model as this store."
                     namespace = new ONMjs.Namespace(@, address_, "bypass")
                     return namespace
 

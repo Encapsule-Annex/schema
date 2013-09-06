@@ -382,6 +382,8 @@ class ONMjs.Model extends ONMjs.implementation.ModelBase
                     throw "ONMjs.Model failure: #{exception}"
 
 
+            # --------------------------------------------------------------------------
+            @isEqual = (model_) => @jsonTag == model_.jsonTag
 
         catch exception
             throw "ONMjs.Model construction fail: #{exception}"
