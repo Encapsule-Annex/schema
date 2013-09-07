@@ -200,10 +200,10 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceActionsViewModel", ( -> """
-<div class="classObjectModelNavigatorNamespaceSectionTitle">
+<div class="classONMjsSelectedNamespaceSectionTitle">
     Actions:
 </div>
-<div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceActions">
+<div class="classONMjsSelectedNamespaceSectionCommon classObjectModelNavigatorNamespaceActions">
     <span data-bind="if: actionsForNamespace">
         <div>
             <span data-bind="if: callbackLinkAddSubcomponent">

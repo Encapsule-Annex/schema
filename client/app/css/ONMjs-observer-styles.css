@@ -1,13 +1,15 @@
 /*
-    CSS3 for Encapsule Project Object Model Manager (OMM) library
-    view model components.
+CSS3 styles for Encapsule Project ONMjs libraries bundled plug-in observers.
 */
 
-/* NEW STUFF :: A single level item in the tree-view */
-.classObjectModelNavigatorMouseOverCursorPointer { cursor: pointer; }
 
+.classONMjsMouseOverPointer { cursor: pointer; }
 
-.classObjectModelNavigatorSelectorWindow {
+/* ----------------------------------------------------------------------------
+Styles leveraged by ONMjs.observer.SelectedPathViewModel
+---------------------------------------------------------------------------- */
+
+.classONMjsSelectedPath {
 width: auto;
 height: auto;
 white-space: nowrap;
@@ -16,44 +18,46 @@ text-overflow: ellipsis;
 margin-left: 0.5em;
 }
 
-.classObjectModelNavigatorSelectorPathElement {
+.classONMjsSelectedPathElement
+{
 }
 
-.classObjectModelNavigatorSelectorPathElement .prefix {
+.classONMjsSelectedPathElement .prefix {
 font-weight: bold;
 color: rgba(0,0,0, 0.5);
 text-shadow: 0.1em 0.1em 0.1em rgba(255,255,255,0.4);
 }
 
-.classObjectModelNavigatorSelectorPathElement .parent {
+.classONMjsSelectedPathElement .parent {
 font-weight: normal;
 color: #99CCFF;
 }
 
-.classObjectModelNavigatorSelectorPathElement .component {
+.classONMjsSelectedPathElement .component {
 font-weight: bold;
 color: #CCCCFF;
 }
 
-
-.classObjectModelNavigatorSelectorPathElement .selected {
+.classONMjsSelectedPathElement .selected {
 font-weight: bold;
 color: #00FF00;
 text-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.75);
 }
 
+/* ----------------------------------------------------------------------------
+Styles leveraged by ONMjs.observer.NavigatorViewModel
+---------------------------------------------------------------------------- */
 
 /* Outer navigator window */
-.classObjectModelNavigatorWindow {
+.classONMjsNavigator {
 font-family: Arial, Verdana, Courier;
 font-size: 8pt;
 margin: 0px;
 }
 
-/* Inner menu level window contained within an outer navigator window */
-.classObjectModelNavigatorMenuWindow {
+.classONMjsNavigatorItem {
 margin: 0px;
-width: 100%;
+width: auto;
 overflow: hidden;
 border-top: 1px solid rgba(255,255,255,0.1);
 border-left: 1px solid rgba(255,255,255,0.1);
@@ -63,7 +67,7 @@ border-right: 1px solid rgba(0,0,0,0.1);
 background-color: rgba(0,0,0,0.02);
 }
 
-.classMenuSelectedOuter {
+.classONMjsNavigatorItemSelected {
 border-bottom: 1px solid rgba(255,255,255,0.1);
 border-right: 1px solid rgba(255,255,255,0.1);
 border-top: 1px solid rgba(0,0,0,0.1);
@@ -72,7 +76,7 @@ border-left: 1px solid rgba(0,0,0,0.1);
 background-color: rgba(0,255,0,0.1);
 }
 
-.classMenuSelected {
+.classONMjsNavigatorItemSelectedLabel {
 background-color: rgba(0,255,0,0.5);
 font-weight: bold;
 font-size: 10pt;
@@ -91,11 +95,15 @@ padding-bottom: 0.1em;
 -moz-border-radius: 8px; border-radius: 8px;
 }
 
-.classMenuUnselectedOuter {
+.classONMjsNavigatorItemSelectedChildren {
+margin-left: 0.5em;
+}
+
+.classONMjsNavigatorItemUnselected {
 background-color: rgba(0,0,0,0.1);
 }
 
-.classMenuUnselected {
+.classONMjsNavigatorItemUnselectedLabel {
 background-color: rgba(255,255,255,0.05);
 font-weight: normal;
 font-size: 10pt;
@@ -114,25 +122,30 @@ padding-bottom: 0.1em;
 -moz-border-radius: 8px; border-radius: 8px;
 }
 
-
-.classObjectModelNavigatorNamespaceHash {
-background-color: rgba(0,0,0,0.1);
-font-family: Courier;
-font-size: 6pt;
-margin: 0px;
-padding: 4px;
-height: 1em;
-display: none;
+.classONMjsNavigatorItemUnselectedChildren {
+margin-left: 0.5em;
 }
 
-.classObjectModelNavigatorNamespaceContext {
+
+/* ----------------------------------------------------------------------------
+Styles leveraged by ONMjs.observer.helpers.*ViewModel
+---------------------------------------------------------------------------- */
+
+
+.classONMjsAddressSelectionLink {
 padding: 4px;
 padding-left: 10px;
 background-color: rgba(255,255,255,0.1);
 border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
-.classObjectModelNavigatorNamespaceContextLabel {
+
+.classONMjsAddressSelectionLinkPrefix {
+color: rgba(0,0,0,0.4);
+font-weight: bold;
+}
+
+.classONMjsAddressSelectionLinkLabel {
 color: rgba(0, 0, 255, 1.0);
 text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
 font-style: normal;
@@ -141,7 +154,7 @@ font-weight: normal;
 text-decoration: underline;
 }
 
-.classObjectModelNavigatorNamespaceContextLabelNoLink {
+.classONMjsAddressSelectionLinkLabelNoLink {
 color: rgba(0,0,0,0.4);
 text-shadow: 1px 1px 1px rgba(255,255,255,0.4);
 font-weight: bold;
@@ -149,19 +162,13 @@ font-style: normal;
 font-family: Verdana, Arial;
 }
 
-.classObjectModelNavigatorNamespaceContextPrefix {
-color: rgba(0,0,0,0.4);
-font-weight: bold;
+.classONMjsCallbackLink {
 }
 
-
-.classObjectModelNavigatorNamespaceCallbackLink {
+.classONMjsCallbackLink .prefix {
 }
 
-.classObjectModelNavigatorNamespaceCallbackLink .prefix {
-}
-
-.classObjectModelNavigatorNamespaceCallbackLink .link {
+.classONMjsCallbackLink .link {
 padding: 0px;
 padding-left: 8px;
 padding-right: 8px;
@@ -174,7 +181,7 @@ border: 1px solid rgba(0,0,0,0.1);
 box-shadow: 0em 0.5em 1em rgba(255,255,255,0.5) inset;
 }
 
-.classObjectModelNavigatorNamespaceCallbackLink .nolink {
+.classONMjsCallbackLink .nolink {
 padding: 0px;
 padding-left: 8px;
 padding-right: 8px;
@@ -184,47 +191,46 @@ border: 1px solid rgba(0,0,0,0.1);
 box-shadow: 0em 0.5em 1em rgba(0,0,0,0.1) inset;
 }
 
+/* ----------------------------------------------------------------------------
+Styles leveraged by ONMjs.observer.SelectedNamespaceTitleViewModel
+---------------------------------------------------------------------------- */
 
-
-
-
-
-
-.classObjectModelNavigatorNamespaceTitleBar {
+.classONMjsSelectedNamespaceTitle {
 padding: 4px;
 padding-left: 10px;
 padding-bottom: 10px;
 }
 
-.classObjectModelNavigatorNamespaceTitleBar .description {
+.classONMjsSelectedNamespaceTitle .description {
 font-size: 10pt;
 font-weight: bold;
 font-family: Arial;
 color: rgba(0,0,0,0.5);
 }
 
-.classObjectModelNavigatorNamespaceTitle {
+.classONMjsSelectedNamespaceTitleLinks {
 font-size: 12pt;
 font-family: Verdana, Arial;
 color: black;
 text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
 }
 
-.classObjectModelNavigatorNamespaceTitle .selected {
+.classONMjsSelectedNamespaceTitleLinks .selected {
 color: #00FF00;
 text-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.75);
 font-size: 14pt;
 font-weight: bold;
 }
 
-.classObjectModelNavigatorNamespaceTitle .separator {
+.classONMjsSelectedNamespaceTitleLinks .separator {
 color: rgba(0,0,0,0.5);
 }
 
+/* ----------------------------------------------------------------------------
+Styles leveraged by ONMjs.observer.SelectedJsonViewModel
+---------------------------------------------------------------------------- */
 
-
-/* title DIV */
-.classObjectModelNavigatorJsonTitle {
+.classONMjsSelectedJson {
 font-size: 12pt;
 color: #333333;
 padding: 4px;
@@ -233,16 +239,14 @@ background-color: rgba(255,255,255,0.2);
 border-bottom: 1px solid rgba(0,0,0,0.4);
 }
 
-.classObjectModelNavigatorJsonTitle .titleString {
+.classONMjsSelectedJson .titleString {
 color: #00FF00;
 text-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.5);
 font-weight: bold;
 float: bottom;
 }
 
-
-/* selector hash string (mainly for debugging) */
-.classObjectModelNavigatorJsonSelectorHash {
+.classONMjsSelectedJsonAddressHash {
 font-size: 8pt;
 font-family: Courier;
 color: rgba(255,255,255,0.4);
@@ -250,19 +254,18 @@ margin-top: 1em;
 margin-bottom: 1em;
 }
 
-/* JSON DIV */
-.classObjectModelNavigatorJsonBody {
+.classONMjsSelectedJsonBody {
 background-color: rgba(0,200,255,0.1);
-}
-
-/* PRE JSON container */
-.classObjectModelNavigatorJsonPreformat {
 font-size: 8pt;
 font-family: Lucica Console, Courier;
 color: black;
 }
 
-.classObjectModelNavigatorNamespaceSectionTitle {
+/* ----------------------------------------------------------------------------
+Styles leveraged by ONMjs.observer.SelectedNamespace*ViewModel
+---------------------------------------------------------------------------- */
+
+.classONMjsSelectedNamespaceSectionTitle {
 font-size: 10pt;
 font-weight: bold;
 font-family: Verdana, Arial;
@@ -277,7 +280,7 @@ background-color: rgba(255,255,255, 0.1);
 -moz-border-top-left-radius: 8px; border-top-left-radius: 8px;
 }
 
-.classObjectModelNavigatorNamespaceSectionCommon {
+.classONMjsSelectedNamespaceSectionCommon {
 background-color: rgba(255,255,255,0.2);
 padding: 4px;
 padding-left: 10px;
@@ -291,6 +294,14 @@ border-left: 1px solid rgba(255,255,255,0.11);
 border-right: 1px solid rgba(0,0,0,0.11);
 -moz-border-bottom-right-radius: 8px; border-bottom-right-radius: 8px;
 }
+
+/* ----------------------------------------------------------------------------
+Styles leveraged by ONMjs.observer.
+---------------------------------------------------------------------------- */
+
+
+/* LEFT OFF RENAMING EFFORT HERE */
+
 
 .classActionAdd {
 background-color: #00CC00;
@@ -396,10 +407,4 @@ text-shadow: none;
 font-weight: bold;
 font-size: 12pt;
 }
-
-
-
-
-
-/* END OF NEW STUFF */
 

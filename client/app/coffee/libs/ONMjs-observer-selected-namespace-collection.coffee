@@ -70,13 +70,13 @@ class ONMjs.observers.SelectedNamespaceCollectionModelView
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceCollectionViewModel", ( -> """
-<div class="classObjectModelNavigatorNamespaceSectionTitle">
-<span class="class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: namespaceLabel"></span>
+<div class="classONMjsSelectedNamespaceSectionTitle">
+<span class="class="classONMjsAddressSelectionLinkLabelNoLink" data-bind="html: namespaceLabel"></span>
 Subcomponents (<span data-bind="text: subcomponentModelViews.length"></span>):
 </div>
-<div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceCollection">
+<div class="classONMjsSelectedNamespaceSectionCommon classObjectModelNavigatorNamespaceCollection">
 <span data-bind="ifnot: subcomponentModelViews.length">
-<i><span class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: namespaceLabel"></span> extension point is empty.</i>
+<i><span class="classONMjsAddressSelectionLinkLabelNoLink" data-bind="html: namespaceLabel"></span> extension point is empty.</i>
 </span>
 <span data-bind="if: subcomponentModelViews.length">
 <span class="link" data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel', foreach: subcomponentModelViews }"></span>

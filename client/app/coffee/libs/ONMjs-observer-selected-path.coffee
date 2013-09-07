@@ -77,7 +77,7 @@ class ONMjs.observers.implementation.SelectedPathElementModelView
             if @isSelected
                 @label += """<span class="selected">#{resolvedLabel}</span>"""
             else
-                styleClasses = "parent classObjectModelNavigatorMouseOverCursorPointer"
+                styleClasses = "parent classONMjsMouseOverPointer"
                 if objectStoreDescriptor.isComponent
                     styleClasses += " component"
                 @label += """<span class="#{styleClasses}">#{resolvedLabel}</span>"""
@@ -94,7 +94,7 @@ class ONMjs.observers.implementation.SelectedPathElementModelView
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedPathElementViewModel", ( -> """
-<span class="classObjectModelNavigatorSelectorPathElement"><span data-bind="html: prefix"></span><span data-bind="html: label, click: onClick"></span></span>
+<span class="classONMjsSelectedPathElement"><span data-bind="html: prefix"></span><span data-bind="html: label, click: onClick"></span></span>
 """))
 
 
@@ -176,6 +176,6 @@ class ONMjs.observers.SelectedPathModelView
         # / END: connstructor
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedPathViewModel", ( -> """
-<span data-bind="template: { name: 'idKoTemplate_SelectedPathElementViewModel', foreach: pathElements }"></span>
+<div class="classONMjsSelectedPath"><span data-bind="template: { name: 'idKoTemplate_SelectedPathElementViewModel', foreach: pathElements }"></span></div>
 """))
 

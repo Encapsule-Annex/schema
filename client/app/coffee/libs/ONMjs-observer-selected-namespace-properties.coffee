@@ -81,10 +81,10 @@ class ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceImmutablePropertiesViewModel", ( -> """
-<div class="classObjectModelNavigatorNamespaceSectionTitle">
+<div class="classONMjsSelectedNamespaceSectionTitle">
     Immutable Properties (<span data-bind="text: propertyModelViews.length"></span>):
 </div>
-<div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceImmutable">
+<div class="classONMjsSelectedNamespaceSectionCommon classObjectModelNavigatorNamespaceImmutable">
     <span data-bind="if: propertyModelViews.length">
         <div class="classObjectModelNavigatorNamespaceProperties">
             <span data-bind="foreach: propertyModelViews">
@@ -142,10 +142,10 @@ class ONMjs.observers.SelectedNamespaceMutablePropertiesModelView
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceMutablePropertiesViewModel", ( -> """
-<div class="classObjectModelNavigatorNamespaceSectionTitle">
+<div class="classONMjsSelectedNamespaceSectionTitle">
     Mutable Properties (<span data-bind="text: propertyModelViews.length"></span>):
 </div>
-<div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceImmutable">
+<div class="classONMjsSelectedNamespaceSectionCommon classObjectModelNavigatorNamespaceImmutable">
     <span data-bind="if: propertyModelViews.length">
         <div class="classObjectModelNavigatorNamespaceProperties">
             <span data-bind="foreach: propertyModelViews">

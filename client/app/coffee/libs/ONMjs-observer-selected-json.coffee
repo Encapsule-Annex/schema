@@ -31,7 +31,6 @@ BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
 ------------------------------------------------------------------------------
 
 
-
 ------------------------------------------------------------------------------
 
 ###
@@ -115,13 +114,13 @@ class ONMjs.observers.SelectedJsonModelView
 
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorJsonModelView", ( -> """
-<div class="classObjectModelNavigatorJsonTitle">
+<div class="classONMjsSelectedJson">
     <span data-bind="html: saveJSONAsLinkHtml"></span>
     <span class="titleString" data-bind="html: title"></span>
 </div>
 address hash:<br>
-<span class="classObjectModelNavigatorJsonSelectorHash" data-bind="html: selectorHash"></span>
+<span class="classONMjsSelectedJsonAddressHash" data-bind="html: selectorHash"></span>
 <div class="classObjectModelNavigatorJsonBody">
-    <pre class="classObjectModelNavigatorJsonPreformat" data-bind="html: jsonString"></pre>
+    <pre class="classONMjsSelectedJsonBody" data-bind="html: jsonString"></pre>
 </div>
 """))

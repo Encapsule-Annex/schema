@@ -117,23 +117,28 @@ class ONMjs.observers.implementation.NavigatorItemModelView
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_NavigatorItemViewModel", ( -> """
 <span data-bind="if: isSelected()">
-    <div class="classObjectModelNavigatorMenuWindow classMenuSelectedOuter">
-        <div class="classMenuSelected" data-bind="text: label" ></div>
+    <div class="classONMjsNavigatorItem classONMjsNavigatorItemSelected">
+        <div class="classONMjsNavigatorItemSelectedLabel" data-bind="text: label" ></div>
+
         <span data-bind="if: children().length">
-            <div class="classObjectModelNavigatorMenuWindowInner">
+            <div class="classONMjsNavigatorItemSelectedChildren">
                 <div data-bind="template: { name: 'idKoTemplate_NavigatorItemViewModel', foreach: children }"></div>
             </div>
         </span>
+
     </div>
 </span>
+
 <span data-bind="ifnot: isSelected()">
-    <div class="classObjectModelNavigatorMenuWindow classObjectModelNavigatorMouseOverCursorPointer" data-bind="click: onClick, clickBubble: false" >
-        <div class="classMenuUnselected" data-bind="text: label"></div>
+    <div class="classONMjsNavigatorItem classONMjsNavigatorItemUnselected classONMjsMouseOverPointer" data-bind="click: onClick, clickBubble: false" >
+        <div class="classONMjsNavigatorItemUnselectedLabel" data-bind="text: label"></div>
+
         <span data-bind="if: children().length">
-            <div class="classObjectModelNavigatorMenuWindowInner">
+            <div class="classONMjsNavigatorItemUnselectedChildren">
                 <div data-bind="template: { name: 'idKoTemplate_NavigatorItemViewModel', foreach: children }"></div>
             </div>
         </span>
+
     </div>
 </span>
 """))

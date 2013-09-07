@@ -85,12 +85,12 @@ class ONMjs.observers.SelectedNamespaceComponentModelView
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceComponentViewModel", ( -> """
 
 <span data-bind="if: extensionPointModelViewArray.length">
-    <div class="classObjectModelNavigatorNamespaceSectionTitle">
+    <div class="classONMjsSelectedNamespaceSectionTitle">
         Extension Points (<span data-bind="text: extensionPointModelViewArray.length"></span>):
     </div>
     <span data-bind="ifnot: extensionPointModelViewArray.length"><i>Extension point contains no subcomponents.</i></span>
     <span data-bind="if: extensionPointModelViewArray.length">
-    <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceComponent">
+    <div class="classONMjsSelectedNamespaceSectionCommon classObjectModelNavigatorNamespaceComponent">
         <span data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel', foreach: extensionPointModelViewArray }"></span>
     </div>
     </span>

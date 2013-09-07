@@ -72,7 +72,7 @@ class ONMjs.observers.helpers.AddressSelectionLinkModelView
             throw "ONMjs.observers.helpers.AddressSelectionLinkModelView failure: #{exception}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_AddressSelectionLinkViewModel", ( -> """<span data-bind="if: prefix"><span class="classObjectModelNavigatorNamespaceContextPrefix" data-bind="html: prefix"></span></span><span data-bind="ifnot: optionsNoLink"><span class="classObjectModelNavigatorNamespaceContextLabel classObjectModelNavigatorMouseOverCursorPointer" data-bind="html: label, click: onClick"></span></span><span data-bind="if: optionsNoLink"><span class="classObjectModelNavigatorNamespaceContextLabelNoLink" data-bind="html: label"></span></span>"""))
+Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_AddressSelectionLinkViewModel", ( -> """<span data-bind="if: prefix"><span class="classONMjsAddressSelectionLinkPrefix" data-bind="html: prefix"></span></span><span data-bind="ifnot: optionsNoLink"><span class="classONMjsAddressSelectionLinkLabel classONMjsMouseOverPointer" data-bind="html: label, click: onClick"></span></span><span data-bind="if: optionsNoLink"><span class="classONMjsAddressSelectionLinkLabelNoLink" data-bind="html: label"></span></span>"""))
 
 #
 # ============================================================================
@@ -99,10 +99,10 @@ class ONMjs.observers.helpers.CallbackLinkModelView
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_CallbackLinkViewModel", ( -> """
-<span class="classObjectModelNavigatorNamespaceCallbackLink">
+<span class="classONMjsCallbackLink">
     <span data-bind="if: prefix"><span class="prefix" data-bind="html: prefix"></span></span>
     <span data-bind="ifnot: optionsNoLink">
-        <span class="link classObjectModelNavigatorMouseOverCursorPointer" data-bind="html: label, click: onClick, css: optionsStyleClass"></span>
+        <span class="link classONMjsMouseOverPointer" data-bind="html: label, click: onClick, css: optionsStyleClass"></span>
     </span>
     <span data-bind="if: optionsNoLink">
         <span class="nolink" data-bind="html: label, css: optionsStyleClass"></span>

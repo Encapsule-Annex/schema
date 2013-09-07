@@ -74,8 +74,8 @@ class ONMjs.observers.SelectedNamespaceChildrenModelView
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceChildrenViewModel", ( -> """
 <span data-bind="if: childModelViews.length">
-    <div class="classObjectModelNavigatorNamespaceSectionTitle">Child Namespaces (<span data-bind="text: childModelViews.length"></span>):</div>
-    <div class="classObjectModelNavigatorNamespaceSectionCommon classObjectModelNavigatorNamespaceChildren">
+    <div class="classONMjsSelectedNamespaceSectionTitle">Child Namespaces (<span data-bind="text: childModelViews.length"></span>):</div>
+    <div class="classONMjsSelectedNamespaceSectionCommon classObjectModelNavigatorNamespaceChildren">
         <span data-bind="template: { name: 'idKoTemplate_AddressSelectionLinkViewModel', foreach: childModelViews }"></span>
     </div>
 </span>
