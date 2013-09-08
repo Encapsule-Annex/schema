@@ -139,7 +139,7 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
             @callbackLinkRemoveComponent = undefined
 
             @callbackLinkCancelActionRequest = new ONMjs.observers.helpers.CallbackLinkModelView(
-                "", "Cancel Request", undefined, undefined, { styleClass: "classActionCancel" }, @onClickCancelActionRequest
+                "", "Cancel Request", undefined, undefined, { styleClass: "classONMjsActionButtonCancel" }, @onClickCancelActionRequest
                 )
 
             @showConfirmRemove = ko.observable(false)
@@ -162,7 +162,7 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
                     archetypeLabel = token.namespaceDescriptor.label
                     
                     @callbackLinkAddSubcomponent = new ONMjs.observers.helpers.CallbackLinkModelView(
-                        "", "Add #{archetypeLabel}", extensionAddress, params_.cachedAddressStore, { styleClass: "classActionAdd" }, @onClickAddSubcomponent)
+                        "", "Add #{archetypeLabel}", extensionAddress, params_.cachedAddressStore, { styleClass: "classONMjsActionButtonAdd" }, @onClickAddSubcomponent)
 
                     # ACTION: remove all subcomponents
 
@@ -170,12 +170,12 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
 
                     @callbackLinkRequestRemoveAllSubcomponents = new ONMjs.observers.helpers.CallbackLinkModelView(
                         "", "Remove All #{params_.selectedNamespaceDescriptor.label}", undefined, undefined,
-                        { noLink: subcomponentCount == 0, styleClass: subcomponentCount != 0 and "classActionRemoveAll" or undefined }, @onClickRemoveAllSubcomponents
+                        { noLink: subcomponentCount == 0, styleClass: subcomponentCount != 0 and "classONMjsActionButtonRemoveAll" or undefined }, @onClickRemoveAllSubcomponents
                         )
 
                     @callbackLinkRemoveAllSubcomponents = new ONMjs.observers.helpers.CallbackLinkModelView(
                         "", "Proceed with Remove All", params_.selectedAddress, params_.cachedAddressStore,
-                        { noLink: subcomponentCount == 0, styleClass: subcomponentCount != 0 and "classActionConfirm" or undefined }, @onDoRemoveAllSubcomponents
+                        { noLink: subcomponentCount == 0, styleClass: subcomponentCount != 0 and "classONMjsActionButtonConfirm" or undefined }, @onDoRemoveAllSubcomponents
                         )
 
                     @actionsForNamespace = true
@@ -185,10 +185,10 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
 
                     # ACTION: remove
                     @callbackLinkRequestRemoveComponent = new ONMjs.observers.helpers.CallbackLinkModelView(
-                        "", "Remove #{params_.selectedNamespaceDescriptor.label}", undefined, undefined, { styleClass: "classActionRemove" }, @onClickRemoveComponent)
+                        "", "Remove #{params_.selectedNamespaceDescriptor.label}", undefined, undefined, { styleClass: "classONMjsActionButtonRemove" }, @onClickRemoveComponent)
 
                     @callbackLinkRemoveComponent = new ONMjs.observers.helpers.CallbackLinkModelView(
-                        "", "Proceed with Remove", params_.selectedAddress, params_.cachedAddressStore, { styleClass: "classActionConfirm" }, @onDoRemoveComponent)
+                        "", "Proceed with Remove", params_.selectedAddress, params_.cachedAddressStore, { styleClass: "classONMjsActionButtonConfirm" }, @onDoRemoveComponent)
 
                     @actionsForNamespace = true
                     break
@@ -203,7 +203,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
 <div class="classONMjsSelectedNamespaceSectionTitle">
     Actions:
 </div>
-<div class="classONMjsSelectedNamespaceSectionCommon classObjectModelNavigatorNamespaceActions">
+<div class="classONMjsSelectedNamespaceSectionCommon classONMjsSelectedNamespaceActions">
     <span data-bind="if: actionsForNamespace">
         <div>
             <span data-bind="if: callbackLinkAddSubcomponent">
@@ -223,7 +223,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
             </span>
 
             <span data-bind="if: showConfirmRemove">
-                <div class="classActionConfirmation">
+                <div class="classONMjsActionConfirmation">
                     Please confirm <strong><span data-bind="text: callbackLinkRequestRemoveComponent.label"></span></span></strong> request.<br><br>
                     <span data-bind="with: callbackLinkCancelActionRequest">
                         <span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span>
@@ -235,7 +235,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
             </span>
 
             <span data-bind="if: showConfirmRemoveAll">
-                <div class="classActionConfirmation">
+                <div class="classONMjsActionConfirmation">
                     Please confirm <strong><span data-bind="text: callbackLinkRequestRemoveAllSubcomponents.label"></span></span></strong> request.<br><br>
                     <span data-bind="with: callbackLinkCancelActionRequest">
                         <span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span>

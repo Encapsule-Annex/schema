@@ -74,7 +74,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
 <span class="class="classONMjsAddressSelectionLinkLabelNoLink" data-bind="html: namespaceLabel"></span>
 Subcomponents (<span data-bind="text: subcomponentModelViews.length"></span>):
 </div>
-<div class="classONMjsSelectedNamespaceSectionCommon classObjectModelNavigatorNamespaceCollection">
+<div class="classONMjsSelectedNamespaceSectionCommon classONMjsSelectedNamespaceCollection">
 <span data-bind="ifnot: subcomponentModelViews.length">
 <i><span class="classONMjsAddressSelectionLinkLabelNoLink" data-bind="html: namespaceLabel"></span> extension point is empty.</i>
 </span>

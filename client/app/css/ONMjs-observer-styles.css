@@ -296,24 +296,23 @@ border-right: 1px solid rgba(0,0,0,0.11);
 }
 
 /* ----------------------------------------------------------------------------
-Styles leveraged by ONMjs.observer.
+Styles leveraged by ONMjs.observer.selectedNamespaceActionsViewMode
 ---------------------------------------------------------------------------- */
 
+.classONMjsSelectedNamespaceActions {
+}
 
-/* LEFT OFF RENAMING EFFORT HERE */
-
-
-.classActionAdd {
+.classONMjsActionButtonAdd {
 background-color: #00CC00;
 }
-.classActionRemove {
+.classONMjsActionButtonRemove {
 background-color: #FF0000;
 }
-.classActionRemoveAll {
+.classONMjsActionButtonRemoveAll {
 background-color: #FF0000;
 }
 
-.classActionConfirmation {
+.classONMjsActionConfirmation {
 margin: 10px;
 margin-right: 20px;
 padding: 10px;
@@ -323,24 +322,30 @@ color: black;
 box-shadow: 0.5em 0.5em 0.5em rgba(0,0,0,0.5);
 }
 
-.classActionConfirm {
+.classONMjsActionButtonConfirm {
 background-color: #FF33CC;
 float: right;
 }
 
-.classActionCancel {
+.classONMjsActionButtonCancel {
 background-color: #00CC00;
 }
 
+/* ----------------------------------------------------------------------------
+Styles leveraged by ONMjs.observer.selectedNamespace*PropertiesViewModel
+---------------------------------------------------------------------------- */
 
-.classObjectModelNavigatorNamespaceProperties {
+.classONMjsSelectedNamespacePropertiesCommon {
 font-family: Courier;
 font-size: 10pt;
 color: #444444;
 }
 
-.classObjectModelNavigatorNamespaceProperties .name {
-color: black;
+.classONMjsSelectedNamespacePropertiesImmutable {
+}
+
+.classONMjsSelectedNamespacePropertiesImmutable .name {
+color: rgba(0,0,0,0.3);
 background-color: rgba(0,255,0,0.1);
 font-weight: bold;
 float: left;
@@ -349,13 +354,7 @@ border-bottom: 1px solid rgba(0,0,0,0.2);
 padding-left: 0.25em;
 }
 
-.classObjectModelNavigatorNamespaceProperties .name .immutable {
-color: #666666;
-font-weight: bold;
-}
-
-
-.classObjectModelNavigatorNamespaceProperties .type {
+.classONMjsSelectedNamespacePropertiesImmutable .type {
 color: #006699;
 float: left;
 width: 128px;
@@ -365,7 +364,35 @@ border-bottom: 1px solid rgba(0,0,0,0.2);
 overflow: hidden;
 }
 
-.classObjectModelNavigatorNamespaceProperties .value {
+.classONMjsSelectedNamespacePropertiesImmutable .value {
+color: #666666;
+text-shadow: none;
+}
+
+.classONMjsSelectedNamespacePropertiesMutable {
+}
+
+.classONMjsSelectedNamespacePropertiesMutable .name {
+color: black;
+background-color: rgba(0,255,0,0.1);
+font-weight: bold;
+float: left;
+width: 172px;
+border-bottom: 1px solid rgba(0,0,0,0.2);
+padding-left: 0.25em;
+}
+
+.classONMjsSelectedNamespacePropertiesMutable .type {
+color: #006699;
+float: left;
+width: 128px;
+text-align: center;
+background-color: rgba(0,200,255,0.1);
+border-bottom: 1px solid rgba(0,0,0,0.2);
+overflow: hidden;
+}
+
+.classONMjsSelectedNamespacePropertiesMutable .value {
 color: white;
 text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
 float: left;
@@ -375,35 +402,28 @@ border-bottom: 1px solid rgba(0,0,0,0.2);
 padding-left: 0.25em;
 }
 
-.classObjectModelNavigatorNamespaceProperties .value .immutable {
-color: #666666;
-text-shadow: none;
+/* ----------------------------------------------------------------------------
+Styles leveraged by ONMjs.observer.selectedNamespaceComponent
+---------------------------------------------------------------------------- */
+
+.classONMjsSelectedNamespaceComponent {
 }
 
-.classObjectModelNavigatorNamespaceImmutable {
+/* ----------------------------------------------------------------------------
+Styles leveraged by ONMjs.observer.selectedNamespaceChildren
+---------------------------------------------------------------------------- */
 
-
+.classONMjsSelectedNamespaceChildren {
 }
 
-.classObjectModelNavigatorNamespaceMutable {
+/* ----------------------------------------------------------------------------
+Styles leveraged by ONMjs.observer.selectedNamespaceCollection
+---------------------------------------------------------------------------- */
 
-
+.classONMjsSelectedNamespaceCollection {
 }
 
-.classObjectModelNavigatorNamespaceComponent {
-
-
-}
-
-.classObjectModelNavigatorNamespaceChildren {
-
-
-}
-
-.classObjectModelNavigatorNamespaceCollection {
-}
-
-.classObjectModelNavigatorNamespaceCollection .link {
+.classONMjsSelectedNamespaceCollection .link {
 font-weight: bold;
 font-size: 12pt;
 }
