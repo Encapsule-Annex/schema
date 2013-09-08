@@ -42,9 +42,9 @@ BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
-Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
+Encapsule.code.lib.onm = Encapsule.code.lib.onm? and Encapsule.code.lib.onm or @Encapsule.code.lib.onm = {}
 
-ONMjs = Encapsule.code.lib.omm
+ONMjs = Encapsule.code.lib.onm
 ONMjs.implementation = ONMjs.implementation? and ONMjs.implementation or ONMjs.implementation = {}
 
 #
@@ -246,7 +246,7 @@ class ONMjs.implementation.ModelBase
             @description = objectModelDeclaration_.description
             
             # Create the root object descriptor (note that this is a generic descriptor shared by all
-            # instances of ObjectModel. The namespace is reserved for use by OMM itself and cannot be
+            # instances of ObjectModel. The namespace is reserved for use by ONM itself and cannot be
             # accessed via the object model layout declaration object.
 
             rootObjectDescriptor = ONMjs.implementation.RootObjectDescriptorFactory(

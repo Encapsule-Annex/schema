@@ -42,9 +42,9 @@ BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
-Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
+Encapsule.code.lib.onm = Encapsule.code.lib.onm? and Encapsule.code.lib.onm or @Encapsule.code.lib.onm = {}
 
-ONMjs = Encapsule.code.lib.omm
+ONMjs = Encapsule.code.lib.onm
 
 # ****************************************************************************
 # ****************************************************************************
@@ -101,7 +101,7 @@ class ONMjs.Address
             @hashString = undefined
 
         catch exception
-            throw "Encapsule.code.lib.omm.Address error: #{exception}"
+            throw "ONMjs.Address error: #{exception}"
 
     #
     # ============================================================================
@@ -127,7 +127,7 @@ class ONMjs.Address
             @hashString = undefined
 
         catch exception
-            throw "Encapsule.code.lib.omm.Address.pushToken failure: #{exception}"
+            throw "ONMjs.Address.pushToken failure: #{exception}"
 
     #
     # ============================================================================
@@ -148,7 +148,7 @@ class ONMjs.Address
             true
 
         catch exception
-            throw "Encapsule.code.lib.omm.Address.validateTokenPair failure: #{exception}"
+            throw "ONMjs.Address.validateTokenPair failure: #{exception}"
 
     #
     # ============================================================================
@@ -354,7 +354,7 @@ ONMjs.address.RootAddress = (model_) ->
    try
        return new ONMjs.Address(model_, [ new ONMjs.AddressToken(model_, undefined, undefined, 0) ])
    catch exception
-       throw "Encapsule.code.lib.omm.address.RootAddress failure: #{exception}"
+       throw "ONMjs.address.RootAddress failure: #{exception}"
 #
 # ============================================================================
 # Builds a rooted, non-recursive, unqualified, address to the subnamespace indicated
@@ -365,7 +365,7 @@ ONMjs.address.FromPathId = (model_, pathId_) ->
         if not (model_? and model_) then throw "Missing object model input parameter."
         if not pathId_? then throw "Missing path input parameter."
         targetDescriptor = model_.getNamespaceDescriptorFromPathId(pathId_)
-        newAddress = new Encapsule.code.lib.omm.Address(model_)
+        newAddress = new ONMjs.Address(model_)
         token = undefined
         pathIds = Encapsule.code.lib.js.clone(targetDescriptor.parentPathIdVector)
         pathIds.push(targetDescriptor.id)
@@ -373,21 +373,21 @@ ONMjs.address.FromPathId = (model_, pathId_) ->
             descriptor = model_.getNamespaceDescriptorFromPathId(parentPathId)
             if descriptor.mvvmType == "archetype"
                 newAddress.pushToken token
-            token = new Encapsule.code.lib.omm.AddressToken(model_, descriptor.idExtensionPoint, undefined, descriptor.id)
+            token = new ONMjs.AddressToken(model_, descriptor.idExtensionPoint, undefined, descriptor.id)
         newAddress.pushToken(token)
         return newAddress
     catch exception
-        throw "Encapsule.code.lib.omm.address.FromPath failure: #{exception}"
+        throw "ONMjs.address.FromPath failure: #{exception}"
 
 #
 # ============================================================================
 ONMjs.address.FromPath = (model_, path_) ->
     try
         pathId = model_.getPathIdFromPath(path_)
-        newAddress = Encapsule.code.lib.omm.address.FromPathId(model_, pathId)
+        newAddress = ONMjs.address.FromPathId(model_, pathId)
         return newAddress
     catch exception
-        throw "Encapsule.code.lib.omm.address.FromPath failure: #{exception}"
+        throw "ONMjs.address.FromPath failure: #{exception}"
 
 
 #
@@ -427,19 +427,19 @@ ONMjs.address.Parent = (address_, generations_) ->
             # or to specify a reference to some other component.
 
             if descriptor.mvvmType != "archetype"
-                token = new Encapsule.code.lib.omm.AddressToken(token.model, token.idExtensionPoint, token.key, descriptor.parent.id)
+                token = new ONMjs.AddressToken(token.model, token.idExtensionPoint, token.key, descriptor.parent.id)
             else
                 token = (tokenSourceIndex != -1) and address_.tokenVector[tokenSourceIndex--] or throw "Internal error: exhausted token stack."
 
             generations--
                 
         newTokenVector = ((tokenSourceIndex < 0) and []) or address_.tokenVector.slice(0, tokenSourceIndex + 1)
-        newAddress = new Encapsule.code.lib.omm.Address(token.model, newTokenVector)
+        newAddress = new ONMjs.Address(token.model, newTokenVector)
         newAddress.pushToken(token)
         return newAddress
 
     catch exception
-        throw "Encapsule.code.lib.omm.address.Parent failure: #{exception}"
+        throw "ONMjs.address.Parent failure: #{exception}"
 
 
 

@@ -47,7 +47,7 @@ class Encapsule.code.app.Schema
 
             Console.messageRaw("<h3>INITIALIZING #{appName} OBJECT MODEL MANAGER</h3>")
 
-            ONMjs = Encapsule.code.lib.omm
+            ONMjs = Encapsule.code.lib.onm
 
             # ONMjs Object Namespace Schema (ONS) declaration.
             # ONMjs is currently parsing a really really old declaration.
@@ -168,17 +168,17 @@ class Encapsule.code.app.Schema
 
             # Some experimental stuff
 
-            token01 = new Encapsule.code.lib.omm.AddressToken(objectModel, undefined, undefined, 2) # root selector
-            token02 = new Encapsule.code.lib.omm.AddressToken(objectModel, 2, undefined, 3) # Should be okay.
-            token03 = new Encapsule.code.lib.omm.AddressToken(objectModel, undefined, undefined, 3) # Should be okay.
+            token01 = new Encapsule.code.lib.onm.AddressToken(objectModel, undefined, undefined, 2) # root selector
+            token02 = new Encapsule.code.lib.onm.AddressToken(objectModel, 2, undefined, 3) # Should be okay.
+            token03 = new Encapsule.code.lib.onm.AddressToken(objectModel, undefined, undefined, 3) # Should be okay.
 
-            address01 = new Encapsule.code.lib.omm.Address(objectModel)
+            address01 = new Encapsule.code.lib.onm.Address(objectModel)
             address01.pushToken token01
             address01.pushToken token02
 
-            address02 = new Encapsule.code.lib.omm.Address objectModel, [ token01, token03 ]
+            address02 = new Encapsule.code.lib.onm.Address objectModel, [ token01, token03 ]
 
-            namespace2Test01 = new Encapsule.code.lib.omm.ObjectStoreNamespace2(objectStore, address02, "new")
+            namespace2Test01 = new Encapsule.code.lib.onm.ObjectStoreNamespace2(objectStore, address02, "new")
 
             ###
 

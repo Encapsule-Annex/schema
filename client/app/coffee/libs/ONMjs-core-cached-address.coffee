@@ -41,9 +41,9 @@ BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
-Encapsule.code.lib.omm = Encapsule.code.lib.omm? and Encapsule.code.lib.omm or @Encapsule.code.lib.omm = {}
+Encapsule.code.lib.onm = Encapsule.code.lib.onm? and Encapsule.code.lib.onm or @Encapsule.code.lib.onm = {}
 
-ONMjs = Encapsule.code.lib.omm
+ONMjs = Encapsule.code.lib.onm
 
 class ONMjs.CachedAddress extends ONMjs.Store
     constructor: (referenceStore_, address_) ->
@@ -96,7 +96,7 @@ class ONMjs.CachedAddress extends ONMjs.Store
 
 
         catch exception
-            throw "Encapsule.code.lib.omm.CachedAddress failure: #{exception}"
+            throw "ONMjs.CachedAddress failure: #{exception}"
 
 
     #
@@ -108,7 +108,7 @@ class ONMjs.CachedAddress extends ONMjs.Store
             return namespace.getResolvedAddress()
 
         catch exception
-            throw "Encapsule.code.lib.omm.CachedAddress.getSelector failure: #{exception}"
+            throw "ONMjs.CachedAddress.getSelector failure: #{exception}"
 
 
     #
@@ -124,7 +124,7 @@ class ONMjs.CachedAddress extends ONMjs.Store
             @selectorNamespace.update()
 
         catch exception
-            throw "Encapsule.code.lib.omm.CachedAddress.setAddress failure: #{exception}"
+            throw "ONMjs.CachedAddress.setAddress failure: #{exception}"
 
 
 
