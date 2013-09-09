@@ -57,23 +57,6 @@ ONMjs.implementation.RootObjectDescriptorFactory = (jsonTag_, label_, descriptio
             objectDescriptor: {
                 mvvmType: "root"
                 description: description_
-                namespaceDescriptor: {
-                    userImmutable: {
-                        userAgent: {
-                            type: "object"
-                            fnCreate: -> {
-                                appPublisher: appPackagePublisher
-                                appName: appName
-                                appVersion: appVersion
-                                appId: appId
-                                appReleaseId: appReleaseId
-                                appBuildId: appBuildId
-                                appBuildTime: appBuildTime
-                            }
-                            fnReinitialize: undefined
-                        } # userAgent
-                    } # userImmutable
-                } # namespaceDescriptor
             } #object Descriptor
             subMenus: menuHierarchy_
         } # rootObjectDescriptor
@@ -95,7 +78,8 @@ class ONMjs.implementation.ModelBase
             # --------------------------------------------------------------------------
             buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, parentDescriptor_, componentDescriptor_, parentPathIdVector_, parentPathExtensionPointIdVector_) =>
                 try
-                    if not (objectModelLayoutObject_? and objectModelLayoutObject_) then throw "Missing object model layout object input parameter! Typically this happens if you declare the object model namespace with an unresolvable reference (e.g. to an object you defined previously for re-use) as opposed to declaring inline in your object model declaration."
+                    if not (objectModelLayoutObject_? and objectModelLayoutObject_) 
+                        throw "Missing object model layout object input parameter! Typically this happens if you declare the object model namespace with an unresolvable reference (e.g. to an object you defined previously for re-use) as opposed to declaring inline in your object model declaration."
 
                     # Local variables used to construct this descriptor.
                     tag = objectModelLayoutObject_.jsonTag
@@ -236,15 +220,26 @@ class ONMjs.implementation.ModelBase
             # / END: buildOMDesriptorFromLayout
 
             # --------------------------------------------------------------------------
-            Console.message("ONMjs.Model: Processing object model declaration '#{objectModelDeclaration_.jsonTag}'")
+            # ONMjs.core.ModelBase CONSTRUCTOR
 
             if not (objectModelDeclaration_? and objectModelDeclaration_)
                 throw "Missing object model delcaration input parameter!"
+
+            if not (objectModelDeclaration_.jsonTag? and objectModelDeclaration_.jsonTag)
+                throw "Missing required root namespace property 'jsonTag'."
+
+            if not (objectModelDeclaration_.label? and objectModelDeclaration_.label)
+                throw "Missing required root namespace property 'label'."
+
+            if not (objectModelDeclaration_.description? and objectModelDeclaration_.description)
+                throw "Missing required root namespace property 'description'."
 
             @jsonTag = objectModelDeclaration_.jsonTag
             @label = objectModelDeclaration_.label
             @description = objectModelDeclaration_.description
             
+            Console.message("ONMjs.Model: Processing object model declaration '#{objectModelDeclaration_.jsonTag}'")
+
             # Create the root object descriptor (note that this is a generic descriptor shared by all
             # instances of ObjectModel. The namespace is reserved for use by ONM itself and cannot be
             # accessed via the object model layout declaration object.

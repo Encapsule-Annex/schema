@@ -248,9 +248,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
 
         </div>
     </span>
-    <span data-bind="ifnot: actionsForNamespace">
-        <i>No actions defined for this namespace.</i>
-    </span>
+    <span data-bind="ifnot: actionsForNamespace"><i>No actions defined for this namespace.</i></span>
 </div>
 """))
 

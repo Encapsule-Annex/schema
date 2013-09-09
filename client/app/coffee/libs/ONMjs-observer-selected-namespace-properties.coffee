@@ -92,7 +92,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
                 <div class="type" data-bind="text: declaration.members.type"></div>
                 <div class="value"><span class="immutable" data-bind="text: store.value"></span></div>
                 <div style="clear: both;" />
-            </div>
+            </span>
         </div>
     </span>
     <span data-bind="ifnot: propertyModelViews.length">
@@ -153,7 +153,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
                 <div class="type" data-bind="text: declaration.members.type"></div>
                 <div class="value" data-bind="text: store.value"></div>
                 <div style="clear: both;" />
-            </div>
+            </span>
         </div>
     </span>
     <span data-bind="ifnot: propertyModelViews.length">

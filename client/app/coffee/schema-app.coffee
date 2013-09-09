@@ -42,9 +42,6 @@ class Encapsule.code.app.Schema
     constructor: ->
         try
             Console.messageRaw("<h3>#{appName} v#{appVersion} APPLICATION STARTING</h3>")
-
-            Encapsule.runtime.app.SchemaSession = new Encapsule.code.app.SchemaSession()
-
             Console.messageRaw("<h3>INITIALIZING #{appName} OBJECT MODEL MANAGER</h3>")
 
             ONMjs = Encapsule.code.lib.onm
@@ -58,11 +55,20 @@ class Encapsule.code.app.Schema
 
             # CONSTRUCT ONMjs CORE
 
+
+            ###
             # The Schema application state model codified as an ONMjs Object Model Declaration.
             schema = ONMjsRuntime.schema = Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
-
             # Initialize the Schema application's ONMjs runtime state model.
             model = ONMjsRuntime.model = new ONMjs.Model(schema)
+            ###
+
+
+            # ----------------------------------------------------------------------------
+            # Experiment: Use ONMjs to create ONMjs object model declarations.
+            model = ONMjsRuntime.model = new ONMjs.Model(ONMjs.implementation.ONMjsObjectModelDeclaration)
+            # ----------------------------------------------------------------------------
+
 
             # Initialize the Schema application's ONMjs runtime state store.
             store = ONMjsRuntime.store = new ONMjs.Store(model)
@@ -116,6 +122,13 @@ class Encapsule.code.app.Schema
             navigatorView.setCachedAddressSinkStore(selectedAddress)
 
 
+            # Select the root namespace of the ONMjs.store.
+            rootAddress = ONMjs.address.RootAddress(model)
+            selectedAddress.setAddress(rootAddress)
+
+
+            ###
+            # DISABLED TESTS AND EXPERIMENTS
 
 
 
@@ -140,9 +153,6 @@ class Encapsule.code.app.Schema
             # TEST CODE
             #---
 
-
-
-
             # Some temporary test code for bringing up the new store addressing model.
 
             # Open the object store's root namespace.
@@ -155,8 +165,6 @@ class Encapsule.code.app.Schema
             address = ONMjs.address.Parent(address, 5)
 
 
-
-            ###
 
             objectModelNavigatorSelectorWindow = Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow()
 
@@ -173,6 +181,10 @@ class Encapsule.code.app.Schema
             token03 = new Encapsule.code.lib.onm.AddressToken(objectModel, undefined, undefined, 3) # Should be okay.
 
             address01 = new Encapsule.code.lib.onm.Address(objectModel)
+
+
+
+
             address01.pushToken token01
             address01.pushToken token02
 
@@ -201,8 +213,9 @@ class Encapsule.code.app.Schema
             Console.message "Initializing local URI routing:"
             Encapsule.runtime.app.SchemaRouter = new Encapsule.code.app.SchemaRouter()
             Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(Encapsule.runtime.app.SchemaRouter.routeChangedCallback)
+
             Console.message( Encapsule.runtime.app.SchemaRouter.getRoute() )
-            Encapsule.runtime.app.SchemaRouter.setRoute(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout.initialSelectionPath)
+            # Encapsule.runtime.app.SchemaRouter.setRoute(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout.initialSelectionPath)
 
             # Encapsule.runtime.app.SchemaD3Main.initializeD3()
 
