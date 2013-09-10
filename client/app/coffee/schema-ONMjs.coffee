@@ -25,7 +25,7 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
 
-Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayout = {
+Encapsule.code.app.ONMjs.SchemaAppData = {
 
     jsonTag: "schema"
     label: "#{appName}"
@@ -84,14 +84,14 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayout = {
     
             subNamespaces: [
 
-                # Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutTools
+                # Encapsule.code.app.ONMjs.SchemaAppDataTools
 
                 {
                     namespaceType: "extensionPoint"
                     jsonTag: "catalogues"
                     label: "Catalogues"
                     description: "SCDL catalogue object collection."
-                    componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutCatalogueArchetype
+                    componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataCatalogueArchetype
                 } # catalogues
 
 
@@ -114,7 +114,7 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayout = {
             ] # Schema submenus
         } # Schema
 
-    ] # ScdlNavigatorWindowLayout
+    ] # SchemaAppData
 } # layout object    
     
 

@@ -24,7 +24,7 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
 
-Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutTools = {
+Encapsule.code.app.ONMjs.SchemaAppDataTools = {
     jsonTag: "toolsMenu"
     label: "Tools"
     objectDescriptor: {
@@ -83,4 +83,4 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutTools = {
         }
     ] # tools submenus
 
-} # Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutTools
+} # Encapsule.code.app.ONMjs.SchemaAppDataTools

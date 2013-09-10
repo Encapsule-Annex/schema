@@ -24,13 +24,13 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
-Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutTypeArchetype = {
+Encapsule.code.app.ONMjs.SchemaAppDataTypeArchetype = {
     namespaceType: "component"                                                                    
     jsonTag: "type"
     label: "Type"
     description: "SCDL type model."
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+        userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {
             name: {
                 type: "string"
@@ -79,4 +79,4 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutTypeArchetype = {
         } # type userMutable
     } # type namespaceDescriptor
 
-} # ScdlNavigatorWindowLayoutTypeArchetype
+} # SchemaAppDataTypeArchetype

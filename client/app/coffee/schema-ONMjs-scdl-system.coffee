@@ -24,19 +24,19 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
-Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSystemArchetype = {
+Encapsule.code.app.ONMjs.SchemaAppDataSystemArchetype = {
     namespaceType: "component"
     jsonTag: "system"
     label: "System"
     description: "SCDL system model."
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+        userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: Encapsule.code.app.ONMjs.ScdlModelUserMutableNamespaceProperties 
     }
 
     subNamespaces: [
-        Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutInputPins
-        Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutOutputPins
+        Encapsule.code.app.ONMjs.SchemaAppDataInputPins
+        Encapsule.code.app.ONMjs.SchemaAppDataOutputPins
 
         { 
             namespaceType: "extensionPoint"
@@ -49,7 +49,7 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSystemArchetype = {
                 label: "System Instance"
                 description: "Contained SCDL system instance."
                 namespaceProperties: {
-                    userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+                    userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                     userMutable: {
                         name: {
                             type: "string"
@@ -88,7 +88,7 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSystemArchetype = {
                 label: "Machine Instance"
                 description: "SCDL machine instance."
                 namespaceProperties: {
-                    userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+                    userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                     userMutable: {
                         name: {
                             type: "string"
@@ -129,7 +129,7 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSystemArchetype = {
                 label: "Socket Instance"
                 description: "SCDL socket instance."
                 namespaceProperties: {
-                    userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+                    userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                     userMutable: {
                         name: {
                             type: "string"
@@ -157,7 +157,7 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSystemArchetype = {
             } # subsystem archetype
         } # subsystems
 
-        Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutNodes
+        Encapsule.code.app.ONMjs.SchemaAppDataNodes
 
     ] # system submenus
-} # Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSystemArchetype
+} # Encapsule.code.app.ONMjs.SchemaAppDataSystemArchetype

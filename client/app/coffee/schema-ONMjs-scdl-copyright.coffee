@@ -24,12 +24,12 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
-Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutCopyrightArchetype = {
+Encapsule.code.app.ONMjs.SchemaAppDataCopyrightArchetype = {
     namespaceType: "component"
     jsonTag: "copyright"
     label: "Copyright"
     description: "SCDL copyright model."
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+        userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
     }
 }

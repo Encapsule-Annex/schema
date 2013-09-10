@@ -24,19 +24,19 @@ Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
-Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutMachineArchetype = {
+Encapsule.code.app.ONMjs.SchemaAppDataMachineArchetype = {
     namespaceType: "component"
     jsonTag: "machine"
     label: "Machine"
     description: "SCDL machine model."
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+        userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: Encapsule.code.app.ONMjs.ScdlModelUserMutableNamespaceProperties 
     } # namespaceProperties
 
     subNamespaces: [
-        Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutInputPins
-        Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutOutputPins
+        Encapsule.code.app.ONMjs.SchemaAppDataInputPins
+        Encapsule.code.app.ONMjs.SchemaAppDataOutputPins
         {
             namespaceType: "extensionPoint"
             jsonTag: "states"
@@ -48,7 +48,7 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutMachineArchetype = {
                 label: "State"
                 description: "SCDL state descriptor."
                 namespaceProperties: {
-                    userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+                    userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                     userMutable: {
                         name: {
                             type: "string"
@@ -90,7 +90,7 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutMachineArchetype = {
                             label: "Transition"
                             description: "SCDL state transition descriptor."
                             namespaceProperties: {
-                                userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+                                userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                                 userMutable: {
                                     name: {
                                         type: "string"
@@ -127,4 +127,4 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutMachineArchetype = {
             } # states objectDescriptor
         } # States
      ] # Machine submenus
-} # Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutMachineArchetype
+} # Encapsule.code.app.ONMjs.SchemaAppDataMachineArchetype

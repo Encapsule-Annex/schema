@@ -28,7 +28,7 @@ if not (net? and net and net.brehaut? and net.brehaut)
    throw "Missing color.js library."
 Color = net.brehaut.Color
 
-Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSettings = {
+Encapsule.code.app.ONMjs.SchemaAppDataSettings = {
     jsonTag: "settings"
     label: "Settings"
     objectDescriptor: {

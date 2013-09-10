@@ -25,13 +25,13 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
 
-Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSpecificationArchetype = {
+Encapsule.code.app.ONMjs.SchemaAppDataSpecificationArchetype = {
     namespaceType: "component"                                                                             
     jsonTag: "specification"
     label: "Specification"
     description: "SCDL specification."
     namespaceProperties: {
-        userImmutable:  Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+        userImmutable:  Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {
             name: {
                 type: "string"
@@ -86,7 +86,7 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                 label: "System Instance"
                 description: "SCDL system model instance."
                 namespaceProperties: {
-                    userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta 
+                    userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties 
                     userMutable: {
                         name: {
                             type: "string"
@@ -122,111 +122,111 @@ Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSpecificationArchetype = {
                             fnReinitialize: -> Encapsule.code.lib.util.uuidNull
                         }
                     }
-                    subNamespaces: [
-                        {
-                            namespaceType: "extensionPoint"
-                            jsonTag: "socketInstances"
-                            label: "Socket Instances"
-                            description: "SCDL socket model instances."
-                            componentArchetype: {
-                                namespaceType: "component"
-                                jsonTag: "socketInstance"
-                                label: "Socket Instance"
-                                description: "SCDL socket model instance."
-                                namespaceProperties: {
-                                    userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
-                                    userMutable: {
-                                        name: {
-                                            type: "string"
-                                            fnCreate: -> ""
-                                            fnReinitialize: -> ""
-                                        }
-                                        description: {
-                                            type: "string"
-                                            fnCreate: -> ""
-                                            fnReinitialize: -> ""
-                                        }
-                                        tags: {
-                                            type: "stringCSV"
-                                            fnCreate: -> ""
-                                            fnReinitialize: -> ""
-                                        }
-                                        uuidModel: {
-                                            type: "uuidSelection"
-                                            selectionSource: "schema/catalogues/catalogue/models/sockets"
-                                            fnCreate: ->  Encapsule.code.lib.util.uuidNull
-                                            fnReinitialize: Encapsule.code.lib.util.uuidNull
-                                        }
-                                        author: {
-                                            type: "uuidSelection"
-                                            selectionSource: "schema/catalogues/catalogue/assets/people"
-                                            fnCreate: -> Encapsule.code.lib.util.uuidNull
-                                            fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
-                                        }
-                                        organization: {
-                                            type: "uuidSelection"
-                                            selectionSource: "schema/catalogues/catalogue/assets/organizations"
-                                            fnCreate: -> Encapsule.code.lib.util.uuidNull
-                                            fnReinitialize: -> Encapsule.code.lib.util.uuidNull
-                                        }
+                }
+                subNamespaces: [
+                    {
+                        namespaceType: "extensionPoint"
+                        jsonTag: "socketInstances"
+                        label: "Socket Instances"
+                        description: "SCDL socket model instances."
+                        componentArchetype: {
+                            namespaceType: "component"
+                            jsonTag: "socketInstance"
+                            label: "Socket Instance"
+                            description: "SCDL socket model instance."
+                            namespaceProperties: {
+                                userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
+                                userMutable: {
+                                    name: {
+                                        type: "string"
+                                        fnCreate: -> ""
+                                        fnReinitialize: -> ""
                                     }
-                                    subNamespaces: [
-                                        {
-                                            namespaceType: "extensionPoint"
-                                            jsonTag: "instanceBindings"
-                                            label: "Instance Bindings"
-                                            description: "SCDL socket model instance bindings."
-                                            componentArchetype: {
-                                                namespaceType: "component"
-                                                jsonTag: "instanceBinding"
-                                                label: "Instance Binding"
-                                                description: "SCDL socket model instance binding."
-                                                namespaceProperties: {
-                                                    userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
-                                                    userMutable: {
-                                                        name: {
-                                                            type: "string"
-                                                            fnCreate: -> ""
-                                                            fnReinitialize: -> ""
-                                                        }
-                                                        description: {
-                                                            type: "string"
-                                                            fnCreate: -> ""
-                                                            fnReinitialize: -> ""
-                                                        }
-                                                        tags: {
-                                                            type: "stringCSV"
-                                                            fnCreate: -> ""
-                                                            fnReinitialize: -> ""
-                                                        }
-                                                        uuidModel: {
-                                                            type: "uuidSelection"
-                                                            selectionSource: "schema/catalogues/catalogue/models/sockets"
-                                                            fnCreate: ->  Encapsule.code.lib.util.uuidNull
-                                                            fnReinitialize: Encapsule.code.lib.util.uuidNull
-                                                        }
-                                                        author: {
-                                                            type: "uuidSelection"
-                                                            selectionSource: "schema/catalogues/catalogue/assets/people"
-                                                            fnCreate: -> Encapsule.code.lib.util.uuidNull
-                                                            fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
-                                                        }
-                                                        organization: {
-                                                            type: "uuidSelection"
-                                                            selectionSource: "schema/catalogues/catalogue/assets/organizations"
-                                                            fnCreate: -> Encapsule.code.lib.util.uuidNull
-                                                            fnReinitialize: -> Encapsule.code.lib.util.uuidNull
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    ]
+                                    description: {
+                                        type: "string"
+                                        fnCreate: -> ""
+                                        fnReinitialize: -> ""
+                                    }
+                                    tags: {
+                                        type: "stringCSV"
+                                        fnCreate: -> ""
+                                        fnReinitialize: -> ""
+                                    }
+                                    uuidModel: {
+                                        type: "uuidSelection"
+                                        selectionSource: "schema/catalogues/catalogue/models/sockets"
+                                        fnCreate: ->  Encapsule.code.lib.util.uuidNull
+                                        fnReinitialize: Encapsule.code.lib.util.uuidNull
+                                    }
+                                    author: {
+                                        type: "uuidSelection"
+                                        selectionSource: "schema/catalogues/catalogue/assets/people"
+                                        fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                        fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                                    }
+                                    organization: {
+                                        type: "uuidSelection"
+                                        selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                                        fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                        fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                                    }
                                 }
                             }
-                        }
-                    ]
-                }
+                            subNamespaces: [
+                                {
+                                    namespaceType: "extensionPoint"
+                                    jsonTag: "instanceBindings"
+                                    label: "Instance Bindings"
+                                    description: "SCDL socket model instance bindings."
+                                    componentArchetype: {
+                                        namespaceType: "component"
+                                        jsonTag: "instanceBinding"
+                                        label: "Instance Binding"
+                                        description: "SCDL socket model instance binding."
+                                        namespaceProperties: {
+                                            userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
+                                            userMutable: {
+                                                name: {
+                                                    type: "string"
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
+                                                }
+                                                description: {
+                                                    type: "string"
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
+                                                }
+                                                tags: {
+                                                    type: "stringCSV"
+                                                    fnCreate: -> ""
+                                                    fnReinitialize: -> ""
+                                                }
+                                                uuidModel: {
+                                                    type: "uuidSelection"
+                                                    selectionSource: "schema/catalogues/catalogue/models/sockets"
+                                                    fnCreate: ->  Encapsule.code.lib.util.uuidNull
+                                                    fnReinitialize: Encapsule.code.lib.util.uuidNull
+                                                }
+                                                author: {
+                                                    type: "uuidSelection"
+                                                    selectionSource: "schema/catalogues/catalogue/assets/people"
+                                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                                                }
+                                                organization: {
+                                                    type: "uuidSelection"
+                                                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
+                                                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+                                                }
+                                            }
+                                        } # namespaceProperties
+                                    } # componentArchetype
+                                } #instanceBinding
+                            ] # instanceBindings subNamespaces
+                        } #instanceBindings componentArchetype
+                    }
+                ]
             }
         }
     ]

@@ -27,9 +27,9 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
 # This object is referenced within an Encapsule Navigator 'layout declarartion'.
-# e.g. item.objectDescriptor.namespaceDescriptor.userImmutable = Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta 
+# e.g. item.objectDescriptor.namespaceDescriptor.userImmutable = Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties 
 
-Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta = {
+Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties = {
     uuid: {
         type: "uuid"
         fnCreate: -> uuid.v4()
