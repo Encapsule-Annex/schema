@@ -119,7 +119,7 @@ class ONMjs.Store
                     if address_.isQualified() then throw "The specified address is qualified and may only be used to specify existing objects in the store."
                     descriptor = address_.getDescriptor()
                     if not descriptor.isComponent then throw "The specified address does not specify the root of a component."
-                    if descriptor.mvvmType == "root" then throw "The specified address refers to the root namespace of the store which is created automatically."
+                    if descriptor.namespaceType == "root" then throw "The specified address refers to the root namespace of the store which is created automatically."
 
                     # Creating the root namespace of a component automatically creates all its sub-namespaces as well.
                     componentNamespace = new ONMjs.Namespace(@, address_, "new")
@@ -145,7 +145,7 @@ class ONMjs.Store
                     if not address_.isQualified() then throw "You cannot use an unqualified address to remove a component."
                     descriptor = address_.getDescriptor()
                     if not descriptor.isComponent then throw "The specified address does not specify the root of a component."
-                    if descriptor.mvvmType == "root" then throw "The specified address refers to the root namespace of the store which cannot be removed."
+                    if descriptor.namespace == "root" then throw "The specified address refers to the root namespace of the store which cannot be removed."
                     # Unrefify the component before actually making any modifications to the store.
                     # modelViewObserver_ == undefined -> broadcast to all registered observers
                     # undoFlag_ == true -> invert namespace traversal order and invoke remove callbacks

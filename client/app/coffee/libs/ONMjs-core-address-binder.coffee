@@ -134,7 +134,7 @@ class ONMjs.implementation.AddressTokenBinder
                     if not (descriptor_? and descriptor_) then throw "Internal error: missing object model descriptor input parameter."
                     if not (mode_? and mode_) then throw "Internal error: missing mode input parameter."
 
-                    jsonTag = ((descriptor_.mvvmType != "archetype") and descriptor_.jsonTag) or key_ or undefined
+                    jsonTag = ((descriptor_.namespaceType != "component") and descriptor_.jsonTag) or key_ or undefined
 
                     result = {
                         jsonTag: jsonTag
@@ -148,13 +148,13 @@ class ONMjs.implementation.AddressTokenBinder
                     switch mode_
                         when "bypass"
                             if not (result.dataReference? and result.dataReference)
-                                throw "Internal error: Unable to resolve #{descriptor_.mvvmType} namespace descriptor in bypass mode."
+                                throw "Internal error: Unable to resolve #{descriptor_.namespaceType} namespace descriptor in bypass mode."
                             break
                         when "new"
                             if not (result.dataReference? and result.dataReference)
                                 namespaceObject = {}
                                 resolveActions_.initializeNamespace(namespaceObject, descriptor_.namespaceDescriptor)
-                                if descriptor_.mvvmType == "archetype"
+                                if descriptor_.namespaceType == "component"
                                     if not (resolveActions_.getUniqueKey? and resolveActions_.getUniqueKey)
                                         throw "The specified component address cannot be resolved because your Object Namespace Schema declaration does not define semantic binding function getUniqueKey."
                                     jsonTag = result.jsonTag = result.newKey = resolveActions_.getUniqueKey(namespaceObject)
@@ -165,7 +165,7 @@ class ONMjs.implementation.AddressTokenBinder
                             break
                         when "strict"
                             if not (result.dataReference? and result.dataReference)
-                                throw "Internal error: Unable to resolve  #{descriptor_.mvvmType} namespace descriptor in strict mode."
+                                throw "Internal error: Unable to resolve  #{descriptor_.namespaceType} namespace descriptor in strict mode."
                             resolveActions_.verifyNamespace(result.dataReference, descriptor_.namespaceDescriptor)
                             break
                         else

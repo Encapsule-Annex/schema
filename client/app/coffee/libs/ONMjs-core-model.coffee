@@ -85,19 +85,19 @@ class ONMjs.implementation.ModelBase
                     # Build this descriptor and add it to the OM's descriptor array.
 
                     thisDescriptor = @objectModelDescriptorById[id] = {
-                        # valid only if namespaceType == "extension" (set to ID of extension point's corresponding archetype)
+                        # valid only if namespaceType == "component" (set to ID of extension point's corresponding archetype)
                         "archetypePathId": -1           
                         "children": []
                         "componentNamespaceIds": []
                         "description": description
-                        # valid only if namespaceType == "archetype" (populated with extension point ID's that specify this archetype by reference)
+                        # valid only if namespaceType == "component" (populated with extension point ID's that specify this archetype by reference)
                         "extensionPointReferenceIds": []
                         "id": id
                         "idComponent": id
                         "isComponent": false
                         "jsonTag": tag
                         "label": ONMD_.label
-                        "mvvmType": namespaceType
+                        "namespaceType": namespaceType
                         "namespaceDescriptor": namespaceProperties
                         "parent": parentDescriptor_
                         "parentPathExtensionPoints": parentPathExtensionPoints # self-extensible objects makes this superfluous I think
@@ -139,7 +139,7 @@ class ONMjs.implementation.ModelBase
                                 objectModelDescriptorReference = @objectModelPathMap[pathReference]
                                 if not (objectModelDescriptorReference? and objectModelDescriptorReference)
                                     throw "Cannot process extension point declaration because its corresponding archetype reference '#{pathReference}' is not defined."
-                                if objectModelDescriptorReference.namespaceType != "archetype"
+                                if objectModelDescriptorReference.namespaceType != "component"
                                     throw "Cannot process extension point declaration becuase it's corresponding archetype reference '#{pathReference}' does not refer to an 'archetype' namespace."
                                 # Add the extension point ID to the archetype's list of extension points
                                 # that specify it by reference.

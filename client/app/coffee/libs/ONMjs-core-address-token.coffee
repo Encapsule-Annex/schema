@@ -108,7 +108,7 @@ class ONMjs.AddressToken
                 throw "Internal error: unable to resolve extension point object model descriptor in request."
 
             # Is an extension point.
-            if @extensionPointDescriptor.mvvmType != "extension"
+            if @extensionPointDescriptor.namespaceType != "extensionPoint"
                 throw "Invalid selector key object specifies an invalid parent extension point ID. Not an extension point."
 
             # Is an extension point that contains the correct application component type.

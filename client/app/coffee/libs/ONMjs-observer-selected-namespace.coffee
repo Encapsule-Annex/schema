@@ -124,7 +124,7 @@ class ONMjs.observers.SelectedNamespaceModelView
 
                     @objectStoreName = objectStore.jsonTag
 
-                    mvvmType = selectedNamespaceDescriptor.mvvmType
+                    namespaceType = selectedNamespaceDescriptor.namespaceType
 
                     # Gather up all the references required to construct the child model views.
                     childParams = {
@@ -138,7 +138,7 @@ class ONMjs.observers.SelectedNamespaceModelView
                     @modelviewTitle(new ONMjs.observers.SelectedNamespaceTitleModelView(childParams))
                     @modelviewActions(new ONMjs.observers.SelectedNamespaceActionsModelView(childParams))
 
-                    switch mvvmType
+                    switch namespaceType
                         when "root"
                             @modelviewImmutable(new ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView(childParams))
                             @modelviewMutable(undefined)
@@ -157,14 +157,14 @@ class ONMjs.observers.SelectedNamespaceModelView
                             @modelviewComponent(new ONMjs.observers.SelectedNamespaceComponentModelView(childParams))
                             @modelviewCollection(undefined)
                             break
-                        when "extension"
+                        when "extensionPoint"
                             @modelviewImmutable(undefined)
                             @modelviewMutable(undefined)
                             @modelviewChildren(undefined)
                             @modelviewComponent(new ONMjs.observers.SelectedNamespaceComponentModelView(childParams))
                             @modelviewCollection(new ONMjs.observers.SelectedNamespaceCollectionModelView(childParams))
                             break
-                        when "archetype"
+                        when "component"
                             immutableModelView = new ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView(childParams)
                             @modelviewImmutable(immutableModelView.propertyModelViews.length and immutableModelView or undefined)
                             mutableModelView = new ONMjs.observers.SelectedNamespaceMutablePropertiesModelView(childParams)
@@ -175,7 +175,7 @@ class ONMjs.observers.SelectedNamespaceModelView
                             @modelviewCollection(undefined)
                             break
                         else
-                            throw "Unrecognized MVVM type in request."
+                            throw "Unrecognized namespace type in request."
 
             }
 

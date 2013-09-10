@@ -177,7 +177,7 @@ class ONMjs.Namespace
                 else
                     @store.reifier.dispatchCallback(address, "onSubnamespaceUpdated", undefined)
 
-                if descriptor.mvvmType == "archetype" or descriptor.mvvmType == "root"
+                if descriptor.namespaceType == "component" or descriptor.namespaceType == "root"
                    if not containingComponentNotified
                        @store.reifier.dispatchCallback(address, "onComponentUpdated", undefined)
                        containingComponentNotified = true
@@ -204,7 +204,7 @@ class ONMjs.Namespace
             resolvedToken = @getLastBinder().resolvedToken
             if not (resolvedToken? and resolvedToken) then throw "Internal error: unable to resolve token."
 
-            if resolvedToken.namespaceDescriptor.mvvmType != "extension"
+            if resolvedToken.namespaceDescriptor.namespaceType != "extensionPoint"
                 throw "You may only visit the subcomponents of an extension point namespace."
 
             for key, object of @data()

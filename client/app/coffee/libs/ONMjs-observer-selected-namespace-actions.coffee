@@ -145,14 +145,14 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
             @showConfirmRemove = ko.observable(false)
             @showConfirmRemoveAll = ko.observable(false)
 
-            switch params_.selectedNamespaceDescriptor.mvvmType
+            switch params_.selectedNamespaceDescriptor.namespaceType
                 when "root"
                     break
 
                 when "child"
                     break
 
-                when "extension"
+                when "extensionPoint"
 
                     # ACTION: add
 
@@ -181,7 +181,7 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
                     @actionsForNamespace = true
                     break
 
-                when "archetype"
+                when "component"
 
                     # ACTION: remove
                     @callbackLinkRequestRemoveComponent = new ONMjs.observers.helpers.CallbackLinkModelView(

@@ -371,7 +371,7 @@ ONMjs.address.FromPathId = (model_, pathId_) ->
         pathIds.push(targetDescriptor.id)
         for parentPathId in pathIds
             descriptor = model_.getNamespaceDescriptorFromPathId(parentPathId)
-            if descriptor.mvvmType == "archetype"
+            if descriptor.namespaceType == "component"
                 newAddress.pushToken token
             token = new ONMjs.AddressToken(model_, descriptor.idExtensionPoint, undefined, descriptor.id)
         newAddress.pushToken(token)
@@ -426,7 +426,7 @@ ONMjs.address.Parent = (address_, generations_) ->
             # because ONM allows extension points to specify the actual component declaration
             # or to specify a reference to some other component.
 
-            if descriptor.mvvmType != "archetype"
+            if descriptor.namespaceType != "component"
                 token = new ONMjs.AddressToken(token.model, token.idExtensionPoint, token.key, descriptor.parent.id)
             else
                 token = (tokenSourceIndex != -1) and address_.tokenVector[tokenSourceIndex--] or throw "Internal error: exhausted token stack."
