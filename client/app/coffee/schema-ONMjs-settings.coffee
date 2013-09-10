@@ -22,13 +22,13 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
+Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
 if not (net? and net and net.brehaut? and net.brehaut)
    throw "Missing color.js library."
 Color = net.brehaut.Color
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSettings = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSettings = {
     jsonTag: "settings"
     label: "Settings"
     objectDescriptor: {

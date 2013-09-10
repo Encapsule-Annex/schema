@@ -22,15 +22,15 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
+Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTypeArchetype = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutTypeArchetype = {
     namespaceType: "component"                                                                    
     jsonTag: "type"
     label: "Type"
     description: "SCDL type model."
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
         userMutable: {
             name: {
                 type: "string"

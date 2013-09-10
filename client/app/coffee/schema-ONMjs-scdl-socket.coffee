@@ -22,20 +22,20 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
+Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSocketArchetype = {
     namespaceType: "component"
     jsonTag: "socket"
     label: "Socket"
     description: "SCDL socket model."
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-        userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties 
+        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+        userMutable: Encapsule.code.app.ONMjs.ScdlModelUserMutableNamespaceProperties 
     }
     subNamespaces: [
-        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins
-        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPins
+        Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutInputPins
+        Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutOutputPins
     ] # Socket submenus
 
-} # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype 
+} # Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSocketArchetype 

@@ -22,21 +22,21 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
+Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutMachineArchetype = {
     namespaceType: "component"
     jsonTag: "machine"
     label: "Machine"
     description: "SCDL machine model."
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-        userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties 
+        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+        userMutable: Encapsule.code.app.ONMjs.ScdlModelUserMutableNamespaceProperties 
     } # namespaceProperties
 
     subNamespaces: [
-        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins
-        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPins
+        Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutInputPins
+        Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutOutputPins
         {
             namespaceType: "extensionPoint"
             jsonTag: "states"
@@ -48,7 +48,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype = {
                 label: "State"
                 description: "SCDL state descriptor."
                 namespaceProperties: {
-                    userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                    userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
                     userMutable: {
                         name: {
                             type: "string"
@@ -90,7 +90,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype = {
                             label: "Transition"
                             description: "SCDL state transition descriptor."
                             namespaceProperties: {
-                                userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                                userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
                                 userMutable: {
                                     name: {
                                         type: "string"
@@ -127,4 +127,4 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype = {
             } # states objectDescriptor
         } # States
      ] # Machine submenus
-} # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype
+} # Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutMachineArchetype

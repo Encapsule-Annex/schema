@@ -21,16 +21,16 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
+Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutCatalogueArchetype = {
 
     namespaceType: "component"
     jsonTag: "catalogue"
     label: "Catalogue"
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
         userMutable: {
             name: {
                 type: "string"
@@ -67,7 +67,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
             jsonTag: "specifications"
             label: "Specifications"
             description: "SCDL specification collection."
-            componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype 
+            componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSpecificationArchetype 
 
         } # Specifications
         {
@@ -82,7 +82,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                     jsonTag: "systems"
                     label: "Systems"
                     description: "SCDL system model collection."
-                    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSystemArchetype
+                    componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSystemArchetype
 
                 } # Systems
                 {
@@ -90,28 +90,28 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                     jsonTag: "sockets"
                     label: "Sockets"
                     description: "SCDL socket model collection."
-                    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype
+                    componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutSocketArchetype
                 } # Sockets
                 {
                     namespaceType: "extensionPoint"
                     jsonTag: "contracts"
                     label: "Contracts"
                     description: "SCDL contract model collection."
-                    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype
+                    componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutContractArchetype
                 } # sockets
                 {
                     namespaceType: "extensionPoint"
                     jsonTag: "machines"
                     label: "Machines"
                     description: "SCDL machine model collection."
-                    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype
+                    componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutMachineArchetype
                 } # machines
                 {
                     namespaceType: "extensionPoint"
                     jsonTag: "types"
                     label: "Types"
                     description: "SCDL type model collection."
-                    componentArchetype:  Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTypeArchetype
+                    componentArchetype:  Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutTypeArchetype
                 } # types
             ] # Models submenus
         } # Models
@@ -133,28 +133,28 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
                             jsonTag: "people"
                             label: "People"
                             description: "SCDL person models."
-                            componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPersonArchetype
+                            componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutPersonArchetype
                         } # people
                         {
                             namespaceType: "extensionPoint"
                             jsonTag: "organizations"
                             label: "Organizations"
                             description: "SCDL organization models."
-                            componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOrganizationArchetype
+                            componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutOrganizationArchetype
                         } # organizations
                         {
                             namespaceType: "extensionPoint"
                             jsonTag: "licenses"
                             label: "Licenses"
                             description: "SCDL license models."
-                            componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutLicenseArchetype
+                            componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutLicenseArchetype
                         } # licenses
                         {
                             namespaceType: "extensionPoint"
                             jsonTag: "copyrights"
                             label: "Copyrights"
                             description: "SCDL copyright models."
-                            componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCopyrightArchetype
+                            componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutCopyrightArchetype
                         } # copyrights
                     ] # assets submenu
                 } # assets

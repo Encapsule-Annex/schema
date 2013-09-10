@@ -22,15 +22,15 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
+Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPin = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutInputPin = {
     namespaceType: "component"
     jsonTag: "inputPin"
     label: "Input Pin"
     description: "SCDL input pin model."
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
         userMutable: {
             name: {
                 type: "string"
@@ -58,23 +58,23 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPin = {
 } # inputPin
 
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutInputPins = {
     namespaceType: "extensionPoint"
     jsonTag: "inputPins"
     label: "Input Pins"
     description: "SCDL input pin models."
-    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPin
+    componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutInputPin
 } # inputPins
 
 
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinChild = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutOutputPinChild = {
     namespaceType: "child"                                                                     
     jsonTag: "outputPin"
     label: "Output Pin"
     description: "SCDL output pin model."
     namespaceDescriptor: {
-        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
         userMutable: {
             name: {
                 type: "string"
@@ -102,13 +102,13 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinChild = {
 } # outputPinChild
 
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinArchetype = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutOutputPinArchetype = {
     namespaceType: "component"
     jsonTag: "outputPin"
     label: "Output Pin"
     description: "SCDL output pin model."
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
         userMutable: {
             name: {
                 type: "string"
@@ -137,12 +137,12 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinArchetype = {
 
 
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPins = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutOutputPins = {
     namespaceType: "extensionPoint"
     jsonTag: "outputPins"
     label: "Output Pins"
     description: "SCDL output pin models."
-    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinArchetype
+    componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutOutputPinArchetype
 } # outputPins
 
 

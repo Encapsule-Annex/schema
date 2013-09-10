@@ -57,7 +57,7 @@ class Encapsule.code.app.Schema
 
 
             # The Schema application state model codified as an ONMjs Object Model Declaration.
-            schema = ONMjsRuntime.schema = Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
+            schema = ONMjsRuntime.schema = Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayout
             # Initialize the Schema application's ONMjs runtime state model.
             model = ONMjsRuntime.model = new ONMjs.Model(schema)
 

@@ -22,9 +22,9 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
+Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutNodes = {
     namespaceType: "extensionPoint"
     jsonTag: "nodes"
     label: "Nodes"
@@ -35,7 +35,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes = {
         label: "Node"
         description: "SCDL node object."
         namespaceProperties: {
-            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+            userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
             userMutable: {
                 name: {
                     type: "string"
@@ -56,8 +56,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes = {
         } # node namespaceProperties
 
         subNamespaces: [
-            Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinChild
-            Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins
+            Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutOutputPinChild
+            Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutInputPins
         ] # node subMenus
     } # node componentArchetype
-} # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes
+} # Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutNodes

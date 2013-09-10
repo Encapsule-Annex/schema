@@ -22,14 +22,14 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
+Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPersonArchetype = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutPersonArchetype = {
     namespaceType: "component"
     jsonTag: "person"
     label: "Person"
     description: "SCDL person object."
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
     }
 }

@@ -22,10 +22,10 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
+Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayout = {
 
     jsonTag: "schema"
     label: "#{appName}"
@@ -57,7 +57,7 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
 
     subNamespaces: [
     
-        # Encapsule.code.app.modelview.OMMDeclarationTest
+        # Encapsule.code.app.ONMjs.OMMDeclarationTest
 
         {
             namespaceType: "child"
@@ -84,14 +84,14 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     
             subNamespaces: [
 
-                # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTools
+                # Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutTools
 
                 {
                     namespaceType: "extensionPoint"
                     jsonTag: "catalogues"
                     label: "Catalogues"
                     description: "SCDL catalogue object collection."
-                    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype
+                    componentArchetype: Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutCatalogueArchetype
                 } # catalogues
 
 

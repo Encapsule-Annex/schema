@@ -24,12 +24,12 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
+Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
 # This object is referenced within an Encapsule Navigator 'layout declarartion'.
-# e.g. item.objectDescriptor.namespaceDescriptor.userImmutable = Encapsule.code.app.modelview.ScdlNamespaceCommonMeta 
+# e.g. item.objectDescriptor.namespaceDescriptor.userImmutable = Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta 
 
-Encapsule.code.app.modelview.ScdlNamespaceCommonMeta = {
+Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta = {
     uuid: {
         type: "uuid"
         fnCreate: -> uuid.v4()
@@ -59,7 +59,7 @@ Encapsule.code.app.modelview.ScdlNamespaceCommonMeta = {
 
 
 
-Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties = {
+Encapsule.code.app.ONMjs.ScdlModelUserMutableNamespaceProperties = {
     name: {
         type: "string"
         fnCreate: -> ""

@@ -22,16 +22,16 @@
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
-Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
+Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMjs or Encapsule.code.app.ONMjs = {}
 
-Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype = {
+Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutContractArchetype = {
     namespaceType: "component"
     jsonTag: "contract"
     label: "Contract"
     description: "SCDL contract model."
     namespaceProperties: {
-        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-        userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties
+        userImmutable: Encapsule.code.app.ONMjs.ScdlNamespaceCommonMeta
+        userMutable: Encapsule.code.app.ONMjs.ScdlModelUserMutableNamespaceProperties
     } # namespaceProperties
 
     subNamespaces: [
@@ -50,8 +50,8 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype = {
         } # modelReference
 
         # Easy to miss this slipped in down here.
-        Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes
+        Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutNodes
 
     ] # Socket Contract submenus
 
-} # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype 
+} # Encapsule.code.app.ONMjs.ScdlNavigatorWindowLayoutContractArchetype 
