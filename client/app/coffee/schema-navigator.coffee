@@ -32,23 +32,23 @@ Encapsule.code.app.modelview.ScdlNavigatorWindowLayout = {
     description: "#{appName} client root."
 
     semanticBindings: {
-        update: (namespaceObjectReference_) ->
-            if namespaceObjectReference_.revision?
-                namespaceObjectReference_.revision++
-            if namespaceObjectReference_.updateTime?
-                namespaceObjectReference_.updateTime = Encapsule.code.lib.util.getEpochTime()
-            if namespaceObjectReference_.uuidRevision?
-                namespaceObjectReference_.uuidRevision = uuid.v4()
+        update: (dataReference_) ->
+            if dataReference_.revision?
+                dataReference_.revision++
+            if dataReference_.updateTime?
+                dataReference_.updateTime = Encapsule.code.lib.util.getEpochTime()
+            if dataReference_.uuidRevision?
+                dataReference_.uuidRevision = uuid.v4()
             return true
 
-        getLabel: (namespaceObjectReference_) ->
-            label = namespaceObjectReference_["name"]? and namespaceObjectReference_["name"] or
-                namespaceObjectReference_["uuid"]? and namespaceObjectReference_["uuid"] or
-                undefined
+        getLabel: (dataReference_, namespaceDescriptor_) ->
+            label = (dataReference_["name"]? and dataReference_["name"]) or
+                (dataReference_["uuid"]? and dataReference_["uuid"] and "#{namespaceDescriptor_.label} #{dataReference_["uuid"]}") or
+                namespaceDescriptor_.label
             return label
 
-        getUniqueKey: (namespaceObjectReference_) ->
-            key = namespaceObjectReference_["uuid"]? and namespaceObjectReference_["uuid"] or undefined
+        getUniqueKey: (dataReference_) ->
+            key = dataReference_["uuid"]? and dataReference_["uuid"] or undefined
             return key
 
     } # semanticBindings

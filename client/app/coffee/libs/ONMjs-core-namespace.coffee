@@ -108,11 +108,16 @@ class ONMjs.Namespace
     # ============================================================================
     getResolvedLabel: =>
         try
-            # TODO: This needs to take advantage of semantic bindings. Currently
-            # this is the unsophisticated version.
-
             resolvedDescriptor = @getLastBinder().resolvedToken.namespaceDescriptor
-            return resolvedDescriptor.label
+            semanticBindings = @store.model.getSemanticBindings()
+            getLabelBinding = semanticBindings? and semanticBindings and semanticBindings.getLabel? and semanticBindings.getLabel or undefined
+            resolvedLabel = undefined
+            if getLabelBinding? and getLabelBinding
+                resolvedLabel = getLabelBinding(@data(), resolvedDescriptor)
+            else
+                resolvedLabel = resolvedDescriptor.label
+
+            return resolvedLabel
             
         catch exception
             throw "ONMjs.Namespace.getResolvedLabel failure: #{exception}"
