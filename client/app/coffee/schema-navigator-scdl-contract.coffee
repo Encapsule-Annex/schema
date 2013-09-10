@@ -25,36 +25,33 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype = {
+    namespaceType: "component"
     jsonTag: "contract"
     label: "Contract"
-    objectDescriptor: {
-        mvvmType: "archetype"
-        description: "SCDL contract model."
-        namespaceDescriptor: {
-            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-            userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties
-        } # namespaceDescriptor
-    }
-    subMenus: [
+    description: "SCDL contract model."
+    namespaceProperties: {
+        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties
+    } # namespaceProperties
+
+    subNamespaces: [
         {
+            namespaceType: "child"
             jsonTag: "socketReference"
             label: "Socket Reference"
-            objectDescriptor: {
-                mvvmType: "child"
-                description: "SCDL socket reference."
-            } # socketReference objectDescriptor
+            description: "SCDL socket reference."
         } # socketReference
+
         {
+            namespaceType: "child"
             jsonTag: "modelReference"
             label: "Model Reference"
-            objectDescriptor: {
-                mvvmType: "child"
-                description: "SCDL model reference."
-            } # modelReference objectDescriptor
+            description: "SCDL model reference."
         } # modelReference
 
         # Easy to miss this slipped in down here.
         Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes
 
     ] # Socket Contract submenus
+
 } # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype 

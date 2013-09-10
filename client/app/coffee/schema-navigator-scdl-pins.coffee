@@ -25,134 +25,124 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPin = {
+    namespaceType: "component"
     jsonTag: "inputPin"
     label: "Input Pin"
-    objectDescriptor: {
-        mvvmType: "archetype"
-        description: "SCDL input pin model."
-        namespaceDescriptor: {
-            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-            userMutable: {
-                name: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                description: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                tags: {
-                    type: "stringCSV"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                type: {
-                    type: "uuidSelection"
-                    selectionSource: "schema/catalogues/catalogue/models/types"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
-                }
-            } # userMutable
-        } # namespaceDescriptor
-    } # inputPin objectDescriptor
+    description: "SCDL input pin model."
+    namespaceProperties: {
+        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userMutable: {
+            name: {
+                type: "string"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            description: {
+                type: "string"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            tags: {
+                type: "stringCSV"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            type: {
+                type: "uuidSelection"
+                selectionSource: "schema/catalogues/catalogue/models/types"
+                fnCreate: -> Encapsule.code.lib.util.uuidNull
+                fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+            }
+        } # userMutable
+    } # namespaceProperties
 } # inputPin
 
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins = {
+    namespaceType: "extensionPoint"
     jsonTag: "inputPins"
     label: "Input Pins"
-    objectDescriptor: {
-        mvvmType: "extension"
-        description: "SCDL input pin models."
-        archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPin
-    } # inputPins objectDescriptor
+    description: "SCDL input pin models."
+    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPin
 } # inputPins
 
 
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinChild = {
+    namespaceType: "child"                                                                     
     jsonTag: "outputPin"
     label: "Output Pin"
-    objectDescriptor: {
-        mvvmType: "child"
-        description: "SCDL output pin model."
-        namespaceDescriptor: {
-            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-            userMutable: {
-                name: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                description: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                tags: {
-                    type: "stringCSV"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                type: {
-                    type: "uuidSelection"
-                    selectionSource: "schema/catalogues/catalogue/models/types"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
-                }
-            } # userMutable
-        } # namespaceDescriptor
-    } # outputPin objectDescriptor
+    description: "SCDL output pin model."
+    namespaceDescriptor: {
+        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userMutable: {
+            name: {
+                type: "string"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            description: {
+                type: "string"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            tags: {
+                type: "stringCSV"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            type: {
+                type: "uuidSelection"
+                selectionSource: "schema/catalogues/catalogue/models/types"
+                fnCreate: -> Encapsule.code.lib.util.uuidNull
+                fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+            }
+        } # userMutable
+    } # namespaceProperties
 } # outputPinChild
 
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinArchetype = {
+    namespaceType: "component"
     jsonTag: "outputPin"
     label: "Output Pin"
-    objectDescriptor: {
-        mvvmType: "archetype"
-        description: "SCDL output pin model."
-        namespaceDescriptor: {
-            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-            userMutable: {
-                name: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                description: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                tags: {
-                    type: "stringCSV"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                type: {
-                    type: "uuidSelection"
-                    selectionSource: "schema/catalogues/catalogue/models/types"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
-                }
-            } # userMutable
-        } # namespaceDescriptor
-    } # outputPin objectDescriptor
+    description: "SCDL output pin model."
+    namespaceProperties: {
+        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userMutable: {
+            name: {
+                type: "string"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            description: {
+                type: "string"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            tags: {
+                type: "stringCSV"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            type: {
+                type: "uuidSelection"
+                selectionSource: "schema/catalogues/catalogue/models/types"
+                fnCreate: -> Encapsule.code.lib.util.uuidNull
+                fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+            }
+        } # userMutable
+    } # namespaceProperties
 } # outputPinArchetype
 
 
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPins = {
+    namespaceType: "extensionPoint"
     jsonTag: "outputPins"
     label: "Output Pins"
-    objectDescriptor: {
-        mvvmType: "extension"
-        description: "SCDL output pin models."
-        archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinArchetype
-    } # outputPins objectDescriptor
+    description: "SCDL output pin models."
+    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinArchetype
 } # outputPins
 
 

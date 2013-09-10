@@ -26,164 +26,135 @@ Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCatalogueArchetype = {
 
+    namespaceType: "component"
     jsonTag: "catalogue"
     label: "Catalogue"
-    objectDescriptor: {
-        jsonTag: "catalogue"
-        mvvmType: "archetype"
-        description: "SCDL catalogue object."
-        namespaceDescriptor: {
-            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-            userMutable: {
-                name: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                description: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                tags: {
-                    type: "stringCSV"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                author: {
-                    type: "uuidSelection"
-                    selectionSource: "schema/catalogues/catalogue/assets/people"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
-                }
-                organization: {
-                    type: "uuidSelection"
-                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
-                }
+    namespaceProperties: {
+        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userMutable: {
+            name: {
+                type: "string"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            description: {
+                type: "string"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            tags: {
+                type: "stringCSV"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            author: {
+                type: "uuidSelection"
+                selectionSource: "schema/catalogues/catalogue/assets/people"
+                fnCreate: -> Encapsule.code.lib.util.uuidNull
+                fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+            }
+            organization: {
+                type: "uuidSelection"
+                selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                fnCreate: -> Encapsule.code.lib.util.uuidNull
+                fnReinitialize: -> Encapsule.code.lib.util.uuidNull
             }
         }
     }
-    subMenus: [
+    subNamespaces: [
         {
+            namespaceType: "extensionPoint"
             jsonTag: "specifications"
             label: "Specifications"
-            objectDescriptor: {
-                mvvmType: "extension"
-                description: "SCDL specification collection."
-                archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype 
-            } # specification objectDescriptor
+            description: "SCDL specification collection."
+            componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSpecificationArchetype 
+
         } # Specifications
         {
+            namespaceType: "child"
             jsonTag: "models"
             label: "Models"
-            objectDescriptor: {
-                mvvmType: "child"
-                description: "SCDL model namespace."
-            }
-            subMenus: [
+            description: "SCDL model namespace."
+
+            subNamespaces: [
                 {
+                    namespaceType: "extensionPoint"
                     jsonTag: "systems"
                     label: "Systems"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "SCDL system model collection."
-                        archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSystemArchetype
-                    } # systems objectDescriptor
+                    description: "SCDL system model collection."
+                    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSystemArchetype
+
                 } # Systems
                 {
+                    namespaceType: "extensionPoint"
                     jsonTag: "sockets"
                     label: "Sockets"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "SCDL socket model collection."
-                        archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype
-                    } # sockets objectDescriptor
-
+                    description: "SCDL socket model collection."
+                    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype
                 } # Sockets
                 {
+                    namespaceType: "extensionPoint"
                     jsonTag: "contracts"
                     label: "Contracts"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "SCDL contract model collection."
-                        archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype
-                    } # contracts objectDescriptor
+                    description: "SCDL contract model collection."
+                    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutContractArchetype
                 } # sockets
-        
                 {
+                    namespaceType: "extensionPoint"
                     jsonTag: "machines"
                     label: "Machines"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "SCDL machine model collection."
-                        archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype
-                    } # machines objectDescriptor
+                    description: "SCDL machine model collection."
+                    componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutMachineArchetype
                 } # machines
-
                 {
+                    namespaceType: "extensionPoint"
                     jsonTag: "types"
                     label: "Types"
-                    objectDescriptor: {
-                        mvvmType: "extension"
-                        description: "SCDL type model collection."
-                        archetype:  Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTypeArchetype
-                    } # types objectDescriptor
+                    description: "SCDL type model collection."
+                    componentArchetype:  Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTypeArchetype
                 } # types
             ] # Models submenus
         } # Models
         {
+            namespaceType: "child"
             jsonTag: "resources"
             label: "Resources"
-            objectDescriptor: {
-                mvvmType: "child"
-                description: "SCDL common resource namespace."
-            }
-            subMenus: [
+            description: "SCDL common resource namespace."
+            subNamespaces: [
                 {
+                    namespaceType: "child"
                     jsonTag: "attribution"
                     label: "Attribution"
-                    objectDescriptor: {
-                        mvvmType: "child"
-                        description: "Shared attribution namespace."
-                    } # objectDescriptor
-                    subMenus: [
+                    description: "Shared attribution namespace."
+
+                    subNamespaces: [
                         {
+                            namespaceType: "extensionPoint"
                             jsonTag: "people"
                             label: "People"
-                            objectDescriptor: {
-                                mvvmType: "extension"
-                                description: "SCDL person models."
-                                archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPersonArchetype
-                            } # people objectDescriptor
+                            description: "SCDL person models."
+                            componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutPersonArchetype
                         } # people
                         {
+                            namespaceType: "extensionPoint"
                             jsonTag: "organizations"
                             label: "Organizations"
-                            objectDescriptor: {
-                                mvvmType: "extension"
-                                description: "SCDL organization models."
-                                archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOrganizationArchetype
-                            } # organizations objectDescriptor
+                            description: "SCDL organization models."
+                            componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOrganizationArchetype
                         } # organizations
                         {
+                            namespaceType: "extensionPoint"
                             jsonTag: "licenses"
                             label: "Licenses"
-                            objectDescriptor: {
-                                mvvmType: "extension"
-                                description: "SCDL license models."
-                                archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutLicenseArchetype
-                            } # licenses objectDescriptor
+                            description: "SCDL license models."
+                            componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutLicenseArchetype
                         } # licenses
                         {
+                            namespaceType: "extensionPoint"
                             jsonTag: "copyrights"
                             label: "Copyrights"
-                            objectDescriptor: {
-                                mvvmType: "extension"
-                                description: "SCDL copyright models."
-                                archetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCopyrightArchetype
-                            } # copyrights objectDescriptor
+                            description: "SCDL copyright models."
+                            componentArchetype: Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutCopyrightArchetype
                         } # copyrights
                     ] # assets submenu
                 } # assets

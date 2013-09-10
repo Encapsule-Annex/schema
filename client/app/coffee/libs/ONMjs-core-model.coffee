@@ -47,26 +47,6 @@ Encapsule.code.lib.onm = Encapsule.code.lib.onm? and Encapsule.code.lib.onm or @
 ONMjs = Encapsule.code.lib.onm
 ONMjs.implementation = ONMjs.implementation? and ONMjs.implementation or ONMjs.implementation = {}
 
-#
-# ****************************************************************************
-ONMjs.implementation.RootObjectDescriptorFactory = (jsonTag_, label_, description_, menuHierarchy_) ->
-    try
-        rootObjectDescriptor = {
-            jsonTag: jsonTag_
-            label: label_
-            objectDescriptor: {
-                mvvmType: "root"
-                description: description_
-            } #object Descriptor
-            subMenus: menuHierarchy_
-        } # rootObjectDescriptor
-
-        return rootObjectDescriptor
-
-    catch exception
-        throw "ONMjs.implementation.RooObjectDescriptorFactor function failed: #{exception}"
-# ****************************************************************************
-#
 
 #
 #
@@ -76,18 +56,23 @@ class ONMjs.implementation.ModelBase
         try
 
             # --------------------------------------------------------------------------
-            buildOMDescriptorFromLayout = (objectModelLayoutObject_, path_, parentDescriptor_, componentDescriptor_, parentPathIdVector_, parentPathExtensionPointIdVector_) =>
+            buildOMDescriptorFromLayout = (ONMD_, path_, parentDescriptor_, componentDescriptor_, parentPathIdVector_, parentPathExtensionPointIdVector_) =>
                 try
-                    if not (objectModelLayoutObject_? and objectModelLayoutObject_) 
+                    if not (ONMD_? and ONMD_) 
                         throw "Missing object model layout object input parameter! Typically this happens if you declare the object model namespace with an unresolvable reference (e.g. to an object you defined previously for re-use) as opposed to declaring inline in your object model declaration."
 
+                    if not (ONMD_.jsonTag? and ONMD_.jsonTag) then throw "Missing required namespace declaration property 'jsonTag'."
+
                     # Local variables used to construct this descriptor.
-                    tag = objectModelLayoutObject_.jsonTag
-
+                    tag = ONMD_.jsonTag
                     path = path_? and path_ and "#{path_}.#{tag}" or tag
+                    Console.message("... Namespace: #{path}")
 
-                    id = @countDescriptors
-                    @countDescriptors++ # set up for the next invocation of this function (used the id var locally)
+                    label = ONMD_.label? and ONMD_.label or "<no label provided>"
+                    description = ONMD_.description? and ONMD_.description or "<no description provided>"
+                    id = @countDescriptors++
+
+                    namespaceType = (ONMD_.namespaceType? and ONMD_.namespaceType) or (not id and "root" or throw "Incorrect or unspecified namespace type error for path '#{path}'.")
 
                     parentPathExtensionPoints = undefined
                     if parentPathExtensionPointIdVector_? and parentPathExtensionPointIdVector_
@@ -95,32 +80,29 @@ class ONMjs.implementation.ModelBase
                     else
                         parentPathExtensionPoints = []
 
-                    mvvmType = objectModelLayoutObject_.objectDescriptor.mvvmType
-
-                    # 
-
-                    namespaceDeclaration = objectModelLayoutObject_.objectDescriptor.namespaceDescriptor? and objectModelLayoutObject_.objectDescriptor.namespaceDescriptor or {}
+                    namespaceProperties = ONMD_.namespaceProperties? and ONMD_.namespaceProperties or {}
 
                     # Build this descriptor and add it to the OM's descriptor array.
+
                     thisDescriptor = @objectModelDescriptorById[id] = {
-                        # valid only if mvvmType == "extension" (set to ID of extension point's corresponding archetype)
+                        # valid only if namespaceType == "extension" (set to ID of extension point's corresponding archetype)
                         "archetypePathId": -1           
                         "children": []
                         "componentNamespaceIds": []
-                        "description": objectModelLayoutObject_.objectDescriptor.description
-                        # valid only if mvvmType == "archetype" (populated with extension point ID's that specify this archetype by reference)
+                        "description": description
+                        # valid only if namespaceType == "archetype" (populated with extension point ID's that specify this archetype by reference)
                         "extensionPointReferenceIds": []
                         "id": id
                         "idComponent": id
                         "isComponent": false
                         "jsonTag": tag
-                        "label": objectModelLayoutObject_.label
-                        "mvvmType": mvvmType
-                        "namespaceDescriptor": namespaceDeclaration
+                        "label": ONMD_.label
+                        "mvvmType": namespaceType
+                        "namespaceDescriptor": namespaceProperties
                         "parent": parentDescriptor_
                         "parentPathExtensionPoints": parentPathExtensionPoints # self-extensible objects makes this superfluous I think
                         "parentPathIdVector": []
-                        "path":  path
+                        "path": path
                          }
 
                     # Add this descriptor to the OM intance's path map for fast look-up based on path.
@@ -137,25 +119,27 @@ class ONMjs.implementation.ModelBase
                         @rankMax = thisDescriptor.parentPathIdVector.length
 
                     componentDescriptor = undefined
-                    switch mvvmType
-                        when "extension"
+
+                    switch namespaceType
+                        when "extensionPoint"
+
                             if not (componentDescriptor_? and componentDescriptor_) then throw "Internal error: componentDescriptor_ should be defined."
-                            thisDescriptor.idComponent = thisDescriptor.parent.idComponent
+                            thisDescriptor.idComponent = componentDescriptor_.id
                             componentDescriptor = componentDescriptor_
                             componentDescriptor.extensionPoints[path] = thisDescriptor
 
                             processArchetypeDeclaration = undefined
                             archetypeDescriptor = undefined
-                            if objectModelLayoutObject_.objectDescriptor.archetype? and objectModelLayoutObject_.objectDescriptor.archetype
+                            if ONMD_.componentArchetype? and ONMD_.componentArchetype
                                 processArchetypeDeclaration = true
-                                archetypeDescriptor = objectModelLayoutObject_.objectDescriptor.archetype # may be undefined
-                            else if objectModelLayoutObject_.objectDescriptor.archetypeReference? and objectModelLayoutObject_.objectDescriptor.archetypeReference
+                                archetypeDescriptor = ONMD_.componentArchetype # may be undefined
+                            else if ONMD_.componentArchetypePath? and ONMD_.componentArchetypePath
                                 processArchetypeDeclaration = false
-                                pathReference = objectModelLayoutObject_.objectDescriptor.archetypeReference
+                                pathReference = ONMD_.componentArchetypePath
                                 objectModelDescriptorReference = @objectModelPathMap[pathReference]
                                 if not (objectModelDescriptorReference? and objectModelDescriptorReference)
                                     throw "Cannot process extension point declaration because its corresponding archetype reference '#{pathReference}' is not defined."
-                                if objectModelDescriptorReference.mvvmType != "archetype"
+                                if objectModelDescriptorReference.namespaceType != "archetype"
                                     throw "Cannot process extension point declaration becuase it's corresponding archetype reference '#{pathReference}' does not refer to an 'archetype' namespace."
                                 # Add the extension point ID to the archetype's list of extension points
                                 # that specify it by reference.
@@ -178,7 +162,7 @@ class ONMjs.implementation.ModelBase
 
                             break
 
-                        when "archetype"
+                        when "component"
                             thisDescriptor.isComponent = true
                             thisDescriptor.extensionPoints = {}
                             parentDescriptor_.archetypePathId = id
@@ -196,26 +180,27 @@ class ONMjs.implementation.ModelBase
                             break
 
                         when "child"
-                            thisDescriptor.idComponent = thisDescriptor.parent.idComponent
+                            if not (componentDescriptor_? and componentDescriptor_) then throw "Internal error: componentDescriptor_ should be defined."
+                            thisDescriptor.idComponent = componentDescriptor_.id
                             componentDescriptor = componentDescriptor_
                             @countChildren++
                             break
                         else
-                            throw "Unrecognized MVVM type \"#{mvvmType}\" in call."
+                            throw "Unrecognized namespace type '#{namespaceType}' in object model namespace declaration."
 
                     @objectModelDescriptorById[thisDescriptor.idComponent].componentNamespaceIds.push thisDescriptor.id
 
-                    if not (objectModelLayoutObject_.subMenus? and objectModelLayoutObject_.subMenus)
+                    if not (ONMD_.subNamespaces? and ONMD_.subNamespaces)
                         return true
 
-                    for subObjectDescriptor in objectModelLayoutObject_.subMenus
+                    for subNamespace in ONMD_.subNamespaces
                         # *** RECURSION
-                        buildOMDescriptorFromLayout(subObjectDescriptor, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, parentPathExtensionPoints)
+                        buildOMDescriptorFromLayout(subNamespace, path, thisDescriptor, componentDescriptor, thisDescriptor.parentPathIdVector, parentPathExtensionPoints)
 
                     return true
 
                 catch exception
-                    throw "buildOMDescriptorFromLayout fail: #{exception}"
+                    throw "ONMjs.Model.buildOMDescriptorFromLayout fail: #{exception}"
 
             # / END: buildOMDesriptorFromLayout
 
@@ -228,44 +213,23 @@ class ONMjs.implementation.ModelBase
             if not (objectModelDeclaration_.jsonTag? and objectModelDeclaration_.jsonTag)
                 throw "Missing required root namespace property 'jsonTag'."
 
-            if not (objectModelDeclaration_.label? and objectModelDeclaration_.label)
-                throw "Missing required root namespace property 'label'."
-
-            if not (objectModelDeclaration_.description? and objectModelDeclaration_.description)
-                throw "Missing required root namespace property 'description'."
-
             @jsonTag = objectModelDeclaration_.jsonTag
-            @label = objectModelDeclaration_.label
-            @description = objectModelDeclaration_.description
-            
+            @label = objectModelDeclaration_.label? and objectModelDeclaration_.label or "<no label provided>"
+            @description = objectModelDeclaration_.description? and objectModelDeclaration_.description or "<no description provided>"
+
             Console.message("ONMjs.Model: Processing object model declaration '#{objectModelDeclaration_.jsonTag}'")
 
-            # Create the root object descriptor (note that this is a generic descriptor shared by all
-            # instances of ObjectModel. The namespace is reserved for use by ONM itself and cannot be
-            # accessed via the object model layout declaration object.
-
-            rootObjectDescriptor = ONMjs.implementation.RootObjectDescriptorFactory(
-                @jsonTag
-                @label
-                @description
-                objectModelDeclaration_.menuHierarchy
-                )
-
-            # ObjectModel instances take a deep copy of objectModelDeclaration_
+            # Deep copy the specified object model declaration object.
             @objectModelDeclaration = Encapsule.code.lib.js.clone objectModelDeclaration_
 
             if not (@objectModelDeclaration? and @objectModelDeclaration)
-                throw "Failed to clone source object model declaration."
-
-            # Note that we patch our _copy_ of the declaration in order to splice in the
-            # auto-generated root namespace leaving the original declaration unchanged.
-            @objectModelDeclaration.menuHierarchy = [ rootObjectDescriptor ]
+                throw "Failed to deep copy (clone) source object model declaration."
 
             #
             # objectModelDescriptor = (required) reference to OM layout declaration object
             # path = (optional/used in recursion) parent descriptor's OM path (defaults to jsonTag if undefined)
             # rank = (optional/used in recursion) directed graph rank (aka level - a zero-based count of tree height)
-            # parentDescriptor_ = (optional/used in recursion) 
+            # parentDescriptor_ = (optional/used in recursion) (if undefined, then 
             #
             # buildOMDescriptorFromLayout additionally depends on the following class members
             #
@@ -281,8 +245,8 @@ class ONMjs.implementation.ModelBase
             @countChildren = 0
             @rankMax = 0
 
-            # *** START RECURSION
-            buildOMDescriptorFromLayout(rootObjectDescriptor)
+            # *** START RECURSIVE PARSE/BUILD OF OBJECT MODEL DESCRIPTOR(s).
+            buildOMDescriptorFromLayout(objectModelDeclaration_)
 
             # Some basic consistency checks to ensure that completely screwed up declaratons
             # aren't foisted upon unsuspecting observers.
@@ -304,9 +268,8 @@ class ONMjs.implementation.ModelBase
             Console.message("... <strong>#{@countDescriptors} total namespace declarations processed.</strong>")
             Console.message("... ... #{@countComponents} composable components / tallest leaf = rank #{@rankMax}")
 
-
         catch exception
-            throw "ONMjs.ModelBase object model declaration parse failure: #{exception}. Check your ONMjs object model declaration carefully for error(s)."
+            throw "ONMjs.ModelBase object model declaration parse failure: #{exception} PLEASE REVIEW YOUR ONMjs OBJECT MODEL DECLARATION CAREFULLY FOR ERROR(S)."
 
 # ****************************************************************************
 #

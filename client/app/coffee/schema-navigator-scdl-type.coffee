@@ -25,59 +25,58 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutTypeArchetype = {
+    namespaceType: "component"                                                                    
     jsonTag: "type"
     label: "Type"
-    objectDescriptor: {
-        mvvmType: "archetype"
-        description: "SCDL type model."
-        namespaceDescriptor: {
-            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-            userMutable: {
-                name: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                description: {
-                    type: "string"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                tags: {
-                    type: "stringCSV"
-                    fnCreate: -> ""
-                    fnReinitialize: -> ""
-                }
-                author: {
-                    type: "uuidSelection"
-                    selectionSource: "schema/catalogues/catalogue/assets/people"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
-                }
-                organization: {
-                    type: "uuidSelection"
-                    selectionSource: "schema/catalogues/catalogue/assets/organizations"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
-                }
-                copyright: {
-                    type: "uuidSelection"
-                    selectionSource: "schema/catalogues/catalogue/assets/copyrights"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
-                }
-                license: {
-                    type: "uuidSelection"
-                    selectionSource: "schema/catalogues/catalogue/assets/licenses"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
-                }
-                platformBinding: {
-                    type: "uuid"
-                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                    fnReinitialize: -> Encapsule.code.lib.util.uuidNull
-                }
-            } # type userMutable
-        } # type namespaceDescriptor
-    } # type objectDescriptor
+    description: "SCDL type model."
+    namespaceProperties: {
+        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userMutable: {
+            name: {
+                type: "string"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            description: {
+                type: "string"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            tags: {
+                type: "stringCSV"
+                fnCreate: -> ""
+                fnReinitialize: -> ""
+            }
+            author: {
+                type: "uuidSelection"
+                selectionSource: "schema/catalogues/catalogue/assets/people"
+                fnCreate: -> Encapsule.code.lib.util.uuidNull
+                fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+            }
+            organization: {
+                type: "uuidSelection"
+                selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                fnCreate: -> Encapsule.code.lib.util.uuidNull
+                fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+            }
+            copyright: {
+                type: "uuidSelection"
+                selectionSource: "schema/catalogues/catalogue/assets/copyrights"
+                fnCreate: -> Encapsule.code.lib.util.uuidNull
+                fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+            }
+            license: {
+                type: "uuidSelection"
+                selectionSource: "schema/catalogues/catalogue/assets/licenses"
+                fnCreate: -> Encapsule.code.lib.util.uuidNull
+                fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+            }
+            platformBinding: {
+                type: "uuid"
+                fnCreate: -> Encapsule.code.lib.util.uuidNull
+                fnReinitialize: -> Encapsule.code.lib.util.uuidNull
+            }
+        } # type userMutable
+    } # type namespaceDescriptor
+
 } # ScdlNavigatorWindowLayoutTypeArchetype

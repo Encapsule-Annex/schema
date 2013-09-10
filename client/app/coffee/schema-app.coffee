@@ -56,18 +56,11 @@ class Encapsule.code.app.Schema
             # CONSTRUCT ONMjs CORE
 
 
-            ###
             # The Schema application state model codified as an ONMjs Object Model Declaration.
             schema = ONMjsRuntime.schema = Encapsule.code.app.modelview.ScdlNavigatorWindowLayout
             # Initialize the Schema application's ONMjs runtime state model.
             model = ONMjsRuntime.model = new ONMjs.Model(schema)
-            ###
 
-
-            # ----------------------------------------------------------------------------
-            # Experiment: Use ONMjs to create ONMjs object model declarations.
-            model = ONMjsRuntime.model = new ONMjs.Model(ONMjs.implementation.ONMjsObjectModelDeclaration)
-            # ----------------------------------------------------------------------------
 
 
             # Initialize the Schema application's ONMjs runtime state store.

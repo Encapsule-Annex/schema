@@ -25,44 +25,39 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes = {
+    namespaceType: "extensionPoint"
     jsonTag: "nodes"
     label: "Nodes"
-    objectDescriptor: {
-        mvvmType: "extension"
-        description: "SCDL node descriptor instances."
-        archetype: {
-            jsonTag: "node"
-            label: "Node"
-            objectDescriptor: {
-                mvvmType: "archetype"
-                description: "SCDL node object."
-                namespaceDescriptor: {
-                    userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-                    userMutable: {
-                        name: {
-                            type: "string"
-                            fnCreate: -> ""
-                            fnReinitialize: -> ""
-                        }
-                        description: {
-                            type: "string"
-                            fnCreate: -> ""
-                            fnReinitialize: -> ""
-                        }
-                        tags: {
-                            type: "stringCSV"
-                            fnCreate: -> ""
-                            fnReinitialize: -> ""
-                        }
-                    } # user mutable
-                } # node namespaceDescriptor
-            } # node objectDescriptor
-            subMenus: [
+    description: "SCDL node descriptor instances."
+    componentArchetype: {
+        namespaceType: "component"
+        jsonTag: "node"
+        label: "Node"
+        description: "SCDL node object."
+        namespaceProperties: {
+            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+            userMutable: {
+                name: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                description: {
+                    type: "string"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+                tags: {
+                    type: "stringCSV"
+                    fnCreate: -> ""
+                    fnReinitialize: -> ""
+                }
+            } # user mutable
+        } # node namespaceProperties
 
-                Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinChild
-                Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins
-
-            ] # node subMenus
-        } # node archetype
-    } # nodes object descriptor
+        subNamespaces: [
+            Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPinChild
+            Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins
+        ] # node subMenus
+    } # node componentArchetype
 } # Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes

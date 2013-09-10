@@ -25,17 +25,15 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSocketArchetype = {
+    namespaceType: "component"
     jsonTag: "socket"
     label: "Socket"
-    objectDescriptor: {
-        mvvmType: "archetype"
-        description: "SCDL socket model."
-        namespaceDescriptor: {
-            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-            userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties 
-        } # namespaceDescriptor
+    description: "SCDL socket model."
+    namespaceProperties: {
+        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties 
     }
-    subMenus: [
+    subNamespaces: [
         Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins
         Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPins
     ] # Socket submenus

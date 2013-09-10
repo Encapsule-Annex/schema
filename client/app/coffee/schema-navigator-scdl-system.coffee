@@ -25,148 +25,136 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutSystemArchetype = {
+    namespaceType: "component"
     jsonTag: "system"
     label: "System"
-    objectDescriptor: {
-        mvvmType: "archetype"
-        description: "SCDL system model."
-        namespaceDescriptor: {
-            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-            userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties 
-        }
+    description: "SCDL system model."
+    namespaceProperties: {
+        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+        userMutable: Encapsule.code.app.modelview.ScdlModelUserMutableNamespaceProperties 
     }
-    subMenus: [
+
+    subNamespaces: [
         Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutInputPins
         Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOutputPins
 
         { 
+            namespaceType: "extensionPoint"
             jsonTag: "subsystems"
             label: "System Instances"
-            objectDescriptor: {
-                mvvmType: "extension"
-                description: "Contained SCDL system model instances."
-                archetype: {
-                    jsonTag: "subsystem"
-                    label: "System Instance"
-                    objectDescriptor: {
-                        mvvmType: "archetype"
-                        description: "Contained SCDL system instance."
-                        namespaceDescriptor: {
-                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-                            userMutable: {
-                                name: {
-                                    type: "string"
-                                    fnCreate: -> ""
-                                    fnReinitialize: -> ""
-                                }
-                                description: {
-                                    type: "string"
-                                    fnCreate: -> ""
-                                    fnReinitialize: -> ""
-                                }
-                                tags: {
-                                    type: "stringCSV"
-                                    fnCreate: -> ""
-                                    fnReinitialize: -> ""
-                                }
-                                systemUuid : {
-                                    type: "uuidSelection"
-                                    selectionSource: "schema/catalogues/catalogue/models/systems"
-                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
-                                }
-                            } # userMutable
-                        } # namespaceDescriptor
-                    } # subsystem objectDescriptor
-                } # subsystem archetype
-            } # subsystems objectDescriptor
+            description: "Contained SCDL system model instances."
+            componentArchetype: {
+                namespaceType: "component"
+                jsonTag: "subsystem"
+                label: "System Instance"
+                description: "Contained SCDL system instance."
+                namespaceProperties: {
+                    userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                    userMutable: {
+                        name: {
+                            type: "string"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                        description: {
+                            type: "string"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                        tags: {
+                            type: "stringCSV"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                        systemUuid : {
+                            type: "uuidSelection"
+                            selectionSource: "schema/catalogues/catalogue/models/systems"
+                            fnCreate: -> Encapsule.code.lib.util.uuidNull
+                            fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                        }
+                    } # userMutable
+                } # namespaceProperties
+            } # subsystem archetype
         } # subsystems
 
         { 
+            namespaceType: "extensionPoint"
             jsonTag: "submachines"
             label: "Machine Instances"
-            objectDescriptor: {
-                mvvmType: "extension"
-                description: "Contained SCDL machine model instances."
-                archetype: {
-                    jsonTag: "submachine"
-                    label: "Machine Instance"
-                    objectDescriptor: {
-                        mvvmType: "archetype"
-                        description: "SCDL machine instance."
-                        namespaceDescriptor: {
-                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-                            userMutable: {
-                                name: {
-                                    type: "string"
-                                    fnCreate: -> ""
-                                    fnReinitialize: -> ""
-                                }
-                                description: {
-                                    type: "string"
-                                    fnCreate: -> ""
-                                    fnReinitialize: -> ""
-                                }
-                                tags: {
-                                    type: "stringCSV"
-                                    fnCreate: -> ""
-                                    fnReinitialize: -> ""
-                                }
-                                machineUuid : {
-                                    type: "uuidSelection"
-                                    selectionSource: "schema/catalogues/catalogue/models/systems"
-                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
-                                }
-                            } # userMutable
-                        } # namespaceDescriptor
-                    } # subsystem objectDescriptor
-                } # subsystem archetype
-            } # subsystems objectDescriptor
-        } # subsystems
+            description: "Contained SCDL machine model instances."
+            componentArchetype: {
+                namespaceType: "component"
+                jsonTag: "submachine"
+                label: "Machine Instance"
+                description: "SCDL machine instance."
+                namespaceProperties: {
+                    userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                    userMutable: {
+                        name: {
+                            type: "string"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                        description: {
+                            type: "string"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                        tags: {
+                            type: "stringCSV"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                        machineUuid : {
+                            type: "uuidSelection"
+                            selectionSource: "schema/catalogues/catalogue/models/systems"
+                            fnCreate: -> Encapsule.code.lib.util.uuidNull
+                            fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                        }
+                    } # userMutable
+                } # namespaceProperties
+            } # subsystem archetype
+
+        } # submachines
 
 
         { 
+            namespaceType: "extensionPoint"
             jsonTag: "subsockets"
             label: "Socket Instances"
-            objectDescriptor: {
-                mvvmType: "extension"
-                description: "Contained SCDL socket model instances."
-                archetype: {
-                    jsonTag: "subsocket"
-                    label: "Socket Instance"
-                    objectDescriptor: {
-                        mvvmType: "archetype"
-                        description: "SCDL socket instance."
-                        namespaceDescriptor: {
-                            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-                            userMutable: {
-                                name: {
-                                    type: "string"
-                                    fnCreate: -> ""
-                                    fnReinitialize: -> ""
-                                }
-                                description: {
-                                    type: "string"
-                                    fnCreate: -> ""
-                                    fnReinitialize: -> ""
-                                }
-                                tags: {
-                                    type: "stringCSV"
-                                    fnCreate: -> ""
-                                    fnReinitialize: -> ""
-                                }
-                                socketUuid : {
-                                    type: "uuidSelection"
-                                    selectionSource: "schema/catalogues/catalogue/models/systems"
-                                    fnCreate: -> Encapsule.code.lib.util.uuidNull
-                                    fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
-                                }
-                            } # userMutable
-                        } # namespaceDescriptor
-                    } # subsystem objectDescriptor
-                } # subsystem archetype
-            } # subsystems objectDescriptor
+            description: "Contained SCDL socket model instances."
+            componentArchetype: {
+                namespaceType: "component"
+                jsonTag: "subsocket"
+                label: "Socket Instance"
+                description: "SCDL socket instance."
+                namespaceProperties: {
+                    userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
+                    userMutable: {
+                        name: {
+                            type: "string"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                        description: {
+                            type: "string"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                        tags: {
+                            type: "stringCSV"
+                            fnCreate: -> ""
+                            fnReinitialize: -> ""
+                        }
+                        socketUuid : {
+                            type: "uuidSelection"
+                            selectionSource: "schema/catalogues/catalogue/models/systems"
+                            fnCreate: -> Encapsule.code.lib.util.uuidNull
+                            fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
+                        }
+                    } # userMutable
+                } # namespaceProperties
+            } # subsystem archetype
         } # subsystems
 
         Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutNodes

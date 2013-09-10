@@ -25,13 +25,11 @@ Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.co
 Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.app.modelview or Encapsule.code.app.modelview = {}
 
 Encapsule.code.app.modelview.ScdlNavigatorWindowLayoutOrganizationArchetype = {
+    namespaceType: "component"
     jsonTag: "organization"
     label: "Organization"
-    objectDescriptor: {
-        mvvmType: "archetype"
-        description: "SCDL organization model."
-        namespaceDescriptor: {
-            userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
-        }
+    description: "SCDL organization model."
+    namespaceProperties: {
+        userImmutable: Encapsule.code.app.modelview.ScdlNamespaceCommonMeta
     }
 }
