@@ -67,7 +67,7 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
                             Console.message("... Success. A new component has been added and selected.")
                         catch exception
                             Console.messageError("ONMjs.observers.SelectedNamespaceActionsModelView.onClickAddSubcomponent failure: #{exception}")
-                        ), 350)
+                        ), 10)
                 catch exception
                     Console.messageError("ONMjs.observers.SelectedNamespaceActionsModelView.onClickAddSubcomponent failure: #{exception}")
 

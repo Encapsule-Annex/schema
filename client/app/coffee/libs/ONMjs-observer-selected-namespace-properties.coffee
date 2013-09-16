@@ -149,9 +149,9 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
     <span data-bind="if: propertyModelViews.length">
         <div class="classONMjsSelectedNamespacePropertiesCommon classONMjsSelectedNamespacePropertiesMutable">
             <span data-bind="foreach: propertyModelViews">
-                <div class="name" data-bind="text: declaration.property"></div>
-                <div class="type" data-bind="text: declaration.members.type"></div>
-                <div class="value" data-bind="text: store.value"></div>
+                <div class="name" data-bind="editableText: declaration.property"></div>
+                <div class="type" data-bind="editableText: declaration.members.type"></div>
+                <div class="value" data-bind="editableText: store.value"></div>
                 <div style="clear: both;" />
             </span>
         </div>

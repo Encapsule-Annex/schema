@@ -64,7 +64,7 @@ border-left: 1px solid rgba(255,255,255,0.1);
 border-bottom: 1px solid rgba(0,0,0,0.1);
 border-right: 1px solid rgba(0,0,0,0.1);
 -moz-border-radius: 8px; border-radius: 8px;
-background-color: rgba(0,0,0,0.02);
+background-color: rgba(255,255,255,0.1);
 }
 
 .classONMjsNavigatorItemSelected {
@@ -73,7 +73,7 @@ border-right: 1px solid rgba(255,255,255,0.1);
 border-top: 1px solid rgba(0,0,0,0.1);
 border-left: 1px solid rgba(0,0,0,0.1);
 -moz-border-radius: 8px; border-radius: 8px;
-background-color: rgba(0,255,0,0.1);
+background-color: rgba(255,255,255,0.105);
 }
 
 .classONMjsNavigatorItemSelectedLabel {
@@ -100,22 +100,22 @@ margin-left: 0.5em;
 }
 
 .classONMjsNavigatorItemUnselected {
-background-color: rgba(0,0,0,0.1);
+background-color: rgba(0,0,0,0.0);
 }
 
 .classONMjsNavigatorItemUnselectedLabel {
 background-color: rgba(255,255,255,0.05);
 font-weight: normal;
 font-size: 10pt;
-color: #CCCCCC;
+color: rgba(0,255,255,1);
 text-decoration: none;
-text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
+text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.9);
 padding: 0.05em;
 white-space: nowrap;
 width: auto;
 overflow: hidden;
 text-overflow: ellipsis;
-box-shadow: 0em 0.5em 1em rgba(255,255,255,0.2) inset;
+box-shadow: 0em 0.5em 1em rgba(255,255,255,0.1) inset;
 padding-left: 0.4em;
 padding-top: 0.1em;
 padding-bottom: 0.1em;
