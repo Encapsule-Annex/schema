@@ -198,6 +198,23 @@ class ONMjs.observers.NavigatorModelView
         
                 #
                 # ----------------------------------------------------------------------------
+                onNamespaceUpdated: (store_, observerId_, address_) =>
+                    try
+                        if @storeObserverId != observerId_ then throw "Unrecognized observer ID."
+                        descriptor = address_.getDescriptor()
+                        if descriptor.namespaceType != "component"
+                            return
+                        namespace = store_.openNamespace(address_)
+                        namespaceState = store_.openObserverNamespaceState(observerId_, address_)
+                        namespaceState.itemModelView.label(namespace.getResolvedLabel())
+                        
+
+                    catch exception
+                        throw "ONMjs.observers.NavigatorModelView.onNamespaceUpdated failure: #{excpetion}"
+
+
+                #
+                # ----------------------------------------------------------------------------
                 onNamespaceRemoved: (store_, observerId_, address_) =>
                     try
                         Console.message("ONMjs.observers.NavigatorModelView.onNamespaceRemoved")
@@ -225,7 +242,7 @@ class ONMjs.observers.NavigatorModelView
                             return true
 
                     catch exception
-                        throw "Encapsule.code.lib.modelview.NavigatorModelView.onNamespaceRemoved failure: #{exception}"
+                        throw "ONMjs.observers.NavigatorModelView.onNamespaceRemoved failure: #{exception}"
 
             }
 

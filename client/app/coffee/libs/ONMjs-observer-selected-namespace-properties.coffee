@@ -187,19 +187,17 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
 <div class="classONMjsSelectedNamespaceSectionCommon">
     <span data-bind="if: propertyModelViews.length">
         <div class="classONMjsSelectedNamespacePropertiesCommon classONMjsSelectedNamespacePropertiesMutable">
-
-            <span data-bind="if: propertiesUpdated">
-                <div class="buttons">
-                    <span data-bind="with: discardLinkModelView"><span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span></span>
-                    <span data-bind="with: updateLinkModelView"><span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span></span>
-                </div>
-            </span>
-
             <span data-bind="foreach: propertyModelViews">
                 <div class="name" data-bind="text: declaration.property"></div>
                 <div class="type" data-bind="text: declaration.members.type"></div>
                 <div style="clear: both;" />
                 <div type="text" class="value" contentEditable="true" data-bind="editableText: store.valueEdit"></div>
+            </span>
+            <span data-bind="if: propertiesUpdated">
+                <div class="buttons">
+                    <span data-bind="with: discardLinkModelView"><span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span></span>
+                    <span data-bind="with: updateLinkModelView"><span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span></span>
+                </div>
             </span>
         </div>
     </span>
