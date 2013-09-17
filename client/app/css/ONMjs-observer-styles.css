@@ -284,6 +284,7 @@ background-color: rgba(255,255,255, 0.1);
 background-color: rgba(255,255,255,0.2);
 padding: 4px;
 padding-left: 10px;
+padding-right: 10px;
 margin-top: 0px;
 margin-left: 10px;
 margin-right: 4px;
@@ -314,12 +315,12 @@ background-color: #FF0000;
 
 .classONMjsActionConfirmation {
 margin: 10px;
-margin-right: 20px;
 padding: 10px;
 border: 1px solid black;
 background-color: #FFFF00;
 color: black;
 box-shadow: 0.5em 0.5em 0.5em rgba(0,0,0,0.5);
+-moz-border-radius: 8px; border-radius: 8px;
 }
 
 .classONMjsActionButtonConfirm {
@@ -372,13 +373,22 @@ text-shadow: none;
 .classONMjsSelectedNamespacePropertiesMutable {
 }
 
+.classONMjsSelectedNamespacePropertiesMutable .buttons {
+margin: 10px;
+padding: 10px;
+border: 1px solid black;
+background-color: rgba(0,200,255,0.2);
+color: black;
+box-shadow: 0.5em 0.5em 0.5em rgba(0,0,0,0.5);
+-moz-border-radius: 8px; border-radius: 8px;
+}
+
 .classONMjsSelectedNamespacePropertiesMutable .name {
 color: black;
 background-color: rgba(0,255,0,0.1);
 font-weight: bold;
 float: left;
 width: 172px;
-border-bottom: 1px solid rgba(0,0,0,0.2);
 padding-left: 0.25em;
 }
 
@@ -388,18 +398,18 @@ float: left;
 width: 128px;
 text-align: center;
 background-color: rgba(0,200,255,0.1);
-border-bottom: 1px solid rgba(0,0,0,0.2);
 overflow: hidden;
 }
 
 .classONMjsSelectedNamespacePropertiesMutable .value {
 color: white;
+font-weight: bold;
 text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
-float: left;
-width: auto;
-background-color: rgba(255,255,255,0.1);
+width: 100%;
+background-color: rgba(0,0,0,0.1);
+border: 1px solid rgba(0,0,0,0.3);
 border-bottom: 1px solid rgba(0,0,0,0.2);
-padding-left: 0.25em;
+margin-bottom: 0.5em;
 }
 
 /* ----------------------------------------------------------------------------

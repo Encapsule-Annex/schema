@@ -90,9 +90,10 @@ class ONMjs.observers.helpers.CallbackLinkModelView
 
             @onClick = =>
                 try
+                    if not (@callback? and @callback) then throw "Internal error: Did you construct this callback link with a valid callback function?"
                     @callback(@prefix, @label, @address, @selectorStore, @options)
                 catch exception
-                    Console.errorMessage("ONMjs.observers.helpers.CallbackLinkModelView.onClick failure: #{exception}")
+                    Console.messageError("ONMjs.observers.helpers.CallbackLinkModelView.onClick failure: #{exception}")
 
         catch exception
             throw "ONMjs.observers.helpers.CallbackLinkModelView failure: #{exception}"

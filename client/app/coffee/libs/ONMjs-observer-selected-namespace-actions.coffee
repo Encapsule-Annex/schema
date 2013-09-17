@@ -116,7 +116,7 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
 
             #
             # ============================================================================
-            @onClickCancelActionRequest  = (prefix_, label_, selector_, selectorStore_, options_) =>
+            @onClickCancelActionRequest  = (prefix_, label_, address_, selectorStore_, options_) =>
                 try
                     @showConfirmRemoveAll(false)
                     @showConfirmRemove(false)

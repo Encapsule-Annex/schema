@@ -66,12 +66,12 @@ class ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView
             dataReference = params_.selectedNamespace.data()
 
             # Enumerate the object model's declaration of this namespace's immutable properties.
-            for name, value of namespaceDeclarationImmutable
+            for name, members of namespaceDeclarationImmutable
                 propertyDescriptor =
                     immutable: true
                     declaration:
                         property: name
-                        members: value
+                        members: members
                     store:
                         value: dataReference[name]
                 @propertyModelViews.push propertyDescriptor
@@ -112,6 +112,7 @@ class ONMjs.observers.SelectedNamespaceMutablePropertiesModelView
     constructor: (params_) ->
         try
             @propertyModelViews = []
+            @namespace = params_.selectedNamespace
 
             # TODO: change namespaceDescriptor to namespaceDeclaration in descriptor
             namespaceDeclaration = params_.selectedNamespaceDescriptor.namespaceDescriptor
@@ -122,19 +123,57 @@ class ONMjs.observers.SelectedNamespaceMutablePropertiesModelView
             if not (namespaceDeclarationMutable? and namespaceDeclarationMutable)
                 return
 
-            dataReference = params_.selectedNamespace.data()
+            @dataReference = params_.selectedNamespace.data()
+
+            @onClickUpdateProperties = (prefix_, label_, addres_, selectorStore_, options_) =>
+                try
+                    propertiesUpdated = false
+                    for propertyModelView in @propertyModelViews
+                       valueEdit = propertyModelView.store.valueEdit()
+                       if propertyModelView.store.value != valueEdit
+                           @dataReference[propertyModelView.declaration.property] = valueEdit
+                           propertiesUpdated = true
+                    if propertiesUpdated
+                        @namespace.update()
+                catch exception
+                    throw "ONMjs.observer.SelectedNamespaceMutablePropertiesModelView.onClickUpdateProperties failure: #{exception}"
+
+            @updateLinkModelView = new ONMjs.observers.helpers.CallbackLinkModelView(
+                "", "Apply #{params_.selectedNamespaceDescriptor.label} Edit", undefined, undefined, { styleClass: "classONMjsActionButtonConfirm" }, @onClickUpdateProperties)
+
+            @onClickDiscardPropertyEdits = (prefix_, label_, address_, selectorStore_, options_) =>
+                try
+                    for propertyModelView in @propertyModelViews
+                        propertyModelView.store.valueEdit(propertyModelView.store.value)
+                catch exception
+                    throw "ONMjs.observer.SelectedNamespaceMutablePropertiesModelView.onClickDiscardPropertyEdits failure: #{exception}"
+
+            @discardLinkModelView = new ONMjs.observers.helpers.CallbackLinkModelView(
+                "", "Discard #{params_.selectedNamespaceDescriptor.label} Edits", undefined, undefined, { styleClass: "classONMjsActionButtonCancel" }, @onClickDiscardPropertyEdits)
+               
 
             # Enumerate the object model's declaration of this namespace's mutable properties.
-            for name, value of namespaceDeclarationMutable
+            for name, members of namespaceDeclarationMutable
+                    
                 propertyDescriptor =
                     immutable: false
                     declaration:
                         property: name
-                        members: value
+                        members: members
                     store:
-                        value: dataReference[name]
+                        value: @dataReference[name]
+                        valueEdit: ko.observable(@dataReference[name])
 
                 @propertyModelViews.push propertyDescriptor
+
+
+            @propertiesUpdated = ko.computed =>
+                propertiesUpdated = false
+                for propertyModelView in @propertyModelViews
+                   valueEdit = propertyModelView.store.valueEdit()
+                   if propertyModelView.store.value != valueEdit
+                       propertiesUpdated = true
+                return propertiesUpdated
 
 
         catch exception
@@ -148,11 +187,19 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
 <div class="classONMjsSelectedNamespaceSectionCommon">
     <span data-bind="if: propertyModelViews.length">
         <div class="classONMjsSelectedNamespacePropertiesCommon classONMjsSelectedNamespacePropertiesMutable">
+
+            <span data-bind="if: propertiesUpdated">
+                <div class="buttons">
+                    <span data-bind="with: discardLinkModelView"><span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span></span>
+                    <span data-bind="with: updateLinkModelView"><span data-bind="template: { name: 'idKoTemplate_CallbackLinkViewModel' }"></span></span>
+                </div>
+            </span>
+
             <span data-bind="foreach: propertyModelViews">
-                <div class="name" data-bind="editableText: declaration.property"></div>
-                <div class="type" data-bind="editableText: declaration.members.type"></div>
-                <div class="value" data-bind="editableText: store.value"></div>
+                <div class="name" data-bind="text: declaration.property"></div>
+                <div class="type" data-bind="text: declaration.members.type"></div>
                 <div style="clear: both;" />
+                <div type="text" class="value" contentEditable="true" data-bind="editableText: store.valueEdit"></div>
             </span>
         </div>
     </span>
