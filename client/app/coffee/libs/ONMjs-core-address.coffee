@@ -98,6 +98,7 @@ class ONMjs.Address
             @subcomponentAddressesAscending = undefined
             @subcomponentsAddressesDescending = undefined
 
+            @humanReadableString = undefined
             @hashString = undefined
 
         catch exception
@@ -124,6 +125,7 @@ class ONMjs.Address
 
             # Pushing a token changes the address so we must clear the cached hash string
             # so it's recomputed upon request.
+            @humanReadableString = undefined
             @hashString = undefined
 
         catch exception
@@ -152,26 +154,40 @@ class ONMjs.Address
 
     #
     # ============================================================================
+    getHumanReadableString: =>
+        try
+            if @humanReadableString? and @humanReadableString
+                return @humanReadableString
+
+            index = 0
+            humanReadableString = ""
+
+            for token in @tokenVector
+                if not index
+                    humanReadableString += "#{token.model.jsonTag}:"
+
+                if token.key? and token.key
+                    humanReadableString += "[#{token.key}]."
+                else
+                    if token.idExtensionPoint > 0
+                        humanReadableString += "[*]."
+                    
+                humanReadableString += "#{token.idNamespace}"
+                index++
+
+            @humanReadableString = humanReadableString
+            return humanReadableString
+
+        catch exception
+            throw "ONMjs.Address.getHumanReadbleString failure: #{exception}"
+    #
+    # ============================================================================
     getHashString: =>
         try
             if @hashString? and @hashString
                 return @hashString
 
-            index = 0
-            rawHashString = ""
-
-            for token in @tokenVector
-                if not index
-                    rawHashString += "#{token.model.jsonTag}:"
-
-                if token.key? and token.key
-                    rawHashString += "[#{token.key}]."
-                else
-                    if token.idExtensionPoint > 0
-                        rawHashString += "[*]."
-                    
-                rawHashString += "#{token.idNamespace}"
-                index++
+            humanReadableString = @getHumanReadableString()
 
             # Given that an ONMjs object model is a singly-rooted tree structure, the raw
             # hash strings of different addresses created for the same object model all share
@@ -186,10 +202,9 @@ class ONMjs.Address
             # by reversing the process. https://github.com/mathiasbynens/esrever is a good
             # sample of how one should reverse a string if maintaining Unicode is important.
 
-            reversedHashString = rawHashString.split('').reverse().join('')
+            reversedHashString = humanReadableString.split('').reverse().join('')
             @hashString = window.btoa(reversedHashString)
             return @hashString
-
             
         catch exception
             throw "ONMjs.Address.getHashString failure: #{exception}"

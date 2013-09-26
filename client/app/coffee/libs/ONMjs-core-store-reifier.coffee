@@ -60,6 +60,11 @@ class ONMjs.implementation.StoreReifier
             # ============================================================================
             @dispatchCallback = (address_, callbackName_, observerId_) =>
                 try
+                    if address_? and address_
+                        Console.message("ONMjs dispatch signal '#{callbackName_}' for address '#{address_.getHumanReadableString()}'")
+                    else
+                        Console.message("ONMjs dispatch signal '#{callbackName_}'")
+
                     if observerId_? and observerId_
                         # Use the specified observer ID to obtain the callback interface  registered with the
                         # store and then dispatch the specified callback on that interface only.
@@ -83,7 +88,7 @@ class ONMjs.implementation.StoreReifier
 
                 catch exception
                     exceptionMessage = "ONMjs.implementation.StoreRefier.dispatchCallback failure while processing " +
-                        "address='#{address_.getHashString()}', callback='#{callbackName_}', observer='#{observerId_? and observerId_ or "[broadcast all]"}': #{exception}"
+                        "address='#{address_.getHumanReadableString()}', callback='#{callbackName_}', observer='#{observerId_? and observerId_ or "[broadcast all]"}': #{exception}"
                     throw exceptionMessage
 
 

@@ -83,5 +83,10 @@ class ONMjs.test.observers.Canary
         onNamespaceRemoved: (store_, address_, observerId_) =>
             Console.message("ONMjs.test.observers.Canary.callbackInterface.onNamespaceRemoved")
 
+        onSubNamespaceUpdated: (store_, address_, observerId_) =>
+            Console.message("ONMjs.test.observer.Canary.callbackInterface.onSubnamespaceUpdated")
+
+        onSubComponentUpdated: (store_, address_, observerId_) =>
+            Console.message("ONMjs.test.observer.Canary.callbackInterface.onSubcomponentUpdated")
 
     }       
