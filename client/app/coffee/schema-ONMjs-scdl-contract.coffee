@@ -27,8 +27,8 @@ Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMj
 Encapsule.code.app.ONMjs.SchemaAppDataContractArchetype = {
     namespaceType: "component"
     jsonTag: "contract"
-    label: "Contract"
-    description: "SCDL contract model."
+    ____label: "Contract"
+    ____description: "SCDL contract model."
     namespaceProperties: {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: Encapsule.code.app.ONMjs.ScdlModelUserMutableNamespaceProperties
@@ -38,15 +38,15 @@ Encapsule.code.app.ONMjs.SchemaAppDataContractArchetype = {
         {
             namespaceType: "child"
             jsonTag: "socketReference"
-            label: "Socket Reference"
-            description: "SCDL socket reference."
+            ____label: "Socket Reference"
+            ____description: "SCDL socket reference."
         } # socketReference
 
         {
             namespaceType: "child"
             jsonTag: "modelReference"
-            label: "Model Reference"
-            description: "SCDL model reference."
+            ____label: "Model Reference"
+            ____description: "SCDL model reference."
         } # modelReference
 
         # Easy to miss this slipped in down here.

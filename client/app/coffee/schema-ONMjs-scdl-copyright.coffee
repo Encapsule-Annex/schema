@@ -27,8 +27,8 @@ Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMj
 Encapsule.code.app.ONMjs.SchemaAppDataCopyrightArchetype = {
     namespaceType: "component"
     jsonTag: "copyright"
-    label: "Copyright"
-    description: "SCDL copyright model."
+    ____label: "Copyright"
+    ____description: "SCDL copyright model."
     namespaceProperties: {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
     }

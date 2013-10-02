@@ -27,8 +27,8 @@ Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMj
 Encapsule.code.app.ONMjs.SchemaAppDataMachineArchetype = {
     namespaceType: "component"
     jsonTag: "machine"
-    label: "Machine"
-    description: "SCDL machine model."
+    ____label: "Machine"
+    ____description: "SCDL machine model."
     namespaceProperties: {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: Encapsule.code.app.ONMjs.ScdlModelUserMutableNamespaceProperties 
@@ -40,13 +40,13 @@ Encapsule.code.app.ONMjs.SchemaAppDataMachineArchetype = {
         {
             namespaceType: "extensionPoint"
             jsonTag: "states"
-            label: "States"
-            description: "SCDL state descriptors."
+            ____label: "States"
+            ____description: "SCDL state descriptors."
             componentArchetype: {
                 namespaceType: "component"
                 jsonTag: "state"
-                label: "State"
-                description: "SCDL state descriptor."
+                ____label: "State"
+                ____description: "SCDL state descriptor."
                 namespaceProperties: {
                     userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                     userMutable: {
@@ -82,13 +82,13 @@ Encapsule.code.app.ONMjs.SchemaAppDataMachineArchetype = {
                     {
                         namespaceType: "extensionPoint"
                         jsonTag: "transitions"
-                        label: "Transitions"
-                        description: "SCDL state transition descriptors."
+                        ____label: "Transitions"
+                        ____description: "SCDL state transition descriptors."
                         componentArchetype: {
                             namespaceType: "component"
                             jsonTag: "transition"
-                            label: "Transition"
-                            description: "SCDL state transition descriptor."
+                            ____label: "Transition"
+                            ____description: "SCDL state transition descriptor."
                             namespaceProperties: {
                                 userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                                 userMutable: {

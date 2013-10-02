@@ -27,13 +27,13 @@ Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMj
 Encapsule.code.app.ONMjs.SchemaAppDataNodes = {
     namespaceType: "extensionPoint"
     jsonTag: "nodes"
-    label: "Nodes"
-    description: "SCDL node descriptor instances."
+    ____label: "Nodes"
+    ____description: "SCDL node descriptor instances."
     componentArchetype: {
         namespaceType: "component"
         jsonTag: "node"
-        label: "Node"
-        description: "SCDL node object."
+        ____label: "Node"
+        ____description: "SCDL node object."
         namespaceProperties: {
             userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
             userMutable: {

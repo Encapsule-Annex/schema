@@ -27,8 +27,8 @@ Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMj
 Encapsule.code.app.ONMjs.SchemaAppDataInputPin = {
     namespaceType: "component"
     jsonTag: "inputPin"
-    label: "Input Pin"
-    description: "SCDL input pin model."
+    ____label: "Input Pin"
+    ____description: "SCDL input pin model."
     namespaceProperties: {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {
@@ -61,8 +61,8 @@ Encapsule.code.app.ONMjs.SchemaAppDataInputPin = {
 Encapsule.code.app.ONMjs.SchemaAppDataInputPins = {
     namespaceType: "extensionPoint"
     jsonTag: "inputPins"
-    label: "Input Pins"
-    description: "SCDL input pin models."
+    ____label: "Input Pins"
+    ____description: "SCDL input pin models."
     componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataInputPin
 } # inputPins
 
@@ -71,8 +71,8 @@ Encapsule.code.app.ONMjs.SchemaAppDataInputPins = {
 Encapsule.code.app.ONMjs.SchemaAppDataOutputPinChild = {
     namespaceType: "child"                                                                     
     jsonTag: "outputPin"
-    label: "Output Pin"
-    description: "SCDL output pin model."
+    ____label: "Output Pin"
+    ____description: "SCDL output pin model."
     namespaceDescriptor: {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {
@@ -105,8 +105,8 @@ Encapsule.code.app.ONMjs.SchemaAppDataOutputPinChild = {
 Encapsule.code.app.ONMjs.SchemaAppDataOutputPinArchetype = {
     namespaceType: "component"
     jsonTag: "outputPin"
-    label: "Output Pin"
-    description: "SCDL output pin model."
+    ____label: "Output Pin"
+    ____description: "SCDL output pin model."
     namespaceProperties: {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {
@@ -140,8 +140,8 @@ Encapsule.code.app.ONMjs.SchemaAppDataOutputPinArchetype = {
 Encapsule.code.app.ONMjs.SchemaAppDataOutputPins = {
     namespaceType: "extensionPoint"
     jsonTag: "outputPins"
-    label: "Output Pins"
-    description: "SCDL output pin models."
+    ____label: "Output Pins"
+    ____description: "SCDL output pin models."
     componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataOutputPinArchetype
 } # outputPins
 

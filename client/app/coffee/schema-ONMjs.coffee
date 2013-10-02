@@ -28,8 +28,8 @@ Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMj
 Encapsule.code.app.ONMjs.SchemaAppData = {
 
     jsonTag: "schema"
-    label: "#{appName}"
-    description: "#{appName} client root."
+    ____label: "#{appName}"
+    ____description: "#{appName} client root."
 
     semanticBindings: {
         update: (dataReference_) ->
@@ -62,8 +62,8 @@ Encapsule.code.app.ONMjs.SchemaAppData = {
         {
             namespaceType: "child"
             jsonTag: "client"
-            label: "Client"
-            description: "#{appName} client home."
+            ____label: "Client"
+            ____description: "#{appName} client home."
             namespaceProperties: {
                 userImmutable: {
                     clientDeployment: {
@@ -89,8 +89,8 @@ Encapsule.code.app.ONMjs.SchemaAppData = {
                 {
                     namespaceType: "extensionPoint"
                     jsonTag: "catalogues"
-                    label: "Catalogues"
-                    description: "SCDL catalogue object collection."
+                    ____label: "Catalogues"
+                    ____description: "SCDL catalogue object collection."
                     componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataCatalogueArchetype
                 } # catalogues
 
@@ -98,15 +98,15 @@ Encapsule.code.app.ONMjs.SchemaAppData = {
                 {
                     namespaceType: "child"
                     jsonTag: "help"
-                    label: "Help"
-                    description: "#{appName} help."
+                    ____label: "Help"
+                    ____description: "#{appName} help."
                 } # help
 
                 {
                     namespaceType: "child"
                     jsonTag: "about"
-                    label: "About"
-                    description: "About namespace."
+                    ____label: "About"
+                    ____description: "About namespace."
                 } # about
 
 

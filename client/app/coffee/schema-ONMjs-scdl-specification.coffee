@@ -28,8 +28,8 @@ Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMj
 Encapsule.code.app.ONMjs.SchemaAppDataSpecificationArchetype = {
     namespaceType: "component"                                                                             
     jsonTag: "specification"
-    label: "Specification"
-    description: "SCDL specification."
+    ____label: "Specification"
+    ____description: "SCDL specification."
     namespaceProperties: {
         userImmutable:  Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {
@@ -78,13 +78,13 @@ Encapsule.code.app.ONMjs.SchemaAppDataSpecificationArchetype = {
         {
             namespaceType: "extensionPoint"
             jsonTag: "systemInstances"
-            label: "System Instances"
-            description: "SCDL system model instances."
+            ____label: "System Instances"
+            ____description: "SCDL system model instances."
             componentArchetype: {
                 namespaceType: "component"
                 jsonTag: "systemInstance"
-                label: "System Instance"
-                description: "SCDL system model instance."
+                ____label: "System Instance"
+                ____description: "SCDL system model instance."
                 namespaceProperties: {
                     userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties 
                     userMutable: {
@@ -127,13 +127,13 @@ Encapsule.code.app.ONMjs.SchemaAppDataSpecificationArchetype = {
                     {
                         namespaceType: "extensionPoint"
                         jsonTag: "socketInstances"
-                        label: "Socket Instances"
-                        description: "SCDL socket model instances."
+                        ____label: "Socket Instances"
+                        ____description: "SCDL socket model instances."
                         componentArchetype: {
                             namespaceType: "component"
                             jsonTag: "socketInstance"
-                            label: "Socket Instance"
-                            description: "SCDL socket model instance."
+                            ____label: "Socket Instance"
+                            ____description: "SCDL socket model instance."
                             namespaceProperties: {
                                 userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                                 userMutable: {
@@ -176,13 +176,13 @@ Encapsule.code.app.ONMjs.SchemaAppDataSpecificationArchetype = {
                                 {
                                     namespaceType: "extensionPoint"
                                     jsonTag: "instanceBindings"
-                                    label: "Instance Bindings"
-                                    description: "SCDL socket model instance bindings."
+                                    ____label: "Instance Bindings"
+                                    ____description: "SCDL socket model instance bindings."
                                     componentArchetype: {
                                         namespaceType: "component"
                                         jsonTag: "instanceBinding"
-                                        label: "Instance Binding"
-                                        description: "SCDL socket model instance binding."
+                                        ____label: "Instance Binding"
+                                        ____description: "SCDL socket model instance binding."
                                         namespaceProperties: {
                                             userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                                             userMutable: {

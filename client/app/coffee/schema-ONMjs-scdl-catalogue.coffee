@@ -28,7 +28,8 @@ Encapsule.code.app.ONMjs.SchemaAppDataCatalogueArchetype = {
 
     namespaceType: "component"
     jsonTag: "catalogue"
-    label: "Catalogue"
+    ____label: "Catalogue"
+    ____description: "SCDL Model Catalogue object."
     namespaceProperties: {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {
@@ -65,52 +66,52 @@ Encapsule.code.app.ONMjs.SchemaAppDataCatalogueArchetype = {
         {
             namespaceType: "extensionPoint"
             jsonTag: "specifications"
-            label: "Specifications"
-            description: "SCDL specification collection."
+            ____label: "Specifications"
+            ____description: "SCDL specification collection."
             componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataSpecificationArchetype 
 
         } # Specifications
         {
             namespaceType: "child"
             jsonTag: "models"
-            label: "Models"
-            description: "SCDL model namespace."
+            ____label: "Models"
+            ____description: "SCDL model namespace."
 
             subNamespaces: [
                 {
                     namespaceType: "extensionPoint"
                     jsonTag: "systems"
-                    label: "Systems"
-                    description: "SCDL system model collection."
+                    ____label: "Systems"
+                    ____description: "SCDL system model collection."
                     componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataSystemArchetype
 
                 } # Systems
                 {
                     namespaceType: "extensionPoint"
                     jsonTag: "sockets"
-                    label: "Sockets"
-                    description: "SCDL socket model collection."
+                    ____label: "Sockets"
+                    ____description: "SCDL socket model collection."
                     componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataSocketArchetype
                 } # Sockets
                 {
                     namespaceType: "extensionPoint"
                     jsonTag: "contracts"
-                    label: "Contracts"
-                    description: "SCDL contract model collection."
+                    ____label: "Contracts"
+                    ____description: "SCDL contract model collection."
                     componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataContractArchetype
                 } # sockets
                 {
                     namespaceType: "extensionPoint"
                     jsonTag: "machines"
-                    label: "Machines"
-                    description: "SCDL machine model collection."
+                    ____label: "Machines"
+                    ____description: "SCDL machine model collection."
                     componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataMachineArchetype
                 } # machines
                 {
                     namespaceType: "extensionPoint"
                     jsonTag: "types"
-                    label: "Types"
-                    description: "SCDL type model collection."
+                    ____label: "Types"
+                    ____description: "SCDL type model collection."
                     componentArchetype:  Encapsule.code.app.ONMjs.SchemaAppDataTypeArchetype
                 } # types
             ] # Models submenus
@@ -118,42 +119,42 @@ Encapsule.code.app.ONMjs.SchemaAppDataCatalogueArchetype = {
         {
             namespaceType: "child"
             jsonTag: "resources"
-            label: "Resources"
-            description: "SCDL common resource namespace."
+            ____label: "Resources"
+            ____description: "SCDL common resource namespace."
             subNamespaces: [
                 {
                     namespaceType: "child"
                     jsonTag: "attribution"
-                    label: "Attribution"
-                    description: "Shared attribution namespace."
+                    ____label: "Attribution"
+                    ____description: "Shared attribution namespace."
 
                     subNamespaces: [
                         {
                             namespaceType: "extensionPoint"
                             jsonTag: "people"
-                            label: "People"
-                            description: "SCDL person models."
+                            ____label: "People"
+                            ____description: "SCDL person models."
                             componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataPersonArchetype
                         } # people
                         {
                             namespaceType: "extensionPoint"
                             jsonTag: "organizations"
-                            label: "Organizations"
-                            description: "SCDL organization models."
+                            ____label: "Organizations"
+                            ____description: "SCDL organization models."
                             componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataOrganizationArchetype
                         } # organizations
                         {
                             namespaceType: "extensionPoint"
                             jsonTag: "licenses"
-                            label: "Licenses"
-                            description: "SCDL license models."
+                            ____label: "Licenses"
+                            ____description: "SCDL license models."
                             componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataLicenseArchetype
                         } # licenses
                         {
                             namespaceType: "extensionPoint"
                             jsonTag: "copyrights"
-                            label: "Copyrights"
-                            description: "SCDL copyright models."
+                            ____label: "Copyrights"
+                            ____description: "SCDL copyright models."
                             componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataCopyrightArchetype
                         } # copyrights
                     ] # assets submenu

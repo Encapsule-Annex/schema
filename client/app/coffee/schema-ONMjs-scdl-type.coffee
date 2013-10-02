@@ -27,8 +27,8 @@ Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMj
 Encapsule.code.app.ONMjs.SchemaAppDataTypeArchetype = {
     namespaceType: "component"                                                                    
     jsonTag: "type"
-    label: "Type"
-    description: "SCDL type model."
+    ____label: "Type"
+    ____description: "SCDL type model."
     namespaceProperties: {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {

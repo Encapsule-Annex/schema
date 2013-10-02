@@ -30,7 +30,7 @@ Color = net.brehaut.Color
 
 Encapsule.code.app.ONMjs.SchemaAppDataSettings = {
     jsonTag: "settings"
-    label: "Settings"
+    ____label: "Settings"
     objectDescriptor: {
         mvvmType: "child"
         description: "#{appName} app settings."
@@ -38,7 +38,7 @@ Encapsule.code.app.ONMjs.SchemaAppDataSettings = {
     subMenus: [
         {
             jsonTag: "user"
-            label: "User"
+            ____label: "User"
             objectDescriptor: {
                 mvvmType: "child"
                 description: "#{appName} customizations."
@@ -46,7 +46,7 @@ Encapsule.code.app.ONMjs.SchemaAppDataSettings = {
         } # user
         {
             jsonTag: "preferences"
-            label: "Preferences"
+            ____label: "Preferences"
             objectDescriptor: {
                 mvvmType: "child"
                 description: "App preferences."
@@ -54,7 +54,7 @@ Encapsule.code.app.ONMjs.SchemaAppDataSettings = {
             subMenus: [
                 {
                     jsonTag: "app"
-                    label: "App"
+                    ____label: "App"
                     objectDescriptor: {
                         mvvmType: "child"
                         description: "#{appName} app preferences."
@@ -62,7 +62,7 @@ Encapsule.code.app.ONMjs.SchemaAppDataSettings = {
                 } # app 
                 {
                     jsonTag: "github"
-                    label: "GitHub"
+                    ____label: "GitHub"
                     objectDescriptor: {
                         mvvmType: "child"
                         description: "GitHub integration preferences."
@@ -72,7 +72,7 @@ Encapsule.code.app.ONMjs.SchemaAppDataSettings = {
         } # preferences
         {
             jsonTag: "advanced"
-            label: "Advanced"
+            ____label: "Advanced"
             objectDescriptor: {
                 mvvmType: "child"
                 description: "Advanced app settings."
@@ -80,7 +80,7 @@ Encapsule.code.app.ONMjs.SchemaAppDataSettings = {
             subMenus: [
                 {
                     jsonTag: "baseScdlCatalogue"
-                    label: "Base Catalogue"
+                    ____label: "Base Catalogue"
                     objectDescriptor: {
                         mvvmType: "child"
                         description: "SCDL catalogue archetype."
@@ -88,7 +88,7 @@ Encapsule.code.app.ONMjs.SchemaAppDataSettings = {
                 } # base SCDL catalogue
                 {
                     jsonTag: "storage"
-                    label: "Storage"
+                    ____label: "Storage"
                     objectDescriptor: {
                         mvvmType: "child"
                         description: "App local and remote storage."
@@ -96,7 +96,7 @@ Encapsule.code.app.ONMjs.SchemaAppDataSettings = {
                     subMenus: [
                         {
                             jsonTag: "local"
-                            label: "Local"
+                            ____label: "Local"
                             objectDescriptor: {
                                 mvvmType: "child"
                                 description: "App local storage."
@@ -104,13 +104,13 @@ Encapsule.code.app.ONMjs.SchemaAppDataSettings = {
                         } # local
                         {
                             jsonTag: "remotes"
-                            label: "Remotes"
+                            ____label: "Remotes"
                             objectDescriptor: {
                                 mvvmType: "extension"
                                 description: "Remote stores."
                                 archetype: {
                                     jsonTag: "source"
-                                    label: "Source"
+                                    ____label: "Source"
                                     objectDescriptor: {
                                         mvvmType: "archetype"
                                         description: "Remove SCDL catalogue source descriptor."

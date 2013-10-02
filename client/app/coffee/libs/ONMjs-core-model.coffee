@@ -68,8 +68,8 @@ class ONMjs.implementation.ModelBase
                     path = path_? and path_ and "#{path_}.#{tag}" or tag
                     Console.message("... Namespace: #{path}")
 
-                    label = ONMD_.label? and ONMD_.label or "<no label provided>"
-                    description = ONMD_.description? and ONMD_.description or "<no description provided>"
+                    label = ONMD_.____label? and ONMD_.____label or "<no label provided>"
+                    description = ONMD_.____description? and ONMD_.____description or "<no description provided>"
                     id = @countDescriptors++
 
                     namespaceType = (ONMD_.namespaceType? and ONMD_.namespaceType) or (not id and "root" or throw "Incorrect or unspecified namespace type error for path '#{path}'.")
@@ -96,7 +96,7 @@ class ONMjs.implementation.ModelBase
                         "idComponent": id
                         "isComponent": false
                         "jsonTag": tag
-                        "label": ONMD_.label
+                        "label": label
                         "namespaceType": namespaceType
                         "namespaceDescriptor": namespaceProperties
                         "parent": parentDescriptor_
