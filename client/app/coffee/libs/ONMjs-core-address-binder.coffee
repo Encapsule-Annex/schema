@@ -153,7 +153,7 @@ class ONMjs.implementation.AddressTokenBinder
                         when "new"
                             if not (result.dataReference? and result.dataReference)
                                 namespaceObject = {}
-                                resolveActions_.initializeNamespace(namespaceObject, descriptor_.namespaceDescriptor)
+                                resolveActions_.initializeNamespace(namespaceObject, descriptor_.namespaceModelPropertiesDeclaration)
                                 if descriptor_.namespaceType == "component"
                                     if not (resolveActions_.getUniqueKey? and resolveActions_.getUniqueKey)
                                         throw "The specified component address cannot be resolved because your Object Namespace Schema declaration does not define semantic binding function getUniqueKey."
@@ -166,7 +166,7 @@ class ONMjs.implementation.AddressTokenBinder
                         when "strict"
                             if not (result.dataReference? and result.dataReference)
                                 throw "Internal error: Unable to resolve  #{descriptor_.namespaceType} namespace descriptor in strict mode."
-                            resolveActions_.verifyNamespace(result.dataReference, descriptor_.namespaceDescriptor)
+                            resolveActions_.verifyNamespace(result.dataReference, descriptor_.namespaceModelPropertiesDeclaration)
                             break
                         else
                             throw "Unrecognized mode parameter value."

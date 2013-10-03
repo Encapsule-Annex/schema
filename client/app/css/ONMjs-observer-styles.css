@@ -81,7 +81,7 @@ white-space: nowrap;
 width: auto;
 overflow: hidden;
 text-overflow: ellipsis;
-box-shadow: 0em 0.5em 1em rgba(0,0,0,0.5) inset;
+box-shadow: 0.3em 0.3em 1em rgba(0,64,0,0.9) inset;
 padding-left: 0.4em;
 padding-top: 0.1em;
 padding-bottom: 0.1em;

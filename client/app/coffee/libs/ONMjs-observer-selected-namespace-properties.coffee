@@ -54,12 +54,11 @@ class ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView
         try
             @propertyModelViews = []
 
-            # TODO: change namespaceDescriptor to namespaceDeclaration in descriptor
-            namespaceDeclaration = params_.selectedNamespaceDescriptor.namespaceDescriptor
-            if not (namespaceDeclaration? and namespaceDeclaration)
-                throw "Cannot resolve namespace declaration for selection."
+            namespaceModelProperties = params_.selectedNamespaceDescriptor.namespaceModelPropertiesDeclaration
+            if not (namespaceModelProperties? and namespaceModelProperties)
+                throw "Cannot resolve namespace properties declaration for selection."
 
-            namespaceDeclarationImmutable = namespaceDeclaration.userImmutable? and namespaceDeclaration.userImmutable or undefined
+            namespaceDeclarationImmutable = namespaceModelProperties.userImmutable? and namespaceModelProperties.userImmutable or undefined
             if not (namespaceDeclarationImmutable? and namespaceDeclarationImmutable)
                 return
 
@@ -114,12 +113,11 @@ class ONMjs.observers.SelectedNamespaceMutablePropertiesModelView
             @propertyModelViews = []
             @namespace = params_.selectedNamespace
 
-            # TODO: change namespaceDescriptor to namespaceDeclaration in descriptor
-            namespaceDeclaration = params_.selectedNamespaceDescriptor.namespaceDescriptor
-            if not (namespaceDeclaration? and namespaceDeclaration)
-                throw "Cannot resolve namespace declaration for selection."
+            namespaceModelProperties = params_.selectedNamespaceDescriptor.namespaceModelPropertiesDeclaration
+            if not (namespaceModelProperties? and namespaceModelProperties)
+                throw "Cannot resolve namespace properties declaration for selection."
 
-            namespaceDeclarationMutable = namespaceDeclaration.userMutable? and namespaceDeclaration.userMutable or undefined
+            namespaceDeclarationMutable = namespaceModelProperties.userMutable? and namespaceModelProperties.userMutable or undefined
             if not (namespaceDeclarationMutable? and namespaceDeclarationMutable)
                 return
 

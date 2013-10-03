@@ -83,6 +83,7 @@ class ONMjs.Address
             # to verify the entire path to the target namespace and this cannot be done if the first token
             # in an address does not address the store's root component.
             @isResolvable = => @isComplete() and @isQualified()
+            @isCreatable = => @isComplete() and @keysRequired and not @keysSpecified
 
             # Performs cloning and validation
             for token in tokenVector_? and tokenVector_ or []
@@ -263,6 +264,28 @@ class ONMjs.Address
 
         catch exception
             throw "ONMjs.Address.getDescriptor failure: #{exception}"
+
+
+    #
+    # ============================================================================
+    getNamespaceModelDeclaration: =>
+        try
+            return @getDescriptor().namespaceModelDeclaration
+
+        catch exception
+            throw "ONMjs.Address.getNamespaceModelDeclaration failure: #{exception}"
+
+
+    #
+    # ============================================================================
+    getNamespaceModelPropertiesDeclaration: =>
+        try
+            return @getDescriptor().namespaceModelPropertiesDeclaration
+
+        catch exception
+            throw "ONMjs.Address.getNamespaceModelPropertiesDeclaration failure: #{exception}"
+
+
 
     #
     # ============================================================================

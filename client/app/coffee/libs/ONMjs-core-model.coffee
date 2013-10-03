@@ -64,7 +64,7 @@ class ONMjs.implementation.ModelBase
                     if not (ONMD_.jsonTag? and ONMD_.jsonTag) then throw "Missing required namespace declaration property 'jsonTag'."
 
                     # Local variables used to construct this descriptor.
-                    tag = ONMD_.jsonTag
+                    tag = ONMD_.jsonTag? and ONMD_.jsonTag or throw "Namespace declaration missing required `jsonTag` property."
                     path = path_? and path_ and "#{path_}.#{tag}" or tag
                     Console.message("... Namespace: #{path}")
 
@@ -73,7 +73,6 @@ class ONMjs.implementation.ModelBase
                     id = @countDescriptors++
 
                     namespaceType = (ONMD_.namespaceType? and ONMD_.namespaceType) or (not id and "root" or throw "Incorrect or unspecified namespace type error for path '#{path}'.")
-
                     parentPathExtensionPoints = undefined
                     if parentPathExtensionPointIdVector_? and parentPathExtensionPointIdVector_
                         parentPathExtensionPoints = Encapsule.code.lib.js.clone parentPathExtensionPointIdVector_
@@ -98,7 +97,8 @@ class ONMjs.implementation.ModelBase
                         "jsonTag": tag
                         "label": label
                         "namespaceType": namespaceType
-                        "namespaceDescriptor": namespaceProperties
+                        "namespaceModelDeclaration": ONMD_
+                        "namespaceModelPropertiesDeclaration": namespaceProperties
                         "parent": parentDescriptor_
                         "parentPathExtensionPoints": parentPathExtensionPoints # self-extensible objects makes this superfluous I think
                         "parentPathIdVector": []
