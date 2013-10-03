@@ -34,31 +34,26 @@ Encapsule.code.app.ONMjs.SchemaAppDataCatalogueArchetype = {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {
             name: {
-                type: "string"
+                ____type: "string"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             description: {
-                type: "string"
+                ____type: "string"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             tags: {
-                type: "stringCSV"
+                ____type: "stringCSV"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             author: {
-                type: "uuidSelection"
-                selectionSource: "schema/catalogues/catalogue/assets/people"
+                ____type: "uuidSelection"
+                ____selectionSource: "schema.catalogues.catalogue.assets.people"
                 fnCreate: -> Encapsule.code.lib.util.uuidNull
-                fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
             }
             organization: {
-                type: "uuidSelection"
-                selectionSource: "schema/catalogues/catalogue/assets/organizations"
+                ____type: "uuidSelection"
+                ____selectionSource: "schema.catalogues.catalogue.assets.organizations"
                 fnCreate: -> Encapsule.code.lib.util.uuidNull
-                fnReinitialize: -> Encapsule.code.lib.util.uuidNull
             }
         }
     }

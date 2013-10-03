@@ -31,29 +31,24 @@ Encapsule.code.app.ONMjs = Encapsule.code.app.ONMjs? and Encapsule.code.app.ONMj
 
 Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties = {
     uuid: {
-        type: "uuid"
+        ____type: "uuid"
         fnCreate: -> uuid.v4()
-        fnReinitialize: undefined
     }
     uuidRevision: {
-        type: "uuid"
+        ____type: "uuid"
         fnCreate: -> uuid.v4()
-        fnReinitialize: -> uuid.v4()
     }
     revision: {
-        type: "revision"
+        ____type: "revision"
         fnCreate: -> 0
-        fnReinitialize: -> 0
     }
     createTime: {
-        type: "epochTime"
+        ____type: "epochTime"
         fnCreate: -> Encapsule.code.lib.util.getEpochTime()
-        fnReinitialize: Encapsule.code.lib.util.getEpochTime()
     }
     updateTime: {
-        type: "epochTime"
+        ____type: "epochTime"
         fnCreate: -> Encapsule.code.lib.util.getEpochTime()
-        fnReinitialize: -> Encapsule.code.lib.util.getEpochTime()
     }
 }
 
@@ -61,48 +56,40 @@ Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties = {
 
 Encapsule.code.app.ONMjs.ScdlModelUserMutableNamespaceProperties = {
     name: {
-        type: "string"
+        ____type: "string"
         fnCreate: -> ""
-        fnReinitialize: -> ""
     }
     description: {
-        type: "string"
+        ____type: "string"
         fnCreate: -> ""
-        fnReinitialize: -> ""
     }
     tags: {
-        type: "stringCSV"
+        ____type: "stringCSV"
         fnCreate: -> ""
-        fnReinitialize: -> ""
     }
     author: {
-        type: "uuidSelection"
-        selectionSource: "schema/catalogues/catalogue/assets/people"
+        ____type: "uuidSelection"
+        ____selectionSource: "schema.catalogues.catalogue.assets.people"
         fnCreate: -> Encapsule.code.lib.util.uuidNull
-        fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
     }
     organization: {
-        type: "uuidSelection"
-        selectionSource: "schema/catalogues/catalogue/assets/organizations"
+        ____type: "uuidSelection"
+        ____selectionSource: "schema.catalogues.catalogue.assets.organizations"
         fnCreate: -> Encapsule.code.lib.util.uuidNull
-        fnReinitialize: -> Encapsule.code.lib.util.uuidNull
     }
     copyright: {
-        type: "uuidSelection"
-        selectionSource: "schema/catalogues/catalogue/assets/copyrights"
+        ____type: "uuidSelection"
+        ____selectionSource: "schema.catalogues.catalogue.assets.copyrights"
         fnCreate: -> Encapsule.code.lib.util.uuidNull
-        fnReinitialize: -> Encapsule.code.lib.util.uuidNull
     }
     license: {
-        type: "uuidSelection"
-        selectionSource: "schema/catalogues/catalogue/assets/licenses"
+        ____type: "uuidSelection"
+        ____selectionSource: "schema.catalogues.catalogue.assets.licenses"
         fnCreate: -> Encapsule.code.lib.util.uuidNull
-        fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
     }
     platformBinding: {
-        type: "uuid"
-        optional: true
+        ____type: "uuid"
+        ____optional: true
         fnCreate: -> undefined
-        fnReinitialize: undefined
     }
 }

@@ -51,29 +51,24 @@ Encapsule.code.app.ONMjs.SchemaAppDataMachineArchetype = {
                     userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                     userMutable: {
                         name: {
-                            type: "string"
+                            ____type: "string"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         description: {
-                            type: "string"
+                            ____type: "string"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         tags: {
-                            type: "stringCSV"
+                            ____type: "stringCSV"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         stateEnterExpression: {
-                            type: "string"
+                            ____type: "string"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         stateExitExpression: {
-                            type: "string"
+                            ____type: "string"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                     } # userMutable
                 } # state namespaceProperties
@@ -93,30 +88,25 @@ Encapsule.code.app.ONMjs.SchemaAppDataMachineArchetype = {
                                 userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                                 userMutable: {
                                     name: {
-                                        type: "string"
+                                        ____type: "string"
                                         fnCreate: -> ""
-                                        fnReinitialize: -> ""
                                     }
                                     description: {
-                                        type: "string"
+                                        ____type: "string"
                                         fnCreate: -> ""
-                                        fnReinitialize: -> ""
                                     }
                                     tags: {
-                                        type: "stringCSV"
+                                        ____type: "stringCSV"
                                         fnCreate: -> ""
-                                        fnReinitialize: -> ""
                                     }
                                     finalState: {
-                                        type: "uuidSelection"
-                                        selectionSource: "schema/catalogues/catalogue/models/machines/machine/states"
+                                        ____type: "uuidSelection"
+                                        ____selectionSource: "schema.catalogues.catalogue.models.machines.machine.states"
                                         fnCreate: -> Encapsule.code.lib.util.uuidNull
-                                        fnReinitialize: -> Encapsule.code.lib.util.uuidNull
                                     }
                                     vectorExpression: {
-                                        type: "string"
+                                        ____type: "string"
                                         fnCreate: -> ""
-                                        fnReinitialize: -> ""
                                     }
                                 } # userMutable
                             } # namespaceProperties

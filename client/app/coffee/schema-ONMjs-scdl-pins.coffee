@@ -33,25 +33,21 @@ Encapsule.code.app.ONMjs.SchemaAppDataInputPin = {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {
             name: {
-                type: "string"
+                ____type: "string"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             description: {
-                type: "string"
+                ____type: "string"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             tags: {
-                type: "stringCSV"
+                ____type: "stringCSV"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             type: {
-                type: "uuidSelection"
-                selectionSource: "schema/catalogues/catalogue/models/types"
+                ____type: "uuidSelection"
+                ____selectionSource: "schema.catalogues.catalogue.models.types"
                 fnCreate: -> Encapsule.code.lib.util.uuidNull
-                fnReinitialize: -> Encapsule.code.lib.util.uuidNull
             }
         } # userMutable
     } # namespaceProperties
@@ -77,25 +73,21 @@ Encapsule.code.app.ONMjs.SchemaAppDataOutputPinChild = {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {
             name: {
-                type: "string"
+                ____type: "string"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             description: {
-                type: "string"
+                ____type: "string"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             tags: {
-                type: "stringCSV"
+                ____type: "stringCSV"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             type: {
-                type: "uuidSelection"
-                selectionSource: "schema/catalogues/catalogue/models/types"
+                ____type: "uuidSelection"
+                ____selectionSource: "schema.catalogues.catalogue.models.types"
                 fnCreate: -> Encapsule.code.lib.util.uuidNull
-                fnReinitialize: -> Encapsule.code.lib.util.uuidNull
             }
         } # userMutable
     } # namespaceProperties
@@ -111,25 +103,21 @@ Encapsule.code.app.ONMjs.SchemaAppDataOutputPinArchetype = {
         userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
         userMutable: {
             name: {
-                type: "string"
+                ____type: "string"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             description: {
-                type: "string"
+                ____type: "string"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             tags: {
-                type: "stringCSV"
+                ____type: "stringCSV"
                 fnCreate: -> ""
-                fnReinitialize: -> ""
             }
             type: {
-                type: "uuidSelection"
-                selectionSource: "schema/catalogues/catalogue/models/types"
+                ____type: "uuidSelection"
+                ____selectionSource: "schema.catalogues.catalogue.models.types"
                 fnCreate: -> Encapsule.code.lib.util.uuidNull
-                fnReinitialize: -> Encapsule.code.lib.util.uuidNull
             }
         } # userMutable
     } # namespaceProperties

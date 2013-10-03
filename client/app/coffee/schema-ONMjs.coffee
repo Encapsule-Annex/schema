@@ -67,17 +67,15 @@ Encapsule.code.app.ONMjs.SchemaAppData = {
             namespaceProperties: {
                 userImmutable: {
                     clientDeployment: {
-                        type: "uuid"
+                        ____type: "uuid"
                         fnCreate: -> uuid.v4()
-                        fnReinitialize: undefined
                     } # clientDeployment
                     localSession: {
-                        type: "object"
+                        ____type: "object"
                         fnCreate: -> {
                             uuid: uuid.v4()
                             timeStart: Encapsule.code.lib.util.getEpochTime()
                         }
-                        fnReinitialize: undefined
                     } # localSession
                 } # userImmutable
             } # namespaceProperties

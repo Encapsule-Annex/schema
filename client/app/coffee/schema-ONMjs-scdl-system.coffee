@@ -52,25 +52,21 @@ Encapsule.code.app.ONMjs.SchemaAppDataSystemArchetype = {
                     userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                     userMutable: {
                         name: {
-                            type: "string"
+                            ____type: "string"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         description: {
-                            type: "string"
+                            ____type: "string"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         tags: {
-                            type: "stringCSV"
+                            ____type: "stringCSV"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         systemUuid : {
-                            type: "uuidSelection"
-                            selectionSource: "schema/catalogues/catalogue/models/systems"
+                            ____type: "uuidSelection"
+                            ____selectionSource: "schema.catalogues.catalogue.models.systems"
                             fnCreate: -> Encapsule.code.lib.util.uuidNull
-                            fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
                         }
                     } # userMutable
                 } # namespaceProperties
@@ -91,25 +87,21 @@ Encapsule.code.app.ONMjs.SchemaAppDataSystemArchetype = {
                     userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                     userMutable: {
                         name: {
-                            type: "string"
+                            ____type: "string"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         description: {
-                            type: "string"
+                            ____type: "string"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         tags: {
-                            type: "stringCSV"
+                            ____type: "stringCSV"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         machineUuid : {
-                            type: "uuidSelection"
-                            selectionSource: "schema/catalogues/catalogue/models/systems"
+                            ____type: "uuidSelection"
+                            ____selectionSource: "schema.catalogues.catalogue.models.systems"
                             fnCreate: -> Encapsule.code.lib.util.uuidNull
-                            fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
                         }
                     } # userMutable
                 } # namespaceProperties
@@ -132,25 +124,21 @@ Encapsule.code.app.ONMjs.SchemaAppDataSystemArchetype = {
                     userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
                     userMutable: {
                         name: {
-                            type: "string"
+                            ____type: "string"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         description: {
-                            type: "string"
+                            ____type: "string"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         tags: {
-                            type: "stringCSV"
+                            ____type: "stringCSV"
                             fnCreate: -> ""
-                            fnReinitialize: -> ""
                         }
                         socketUuid : {
-                            type: "uuidSelection"
-                            selectionSource: "schema/catalogues/catalogue/models/systems"
+                            ____type: "uuidSelection"
+                            ____selectionSource: "schema.catalogues.catalogue.models.systems"
                             fnCreate: -> Encapsule.code.lib.util.uuidNull
-                            fnReinitialize: ->  Encapsule.code.lib.util.uuidNull
                         }
                     } # userMutable
                 } # namespaceProperties

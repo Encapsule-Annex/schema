@@ -38,19 +38,16 @@ Encapsule.code.app.ONMjs.SchemaAppDataNodes = {
             userImmutable: Encapsule.code.app.ONMjs.SchemaAppDataNamespaceCommonProperties
             userMutable: {
                 name: {
-                    type: "string"
+                    ____type: "string"
                     fnCreate: -> ""
-                    fnReinitialize: -> ""
                 }
                 description: {
-                    type: "string"
+                    ____type: "string"
                     fnCreate: -> ""
-                    fnReinitialize: -> ""
                 }
                 tags: {
-                    type: "stringCSV"
+                    ____type: "stringCSV"
                     fnCreate: -> ""
-                    fnReinitialize: -> ""
                 }
             } # user mutable
         } # node namespaceProperties

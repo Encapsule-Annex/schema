@@ -88,7 +88,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
         <div class="classONMjsSelectedNamespacePropertiesCommon classONMjsSelectedNamespacePropertiesImmutable">
             <span data-bind="foreach: propertyModelViews">
                 <div class="name"><span class="immutable" data-bind="text: declaration.property"></span></div>
-                <div class="type" data-bind="text: declaration.members.type"></div>
+                <div class="type" data-bind="text: declaration.members.____type"></div>
                 <div class="value"><span class="immutable" data-bind="text: store.value"></span></div>
                 <div style="clear: both;" />
             </span>
@@ -187,7 +187,7 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_Selected
         <div class="classONMjsSelectedNamespacePropertiesCommon classONMjsSelectedNamespacePropertiesMutable">
             <span data-bind="foreach: propertyModelViews">
                 <div class="name" data-bind="text: declaration.property"></div>
-                <div class="type" data-bind="text: declaration.members.type"></div>
+                <div class="type" data-bind="text: declaration.members.____type"></div>
                 <div style="clear: both;" />
                 <div type="text" class="value" contentEditable="true" data-bind="editableText: store.valueEdit"></div>
             </span>
