@@ -197,7 +197,6 @@ class ONMjs.implementation.AddressTokenBinder
             semanticBindings = model.getSemanticBindings()
             getUniqueKeyFunction = semanticBindings? and semanticBindings and semanticBindings.getUniqueKey? and semanticBindings.getUniqueKey or undefined
 
-
             resolveActions = {
                 initializeNamespace: localInitializeNamespaceMembers
                 verifyNamespace: localVerifyNamespaceMembers

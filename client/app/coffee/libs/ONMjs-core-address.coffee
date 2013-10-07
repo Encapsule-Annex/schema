@@ -130,7 +130,7 @@ class ONMjs.Address
             @hashString = undefined
 
         catch exception
-            throw "ONMjs.Address.pushToken failure: #{exception}"
+            throw "ONMjs.Address.pushToken address modification failed: #{exception}"
 
     #
     # ============================================================================
@@ -140,13 +140,13 @@ class ONMjs.Address
                 throw "Internal error: input parameters are not correct."
 
             if not childToken_.keyRequired
-                throw "Child select key does not require resolution yet is child."
+                throw "Child token is invalid because it specifies a namespace in the root component."
 
             if parentToken_.namespaceDescriptor.id != childToken_.extensionPointDescriptor.id
-                throw "Invalid token specifies an extension point ID that doesn't match the parent container's extension point ID."
+                throw "Child token is invalid because the parent token does not select the required extension point namespace."
 
             if not parentToken_.isQualified() and childToken_.isQualified()
-                throw "Invalid token specifies a key without parent key context."
+                throw "Child token is invalid because the parent token is unqualified and the child is qualified."
 
             true
 

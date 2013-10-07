@@ -123,32 +123,23 @@ class Encapsule.code.app.Schema
 
             try
     
-                #---
-                # TEST CODE
                 # Attach the canary to the store via ONMjs.Store.registerObserver.
                 canaryStoreObserverId = store.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
+
                 # Detach the canary from the store via ONMjs.Store.unregisterObserver.
                 store.unregisterObserver(canaryStoreObserverId)
-                # The above attach/detach should produce corresponding callback notifications logged.
-                # in the Schema debug console window.
-    
-              
-                
-                ###
-                #---
-                # TEST CODE
-                # Manually create a new ONMjs.Address object.
-                newAddress = ONMjs.address.FromPath(model, "schema.client")
-                # Manually set the selected address.
-                selectedAddress.setAddress(newAddress)
-                # TEST CODE
-                #---
+
     
                 addressRoot = ONMjs.address.RootAddress(model)
 
                 addressTest0 = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue")
-                addressTest0A = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue.models.machines.machine")
+                namespace = store.createComponent(addressTest0)
 
+                addressTest0A = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue.models.machines.machine")
+                namespace = store.createComponent(addressTest0A)
+
+
+                
                 addressTest1 = ONMjs.address.Synthesize(addressRoot, "client.catalogues.catalogue")
 
                 beesWax = addressTest0.isEqual(addressTest1)
@@ -159,13 +150,9 @@ class Encapsule.code.app.Schema
                 resolvedAddress = namespace.getResolvedAddress()
                 synthAddress = ONMjs.address.Synthesize(resolvedAddress, "models.machines.machine")
                 namespace = store.createComponent(synthAddress)
+
                 ###
 
-                namespace = store.createComponent(addressTest0A)
-
-
-
-                #namepsace = store.createComponent(addressTest1)
 
     
             #
@@ -174,7 +161,7 @@ class Encapsule.code.app.Schema
                 alert("TEST FAILURE: #{exception}")
 
             # ==============================================================================
-            ###                
+
 
 
     
