@@ -297,6 +297,13 @@ class ONMjs.Model extends ONMjs.implementation.ModelBase
 
                 catch exception
                     throw "ONMjs.Model.getNamespaceDescriptorFromPathId failure: #{exception}"
+
+            # --------------------------------------------------------------------------
+            @getNamespaceDescriptorFromPath = (path_) =>
+                try
+                    return @getNamespaceDescriptorFromPathId(@getPathIdFromPath(path_))
+                catch exception
+                    throw "ONMjs.Model.getNamespaceDescriptorFromPath failure: #{exception}"
                 
             # --------------------------------------------------------------------------
             @getPathIdFromPath = (objectModelPath_) =>
