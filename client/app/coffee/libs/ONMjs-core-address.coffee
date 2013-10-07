@@ -143,10 +143,10 @@ class ONMjs.Address
                 throw "Child select key does not require resolution yet is child."
 
             if parentToken_.namespaceDescriptor.id != childToken_.extensionPointDescriptor.id
-                throw "Child select key is invalid because parent select key does not specifiy the expected extension point."
+                throw "Invalid token specifies an extension point ID that doesn't match the parent container's extension point ID."
 
             if not parentToken_.isQualified() and childToken_.isQualified()
-                throw "Parent select key specifies a new instance yet child select key specifies a key."
+                throw "Invalid token specifies a key without parent key context."
 
             true
 
@@ -388,6 +388,69 @@ ONMjs.address = {}
 
 #
 # ============================================================================
+ONMjs.address.ModelPathFromAddress = (address_) ->
+    try
+        if not (address_? and address_) then throw "Missing address input parameter.";
+        if not address_.tokenVector.length then throw "Invalid address contains no address tokens."
+        lastToken = address_.getLastToken()
+        return lastToken.namespaceDescriptor.path
+
+    catch exception
+        throw "ONMjs.address.ModelPathFromAddress failure: #{exception}"
+
+#
+# ============================================================================
+ONMjs.address.ModelDescriptorFromAddressAndSubpath = (address_, subpath_) ->
+    try
+        if not (subpath_? and subpath_) then throw "Missing subpath input parameter."
+        path = "#{ONMjs.address.ModelPathFromAddress(address_)}.#{subpath_}"
+        return descriptor = address_.model.getNamespaceDescriptorFromPath(path)
+
+
+    catch exception
+        throw "ONMjs.address.CreateNewModelPathFromAddressAndSubpath failure: #{exception}"
+
+#
+# ============================================================================
+ONMjs.address.Synthesize = (address_, subpath_) ->
+    try
+        subpathDescriptor = ONMjs.address.ModelDescriptorFromAddressAndSubpath(address_, subpath_)
+        baseDescriptor = address_.getLastToken().namespaceDescriptor
+
+        if ((baseDescriptor.namespaceType == "extensionPoint") and (subpathDescriptor.namespaceType != "component"))
+            throw "Invalid subpath string must begin with the name of the component contained by the base address' extension point."
+
+        baseDescriptorHeight = baseDescriptor.parentPathIdVector.length
+        subpathDescriptorHeight = subpathDescriptor.parentPathIdVector.length
+
+        if ((subpathDescriptorHeight - baseDescriptorHeight) <= 0)
+            throw "Internal error due to failed consistency check."
+
+        subpathParentIdVector = subpathDescriptor.parentPathIdVector.slice(baseDescriptorHeight + 1, subpathDescriptorHeight)
+        subpathParentIdVector.push subpathDescriptor.id
+        baseTokenVector = address_.tokenVector.slice(0, address_.tokenVector.length - 1) or []
+        newAddress = new ONMjs.Address(address_.model, baseTokenVector)
+        token = address_.getLastToken().clone()
+        
+        for pathId in subpathParentIdVector
+            descriptor = address_.model.getNamespaceDescriptorFromPathId(pathId)
+
+            switch descriptor.namespaceType
+                when "component"
+                    newAddress.pushToken(token)
+                    token = new ONMjs.AddressToken(token.model, token.namespaceDescriptor.id, undefined, pathId)
+                    break
+                else
+                    token = new ONMjs.AddressToken(token.model, token.idExtensionPoint, token.key, pathId)
+
+        newAddress.pushToken(token)
+        return newAddress
+
+    catch exception
+        throw "ONMjs.address.SynthesizeAddress(address_, subpath_) failure: #{exception}"
+
+#
+# ============================================================================
 ONMjs.address.RootAddress = (model_) ->
    try
        return new ONMjs.Address(model_, [ new ONMjs.AddressToken(model_, undefined, undefined, 0) ])
@@ -396,7 +459,7 @@ ONMjs.address.RootAddress = (model_) ->
 #
 # ============================================================================
 # Builds a rooted, non-recursive, unqualified, address to the subnamespace indicated
-# by pathId_ in the namespace indicated by model_.
+# by pathId_ in the address space indicated by model_.
 
 ONMjs.address.FromPathId = (model_, pathId_) ->
     try
@@ -515,7 +578,7 @@ ONMjs.address.NewAddressSameComponent = (address_, pathId_) ->
 
 #
 # ============================================================================
-# Given a source address, determine if it specified the root namespame
+# Given a source address, determine if it specifies the root namespame
 # of the store or an extension component. If it does, simply return a reference
 # to the source address. Otherwise, create and return a new address that
 # specifies the source address' owning component address.
