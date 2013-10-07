@@ -132,9 +132,9 @@ class Encapsule.code.app.Schema
                 # The above attach/detach should produce corresponding callback notifications logged.
                 # in the Schema debug console window.
     
-                # TEST CODE
-                #---
-    
+              
+                
+                ###
                 #---
                 # TEST CODE
                 # Manually create a new ONMjs.Address object.
@@ -167,10 +167,6 @@ class Encapsule.code.app.Schema
 
                 #namepsace = store.createComponent(addressTest1)
 
-                
-
-
-    
     
             #
             catch exception
@@ -178,6 +174,11 @@ class Encapsule.code.app.Schema
                 alert("TEST FAILURE: #{exception}")
 
             # ==============================================================================
+            ###                
+
+
+    
+
 
             Encapsule.runtime.app.SchemaBootInfoWindow = new Encapsule.code.app.modelview.SchemaBootInfoWindow()
 
