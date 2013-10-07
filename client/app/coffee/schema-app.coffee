@@ -61,8 +61,6 @@ class Encapsule.code.app.Schema
             # Initialize the Schema application's ONMjs runtime state model.
             model = ONMjsRuntime.model = new ONMjs.Model(schema)
 
-
-
             # Initialize the Schema application's ONMjs runtime state store.
             store = ONMjsRuntime.store = new ONMjs.Store(model)
 
@@ -120,73 +118,64 @@ class Encapsule.code.app.Schema
             selectedAddress.setAddress(rootAddress)
 
 
-            ###
-            # DISABLED TESTS AND EXPERIMENTS
+            #
+            # TESTS AND EXPERIMENTS
+
+            try
+    
+                #---
+                # TEST CODE
+                # Attach the canary to the store via ONMjs.Store.registerObserver.
+                canaryStoreObserverId = store.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
+                # Detach the canary from the store via ONMjs.Store.unregisterObserver.
+                store.unregisterObserver(canaryStoreObserverId)
+                # The above attach/detach should produce corresponding callback notifications logged.
+                # in the Schema debug console window.
+    
+                # TEST CODE
+                #---
+    
+                #---
+                # TEST CODE
+                # Manually create a new ONMjs.Address object.
+                newAddress = ONMjs.address.FromPath(model, "schema.client")
+                # Manually set the selected address.
+                selectedAddress.setAddress(newAddress)
+                # TEST CODE
+                #---
+    
+                addressRoot = ONMjs.address.RootAddress(model)
+
+                addressTest0 = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue")
+                addressTest0A = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue.models.machines.machine")
+
+                addressTest1 = ONMjs.address.Synthesize(addressRoot, "client.catalogues.catalogue")
+
+                beesWax = addressTest0.isEqual(addressTest1)
+
+
+                ###
+                namespace = store.createComponent(addressTest0)
+                resolvedAddress = namespace.getResolvedAddress()
+                synthAddress = ONMjs.address.Synthesize(resolvedAddress, "models.machines.machine")
+                namespace = store.createComponent(synthAddress)
+                ###
+
+                namespace = store.createComponent(addressTest0A)
 
 
 
-            #---
-            # TEST CODE
-            # Attach the canary to the store via ONMjs.Store.registerObserver.
-            canaryStoreObserverId = store.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
-            # Detach the canary from the store via ONMjs.Store.unregisterObserver.
-            store.unregisterObserver(canaryStoreObserverId)
-            # The above attach/detach should produce corresponding callback notifications logged.
-            # in the Schema debug console window.
+                #namepsace = store.createComponent(addressTest1)
 
-            # TEST CODE
-            #---
-
-            #---
-            # TEST CODE
-            # Manually create a new ONMjs.Address object.
-            newAddress = ONMjs.address.FromPath(model, "schema.client")
-            # Manually set the selected address.
-            selectedAddress.setAddress(newAddress)
-            # TEST CODE
-            #---
-
-            # Some temporary test code for bringing up the new store addressing model.
-
-            # Open the object store's root namespace.
-            namespace = new ONMjs.Namespace(store)
-
-            address = ONMjs.address.FromPath(model, "schema.omm")
-            address2 = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue.models.machines.machine.states.state.transitions.transition")
-            address3 = ONMjs.address.Parent(address2, 2)
-            address = ONMjs.address.Parent(address)
-            address = ONMjs.address.Parent(address, 5)
+                
 
 
-
-            objectModelNavigatorSelectorWindow = Encapsule.runtime.app.ObjectModelNavigatorSelectorWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorSelectorWindow()
-
-
-            objectModelNavigatorNamespaceWindow = Encapsule.runtime.app.ObjectModelNavigatorNamespaceWindow = new Encapsule.code.lib.modelview.ObjectModelNavigatorNamespaceWindow()
-            objectModelNavigatorWindow.selectorStore.registerModelViewObserver(objectModelNavigatorNamespaceWindow.selectorStoreCallbacks)
-
-            # ==============================================================================
-
-            # Some experimental stuff
-
-            token01 = new Encapsule.code.lib.onm.AddressToken(objectModel, undefined, undefined, 2) # root selector
-            token02 = new Encapsule.code.lib.onm.AddressToken(objectModel, 2, undefined, 3) # Should be okay.
-            token03 = new Encapsule.code.lib.onm.AddressToken(objectModel, undefined, undefined, 3) # Should be okay.
-
-            address01 = new Encapsule.code.lib.onm.Address(objectModel)
-
-
-
-
-            address01.pushToken token01
-            address01.pushToken token02
-
-            address02 = new Encapsule.code.lib.onm.Address objectModel, [ token01, token03 ]
-
-            namespace2Test01 = new Encapsule.code.lib.onm.ObjectStoreNamespace2(objectStore, address02, "new")
-
-            ###
-
+    
+    
+            #
+            catch exception
+                Console.message("MAIN BODY TESTS FAILED: #{exception}")
+                alert("TEST FAILURE: #{exception}")
 
             # ==============================================================================
 
