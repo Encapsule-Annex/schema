@@ -75,22 +75,28 @@ class ONMjs.Namespace
                 throw "Specified address is unresolvable in #{mode} mode."
 
             # The actual store data.
-            @dataReferences = []
+
             dataReference = store_.dataReference? and store_.dataReference or throw "Cannot resolve object store's root data reference."
-            @dataReferences.push dataReference
             
             @addressTokenBinders = for addressToken in address.tokenVector
-
                 tokenBinder = new ONMjs.implementation.AddressTokenBinder(store_, dataReference, addressToken, mode)
-
-                resolvedToken = tokenBinder.resolvedToken
-
-                if (resolvedToken.idComponent != 0) and not (resolvedToken.key? and resolvedToken.key)
-                    throw "Internal error."
-
                 dataReference = tokenBinder.dataReference
-                @dataReferences.push dataReference
                 tokenBinder
+
+            if mode == "new"
+
+                index = -1
+                for addressToken in address.tokenVector
+                    index++
+                    if not (addressToken.key? and addressToken.key)
+                        tokenBindersSlice = @addressTokenBinders.slice(0, index + 1)
+                        tokenArray = []
+                        for tokenBinder in tokenBindersSlice
+                            tokenArray.push tokenBinder.resolvedToken
+                        resolvedAddress = new ONMjs.Address(address.model, tokenArray)
+                        resolvedAddress = ONMjs.address.ComponentAddress(resolvedAddress)
+                        @store.reifier.reifyStoreComponent(resolvedAddress)
+
 
             @resolvedAddress = undefined
 
@@ -133,10 +139,10 @@ class ONMjs.Namespace
     # ============================================================================
     data: =>
         try
-            dataReferences = @dataReferences.length
-            if not dataReferences
-                throw "Internal error: Unable to retrieve data reference from Namespace object."
-            dataReference = @dataReferences[dataReferences - 1]
+            tokenBinderCount = @addressTokenBinders.length
+            if not (tokenBinderCount > 0)
+                throw "Internal error namespace token binder array is empty."
+            @addressTokenBinders[tokenBinderCount - 1].dataReference
 
         catch exception
             throw "ONMjs.Namespace.data failure: #{exception}"

@@ -124,7 +124,12 @@ class ONMjs.Store
                     # Creating the root namespace of a component automatically creates all its sub-namespaces as well.
                     componentNamespace = new ONMjs.Namespace(@, address_, "new")
                     resolvedAddress = componentNamespace.getResolvedAddress()
+                    ###
+                    this needs to be reifyStoreComponentHierarchy and accept both the source address_ and the resolved address.
+                    works okay if you create one component level at a time. However, if you create a component deep in the hierarchy
+                    there are potentially many create component events to dispatch.
                     @reifier.reifyStoreComponent(resolvedAddress)
+                    ###
 
                     extensionPointAddress = ONMjs.address.Parent(resolvedAddress);
                     extensionPointNamespace = @openNamespace(extensionPointAddress)
