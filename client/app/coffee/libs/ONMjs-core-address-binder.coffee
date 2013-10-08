@@ -231,16 +231,25 @@ class ONMjs.implementation.AddressTokenBinder
                 Console.message("Verifying component namespaces.")
                 # ONMjs.implementation.binding.VerifyComponentNamespaces(store_, resolveResult.dataReference, targetComponentDescriptor, extensionPointId)            
 
+            # ... If we've been asked to bind the root namespace of the component then we're done.
+
             if targetNamespaceDescriptor.isComponent
                 return
 
-            # Resolve the target namespace relative to its component root.
-            targetNamespaceHeightOverComponent = targetNamespaceDescriptor.parentPathIdVector.length - targetComponentDescriptor.parentPathIdVector.length - 1
-            pathIdsToProcess = targetNamespaceHeightOverComponent and targetNamespaceDescriptor.parentPathIdVector.slice(-targetNamespaceHeightOverComponent) or []
+            # ... otherwise the request is to bind a subnamespace of the component we just bound (i.e. created or opened depending on mode) above.
 
-            for pathId in pathIdsToProcess
+            # How many ranks above us in the parent/child tree is the requested subnamespace?
+            generations = targetNamespaceDescriptor.parentPathIdVector.length - targetComponentDescriptor.parentPathIdVector.length - 1
+
+            # Parent path ID's of the parent namespaces (i.e. child namespaces of the current data reference)
+            parentPathIds = generations and targetNamespaceDescriptor.parentPathIdVector.slice(-generations) or []
+
+            # ... Resolve the component subnamespace parents of the target namespace.
+            for pathId in parentPathIds
                 descriptor = model.getNamespaceDescriptorFromPathId(pathId)
                 resolveResults = ONMjs.implementation.binding.ResolveNamespaceDescriptor(resolveActions, store_, resolveResults.dataReference, descriptor, resolveResults.key, mode_)
+
+            # ... Resolve the target namespace
             resolveResults = ONMjs.implementation.binding.ResolveNamespaceDescriptor(resolveActions, store_, resolveResults.dataReference, targetNamespaceDescriptor, resolveResults.key, mode_)
             @dataReference = resolveResults.dataReference
 

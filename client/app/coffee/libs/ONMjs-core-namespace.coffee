@@ -76,27 +76,15 @@ class ONMjs.Namespace
 
             # The actual store data.
 
-            dataReference = store_.dataReference? and store_.dataReference or throw "Cannot resolve object store's root data reference."
-            
-            @addressTokenBinders = for addressToken in address.tokenVector
-                tokenBinder = new ONMjs.implementation.AddressTokenBinder(store_, dataReference, addressToken, mode)
-                dataReference = tokenBinder.dataReference
-                tokenBinder
+            @dataReference = store_.dataReference? and store_.dataReference or throw "Cannot resolve object store's root data reference."
+            @resolvedTokenArray = []
+            @getResolvedToken = => @resolvedTokenArray.length and @resolvedTokenArray[@resolvedTokenArray.length - 1] or undefined
 
-            if mode == "new"
-
-                index = -1
-                for addressToken in address.tokenVector
-                    index++
-                    if not (addressToken.key? and addressToken.key)
-                        tokenBindersSlice = @addressTokenBinders.slice(0, index + 1)
-                        tokenArray = []
-                        for tokenBinder in tokenBindersSlice
-                            tokenArray.push tokenBinder.resolvedToken
-                        resolvedAddress = new ONMjs.Address(address.model, tokenArray)
-                        resolvedAddress = ONMjs.address.ComponentAddress(resolvedAddress)
-                        @store.reifier.reifyStoreComponent(resolvedAddress)
-
+            for addressToken in address.tokenVector
+                tokenBinder = new ONMjs.implementation.AddressTokenBinder(store_, @dataReference, addressToken, mode)
+                @resolvedTokenArray.push tokenBinder.resolvedToken
+                @dataReference = tokenBinder.dataReference
+                true
 
             @resolvedAddress = undefined
 
@@ -109,9 +97,7 @@ class ONMjs.Namespace
         try
             if @resolvedAddress? and @resolvedAddress
                 return @resolvedAddress
-            resolvedTokenVector = for addressTokenBinder in @addressTokenBinders
-                addressTokenBinder.resolvedToken
-            @resolvedAddress = new ONMjs.Address(@store.model, resolvedTokenVector)
+            @resolvedAddress = new ONMjs.Address(@store.model, @resolvedTokenArray)
             return @resolvedAddress
         catch exception
             throw "ONMjs.Namespace.address failure: #{exception}"
@@ -121,7 +107,7 @@ class ONMjs.Namespace
     # ============================================================================
     getResolvedLabel: =>
         try
-            resolvedDescriptor = @getLastBinder().resolvedToken.namespaceDescriptor
+            resolvedDescriptor = @getResolvedToken().namespaceDescriptor
             semanticBindings = @store.model.getSemanticBindings()
             getLabelBinding = semanticBindings? and semanticBindings and semanticBindings.getLabel? and semanticBindings.getLabel or undefined
             resolvedLabel = undefined
@@ -137,15 +123,8 @@ class ONMjs.Namespace
 
     #
     # ============================================================================
-    data: =>
-        try
-            tokenBinderCount = @addressTokenBinders.length
-            if not (tokenBinderCount > 0)
-                throw "Internal error namespace token binder array is empty."
-            @addressTokenBinders[tokenBinderCount - 1].dataReference
+    data: => @dataReference
 
-        catch exception
-            throw "ONMjs.Namespace.data failure: #{exception}"
 
     #
     # ============================================================================
@@ -210,16 +189,12 @@ class ONMjs.Namespace
 
 
 
-    #
-    # ============================================================================
-    # This is pretty low-level for a public-facing API?
-    getLastBinder: => @addressTokenBinders.length and @addressTokenBinders[@addressTokenBinders.length - 1] or throw "Internal error: unable to retrieve the last token binder for this namespace."
 
     #
     # ============================================================================
     visitExtensionPointSubcomponents: (callback_) =>
         try
-            resolvedToken = @getLastBinder().resolvedToken
+            resolvedToken = @getResolvedToken()
             if not (resolvedToken? and resolvedToken) then throw "Internal error: unable to resolve token."
 
             if resolvedToken.namespaceDescriptor.namespaceType != "extensionPoint"
