@@ -133,16 +133,26 @@ class Encapsule.code.app.Schema
                 addressRoot = ONMjs.address.RootAddress(model)
 
                 addressTest0 = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue")
-                #namespace = store.createComponent(addressTest0)
+                namespace = store.createComponent(addressTest0)
 
                 addressTest0A = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue.models.machines.machine")
-                #namespace = store.createComponent(addressTest0A)
+                namespace = store.createComponent(addressTest0A)
 
 
                 
                 addressTest1 = ONMjs.address.Synthesize(addressRoot, "client.catalogues.catalogue")
+                namespace = store.createComponent(addressTest1)
 
                 beesWax = addressTest0.isEqual(addressTest1)
+
+                addressNewCatalogue = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue")
+                newCatalogueAddress = store.createComponent(addressNewCatalogue).getResolvedAddress()
+
+                newPersonAddress = ONMjs.address.Synthesize(newCatalogueAddress, "resources.attribution.people.person")
+                for x in [0...50]
+                    newPersonNamespace = store.createComponent(newPersonAddress)
+                
+                
 
 
                 ###

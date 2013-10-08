@@ -84,6 +84,16 @@ class ONMjs.Namespace
                 tokenBinder = new ONMjs.implementation.AddressTokenBinder(store_, @dataReference, addressToken, mode)
                 @resolvedTokenArray.push tokenBinder.resolvedToken
                 @dataReference = tokenBinder.dataReference
+                if mode == "new"
+                    if addressToken.idComponent 
+                        if not (addressToken.key? and addressToken.key)
+                            resolvedAddress = new ONMjs.Address(@store.model, @resolvedTokenArray)
+                            componentAddress = ONMjs.address.ComponentAddress(resolvedAddress)
+                            @store.reifier.reifyStoreComponent(componentAddress)
+                            extensionPointAddress = ONMjs.address.Parent(componentAddress)
+                            extensionPointNamespace = @store.openNamespace(extensionPointAddress)
+                            extensionPointNamespace.update();
+
                 true
 
             @resolvedAddress = undefined
