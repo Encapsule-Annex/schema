@@ -151,7 +151,7 @@ class ONMjs.Address
             true
 
         catch exception
-            throw "ONMjs.Address.validateTokenPair failure: #{exception}"
+            throw "ONMjs.Address.validateTokenPair the specified parent and child tokens are incompatible and cannot be used to form an address: #{exception}"
 
     #
     # ============================================================================

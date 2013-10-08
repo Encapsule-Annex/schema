@@ -81,16 +81,12 @@ class ONMjs.Namespace
             
             @addressTokenBinders = for addressToken in address.tokenVector
 
-                evilEyes = false
-                if (addressToken.namespaceDescriptor.namespaceType == "component")
-                    Console.message("a component has been spotted...")
-                    evilEyes = true
-
                 tokenBinder = new ONMjs.implementation.AddressTokenBinder(store_, dataReference, addressToken, mode)
 
-                if evilEyes
-                    if not (tokenBinder.resolvedToken.key? and tokenBinder.resolvedToken.key)
-                        throw "Internal error. A bound component token must always specify a key valuue!"
+                resolvedToken = tokenBinder.resolvedToken
+
+                if (resolvedToken.idComponent != 0) and not (resolvedToken.key? and resolvedToken.key)
+                    throw "Internal error."
 
                 dataReference = tokenBinder.dataReference
                 @dataReferences.push dataReference

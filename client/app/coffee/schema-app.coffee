@@ -133,10 +133,10 @@ class Encapsule.code.app.Schema
                 addressRoot = ONMjs.address.RootAddress(model)
 
                 addressTest0 = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue")
-                namespace = store.createComponent(addressTest0)
+                #namespace = store.createComponent(addressTest0)
 
                 addressTest0A = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue.models.machines.machine")
-                namespace = store.createComponent(addressTest0A)
+                #namespace = store.createComponent(addressTest0A)
 
 
                 
