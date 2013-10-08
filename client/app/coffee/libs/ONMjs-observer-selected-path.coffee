@@ -56,7 +56,7 @@ class ONMjs.observers.implementation.SelectedPathElementModelView
             @objectStoreAddress = objectStoreAddress_
             @isSelected = (count_ == selectedCount_)
             objectStoreNamespace = addressCache_.referenceStore.openNamespace(objectStoreAddress_)
-            objectStoreDescriptor = objectStoreNamespace.getLastBinder().resolvedToken.namespaceDescriptor
+            objectStoreDescriptor = objectStoreNamespace.getResolvedToken().namespaceDescriptor
             resolvedLabel = objectStoreNamespace.getResolvedLabel()
 
             @prefix = ""

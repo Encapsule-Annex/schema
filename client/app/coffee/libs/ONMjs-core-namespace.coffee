@@ -130,7 +130,7 @@ class ONMjs.Namespace
     # ============================================================================
     toJSON: (replacer_, space_) =>
         try
-            namespaceDescriptor = @getLastBinder().resolvedToken.namespaceDescriptor
+            namespaceDescriptor = @getResolvedToken().namespaceDescriptor
             resultObject = {}
             resultObject[namespaceDescriptor.jsonTag] = @data()
             space = space_? and space_ or 0
