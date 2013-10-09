@@ -54,39 +54,40 @@ class ONMjs.test.observers.Canary
     callbackInterface: {
 
         onObserverAttachBegin: (store_, observerId_) =>
-            Console.message("ONMjs.test.observers.Canary.callbackInterface.onObserverAttachBegin")
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onObserverAttachBegin")
 
         onObserverAttachEnd: (store_, observerId_) =>
-            Console.message("ONMjs.test.observers.Canary.callbackInterface.onObserverAttachEnd")
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onObserverAttachEnd")
 
         onObserverDetachBegin: (store_, observerId_) =>
-            Console.message("ONMjs.test.observers.Canary.callbackInterface.onObserverDetachBegin")
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onObserverDetachBegin")
 
         onObserverDetachEnd: (store_, observerId_) =>
-            Console.message("ONMjs.test.observers.Canary.callbackInterface.onObserverDetachEnd")
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onObserverDetachEnd")
 
-        onComponentCreated: (store_, address_, observerId_) =>
-            Console.message("ONMjs.test.observers.Canary.callbackInterface.onComponentCreated")
 
-        onComponentRemoved: (store_, address_, observerId_) =>
-            Console.message("ONMjs.test.observers.Canary.callbackInterface.onComponentRemoved")
+        onComponentCreated: (store_, observerId_, address_) =>
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onComponentCreated(#{address_.getHumanReadableString()})")
 
-        onNamespaceCreated: (store_, address_, observerId_) =>
-            Console.message("ONMjs.test.observers.Canary.callbackInterface.onNamespaceCreated")
+        onComponentUpdated: (store_, observerId_, address_) =>
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onComponentUpdated(#{address_.getHumanReadableString()})")
 
-        onNamespaceUpdated: (store_, address_, observerId_) =>
-            Console.message("ONMjs.test.observers.Canary.callbackInterface.onNamespaceUpdated")
+        onComponentRemoved: (store_, observerId_, address_) =>
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onComponentRemoved(#{address_.getHumanReadableString()})")
 
-        onComponentUpdated: (store_, address_, observerId_) =>
-            Console.message("ONMjs.test.observers.Canary.callbackInterface.onComponentUpdated")
+        onNamespaceCreated: (store_, observerId_, address_) =>
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onNamespaceCreated(#{address_.getHumanReadableString()})")
 
-        onNamespaceRemoved: (store_, address_, observerId_) =>
-            Console.message("ONMjs.test.observers.Canary.callbackInterface.onNamespaceRemoved")
+        onNamespaceUpdated: (store_, observerId_, address_) =>
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onNamespaceUpdated(#{address_.getHumanReadableString()})")
 
-        onSubNamespaceUpdated: (store_, address_, observerId_) =>
-            Console.message("ONMjs.test.observer.Canary.callbackInterface.onSubnamespaceUpdated")
+        onNamespaceRemoved: (store_, observerId_, address_) =>
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onNamespaceRemoved(#{address_.getHumanReadableString()})")
 
-        onSubComponentUpdated: (store_, address_, observerId_) =>
-            Console.message("ONMjs.test.observer.Canary.callbackInterface.onSubcomponentUpdated")
+        onSubNamespaceUpdated: (store_, observerId_, address_) =>
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onSubNamespaceUpdated(#{address_.getHumanReadableString()})")
+
+        onSubComponentUpdated: (store_, observerId_, address_) =>
+            Console.message("ONMjs_#{store_.jsonTag}::#{observerId_}::onSubComponentUpdated(#{address_.getHumanReadableString()})")
 
     }       

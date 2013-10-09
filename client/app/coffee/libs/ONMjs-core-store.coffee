@@ -177,7 +177,7 @@ class ONMjs.Store
             # ============================================================================
             @toJSON = (replacer_, space_) =>
                 try
-                    rootNamespace = @openNamespace(ONMjs.address.RootAddress())
+                    rootNamespace = @openNamespace(ONMjs.address.RootAddress(@model))
                     resultJSON = rootNamespace.toJSON(replacer_, space_)
                     return resultJSON
 

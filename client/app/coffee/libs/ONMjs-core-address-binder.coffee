@@ -224,12 +224,10 @@ class ONMjs.implementation.AddressTokenBinder
             extensionPointId = token_.extensionPointDescriptor? and token_.extensionPointDescriptor and token_.extensionPointDescriptor.id or -1
 
             if mode_ == "new" and resolveResults.created
-                Console.message("Initializing new component.")
                 ONMjs.implementation.binding.InitializeComponentNamespaces(store_, @dataReference, targetComponentDescriptor, extensionPointId, @resolvedToken.key)
 
             if mode_ == "strict"
-                Console.message("Verifying component namespaces.")
-                # ONMjs.implementation.binding.VerifyComponentNamespaces(store_, resolveResult.dataReference, targetComponentDescriptor, extensionPointId)            
+                ONMjs.implementation.binding.VerifyComponentNamespaces(store_, resolveResult.dataReference, targetComponentDescriptor, extensionPointId)            
 
             # ... If we've been asked to bind the root namespace of the component then we're done.
 

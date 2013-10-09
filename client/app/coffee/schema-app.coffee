@@ -127,7 +127,7 @@ class Encapsule.code.app.Schema
                 canaryStoreObserverId = store.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
 
                 # Detach the canary from the store via ONMjs.Store.unregisterObserver.
-                store.unregisterObserver(canaryStoreObserverId)
+                #store.unregisterObserver(canaryStoreObserverId)
 
     
                 addressRoot = ONMjs.address.RootAddress(model)
@@ -152,7 +152,9 @@ class Encapsule.code.app.Schema
                 for x in [0...50]
                     newPersonNamespace = store.createComponent(newPersonAddress)
                 
-                
+                storeJSON = store.toJSON(undefined, 0)
+
+                newStore = new ONMjs.Store(model, storeJSON)
 
 
                 ###

@@ -178,7 +178,6 @@ class ONMjs.observers.NavigatorModelView
                 # ----------------------------------------------------------------------------
                 onNamespaceCreated: (store_, observerId_, address_) =>
                     try
-                        Console.message("ONMjs.observersNavigatorModelView.onNamespaceCreated")
                         if @storeObserverId != observerId_ then throw "Unrecognized observer ID."
                         namespaceState = store_.openObserverNamespaceState(observerId_, address_)
                         namespaceState.description = "Hey this is the ONMjs.observers.NavigatorModelView class saving some submenu state."
@@ -217,7 +216,6 @@ class ONMjs.observers.NavigatorModelView
                 # ----------------------------------------------------------------------------
                 onNamespaceRemoved: (store_, observerId_, address_) =>
                     try
-                        Console.message("ONMjs.observers.NavigatorModelView.onNamespaceRemoved")
                         if @storeObserverId != observerId_ then throw "Unrecognized observer ID."
                         namespaceState = store_.openObserverNamespaceState(observerId_, address_)
 
