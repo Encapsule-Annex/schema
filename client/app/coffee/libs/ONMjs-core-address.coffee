@@ -73,7 +73,7 @@ class ONMjs.implementation.AddressDetails
                     throw "ONMjs.implementation.AddressDetails.getModelDescriptorFromSubpath failure: #{exception}"
 
             # --------------------------------------------------------------------------
-            @createSubpathIdAddress = (pathId) =>
+            @createSubpathIdAddress = (pathId_) =>
                 try
                     if not (pathId_?  and pathId_ > -1) then throw "Missing namespace path ID input parameter."
                     addressedComponentToken = @address.getLastToken()

@@ -59,7 +59,7 @@ class ONMjs.observers.SelectedNamespaceChildrenModelView
             if descriptor.children.length
                 index = 0
                 for descriptor in descriptor.children
-                    childAddress = ONMjs.address.NewAddressSameComponent(params_.selectedAddress, descriptor.id)
+                    childAddress = params_.selectedAddress.implementation.createSubpathIdAddress(descriptor.id)
                     childNamespace = params_.cachedAddressStore.referenceStore.openNamespace(childAddress)
                     prefix = "#{index++ + 1}: "
                     label =  "#{childNamespace.getResolvedLabel()}"

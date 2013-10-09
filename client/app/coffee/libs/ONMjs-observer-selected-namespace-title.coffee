@@ -79,11 +79,11 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
                 displayComponent = true
                 if params_.selectedNamespaceDescriptor.namespaceType != "component"
                     # The selected namespace is a subnamespace of a component.
-                    componentAddress = ONMjs.address.NewAddressSameComponent(params_.selectedAddress, params_.selectedNamespaceDescriptor.idComponent)
+                    componentAddress = params_.selectedAddress.createComponentAddress()
                 else
                     # The selected namespace is the root of an extension component.
                     extensionPointAddress = params_.selectedAddress.createParentAddress()
-                    componentAddress = ONMjs.address.NewAddressSameComponent(extensionPointAddress, extensionPointAddress.getDescriptor().idComponent)
+                    componentAddress = extensionPointAddress.createComponentAddress()
 
                 componentNamespace = params_.objectStore.openNamespace(componentAddress)
                 componentDescriptor = componentAddress.getDescriptor()

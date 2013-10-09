@@ -57,26 +57,20 @@ class ONMjs.observers.SelectedNamespaceComponentModelView
             componentDescriptor = componentAddress.getDescriptor()
             componentNamespace = params_.cachedAddressStore.referenceStore.openNamespace(componentAddress)
 
-            ###
-            @componentModelView = new ONMjs.observers.helers.AddressSelectionLinkModelView(
-                "", componentNamespace.getResolvedLabel(), componentAddress, params_.cachedAddressStore, { noLink: true } )
-            ###
-
             @extensionPointModelViewArray = []
 
             index = 0
-            for extensionPointPath, extensionPointDescriptor of componentDescriptor.extensionPoints
-                extensionPointAddress = ONMjs.address.NewAddressSameComponent(componentAddress, extensionPointDescriptor.id)
-                extensionPointNamespace = params_.cachedAddressStore.referenceStore.openNamespace(extensionPointAddress)
-                noLinkFlag = extensionPointAddress.isEqual(params_.selectedAddress)
+            componentAddress.visitExtensionPointAddresses( (address_) =>
+                noLinkFlag = address_.isEqual(params_.selectedAddress)
+                extensionPointNamespace = params_.cachedAddressStore.referenceStore.openNamespace(address_)
                 prefix = undefined
                 if index++ then prefix = " &bull; "
                 label = "#{extensionPointNamespace.getResolvedLabel()}"
                 subcomponentCount = Encapsule.code.lib.js.dictionaryLength(extensionPointNamespace.data())
                 label += " (#{subcomponentCount})"
-
                 @extensionPointModelViewArray.push new ONMjs.observers.helpers.AddressSelectionLinkModelView(
-                    prefix, label, extensionPointAddress, params_.cachedAddressStore, { noLink: noLinkFlag })
+                    prefix, label, address_, params_.cachedAddressStore, { noLink: noLinkFlag })
+                )
 
         catch exception
             throw "ONMjs.observers.SelectedNamespaceComponentModelView failure: #{exception}"
