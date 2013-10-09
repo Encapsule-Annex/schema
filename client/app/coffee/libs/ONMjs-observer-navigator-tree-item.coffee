@@ -70,7 +70,6 @@ class ONMjs.observers.implementation.NavigatorItemModelView
             @children = ko.observableArray []
             @isSelected = ko.observable false
             @selectionsByObserverId = {}
-            @blipper = Encapsule.runtime.boot.phase0.blipper
 
             namespace = store_.openNamespace(address_)
             @label = ko.observable(namespace.getResolvedLabel())

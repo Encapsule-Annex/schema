@@ -64,11 +64,11 @@ class ONMjs.AddressToken
             # Resolve the specified namespace's object model descriptor.
             if not idNamespace_? then throw "Missing target namespace ID input parameter."
             @idNamespace = idNamespace_
-            @namespaceDescriptor = model_.getNamespaceDescriptorFromPathId(idNamespace_)
+            @namespaceDescriptor = model_.implementation.getNamespaceDescriptorFromPathId(idNamespace_)
 
             # Resolve the specified namespace's component object model descriptor.
             @idComponent = @namespaceDescriptor.idComponent
-            @componentDescriptor = model_.getNamespaceDescriptorFromPathId(@idComponent)
+            @componentDescriptor = model_.implementation.getNamespaceDescriptorFromPathId(@idComponent)
 
             @key =  (@componentDescriptor.id > 0) and key_? and key_ or undefined
             @keyRequired = false # may be overridden later in the constructor
@@ -101,7 +101,7 @@ class ONMjs.AddressToken
                 throw "You must specify the ID of the parent extension point when creating a token addressing a '#{@componentDescriptor.path}' component namespace."
 
             # Resolve the extension point's object model descriptor.
-            @extensionPointDescriptor = @model.getNamespaceDescriptorFromPathId(@idExtensionPoint)
+            @extensionPointDescriptor = @model.implementation.getNamespaceDescriptorFromPathId(@idExtensionPoint)
 
             # Exists.
             if not (@extensionPointDescriptor? and @extensionPointDescriptor)

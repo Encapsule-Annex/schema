@@ -283,59 +283,62 @@ class ONMjs.Model extends ONMjs.implementation.ModelBase
         try
             super(objectModelDeclaration_)
 
-            # --------------------------------------------------------------------------
-            @getNamespaceDescriptorFromPathId = (pathId_) =>
-                try
-                    if not (pathId_?) then throw "Missing path ID parameter!"
-                    if (pathId_ < 0) or (pathId_ >= @objectModelDescriptorById.length)
-                        throw "Out of range path ID '#{pathId_} cannot be resolved."
+            @implementation =
+                # --------------------------------------------------------------------------
+                getNamespaceDescriptorFromPathId: (pathId_) =>
+                    try
+                        if not (pathId_?) then throw "Missing path ID parameter!"
+                        if (pathId_ < 0) or (pathId_ >= @objectModelDescriptorById.length)
+                            throw "Out of range path ID '#{pathId_} cannot be resolved."
 
-                    objectModelDescriptor = @objectModelDescriptorById[pathId_]
-                    if not (objectModelDescriptor? and objectModelDescriptor)
-                        throw "Internal error getting namespace descriptor for path ID=#{pathId_}!"
-                    return objectModelDescriptor
+                        objectModelDescriptor = @objectModelDescriptorById[pathId_]
+                        if not (objectModelDescriptor? and objectModelDescriptor)
+                            throw "Internal error getting namespace descriptor for path ID=#{pathId_}!"
+                        return objectModelDescriptor
 
-                catch exception
-                    throw "ONMjs.Model.getNamespaceDescriptorFromPathId failure: #{exception}"
+                    catch exception
+                      throw "ONMjs.Model.implementation.getNamespaceDescriptorFromPathId failure: #{exception}"
 
-            # --------------------------------------------------------------------------
-            @getNamespaceDescriptorFromPath = (path_) =>
-                try
-                    return @getNamespaceDescriptorFromPathId(@getPathIdFromPath(path_))
-                catch exception
-                    throw "ONMjs.Model.getNamespaceDescriptorFromPath failure: #{exception}"
+                # --------------------------------------------------------------------------
+                getNamespaceDescriptorFromPath: (path_) =>
+                    try
+                        return @implementation.getNamespaceDescriptorFromPathId(@implementation.getPathIdFromPath(path_))
+                    catch exception
+                        throw "ONMjs.Model.implementation.getNamespaceDescriptorFromPath failure: #{exception}"
                 
-            # --------------------------------------------------------------------------
-            @getPathIdFromPath = (objectModelPath_) =>
-                try
-                    if not (objectModelPath_? and objectModelPath_) then throw "Missing object model path parameter!"
+                # --------------------------------------------------------------------------
+                getPathIdFromPath: (objectModelPath_) =>
+                    try
+                        if not (objectModelPath_? and objectModelPath_) then throw "Missing object model path parameter!"
+    
+                        objectModelDescriptor = @objectModelPathMap[objectModelPath_]
+                        if not (objectModelDescriptor? and objectModelDescriptor)
+                            throw "Invalid object model path '#{objectModelPath_}' cannot be resolved."
+            
+                        objectModelPathId = objectModelDescriptor.id
+                        if not objectModelPathId?
+                            throw "Internal error: Invalid object model descriptor doesn't support id property for path '#{objectModelPath_}."
+    
+                        return objectModelPathId
+    
+                    catch exception
+                        throw "ONMjs.Model.implementation.getPathIdFromPath fail: #{exception}"
 
-                    objectModelDescriptor = @objectModelPathMap[objectModelPath_]
-                    if not (objectModelDescriptor? and objectModelDescriptor)
-                        throw "Invalid object model path '#{objectModelPath_}' cannot be resolved."
-        
-                    objectModelPathId = objectModelDescriptor.id
-                    if not objectModelPathId?
-                        throw "Internal error: Invalid object model descriptor doesn't support id property for path '#{objectModelPath_}."
+                # --------------------------------------------------------------------------
+                getPathFromPathId: (pathId_) =>
+                    try
+                        objectModelDescriptor = @implementation.getNamespaceDescriptorFromPathId(pathId_)
+                        if not (objectModelDescriptor? and objectModelDescriptor)
+                            throw "Internal error: Can't find object descriptor for valid path ID '#{pathId_}."
+                        path = objectModelDescriptor.path
+                        if not (path? and path)
+                            throw "Internal error: Invalid object model descriptor doesn't support path property for path '#{objectModelPath_}."
+                        return path
 
-                    return objectModelPathId
+                    catch exception
+                        throw "ONMjs.Model.implementation.getPathFromPathId fail: #{exception}"
 
-                catch exception
-                    throw "ONMjs.Model.getPathIdFromPath fail: #{exception}"
 
-            # --------------------------------------------------------------------------
-            @getPathFromPathId = (pathId_) =>
-                try
-                    objectModelDescriptor = @getNamespaceDescriptorFromPathId(pathId_)
-                    if not (objectModelDescriptor? and objectModelDescriptor)
-                        throw "Internal error: Can't find object descriptor for valid path ID '#{pathId_}."
-                    path = objectModelDescriptor.path
-                    if not (path? and path)
-                        throw "Internal error: Invalid object model descriptor doesn't support path property for path '#{objectModelPath_}."
-                    return path
-
-                catch exception
-                    throw "ONMjs.Model.getPathFromPathId fail: #{exception}"
 
 
             # --------------------------------------------------------------------------

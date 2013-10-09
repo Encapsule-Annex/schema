@@ -67,9 +67,6 @@ class ONMjs.CachedAddress extends ONMjs.Store
             @selectorNamespaceData = @selectorNamespace.data()
             @selectorNamespaceData.selectedNamespace = undefined
 
-            # local alias
-            @blipper = Encapsule.runtime.boot.phase0.blipper
-
             @setAddress(address_)
 
             @objectStoreCallbacks = {
@@ -120,7 +117,6 @@ class ONMjs.CachedAddress extends ONMjs.Store
             else
                 @selectorNamespaceData.selectedNamespace = new ONMjs.Namespace(@referenceStore, address_)
 
-            @blipper.blip("21") # double click sound
             @selectorNamespace.update()
 
         catch exception

@@ -60,7 +60,6 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
                 try
                     Console.message("ObjectModelNavigatorNamespaceActions.onClickAddSubcomponent starting...")
                     componentNamespace = selectorStore_.referenceStore.createComponent(address_)
-                    @blipper.blip("23")
                     setTimeout( ( =>
                         try
                             selectorStore_.setAddress(componentNamespace.getResolvedAddress())
@@ -75,7 +74,6 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
             # ============================================================================
             @onClickRemoveComponent = (prefix_, label_, address_, selectorStore_, options_) =>
                 try
-                    @blipper.blip("15")
                     @showConfirmRemove(true)
                 catch exception
                     throw "ONMjs.observers.SelectedNamespaceActionsModelView.onClickRemoveComponent failure: #{exception}"
@@ -84,7 +82,6 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
             # ============================================================================
             @onDoRemoveComponent = (prefix_, label_, address_, selectorStore_, options_) =>
                 try
-                    @blipper.blip("27")
                     selectorStore_.referenceStore.removeComponent(address_)
 
                 catch exception
@@ -94,7 +91,6 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
             # ============================================================================
             @onClickRemoveAllSubcomponents = (prefix_, label_, address_, selectorStore_, options_) =>
                 try
-                    @blipper.blip("15")
                     @showConfirmRemoveAll(true)
                 catch exception
                     throw "ONMjs.observers.SelectedNamespaceActionsModelView.onClickRemoveAllSubcomponents failure: #{exception}"
@@ -103,7 +99,6 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
             # ============================================================================
             @onDoRemoveAllSubcomponents = (prefix_, label_, address_, selectorStore_, options_) =>
                 try
-                    @blipper.blip("27")
                     store = selectorStore_.referenceStore
                     namespace = store.openNamespace(address_)
                     subcomponentAddresses = [] 
@@ -127,7 +122,6 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
 
             #
             # ==============================================================================
-            @blipper = Encapsule.runtime.boot.phase0.blipper
             @actionsForNamespace = false
 
             @callbackLinkAddSubcomponent = undefined

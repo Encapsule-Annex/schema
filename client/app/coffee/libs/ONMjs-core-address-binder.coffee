@@ -244,7 +244,7 @@ class ONMjs.implementation.AddressTokenBinder
 
             # ... Resolve the component subnamespace parents of the target namespace.
             for pathId in parentPathIds
-                descriptor = model.getNamespaceDescriptorFromPathId(pathId)
+                descriptor = model.implementation.getNamespaceDescriptorFromPathId(pathId)
                 resolveResults = ONMjs.implementation.binding.ResolveNamespaceDescriptor(resolveActions, store_, resolveResults.dataReference, descriptor, resolveResults.key, mode_)
 
             # ... Resolve the target namespace

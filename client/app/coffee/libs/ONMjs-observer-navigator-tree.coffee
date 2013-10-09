@@ -53,9 +53,6 @@ class ONMjs.observers.NavigatorModelView
     constructor: ->
         # \ BEGIN: constructor
         try
-
-            @blipper = Encapsule.runtime.boot.phase0.blipper
-
             @objectStore = undefined
             @rootMenuModelView = undefined
 

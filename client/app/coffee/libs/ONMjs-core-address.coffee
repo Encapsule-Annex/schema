@@ -404,7 +404,7 @@ ONMjs.address.ModelDescriptorFromAddressAndSubpath = (address_, subpath_) ->
     try
         if not (subpath_? and subpath_) then throw "Missing subpath input parameter."
         path = "#{ONMjs.address.ModelPathFromAddress(address_)}.#{subpath_}"
-        return descriptor = address_.model.getNamespaceDescriptorFromPath(path)
+        return descriptor = address_.model.implementation.getNamespaceDescriptorFromPath(path)
 
 
     catch exception
@@ -433,7 +433,7 @@ ONMjs.address.Synthesize = (address_, subpath_) ->
         token = address_.getLastToken().clone()
         
         for pathId in subpathParentIdVector
-            descriptor = address_.model.getNamespaceDescriptorFromPathId(pathId)
+            descriptor = address_.model.implementation.getNamespaceDescriptorFromPathId(pathId)
 
             switch descriptor.namespaceType
                 when "component"
@@ -465,13 +465,13 @@ ONMjs.address.FromPathId = (model_, pathId_) ->
     try
         if not (model_? and model_) then throw "Missing object model input parameter."
         if not pathId_? then throw "Missing path input parameter."
-        targetDescriptor = model_.getNamespaceDescriptorFromPathId(pathId_)
+        targetDescriptor = model_.implementation.getNamespaceDescriptorFromPathId(pathId_)
         newAddress = new ONMjs.Address(model_)
         token = undefined
         pathIds = Encapsule.code.lib.js.clone(targetDescriptor.parentPathIdVector)
         pathIds.push(targetDescriptor.id)
         for parentPathId in pathIds
-            descriptor = model_.getNamespaceDescriptorFromPathId(parentPathId)
+            descriptor = model_.implementation.getNamespaceDescriptorFromPathId(parentPathId)
             if descriptor.namespaceType == "component"
                 newAddress.pushToken token
             token = new ONMjs.AddressToken(model_, descriptor.idExtensionPoint, undefined, descriptor.id)
@@ -484,7 +484,7 @@ ONMjs.address.FromPathId = (model_, pathId_) ->
 # ============================================================================
 ONMjs.address.FromPath = (model_, path_) ->
     try
-        pathId = model_.getPathIdFromPath(path_)
+        pathId = model_.implementation.getPathIdFromPath(path_)
         newAddress = ONMjs.address.FromPathId(model_, pathId)
         return newAddress
     catch exception
@@ -559,7 +559,7 @@ ONMjs.address.NewAddressSameComponent = (address_, pathId_) ->
         addressedComponentToken = address_.getLastToken()
         addressedComponentDescriptor = addressedComponentToken.componentDescriptor
 
-        targetNamespaceDescriptor = address_.model.getNamespaceDescriptorFromPathId(pathId_)
+        targetNamespaceDescriptor = address_.model.implementation.getNamespaceDescriptorFromPathId(pathId_)
         if targetNamespaceDescriptor.idComponent != addressedComponentDescriptor.id
             throw "Invalid path ID specified does not resolve to a namespace in the same component as the source address."
 

@@ -124,7 +124,8 @@ class Encapsule.code.app.Schema
             try
     
                 # Attach the canary to the store via ONMjs.Store.registerObserver.
-                canaryStoreObserverId = store.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
+                storeDebugMonitorObserverId = store.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
+                selectedAddressDebugMonitorObserverId = selectedAddress.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
 
                 # Detach the canary from the store via ONMjs.Store.unregisterObserver.
                 #store.unregisterObserver(canaryStoreObserverId)
