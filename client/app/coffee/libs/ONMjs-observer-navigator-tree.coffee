@@ -183,7 +183,7 @@ class ONMjs.observers.NavigatorModelView
                         if address_.isRoot()
                             @rootMenuModelView = namespaceState.itemModelView
 
-                        parentAddress = ONMjs.address.Parent(address_)
+                        parentAddress = address_.createParentAddress()
                         if parentAddress? and parentAddress?
                             parentNamespaceState = store_.openObserverNamespaceState(observerId_, parentAddress)
                             parentNamespaceState.itemModelView.children.push namespaceState.itemModelView
@@ -219,7 +219,7 @@ class ONMjs.observers.NavigatorModelView
                         if address_.isRoot()
                             @rootMenuModelView = undefined
 
-                        parentAddress = ONMjs.address.Parent(address_)
+                        parentAddress = address_.createParentAddress()
                         if parentAddress? and parentAddress
                             parentNamespaceState = store_.openObserverNamespaceState(observerId_, parentAddress)
                             parentChildItemArray = parentNamespaceState.itemModelView.children()

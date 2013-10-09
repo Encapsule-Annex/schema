@@ -275,7 +275,7 @@ class ONMjs.implementation.ModelBase
 #
 #
 # ****************************************************************************
-class ONMjs.implementation.ModelPrivateMethods
+class ONMjs.implementation.ModelDetails
     constructor: (model_) ->
         try
             @model = (model_? and model_) or throw "Internal error missing model input parameter."
@@ -291,14 +291,14 @@ class ONMjs.implementation.ModelPrivateMethods
                         throw "Internal error getting namespace descriptor for path ID=#{pathId_}!"
                     return objectModelDescriptor
                 catch exception
-                    throw "ONMjs.Model.implementation.getNamespaceDescriptorFromPathId failure: #{exception}"
+                    throw "ONMjs.implementation.ModelDetails.getNamespaceDescriptorFromPathId failure: #{exception}"
 
             # --------------------------------------------------------------------------
             @getNamespaceDescriptorFromPath = (path_) =>
                 try
                     return @getNamespaceDescriptorFromPathId(@getPathIdFromPath(path_))
                 catch exception
-                    throw "ONMjs.Model.implementation.getNamespaceDescriptorFromPath failure: #{exception}"
+                    throw "ONMjs.implementation.ModelDetails.getNamespaceDescriptorFromPath failure: #{exception}"
                 
             # --------------------------------------------------------------------------
             @getPathIdFromPath = (path_) =>
@@ -312,7 +312,7 @@ class ONMjs.implementation.ModelPrivateMethods
                         throw "Internal error: Invalid object model descriptor doesn't support id property for path '#{objectModelPath_}."
                     return objectModelPathId
                 catch exception
-                    throw "ONMjs.Model.implementation.getPathIdFromPath fail: #{exception}"
+                    throw "ONMjs.implementation.ModelDetails.getPathIdFromPath fail: #{exception}"
 
             # --------------------------------------------------------------------------
             @getPathFromPathId = (pathId_) =>
@@ -325,10 +325,10 @@ class ONMjs.implementation.ModelPrivateMethods
                         throw "Internal error: Invalid object model descriptor doesn't support path property for path '#{objectModelPath_}."
                     return path
                 catch exception
-                    throw "ONMjs.Model.implementation.getPathFromPathId fail: #{exception}"
+                    throw "ONMjs.implementation.ModelDetails.getPathFromPathId fail: #{exception}"
 
             # --------------------------------------------------------------------------
-            @getAddressFromPathId = (pathId_) ->
+            @createAddressFromPathId = (pathId_) ->
                 try
                     if not pathId_? then throw "Missing path input parameter."
                     targetDescriptor = @getNamespaceDescriptorFromPathId(pathId_)
@@ -344,11 +344,11 @@ class ONMjs.implementation.ModelPrivateMethods
                     newAddress.pushToken(token)
                     return newAddress
                 catch exception
-                    throw "ONMjs.Model.implementation.getAddressFromPathId failure: #{exception}"
+                    throw "ONMjs.implementation.ModelDetails.getAddressFromPathId failure: #{exception}"
         
 
         catch exception
-            throw "ONMjs.implementation.ModelPrivateMethods failure: #{exception}"
+            throw "ONMjs.implementation.ModelDetails failure: #{exception}"
 
 
 #
@@ -358,10 +358,10 @@ class ONMjs.Model extends ONMjs.implementation.ModelBase
     constructor: (objectModelDeclaration_) ->
         try
             super(objectModelDeclaration_)
-            @implementation = new ONMjs.implementation.ModelPrivateMethods(@)
+            @implementation = new ONMjs.implementation.ModelDetails(@)
 
             # --------------------------------------------------------------------------
-            @getRootAddress = =>
+            @createRootAddress = =>
                 try
                     return new ONMjs.Address(@, [ new ONMjs.AddressToken(@, undefined, undefined, 0) ])
                 catch exception
@@ -369,10 +369,10 @@ class ONMjs.Model extends ONMjs.implementation.ModelBase
             
 
             # --------------------------------------------------------------------------
-            @getAddressFromPath = (path_) =>
+            @createPathAddress = (path_) =>
                 try
                     pathId = @implementation.getPathIdFromPath(path_)
-                    newAddress = @implementation.getAddressFromPathId(pathId)
+                    newAddress = @implementation.createAddressFromPathId(pathId)
                     return newAddress
                 catch exception
                     throw "ONMjs.Model.getAddressFromPath failure: #{exception}"

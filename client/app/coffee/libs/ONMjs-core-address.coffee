@@ -45,11 +45,63 @@ Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.co
 Encapsule.code.lib.onm = Encapsule.code.lib.onm? and Encapsule.code.lib.onm or @Encapsule.code.lib.onm = {}
 
 ONMjs = Encapsule.code.lib.onm
+ONMjs.implementation = ONMjs.implementation? and ONMjs.implementation or ONMjs.implementation = {}
 
-# ****************************************************************************
-# ****************************************************************************
 #
 #
+# ****************************************************************************
+class ONMjs.implementation.AddressDetails
+    constructor: (address_) ->
+        try
+            @address = (address_? and address_) or throw "Internal error missing address input parameter."
+
+            # --------------------------------------------------------------------------
+            @getModelPath = =>
+                try
+                    if not @address.tokenVector.length then throw "Invalid address contains no address tokens."
+                    lastToken = @address.getLastToken()
+                    return lastToken.namespaceDescriptor.path
+                catch exception
+                    throw "ONMjs.implementation.AddressDetails.getModelPathFromAddress failure: #{exception}"
+
+            # --------------------------------------------------------------------------
+            @getModelDescriptorFromSubpath = (subpath_) =>
+                try
+                    path = "#{@getModelPath()}.#{subpath_}"
+                    return address_.model.implementation.getNamespaceDescriptorFromPath(path)
+                catch exception
+                    throw "ONMjs.implementation.AddressDetails.getModelDescriptorFromSubpath failure: #{exception}"
+
+            # --------------------------------------------------------------------------
+            @createSubpathIdAddress = (pathId) =>
+                try
+                    if not (pathId_?  and pathId_ > -1) then throw "Missing namespace path ID input parameter."
+                    addressedComponentToken = @address.getLastToken()
+                    addressedComponentDescriptor = addressedComponentToken.componentDescriptor
+                    targetNamespaceDescriptor = @address.model.implementation.getNamespaceDescriptorFromPathId(pathId_)
+                    if targetNamespaceDescriptor.idComponent != addressedComponentDescriptor.id
+                        throw "Invalid path ID specified does not resolve to a namespace in the same component as the source address."
+                    newToken = new ONMjs.AddressToken(@address.model, addressedComponentToken.idExtensionPoint, addressedComponentToken.key, pathId_)
+                    newTokenVector = @address.tokenVector.length > 0 and @address.tokenVector.slice(0, @address.tokenVector.length - 1) or []
+                    newTokenVector.push newToken
+                    newAddress = new ONMjs.Address(@address.model, newTokenVector)
+                    return newAddress
+                catch exception
+                    throw "ONMjs.implementation.AddressDetails.createSubpathIdAddress failure: #{exception}"
+
+
+
+
+
+
+        catch exception
+            throw "ONMjs.implementation.AddressDetails failure: #{exception}"
+
+
+
+#
+#
+# ****************************************************************************
 class ONMjs.Address
 
     constructor: (model_, tokenVector_) ->
@@ -102,8 +154,12 @@ class ONMjs.Address
             @humanReadableString = undefined
             @hashString = undefined
 
+            # New stuff for address generation
+            @implementation = new ONMjs.implementation.AddressDetails(@)
+
         catch exception
             throw "ONMjs.Address error: #{exception}"
+
 
     #
     # ============================================================================
@@ -268,6 +324,112 @@ class ONMjs.Address
 
     #
     # ============================================================================
+    createParentAddress: (generations_) =>
+        try
+            if not @tokenVector.length then throw "Invalid address contains no address tokens."
+
+            generations = generations_? and generations_ or 1
+            tokenSourceIndex = @tokenVector.length - 1
+            token = @tokenVector[tokenSourceIndex--]
+
+            if token.namespaceDescriptor.id == 0
+                return undefined
+
+            while generations
+                descriptor = token.namespaceDescriptor
+
+                # If we have reached the root descriptor we're done regardless of the number
+                # of generations the caller requested.
+
+                if descriptor.id == 0
+                    break
+
+                # If the current descriptor is within a component (i.e. not the component root)
+                # then descriptor.parent.id indicates its parent ID from which we can trivially
+                # update the current address token.
+                #
+                # However, if the current descriptor is the root of a component then its parent
+                # is by definition an extension point. What makes this complicated is that 
+                # the mapping of extension point ID to component ID is 1:1 but the converse is not
+                # necessarily true. Component ID to containing extension point ID is 1:N potentially
+                # because ONM allows extension points to specify the actual component declaration
+                # or to specify a reference to some other component.
+
+                if descriptor.namespaceType != "component"
+                    token = new ONMjs.AddressToken(token.model, token.idExtensionPoint, token.key, descriptor.parent.id)
+                else
+                    token = (tokenSourceIndex != -1) and @tokenVector[tokenSourceIndex--] or throw "Internal error: exhausted token stack."
+
+                generations--
+                
+            newTokenVector = ((tokenSourceIndex < 0) and []) or @tokenVector.slice(0, tokenSourceIndex + 1)
+            newAddress = new ONMjs.Address(token.model, newTokenVector)
+            newAddress.pushToken(token)
+            return newAddress
+
+        catch exception
+            throw "ONMjs.Address.createParentAddress failure: #{exception}"
+
+
+    #
+    # ============================================================================
+    createSubpathAddress: (subpath_) =>
+        try
+            if not (subpath_? and subpath_) then throw "Missing subpath input parameter."
+            subpathDescriptor = @implementation.getModelDescriptorFromSubpath(subpath_)
+            baseDescriptor = @getLastToken().namespaceDescriptor
+
+            if ((baseDescriptor.namespaceType == "extensionPoint") and (subpathDescriptor.namespaceType != "component"))
+                throw "Invalid subpath string must begin with the name of the component contained by the base address' extension point."
+
+            baseDescriptorHeight = baseDescriptor.parentPathIdVector.length
+            subpathDescriptorHeight = subpathDescriptor.parentPathIdVector.length
+
+            if ((subpathDescriptorHeight - baseDescriptorHeight) < 1)
+                throw "Internal error due to failed consistency check."
+
+            subpathParentIdVector = subpathDescriptor.parentPathIdVector.slice(baseDescriptorHeight + 1, subpathDescriptorHeight)
+            subpathParentIdVector.push subpathDescriptor.id
+            baseTokenVector = @tokenVector.slice(0, @tokenVector.length - 1) or []
+            newAddress = new ONMjs.Address(@model, baseTokenVector)
+            token = @getLastToken().clone()
+        
+            for pathId in subpathParentIdVector
+                descriptor = @model.implementation.getNamespaceDescriptorFromPathId(pathId)
+
+                switch descriptor.namespaceType
+                    when "component"
+                        newAddress.pushToken(token)
+                        token = new ONMjs.AddressToken(token.model, token.namespaceDescriptor.id, undefined, pathId)
+                        break
+                    else
+                        token = new ONMjs.AddressToken(token.model, token.idExtensionPoint, token.key, pathId)
+
+            newAddress.pushToken(token)
+            return newAddress
+
+        catch exception
+            throw "ONMjs.Address.createSubpathAddress failure: #{exception}"
+
+
+
+
+    #
+    # ============================================================================
+    createComponentAddress: =>
+        try
+            descriptor = @getDescriptor()
+            if descriptor.isComponent
+                return @clone()
+            newAddress = @implementation.createSubpathIdAddress(descriptor.idComponent)
+            return newAddress
+        catch excpetion
+            throw "ONMjs.Address.createComponentAddress failure: #{exception}"
+
+
+
+    #
+    # ============================================================================
     getNamespaceModelDeclaration: =>
         try
             return @getDescriptor().namespaceModelDeclaration
@@ -310,10 +472,10 @@ class ONMjs.Address
             if not (callback_? and callback_) then return false
             if not (@parentAddressesDesending? and @parentAddressesDesceding)
                 @parentAddressesDescending = []
-                parent = ONMjs.address.Parent(@)
+                parent = @createParentAddress()
                 while parent
                     @parentAddressesDescending.push parent
-                    parent = ONMjs.address.Parent(parent)
+                    parent = parent.createParentAddress()
             if not @parentAddressesDescending.length then return false
             for address in @parentAddressesDescending
                 callback_(address)
@@ -331,7 +493,7 @@ class ONMjs.Address
                 @subnamespaceAddressesAscending = []
                 namespaceDescriptor = @getLastToken().namespaceDescriptor
                 for subnamespacePathId in namespaceDescriptor.componentNamespaceIds
-                    subnamespaceAddress = ONMjs.address.NewAddressSameComponent(@, subnamespacePathId)
+                    subnamespaceAddress = @implementation.createSubpathIdAddress(subnamespacePathId)
                     @subnamespaceAddressesAscending.push subnamespaceAddress
             for address in @subnamespaceAddressesAscending
                 callback_(address)
@@ -363,193 +525,11 @@ class ONMjs.Address
                 @extensionPointAddresses = []
                 namespaceDescriptor = @getLastToken().namespaceDescriptor
                 for path, extensionPointDescriptor of namespaceDescriptor.extensionPoints
-                    extensionPointAddress = ONMjs.address.NewAddressSameComponent(@, extensionPointDescriptor.id)
+                    extensionPointAddress = @implementation.createSubpathIdAddress(extensionPointDescriptor.id)
                     @extensionPointAddresses.push extensionPointAddress
             for address in @extensionPointAddresses
                 callback_(address)
             true # that
         catch exception
             throw "ONMjs.Address.visitExtensionPointAddresses failure: #{exception}"
-
-
-
-
-
-
-
-
-
-#
-#
-# ****************************************************************************
-# ****************************************************************************
-
-ONMjs.address = {}
-
-#
-# ============================================================================
-ONMjs.address.ModelPathFromAddress = (address_) ->
-    try
-        if not (address_? and address_) then throw "Missing address input parameter.";
-        if not address_.tokenVector.length then throw "Invalid address contains no address tokens."
-        lastToken = address_.getLastToken()
-        return lastToken.namespaceDescriptor.path
-
-    catch exception
-        throw "ONMjs.address.ModelPathFromAddress failure: #{exception}"
-
-#
-# ============================================================================
-ONMjs.address.ModelDescriptorFromAddressAndSubpath = (address_, subpath_) ->
-    try
-        if not (subpath_? and subpath_) then throw "Missing subpath input parameter."
-        path = "#{ONMjs.address.ModelPathFromAddress(address_)}.#{subpath_}"
-        return descriptor = address_.model.implementation.getNamespaceDescriptorFromPath(path)
-
-
-    catch exception
-        throw "ONMjs.address.CreateNewModelPathFromAddressAndSubpath failure: #{exception}"
-
-#
-# ============================================================================
-ONMjs.address.Synthesize = (address_, subpath_) ->
-    try
-        subpathDescriptor = ONMjs.address.ModelDescriptorFromAddressAndSubpath(address_, subpath_)
-        baseDescriptor = address_.getLastToken().namespaceDescriptor
-
-        if ((baseDescriptor.namespaceType == "extensionPoint") and (subpathDescriptor.namespaceType != "component"))
-            throw "Invalid subpath string must begin with the name of the component contained by the base address' extension point."
-
-        baseDescriptorHeight = baseDescriptor.parentPathIdVector.length
-        subpathDescriptorHeight = subpathDescriptor.parentPathIdVector.length
-
-        if ((subpathDescriptorHeight - baseDescriptorHeight) <= 0)
-            throw "Internal error due to failed consistency check."
-
-        subpathParentIdVector = subpathDescriptor.parentPathIdVector.slice(baseDescriptorHeight + 1, subpathDescriptorHeight)
-        subpathParentIdVector.push subpathDescriptor.id
-        baseTokenVector = address_.tokenVector.slice(0, address_.tokenVector.length - 1) or []
-        newAddress = new ONMjs.Address(address_.model, baseTokenVector)
-        token = address_.getLastToken().clone()
-        
-        for pathId in subpathParentIdVector
-            descriptor = address_.model.implementation.getNamespaceDescriptorFromPathId(pathId)
-
-            switch descriptor.namespaceType
-                when "component"
-                    newAddress.pushToken(token)
-                    token = new ONMjs.AddressToken(token.model, token.namespaceDescriptor.id, undefined, pathId)
-                    break
-                else
-                    token = new ONMjs.AddressToken(token.model, token.idExtensionPoint, token.key, pathId)
-
-        newAddress.pushToken(token)
-        return newAddress
-
-    catch exception
-        throw "ONMjs.address.SynthesizeAddress(address_, subpath_) failure: #{exception}"
-
-
-#
-# ============================================================================
-# Return the parent address (defaults to a single generation) or undefined
-# if no parent address exists.
-ONMjs.address.Parent = (address_, generations_) ->
-    try
-        if not (address_? and address_) then throw "Missing address input parameter."
-        if not address_.tokenVector.length then throw "Invalid address contains no address tokens."
-
-        generations = generations_? and generations_ or 1
-        tokenSourceIndex = address_.tokenVector.length - 1
-        token = address_.tokenVector[tokenSourceIndex--]
-
-        if token.namespaceDescriptor.id == 0
-            return undefined
-
-        while generations
-            descriptor = token.namespaceDescriptor
-
-            # If we have reached the root descriptor we're done regardless of the number
-            # of generations the caller requested.
-
-            if descriptor.id == 0
-                break
-
-            # If the current descriptor is within a component (i.e. not the component root)
-            # then descriptor.parent.id indicates its parent ID from which we can trivially
-            # update the current address token.
-            #
-            # However, if the current descriptor is the root of a component then its parent
-            # is by definition an extension point. What makes this complicated is that 
-            # the mapping of extension point ID to component ID is 1:1 but the converse is not
-            # necessarily true. Component ID to containing extension point ID is 1:N potentially
-            # because ONM allows extension points to specify the actual component declaration
-            # or to specify a reference to some other component.
-
-            if descriptor.namespaceType != "component"
-                token = new ONMjs.AddressToken(token.model, token.idExtensionPoint, token.key, descriptor.parent.id)
-            else
-                token = (tokenSourceIndex != -1) and address_.tokenVector[tokenSourceIndex--] or throw "Internal error: exhausted token stack."
-
-            generations--
-                
-        newTokenVector = ((tokenSourceIndex < 0) and []) or address_.tokenVector.slice(0, tokenSourceIndex + 1)
-        newAddress = new ONMjs.Address(token.model, newTokenVector)
-        newAddress.pushToken(token)
-        return newAddress
-
-    catch exception
-        throw "ONMjs.address.Parent failure: #{exception}"
-
-
-
-
-
-#
-# ============================================================================
-# Given a source address, generate a new address to another namespace within
-# the component specified by the source address.
-
-ONMjs.address.NewAddressSameComponent = (address_, pathId_) ->
-    try
-
-        if not (address_? and address_) then throw "Missing address input parameter."
-        if not (pathId_?  and pathId_ > -1) then throw "Missing namespace path ID input parameter."
-        addressedComponentToken = address_.getLastToken()
-        addressedComponentDescriptor = addressedComponentToken.componentDescriptor
-
-        targetNamespaceDescriptor = address_.model.implementation.getNamespaceDescriptorFromPathId(pathId_)
-        if targetNamespaceDescriptor.idComponent != addressedComponentDescriptor.id
-            throw "Invalid path ID specified does not resolve to a namespace in the same component as the source address."
-
-        newToken = new ONMjs.AddressToken(address_.model, addressedComponentToken.idExtensionPoint, addressedComponentToken.key, pathId_)
-
-        newTokenVector = address_.tokenVector.length > 0 and address_.tokenVector.slice(0, address_.tokenVector.length - 1) or []
-        newTokenVector.push newToken
-        newAddress = new ONMjs.Address(address_.model, newTokenVector)
-
-        return newAddress
-
-    catch exception
-        throw "ONMjs.address.NewAddressSameComponent failure: #{exception}"
-
-
-
-#
-# ============================================================================
-# Given a source address, determine if it specifies the root namespame
-# of the store or an extension component. If it does, simply return a reference
-# to the source address. Otherwise, create and return a new address that
-# specifies the source address' owning component address.
-
-ONMjs.address.ComponentAddress = (address_) ->
-    try
-        if not (address_? and address_) then throw "Missing address input parameter."
-        descriptor = address_.getDescriptor()
-        if descriptor.isComponent
-            return address_
-        return ONMjs.address.NewAddressSameComponent(address_, descriptor.idComponent)
-
-    catch excpetion
-        throw "ONMjs.address.ComponentAddress failure: #{exception}"
 

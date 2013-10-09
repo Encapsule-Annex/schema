@@ -82,7 +82,7 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
                     componentAddress = ONMjs.address.NewAddressSameComponent(params_.selectedAddress, params_.selectedNamespaceDescriptor.idComponent)
                 else
                     # The selected namespace is the root of an extension component.
-                    extensionPointAddress = ONMjs.address.Parent(params_.selectedAddress)
+                    extensionPointAddress = params_.selectedAddress.createParentAddress()
                     componentAddress = ONMjs.address.NewAddressSameComponent(extensionPointAddress, extensionPointAddress.getDescriptor().idComponent)
 
                 componentNamespace = params_.objectStore.openNamespace(componentAddress)
@@ -99,7 +99,7 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
                 displayExtensionPoint = true
 
                 if not (extensionPointAddress? and extensionPointAddress)
-                    extensionPointAddress = ONMjs.address.Parent(params_.selectedAddress)
+                    extensionPointAddress = params_.selectedAddress.createParentAddress()
                     
                 extensionPointDescriptor = extensionPointAddress.getDescriptor()
 

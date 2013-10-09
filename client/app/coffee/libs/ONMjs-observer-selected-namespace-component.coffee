@@ -53,7 +53,7 @@ class ONMjs.observers.SelectedNamespaceComponentModelView
     constructor: (params_) ->
         try
 
-            componentAddress = ONMjs.address.ComponentAddress(params_.selectedAddress)
+            componentAddress = params_.selectedAddress.createComponentAddress()
             componentDescriptor = componentAddress.getDescriptor()
             componentNamespace = params_.cachedAddressStore.referenceStore.openNamespace(componentAddress)
 

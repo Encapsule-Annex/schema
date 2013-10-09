@@ -88,12 +88,11 @@ class ONMjs.Namespace
                     if addressToken.idComponent 
                         if not (addressToken.key? and addressToken.key)
                             resolvedAddress = new ONMjs.Address(@store.model, @resolvedTokenArray)
-                            componentAddress = ONMjs.address.ComponentAddress(resolvedAddress)
+                            componentAddress = resolvedAddress.createComponentAddress()
                             @store.reifier.reifyStoreComponent(componentAddress)
-                            extensionPointAddress = ONMjs.address.Parent(componentAddress)
+                            extensionPointAddress = componentAddress.createParentAddress()
                             extensionPointNamespace = @store.openNamespace(extensionPointAddress)
                             extensionPointNamespace.update();
-
                 true
 
             @resolvedAddress = undefined
@@ -191,7 +190,7 @@ class ONMjs.Namespace
                    else
                        @store.reifier.dispatchCallback(address, "onSubcomponentUpdated", undefined)
 
-                address = ONMjs.address.Parent(address) # returns undefined if address == root namespace of the store
+                address = address.createParentAddress() # returns undefined if address == root namespace of the store
                 count++
             
         catch exception

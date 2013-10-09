@@ -62,7 +62,7 @@ class ONMjs.CachedAddress extends ONMjs.Store
             # Initialize the base ONMjs.Store class.
             super(selectorModel)
 
-            selectorAddress = selectorModel.getRootAddress()
+            selectorAddress = selectorModel.createRootAddress()
             @selectorNamespace = new ONMjs.Namespace(@, selectorAddress)
             @selectorNamespaceData = @selectorNamespace.data()
             @selectorNamespaceData.selectedNamespace = undefined
@@ -84,7 +84,7 @@ class ONMjs.CachedAddress extends ONMjs.Store
                     try
                         cachedAddress = @getAddress()
                         if cachedAddress.isEqual(address_)
-                            parentAddress = ONMjs.address.Parent(cachedAddress)
+                            parentAddress = cachedAddress.createParentAddress()
                             @setAddress(parentAddress)
                         return
                     catch exception

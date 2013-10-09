@@ -114,7 +114,7 @@ class Encapsule.code.app.Schema
 
 
             # Select the root namespace of the ONMjs.store.
-            rootAddress = model.getRootAddress()
+            rootAddress = model.createRootAddress()
             selectedAddress.setAddress(rootAddress)
 
 
@@ -131,27 +131,28 @@ class Encapsule.code.app.Schema
                 #store.unregisterObserver(canaryStoreObserverId)
 
     
-                addressRoot = model.getRootAddress()
+                addressRoot = model.createRootAddress()
 
                 path = model.implementation.getPathFromPathId(40)
 
-                addressTest0 = model.getAddressFromPath("schema.client.catalogues.catalogue")
+                addressTest0 = model.createPathAddress("schema.client.catalogues.catalogue")
                 namespace = store.createComponent(addressTest0)
 
-                addressTest0A = model.getAddressFromPath("schema.client.catalogues.catalogue.models.machines.machine")
+                addressTest0A = model.createPathAddress("schema.client.catalogues.catalogue.models.machines.machine")
                 namespace = store.createComponent(addressTest0A)
 
 
                 
-                addressTest1 = ONMjs.address.Synthesize(addressRoot, "client.catalogues.catalogue")
+                addressTest1 = addressRoot.createSubpathAddress("client.catalogues.catalogue")
                 namespace = store.createComponent(addressTest1)
 
                 beesWax = addressTest0.isEqual(addressTest1)
 
-                addressNewCatalogue = model.getAddressFromPath("schema.client.catalogues.catalogue")
+                addressNewCatalogue = model.createPathAddress("schema.client.catalogues.catalogue")
                 newCatalogueAddress = store.createComponent(addressNewCatalogue).getResolvedAddress()
 
-                newPersonAddress = ONMjs.address.Synthesize(newCatalogueAddress, "resources.attribution.people.person")
+                newPersonAddress = newCatalogueAddress.createSubpathAddress("resources.attribution.people.person")
+
                 for x in [0...50]
                     newPersonNamespace = store.createComponent(newPersonAddress)
                 

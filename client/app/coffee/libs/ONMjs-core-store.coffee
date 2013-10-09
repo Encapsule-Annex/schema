@@ -145,7 +145,7 @@ class ONMjs.Store
                     @reifier.reifyStoreExtensions(address_, undefined, true)
                     @reifier.unreifyStoreComponent(address_)
                     componentNamespace = @openNamespace(address_)
-                    extensionPointAddress = ONMjs.address.Parent(address_)
+                    extensionPointAddress = address_.createParentAddress()
                     extensionPointNamespace = @openNamespace(extensionPointAddress)
                     componentDictionary = extensionPointNamespace.data()
                     componentKey = address_.getLastToken().key
@@ -177,7 +177,7 @@ class ONMjs.Store
             # ============================================================================
             @toJSON = (replacer_, space_) =>
                 try
-                    rootNamespace = @openNamespace(@model.getRootAddress())
+                    rootNamespace = @openNamespace(@model.createRootAddress())
                     resultJSON = rootNamespace.toJSON(replacer_, space_)
                     return resultJSON
 
@@ -213,7 +213,7 @@ class ONMjs.Store
                     # collections but excluding the components contained with child extension points.
 
                     # Get the store's root address.
-                    rootAddress = @model.getRootAddress()
+                    rootAddress = @model.createRootAddress()
 
                     @reifier.dispatchCallback(undefined, "onObserverAttachBegin", observerIdCode)
 
@@ -248,7 +248,7 @@ class ONMjs.Store
                     @reifier.dispatchCallback(undefined, "onObserverDetachBegin", observerIdCode_)
 
                     # Get the store's root address.
-                    rootAddress = @model.getRootAddress()
+                    rootAddress = @model.createRootAddress()
 
                     @reifier.reifyStoreExtensions(rootAddress, observerIdCode_, true)
                     @reifier.unreifyStoreComponent(rootAddress, observerIdCode_)
@@ -291,7 +291,7 @@ class ONMjs.Store
                     if not (address_? and address_) then throw "Missing address input parameter."
                     token = address_.getLastToken()
                     componentNamespaceId = token.componentDescriptor.id
-                    componentAddress = ONMjs.address.NewAddressSameComponent(address_, componentNamespaceId)
+                    componentAddress = address_.createComponentAddress()
                     return @openObserverNamespaceState(observerId_, componentAddress)
                 catch exception
                     throw "ONMjs.Store.openObserverComponentState failure: #{exception}"
