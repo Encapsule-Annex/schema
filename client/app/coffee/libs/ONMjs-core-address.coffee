@@ -449,47 +449,6 @@ ONMjs.address.Synthesize = (address_, subpath_) ->
     catch exception
         throw "ONMjs.address.SynthesizeAddress(address_, subpath_) failure: #{exception}"
 
-#
-# ============================================================================
-ONMjs.address.RootAddress = (model_) ->
-   try
-       return new ONMjs.Address(model_, [ new ONMjs.AddressToken(model_, undefined, undefined, 0) ])
-   catch exception
-       throw "ONMjs.address.RootAddress failure: #{exception}"
-#
-# ============================================================================
-# Builds a rooted, non-recursive, unqualified, address to the subnamespace indicated
-# by pathId_ in the address space indicated by model_.
-
-ONMjs.address.FromPathId = (model_, pathId_) ->
-    try
-        if not (model_? and model_) then throw "Missing object model input parameter."
-        if not pathId_? then throw "Missing path input parameter."
-        targetDescriptor = model_.implementation.getNamespaceDescriptorFromPathId(pathId_)
-        newAddress = new ONMjs.Address(model_)
-        token = undefined
-        pathIds = Encapsule.code.lib.js.clone(targetDescriptor.parentPathIdVector)
-        pathIds.push(targetDescriptor.id)
-        for parentPathId in pathIds
-            descriptor = model_.implementation.getNamespaceDescriptorFromPathId(parentPathId)
-            if descriptor.namespaceType == "component"
-                newAddress.pushToken token
-            token = new ONMjs.AddressToken(model_, descriptor.idExtensionPoint, undefined, descriptor.id)
-        newAddress.pushToken(token)
-        return newAddress
-    catch exception
-        throw "ONMjs.address.FromPath failure: #{exception}"
-
-#
-# ============================================================================
-ONMjs.address.FromPath = (model_, path_) ->
-    try
-        pathId = model_.implementation.getPathIdFromPath(path_)
-        newAddress = ONMjs.address.FromPathId(model_, pathId)
-        return newAddress
-    catch exception
-        throw "ONMjs.address.FromPath failure: #{exception}"
-
 
 #
 # ============================================================================

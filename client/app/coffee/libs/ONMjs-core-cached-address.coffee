@@ -62,7 +62,7 @@ class ONMjs.CachedAddress extends ONMjs.Store
             # Initialize the base ONMjs.Store class.
             super(selectorModel)
 
-            selectorAddress = new ONMjs.address.FromPathId(selectorModel, 0)
+            selectorAddress = selectorModel.getRootAddress()
             @selectorNamespace = new ONMjs.Namespace(@, selectorAddress)
             @selectorNamespaceData = @selectorNamespace.data()
             @selectorNamespaceData.selectedNamespace = undefined

@@ -114,7 +114,7 @@ class Encapsule.code.app.Schema
 
 
             # Select the root namespace of the ONMjs.store.
-            rootAddress = ONMjs.address.RootAddress(model)
+            rootAddress = model.getRootAddress()
             selectedAddress.setAddress(rootAddress)
 
 
@@ -131,12 +131,14 @@ class Encapsule.code.app.Schema
                 #store.unregisterObserver(canaryStoreObserverId)
 
     
-                addressRoot = ONMjs.address.RootAddress(model)
+                addressRoot = model.getRootAddress()
 
-                addressTest0 = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue")
+                path = model.implementation.getPathFromPathId(40)
+
+                addressTest0 = model.getAddressFromPath("schema.client.catalogues.catalogue")
                 namespace = store.createComponent(addressTest0)
 
-                addressTest0A = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue.models.machines.machine")
+                addressTest0A = model.getAddressFromPath("schema.client.catalogues.catalogue.models.machines.machine")
                 namespace = store.createComponent(addressTest0A)
 
 
@@ -146,7 +148,7 @@ class Encapsule.code.app.Schema
 
                 beesWax = addressTest0.isEqual(addressTest1)
 
-                addressNewCatalogue = ONMjs.address.FromPath(model, "schema.client.catalogues.catalogue")
+                addressNewCatalogue = model.getAddressFromPath("schema.client.catalogues.catalogue")
                 newCatalogueAddress = store.createComponent(addressNewCatalogue).getResolvedAddress()
 
                 newPersonAddress = ONMjs.address.Synthesize(newCatalogueAddress, "resources.attribution.people.person")

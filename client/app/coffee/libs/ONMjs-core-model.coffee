@@ -271,8 +271,84 @@ class ONMjs.implementation.ModelBase
         catch exception
             throw "ONMjs.ModelBase object model declaration parse failure: #{exception} PLEASE REVIEW YOUR ONMjs OBJECT MODEL DECLARATION CAREFULLY FOR ERROR(S)."
 
-# ****************************************************************************
+
 #
+#
+# ****************************************************************************
+class ONMjs.implementation.ModelPrivateMethods
+    constructor: (model_) ->
+        try
+            @model = (model_? and model_) or throw "Internal error missing model input parameter."
+
+            # --------------------------------------------------------------------------
+            @getNamespaceDescriptorFromPathId = (pathId_) =>
+                try
+                    if not (pathId_?) then throw "Missing path ID parameter!"
+                    if (pathId_ < 0) or (pathId_ >= @model.objectModelDescriptorById.length)
+                        throw "Out of range path ID '#{pathId_} cannot be resolved."
+                    objectModelDescriptor = @model.objectModelDescriptorById[pathId_]
+                    if not (objectModelDescriptor? and objectModelDescriptor)
+                        throw "Internal error getting namespace descriptor for path ID=#{pathId_}!"
+                    return objectModelDescriptor
+                catch exception
+                    throw "ONMjs.Model.implementation.getNamespaceDescriptorFromPathId failure: #{exception}"
+
+            # --------------------------------------------------------------------------
+            @getNamespaceDescriptorFromPath = (path_) =>
+                try
+                    return @getNamespaceDescriptorFromPathId(@getPathIdFromPath(path_))
+                catch exception
+                    throw "ONMjs.Model.implementation.getNamespaceDescriptorFromPath failure: #{exception}"
+                
+            # --------------------------------------------------------------------------
+            @getPathIdFromPath = (path_) =>
+                try
+                    if not (path_? and path_) then throw "Missing object model path parameter!"
+                    objectModelDescriptor = @model.objectModelPathMap[path_]
+                    if not (objectModelDescriptor? and objectModelDescriptor)
+                        throw "Invalid object model path '#{objectModelPath_}' cannot be resolved."
+                    objectModelPathId = objectModelDescriptor.id
+                    if not objectModelPathId?
+                        throw "Internal error: Invalid object model descriptor doesn't support id property for path '#{objectModelPath_}."
+                    return objectModelPathId
+                catch exception
+                    throw "ONMjs.Model.implementation.getPathIdFromPath fail: #{exception}"
+
+            # --------------------------------------------------------------------------
+            @getPathFromPathId = (pathId_) =>
+                try
+                    objectModelDescriptor = @getNamespaceDescriptorFromPathId(pathId_)
+                    if not (objectModelDescriptor? and objectModelDescriptor)
+                        throw "Internal error: Can't find object descriptor for valid path ID '#{pathId_}."
+                    path = objectModelDescriptor.path
+                    if not (path? and path)
+                        throw "Internal error: Invalid object model descriptor doesn't support path property for path '#{objectModelPath_}."
+                    return path
+                catch exception
+                    throw "ONMjs.Model.implementation.getPathFromPathId fail: #{exception}"
+
+            # --------------------------------------------------------------------------
+            @getAddressFromPathId = (pathId_) ->
+                try
+                    if not pathId_? then throw "Missing path input parameter."
+                    targetDescriptor = @getNamespaceDescriptorFromPathId(pathId_)
+                    newAddress = new ONMjs.Address(@model)
+                    token = undefined
+                    pathIds = Encapsule.code.lib.js.clone(targetDescriptor.parentPathIdVector)
+                    pathIds.push(targetDescriptor.id)
+                    for parentPathId in pathIds
+                        descriptor = @getNamespaceDescriptorFromPathId(parentPathId)
+                        if descriptor.namespaceType == "component"
+                            newAddress.pushToken token
+                        token = new ONMjs.AddressToken(@model, descriptor.idExtensionPoint, undefined, descriptor.id)
+                    newAddress.pushToken(token)
+                    return newAddress
+                catch exception
+                    throw "ONMjs.Model.implementation.getAddressFromPathId failure: #{exception}"
+        
+
+        catch exception
+            throw "ONMjs.implementation.ModelPrivateMethods failure: #{exception}"
 
 
 #
@@ -282,64 +358,24 @@ class ONMjs.Model extends ONMjs.implementation.ModelBase
     constructor: (objectModelDeclaration_) ->
         try
             super(objectModelDeclaration_)
+            @implementation = new ONMjs.implementation.ModelPrivateMethods(@)
 
-            @implementation =
-                # --------------------------------------------------------------------------
-                getNamespaceDescriptorFromPathId: (pathId_) =>
-                    try
-                        if not (pathId_?) then throw "Missing path ID parameter!"
-                        if (pathId_ < 0) or (pathId_ >= @objectModelDescriptorById.length)
-                            throw "Out of range path ID '#{pathId_} cannot be resolved."
-
-                        objectModelDescriptor = @objectModelDescriptorById[pathId_]
-                        if not (objectModelDescriptor? and objectModelDescriptor)
-                            throw "Internal error getting namespace descriptor for path ID=#{pathId_}!"
-                        return objectModelDescriptor
-
-                    catch exception
-                      throw "ONMjs.Model.implementation.getNamespaceDescriptorFromPathId failure: #{exception}"
-
-                # --------------------------------------------------------------------------
-                getNamespaceDescriptorFromPath: (path_) =>
-                    try
-                        return @implementation.getNamespaceDescriptorFromPathId(@implementation.getPathIdFromPath(path_))
-                    catch exception
-                        throw "ONMjs.Model.implementation.getNamespaceDescriptorFromPath failure: #{exception}"
-                
-                # --------------------------------------------------------------------------
-                getPathIdFromPath: (objectModelPath_) =>
-                    try
-                        if not (objectModelPath_? and objectModelPath_) then throw "Missing object model path parameter!"
-    
-                        objectModelDescriptor = @objectModelPathMap[objectModelPath_]
-                        if not (objectModelDescriptor? and objectModelDescriptor)
-                            throw "Invalid object model path '#{objectModelPath_}' cannot be resolved."
+            # --------------------------------------------------------------------------
+            @getRootAddress = =>
+                try
+                    return new ONMjs.Address(@, [ new ONMjs.AddressToken(@, undefined, undefined, 0) ])
+                catch exception
+                    throw "ONMjs.Model.getRootAddress failure: #{exception}"
             
-                        objectModelPathId = objectModelDescriptor.id
-                        if not objectModelPathId?
-                            throw "Internal error: Invalid object model descriptor doesn't support id property for path '#{objectModelPath_}."
-    
-                        return objectModelPathId
-    
-                    catch exception
-                        throw "ONMjs.Model.implementation.getPathIdFromPath fail: #{exception}"
 
-                # --------------------------------------------------------------------------
-                getPathFromPathId: (pathId_) =>
-                    try
-                        objectModelDescriptor = @implementation.getNamespaceDescriptorFromPathId(pathId_)
-                        if not (objectModelDescriptor? and objectModelDescriptor)
-                            throw "Internal error: Can't find object descriptor for valid path ID '#{pathId_}."
-                        path = objectModelDescriptor.path
-                        if not (path? and path)
-                            throw "Internal error: Invalid object model descriptor doesn't support path property for path '#{objectModelPath_}."
-                        return path
-
-                    catch exception
-                        throw "ONMjs.Model.implementation.getPathFromPathId fail: #{exception}"
-
-
-
+            # --------------------------------------------------------------------------
+            @getAddressFromPath = (path_) =>
+                try
+                    pathId = @implementation.getPathIdFromPath(path_)
+                    newAddress = @implementation.getAddressFromPathId(pathId)
+                    return newAddress
+                catch exception
+                    throw "ONMjs.Model.getAddressFromPath failure: #{exception}"
 
             # --------------------------------------------------------------------------
             @getSemanticBindings = =>
@@ -347,11 +383,15 @@ class ONMjs.Model extends ONMjs.implementation.ModelBase
                     semanticBindings = @objectModelDeclaration.semanticBindings
                     return semanticBindings
                 catch exception
-                    throw "ONMjs.Model failure: #{exception}"
-
+                    throw "ONMjs.Model.getSemanticBindings failure: #{exception}"
 
             # --------------------------------------------------------------------------
-            @isEqual = (model_) => @jsonTag == model_.jsonTag
+            @isEqual = (model_) =>
+                try
+                    @jsonTag == model_.jsonTag
+                catch exception
+                    throw "ONMjs.Model.isEqual failure: #{exception}"
 
         catch exception
             throw "ONMjs.Model construction fail: #{exception}"
+

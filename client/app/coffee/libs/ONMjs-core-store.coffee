@@ -177,7 +177,7 @@ class ONMjs.Store
             # ============================================================================
             @toJSON = (replacer_, space_) =>
                 try
-                    rootNamespace = @openNamespace(ONMjs.address.RootAddress(@model))
+                    rootNamespace = @openNamespace(@model.getRootAddress())
                     resultJSON = rootNamespace.toJSON(replacer_, space_)
                     return resultJSON
 
@@ -213,7 +213,7 @@ class ONMjs.Store
                     # collections but excluding the components contained with child extension points.
 
                     # Get the store's root address.
-                    rootAddress = ONMjs.address.RootAddress(@model)
+                    rootAddress = @model.getRootAddress()
 
                     @reifier.dispatchCallback(undefined, "onObserverAttachBegin", observerIdCode)
 
@@ -248,7 +248,7 @@ class ONMjs.Store
                     @reifier.dispatchCallback(undefined, "onObserverDetachBegin", observerIdCode_)
 
                     # Get the store's root address.
-                    rootAddress = ONMjs.address.RootAddress(@model)
+                    rootAddress = @model.getRootAddress()
 
                     @reifier.reifyStoreExtensions(rootAddress, observerIdCode_, true)
                     @reifier.unreifyStoreComponent(rootAddress, observerIdCode_)
