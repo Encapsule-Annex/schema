@@ -60,6 +60,43 @@ Encapsule.code.app.ONMjs.SchemaAppData = {
         # Encapsule.code.app.ONMjs.OMMDeclarationTest
 
         {
+            namespaceType: "extensionPoint"
+            jsonTag: "extendoTest"
+            ____label: "Extendo Objects Test"
+            ____description: "A collection of objects that are recursively extensible."
+            componentArchetype: {
+                namespaceType: "component"
+                jsonTag: "extendo"
+                ____label: "Extendo Component"
+                ____description: "This is an extendo component. An extendo component declares an extension point containing instances of its own type."
+                namespaceProperties: {
+                    userImmutable: {
+                        uuid: {
+                            ____type: "uuid"
+                            fnCreate: -> uuid.v4()
+                        }
+                    }
+                }
+                subNamespaces: [
+                    {
+                        namespaceType: "extensionPoint"
+                        jsonTag: "extendoCollection"
+                        ____label: "Extendo Collection"
+                        ____description: "This is a collection of extendo objects."
+                        componentArchetypePath: "schema.extendoTest.extendo"
+                    }
+                    {
+                        namespaceType: "extensionPoint"
+                        jsonTag: "people"
+                        ____label: "Cabal"
+                        ____description: "My cabal."
+                        componentArchetype: Encapsule.code.app.ONMjs.SchemaAppDataPersonArchetype 
+                    }
+                ]
+            }
+        }
+
+        {
             namespaceType: "child"
             jsonTag: "client"
             ____label: "Client"
