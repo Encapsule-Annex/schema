@@ -54,19 +54,16 @@ class ONMjs.observers.SelectedNamespaceChildrenModelView
         try
             @childModelViews = []
 
-            descriptor = params_.selectedNamespaceDescriptor
-
-            if descriptor.children.length
-                index = 0
-                for descriptor in descriptor.children
-                    childAddress = params_.selectedAddress.implementation.createSubpathIdAddress(descriptor.id)
-                    childNamespace = params_.cachedAddressStore.referenceStore.openNamespace(childAddress)
-                    prefix = "#{index++ + 1}: "
-                    label =  "#{childNamespace.getResolvedLabel()}"
-                    if descriptor.namespaceType == "extensionPoint"
-                        label += " (#{Encapsule.code.lib.js.dictionaryLength(childNamespace.data())})"
-                    label += "<br>"
-                    @childModelViews.push new ONMjs.observers.helpers.AddressSelectionLinkModelView(prefix, label, childAddress, params_.cachedAddressStore)
+            index = 0
+            params_.selectedAddress.visitChildAddresses( (address_) =>
+                childNamespace = params_.cachedAddressStore.referenceStore.openNamespace(address_)
+                prefix = "#{index++ + 1}: "
+                label =  "#{childNamespace.getResolvedLabel()}"
+                if address_.getNamespaceModelDeclaration().namespaceType == "extensionPoint"
+                    label += " (#{Encapsule.code.lib.js.dictionaryLength(childNamespace.data())})"
+                label += "<br>"
+                @childModelViews.push new ONMjs.observers.helpers.AddressSelectionLinkModelView(prefix, label, address_, params_.cachedAddressStore)
+                )
                 
         catch exception
             throw "ONMjs.observers.SelectedNamespaceChildrenModelView failure: #{exception}"

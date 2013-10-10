@@ -447,8 +447,6 @@ class ONMjs.Address
         catch exception
             throw "ONMjs.Address.getNamespaceModelPropertiesDeclaration failure: #{exception}"
 
-
-
     #
     # ============================================================================
     visitParentAddressesAscending: (callback_) =>
@@ -460,8 +458,11 @@ class ONMjs.Address
                 @parentAddressesAscending.reverse()
             if not @parentAddressesAscending.length then return false
             for address in @parentAddressesAscending
-                callback_(address)
-            true # that
+                try
+                    callback_(address)
+                catch exception
+                    throw "Failure occurred inside your registered callback function implementation: #{exception}"
+            true
         catch exception
             throw "ONMjs.Address.visitParentAddressesAscending failure: #{exception}"
         
@@ -478,9 +479,11 @@ class ONMjs.Address
                     parent = parent.createParentAddress()
             if not @parentAddressesDescending.length then return false
             for address in @parentAddressesDescending
-                callback_(address)
-            true # that
-
+                try
+                    callback_(address)
+                catch exception
+                    throw "Failure occurred inside your registered callback function implementation: #{exception}"
+            true
         catch exception
             throw "ONMjs.Address.visitParentAddressesDescending failure: #{exception}"
 
@@ -496,8 +499,11 @@ class ONMjs.Address
                     subnamespaceAddress = @implementation.createSubpathIdAddress(subnamespacePathId)
                     @subnamespaceAddressesAscending.push subnamespaceAddress
             for address in @subnamespaceAddressesAscending
-                callback_(address)
-            true # that
+                try
+                    callback_(address)
+                catch exception
+                    throw "Failure occurred inside your registered callback function implementation: #{exception}"
+            true
         catch exception
             throw "ONMjs.Address.visitSubaddressesAscending failure: #{exception}"
 
@@ -511,10 +517,31 @@ class ONMjs.Address
                 @visitSubaddressesAscending( (address__) => @subnamespaceAddressesDescending.push address__ )
                 @subnamespaceAddressesDescending.reverse()
             for address in @subnamespaceAddressesDescending
-                callback_(address)
-            true # that
+                try
+                    callback_(address)
+                catch exception
+                    throw "Failure occurred inside your registered callback function implementation: #{exception}"
+            true
         catch exception
             throw "ONMjs.Address.visitSubaddressesAscending failure: #{exception}"
+
+
+
+    #
+    # ============================================================================
+    visitChildAddresses: (callback_) =>
+        try
+            if not (callback_? and callback_) then return false
+            namespaceDescriptor = @getLastToken().namespaceDescriptor
+            for childDescriptor in namespaceDescriptor.children
+                childAddress = @implementation.createSubpathIdAddress(childDescriptor.id)
+                try
+                    callback_(childAddress)
+                catch exception
+                    throw "Failure occurred inside your registered callback function implementation: #{exception}"
+            true
+        catch exception
+            throw "ONMjs.Address.visitChildAddresses failure: #{exception}"
 
     #
     # ============================================================================
