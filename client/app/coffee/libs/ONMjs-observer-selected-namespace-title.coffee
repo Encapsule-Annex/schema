@@ -54,7 +54,7 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
         try
 
             @namespaceLabelResolved = params_.selectedNamespace.getResolvedLabel()
-            @namespaceDescription = params_.selectedNamespaceDescriptor.description
+            @namespaceDescription = params_.selectedNamespaceModel.____description? and params_.selectedNamespaceModel.____description or "<no description provided>"
 
             displayComponent = false
             componentPathId = undefined
@@ -75,9 +75,9 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
             componentDescriptor = undefined
             extensionPointAddress = undefined
 
-            if params_.selectedNamespaceDescriptor.id != 0 # i.e. namespaceType != "root"
+            if params_.selectedAddress.isRoot()
                 displayComponent = true
-                if params_.selectedNamespaceDescriptor.namespaceType != "component"
+                if params_.selectedNamespaceModel.namespaceType != "component"
                     # The selected namespace is a subnamespace of a component.
                     componentAddress = params_.selectedAddress.createComponentAddress()
                 else
@@ -86,25 +86,28 @@ class ONMjs.observers.SelectedNamespaceTitleModelView
                     componentAddress = extensionPointAddress.createComponentAddress()
 
                 componentNamespace = params_.objectStore.openNamespace(componentAddress)
-                componentDescriptor = componentAddress.getDescriptor()
-
-                @componentSuffixString = componentDescriptor.id and ":" or "::"
                 componentLabelResolved = componentNamespace.getResolvedLabel()
+
+                namespaceType = componentAddress.getNamespaceModelDeclaration().namespaceType
+
+
+                @componentSuffixString = (namespaceType != "root" and ":") or "::"
 
                 @componentClickableLink = new ONMjs.observers.helpers.AddressSelectionLinkModelView(
                     "", componentLabelResolved, componentAddress, params_.cachedAddressStore)
 
-            if params_.selectedNamespaceDescriptor.namespaceType == "component"
+            if namespaceType == "component"
                 # We'll need the owning extension point's label and type information.
                 displayExtensionPoint = true
 
                 if not (extensionPointAddress? and extensionPointAddress)
                     extensionPointAddress = params_.selectedAddress.createParentAddress()
                     
-                extensionPointDescriptor = extensionPointAddress.getDescriptor()
+                extensionPointModel = extensionPointAddress.getNamespaceModelDeclaration()
+                label = extensionPointModel.____label? and extensionPointModel.____label or "<no label defined>"
 
                 @extensionPointClickableLink = new ONMjs.observers.helpers.AddressSelectionLinkModelView(
-                    "", extensionPointDescriptor.label, extensionPointAddress, params_.cachedAddressStore)
+                    "", label, extensionPointAddress, params_.cachedAddressStore)
 
             @templateName = undefined
 

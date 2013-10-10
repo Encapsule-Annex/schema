@@ -54,7 +54,6 @@ class ONMjs.observers.SelectedNamespaceComponentModelView
         try
 
             componentAddress = params_.selectedAddress.createComponentAddress()
-            componentDescriptor = componentAddress.getDescriptor()
             componentNamespace = params_.cachedAddressStore.referenceStore.openNamespace(componentAddress)
 
             @extensionPointModelViewArray = []

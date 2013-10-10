@@ -53,7 +53,9 @@ class ONMjs.observers.SelectedNamespaceCollectionModelView
     constructor: (params_) ->
         try
             @subcomponentModelViews = []
-            @namespaceLabel = params_.selectedNamespaceDescriptor.label or "<no label provided>"
+          
+            label = params_.selectedNamespaceModel.____label
+            @namespaceLabel = label? and label or "<no label provided>"
 
             semanticBindings = params_.cachedAddressStore.referenceStore.model.getSemanticBindings()
             index = 0

@@ -197,13 +197,12 @@ class ONMjs.observers.NavigatorModelView
                 onNamespaceUpdated: (store_, observerId_, address_) =>
                     try
                         if @storeObserverId != observerId_ then throw "Unrecognized observer ID."
-                        descriptor = address_.getDescriptor()
-                        if descriptor.namespaceType != "component"
+                        namespaceModel = address_.getNamespaceModelDeclaration()
+                        if namespaceModel.namespaceType != "component"
                             return
                         namespace = store_.openNamespace(address_)
                         namespaceState = store_.openObserverNamespaceState(observerId_, address_)
                         namespaceState.itemModelView.label(namespace.getResolvedLabel())
-                        
 
                     catch exception
                         throw "ONMjs.observers.NavigatorModelView.onNamespaceUpdated failure: #{excpetion}"

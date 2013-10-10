@@ -120,11 +120,9 @@ class ONMjs.observers.SelectedNamespaceModelView
                         return true
 
                     selectedNamespace = objectStore.openNamespace(selectedAddress)
-                    selectedNamespaceDescriptor = selectedAddress.getDescriptor()
+                    selectedNamespaceModel = selectedAddress.getNamespaceModelDeclaration()
 
                     @objectStoreName = objectStore.jsonTag
-
-                    namespaceType = selectedNamespaceDescriptor.namespaceType
 
                     # Gather up all the references required to construct the child model views.
                     childParams = {
@@ -132,12 +130,13 @@ class ONMjs.observers.SelectedNamespaceModelView
                         objectStore: objectStore
                         selectedAddress: selectedAddress
                         selectedNamespace: selectedNamespace
-                        selectedNamespaceDescriptor: selectedNamespaceDescriptor
+                        selectedNamespaceModel: selectedNamespaceModel
                     }
 
                     @modelviewTitle(new ONMjs.observers.SelectedNamespaceTitleModelView(childParams))
                     @modelviewActions(new ONMjs.observers.SelectedNamespaceActionsModelView(childParams))
 
+                    namespaceType = selectedNamespaceModel.namespaceType
                     switch namespaceType
                         when "root"
                             @modelviewImmutable(new ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView(childParams))

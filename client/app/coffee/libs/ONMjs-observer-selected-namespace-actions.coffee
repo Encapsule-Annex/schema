@@ -139,7 +139,7 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
             @showConfirmRemove = ko.observable(false)
             @showConfirmRemoveAll = ko.observable(false)
 
-            switch params_.selectedNamespaceDescriptor.namespaceType
+            switch params_.selectedNamespaceModel.namespaceType
                 when "root"
                     break
 
@@ -150,20 +150,21 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
 
                     # ACTION: add
 
-                    extensionAddress = params_.selectedAddress.clone()
-                    token = new ONMjs.AddressToken(params_.objectStore.model, params_.selectedNamespaceDescriptor.id, undefined, params_.selectedNamespaceDescriptor.archetypePathId)
-                    extensionAddress.pushToken(token)
-                    archetypeLabel = token.namespaceDescriptor.label
+                    componentAddress = params_.selectedAddress.createSubcomponentAddress()
+                    componentModel = componentAddress.getNamespaceModelDeclaration()
+                    archetypeLabel = componentModel.____label? and componentModel.____label or "<no label provided>"
                     
                     @callbackLinkAddSubcomponent = new ONMjs.observers.helpers.CallbackLinkModelView(
-                        "", "Add #{archetypeLabel}", extensionAddress, params_.cachedAddressStore, { styleClass: "classONMjsActionButtonAdd" }, @onClickAddSubcomponent)
+                        "", "Add #{archetypeLabel}", componentAddress, params_.cachedAddressStore, { styleClass: "classONMjsActionButtonAdd" }, @onClickAddSubcomponent)
 
                     # ACTION: remove all subcomponents
 
                     subcomponentCount = Encapsule.code.lib.js.dictionaryLength(params_.selectedNamespace.data())
 
+                    label = params_.selectedNamespaceModel.____label? and params_.selectedNamespaceModel.____label or "<no label defined>"
+
                     @callbackLinkRequestRemoveAllSubcomponents = new ONMjs.observers.helpers.CallbackLinkModelView(
-                        "", "Remove All #{params_.selectedNamespaceDescriptor.label}", undefined, undefined,
+                        "", "Remove All #{label}", undefined, undefined,
                         { noLink: subcomponentCount == 0, styleClass: subcomponentCount != 0 and "classONMjsActionButtonRemoveAll" or undefined }, @onClickRemoveAllSubcomponents
                         )
 
@@ -178,8 +179,10 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
                 when "component"
 
                     # ACTION: remove
+
+                    label = params_.selectedNamespaceModel.____label? and params_.selectedNamespaceModel.____label or "<no label provided>"
                     @callbackLinkRequestRemoveComponent = new ONMjs.observers.helpers.CallbackLinkModelView(
-                        "", "Remove #{params_.selectedNamespaceDescriptor.label}", undefined, undefined, { styleClass: "classONMjsActionButtonRemove" }, @onClickRemoveComponent)
+                        "", "Remove #{label}", undefined, undefined, { styleClass: "classONMjsActionButtonRemove" }, @onClickRemoveComponent)
 
                     @callbackLinkRemoveComponent = new ONMjs.observers.helpers.CallbackLinkModelView(
                         "", "Proceed with Remove", params_.selectedAddress, params_.cachedAddressStore, { styleClass: "classONMjsActionButtonConfirm" }, @onDoRemoveComponent)

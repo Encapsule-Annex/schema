@@ -54,7 +54,7 @@ class ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView
         try
             @propertyModelViews = []
 
-            namespaceModelProperties = params_.selectedNamespaceDescriptor.namespaceModelPropertiesDeclaration
+            namespaceModelProperties = params_.selectedAddress.getNamespaceModelPropertiesDeclaration()
             if not (namespaceModelProperties? and namespaceModelProperties)
                 throw "Cannot resolve namespace properties declaration for selection."
 
@@ -113,7 +113,7 @@ class ONMjs.observers.SelectedNamespaceMutablePropertiesModelView
             @propertyModelViews = []
             @namespace = params_.selectedNamespace
 
-            namespaceModelProperties = params_.selectedNamespaceDescriptor.namespaceModelPropertiesDeclaration
+            namespaceModelProperties = params_.selectedAddress.getNamespaceModelPropertiesDeclaration()
             if not (namespaceModelProperties? and namespaceModelProperties)
                 throw "Cannot resolve namespace properties declaration for selection."
 
@@ -136,8 +136,10 @@ class ONMjs.observers.SelectedNamespaceMutablePropertiesModelView
                 catch exception
                     throw "ONMjs.observer.SelectedNamespaceMutablePropertiesModelView.onClickUpdateProperties failure: #{exception}"
 
+            label = params_.selectedNamespaceModel.____label? and params_.selectedNamespaceModel.____label or "<no label defined>"
+
             @updateLinkModelView = new ONMjs.observers.helpers.CallbackLinkModelView(
-                "", "Apply #{params_.selectedNamespaceDescriptor.label} Edit", undefined, undefined, { styleClass: "classONMjsActionButtonConfirm" }, @onClickUpdateProperties)
+                "", "Apply #{label} Edit", undefined, undefined, { styleClass: "classONMjsActionButtonConfirm" }, @onClickUpdateProperties)
 
             @onClickDiscardPropertyEdits = (prefix_, label_, address_, selectorStore_, options_) =>
                 try
@@ -147,7 +149,7 @@ class ONMjs.observers.SelectedNamespaceMutablePropertiesModelView
                     throw "ONMjs.observer.SelectedNamespaceMutablePropertiesModelView.onClickDiscardPropertyEdits failure: #{exception}"
 
             @discardLinkModelView = new ONMjs.observers.helpers.CallbackLinkModelView(
-                "", "Discard #{params_.selectedNamespaceDescriptor.label} Edits", undefined, undefined, { styleClass: "classONMjsActionButtonCancel" }, @onClickDiscardPropertyEdits)
+                "", "Discard #{label} Edits", undefined, undefined, { styleClass: "classONMjsActionButtonCancel" }, @onClickDiscardPropertyEdits)
                
 
             # Enumerate the object model's declaration of this namespace's mutable properties.

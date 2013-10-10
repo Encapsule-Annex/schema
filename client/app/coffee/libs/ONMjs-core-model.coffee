@@ -72,7 +72,7 @@ class ONMjs.implementation.ModelDetails
                     description = ONMD_.____description? and ONMD_.____description or "<no description provided>"
                     id = @countDescriptors++
 
-                    namespaceType = (ONMD_.namespaceType? and ONMD_.namespaceType) or (not id and "root" or throw "Incorrect or unspecified namespace type error for path '#{path}'.")
+                    namespaceType = (ONMD_.namespaceType? and ONMD_.namespaceType) or (not id and (ONMD_.namespaceType = "root")) or throw "Internal error unable to determine namespace type."
                     parentPathExtensionPoints = undefined
                     if parentPathExtensionPointIdVector_? and parentPathExtensionPointIdVector_
                         parentPathExtensionPoints = Encapsule.code.lib.js.clone parentPathExtensionPointIdVector_
@@ -271,9 +271,9 @@ class ONMjs.implementation.ModelDetails
                     for parentPathId in pathIds
                         descriptor = @getNamespaceDescriptorFromPathId(parentPathId)
                         if descriptor.namespaceType == "component"
-                            newAddress.pushToken token
+                            newAddress.implementation.pushToken token
                         token = new ONMjs.AddressToken(@model, descriptor.idExtensionPoint, undefined, descriptor.id)
-                    newAddress.pushToken(token)
+                    newAddress.implementation.pushToken(token)
                     return newAddress
                 catch exception
                     throw "ONMjs.implementation.ModelDetails.getAddressFromPathId failure: #{exception}"

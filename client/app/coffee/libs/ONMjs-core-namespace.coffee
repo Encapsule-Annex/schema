@@ -54,7 +54,7 @@ class ONMjs.Namespace
 
             # As a matter of policy, if no address is specified or if a zero-length address is specified, open the root namespace.
             address = undefined
-            if not (address_? and address_ and address_.tokenVector.length)
+            if not (address_? and address_ and address_.implementation.tokenVector.length)
                 objectModel = store_.model
                 address = new ONMjs.Address(objectModel, [ new ONMjs.AddressToken(objectModel, undefined, undefined, 0) ] )
             else
@@ -80,7 +80,7 @@ class ONMjs.Namespace
             @resolvedTokenArray = []
             @getResolvedToken = => @resolvedTokenArray.length and @resolvedTokenArray[@resolvedTokenArray.length - 1] or undefined
 
-            for addressToken in address.tokenVector
+            for addressToken in address.implementation.tokenVector
                 tokenBinder = new ONMjs.implementation.AddressTokenBinder(store_, @dataReference, addressToken, mode)
                 @resolvedTokenArray.push tokenBinder.resolvedToken
                 @dataReference = tokenBinder.dataReference
@@ -177,7 +177,7 @@ class ONMjs.Namespace
             count = 0
             containingComponentNotified = false
             while address? and address
-                descriptor = address.getDescriptor()
+                descriptor = address.implementation.getDescriptor()
                 if count == 0
                     @store.reifier.dispatchCallback(address, "onNamespaceUpdated", undefined)
                 else
@@ -212,8 +212,11 @@ class ONMjs.Namespace
             for key, object of @data()
                 address = @getResolvedAddress().clone()
                 token = new ONMjs.AddressToken(@store.model, resolvedToken.idNamespace, key, resolvedToken.namespaceDescriptor.archetypePathId)
-                address.pushToken(token)
-                callback_(address)
+                address.implementation.pushToken(token)
+                try
+                    callback_(address)
+                catch exception
+                    throw "Failure occurred inside your callback function implementation: #{exception}"
 
             true
 

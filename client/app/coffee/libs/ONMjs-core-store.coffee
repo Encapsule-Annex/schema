@@ -117,7 +117,7 @@ class ONMjs.Store
                     if not (address_? and address_) then throw "Missing object model namespace selector input parameter."
                     if not @validateAddressModel(address_) then throw "The specified address cannot be used to reference this store because it's not bound to the same model as this store."
                     if address_.isQualified() then throw "The specified address is qualified and may only be used to specify existing objects in the store."
-                    descriptor = address_.getDescriptor()
+                    descriptor = address_.implementation.getDescriptor()
                     if not descriptor.isComponent then throw "The specified address does not specify the root of a component."
                     if descriptor.namespaceType == "root" then throw "The specified address refers to the root namespace of the store which is created automatically."
 
@@ -136,7 +136,7 @@ class ONMjs.Store
                     if not (address_? and address_) then throw "Missing address input parameter!"
                     if not @validateAddressModel(address_) then throw "The specified address cannot be used to reference this store because it's not bound to the same model as this store."
                     if not address_.isQualified() then throw "You cannot use an unqualified address to remove a component."
-                    descriptor = address_.getDescriptor()
+                    descriptor = address_.implementation.getDescriptor()
                     if not descriptor.isComponent then throw "The specified address does not specify the root of a component."
                     if descriptor.namespace == "root" then throw "The specified address refers to the root namespace of the store which cannot be removed."
                     # Unrefify the component before actually making any modifications to the store.
@@ -148,7 +148,7 @@ class ONMjs.Store
                     extensionPointAddress = address_.createParentAddress()
                     extensionPointNamespace = @openNamespace(extensionPointAddress)
                     componentDictionary = extensionPointNamespace.data()
-                    componentKey = address_.getLastToken().key
+                    componentKey = address_.implementation.getLastToken().key
                     delete componentDictionary[componentKey]
                     extensionPointNamespace.update()
                     return componentNamespace
@@ -289,7 +289,7 @@ class ONMjs.Store
                 try
                     if not (observerId_? and observerId_) then throw "Missing observer ID parameter."
                     if not (address_? and address_) then throw "Missing address input parameter."
-                    token = address_.getLastToken()
+                    token = address_.implementation.getLastToken()
                     componentNamespaceId = token.componentDescriptor.id
                     componentAddress = address_.createComponentAddress()
                     return @openObserverNamespaceState(observerId_, componentAddress)
@@ -303,7 +303,7 @@ class ONMjs.Store
                     if not (observerId_? and observerId_) then throw "Missing observer ID parameter."
                     if not (address_? and address_) then throw "Missing address input parameter."
                     observerState = @openObserverState(observerId_)
-                    token = address_.getLastToken()
+                    token = address_.implementation.getLastToken()
                     namespacePathId = token.namespaceDescriptor.id
                     namespacePathState = observerState[namespacePathId]? and observerState[namespacePathId] or observerState[namespacePathId] = {}
                     namespaceURN = address_.getHashString()
