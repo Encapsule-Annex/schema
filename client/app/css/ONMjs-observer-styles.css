@@ -30,17 +30,17 @@ text-shadow: 0.1em 0.1em 0.1em rgba(255,255,255,0.4);
 
 .classONMjsSelectedPathElement .parent {
 font-weight: normal;
-color: #99CCFF;
+color: rgba(0,200,255,1);
 }
 
 .classONMjsSelectedPathElement .component {
 font-weight: bold;
-color: #CCCCFF;
+color: rgba(0,200,255,1);
 }
 
 .classONMjsSelectedPathElement .selected {
 font-weight: bold;
-color: #00FF00;
+color: white;
 text-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.75);
 }
 
@@ -65,23 +65,22 @@ border-left: 1px solid rgba(0,0,0,0.3);
 
 .classONMjsNavigatorItemSelected {
 -moz-border-radius: 8px; border-radius: 8px;
-background-color: rgba(255,255,0,0.1);
+background-color: rgba(0,0, 64,0.15);
 }
 
 .classONMjsNavigatorItemSelectedLabel {
 border: 1px solid rgba(255,255,0,0.2);
-background-color: rgba(0,255,0,0.5);
 font-weight: bold;
 font-size: 10pt;
-color: black;
-text-shadow: 0.1em 0.1em 0.1em rgba(255,255,255,0.5);
+color: white;
+text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
 text-decoration: none;
 padding: 0.05em;
 white-space: nowrap;
 width: auto;
 overflow: hidden;
 text-overflow: ellipsis;
-box-shadow: 0.3em 0.3em 1em rgba(0,64,0,0.9) inset;
+box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.2) inset;
 padding-left: 0.4em;
 padding-top: 0.1em;
 padding-bottom: 0.1em;
@@ -99,11 +98,11 @@ background-color: rgba(255,255,255,0.02);
 .classONMjsNavigatorItemUnselectedLabel {
 border: 1px solid rgba(0,0,0,0.05);
 background-color: rgba(255,255,255,0.05);
-font-weight: normal;
+font-weight: bold;
 font-size: 10pt;
-color: rgba(0,255,255,1);
+color: rgba(0,200,255,0.8);
 text-decoration: none;
-text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.9);
+text-shadow: -0.1em -0.1em 0.1em rgba(0,0,0,0.2);
 padding: 0.05em;
 white-space: nowrap;
 width: auto;
@@ -140,11 +139,10 @@ font-weight: bold;
 }
 
 .classONMjsAddressSelectionLinkLabel {
-color: rgba(0, 0, 255, 1.0);
-text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
+color: rgba(0,0,128,0.6);
+font-weight: bold;
 font-style: normal;
 font-family: Verdana, Arial;
-font-weight: normal;
 text-decoration: underline;
 }
 
@@ -210,7 +208,7 @@ text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
 }
 
 .classONMjsSelectedNamespaceTitleLinks .selected {
-color: #00FF00;
+color: white;
 text-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.75);
 font-size: 14pt;
 font-weight: bold;
@@ -234,7 +232,7 @@ border-bottom: 1px solid rgba(0,0,0,0.4);
 }
 
 .classONMjsSelectedJson .titleString {
-color: #00FF00;
+color: white;
 text-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.5);
 font-weight: bold;
 float: bottom;
