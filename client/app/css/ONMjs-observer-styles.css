@@ -66,12 +66,13 @@ border-left: 1px solid rgba(0,0,0,0.3);
 .classONMjsNavigatorItemSelected {
 -moz-border-radius: 8px; border-radius: 8px;
 background-color: rgba(0,0, 64,0.15);
+border: 1px solid rgba(255,255,255,0.5);
 }
 
 .classONMjsNavigatorItemSelectedLabel {
-border: 1px solid rgba(255,255,0,0.2);
+border-bottom: 1px solid rgba(255,255,255,0.2);
 font-weight: bold;
-font-size: 10pt;
+font-size: 14pt;
 color: white;
 text-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.5);
 text-decoration: none;

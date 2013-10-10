@@ -110,6 +110,9 @@ class ONMjs.observers.SelectedPathModelView
             @cachedAddressStore = undefined
             @cachedAddressStoreObserverId = undefined
 
+            @addressHumanString = ko.observable("not connected")
+            @addressHashString = ko.observable("not connected")
+
             @attachToCachedAddress = (cachedAddress_) =>
                 try
                     if not (cachedAddress_? and cachedAddress_) then throw "Missing cached address input parameter."
@@ -136,6 +139,8 @@ class ONMjs.observers.SelectedPathModelView
 
                 onDetachEnd: (store_, observerId_) =>
                     @pathElements.removeAll()
+                    @addressHashString("not connected")
+                    @addressHumanString("not connected")
                     @cachedAddress = undefined
                     @cachedAddressStoreObserverId = undefined
                     Console.message("ONMjs.observers.SelectedPathModelView has detached from and is no longer observing an ONMjs.CachedAddress instance.")
@@ -150,6 +155,8 @@ class ONMjs.observers.SelectedPathModelView
                     try
                         selectedAddress = store_.getAddress()
                         if not (selectedAddress? and selectedAddress) then return true
+                        @addressHumanString(selectedAddress.getHumanReadableString())
+                        @addressHashString(selectedAddress.getHashString())
                         addresses = []
                         selectedAddress.visitParentAddressesAscending( (address__) => 
                             addresses.push address__ )
@@ -177,5 +184,7 @@ class ONMjs.observers.SelectedPathModelView
 
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedPathViewModel", ( -> """
 <div class="classONMjsSelectedPath"><span data-bind="template: { name: 'idKoTemplate_SelectedPathElementViewModel', foreach: pathElements }"></span></div>
+<div style="margin-top: 8px; font-family: Courier;"><span data-bind="text: addressHumanString"></span></div>
+<div style="font-family: Courier;"><span data-bind="text: addressHashString"></span></div>
 """))
 
