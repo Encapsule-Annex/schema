@@ -26,7 +26,7 @@ class window.Console
 
         consoleEl = $("#idConsole")
         if not consoleEl? or not consoleEl
-            throw "Unable to resolve the #{appName} console!"
+            throw "Unable to resolve the #idConsole DIV."
 
         if Encapsule.runtime.app.SchemaWindowManager? and Encapsule.runtime.app.SchemaWindowManager
             consoleEl.html("reset")

@@ -60,11 +60,6 @@ class ONMjs.implementation.StoreReifier
             # ============================================================================
             @dispatchCallback = (address_, callbackName_, observerId_) =>
                 try
-                    if address_? and address_
-                        #Console.message("ONMjs dispatch signal '#{callbackName_}' for address '#{address_.getHumanReadableString()}'")
-                    else
-                        #Console.message("ONMjs dispatch signal '#{callbackName_}'")
-
                     if observerId_? and observerId_
                         # Use the specified observer ID to obtain the callback interface  registered with the
                         # store and then dispatch the specified callback on that interface only.

@@ -57,7 +57,6 @@ class ONMjs.Store
 
             #
             # ============================================================================
-            Console.message("ONMjs.Store: Creating memory store instance for object model '#{model_.jsonTag}'")
 
             # Validate parameters.
             if not (model_? and model_) then throw "Missing object model parameter!"
@@ -80,16 +79,13 @@ class ONMjs.Store
             @observersState = {}
 
             if initialStateJSON_? and initialStateJSON_
-                Console.message("... deserializing from JSON string")
                 parsedObject = JSON.parse(initialStateJSON_)
                 @objectStore = parsedObject[@jsonTag]
                 if not (@objectStore? and @objectStore)
                     throw "Cannot deserialize specified JSON string!"
                 @objectStoreSource = "json"
-                Console.message("... Store initialized from deserialized JSON string.")
                 
             else
-                Console.message("... Initializing new instance of the '#{@jsonTag}' object model.")
                 @dataReference = {}
                 @objectStoreSource = "new"
 
