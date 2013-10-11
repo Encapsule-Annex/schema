@@ -240,13 +240,13 @@ class ONMjs.Address
 
             for token in @implementation.tokenVector
                 if not index
-                    humanReadableString += "#{token.model.jsonTag}:"
+                    humanReadableString += "#{token.model.jsonTag}."
 
                 if token.key? and token.key
-                    humanReadableString += "[#{token.key}]."
+                    humanReadableString += ".#{token.key}."
                 else
                     if token.idExtensionPoint > 0
-                        humanReadableString += "[*]."
+                        humanReadableString += "."
                     
                 humanReadableString += "#{token.idNamespace}"
                 index++
@@ -256,6 +256,9 @@ class ONMjs.Address
 
         catch exception
             throw "ONMjs.Address.getHumanReadableString failure: #{exception}"
+
+
+
     #
     # ============================================================================
     getHashString: =>
@@ -279,7 +282,8 @@ class ONMjs.Address
             # sample of how one should reverse a string if maintaining Unicode is important.
 
             reversedHashString = humanReadableString.split('').reverse().join('')
-            @implementation.hashString = window.btoa(reversedHashString)
+            @implementation.hashString = encodeURIComponent(reversedHashString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A")
+            #@implementation.hashString = window.btoa(reversedHashString)
             return @implementation.hashString
             
         catch exception
