@@ -146,7 +146,7 @@ class ONMjs.observers.SelectedNamespaceActionsModelView
                     # ACTION: add
 
                     componentAddress = params_.selectedAddress.createSubcomponentAddress()
-                    componentModel = componentAddress.getNamespaceModelDeclaration()
+                    componentModel = componentAddress.getModel()
                     archetypeLabel = componentModel.____label? and componentModel.____label or "<no label provided>"
                     
                     @callbackLinkAddSubcomponent = new ONMjs.observers.helpers.CallbackLinkModelView(

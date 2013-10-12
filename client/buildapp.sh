@@ -17,7 +17,7 @@ app_package_publisher="Encapsule Project"
 app_package_publisher_url="http://www.encapsule.org"
 
 # THIS CHANGES ALL THE TIME
-onm_version="0.0.1"
+onm_version="0.0.2"
 app_version="0.929"
 # 
 
@@ -181,10 +181,11 @@ rm $onmcfile
 echo 'Encapsule.code.lib.onm.version = "'$onm_version'"' > ONMjs-core-version.coffee
 
 
-cat ONMjs-core-address.coffee > $onmcfile
+cat encapsule-lib-javascript.coffee > $onmcfile
+cat ONMjs-core-model.coffee >> $onmcfile
+cat ONMjs-core-address.coffee >> $onmcfile
 cat ONMjs-core-address-binder.coffee >> $onmcfile
 cat ONMjs-core-address-token.coffee >> $onmcfile
-cat ONMjs-core-model.coffee >> $onmcfile
 cat ONMjs-core-namespace.coffee >> $onmcfile
 cat ONMjs-core-store-reifier.coffee >> $onmcfile
 cat ONMjs-core-store.coffee >> $onmcfile

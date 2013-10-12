@@ -120,7 +120,7 @@ class ONMjs.observers.SelectedNamespaceModelView
                         return true
 
                     selectedNamespace = objectStore.openNamespace(selectedAddress)
-                    selectedNamespaceModel = selectedAddress.getNamespaceModelDeclaration()
+                    selectedNamespaceModel = selectedAddress.getModel()
 
                     @objectStoreName = objectStore.jsonTag
 

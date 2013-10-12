@@ -59,7 +59,7 @@ class ONMjs.observers.SelectedNamespaceChildrenModelView
                 childNamespace = params_.cachedAddressStore.referenceStore.openNamespace(address_)
                 prefix = "#{index++ + 1}: "
                 label =  "#{childNamespace.getResolvedLabel()}"
-                if address_.getNamespaceModelDeclaration().namespaceType == "extensionPoint"
+                if address_.getModel().namespaceType == "extensionPoint"
                     label += " (#{Encapsule.code.lib.js.dictionaryLength(childNamespace.data())})"
                 label += "<br>"
                 @childModelViews.push new ONMjs.observers.helpers.AddressSelectionLinkModelView(prefix, label, address_, params_.cachedAddressStore)

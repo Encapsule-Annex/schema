@@ -54,7 +54,7 @@ class ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView
         try
             @propertyModelViews = []
 
-            namespaceModelProperties = params_.selectedAddress.getNamespaceModelPropertiesDeclaration()
+            namespaceModelProperties = params_.selectedAddress.getPropertiesModel()
             if not (namespaceModelProperties? and namespaceModelProperties)
                 throw "Cannot resolve namespace properties declaration for selection."
 
@@ -113,7 +113,7 @@ class ONMjs.observers.SelectedNamespaceMutablePropertiesModelView
             @propertyModelViews = []
             @namespace = params_.selectedNamespace
 
-            namespaceModelProperties = params_.selectedAddress.getNamespaceModelPropertiesDeclaration()
+            namespaceModelProperties = params_.selectedAddress.getPropertiesModel()
             if not (namespaceModelProperties? and namespaceModelProperties)
                 throw "Cannot resolve namespace properties declaration for selection."
 

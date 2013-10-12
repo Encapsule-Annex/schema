@@ -280,9 +280,9 @@ class ONMjs.Address
             # generally meaningless to humans, and the original string may be recovered
             # by reversing the process. https://github.com/mathiasbynens/esrever is a good
             # sample of how one should reverse a string if maintaining Unicode is important.
+            # reversedHashString = humanReadableString.split('').reverse().join('')
 
-            reversedHashString = humanReadableString.split('').reverse().join('')
-            @implementation.hashString = encodeURIComponent(reversedHashString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A")
+            @implementation.hashString = encodeURIComponent(humanReadableString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A")
             #@implementation.hashString = window.btoa(reversedHashString)
             return @implementation.hashString
             
@@ -443,24 +443,22 @@ class ONMjs.Address
 
     #
     # ============================================================================
-    # SHOULD BE: getModel
-    getNamespaceModelDeclaration: =>
+    getModel: =>
         try
             return @implementation.getDescriptor().namespaceModelDeclaration
 
         catch exception
-            throw "ONMjs.Address.getNamespaceModelDeclaration failure: #{exception}"
+            throw "ONMjs.Address.getModel failure: #{exception}"
 
 
     #
     # ============================================================================
-    # SHOULD BE: getPropertiesModel
-    getNamespaceModelPropertiesDeclaration: =>
+    getPropertiesModel: =>
         try
             return @implementation.getDescriptor().namespaceModelPropertiesDeclaration
 
         catch exception
-            throw "ONMjs.Address.getNamespaceModelPropertiesDeclaration failure: #{exception}"
+            throw "ONMjs.Address.getPropertiesModel failure: #{exception}"
 
     #
     # ============================================================================
