@@ -17,8 +17,8 @@ app_package_publisher="Encapsule Project"
 app_package_publisher_url="http://www.encapsule.org"
 
 # THIS CHANGES ALL THE TIME
-onm_version="0.0.2"
-app_version="0.929"
+onm_version="0.0.3"
+app_version="0.930"
 # 
 
 app_name="Schema"
@@ -264,11 +264,17 @@ echo =================================================================
 echo '**** PACKAGING ONMjs LIBRARY ****'
 
 echo Creating ONMjs-lib-min.js
+cat uuid.js ONMjs-lib-debug.js > ONMjs-lib-debug-temp.js
+cat ONMjs-lib-debug-temp.js > ONMjs-lib-debug.js
+rm ONMjs-lib-debug-temp.js
 uglifyjs -mange -v ONMjs-lib-debug.js > ONMjs-lib-min.js
 cp ONMjs-lib-debug.js ONMjs-lib-debug-$onm_version.js
 cp ONMjs-lib-min.js ONMjs-lib-min-$onm_version.js
 
 echo Creating ONMjs-lib-core-min.js
+cat uuid.js ONMjs-lib-core-debug.js > ONMjs-lib-core-debug-temp.js
+cat ONMjs-lib-core-debug-temp.js > ONMjs-lib-core-debug.js
+rm ONMjs-lib-core-debug-temp.js
 uglifyjs -mangle -v ONMjs-lib-core-debug.js  > ONMjs-lib-core-min.js
 cp ONMjs-lib-core-debug.js ONMjs-lib-core-debug-$onm_version.js
 cp ONMjs-lib-core-min.js ONMjs-lib-core-min-$onm_version.js
