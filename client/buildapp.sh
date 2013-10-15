@@ -17,8 +17,7 @@ app_package_publisher="Encapsule Project"
 app_package_publisher_url="http://www.encapsule.org"
 
 # THIS CHANGES ALL THE TIME
-onm_version="0.0.3"
-app_version="0.930"
+app_version="0.931"
 # 
 
 app_name="Schema"
@@ -123,8 +122,6 @@ cp -rv $schema_client_lib/img/ $schema_deploy_client_html/
 cp -rv $schema_client_lib/js/ $schema_deploy_client_html/
 cp -rv $schema_client_lib/scdl/ $schema_deploy_client_html/
 
-
-
 cp -v $schema_client_app/*.html $schema_deploy_client_html/
 cp -v $schema_client_app/.htaccess $schema_deploy_client_html/
 cp -v $schema_client_app_css/*.css $schema_deploy_client_html_css/
@@ -174,46 +171,6 @@ echo Building application Coffeescript libraries:
 cd $schema_client_app_coffee
 coffee -o $schema_deploy_client_html_js/ -c *.coffee
 cd $schema_client_app_coffee_libs
-
-onmcfile="ONMjs-lib-core-debug.coffee"
-rm $onmcfile
-
-echo 'Encapsule.code.lib.onm.version = "'$onm_version'"' > ONMjs-core-version.coffee
-
-
-cat encapsule-lib-javascript.coffee > $onmcfile
-cat ONMjs-core-model.coffee >> $onmcfile
-cat ONMjs-core-address.coffee >> $onmcfile
-cat ONMjs-core-address-binder.coffee >> $onmcfile
-cat ONMjs-core-address-token.coffee >> $onmcfile
-cat ONMjs-core-namespace.coffee >> $onmcfile
-cat ONMjs-core-store-reifier.coffee >> $onmcfile
-cat ONMjs-core-store.coffee >> $onmcfile
-cat ONMjs-core-cached-address.coffee >> $onmcfile
-cat ONMjs-core-version.coffee >> $onmcfile
-
-onmofile="ONMjs-lib-observe-debug.coffee"
-rm $onmofile
-cat ONMjs-observer-navigator-tree.coffee > $onmofile
-cat ONMjs-observer-navigator-tree-item.coffee >> $onmofile
-cat ONMjs-observer-selected-json.coffee >> $onmofile
-cat ONMjs-observer-selected-path.coffee >> $onmofile
-cat ONMjs-observer-canary-test.coffee >> $onmofile
-cat ONMjs-observer-selected-namespace.coffee >> $onmofile
-cat ONMjs-observer-selected-namespace-actions.coffee >> $onmofile
-cat ONMjs-observer-selected-namespace-children.coffee >> $onmofile
-cat ONMjs-observer-selected-namespace-collection.coffee >> $onmofile
-cat ONMjs-observer-selected-namespace-component.coffee >> $onmofile
-cat ONMjs-observer-selected-namespace-helpers.coffee >> $onmofile
-cat ONMjs-observer-selected-namespace-properties.coffee >> $onmofile
-cat ONMjs-observer-selected-namespace-title.coffee >> $onmofile
-
-onmfile="ONMjs-lib-debug.coffee"
-rm $onmfile
-cat ONMjs-lib-core-debug.coffee > $onmfile
-cat ONMjs-lib-observe-debug.coffee >> $onmfile
-
-
 coffee -o $schema_deploy_client_html_js/ -c *.coffee
 echo === ^--- COFFEESCRIPT: EXPECT NO ERRORS =========================
 echo =================================================================
@@ -257,45 +214,6 @@ echo --- >> $build_log
 
 
 cd $schema_deploy_client_html_js
-
-echo =================================================================
-echo =================================================================
-echo =================================================================
-echo '**** PACKAGING ONMjs LIBRARY ****'
-
-echo Creating ONMjs-lib-min.js
-cat uuid.js ONMjs-lib-debug.js > ONMjs-lib-debug-temp.js
-cat ONMjs-lib-debug-temp.js > ONMjs-lib-debug.js
-rm ONMjs-lib-debug-temp.js
-uglifyjs -mange -v ONMjs-lib-debug.js > ONMjs-lib-min.js
-cp ONMjs-lib-debug.js ONMjs-lib-debug-$onm_version.js
-cp ONMjs-lib-min.js ONMjs-lib-min-$onm_version.js
-
-echo Creating ONMjs-lib-core-min.js
-cat uuid.js ONMjs-lib-core-debug.js > ONMjs-lib-core-debug-temp.js
-cat ONMjs-lib-core-debug-temp.js > ONMjs-lib-core-debug.js
-rm ONMjs-lib-core-debug-temp.js
-uglifyjs -mangle -v ONMjs-lib-core-debug.js  > ONMjs-lib-core-min.js
-cp ONMjs-lib-core-debug.js ONMjs-lib-core-debug-$onm_version.js
-cp ONMjs-lib-core-min.js ONMjs-lib-core-min-$onm_version.js
-
-echo Creating ONMjs-lib-observe-min.js
-uglifyjs -mangle -v ONMjs-lib-observe-debug.js  > ONMjs-lib-observe-min.js
-cp ONMjs-lib-observe-debug.js ONMjs-lib-observe-debug-$onm_version.js
-cp ONMjs-lib-observe-min.js ONMjs-lib-observe-min-$onm_version.js
-
-
-
-
-echo '**** ONMjs LIBRARY PACKAGING COMPLETE ****'
-echo =================================================================
-echo =================================================================
-echo =================================================================
-if [ "$1" = "pause" ]
-then
-
-   echo -n 'PAUSED. Hit ENTER to complete the build. > ' ; read USERINPUT
-fi
 
 cd $schema_deploy_client_html
 appCache=`find *.html css/*.css js/*.js audio/*.wav audio/*.mp3 scdl/*.json json/*.json img/*.jpg img/*.png -type f`
