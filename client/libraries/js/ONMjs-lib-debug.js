@@ -584,7 +584,7 @@
               if (descriptor.namespaceType === "component") {
                 newAddress.implementation.pushToken(token);
               }
-              token = new ONMjs.AddressToken(this.model, descriptor.idExtensionPoint, void 0, descriptor.id);
+              token = new ONMjs.implementation.AddressToken(this.model, descriptor.idExtensionPoint, void 0, descriptor.id);
             }
             newAddress.implementation.pushToken(token);
             return newAddress;
@@ -641,7 +641,7 @@
         this.implementation = new ONMjs.implementation.ModelDetails(this, objectModelDeclaration_);
         this.createRootAddress = function() {
           try {
-            return new ONMjs.Address(_this, [new ONMjs.AddressToken(_this, void 0, void 0, 0)]);
+            return new ONMjs.Address(_this, [new ONMjs.implementation.AddressToken(_this, void 0, void 0, 0)]);
           } catch (exception) {
             throw "ONMjs.Model.getRootAddress failure: " + exception;
           }
@@ -774,7 +774,7 @@
             if (targetNamespaceDescriptor.idComponent !== addressedComponentDescriptor.id) {
               throw "Invalid path ID specified does not resolve to a namespace in the same component as the source address.";
             }
-            newToken = new ONMjs.AddressToken(_this.model, addressedComponentToken.idExtensionPoint, addressedComponentToken.key, pathId_);
+            newToken = new ONMjs.implementation.AddressToken(_this.model, addressedComponentToken.idExtensionPoint, addressedComponentToken.key, pathId_);
             newTokenVector = _this.tokenVector.length > 0 && _this.tokenVector.slice(0, _this.tokenVector.length - 1) || [];
             newTokenVector.push(newToken);
             newAddress = new ONMjs.Address(_this.model, newTokenVector);
@@ -1035,7 +1035,7 @@
             break;
           }
           if (descriptor.namespaceType !== "component") {
-            token = new ONMjs.AddressToken(token.model, token.idExtensionPoint, token.key, descriptor.parent.id);
+            token = new ONMjs.implementation.AddressToken(token.model, token.idExtensionPoint, token.key, descriptor.parent.id);
           } else {
             token = (tokenSourceIndex !== -1) && this.implementation.tokenVector[tokenSourceIndex--] || (function() {
               throw "Internal error: exhausted token stack.";
@@ -1079,10 +1079,10 @@
           switch (descriptor.namespaceType) {
             case "component":
               newAddress.implementation.pushToken(token);
-              token = new ONMjs.AddressToken(token.model, token.namespaceDescriptor.id, void 0, pathId);
+              token = new ONMjs.implementation.AddressToken(token.model, token.namespaceDescriptor.id, void 0, pathId);
               break;
             default:
-              token = new ONMjs.AddressToken(token.model, token.idExtensionPoint, token.key, pathId);
+              token = new ONMjs.implementation.AddressToken(token.model, token.idExtensionPoint, token.key, pathId);
           }
         }
         newAddress.implementation.pushToken(token);
@@ -1113,7 +1113,7 @@
         if (descriptor.namespaceType !== "extensionPoint") {
           throw "Unable to determine subcomponent to create because this address does not specifiy an extension point namespace.";
         }
-        newToken = new ONMjs.AddressToken(this.model, descriptor.id, void 0, descriptor.archetypePathId);
+        newToken = new ONMjs.implementation.AddressToken(this.model, descriptor.id, void 0, descriptor.archetypePathId);
         return this.clone().implementation.pushToken(newToken);
       } catch (exception) {
         throw "ONMjs.Address.createSubcomponentAddress failure: " + exception;
@@ -1649,7 +1649,9 @@
 
   ONMjs = Encapsule.code.lib.onm;
 
-  ONMjs.AddressToken = (function() {
+  ONMjs.implementation = (ONMjs.implementation != null) && ONMjs.implementation || (ONMjs.implementation = {});
+
+  ONMjs.implementation.AddressToken = (function() {
 
     function AddressToken(model_, idExtensionPoint_, key_, idNamespace_) {
       this.isRoot = __bind(this.isRoot, this);
@@ -1696,12 +1698,12 @@
         }
         return;
       } catch (exception) {
-        throw "ONMjs.AddressToken failure: " + exception;
+        throw "ONMjs.implementation.AddressToken failure: " + exception;
       }
     }
 
     AddressToken.prototype.clone = function() {
-      return new ONMjs.AddressToken(this.model, (this.extensionPointDescriptor != null) && this.extensionPointDescriptor && this.extensionPointDescriptor.id || -1, this.key, this.namespaceDescriptor.id);
+      return new ONMjs.implementation.AddressToken(this.model, (this.extensionPointDescriptor != null) && this.extensionPointDescriptor && this.extensionPointDescriptor.id || -1, this.key, this.namespaceDescriptor.id);
     };
 
     AddressToken.prototype.isEqual = function(token_) {
@@ -1802,7 +1804,7 @@
         address = void 0;
         if (!((address_ != null) && address_ && address_.implementation.tokenVector.length)) {
           objectModel = store_.model;
-          address = new ONMjs.Address(objectModel, [new ONMjs.AddressToken(objectModel, void 0, void 0, 0)]);
+          address = new ONMjs.Address(objectModel, [new ONMjs.implementation.AddressToken(objectModel, void 0, void 0, 0)]);
         } else {
           address = address_;
         }
@@ -1958,7 +1960,7 @@
         for (key in _ref) {
           object = _ref[key];
           address = this.getResolvedAddress().clone();
-          token = new ONMjs.AddressToken(this.store.model, resolvedToken.idNamespace, key, resolvedToken.namespaceDescriptor.archetypePathId);
+          token = new ONMjs.implementation.AddressToken(this.store.model, resolvedToken.idNamespace, key, resolvedToken.namespaceDescriptor.archetypePathId);
           address.implementation.pushToken(token);
           try {
             callback_(address);
@@ -2225,7 +2227,7 @@
         } else {
           this.dataReference = {};
           this.objectStoreSource = "new";
-          token = new ONMjs.AddressToken(model_, void 0, void 0, 0);
+          token = new ONMjs.implementation.AddressToken(model_, void 0, void 0, 0);
           tokenBinder = new ONMjs.implementation.AddressTokenBinder(this, this.dataReference, token, "new");
         }
         this.validateAddressModel = function(address_) {
@@ -2583,13 +2585,13 @@
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.8";
+  Encapsule.code.lib.onm.about.version = "0.0.9";
 
-  Encapsule.code.lib.onm.about.build = "Tue Oct 15 17:09:20 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Tue Oct 15 21:37:29 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1381856960";
+  Encapsule.code.lib.onm.about.epoch = "1381873049";
 
-  Encapsule.code.lib.onm.about.uuid = "c02cffb9-af11-4331-b5ee-5db9ddaa916e";
+  Encapsule.code.lib.onm.about.uuid = "a46f0ba1-b93f-4c0a-a3ae-42a77dec3e88";
 
 }).call(this);
 // Generated by CoffeeScript 1.4.0
@@ -2623,63 +2625,13 @@
       var consoleEl;
       consoleEl = $("#idConsole");
       if (!(consoleEl != null) || !consoleEl) {
-        throw "Unable to resolve the #idConsole DIV.";
+        return false;
       }
-      if ((Encapsule.runtime.app.SchemaWindowManager != null) && Encapsule.runtime.app.SchemaWindowManager) {
-        consoleEl.html("reset");
-        Encapsule.runtime.app.SchemaWindowManager.refreshWindowManagerViewState({
-          forceEval: true
-        });
-      }
-      consoleEl.html("<div id=\"idClearConsole\" style=\"float: right;\">\n    <button id=\"idButtonClearConsole\" class=\"button red small\">Reset Console</button>\n    <button id=\"idButtonHideConsole\" class=\"button blue small\">Hide Console</button>\n</div>\n<img src=\"img/core-seablue-48x48.png\" style=\"float:left; margin-right: 10px;\">\n<h1>" + appName + " v" + appVersion + "</h1>\n<div style=\"clear: both;\"></div>\n<p>\n    <strong>Copyright:</strong> " + appCopyright + " &bull;\n    <strong>License:</strong> <a href=\"" + appLicenseUrl + "\" title=\"Read the " + appLicense + " text...\" target=\"_blank\">" + appLicense + "</a> &bull;\n    <strong>Sources:</strong> <a href=\"" + appGitHubRepoUrl + "\" title=\"" + appGitHubRepoName + " repo on GitHub\" target=\"_blank\">" + appGitHubRepoName + "</a>\n</p>\n<p>\nBuild: {" + appBuildId + "}  " + appBuildTime + " by <a href=\"mailto:" + appBuilder + "\">" + appBuilder + "</a>\n</p>");
-      $("#idButtonClearConsole").click(function() {
-        consoleEl = $("#idConsole").css({
-          backgroundColor: "#CCCCCC"
-        });
-        Console.init();
-        return Console.message("Console re-initialized.");
-      });
-      return $("#idButtonHideConsole").click(function() {
-        return Console.hide();
-      });
-    };
-
-    Console.opacity = function(opacity_) {
-      var consoleEl;
-      consoleEl = $("#idConsole");
-      return consoleEl.css({
-        opacity: "" + opacity_
-      });
-    };
-
-    Console.show = function() {
-      var consoleEl;
-      consoleEl = $("#idConsole");
-      if ((consoleEl != null) && consoleEl) {
-        return consoleEl.hide(0, function() {
-          Console.opacity(1.0);
-          return consoleEl.show(500);
-        });
-      }
-    };
-
-    Console.hide = function() {
-      var consoleEl;
-      consoleEl = $("#idConsole");
-      if ((consoleEl != null) && consoleEl) {
-        return consoleEl.hide(500, function() {
-          Console.opacity(0.0);
-          if ((Encapsule.runtime.app.SchemaWindowManager != null) && Encapsule.runtime.app.SchemaWindowManager) {
-            return Encapsule.runtime.app.SchemaWindowManager.refreshWindowManagerViewState({
-              forceEval: true
-            });
-          }
-        });
-      }
+      consoleEl.html("");
+      return true;
     };
 
     Console.log = function(trace) {
-      Console.message(trace);
       if ((typeof console !== "undefined" && console !== null) && console && (console.log != null) && console.log) {
         return console.log(trace);
       }
@@ -2705,22 +2657,10 @@
     };
 
     Console.messageError = function(errorException) {
-      var blipper, consoleEl, errorMessage;
-      errorMessage = "<h2 style=\"color: #990000;\">" + appName + " Runtime Exception</h2>\n<div class=\"classConsoleExceptionContainer\">\n    <h3 style=\"color: #660000\">" + appName + " v" + appVersion + " RUNTIME EXCEPTION:</h3>\n    <h4>AppID: " + appId + " &bull; ReleaseID: " + appReleaseId + " &bull; AppBuildID: " + appBuildId + "</h4>\n    <div style=\"margin: 5px; margin-top-15px; padding: 10px; background-color: #FF9900; border: 1px solid black;\">" + errorException + "</div>\n</div>";
+      var errorMessage;
+      errorMessage = "<div class=\"classConsoleExceptionContainer\">ERROR: " + errorException + "</div>";
       Console.messageRaw(errorMessage);
-      Console.log("!!!! " + errorException);
-      consoleEl = $("#idConsole");
-      consoleEl.show();
-      consoleEl.css({
-        opacity: "1.0",
-        backgroundColor: "#FFCC00"
-      });
-      Encapsule.runtime.boot.phase0.spinner.cancel();
-      if ((typeof Encapsule !== "undefined" && Encapsule !== null) && (Encapsule.runtime != null) && (Encapsule.runtime.boot != null) && (Encapsule.runtime.boot.phase0 != null) && (Encapsule.runtime.boot.phase0.blipper != null)) {
-        blipper = Encapsule.runtime.boot.phase0.blipper;
-        blipper.blip("22a");
-        return blipper.blip("warning");
-      }
+      return Console.log("!!!! " + errorException);
     };
 
     return Console;

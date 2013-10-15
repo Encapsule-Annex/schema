@@ -26,12 +26,11 @@ Encapsule.code.app.modelview = Encapsule.code.app.modelview? and Encapsule.code.
 class Encapsule.code.app.modelview.SchemaBootInfoWindow
     constructor: ->
 
-        @showDebugConsole = =>
-            Console.show()
-
 Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SchemaBootInfoWindow", ( -> """
 <h1>#{appName} v#{appVersion} Diagnostic Window</h1>
-<button data-bind="click: showDebugConsole" class="button small blue">#{appName} Debug Console</button>
+
+<div id="idConsole">really nothing?</div>
+
 <h2>App Boot Info</h2>
 <p>
 Bootstrapper exit status: <strong><span data-bind="text: Encapsule.runtime.boot.exitStatus"></span></strong><br>
@@ -43,6 +42,11 @@ Browser Version: <strong><span data-bind="text: Encapsule.runtime.boot.phase1.br
 Application cache status: <strong><span data-bind="text: Encapsule.runtime.boot.phase2.appCacheMonitorState"></span></strong><br>
 Application cache race condition handled: <strong><span data-bind="text: Encapsule.runtime.boot.phase2.appCacheRaceConditionBroken"></span></strong><br>
 </p>
+<h2>ONMjs Build Info</h2>
+ONMjs.about.version: #{Encapsule.code.lib.onm.about.version}<br>
+OMNjs.about.uuid: #{Encapsule.code.lib.onm.about.uuid}<br>
+ONMjs.about.build: #{Encapsule.code.lib.onm.about.build}<br>
+ONMjs.about.epoch: #{Encapsule.code.lib.onm.about.epoch}<br>
 <h2>App Build Info</h2>
 <p>
 Application Package Publisher: <strong><a href="#{appPackagePublisherUrl}" target="_blank"><span data-bind="text: appPackagePublisher"></span></a></strong><br>

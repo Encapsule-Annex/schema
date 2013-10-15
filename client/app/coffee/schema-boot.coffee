@@ -88,7 +88,7 @@ phase0 = (bootstrapperOptions_) ->
 
     bodyJN = $("body")
     bodyJN.html($("""
-        <div id="idSpinner" class="classCentered"></div><div id="idConsole"></div>
+        <div id="idSpinner" class="classCentered"></div>
         """))
 
     phase0Out = bootstrapperOptions_.phase0 = {}
