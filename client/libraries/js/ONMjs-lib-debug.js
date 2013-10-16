@@ -540,7 +540,7 @@
             }
             objectModelDescriptor = _this.objectModelPathMap[path_];
             if (!((objectModelDescriptor != null) && objectModelDescriptor)) {
-              throw "Invalid object model path '" + objectModelPath_ + "' cannot be resolved.";
+              throw "Path '" + path_ + "' is not in the '" + _this.model.jsonTag + "' model's address space.";
             }
             objectModelPathId = objectModelDescriptor.id;
             if (!(objectModelPathId != null)) {
@@ -948,7 +948,7 @@
             humanReadableString += "." + token.key + ".";
           } else {
             if (token.idExtensionPoint > 0) {
-              humanReadableString += ".";
+              humanReadableString += "-";
             }
           }
           humanReadableString += "" + token.idNamespace;
@@ -1519,7 +1519,7 @@
             }
             resolveResults.key = resolveResults.jsonTag = resolveActions_.getUniqueKey(newData);
             if (!((resolveResults.key != null) && resolveResults.key)) {
-              throw "Unable to obtain key for new data component from function semanticBindings.getUniqueKey.";
+              throw "Your data model's semanticBindings.getUniqueKey function returned an invalid key. Key cannot be zero or zero-length.";
             }
           }
           resolveResults.dataReference = resolveResults.dataParentReference[resolveResults.jsonTag] = newData;
@@ -1818,9 +1818,9 @@
         }
         mode = (mode_ != null) && mode_ || "bypass";
         if ((mode !== "new") && !address.isResolvable()) {
-          throw "Specified address is unresolvable in " + mode + " mode.";
+          throw "'" + mode + "' mode error: Unresolvable address '" + (address.getHumanReadableString()) + "' invalid for this operation.";
         }
-        this.dataReference = (store_.dataReference != null) && store_.dataReference || (function() {
+        this.dataReference = (store_.implementation.dataReference != null) && store_.implementation.dataReference || (function() {
           throw "Cannot resolve object store's root data reference.";
         })();
         this.resolvedTokenArray = [];
@@ -1838,7 +1838,7 @@
               if (!((addressToken.key != null) && addressToken.key)) {
                 resolvedAddress = new ONMjs.Address(this.store.model, this.resolvedTokenArray);
                 componentAddress = resolvedAddress.createComponentAddress();
-                this.store.reifier.reifyStoreComponent(componentAddress);
+                this.store.implementation.reifier.reifyStoreComponent(componentAddress);
                 extensionPointAddress = componentAddress.createParentAddress();
                 extensionPointNamespace = this.store.openNamespace(extensionPointAddress);
                 extensionPointNamespace.update();
@@ -1925,16 +1925,16 @@
         while ((address != null) && address) {
           descriptor = address.implementation.getDescriptor();
           if (count === 0) {
-            this.store.reifier.dispatchCallback(address, "onNamespaceUpdated", void 0);
+            this.store.implementation.reifier.dispatchCallback(address, "onNamespaceUpdated", void 0);
           } else {
-            this.store.reifier.dispatchCallback(address, "onSubnamespaceUpdated", void 0);
+            this.store.implementation.reifier.dispatchCallback(address, "onSubnamespaceUpdated", void 0);
           }
           if (descriptor.namespaceType === "component" || descriptor.namespaceType === "root") {
             if (!containingComponentNotified) {
-              this.store.reifier.dispatchCallback(address, "onComponentUpdated", void 0);
+              this.store.implementation.reifier.dispatchCallback(address, "onComponentUpdated", void 0);
               containingComponentNotified = true;
             } else {
-              this.store.reifier.dispatchCallback(address, "onSubcomponentUpdated", void 0);
+              this.store.implementation.reifier.dispatchCallback(address, "onSubcomponentUpdated", void 0);
             }
           }
           address = address.createParentAddress();
@@ -2038,7 +2038,7 @@
           var callbackFunction, callbackInterface, exceptionMessage, observerId, _ref, _results;
           try {
             if ((observerId_ != null) && observerId_) {
-              callbackInterface = _this.store.observers[observerId_];
+              callbackInterface = _this.store.implementation.observers[observerId_];
               if (!((callbackInterface != null) && callbackInterface)) {
                 throw "Internal error: unable to resolve observer ID to obtain callback interface.";
               }
@@ -2051,7 +2051,7 @@
                 }
               }
             } else {
-              _ref = _this.store.observers;
+              _ref = _this.store.implementation.observers;
               _results = [];
               for (observerId in _ref) {
                 callbackInterface = _ref[observerId];
@@ -2079,7 +2079,7 @@
             if (!((address_ != null) && address_)) {
               throw "Internal error: Missing address input parameter.";
             }
-            if (!Encapsule.code.lib.js.dictionaryLength(_this.store.observers)) {
+            if (!Encapsule.code.lib.js.dictionaryLength(_this.store.implementation.observers)) {
               return;
             }
             dispatchCallback = _this.dispatchCallback;
@@ -2098,7 +2098,7 @@
             if (!((address_ != null) && address_)) {
               throw "Internal error: Missing address input parameter.";
             }
-            if (!Encapsule.code.lib.js.dictionaryLength(_this.store.observers)) {
+            if (!Encapsule.code.lib.js.dictionaryLength(_this.store.implementation.observers)) {
               return;
             }
             dispatchCallback = _this.dispatchCallback;
@@ -2117,7 +2117,7 @@
             if (!((address_ != null) && address_)) {
               throw "Internal error: Missing address input parameter.";
             }
-            if (!Encapsule.code.lib.js.dictionaryLength(_this.store.observers)) {
+            if (!Encapsule.code.lib.js.dictionaryLength(_this.store.implementation.observers)) {
               return;
             }
             dispatchCallback = _this.dispatchCallback;
@@ -2199,13 +2199,33 @@
 
   ONMjs = Encapsule.code.lib.onm;
 
+  ONMjs.implementation.StoreDetails = (function() {
+
+    function StoreDetails(store_, model_, initialStateJSON_) {
+      try {
+        this.store = store_;
+        this.model = model_;
+        this.reifier = new ONMjs.implementation.StoreReifier(this.store);
+        this.dataReference = {};
+        this.objectStoreSource = void 0;
+        this.observers = {};
+        this.observersState = {};
+      } catch (exception) {
+        throw "ONMjs.implementation.StoreDetails failure: " + exception;
+      }
+    }
+
+    return StoreDetails;
+
+  })();
+
   ONMjs.Store = (function() {
 
     function Store(model_, initialStateJSON_) {
-      var parsedObject, token, tokenBinder,
+      var token, tokenBinder,
         _this = this;
       try {
-        this.reifier = new ONMjs.implementation.StoreReifier(this);
+        this.implementation = new ONMjs.implementation.StoreDetails(this, model_, initialStateJSON_);
         if (!((model_ != null) && model_)) {
           throw "Missing object model parameter!";
         }
@@ -2213,22 +2233,17 @@
         this.jsonTag = model_.jsonTag;
         this.label = model_.label;
         this.description = model_.description;
-        this.dataReference = void 0;
-        this.objectStoreSource = void 0;
-        this.observers = {};
-        this.observersState = {};
         if ((initialStateJSON_ != null) && initialStateJSON_) {
-          parsedObject = JSON.parse(initialStateJSON_);
-          this.objectStore = parsedObject[this.jsonTag];
-          if (!((this.objectStore != null) && this.objectStore)) {
+          this.implementation.dataReference = JSON.parse(initialStateJSON_);
+          if (!((this.implementation.dataReference != null) && this.implementation.dataReference)) {
             throw "Cannot deserialize specified JSON string!";
           }
-          this.objectStoreSource = "json";
+          this.implementation.objectStoreSource = "json";
         } else {
-          this.dataReference = {};
-          this.objectStoreSource = "new";
+          this.implementation.dataReference = {};
+          this.implementation.objectStoreSource = "new";
           token = new ONMjs.implementation.AddressToken(model_, void 0, void 0, 0);
-          tokenBinder = new ONMjs.implementation.AddressTokenBinder(this, this.dataReference, token, "new");
+          tokenBinder = new ONMjs.implementation.AddressTokenBinder(this, this.implementation.dataReference, token, "new");
         }
         this.validateAddressModel = function(address_) {
           try {
@@ -2284,8 +2299,8 @@
             if (descriptor.namespace === "root") {
               throw "The specified address refers to the root namespace of the store which cannot be removed.";
             }
-            _this.reifier.reifyStoreExtensions(address_, void 0, true);
-            _this.reifier.unreifyStoreComponent(address_);
+            _this.implementation.reifier.reifyStoreExtensions(address_, void 0, true);
+            _this.implementation.reifier.unreifyStoreComponent(address_);
             componentNamespace = _this.openNamespace(address_);
             extensionPointAddress = address_.createParentAddress();
             extensionPointNamespace = _this.openNamespace(extensionPointAddress);
@@ -2331,12 +2346,12 @@
             }
             observerCallbackInterface_.observingEntity = observingEntityReference_;
             observerIdCode = uuid.v4();
-            _this.observers[observerIdCode] = observerCallbackInterface_;
+            _this.implementation.observers[observerIdCode] = observerCallbackInterface_;
             rootAddress = _this.model.createRootAddress();
-            _this.reifier.dispatchCallback(void 0, "onObserverAttachBegin", observerIdCode);
-            _this.reifier.reifyStoreComponent(rootAddress, observerIdCode);
-            _this.reifier.reifyStoreExtensions(rootAddress, observerIdCode);
-            _this.reifier.dispatchCallback(void 0, "onObserverAttachEnd", observerIdCode);
+            _this.implementation.reifier.dispatchCallback(void 0, "onObserverAttachBegin", observerIdCode);
+            _this.implementation.reifier.reifyStoreComponent(rootAddress, observerIdCode);
+            _this.implementation.reifier.reifyStoreExtensions(rootAddress, observerIdCode);
+            _this.implementation.reifier.dispatchCallback(void 0, "onObserverAttachEnd", observerIdCode);
             return observerIdCode;
           } catch (exception) {
             throw "ONMjs.Store.registerObserver failure: " + exception;
@@ -2348,17 +2363,17 @@
             if (!((observerIdCode_ != null) && observerIdCode_)) {
               throw "Missing observer ID code input parameter!";
             }
-            registeredObserver = _this.observers[observerIdCode_];
+            registeredObserver = _this.implementation.observers[observerIdCode_];
             if (!((registeredObserver != null) && registeredObserver)) {
               throw "Unknown observer ID code provided. No registration to remove.";
             }
-            _this.reifier.dispatchCallback(void 0, "onObserverDetachBegin", observerIdCode_);
+            _this.implementation.reifier.dispatchCallback(void 0, "onObserverDetachBegin", observerIdCode_);
             rootAddress = _this.model.createRootAddress();
-            _this.reifier.reifyStoreExtensions(rootAddress, observerIdCode_, true);
-            _this.reifier.unreifyStoreComponent(rootAddress, observerIdCode_);
-            _this.reifier.dispatchCallback(void 0, "onObserverDetachEnd", observerIdCode_);
+            _this.implementation.reifier.reifyStoreExtensions(rootAddress, observerIdCode_, true);
+            _this.implementation.reifier.unreifyStoreComponent(rootAddress, observerIdCode_);
+            _this.implementation.reifier.dispatchCallback(void 0, "onObserverDetachEnd", observerIdCode_);
             _this.removeObserverState(observerIdCode_);
-            return delete _this.observers[observerIdCode_];
+            return delete _this.implementation.observers[observerIdCode_];
           } catch (exception) {
             throw "ONMjs.Store.unregisterObserver failure: " + exception;
           }
@@ -2369,7 +2384,7 @@
             if (!((observerId_ != null) && observerId_)) {
               throw "Missing observer ID parameter!";
             }
-            observerState = (_this.observersState[observerId_] != null) && _this.observersState[observerId_] || (_this.observersState[observerId_] = []);
+            observerState = (_this.implementation.observersState[observerId_] != null) && _this.implementation.observersState[observerId_] || (_this.implementation.observersState[observerId_] = []);
             return observerState;
           } catch (exception) {
             throw "ONMjs.Store.openObserverStateObject failure: " + exception;
@@ -2380,8 +2395,8 @@
             throw "Missing observer ID parameter!";
           }
           if ((typeof observerState !== "undefined" && observerState !== null) && observerState) {
-            if ((_this.observerState[observerId_] != null) && _this.observerState[observerId_]) {
-              delete _this.observerState[observerId_];
+            if ((_this.implementation.observerState[observerId_] != null) && _this.implementation.observerState[observerId_]) {
+              delete _this.implementation.observerState[observerId_];
             }
           }
           return _this;
@@ -2496,11 +2511,11 @@
 
   ONMjs = Encapsule.code.lib.onm;
 
-  ONMjs.CachedAddress = (function(_super) {
+  ONMjs.AddressStore = (function(_super) {
 
-    __extends(CachedAddress, _super);
+    __extends(AddressStore, _super);
 
-    function CachedAddress(referenceStore_, address_) {
+    function AddressStore(referenceStore_, address_) {
       this.setAddress = __bind(this.setAddress, this);
 
       this.getAddress = __bind(this.getAddress, this);
@@ -2513,11 +2528,11 @@
         }
         this.referenceStore = referenceStore_;
         selectorModel = new ONMjs.Model({
-          jsonTag: "cachedAddress",
+          jsonTag: "addressStore",
           label: "" + referenceStore_.model.jsonTag + " Address Cache",
           description: "" + referenceStore_.model.label + " observable address cache."
         });
-        CachedAddress.__super__.constructor.call(this, selectorModel);
+        AddressStore.__super__.constructor.call(this, selectorModel);
         selectorAddress = selectorModel.createRootAddress();
         this.selectorNamespace = new ONMjs.Namespace(this, selectorAddress);
         this.selectorNamespaceData = this.selectorNamespace.data();
@@ -2532,7 +2547,7 @@
                 return _this.setAddress(address_);
               }
             } catch (exception) {
-              throw "ONMjs.CachedAddress.objectStoreCallbacks.onNamespaceUpdated failure: " + exception;
+              throw "ONMjs.AddressStore.objectStoreCallbacks.onNamespaceUpdated failure: " + exception;
             }
           },
           onNamespaceRemoved: function(objectStore_, observerId_, address_) {
@@ -2544,16 +2559,16 @@
                 _this.setAddress(parentAddress);
               }
             } catch (exception) {
-              throw "ONMjs.CachedAddress.objectStoreCallbacks.onNamespaceRemoved failure: " + exception;
+              throw "ONMjs.AddressStore.objectStoreCallbacks.onNamespaceRemoved failure: " + exception;
             }
           }
         };
       } catch (exception) {
-        throw "ONMjs.CachedAddress failure: " + exception;
+        throw "ONMjs.AddressStore failure: " + exception;
       }
     }
 
-    CachedAddress.prototype.getAddress = function() {
+    AddressStore.prototype.getAddress = function() {
       var namespace;
       try {
         namespace = this.selectorNamespaceData.selectedNamespace;
@@ -2562,11 +2577,11 @@
         }
         return namespace.getResolvedAddress();
       } catch (exception) {
-        throw "ONMjs.CachedAddress.getSelector failure: " + exception;
+        throw "ONMjs.AddressStore.getSelector failure: " + exception;
       }
     };
 
-    CachedAddress.prototype.setAddress = function(address_) {
+    AddressStore.prototype.setAddress = function(address_) {
       try {
         if (!(address_ && address_)) {
           this.selectorNamespaceData.selectedNamespace = void 0;
@@ -2575,23 +2590,23 @@
         }
         return this.selectorNamespace.update();
       } catch (exception) {
-        throw "ONMjs.CachedAddress.setAddress failure: " + exception;
+        throw "ONMjs.AddressStore.setAddress failure: " + exception;
       }
     };
 
-    return CachedAddress;
+    return AddressStore;
 
   })(ONMjs.Store);
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.9";
+  Encapsule.code.lib.onm.about.version = "0.0.11";
 
-  Encapsule.code.lib.onm.about.build = "Tue Oct 15 21:59:39 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Wed Oct 16 02:05:51 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1381874379";
+  Encapsule.code.lib.onm.about.epoch = "1381889151";
 
-  Encapsule.code.lib.onm.about.uuid = "22ae8934-92b9-473b-998c-7440d2b017f3";
+  Encapsule.code.lib.onm.about.uuid = "86b65930-ccbd-4f43-aad1-0bd97a35122a";
 
 }).call(this);
 // Generated by CoffeeScript 1.4.0
@@ -3581,55 +3596,53 @@
 
   ONMjs = Encapsule.code.lib.onm;
 
-  ONMjs.test = {};
+  ONMjs.observers = (ONMjs.observers != null) && ONMjs.observers || (ONMjs.observers = {});
 
-  ONMjs.test.observers = {};
-
-  ONMjs.test.observers.Canary = (function() {
+  ONMjs.observers.GenericTest = (function() {
     var _this = this;
 
-    function Canary() {}
+    function GenericTest() {}
 
-    Canary.prototype.callbackInterface = {
+    GenericTest.prototype.callbackInterface = {
       onObserverAttachBegin: function(store_, observerId_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onObserverAttachBegin");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onObserverAttachBegin");
       },
       onObserverAttachEnd: function(store_, observerId_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onObserverAttachEnd");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onObserverAttachEnd");
       },
       onObserverDetachBegin: function(store_, observerId_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onObserverDetachBegin");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onObserverDetachBegin");
       },
       onObserverDetachEnd: function(store_, observerId_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onObserverDetachEnd");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onObserverDetachEnd");
       },
       onComponentCreated: function(store_, observerId_, address_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onComponentCreated(" + (address_.getHumanReadableString()) + ")");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onComponentCreated(" + (address_.getHumanReadableString()) + ")");
       },
       onComponentUpdated: function(store_, observerId_, address_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onComponentUpdated(" + (address_.getHumanReadableString()) + ")");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onComponentUpdated(" + (address_.getHumanReadableString()) + ")");
       },
       onComponentRemoved: function(store_, observerId_, address_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onComponentRemoved(" + (address_.getHumanReadableString()) + ")");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onComponentRemoved(" + (address_.getHumanReadableString()) + ")");
       },
       onNamespaceCreated: function(store_, observerId_, address_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onNamespaceCreated(" + (address_.getHumanReadableString()) + ")");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onNamespaceCreated(" + (address_.getHumanReadableString()) + ")");
       },
       onNamespaceUpdated: function(store_, observerId_, address_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onNamespaceUpdated(" + (address_.getHumanReadableString()) + ")");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onNamespaceUpdated(" + (address_.getHumanReadableString()) + ")");
       },
       onNamespaceRemoved: function(store_, observerId_, address_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onNamespaceRemoved(" + (address_.getHumanReadableString()) + ")");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onNamespaceRemoved(" + (address_.getHumanReadableString()) + ")");
       },
       onSubNamespaceUpdated: function(store_, observerId_, address_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onSubNamespaceUpdated(" + (address_.getHumanReadableString()) + ")");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onSubNamespaceUpdated(" + (address_.getHumanReadableString()) + ")");
       },
       onSubComponentUpdated: function(store_, observerId_, address_) {
-        return Console.message("ONMjs_" + store_.jsonTag + "::" + observerId_ + "::onSubComponentUpdated(" + (address_.getHumanReadableString()) + ")");
+        return Console.message("ONMjs_" + store_.jsonTag + "Observer::" + observerId_ + "::onSubComponentUpdated(" + (address_.getHumanReadableString()) + ")");
       }
     };
 
-    return Canary;
+    return GenericTest;
 
   }).call(this);
 

@@ -64,8 +64,8 @@ class Encapsule.code.app.Schema
             # Initialize the Schema application's ONMjs runtime state store.
             store = ONMjsRuntime.store = new ONMjs.Store(model)
 
-            # Create a ONMjs.CachedAddress object associated with the store.
-            selectedAddress = ONMjsRuntime.selectedAddress = new ONMjs.CachedAddress(store)
+            # Create a ONMjs.AddressStore object associated with the store.
+            selectedAddress = ONMjsRuntime.selectedAddress = new ONMjs.AddressStore(store)
 
             # CONSTRUCT ONMjs OBSERVERS
 
@@ -81,8 +81,8 @@ class Encapsule.code.app.Schema
             # JSON view window.
             jsonView = ONMjsRuntime.observers.json = new ONMjs.observers.SelectedJsonModelView()
 
-            # TEST:: Create an instance of "canary" - an ONMjs observer. Canary "sings" to the console log.
-            canaryMonitor = ONMjsRuntime.observers.canary = new ONMjs.test.observers.Canary()
+            # TEST:: Create an instance of "GenericTest" - an ONMjs observer.
+            canaryMonitor = ONMjsRuntime.observers.canary = new ONMjs.observers.GenericTest()
 
             # REGISTER ONMjs OBSERVERS (i.e. ATTACH)
 
@@ -157,8 +157,10 @@ class Encapsule.code.app.Schema
                     newPersonNamespace = store.createComponent(newPersonAddress)
                 
                 storeJSON = store.toJSON(undefined, 0)
-
                 newStore = new ONMjs.Store(model, storeJSON)
+                storeJSON2 = newStore.toJSON(undefined, 0)
+                if storeJSON != storeJSON2
+                    throw "JSON serialize/deserialize roundtrip test failure."
 
 
                 ###
