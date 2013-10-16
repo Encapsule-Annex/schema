@@ -1779,6 +1779,30 @@
 
   ONMjs = Encapsule.code.lib.onm;
 
+  ONMjs.implementation = (ONMjs.implementation != null) && ONMjs.implementation || (ONMjs.implementation = {});
+
+  ONMjs.implementation.NamespaceDetails = (function() {
+
+    function NamespaceDetails(namespace_, store_, address_, mode_) {
+      var _this = this;
+      try {
+        this.dataReference = (store_.implementation.dataReference != null) && store_.implementation.dataReference || (function() {
+          throw "Cannot resolve object store's root data reference.";
+        })();
+        this.resolvedTokenArray = [];
+        this.getResolvedToken = function() {
+          return _this.resolvedTokenArray.length && _this.resolvedTokenArray[_this.resolvedTokenArray.length - 1] || void 0;
+        };
+        this.resolvedAddress = void 0;
+      } catch (exception) {
+        throw "ONMjs.implementation.NamespaceDetails failure: " + exception;
+      }
+    }
+
+    return NamespaceDetails;
+
+  })();
+
   ONMjs.Namespace = (function() {
 
     function Namespace(store_, address_, mode_) {
@@ -1794,13 +1818,13 @@
 
       this.getResolvedAddress = __bind(this.getResolvedAddress, this);
 
-      var address, addressToken, componentAddress, extensionPointAddress, extensionPointNamespace, mode, objectModel, objectModelNameKeys, objectModelNameStore, resolvedAddress, tokenBinder, _i, _len, _ref,
-        _this = this;
+      var address, addressToken, componentAddress, extensionPointAddress, extensionPointNamespace, mode, objectModel, objectModelNameKeys, objectModelNameStore, resolvedAddress, tokenBinder, _i, _len, _ref;
       try {
         if (!((store_ != null) && store_)) {
           throw "Missing object store input parameter.";
         }
         this.store = store_;
+        this.implementation = new ONMjs.implementation.NamespaceDetails(this, store_, address_, mode_);
         address = void 0;
         if (!((address_ != null) && address_ && address_.implementation.tokenVector.length)) {
           objectModel = store_.model;
@@ -1820,23 +1844,16 @@
         if ((mode !== "new") && !address.isResolvable()) {
           throw "'" + mode + "' mode error: Unresolvable address '" + (address.getHumanReadableString()) + "' invalid for this operation.";
         }
-        this.dataReference = (store_.implementation.dataReference != null) && store_.implementation.dataReference || (function() {
-          throw "Cannot resolve object store's root data reference.";
-        })();
-        this.resolvedTokenArray = [];
-        this.getResolvedToken = function() {
-          return _this.resolvedTokenArray.length && _this.resolvedTokenArray[_this.resolvedTokenArray.length - 1] || void 0;
-        };
         _ref = address.implementation.tokenVector;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           addressToken = _ref[_i];
-          tokenBinder = new ONMjs.implementation.AddressTokenBinder(store_, this.dataReference, addressToken, mode);
-          this.resolvedTokenArray.push(tokenBinder.resolvedToken);
-          this.dataReference = tokenBinder.dataReference;
+          tokenBinder = new ONMjs.implementation.AddressTokenBinder(store_, this.implementation.dataReference, addressToken, mode);
+          this.implementation.resolvedTokenArray.push(tokenBinder.resolvedToken);
+          this.implementation.dataReference = tokenBinder.dataReference;
           if (mode === "new") {
             if (addressToken.idComponent) {
               if (!((addressToken.key != null) && addressToken.key)) {
-                resolvedAddress = new ONMjs.Address(this.store.model, this.resolvedTokenArray);
+                resolvedAddress = new ONMjs.Address(this.store.model, this.implementation.resolvedTokenArray);
                 componentAddress = resolvedAddress.createComponentAddress();
                 this.store.implementation.reifier.reifyStoreComponent(componentAddress);
                 extensionPointAddress = componentAddress.createParentAddress();
@@ -1847,7 +1864,6 @@
           }
           true;
         }
-        this.resolvedAddress = void 0;
       } catch (exception) {
         throw "ONMjs.Namespace failure: " + exception;
       }
@@ -1855,11 +1871,11 @@
 
     Namespace.prototype.getResolvedAddress = function() {
       try {
-        if ((this.resolvedAddress != null) && this.resolvedAddress) {
-          return this.resolvedAddress;
+        if ((this.implementation.resolvedAddress != null) && this.implementation.resolvedAddress) {
+          return this.implementation.resolvedAddress;
         }
-        this.resolvedAddress = new ONMjs.Address(this.store.model, this.resolvedTokenArray);
-        return this.resolvedAddress;
+        this.implementation.resolvedAddress = new ONMjs.Address(this.store.model, this.implementation.resolvedTokenArray);
+        return this.implementation.resolvedAddress;
       } catch (exception) {
         throw "ONMjs.Namespace.address failure: " + exception;
       }
@@ -1868,7 +1884,7 @@
     Namespace.prototype.getResolvedLabel = function() {
       var getLabelBinding, resolvedDescriptor, resolvedLabel, semanticBindings;
       try {
-        resolvedDescriptor = this.getResolvedToken().namespaceDescriptor;
+        resolvedDescriptor = this.implementation.getResolvedToken().namespaceDescriptor;
         semanticBindings = this.store.model.getSemanticBindings();
         getLabelBinding = (semanticBindings != null) && semanticBindings && (semanticBindings.getLabel != null) && semanticBindings.getLabel || void 0;
         resolvedLabel = void 0;
@@ -1884,13 +1900,13 @@
     };
 
     Namespace.prototype.data = function() {
-      return this.dataReference;
+      return this.implementation.dataReference;
     };
 
     Namespace.prototype.toJSON = function(replacer_, space_) {
       var namespaceDescriptor, resultJSON, resultObject, space;
       try {
-        namespaceDescriptor = this.getResolvedToken().namespaceDescriptor;
+        namespaceDescriptor = this.implementation.getResolvedToken().namespaceDescriptor;
         resultObject = {};
         resultObject[namespaceDescriptor.jsonTag] = this.data();
         space = (space_ != null) && space_ || 0;
@@ -1949,7 +1965,7 @@
     Namespace.prototype.visitExtensionPointSubcomponents = function(callback_) {
       var address, key, object, resolvedToken, token, _ref;
       try {
-        resolvedToken = this.getResolvedToken();
+        resolvedToken = this.implementation.getResolvedToken();
         if (!((resolvedToken != null) && resolvedToken)) {
           throw "Internal error: unable to resolve token.";
         }
@@ -2600,13 +2616,13 @@
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.11";
+  Encapsule.code.lib.onm.about.version = "0.0.13";
 
-  Encapsule.code.lib.onm.about.build = "Wed Oct 16 02:05:51 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Wed Oct 16 03:25:46 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1381889151";
+  Encapsule.code.lib.onm.about.epoch = "1381893946";
 
-  Encapsule.code.lib.onm.about.uuid = "86b65930-ccbd-4f43-aad1-0bd97a35122a";
+  Encapsule.code.lib.onm.about.uuid = "f2137e56-7b48-4d9a-a5f5-6861a4560c6e";
 
 }).call(this);
 // Generated by CoffeeScript 1.4.0
@@ -3397,14 +3413,13 @@
   ONMjs.observers.implementation.SelectedPathElementModelView = (function() {
 
     function SelectedPathElementModelView(addressCache_, count_, selectedCount_, objectStoreAddress_) {
-      var objectStoreDescriptor, objectStoreNamespace, resolvedLabel, styleClasses,
+      var objectStoreNamespace, resolvedLabel, styleClasses,
         _this = this;
       try {
         this.cachedAddressStore = addressCache_;
         this.objectStoreAddress = objectStoreAddress_;
         this.isSelected = count_ === selectedCount_;
         objectStoreNamespace = addressCache_.referenceStore.openNamespace(objectStoreAddress_);
-        objectStoreDescriptor = objectStoreNamespace.getResolvedToken().namespaceDescriptor;
         resolvedLabel = objectStoreNamespace.getResolvedLabel();
         this.prefix = "";
         switch (count_) {
@@ -3425,7 +3440,7 @@
           this.label += "<span class=\"selected\">" + resolvedLabel + "</span>";
         } else {
           styleClasses = "parent classONMjsMouseOverPointer";
-          if (objectStoreDescriptor.isComponent) {
+          if (objectStoreAddress_.getModel().namespaceType === "component") {
             styleClasses += " component";
           }
           this.label += "<span class=\"" + styleClasses + "\">" + resolvedLabel + "</span>";
