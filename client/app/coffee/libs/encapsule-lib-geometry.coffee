@@ -29,6 +29,8 @@ Encapsule.runtime.core = Encapsule.runtime.core? and Encapsule.runtime.core or @
 Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
 Encapsule.runtime.app.kotemplates = Encapsule.runtime.app.kotemplates? and Encapsule.runtime.app.kotemplates or @Encapsule.runtime.app.kotemplates = []
 
+backchannel = Encapsule.runtime.backchannel? and Encapsule.runtime.backchannel or throw "Missing expected Encapsule.runtime.backchannel object."
+
 ###
 # Get back to this later
 #
@@ -307,7 +309,7 @@ Encapsule.code.lib.geometry.frame.createFromOffsetRectangleWithMargins = (offset
         frameObject.view.rectangle.extent.width -= horizontalMarginExtent
         frameObject.view.rectangle.extent.height -= verticalMarginExtent
 
-        Console.message("""
+        backchannel.log("""
             <b>Frame:</b>
             #{frameObject.frame.rectangle.extent.width} x #{frameObject.frame.rectangle.extent.height}
             w/offset (#{frameObject.frame.offset.top}, #{frameObject.frame.offset.left})

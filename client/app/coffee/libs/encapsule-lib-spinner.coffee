@@ -28,6 +28,7 @@ namespaceEncapsule_code = Encapsule.code? and Encapsule.code or @Encapsule.code 
 namespaceEncapsule_code_lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 namespaceEncapsule_code_lib_view = Encapsule.code.lib.view? and Encapsule.code.lib.view or @Encapsule.code.lib.view = {}
 
+backchannel = Encapsule.runtime.backchannel? and Encapsule.runtime.backchannel or throw "Missing expected Encapsule.runtime.backchannel object."
 
 # http://fgnass.github.com/spin.js/#?
 
@@ -52,7 +53,7 @@ class namespaceEncapsule_code_lib_view.spinner
     optionsDefault: optionsDefault
    
     constructor: ->
-        Console.message("Constructed a spinner wrapper object.")
+        backchannel.log("Constructed a spinner wrapper object.")
         @captionUpdateTimer = undefined
 
     draw: (options_) =>

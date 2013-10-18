@@ -23,6 +23,8 @@ namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.app = Encapsule.code.app? and Encapsule.code.app or @Encapsule.code.app = {}
 
+backchannel = Encapsule.runtime.backchannel? and Encapsule.runtime.backchannel or throw "Missing expected Encapsule.runtime.backchannel object."
+
 class Encapsule.code.app.SchemaRouter
     constructor: ->
         # \ BEGIN: constructor scope
@@ -35,18 +37,18 @@ class Encapsule.code.app.SchemaRouter
                 # \ BEGIN: routeChangedCallback scope
                 try
                     # \ BEGIN: routeChangedCallback try scope
-                    Console.message("#{appName} local router: Route changed.")
-                    Console.message("... sequence=#{sequence_} // route=#{route_} // location=#{location_}")
+                    backchannel.log("#{appName} local router: Route changed.")
+                    backchannel.log("... sequence=#{sequence_} // route=#{route_} // location=#{location_}")
 
                     # / END: routeChangedCallback try scope
                 catch exception
                     message = "SchemaRouter.routeChangedCallback fail: #{exception}"
-                    Console.messageError(message)
+                    backchannel.logError(message)
                 # / END: routeChangedCallback scope
 
 
             @setRoute = (route_) =>
-                Console.message("#{appName} local router: Setting new local route.")
+                backchannel.log("#{appName} local router: Setting new local route.")
                 @routerCore.setRoute(route_)
 
             @getRoute = =>
@@ -55,5 +57,5 @@ class Encapsule.code.app.SchemaRouter
             # / END: constructor try scope
         catch exception
             message = "#{appName} local router fail: #{exception}"
-            Console.messageError(message)
+            backchannel.error(message)
         # / END: constructor scope

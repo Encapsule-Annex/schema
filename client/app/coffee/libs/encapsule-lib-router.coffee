@@ -29,6 +29,7 @@ namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 
+backchannel = Encapsule.runtime.backchannel? and Encapsule.runtime.backchannel or throw "Missing expected Encapsule.runtime.backchannel object."
 
 class Encapsule.code.lib.InPageURIRouter
 
@@ -55,7 +56,7 @@ class Encapsule.code.lib.InPageURIRouter
     #
     constructor: ->
 
-        Console.message("#{appName} router: initialize.")
+        backchannel.log("#{appName} router: initialize.")
 
         #
         # class instance state
@@ -94,11 +95,11 @@ class Encapsule.code.lib.InPageURIRouter
             @lastTriggeredRoute = @clientRouter.getRoute()
             @lastTriggeredLocation = document.location
             if @applicationRouteCallback? and @applicationRouteCallback
-                Console.message("InPageURIRouter dispatching #{@routerSequenceNumber} : #{document.location.hash}")
+                backchannel.log("InPageURIRouter dispatching #{@routerSequenceNumber} : #{document.location.hash}")
                 @routerSequenceNumber++
                 @applicationRouteCallback(@routerSequenceNumber, @lastTriggeredRoute, @lastTriggeredLocation)
             else
-                Console.message("InPaageURIRouter caching #{@routerSequenceNumber} : #{document.location.hash}")
+                backchannel.log("InPaageURIRouter caching #{@routerSequenceNumber} : #{document.location.hash}")
 
         clientOptions = {
             #before: onBefore,
@@ -118,12 +119,12 @@ class Encapsule.code.lib.InPageURIRouter
         @clientRouter = Router() 
         @clientRouter.configure(clientOptions)
 
-        Console.message("#{appName} router: starting.")
+        backchannel.log("#{appName} router: starting.")
         @clientRouter.init()
-        Console.message("#{appName} router: started.")
+        backchannel.log("#{appName} router: started.")
 
         if @internalAllRoutesCallbackCount == 0
-            Console.message("#{appName} router: redirecting to default route.")
+            backchannel.log("#{appName} router: redirecting to default route.")
             @clientRouter.setRoute("")
 
         @setApplicationRouteCallback = (applicationRouteCallback_) =>
@@ -132,11 +133,11 @@ class Encapsule.code.lib.InPageURIRouter
                 throw "You need to specify a callback function."
 
             if @applicationRouteCallback? or @applicationRouteCallback
-                Console.message("#{appName} router: re-registering application route callback.")
+                backchannel.log("#{appName} router: re-registering application route callback.")
                 if @routerSequenceNumber > 0
                     @routerSequenceNumber--
             else
-                Console.message("#{appName} router: registering application route callback.")
+                backchannel.log("#{appName} router: registering application route callback.")
 
             @applicationRouteCallback = applicationRouteCallback_
 

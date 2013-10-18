@@ -40,25 +40,14 @@ BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.runtime = Encapsule.runtime? and Encapsule.runtime or @Encapsule.runtime = {}
-Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
 
-Encapsule.runtime.backchannel = Encapsule.runtime.backchannel? and Encapsule.runtime.backchannel or @Encapsule.runtime.backchannel = new Encapsule.code.lib.base.BackChannel();
+consoleLogHandler = (text_) ->
+    console? and console and console.log? and console.log and console.log(text_) and true or false
+
+consoleErrorHandler = (text_) ->
+    console? and console and console.error? and console.error and console.error(text_) and true or false
+    alert(text_)
+
+@Encapsule.runtime.backchannel = new Encapsule.code.lib.base.BackChannel(consoleLogHandler, consoleErrorHandler)
+
 backchannel = Encapsule.runtime.backchannel
-
-Encapsule.runtime.boot = {
-    onBootstrapComplete: (bootstrapperStatus_) ->
-        backchannel.log("Application on bootstrap complete.");
-        Encapsule.runtime.app.schema = new Encapsule.code.app.Schema()
-    }
-
-$ ->
-    try
-        Encapsule.code.app.bootstrapper.run Encapsule.runtime.boot
-        backchannel.log("Application booted successfully.")
-    catch exception
-        backchannel.error("Application boot failure: #{exception}")
-    @
-
-
-
-

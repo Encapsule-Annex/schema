@@ -35,14 +35,14 @@ schemaRuntime = Encapsule.runtime.app
 ONMjsRuntime = schemaRuntime.ONMjs? and schemaRuntime.ONMjs or schemaRuntime.ONMjs = {}
 ONMjsRuntime.observers = ONMjsRuntime.observers? and ONMjsRuntime.observers or ONMjsRuntime.observers = {}
 
-
+backchannel = Encapsule.runtime.backchannel? and Encapsule.runtime.backchannel or throw "Missing expected Encapsule.runtime.backchannel object."
 
 class Encapsule.code.app.Schema
 
     constructor: ->
         try
-            Console.messageRaw("<h3>#{appName} v#{appVersion} APPLICATION STARTING</h3>")
-            Console.messageRaw("<h3>INITIALIZING #{appName} OBJECT MODEL MANAGER</h3>")
+            backchannel.log("<h3>#{appName} v#{appVersion} APPLICATION STARTING</h3>")
+            backchannel.log("<h3>INITIALIZING #{appName} OBJECT MODEL MANAGER</h3>")
 
             ONMjs = Encapsule.code.lib.onm
 
@@ -70,19 +70,19 @@ class Encapsule.code.app.Schema
             # CONSTRUCT ONMjs OBSERVERS
 
             # Path (address) view window.
-            pathView = ONMjsRuntime.observers.path = new ONMjs.observers.SelectedPathModelView()
+            pathView = ONMjsRuntime.observers.path = new ONMjs.observers.SelectedPathModelView(backchannel)
 
             # Navigator (treeview) view window.
-            navigatorView = ONMjsRuntime.observers.navigator = new ONMjs.observers.NavigatorModelView()
+            navigatorView = ONMjsRuntime.observers.navigator = new ONMjs.observers.NavigatorModelView(backchannel)
 
             # Namespace view/edit view window.
-            namespaceView = ONMjsRuntime.observers.namespace = new ONMjs.observers.SelectedNamespaceModelView()
+            namespaceView = ONMjsRuntime.observers.namespace = new ONMjs.observers.SelectedNamespaceModelView(backchannel)
 
             # JSON view window.
-            jsonView = ONMjsRuntime.observers.json = new ONMjs.observers.SelectedJsonModelView()
+            jsonView = ONMjsRuntime.observers.json = new ONMjs.observers.SelectedJsonModelView(backchannel)
 
             # TEST:: Create an instance of "GenericTest" - an ONMjs observer.
-            canaryMonitor = ONMjsRuntime.observers.canary = new ONMjs.observers.GenericTest()
+            canaryMonitor = ONMjsRuntime.observers.canary = new ONMjs.observers.GenericTest(backchannel)
 
             # REGISTER ONMjs OBSERVERS (i.e. ATTACH)
 
@@ -174,7 +174,7 @@ class Encapsule.code.app.Schema
     
             #
             catch exception
-                Console.message("MAIN BODY TESTS FAILED: #{exception}")
+                backchannel.log("MAIN BODY TESTS FAILED: #{exception}")
                 alert("TEST FAILURE: #{exception}")
 
             # ==============================================================================
@@ -197,21 +197,21 @@ class Encapsule.code.app.Schema
             #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneD3")
             #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootLayoutDebugPlane")
 
-            Console.message "Initializing local URI routing:"
+            backchannel.log "Initializing local URI routing:"
             Encapsule.runtime.app.SchemaRouter = new Encapsule.code.app.SchemaRouter()
             Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(Encapsule.runtime.app.SchemaRouter.routeChangedCallback)
 
-            Console.message( Encapsule.runtime.app.SchemaRouter.getRoute() )
+            backchannel.log( Encapsule.runtime.app.SchemaRouter.getRoute() )
             # Encapsule.runtime.app.SchemaRouter.setRoute(Encapsule.code.app.modelview.ScdlNavigatorWindowLayout.initialSelectionPath)
 
             # Encapsule.runtime.app.SchemaD3Main.initializeD3()
 
             Encapsule.runtime.boot.phase0.spinner.cancel()
-            Console.message("#{appName} main application document.onLoad event handler exit error.")
+            backchannel.log("#{appName} main application document.onLoad event handler exit error.")
             Encapsule.runtime.boot.phase0.blipper.blip "system-normal"
 
 
         catch exception
-            Console.messageError """#{appPackagePublisher} #{appName} v#{appVersion} APP INIT FAIL:: #{exception}"""
+            backchannel.error """#{appPackagePublisher} #{appName} v#{appVersion} APP INIT FAIL:: #{exception}"""
 
 

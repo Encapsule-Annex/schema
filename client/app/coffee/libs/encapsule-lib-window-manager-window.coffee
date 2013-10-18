@@ -28,7 +28,7 @@ namespaceEncapsule_runtime = Encapsule.runtime? and Encapsule.runtime or @Encaps
 namespaceEncapsule_runtime_app = Encapsule.runtime.app? and Encapsule.runtime.app or @Encapsule.runtime.app = {}
 namespaceEncapsule_runtime_app_kotemplates = Encapsule.runtime.app.kotemplates? and Encapsule.runtime.app.kotemplates or @Encapsule.runtime.app.kotemplates = []
 
-
+backchannel = Encapsule.runtime.backchannel? and Encapsule.runtime.backchannel or throw "Missing expected Encapsule.runtime.backchannel object."
 
 # \ BEGIN: file scope
 
@@ -36,7 +36,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
     constructor: (sourceDescriptor_) ->
         try
             # \ BEGIN: constructor try scope
-            Console.message("""... + WindowManager creating new window host id="#{sourceDescriptor_.id}" name="#{sourceDescriptor_.name}""")
+            backchannel.log("""... + WindowManager creating new window host id="#{sourceDescriptor_.id}" name="#{sourceDescriptor_.name}""")
 
             geo = Encapsule.code.lib.geometry
 
@@ -143,7 +143,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
 
             # \ BEGIN: onMouseOver
             @onMouseOver = =>
-                #Console.message("Mouse over #{@id}")
+                #backchannel.log("Mouse over #{@id}")
                 @cssHostOpacity(1)
                 @cssChromeOpacity(1)
                 @cssWindowOpacity(1)
@@ -151,7 +151,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
 
             # \ BEGIN: onMouseOut
             @onMouseOut = =>
-                #Console.message("Mouse out #{@id}")
+                #backchannel.log("Mouse out #{@id}")
                 @cssHostOpacity(@sourceDescriptor.globalWindowAttributes.hostWindowOpacity)
                 @cssChromeOpacity( @sourceDescriptor.globalWindowAttributes.chromeWindowOpacity)
                 @cssWindowOpacity(@sourceDescriptor.opacity)
@@ -165,7 +165,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                     # \BEGIN: try scope
                         # We will do some checking here to ensure that a change actually occurred.
                         # If so, then we will update the Knockout.js observables contained by thie ObservableWindow instance
-                        Console.message("Observable window offset rectangle updated: #{offsetRectangle_.rectangle.extent.width} x #{offsetRectangle_.rectangle.extent.height} // #{offsetRectangle_.offset.left}, #{offsetRectangle_.offset.top}")
+                        backchannel.log("Observable window offset rectangle updated: #{offsetRectangle_.rectangle.extent.width} x #{offsetRectangle_.rectangle.extent.height} // #{offsetRectangle_.offset.left}, #{offsetRectangle_.offset.top}")
                         @offsetRectangleHost(offsetRectangle_)
 
                         marginsChrome = geo.margins.createUniform(@sourceDescriptor.globalWindowAttributes.hostWindowPadding)

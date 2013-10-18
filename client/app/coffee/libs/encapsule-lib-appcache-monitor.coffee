@@ -23,6 +23,7 @@ namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
 Encapsule.code = Encapsule.code? and Encapsule.code or @Encapsule.code = {}
 Encapsule.code.lib = Encapsule.code.lib? and Encapsule.code.lib or @Encapsule.code.lib = {}
 
+backchannel = Encapsule.runtime.backchannel? and Encapsule.runtime.backchannel or throw "Missing expected Encapsule.runtime.backchannel object."
 
 class Encapsule.code.lib.ApplicationCacheMonitor
  
@@ -32,67 +33,67 @@ class Encapsule.code.lib.ApplicationCacheMonitor
     fileCount: 0
 
     onChecking: =>
-        Console.message("Encapsule application cache monitor: CHECKING event handler.")
+        backchannel.log("Encapsule application cache monitor: CHECKING event handler.")
         @status = "checking"
         @appCallbacks.onChecking()
     onDownloading: =>
-        Console.message("Encapsule application cache monitor: DOWNLOADING event handler.")
+        backchannel.log("Encapsule application cache monitor: DOWNLOADING event handler.")
         @status = "downloading"
         @appCallbacks.onDownloading()
     onProgress: =>
-        Console.message("Encapsule application cache monitor: PROGRESS event handler.")
+        backchannel.log("Encapsule application cache monitor: PROGRESS event handler.")
         @status = "downloading"
         @fileCount++
         @appCallbacks.onProgress(@fileCount)
     onError: =>
         # Terminal state
-        Console.message("Encapsule application cache monitor: ERROR event handler.")
+        backchannel.log("Encapsule application cache monitor: ERROR event handler.")
         @stop()
         switch @cache.status
             when window.applicationCache.UNCACHED
-                Console.message("... Error event called with browser app cache in UNCACHED state. Calling app's OBSOLETE handler.")
+                backchannel.log("... Error event called with browser app cache in UNCACHED state. Calling app's OBSOLETE handler.")
                 @appCallbacks.onObsolete()
                 break;
             when window.applicationCache.IDLE
-                Console.message("... Error event called with browser app cache in IDLE state. Calling app's OFFLINE handler.")
+                backchannel.log("... Error event called with browser app cache in IDLE state. Calling app's OFFLINE handler.")
                 @appCallbacks.onOffline()
                 break;
             when window.applicationCache.CHECKING
-                Console.message("... Error event called with browser app cache in CHECKING state. Calling app's ERROR handler")
+                backchannel.log("... Error event called with browser app cache in CHECKING state. Calling app's ERROR handler")
                 break;
             when window.applicationCache.DOWNLOADING
-                Console.message("... Error event called with browser app cache in CHECKING state. Calling app's ERROR handler")
+                backchannel.log("... Error event called with browser app cache in CHECKING state. Calling app's ERROR handler")
                 break;
             else
-                Console.messageError("Encapsule application cache monitor unexpected browser app cache state found in error handler callback!")
+                backchannel.error("Encapsule application cache monitor unexpected browser app cache state found in error handler callback!")
 
     onObsolete: =>
         # Terminal state
-        Console.message("Encapsule application cache monitor: OBSOLETE event handler.")
+        backchannel.log("Encapsule application cache monitor: OBSOLETE event handler.")
         @stop()
         @status = "obsolete"
         @appCallbacks.onObsolete()
     onCached: =>
         # Terminal state
-        Console.message("Encapsule application cache monitor: CACHED event handler.")
+        backchannel.log("Encapsule application cache monitor: CACHED event handler.")
         @stop()
         @status = "cached"
         @appCallbacks.onCached(@fileCount)
     onNoUpdate: =>
         # Terminal state
-        Console.message("Encapsule application cache monitor: NOUPDATE event handler.")
+        backchannel.log("Encapsule application cache monitor: NOUPDATE event handler.")
         @stop()
         @status = "noupdate"
         @appCallbacks.onNoUpdate()
     onUpdateReady: =>
         # Terminal state
-        Console.message("Encapsule application cache monitor: UPDATEREADY event handler.")
+        backchannel.log("Encapsule application cache monitor: UPDATEREADY event handler.")
         @stop()
         @status = "updateready"
         @appCallbacks.onUpdateReady(@fileCount)
 
     constructor: (callbacks_) ->
-        Console.message("Initializing Encapsule application cache monitor subsystem.")
+        backchannel.log("Initializing Encapsule application cache monitor subsystem.")
         @status = "initializing"
         if not (callbacks_? and callbacks_)
             @status = "failed"
@@ -109,7 +110,7 @@ class Encapsule.code.lib.ApplicationCacheMonitor
 
         @initialAppCacheStatus = @cache.status
         @finalAppCacheStatus = undefined
-        Console.message("... browser application initial status prior to event registration = #{@initialAppCacheStatus}")
+        backchannel.log("... browser application initial status prior to event registration = #{@initialAppCacheStatus}")
 
         @status = "hookingEvents"
 
@@ -228,7 +229,7 @@ class Encapsule.code.lib.ApplicationCacheMonitor
             currentAppCacheStatus = @cache.status
             @watchDogTimerElapsedTime += @watchDogTimerInterval
             @watchDogTimerElapsedTimeActual += @watchDogTimerInterval
-            Console.message("Encapsule application cache monitor watchdog: Elaped=#{@watchDogTimerElapsedTime} Current browser cache status=#{currentAppCacheStatus} Monitor status=#{@status}")
+            backchannel.log("Encapsule application cache monitor watchdog: Elaped=#{@watchDogTimerElapsedTime} Current browser cache status=#{currentAppCacheStatus} Monitor status=#{@status}")
 
             # Give the browser a swift kick in the pants iff necessary.
             #
@@ -244,62 +245,62 @@ class Encapsule.code.lib.ApplicationCacheMonitor
             switch currentAppCacheStatus
                 when window.applicationCache.UNCACHED
                     if @initialAppCacheStatus == window.applicationCache.UNCACHED
-                        Console.message("... both initial and current browser app cache status is UNCACHED. Potentially, the application is LOCKED.")
+                        backchannel.log("... both initial and current browser app cache status is UNCACHED. Potentially, the application is LOCKED.")
                         if @status != "downloading"
                             @stop()
-                            Console.message("""... the app cache monitor is not "downloading" so we're calling it LOCKED.""")
+                            backchannel.log("""... the app cache monitor is not "downloading" so we're calling it LOCKED.""")
                             @appCallbacks.onObsolete()
                         else
-                            Console.message("""... the app cache monitor is "downloading" so we'll continue to watch this.""")
+                            backchannel.log("""... the app cache monitor is "downloading" so we'll continue to watch this.""")
                     else
-                        Console.message("... browser app cache status has tranitioned to UNCACHED. This looks like a connection error.")
+                        backchannel.log("... browser app cache status has tranitioned to UNCACHED. This looks like a connection error.")
                         @stop()
                         @appCallbacks.onError()
                     break
                 when window.applicationCache.IDLE
                     switch @initialAppCacheStatus
                         when window.applicationCache.UNCACHED
-                            Console.message("... browser app cache status was initially UNCACHED but current status is IDLE. This looks like a fresh install.")
+                            backchannel.log("... browser app cache status was initially UNCACHED but current status is IDLE. This looks like a fresh install.")
                             @stop()
                             @appCallbacks.onCached()
                             break
                         when window.applicationCache.IDLE
-                            Console.message("... browser app cache status was initially IDLE and is still IDLE.")
+                            backchannel.log("... browser app cache status was initially IDLE and is still IDLE.")
                             if @status == "waiting"
-                                Console.message("... monitor status is #{@status}. Assuming no update.")
+                                backchannel.log("... monitor status is #{@status}. Assuming no update.")
                                 @stop()
                                 @appCallbacks.onNoUpdate()
                             else
-                                Console.message("... monitor status is #{@status}. Continuing to watch...")
+                                backchannel.log("... monitor status is #{@status}. Continuing to watch...")
                             break
                         when window.applicationCache.CHECKING
-                            Console.message("... browser app cache status was initially IDLE and is currently CHECKING. Continue to watch...")
+                            backchannel.log("... browser app cache status was initially IDLE and is currently CHECKING. Continue to watch...")
                             break
                         when window.applicationCache.DOWNLOADING
-                            Console.message("... the browser app cache status was initially IDLE and is currently DOWNLOADING.")
+                            backchannel.log("... the browser app cache status was initially IDLE and is currently DOWNLOADING.")
                             break
                         else
                             stop()
-                            Console.messageError("Encapsule application cache monitor unable to reconcile current cache status. Giving up.")
+                            backchannel.error("Encapsule application cache monitor unable to reconcile current cache status. Giving up.")
                     break
                 when window.applicationCache.CHECKING
-                    Console.message("... browser app cache status is currently CHECKING. Continue to watch...")
+                    backchannel.log("... browser app cache status is currently CHECKING. Continue to watch...")
                     break
                 when window.applicationCache.DOWNLOADING
-                    Console.message("... browser app cache status is currently DOWNLOADING. Continue to watch...")
+                    backchannel.log("... browser app cache status is currently DOWNLOADING. Continue to watch...")
                     break
                 when window.applicationCache.UPDATEREADY
-                    Console.message("... browser app cache status is currently UPDATEREADY.")
+                    backchannel.log("... browser app cache status is currently UPDATEREADY.")
                     @stop()
                     @appCallbacks.onUpdateReady()
                     break
                 when window.applicationCache.OBSOLETE
-                    Console.message("... browser app cache status is currently OBSOLETE.")
+                    backchannel.log("... browser app cache status is currently OBSOLETE.")
                     @stop()
                     @appCallbacks.onObsolete()
                     break
                 else
-                   Console.messageError("Encapsule application cache monitor unexpected browser app cache state found in watchdog timer handler!")
+                   backchannel.logError("Encapsule application cache monitor unexpected browser app cache state found in watchdog timer handler!")
 
 
             if @watchDogTimerElapsedTime >= @watchDogTimerDropDeadTimeout
@@ -315,17 +316,17 @@ class Encapsule.code.lib.ApplicationCacheMonitor
 
                         switch @status
                             when "downloading"
-                                Console.message("... the monitor detected DOWNLOADING activity but the browser hasn't fired events to signal completion. Assuming we took an update.")
+                                backchannel.log("... the monitor detected DOWNLOADING activity but the browser hasn't fired events to signal completion. Assuming we took an update.")
                                 @appCallbacks.onUpdateReady()
                                 break
 
                             when "checking"
-                                Console.message("... the monitor notes entry into CHECKING handler but the browser hasn't fired events to signal completion. Assuming no update.")
+                                backchannel.log("... the monitor notes entry into CHECKING handler but the browser hasn't fired events to signal completion. Assuming no update.")
                                 @appCallbacks.onNoUpdate()
                                 break
 
                             else
-                                Console.messageError("Application cache watchdog timer total elapsed time has exceeded drop-dead threshold! Giving up. Please try a manual page refresh.")
+                                backchannel.logError("Application cache watchdog timer total elapsed time has exceeded drop-dead threshold! Giving up. Please try a manual page refresh.")
                                 break;
 
                         break
@@ -334,12 +335,12 @@ class Encapsule.code.lib.ApplicationCacheMonitor
 
                         switch @status
                             when "downloading"
-                                Console.message("... the monitor detected DOWNLOADING activitity but it doesn't look like we've finished yet. Extending drop-dead time for another click.")
+                                backchannel.log("... the monitor detected DOWNLOADING activitity but it doesn't look like we've finished yet. Extending drop-dead time for another click.")
                                 @watchDogTimerElapsedTime -= @watchDogTimerInterval
                                 break
                             else
                                 @stop()
-                                Console.messageError("Application cache watchdog timer total elapsed time has exceeded drop-dead threshold! Giving up. Please try a manual page refresh.")
+                                backchannel.logError("Application cache watchdog timer total elapsed time has exceeded drop-dead threshold! Giving up. Please try a manual page refresh.")
                                 break;
 
             ), @watchDogTimerInterval)
@@ -347,7 +348,7 @@ class Encapsule.code.lib.ApplicationCacheMonitor
 
     stop: =>
         try
-            Console.message("Application cache monitor removing event handlers and terminating.")
+            backchannel.log("Application cache monitor removing event handlers and terminating.")
             clearInterval(@watchDogTimer)
             @cache.removeEventListener "checking",  @onChecking
             @cache.removeEventListener "downloading", @onDownloading
@@ -358,7 +359,7 @@ class Encapsule.code.lib.ApplicationCacheMonitor
             @cache.removeEventListener "noupdate", @onNoUpdate
             @cache.removeEventListener "updateready", @onUpdateReady
             @finalAppCacheStatus = @cache.status
-            Console.message("Application cache monitor has terminated. Final browser cache status=#{@finalAppCacheStatus}")
+            backchannel.log("Application cache monitor has terminated. Final browser cache status=#{@finalAppCacheStatus}")
         catch exception
             throw "In stopAppCacheMonitor #{exception}"
 
