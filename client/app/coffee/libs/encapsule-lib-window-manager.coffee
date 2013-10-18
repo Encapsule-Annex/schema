@@ -369,7 +369,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 try
                     Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , =>
                         Encapsule.code.lib.kohelpers.implementation.SynthesizeWindowManagerViewModelFromLayoutDeclaration(@layout)
-                    windowManagerHtmlViewRootDocumentElement = Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates(@layout.id)
+                    $("BODY").append($("""<div id="idKnockoutViewTemplateCache" style="display: none;"></div>"""))
+                    Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates("#idKnockoutViewTemplateCache")
                     backchannel.log("Okay")
                 catch exception
                     throw "View template librarian init failure: #{exception}"
@@ -385,7 +386,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             backchannel.log "<h3>BINDING MODEL-VIEW/VIEW-MODEL (MVVM) VIA KNOCKOUT.JS</h3>"
             Encapsule.code.app.setBootChrome("schemaBind")
             try
-                ko.applyBindings @ , windowManagerHtmlViewRootDocumentElement
+                windowManagerElement = Encapsule.code.lib.kohelpers.implementation.CreateWindowManagerView()
+                ko.applyBindings @ , windowManagerElement
                 backchannel.log("#{layout_.id} #{layout_.name} Model-View/View-Model (MVVM) binding completed.")
             catch exception
                 throw """MVVM binding operation failed. Knockout.js reports: #{exception}"""

@@ -31,6 +31,40 @@ Encapsule.runtime.app.kotemplates = Encapsule.runtime.app.kotemplates? and Encap
 
 
 
+# Migrated from encapsule-lib-knockout-templates.coffee
+
+# Returns $("idKnockoutHtmlView")[0] - the document element node of the window manager host span. Re-examine this.
+
+Encapsule.code.lib.kohelpers.implementation.CreateWindowManagerView = ->
+
+    try
+        # Root HTML view binding for window manager.
+        windowManagerHtmlViewBinding = """
+            <!-- BEGIN: \\ ENCAPSULE PROJECT WINDOW MANAGER HOST -->
+            <span id="idEncapsuleWindowManagerHost">
+                <!-- BEGIN: \\ WINDOW MANAGER MODEL VIEW TEMPLATES -->
+                <span id="idEncapsuleWindowManagerViewTemplateCache"></span>
+                <!-- END: / WINDOW MANAGER MODEL VIEW TEMPLATES -->
+                <!-- BEGIN: \\ ENCAPSULE PROJECT WINDOW MANAGER HOST VIEW MODEL -->
+                <span id="idEncapsuleWindowManager" data-bind="template: { name: 'idKoTemplate_EncapsuleWindowManager' }"></span>
+                <!-- END: / ENCAPSULE PROJECT WINDOW MANAGER HOST VIEW MODEL -->
+            </span>
+            <!-- END: / ENCAPSULE PROJECT WINDOW MANAGER HOST -->
+            """
+
+        # Install the view. Binding occurs separately, later, at a higher context.
+        $("body").append($(windowManagerHtmlViewBinding))
+        windowManagerElement = $("#idEncapsuleWindowManager")
+        return windowManagerElement[0]
+
+    catch exception
+        throw "Encapsule.code.lib.kohelpers.implementation.CreateWindowManagerView failure: #{exception}"
+
+
+
+
+
+
 # Called from the constructor of ObservableWindowManager to synthesize the entire static view model template
 # string from the specified layout JS object.
 
