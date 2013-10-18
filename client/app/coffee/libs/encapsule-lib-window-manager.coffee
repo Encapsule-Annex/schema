@@ -174,7 +174,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     # / END: try
 
                 catch exception
-                    backchannel.logError "Window geometries refresh failed: #{exception}"
+                    backchannel.error "Window geometries refresh failed: #{exception}"
 
                 # / END: function scope
 
@@ -254,7 +254,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     # / END: refreshWindowManagerViewState try scope
 
                 catch exception
-                    backchannel.logError "Failed to refresh window manager view state: #{exception}"
+                    backchannel.error "Failed to refresh window manager view state: #{exception}"
                 # / END: refreshWindowManagerViewState function scope
 
             # / END RUNTIME CALLBACKS
@@ -459,7 +459,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         @currentDisplayPlaneId = planeId_
 
                 catch exception
-                    backchannel.logError("""ObservableWindowManger.displayPlane("#{planeId_}") fail: #{exception}""")
+                    backchannel.error("""ObservableWindowManger.displayPlane("#{planeId_}") fail: #{exception}""")
 
 
             # / END INITIALIZATION OF WINDOW MANAGER OBJECT INSTANCE

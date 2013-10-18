@@ -209,7 +209,7 @@ phase2 = (bootstrapperOptions_) ->
             backchannel.log("<h2>attention please</h2>")
             backchannel.log("<p>There has been a disturbance in the force.</p>")
             backchannel.log("<p>Please refresh this page to try try again.</p>")
-            backchannel.logError "An error has occurred caching application files from the #{appPackagePublisher}'s servers."
+            backchannel.error "An error has occurred caching application files from the #{appPackagePublisher}'s servers."
             throw "Manually refresh your browser to resolve. See log messages above for additional information."
         , onObsolete: ->
             Encapsule.code.app.setBootChrome("phase2obsolete")
@@ -221,7 +221,7 @@ phase2 = (bootstrapperOptions_) ->
             backchannel.log("<p>We're sorry to inconvenience you!</p>")
             backchannel.log("<p>Encapsule Project has issued a service advisory for #{appName} v#{appVersion} build ID #{appBuildId} and temporarily suspended service.</p>")
             backchannel.log("<p>Please visit <a href=\"#{appBlogUrl}\" title=\"#{appBlogName}\">#{appBlogName}</a> for the news and advisories.</p>")
-            backchannel.logError "#{appName} has been locked by Encpausle Project."
+            backchannel.error "#{appName} has been locked by Encpausle Project."
         , onOffline: ->
             Encapsule.code.app.setBootChrome("phase2offline")
             backchannel.log("#{appName} v#{appVersion} starting boot phase 2: app cache OFFLINE")
@@ -269,14 +269,14 @@ phase2 = (bootstrapperOptions_) ->
                     backchannel.log("I _believe_ this is exceptionally rare and occurs only when the app has previously been cached from a FQ path (e.g. http://schema.encapsule.org/schema.html) and is then accessed via a non-qualified URL (e.g. http://schema.encapsule.org).")
                     backchannel.log("<p>If you encounter this error under different circumstances please let me know.</p>")
                     backchannel.log("<p><strong>Note: you can typically recover from a DOM exception in this case by simply refreshing the page.</strong></p>")
-                    backchannel.logError(exception)
+                    backchannel.error(exception)
                 ) , Encapsule.code.app.bootDelay
         }
     try
         phase2Out.appCacheMonitor = new Encapsule.code.lib.ApplicationCacheMonitor(appCacheCallbacks)
 
     catch exception
-        backchannel.logError(exception)
+        backchannel.error(exception)
 
 
 phase3 = (bootstrapperOptions_) ->

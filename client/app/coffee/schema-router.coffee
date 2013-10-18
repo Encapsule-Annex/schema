@@ -43,7 +43,7 @@ class Encapsule.code.app.SchemaRouter
                     # / END: routeChangedCallback try scope
                 catch exception
                     message = "SchemaRouter.routeChangedCallback fail: #{exception}"
-                    backchannel.logError(message)
+                    backchannel.error(message)
                 # / END: routeChangedCallback scope
 
 

@@ -113,10 +113,6 @@ class Encapsule.code.app.Schema
             navigatorView.setCachedAddressSinkStore(selectedAddress)
 
 
-            # Select the root namespace of the ONMjs.store.
-            rootAddress = model.createRootAddress()
-            selectedAddress.setAddress(rootAddress)
-
 
             #
             # TESTS AND EXPERIMENTS
@@ -161,16 +157,6 @@ class Encapsule.code.app.Schema
                 storeJSON2 = newStore.toJSON(undefined, 0)
                 if storeJSON != storeJSON2
                     throw "JSON serialize/deserialize roundtrip test failure."
-
-
-                ###
-                namespace = store.createComponent(addressTest0)
-                resolvedAddress = namespace.getResolvedAddress()
-                synthAddress = ONMjs.address.Synthesize(resolvedAddress, "models.machines.machine")
-                namespace = store.createComponent(synthAddress)
-                ###
-
-
     
             #
             catch exception
@@ -209,6 +195,11 @@ class Encapsule.code.app.Schema
             Encapsule.runtime.boot.phase0.spinner.cancel()
             backchannel.log("#{appName} main application document.onLoad event handler exit error.")
             Encapsule.runtime.boot.phase0.blipper.blip "system-normal"
+
+            # Select the root namespace of the ONMjs.store.
+            rootAddress = model.createRootAddress()
+            selectedAddress.setAddress(rootAddress)
+
 
 
         catch exception

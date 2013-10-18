@@ -300,7 +300,7 @@ class Encapsule.code.lib.ApplicationCacheMonitor
                     @appCallbacks.onObsolete()
                     break
                 else
-                   backchannel.logError("Encapsule application cache monitor unexpected browser app cache state found in watchdog timer handler!")
+                   backchannel.error("Encapsule application cache monitor unexpected browser app cache state found in watchdog timer handler!")
 
 
             if @watchDogTimerElapsedTime >= @watchDogTimerDropDeadTimeout
@@ -326,7 +326,7 @@ class Encapsule.code.lib.ApplicationCacheMonitor
                                 break
 
                             else
-                                backchannel.logError("Application cache watchdog timer total elapsed time has exceeded drop-dead threshold! Giving up. Please try a manual page refresh.")
+                                backchannel.error("Application cache watchdog timer total elapsed time has exceeded drop-dead threshold! Giving up. Please try a manual page refresh.")
                                 break;
 
                         break
@@ -340,7 +340,7 @@ class Encapsule.code.lib.ApplicationCacheMonitor
                                 break
                             else
                                 @stop()
-                                backchannel.logError("Application cache watchdog timer total elapsed time has exceeded drop-dead threshold! Giving up. Please try a manual page refresh.")
+                                backchannel.error("Application cache watchdog timer total elapsed time has exceeded drop-dead threshold! Giving up. Please try a manual page refresh.")
                                 break;
 
             ), @watchDogTimerInterval)
