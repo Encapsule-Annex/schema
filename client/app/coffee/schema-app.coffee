@@ -57,9 +57,11 @@ class Encapsule.code.app.Schema
 
 
             # The Schema application state model codified as an ONMjs Object Model Declaration.
-            schema = ONMjsRuntime.schema = Encapsule.code.app.ONMjs.SchemaAppData
+
+            #modelDeclaration = ONMjs.dataModels.selfDeclaration
+
             # Initialize the Schema application's ONMjs runtime state model.
-            model = ONMjsRuntime.model = new ONMjs.Model(schema)
+            model = ONMjsRuntime.model = new ONMjs.Model(Encapsule.code.app.ONMjs.SchemaAppData)
 
             # Initialize the Schema application's ONMjs runtime state store.
             store = ONMjsRuntime.store = new ONMjs.Store(model)
@@ -113,6 +115,7 @@ class Encapsule.code.app.Schema
             navigatorView.setCachedAddressSinkStore(selectedAddress)
 
 
+            ###
 
             #
             # TESTS AND EXPERIMENTS
@@ -167,7 +170,7 @@ class Encapsule.code.app.Schema
 
 
 
-    
+            ###    
 
 
             Encapsule.runtime.app.SchemaBootInfoWindow = new Encapsule.code.app.modelview.SchemaBootInfoWindow()
@@ -178,7 +181,7 @@ class Encapsule.code.app.Schema
             # Initialize the Encapsule Window Manager library.
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager(Encapsule.code.app.winmgr.layout.root.Layout)
 
-            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneOmmNavigator")
+            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneSCDLEditor")
             #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
             #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneD3")
             #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootLayoutDebugPlane")

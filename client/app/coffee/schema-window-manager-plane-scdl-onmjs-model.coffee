@@ -36,10 +36,10 @@ ONMjsRuntime.observers = ONMjsRuntime.observers? and ONMjsRuntime.observers or O
 
 
 
-Encapsule.code.app.winmgr.layout.root.PlaneOmmNavigator = {
+Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor = {
 
-    id: "idSchemaPlaneOmmNavigator"
-    name: "OMM Navigator"
+    id: "idSchemaPlaneSCDLEditor"
+    name: "SCDL Editor"
     initialEnable: false
     splitterStack: [
         {

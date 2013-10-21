@@ -2728,13 +2728,320 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.19";
+  Encapsule.code.lib.onm.about.version = "0.0.21";
 
-  Encapsule.code.lib.onm.about.build = "Fri Oct 18 23:09:46 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Mon Oct 21 19:33:12 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1382137786";
+  Encapsule.code.lib.onm.about.epoch = "1382383992";
 
-  Encapsule.code.lib.onm.about.uuid = "aa921cbd-6fad-4897-b0e8-64530c148fae";
+  Encapsule.code.lib.onm.about.uuid = "421fcbbc-7f2b-4c1b-8db5-a24028526b49";
+
+  /*
+  ------------------------------------------------------------------------------
+  
+  The MIT License (MIT)
+  
+  Copyright (c) 2013 Encapsule Project
+    
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  
+  **** Encapsule Project :: Build better software with circuit models ****
+  
+  OPEN SOURCES: http://github.com/Encapsule HOMEPAGE: http://Encapsule.org
+  BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
+  
+  ------------------------------------------------------------------------------
+  
+  
+  
+  ------------------------------------------------------------------------------
+  */
+
+
+  namespaceEncapsule = (typeof Encapsule !== "undefined" && Encapsule !== null) && Encapsule || (this.Encapsule = {});
+
+  Encapsule.code = (Encapsule.code != null) && Encapsule.code || (this.Encapsule.code = {});
+
+  Encapsule.code.lib = (Encapsule.code.lib != null) && Encapsule.code.lib || (this.Encapsule.code.lib = {});
+
+  Encapsule.code.lib.onm = (Encapsule.code.lib.onm != null) && Encapsule.code.lib.onm || (this.Encapsule.code.lib.onm = {});
+
+  ONMjs = Encapsule.code.lib.onm;
+
+  ONMjs.dataModels = (ONMjs.dataModels != null) && ONMjs.dataModels || (ONMjs.dataModels = {});
+
+  ONMjs.dataModels.implementation = (ONMjs.dataModels.implementation != null) && ONMjs.dataModels.implementation || (ONMjs.dataModels.implementation = {});
+
+  ONMjs.dataModels.implementation.selfDeclaration = {};
+
+  ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties = {
+    namespaceType: "extensionPoint",
+    jsonTag: "metaProperties",
+    ____label: "META PROPERTIES",
+    ____descriptor: "Collection of this namespaces' meta-properties.",
+    componentArchetype: {
+      namespaceType: "component",
+      jsonTag: "metaproperty",
+      ____label: "META PROPERTY",
+      ____description: "Meta property",
+      ____getLabelVariant: "jsonTagAndValue",
+      namespaceProperties: {
+        userImmutable: {
+          uuid: {
+            ____type: "uuid",
+            fnCreate: function() {
+              return uuid.v4();
+            }
+          }
+        },
+        userMutable: {
+          jsonTag: {
+            ____type: "JSON tag string",
+            fnCreate: function() {
+              return "";
+            }
+          },
+          value: {
+            ____type: "string",
+            fnCreate: function() {
+              return "";
+            }
+          }
+        }
+      }
+    }
+  };
+
+  ONMjs.dataModels.implementation.selfDeclaration.namespaceProperty = {
+    namespaceType: "component",
+    jsonTag: "property",
+    ____label: "PROPERTY",
+    ____description: "Namespace property.",
+    ____getLabelVariant: "jsonTagAndValue",
+    namespaceProperties: {
+      userImmutable: {
+        uuid: {
+          ____type: "uuid",
+          fnCreate: function() {
+            return uuid.v4();
+          }
+        }
+      },
+      userMutable: {
+        jsonTag: {
+          ____type: "JSON tag string",
+          fnCreate: function() {
+            return "";
+          }
+        },
+        value: {
+          ____type: "string",
+          fnCreate: function() {
+            return "";
+          }
+        }
+      }
+    },
+    subNamespaces: [ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties]
+  };
+
+  ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties = {
+    namespaceType: "child",
+    jsonTag: "properties",
+    ____label: "PROPERTIES",
+    ____description: "Namespace properties.",
+    subNamespaces: [
+      {
+        namespaceType: "extensionPoint",
+        jsonTag: "userImmutable",
+        ____label: "USER IMMUTABLE PROPERTIES",
+        ____description: "User immutable namespace properties.",
+        componentArchetype: ONMjs.dataModels.implementation.selfDeclaration.namespaceProperty
+      }, {
+        namespaceType: "extensionPoint",
+        jsonTag: "userMutable",
+        ____label: "USER MUTABLE PROPERTIES",
+        ____description: "User mutable namespace properties.",
+        componentArchetype: ONMjs.dataModels.implementation.selfDeclaration.namespaceProperty
+      }
+    ]
+  };
+
+  ONMjs.dataModels.selfDeclaration = {
+    namespaceType: "root",
+    jsonTag: "dataModelDeclaration",
+    ____label: "ONMJS DATA MODEL DECLARATION",
+    ____description: "ONMjs data model declaration.",
+    ____getLabelVariant: "jsonTagAndNamespaceType",
+    namespaceProperties: {
+      userImmutable: {
+        revision: {
+          fnCreate: function() {
+            return 0;
+          }
+        },
+        uuid: {
+          fnCreate: function() {
+            return uuid.v4();
+          }
+        },
+        uuidRevision: {
+          fnCreate: function() {
+            return uuid.v4();
+          }
+        },
+        namespaceType: {
+          fnCreate: function() {
+            return "root";
+          }
+        }
+      },
+      userMutable: {
+        jsonTag: {
+          ____type: "JSON tag string",
+          fnCreate: function() {
+            return "";
+          }
+        },
+        ____label: {
+          ____type: "String",
+          fnCreate: function() {
+            return "";
+          }
+        },
+        ____description: {
+          ____type: "String",
+          fnCreate: function() {
+            return "";
+          }
+        }
+      }
+    },
+    subNamespaces: [
+      ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties, ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties, {
+        namespaceType: "extensionPoint",
+        jsonTag: "namespaces",
+        ____label: "NAMESPACES",
+        ____description: "collection of namespace declarations.",
+        componentArchetype: {
+          namespaceType: "component",
+          jsonTag: "namespace",
+          ____label: "NAMESPACE",
+          ____description: "ONMjs component namespace declaration.",
+          ____getLabelVariant: "jsonTagAndNamespaceType",
+          namespaceProperties: {
+            userImmutable: {
+              revision: {
+                fnCreate: function() {
+                  return 0;
+                }
+              },
+              uuid: {
+                fnCreate: function() {
+                  return uuid.v4();
+                }
+              },
+              uuidRevision: {
+                fnCreate: function() {
+                  return uuid.v4();
+                }
+              }
+            },
+            userMutable: {
+              namespaceType: {
+                ____type: "Must be 'child' or 'extensionPoint' or 'component'",
+                fnCreate: function() {
+                  return "invalid";
+                }
+              },
+              jsonTag: {
+                ____type: "JSON tag string",
+                fnCreate: function() {
+                  return "";
+                }
+              },
+              ____label: {
+                ____type: "String",
+                fnCreate: function() {
+                  return "";
+                }
+              },
+              ____description: {
+                ____type: "String",
+                fnCreate: function() {
+                  return "";
+                }
+              }
+            }
+          },
+          subNamespaces: [
+            ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties, ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties, {
+              namespaceType: "extensionPoint",
+              jsonTag: "namespaces",
+              ____label: "NAMESPACES",
+              ____description: "Subnamespace collection.",
+              componentArchetypePath: "dataModelDeclaration.namespaces.namespace"
+            }
+          ]
+        }
+      }
+    ],
+    semanticBindings: {
+      getUniqueKey: function(data_) {
+        return data_.uuid;
+      },
+      update: function(data_) {
+        if (data_.revision != null) {
+          data_.revision++;
+        }
+        if (data_.uuidRevision != null) {
+          return data_.uuidRevision = uuid.v4();
+        }
+      },
+      getLabel: function(data_, namespaceDescriptor_) {
+        var defaultLabel;
+        try {
+          defaultLabel = (namespaceDescriptor_.label != null) && namespaceDescriptor_.label || "<no default label specified>";
+          if (!((namespaceDescriptor_.namespaceModelDeclaration.____getLabelVariant != null) && namespaceDescriptor_.namespaceModelDeclaration.____getLabelVariant)) {
+            return defaultLabel;
+          }
+          switch (namespaceDescriptor_.namespaceModelDeclaration.____getLabelVariant) {
+            case "jsonTagAndNamespaceType":
+              if ((data_.jsonTag != null) && data_.jsonTag) {
+                return "" + data_.jsonTag + " (" + data_.namespaceType + ")";
+              }
+              break;
+            case "jsonTagAndValue":
+              if ((data_.jsonTag != null) && data_.jsonTag) {
+                return "'" + data_.jsonTag + "': '" + data_.value + "'";
+              }
+              break;
+            default:
+              throw "Unrecognized getLabelVariant string specified.";
+          }
+          return namespaceDescriptor_.namespaceModelDeclaration.____label;
+        } catch (exception) {
+          throw "Failed in getLabel: " + exception;
+        }
+      }
+    }
+  };
 
 }).call(this);
 // Generated by CoffeeScript 1.4.0
@@ -3846,8 +4153,10 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             namespaceType = selectedNamespaceModel.namespaceType;
             switch (namespaceType) {
               case "root":
-                _this.modelviewImmutable(new ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView(childParams));
-                _this.modelviewMutable(void 0);
+                immutableModelView = new ONMjs.observers.SelectedNamespaceImmutablePropertiesModelView(childParams);
+                _this.modelviewImmutable(immutableModelView.propertyModelViews.length && immutableModelView || void 0);
+                mutableModelView = new ONMjs.observers.SelectedNamespaceMutablePropertiesModelView(childParams);
+                _this.modelviewMutable(mutableModelView.propertyModelViews.length && mutableModelView || void 0);
                 newModelViewChildren = new ONMjs.observers.SelectedNamespaceChildrenModelView(childParams);
                 _this.modelviewChildren(newModelViewChildren.childModelViews.length && newModelViewChildren || void 0);
                 _this.modelviewComponent(new ONMjs.observers.SelectedNamespaceComponentModelView(childParams));
