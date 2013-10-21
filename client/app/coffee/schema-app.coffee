@@ -58,10 +58,7 @@ class Encapsule.code.app.Schema
 
             # CONSTRUCT ONMjs CORE
 
-
             # The Schema application state model codified as an ONMjs Object Model Declaration.
-
-            #modelDeclaration = ONMjs.dataModels.selfDeclaration
 
             # Initialize the Schema application's ONMjs runtime state model.
             model = ONMjsRuntime.model = new ONMjs.Model(Encapsule.code.app.ONMjs.SchemaAppData)
@@ -119,20 +116,21 @@ class Encapsule.code.app.Schema
 
             onmjsSelfModel = new ONMjs.Model(ONMjs.dataModels.selfDeclaration)
             onmjsSelfStore = new ONMjs.Store(onmjsSelfModel)
-            onmjsSelfAddressStore = new ONMjs.AddressStore(onmjsSelfStore)
+            onmjsSelfAddressStore = new ONMjs.AddressStore(onmjsSelfStore, onmjsSelfModel.createRootAddress())
 
             onmjsSelfObserverPath = ONMjsRuntime.observers.onmjs.path = new ONMjs.observers.SelectedPathModelView(backchannel)
             onmjsSelfObserverNavigator = ONMjsRuntime.observers.onmjs.navigator = new ONMjs.observers.NavigatorModelView(backchannel)
             onmjsSelfObserverNamespace = ONMjsRuntime.observers.onmjs.namespace = new ONMjs.observers.SelectedNamespaceModelView(backchannel)
             onmjsSelfObserverJson = ONMjsRuntime.observers.onmjs.json = new ONMjs.observers.SelectedJsonModelView(backchannel)
 
+            addressStoreObservingStoreId = onmjsSelfStore.registerObserver(onmjsSelfAddressStore.objectStoreCallbacks, onmjsSelfAddressStore)
             onmjsSelfObserverPath.attachToCachedAddress(onmjsSelfAddressStore)
             onmjsSelfObserverNavigator.attachToStore(onmjsSelfStore)
             onmjsSelfObserverNavigator.attachToCachedAddress(onmjsSelfAddressStore)
             onmjsSelfObserverNavigator.setCachedAddressSinkStore(onmjsSelfAddressStore)
             onmjsSelfObserverNamespace.attachToCachedAddress(onmjsSelfAddressStore)
             onmjsSelfObserverJson.attachToCachedAddress(onmjsSelfAddressStore)
-            onmjsSelfAddressStore.setAddress(onmjsSelfModel.createRootAddress())
+
 
             
 
