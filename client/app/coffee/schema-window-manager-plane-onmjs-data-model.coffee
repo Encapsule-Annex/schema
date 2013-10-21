@@ -16,7 +16,7 @@
 
 ###
 #
-# schema-window-manager-layout-plane-scdl-onmjs-model.coffee
+# schema-window-manager-layout-plane-onmjs-data-model.coffee
 #
 
 namespaceEncapsule = Encapsule? and Encapsule or @Encapsule = {}
@@ -33,23 +33,22 @@ Encapsule.runtime.app = Encapsule.runtime.app? and Encapsule.runtime.app or @Enc
 schemaRuntime = Encapsule.runtime.app
 ONMjsRuntime = schemaRuntime.ONMjs? and schemaRuntime.ONMjs or schemaRuntime.ONMjs = {}
 ONMjsRuntime.observers = ONMjsRuntime.observers? and ONMjsRuntime.observers or ONMjsRuntime.observers = {}
+ONMjsRuntime.observers.onmjs = ONMjsRuntime.observers.onmjs? and ONMjsRuntime.observer.onmjs or ONMjsRuntime.observers.onmjs = {}
 
-ONMjsRuntime.observers.scdl = ONMjsRuntime.observers.scdl? and ONMjsRuntime.observers.scdl or ONMjsRuntime.observers.scdl = {}
 
+Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
 
-Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor = {
-
-    id: "idSchemaPlaneSCDLEditor"
-    name: "SCDL Editor"
+    id: "idSchemaPlaneONMjsEditor"
+    name: "ONMjs Editor"
     initialEnable: false
     splitterStack: [
         {
-            id: "idOMNavSelectorSplitter"
-            name: "Selector Window Splitter"
+            id: "idONMjsEditorSplit1"
+            name: "Split 1"
             type: "horizontal"
             Q1WindowDescriptor: {
-                id: "idOMNavSelectorWindow"
-                name: "Selector Window"
+                id: "idONMjsEditorPathWindow"
+                name: "ONMjs Editor Path Window"
                 initialMode: "min"
                 initialEnable: true
                 overflow: "hidden"
@@ -57,7 +56,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor = {
                 backgroundColor: "rgba(0,255,0, 0.2)"
                 modes: { full: { reserve: 64 }, min: { reserve: 16 } }
                 MVVM: {
-                    fnModelView: -> ONMjsRuntime.observers.scdl.path
+                    fnModelView: -> ONMjsRuntime.observers.onmjs.path
                     viewModelTemplateId: "idKoTemplate_SelectedPathViewModel"
                 }
             }
@@ -67,12 +66,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor = {
         Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom
 
         {                                                                    
-            id: "idCatalogueNavigatorSplitter"
-            name: "SCDL Catalogue Navigator Splitter"                                           
+            id: "idONMjsEditorSplit2"
+            name: "Split 2"
             type: "vertical"                                                 
             Q1WindowDescriptor: {                                            
-                id: "idScdlCatalogueNavigator"
-                name: "SCDL Catalogue Navigator"
+                id: "idONMjsEditorNavigatorWindow"
+                name: "ONMjs Editor Navigator Window"
                 initialMode: "min"
                 initialEnable: true
                 overflow: "auto"
@@ -81,7 +80,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor = {
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
 
                 MVVM: {
-                    fnModelView: -> ONMjsRuntime.observers.scdl.navigator
+                    fnModelView: -> ONMjsRuntime.observers.onmjs.navigator
                     viewModelTemplateId: "idKoTemplate_NavigatorViewModel"
                 }
 
@@ -90,13 +89,13 @@ Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor = {
         }
 
         {
-            id: "idCatalogueNavigatorJsonSplitter"
-            name: "SCDL Catalogue Navigator JSON Splitter"
+            id: "idONMjsEditorSplit3"
+            name: "Spit 3"
             type: "vertical"
             Q1WindowDescriptor: undefined
             Q2WindowDescriptor: {                                            
-                id: "idScdlNavigatorMenuItemJSONWindow"                                                
-                name: "SCDL Catalogue Item JSON View"                                        
+                id: "idONMjsEditorJSONWindow"
+                name: "ONMjs Editor JSON Window"
                 initialMode: "min"
                 initialEnable: true
                 overflow: "auto"
@@ -104,7 +103,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor = {
                 backgroundColor: "rgba(255,255,255,0.1)"
                 modes: { full: { reserve: 500 }, min: { reserve: 250 } }
                 MVVM: {
-                    fnModelView: -> ONMjsRuntime.observers.scdl.json
+                    fnModelView: -> ONMjsRuntime.observers.onmjs.json
                     viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorJsonModelView"
 
                 }
@@ -113,12 +112,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor = {
 
 
         {                                                                    
-            id: "idSchemaNavigatorSelectedItemWindowSplitter"
-            name: "Schema Navigator Selected Item Meta Window Splitter"
+            id: "idONMjsEditorSplit4"
+            name: "Split 4"
             type: "horizontal"                                                 
             Q1WindowDescriptor: {                                            
-                id: "idSchemaNavigatorSelectedItemWindow"                                     
-                name: "Schema Navigator Selected Item"                               
+                id: "idONMjsEditorNamespaceWindow"
+                name: "ONMjs Editor Namespace Window"
                 initialMode: "full"
                 initialEnable: true
                 opacity: 1.0
@@ -126,7 +125,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor = {
                 backgroundColor:  "rgba(255,255,255,0.4)"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                 MVVM: {
-                    fnModelView: -> ONMjsRuntime.observers.scdl.namespace
+                    fnModelView: -> ONMjsRuntime.observers.onmjs.namespace
                     viewModelTemplateId: "idKoTemplate_SelectedNamespaceViewModel"
                 }
             }

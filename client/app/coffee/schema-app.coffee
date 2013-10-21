@@ -35,6 +35,9 @@ schemaRuntime = Encapsule.runtime.app
 ONMjsRuntime = schemaRuntime.ONMjs? and schemaRuntime.ONMjs or schemaRuntime.ONMjs = {}
 ONMjsRuntime.observers = ONMjsRuntime.observers? and ONMjsRuntime.observers or ONMjsRuntime.observers = {}
 
+ONMjsRuntime.observers.scdl = ONMjsRuntime.observers.scdl? and ONMjsRuntime.observers.scdl or ONMjsRuntime.observers.scdl = {}
+ONMjsRuntime.observers.onmjs = ONMjsRuntime.observers.onmjs? and ONMjsRuntime.observers.onmjs or ONMjsRuntime.observers.onmjs = {}
+
 backchannel = Encapsule.runtime.backchannel? and Encapsule.runtime.backchannel or throw "Missing expected Encapsule.runtime.backchannel object."
 
 class Encapsule.code.app.Schema
@@ -72,19 +75,19 @@ class Encapsule.code.app.Schema
             # CONSTRUCT ONMjs OBSERVERS
 
             # Path (address) view window.
-            pathView = ONMjsRuntime.observers.path = new ONMjs.observers.SelectedPathModelView(backchannel)
+            pathView = ONMjsRuntime.observers.scdl.path = new ONMjs.observers.SelectedPathModelView(backchannel)
 
             # Navigator (treeview) view window.
-            navigatorView = ONMjsRuntime.observers.navigator = new ONMjs.observers.NavigatorModelView(backchannel)
+            navigatorView = ONMjsRuntime.observers.scdl.navigator = new ONMjs.observers.NavigatorModelView(backchannel)
 
             # Namespace view/edit view window.
-            namespaceView = ONMjsRuntime.observers.namespace = new ONMjs.observers.SelectedNamespaceModelView(backchannel)
+            namespaceView = ONMjsRuntime.observers.scdl.namespace = new ONMjs.observers.SelectedNamespaceModelView(backchannel)
 
             # JSON view window.
-            jsonView = ONMjsRuntime.observers.json = new ONMjs.observers.SelectedJsonModelView(backchannel)
+            jsonView = ONMjsRuntime.observers.scdl.json = new ONMjs.observers.SelectedJsonModelView(backchannel)
 
             # TEST:: Create an instance of "GenericTest" - an ONMjs observer.
-            canaryMonitor = ONMjsRuntime.observers.canary = new ONMjs.observers.GenericTest(backchannel)
+            canaryMonitor = ONMjsRuntime.observers.scdl.canary = new ONMjs.observers.GenericTest(backchannel)
 
             # REGISTER ONMjs OBSERVERS (i.e. ATTACH)
 
@@ -113,6 +116,26 @@ class Encapsule.code.app.Schema
 
             # Tell the navigator which CachedAddress to route user address selections to.
             navigatorView.setCachedAddressSinkStore(selectedAddress)
+
+            onmjsSelfModel = new ONMjs.Model(ONMjs.dataModels.selfDeclaration)
+            onmjsSelfStore = new ONMjs.Store(onmjsSelfModel)
+            onmjsSelfAddressStore = new ONMjs.AddressStore(onmjsSelfStore)
+
+            onmjsSelfObserverPath = ONMjsRuntime.observers.onmjs.path = new ONMjs.observers.SelectedPathModelView(backchannel)
+            onmjsSelfObserverNavigator = ONMjsRuntime.observers.onmjs.navigator = new ONMjs.observers.NavigatorModelView(backchannel)
+            onmjsSelfObserverNamespace = ONMjsRuntime.observers.onmjs.namespace = new ONMjs.observers.SelectedNamespaceModelView(backchannel)
+            onmjsSelfObserverJson = ONMjsRuntime.observers.onmjs.json = new ONMjs.observers.SelectedJsonModelView(backchannel)
+
+            onmjsSelfObserverPath.attachToCachedAddress(onmjsSelfAddressStore)
+            onmjsSelfObserverNavigator.attachToStore(onmjsSelfStore)
+            onmjsSelfObserverNavigator.attachToCachedAddress(onmjsSelfAddressStore)
+            onmjsSelfObserverNavigator.setCachedAddressSinkStore(onmjsSelfAddressStore)
+            onmjsSelfObserverNamespace.attachToCachedAddress(onmjsSelfAddressStore)
+            onmjsSelfObserverJson.attachToCachedAddress(onmjsSelfAddressStore)
+            onmjsSelfAddressStore.setAddress(onmjsSelfModel.createRootAddress())
+
+            
+
 
 
             ###
