@@ -66,33 +66,111 @@ class Encapsule.app.lib.DragonEggCompiler
             @label = ko.observable ""
             @description = ko.observable ""
 
+            @dataModelDeclarationObject = undefined
+            @dataModelDeclarationJSON = ko.observable "<no selection>"
+
+            copyProperty = (propertyName_, dataReferenceSource_, dataReferenceDestination_) ->
+                try
+                    dataReferenceDestination_[propertyName_] = dataReferenceSource_[propertyName_]
+                catch exception
+                    throw "failed to copy property #{propertyName_}"
+
+            compileComponent = (store_, address_, parentDataReference_) =>
+                try
+                    componentNamespace = store_.openNamespace(address_)
+                    inputData = componentNamespace.data()
+                    outputData = parentDataReference_
+
+                    copyProperty("jsonTag", inputData, outputData)
+                    copyProperty("namespaceType", inputData, outputData)
+                    copyProperty("____label", inputData, outputData)
+                    copyProperty("____description", inputData, outputData)
+
+                    metaPropertiesAddress = address_.createSubpathAddress("metaProperties")
+                    metaPropertiesNamespace = store_.openNamespace(metaPropertiesAddress)
+                    metaPropertiesNamespace.visitExtensionPointSubcomponents( (subcomponentAddress_) =>
+                        subcomponentNamespace = store_.openNamespace(subcomponentAddress_)
+                        subcomponentData = subcomponentNamespace.data()
+                        if subcomponentData.jsonTag? and subcomponentData.jsonTag
+                            outputData[subcomponentData.jsonTag] = subcomponentData.value
+                        true
+                        )
+
+
+                    outputData.namespaceProperties = {}
+                    outputData.namespaceProperties.userImmutable = {}
+                    outputData.namespaceProperties.userMutable = {}
+                    outputData.subNamespaces = []
+
+                    immutablePropertiesAddress = address_.createSubpathAddress("properties.userImmutable")
+
+                    mutablePropertiesAddress = address_.createSubpathAddress("properties.userMutable")
+
+
+                    true
+
+                catch exception
+                    throw "Encapsule.app.lib.DragonEggCompiler.compileChildComponent failure: #{exception}"
+
+
+            compile = (store_, address_) =>
+                try
+                    @dataModelDeclarationObject = {}
+                    @dataModelDeclarationJSON("")
+                    compileComponent(store_, address_, @dataModelDeclarationObject)
+                    resultJSON = JSON.stringify(@dataModelDeclarationObject, undefined, 2)
+                    if not (resultJSON? and resultJSON)
+                        throw "Cannot serialize Javascript object to JSON!"
+                    @dataModelDeclarationJSON(resultJSON)
+                    true
+                catch exception
+
             @dragonEggStoreAddressObserverInterface = {
 
-                onComponentCreated: (store_, observerId_, address_) =>
+                onComponentUpdated: (store_, observerId_, address_) =>
                     try
-                        @selectedDragonEggAddress = undefined
                         candidateAddress = store_.getAddress()
+                        selectedAddress = undefined
 
                         if candidateAddress.getModel().jsonTag == "dragonEgg"
-                            @selectedDragonEggAddress = candidateAddress
-                            return true
-
-                        candidateAddress.visitParentAddressesDescending( (parentAddress_) =>
-                            if parentAddress_.getModel().jsonTag == "dragonEgg"
-                                @selectedDragonEggAddress = parentAddress_
-                                return true
+                            selectedAddress = candidateAddress
+                        else
+                            candidateAddress.visitParentAddressesDescending( (parentAddress_) =>
+                                if parentAddress_.getModel().jsonTag == "dragonEgg"
+                                    selectedAddress = parentAddress_
                             )
 
-                        @jsonTag("<no selection>")
-                        @label("")
-                        @description("")
-                        return false
+                        if selectedAddress? and selectedAddress
+                            namespaceData = store_.referenceStore.openNamespace(selectedAddress).data()
+                            @jsonTag(namespaceData.jsonTag)
+                            @label(namespaceData.____label)
+                            @description(namespaceData.____description)
+
+
+                            lastAddress = @selectedDragonEggAddress
+                            @selectedDragonEggAddress = selectedAddress
+
+                            if (
+                                   ( (not (lastAddress? and lastAddress)) and (selectedAddress? and selectedAddress) ) or
+                                   ( (not (selectedAddress? and selectedAddress)) and (lastAddress? and lastAddress?) ) or
+                                   not lastAddress.isEqual(selectedAddress)
+                                   )
+                                @dragonEggStoreObserverInterface.onComponentUpdated(store_.referenceStore, undefined, selectedAddress)
+                          
+                        else
+                            @jsonTag("<no selection>")
+                            @label("")
+                            @description("")
+                            @dataModelDeclarationJSON("<no selection>")
+                            @selectedDragonEggAddress = undefined
+    
+                        return true
 
                     catch exception
                         throw "Encapsule.app.lib.DragonEggCompiler.dragonEggStoreAddressObserverInterface.onComponentCreated failure: #{exception}"
 
-                onComponentUpdated: (store_, observerId_, address_) =>
-                    @dragonEggStoreAddressObserverInterface.onComponentCreated(store_, observerId_, address_)
+                onComponentCreated: (store_, observerId_, address_) =>
+                    @dragonEggStoreAddressObserverInterface.onComponentUpdated(store_, observerId_, address_)
 
             }
 
@@ -101,21 +179,19 @@ class Encapsule.app.lib.DragonEggCompiler
                 onComponentCreated: (store_, observerId_, address_) =>
                     try
                         if not (@selectedDragonEggAddress? and @selectedDragonEggAddress)
-                            @backchannel.log("... no selected dragon egg address")
+                            # ignore - there's no selected dragon egg address
                             return true
 
                         if not @selectedDragonEggAddress.isEqual(address_)
-                            @backchannel.log("... ignoring - not selected dragon egg")
+                            # ignore - this is not the drone we're looking for
                             return true
 
+                        # Do something interesting here.
                         namespace = store_.openNamespace(address_)
                         data = namespace.data()
 
-                        @jsonTag(data.jsonTag)
-                        @label(data.____label)
-                        @description(data.____description)
-
-                        @backchannel.log("Dragon egg updated.")
+                        compile(store_, address_)
+                        @backchannel.log("Dragon egg updated: #{address_.getHumanReadableString()}")
                         return true
 
                     catch exception
@@ -148,10 +224,16 @@ jsonTag: <span data-bind="text: jsonTag"></span><br>
 label: <span data-bind="text: label"></span><br>
 description: <span data-bind="text: description"></span><br>
 </div>
-<!--
-<span class="classONMjsSelectedJsonAddressHash" data-bind="html: selectorHash"></span>
+
+
+
+<!-- <span class="classONMjsSelectedJsonAddressHash" data-bind="html: selectorHash"></span> -->
+
+
+
+
 <div class="classObjectModelNavigatorJsonBody">
-    <pre class="classONMjsSelectedJsonBody" data-bind="html: jsonString"></pre>
+<pre class="classONMjsSelectedJsonBody" data-bind="html: dataModelDeclarationJSON"></pre>
 </div>
--->
+
 """))
