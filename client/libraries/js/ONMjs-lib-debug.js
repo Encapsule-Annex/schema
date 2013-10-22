@@ -2728,13 +2728,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.21";
+  Encapsule.code.lib.onm.about.version = "0.0.22";
 
-  Encapsule.code.lib.onm.about.build = "Mon Oct 21 19:33:12 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Tue Oct 22 00:57:08 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1382383992";
+  Encapsule.code.lib.onm.about.epoch = "1382403428";
 
-  Encapsule.code.lib.onm.about.uuid = "421fcbbc-7f2b-4c1b-8db5-a24028526b49";
+  Encapsule.code.lib.onm.about.uuid = "4fa04389-65f1-441b-8bff-7550d5012428";
 
   /*
   ------------------------------------------------------------------------------
@@ -2793,12 +2793,12 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties = {
     namespaceType: "extensionPoint",
     jsonTag: "metaProperties",
-    ____label: "META PROPERTIES",
+    ____label: "meta properties",
     ____descriptor: "Collection of this namespaces' meta-properties.",
     componentArchetype: {
       namespaceType: "component",
       jsonTag: "metaproperty",
-      ____label: "META PROPERTY",
+      ____label: "meta property",
       ____description: "Meta property",
       ____getLabelVariant: "jsonTagAndValue",
       namespaceProperties: {
@@ -2831,7 +2831,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.dataModels.implementation.selfDeclaration.namespaceProperty = {
     namespaceType: "component",
     jsonTag: "property",
-    ____label: "PROPERTY",
+    ____label: "property",
     ____description: "Namespace property.",
     ____getLabelVariant: "jsonTagAndValue",
     namespaceProperties: {
@@ -2864,19 +2864,19 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties = {
     namespaceType: "child",
     jsonTag: "properties",
-    ____label: "PROPERTIES",
+    ____label: "properties",
     ____description: "Namespace properties.",
     subNamespaces: [
       {
         namespaceType: "extensionPoint",
         jsonTag: "userImmutable",
-        ____label: "USER IMMUTABLE PROPERTIES",
+        ____label: "immutable",
         ____description: "User immutable namespace properties.",
         componentArchetype: ONMjs.dataModels.implementation.selfDeclaration.namespaceProperty
       }, {
         namespaceType: "extensionPoint",
         jsonTag: "userMutable",
-        ____label: "USER MUTABLE PROPERTIES",
+        ____label: "mutable",
         ____description: "User mutable namespace properties.",
         componentArchetype: ONMjs.dataModels.implementation.selfDeclaration.namespaceProperty
       }
@@ -2885,91 +2885,49 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   ONMjs.dataModels.selfDeclaration = {
     namespaceType: "root",
-    jsonTag: "dataModelDeclaration",
-    ____label: "ONMJS DATA MODEL DECLARATION",
-    ____description: "ONMjs data model declaration.",
-    ____getLabelVariant: "jsonTagAndNamespaceType",
-    namespaceProperties: {
-      userImmutable: {
-        revision: {
-          fnCreate: function() {
-            return 0;
-          }
-        },
-        uuid: {
-          fnCreate: function() {
-            return uuid.v4();
-          }
-        },
-        uuidRevision: {
-          fnCreate: function() {
-            return uuid.v4();
-          }
-        },
-        namespaceType: {
-          fnCreate: function() {
-            return "root";
-          }
-        }
-      },
-      userMutable: {
-        jsonTag: {
-          ____type: "JSON tag string",
-          fnCreate: function() {
-            return "";
-          }
-        },
-        ____label: {
-          ____type: "String",
-          fnCreate: function() {
-            return "";
-          }
-        },
-        ____description: {
-          ____type: "String",
-          fnCreate: function() {
-            return "";
-          }
-        }
-      }
-    },
+    jsonTag: "littleDragon",
+    ____label: "Little Dragon",
+    ____description: "ONMjs data model declaration editor.",
     subNamespaces: [
-      ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties, ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties, {
+      {
         namespaceType: "extensionPoint",
-        jsonTag: "namespaces",
-        ____label: "NAMESPACES",
-        ____description: "collection of namespace declarations.",
+        jsonTag: "dragonEggs",
+        ____label: "Dragon Eggs",
+        ____description: "ONMjs data model declaration collection.",
         componentArchetype: {
           namespaceType: "component",
-          jsonTag: "namespace",
-          ____label: "NAMESPACE",
-          ____description: "ONMjs component namespace declaration.",
+          jsonTag: "dragonEgg",
+          ____label: "Dragon Egg",
+          ____description: "ONMjs data model declaration.",
           ____getLabelVariant: "jsonTagAndNamespaceType",
           namespaceProperties: {
             userImmutable: {
               revision: {
+                ____type: "integer",
                 fnCreate: function() {
                   return 0;
                 }
               },
               uuid: {
+                ____type: "uuid",
                 fnCreate: function() {
                   return uuid.v4();
                 }
               },
               uuidRevision: {
+                ____type: "uuid",
                 fnCreate: function() {
                   return uuid.v4();
+                }
+              },
+              namespaceType: {
+                ____type: "namespaceTypeEnum",
+                fnCreate: function() {
+                  return "root";
                 }
               }
             },
             userMutable: {
-              namespaceType: {
-                ____type: "Must be 'child' or 'extensionPoint' or 'component'",
-                fnCreate: function() {
-                  return "invalid";
-                }
-              },
               jsonTag: {
                 ____type: "JSON tag string",
                 fnCreate: function() {
@@ -2994,9 +2952,72 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties, ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties, {
               namespaceType: "extensionPoint",
               jsonTag: "namespaces",
-              ____label: "NAMESPACES",
-              ____description: "Subnamespace collection.",
-              componentArchetypePath: "dataModelDeclaration.namespaces.namespace"
+              ____label: "namespaces",
+              ____description: "collection of namespace declarations.",
+              componentArchetype: {
+                namespaceType: "component",
+                jsonTag: "namespace",
+                ____label: "namespace",
+                ____description: "ONMjs component namespace declaration.",
+                ____getLabelVariant: "jsonTagAndNamespaceType",
+                namespaceProperties: {
+                  userImmutable: {
+                    revision: {
+                      ____type: "integer",
+                      fnCreate: function() {
+                        return 0;
+                      }
+                    },
+                    uuid: {
+                      ____type: "uuid",
+                      fnCreate: function() {
+                        return uuid.v4();
+                      }
+                    },
+                    uuidRevision: {
+                      ____type: "uuid",
+                      fnCreate: function() {
+                        return uuid.v4();
+                      }
+                    }
+                  },
+                  userMutable: {
+                    namespaceType: {
+                      ____type: "Must be 'child' or 'extensionPoint' or 'component'",
+                      fnCreate: function() {
+                        return "invalid";
+                      }
+                    },
+                    jsonTag: {
+                      ____type: "JSON tag string",
+                      fnCreate: function() {
+                        return "";
+                      }
+                    },
+                    ____label: {
+                      ____type: "String",
+                      fnCreate: function() {
+                        return "";
+                      }
+                    },
+                    ____description: {
+                      ____type: "String",
+                      fnCreate: function() {
+                        return "";
+                      }
+                    }
+                  }
+                },
+                subNamespaces: [
+                  ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties, ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties, {
+                    namespaceType: "extensionPoint",
+                    jsonTag: "namespaces",
+                    ____label: "namespaces",
+                    ____description: "Subnamespace collection.",
+                    componentArchetypePath: "littleDragon.dragonEggs.dragonEgg.namespaces.namespace"
+                  }
+                ]
+              }
             }
           ]
         }

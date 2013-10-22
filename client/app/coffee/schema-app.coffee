@@ -114,9 +114,12 @@ class Encapsule.code.app.Schema
             # Tell the navigator which CachedAddress to route user address selections to.
             navigatorView.setCachedAddressSinkStore(selectedAddress)
 
+
             onmjsSelfModel = new ONMjs.Model(ONMjs.dataModels.selfDeclaration)
+            onmjsSelfModelRootAddress = onmjsSelfModel.createRootAddress()
             onmjsSelfStore = new ONMjs.Store(onmjsSelfModel)
-            onmjsSelfAddressStore = new ONMjs.AddressStore(onmjsSelfStore, onmjsSelfModel.createRootAddress())
+
+            onmjsSelfAddressStore = new ONMjs.AddressStore(onmjsSelfStore, onmjsSelfModelRootAddress)
 
             onmjsSelfObserverPath = ONMjsRuntime.observers.onmjs.path = new ONMjs.observers.SelectedPathModelView(backchannel)
             onmjsSelfObserverNavigator = ONMjsRuntime.observers.onmjs.navigator = new ONMjs.observers.NavigatorModelView(backchannel)
