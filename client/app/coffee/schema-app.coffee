@@ -135,11 +135,12 @@ class Encapsule.code.app.Schema
             onmjsSelfObserverJson.attachToCachedAddress(onmjsSelfAddressStore)
 
 
+            dragonEggCompiler = ONMjsRuntime.observers.onmjs.dragonEggCompiler = new Encapsule.app.lib.DragonEggCompiler(backchannel)
+            dragonEggCompilerObserverId = onmjsSelfStore.registerObserver(dragonEggCompiler.dragonEggStoreObserverInterface, dragonEggCompiler)
+            dragonEggCompilerObserverId2 = onmjsSelfAddressStore.registerObserver(dragonEggCompiler.dragonEggStoreAddressObserverInterface, dragonEggCompiler)
             
 
 
-
-            ###
 
             #
             # TESTS AND EXPERIMENTS
@@ -163,8 +164,6 @@ class Encapsule.code.app.Schema
 
                 addressTest0A = model.createPathAddress("schema.client.catalogues.catalogue.models.machines.machine")
                 namespace = store.createComponent(addressTest0A)
-
-
                 
                 addressTest1 = addressRoot.createSubpathAddress("client.catalogues.catalogue")
                 namespace = store.createComponent(addressTest1)
@@ -191,11 +190,6 @@ class Encapsule.code.app.Schema
                 alert("TEST FAILURE: #{exception}")
 
             # ==============================================================================
-
-
-
-            ###    
-
 
             Encapsule.runtime.app.SchemaBootInfoWindow = new Encapsule.code.app.modelview.SchemaBootInfoWindow()
 
@@ -226,8 +220,6 @@ class Encapsule.code.app.Schema
             # Select the root namespace of the ONMjs.store.
             rootAddress = model.createRootAddress()
             selectedAddress.setAddress(rootAddress)
-
-
 
         catch exception
             backchannel.error """#{appPackagePublisher} #{appName} v#{appVersion} APP INIT FAIL:: #{exception}"""

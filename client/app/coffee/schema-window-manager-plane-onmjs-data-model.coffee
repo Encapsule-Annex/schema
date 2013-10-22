@@ -89,6 +89,27 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
         }
 
         {
+            id: "idONMjsEditorSplit3A"
+            name: "Spit 3"
+            type: "vertical"
+            Q1WindowDescriptor: undefined
+            Q2WindowDescriptor: {                                            
+                id: "idONMjsEditorCompiledJSONWindow"
+                name: "Is this really necessary?"
+                initialMode: "min"
+                initialEnable: true
+                opacity: 1.0
+                overflow: "auto"
+                modes: {full: { reserve: 500 }, min: { reserve: 250} }
+                MVVM: {
+                    fnModelView: -> ONMjsRuntime.observers.onmjs.dragonEggCompiler
+                    viewModelTemplateId: "idKoTemplate_DragonEggCompilerView"
+                }
+            }
+        }   
+
+
+        {
             id: "idONMjsEditorSplit3"
             name: "Spit 3"
             type: "vertical"
@@ -110,7 +131,6 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
             }
         }   
 
-
         {                                                                    
             id: "idONMjsEditorSplit4"
             name: "Split 4"
@@ -131,6 +151,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
             }
 
             Q2WindowDescriptor: undefined
+
         }
 
     ] # / END: splitter stack
