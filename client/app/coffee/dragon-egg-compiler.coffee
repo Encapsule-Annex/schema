@@ -96,21 +96,81 @@ class Encapsule.app.lib.DragonEggCompiler
                         true
                         )
 
+                    if not inputData.namespaceType == "extensionPoint"
+                        # \ BEGIN: if not extension point
+                        outputData.namespaceProperties = {}
+                        outputData.namespaceProperties.userImmutable = {}
+                        outputData.namespaceProperties.userMutable = {}
 
-                    outputData.namespaceProperties = {}
-                    outputData.namespaceProperties.userImmutable = {}
-                    outputData.namespaceProperties.userMutable = {}
+                        immutablePropertiesAddress = address_.createSubpathAddress("properties.userImmutable")
+                        immutablePropertiesNamespace = store_.openNamespace(immutablePropertiesAddress)
+                        immutablePropertiesNamespace.visitExtensionPointSubcomponents( (immutablePropertyAddress_) =>
+                            immutablePropertyNamespace = store_.openNamespace(immutablePropertyAddress_)
+                            immutablePropertyData = immutablePropertyNamespace.data()
+                            if immutablePropertyData.jsonTag? and immutablePropertyData.jsonTag
+                                propertyReference = outputData.namespaceProperties.userImmutable[immutablePropertyData.jsonTag] = {}
+                                propertyReference.defaultValue = immutablePropertyData.value
+                                metaPropertiesAddress = immutablePropertyAddress_.createSubpathAddress("metaProperties")
+                                metaPropertiesNamespace = store_.openNamespace(metaPropertiesAddress)
+                                metaPropertiesNamespace.visitExtensionPointSubcomponents( (metaPropertyAddress_) =>
+                                    metaPropertyNamespace = store_.openNamespace(metaPropertyAddress_)
+                                    metaPropertyData = metaPropertyNamespace.data()
+                                    if metaPropertyData.jsonTag? and metaPropertyData.jsonTag
+                                        propertyReference[metaPropertyData.jsonTag] = metaPropertyData.value
+                                    )
+                            )
+                            
+                        mutablePropertiesAddress = address_.createSubpathAddress("properties.userMutable")
+                        mutablePropertiesNamespace = store_.openNamespace(mutablePropertiesAddress)
+                        mutablePropertiesNamespace.visitExtensionPointSubcomponents( (mutablePropertyAddress_) =>
+                            mutablePropertyNamespace = store_.openNamespace(mutablePropertyAddress_)
+                            mutablePropertyData = mutablePropertyNamespace.data()
+                            if mutablePropertyData.jsonTag? and mutablePropertyData.jsonTag
+                                propertyReference = outputData.namespaceProperties.userMutable[mutablePropertyData.jsonTag] = {}
+                                propertyReference.defaultValue = mutablePropertyData.value
+                                metaPropertiesAddress = mutablePropertyAddress_.createSubpathAddress("metaProperties")
+                                metaPropertiesNamespace = store_.openNamespace(metaPropertiesAddress)
+                                metaPropertiesNamespace.visitExtensionPointSubcomponents( (metaPropertyAddress_) =>
+                                    metaPropertyNamespace = store_.openNamespace(metaPropertyAddress_)
+                                    metaPropertyData = metaPropertyNamespace.data()
+                                    if metaPropertyData.jsonTag? and metaPropertyData.jsonTag
+                                        propertyReference[metaPropertyData.jsonTag] = metaPropertyData.value
+                                    )
+                            )
+                        # / END: if not extension point
+                            
                     outputData.subNamespaces = []
 
-                    immutablePropertiesAddress = address_.createSubpathAddress("properties.userImmutable")
-
-                    mutablePropertiesAddress = address_.createSubpathAddress("properties.userMutable")
-
+                    namespacesAddress = address_.createSubpathAddress("namespaces")
+                    namespacesNamespace = store_.openNamespace(namespacesAddress)
+                    namespacesNamespace.visitExtensionPointSubcomponents( (subnamespaceAddress_) =>
+                        subnamespaceNamespace = store_.openNamespace(subnamespaceAddress_)
+                        subnamespaceData = subnamespaceNamespace.data()
+                        switch subnamespaceData.namespaceType
+                            when "child"
+                                namespaceDeclaration = {}
+                                compileComponent(store_, subnamespaceAddress_, namespaceDeclaration)
+                                outputData.subNamespaces.push namespaceDeclaration
+                                break
+                            when "extensionPoint"
+                                namespaceDeclaration = {}
+                                compileComponent(store_, subnamespaceAddress_, namespaceDeclaration)
+                                outputData.subNamespaces.push namespaceDeclaration
+                                break
+                            when "component"
+                                namespaceDeclaration = {}
+                                compileComponent(store_, subnamespaceAddress_, namespaceDeclaration)
+                                outputData.componentArchetype = namespaceDeclaration
+                                break
+                            else
+                                break
+                        true
+                        )
 
                     true
 
                 catch exception
-                    throw "Encapsule.app.lib.DragonEggCompiler.compileChildComponent failure: #{exception}"
+                    throw "Encapsule.app.lib.DragonEggCompiler.compileComponent failure: #{exception}"
 
 
             compile = (store_, address_) =>
@@ -124,6 +184,7 @@ class Encapsule.app.lib.DragonEggCompiler
                     @dataModelDeclarationJSON(resultJSON)
                     true
                 catch exception
+                    throw "Encapsule.app.lib.DragonEggCompiler.compile failure: #{exception}"
 
             @dragonEggStoreAddressObserverInterface = {
 
