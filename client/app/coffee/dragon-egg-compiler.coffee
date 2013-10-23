@@ -251,7 +251,6 @@ class Encapsule.app.lib.DragonEggCompiler
                             # ignore - this is not the drone we're looking for
                             return true
 
-                        # Do something interesting here.
                         namespace = store_.openNamespace(address_)
                         data = namespace.data()
 
@@ -259,21 +258,20 @@ class Encapsule.app.lib.DragonEggCompiler
                             return true
 
                         compile(store_, address_)
-                        @backchannel.log("Dragon egg updated: #{address_.getHumanReadableString()}. Notifying app...")
+                        @backchannel.log("Data model recompiled. Egg@#{address_.getHumanReadableString()}. Notifying app...")
 
                         if @callback? and @callback
                             @callback(store_, address_, @dataModelDeclarationObject)
+
                         return true
 
                     catch exception
                         throw "Encapsule.app.lib.DragonEggCompiler.dragonEggStoreObserverInterface.onComponentUpdated failure: #{exception}"
 
                 onComponentUpdated: (store_, observerId_, address_) =>
-                    @backchannel.log("... forwarding onComponentUpdated")
                     @dragonEggStoreObserverInterface.onComponentCreated(store_, observerId_, address_)
 
                 onSubcomponentUpdated: (store_, observerId_, address_) =>
-                    @backchannel.log("... forwarding onSubcomponentUpdated")
                     @dragonEggStoreObserverInterface.onComponentCreated(store_, observerId_, address_)
             }
                 

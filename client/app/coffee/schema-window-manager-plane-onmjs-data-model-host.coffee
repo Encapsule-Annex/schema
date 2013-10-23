@@ -57,7 +57,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 backgroundColor: "rgba(0,255,0, 0.2)"
                 modes: { full: { reserve: 64 }, min: { reserve: 16 } }
                 MVVM: {
-                    fnModelView: -> ONMjsRuntime.observers.onmjs.path
+                    fnModelView: -> ONMjsRuntime.dataModelHost.observers.path
                     viewModelTemplateId: "idKoTemplate_SelectedPathViewModel"
                 }
             }
@@ -81,7 +81,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
 
                 MVVM: {
-                    fnModelView: -> ONMjsRuntime.observers.onmjs.navigator
+                    fnModelView: -> ONMjsRuntime.dataModelHost.observers.navigator
                     viewModelTemplateId: "idKoTemplate_NavigatorViewModel"
                 }
 
@@ -102,10 +102,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 opacity: 1.0
                 overflow: "auto"
                 modes: {full: { reserve: 500 }, min: { reserve: 250} }
+                ###
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.observers.onmjs.dragonEggCompiler
                     viewModelTemplateId: "idKoTemplate_DragonEggCompilerView"
                 }
+                ###
             }
         }   
 
@@ -125,7 +127,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 backgroundColor: "rgba(255,255,255,0.1)"
                 modes: { full: { reserve: 500 }, min: { reserve: 250 } }
                 MVVM: {
-                    fnModelView: -> ONMjsRuntime.observers.onmjs.json
+                    fnModelView: -> ONMjsRuntime.dataModelHost.observers.json
                     viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorJsonModelView"
 
                 }
@@ -146,7 +148,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 backgroundColor:  "rgba(255,255,255,0.4)"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                 MVVM: {
-                    fnModelView: -> ONMjsRuntime.observers.onmjs.namespace
+                    fnModelView: -> ONMjsRuntime.dataModelHost.observers.namespace
                     viewModelTemplateId: "idKoTemplate_SelectedNamespaceViewModel"
                 }
             }

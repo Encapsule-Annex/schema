@@ -112,7 +112,7 @@ class Encapsule.code.app.Schema
             jsonView.attachToCachedAddress(selectedAddress)
 
             # Tell the navigator which CachedAddress to route user address selections to.
-            navigatorView.setCachedAddressSinkStore(selectedAddress)
+            navigatorView.setCachedAddressSink(selectedAddress)
 
 
             onmjsSelfModel = new ONMjs.Model(ONMjs.dataModels.selfDeclaration)
@@ -130,11 +130,11 @@ class Encapsule.code.app.Schema
             onmjsSelfObserverPath.attachToCachedAddress(onmjsSelfAddressStore)
             onmjsSelfObserverNavigator.attachToStore(onmjsSelfStore)
             onmjsSelfObserverNavigator.attachToCachedAddress(onmjsSelfAddressStore)
-            onmjsSelfObserverNavigator.setCachedAddressSinkStore(onmjsSelfAddressStore)
+            onmjsSelfObserverNavigator.setCachedAddressSink(onmjsSelfAddressStore)
             onmjsSelfObserverNamespace.attachToCachedAddress(onmjsSelfAddressStore)
             onmjsSelfObserverJson.attachToCachedAddress(onmjsSelfAddressStore)
 
-            dataModelHost = new Encapsule.app.lib.ONMjsDataModelHost(backchannel)
+            dataModelHost = ONMjsRuntime.dataModelHost = new Encapsule.app.lib.ONMjsDataModelHost(backchannel)
 
             dragonEggCompiler = ONMjsRuntime.observers.onmjs.dragonEggCompiler = new Encapsule.app.lib.DragonEggCompiler(backchannel, dataModelHost.updateModel)
             dragonEggCompilerObserverId = onmjsSelfStore.registerObserver(dragonEggCompiler.dragonEggStoreObserverInterface, dragonEggCompiler)

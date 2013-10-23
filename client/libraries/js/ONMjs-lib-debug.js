@@ -2728,13 +2728,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.22";
+  Encapsule.code.lib.onm.about.version = "0.0.23";
 
-  Encapsule.code.lib.onm.about.build = "Tue Oct 22 00:57:08 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Wed Oct 23 18:36:50 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1382403428";
+  Encapsule.code.lib.onm.about.epoch = "1382553410";
 
-  Encapsule.code.lib.onm.about.uuid = "4fa04389-65f1-441b-8bff-7550d5012428";
+  Encapsule.code.lib.onm.about.uuid = "9ec407f2-6b36-4922-85af-5e6df6167cab";
 
   /*
   ------------------------------------------------------------------------------
@@ -3369,7 +3369,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         this.rootMenuModelView = void 0;
         this.store = void 0;
         this.storeObserverId = void 0;
-        this.selectedCachedAddressSinkStore = void 0;
+        this.selectedCachedAddressSink = void 0;
         this.attachToStore = function(store_) {
           try {
             if (!((store_ != null) && store_)) {
@@ -3409,9 +3409,9 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             throw "ONMjs.observers.NavigatorModelView.attachToCachedAddress failure: " + excpetion;
           }
         };
-        this.detachFromCachedAddress = function(cachedAddres_, observerId_) {
+        this.detachFromCachedAddress = function(cachedAddress_, observerId_) {
           try {
-            if (!((typeof cachedAddress_ !== "undefined" && cachedAddress_ !== null) && cachedAddres_)) {
+            if (!((cachedAddress_ != null) && cachedAddress_)) {
               throw "Missing cached address input parameter.";
             }
             if (!((observerId_ != null) && observerId_)) {
@@ -3423,24 +3423,21 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             throw "ONMjs.observers.NavigatorModelView.detachFromCachedAddress failure: " + exception;
           }
         };
-        this.setCachedAddressSinkStore = function(cachedAddress_) {
+        this.setCachedAddressSink = function(cachedAddress_) {
           try {
-            if (!((cachedAddress_ != null) && cachedAddress_)) {
-              throw "Missing cached address input parameter.";
-            }
-            return _this.selectedCachedAddressSinkStore = cachedAddress_;
+            return _this.selectedCachedAddressSink = cachedAddress_;
           } catch (exception) {
-            throw "ONMjs.observers.NavigatorModelView.setCachedAddressSinkStore failure: " + exception;
+            throw "ONMjs.observers.NavigatorModelView.setCachedAddressSink failure: " + exception;
           }
         };
         this.routeUserSelectAddressRequest = function(address_) {
           var message;
           try {
-            if ((_this.selectedCachedAddressSinkStore != null) && _this.selectedCachedAddressSinkStore) {
-              _this.selectedCachedAddressSinkStore.setAddress(address_);
+            if ((_this.selectedCachedAddressSink != null) && _this.selectedCachedAddressSink) {
+              _this.selectedCachedAddressSink.setAddress(address_);
               return;
             }
-            message = ("ONMjs.obsevers.NavigatorModelView.routeUserSelectAddressRequest for address  '" + (address_.getHashString()) + "'failed. ") + "setCachedAddressSinkStore method must be called to set the routing destination.";
+            message = ("ONMjs.obsevers.NavigatorModelView.routeUserSelectAddressRequest for address  '" + (address_.getHashString()) + "'failed. ") + "setCachedAddressSink method must be called to set the routing destination.";
             return alert(message);
           } catch (exception) {
             throw "ONMjs.observers.NavigatorModelView.routeUserSelectAddressRequest failure: " + exception;
@@ -3765,7 +3762,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         this.selectorHash = ko.observable("<not connected>");
         this.jsonString = ko.observable("<not connected>");
         this.cachedAddressStore = void 0;
-        this.cahcedAddressStoreObserverId = void 0;
+        this.cachedAddressObserverId = void 0;
         this.saveJSONAsLinkHtml = ko.computed(function() {
           var html;
           return html = "<a href=\"data:text/json;base64," + (window.btoa(_this.jsonString())) + "\" target=\"_blank\" title=\"Open raw JSON in new tab...\"> \n<img src=\"./img/json_file-48x48.png\" style=\"width: 24px; heigh: 24px; border: 0px solid black; vertical-align: middle;\" ></a>";
@@ -3779,7 +3776,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
               throw "Already attached to an ONMjs.CachedAddress object.";
             }
             _this.cachedAddressStore = cachedAddress_;
-            _this.storeObserverId = cachedAddress_.registerObserver(_this.cachedAddressCallbackInterface, _this);
+            _this.cachedAddressObserverId = cachedAddress_.registerObserver(_this.cachedAddressCallbackInterface, _this);
             return true;
           } catch (exception) {
             throw "ONMjs.observers.SelectedJsonModelView.attachToCachedAddress failure: " + exception + ".";
@@ -3787,12 +3784,12 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         };
         this.detachFromCachedAddress = function() {
           try {
-            if (!((_this.cachedAddressStoreObserverId != null) && _this.cachedAddressStoreObserverId)) {
-              throw "Not attached to an ONMjs.CachedAddress object.";
+            if (!((_this.cachedAddressStore != null) && _this.cachedAddressStore)) {
+              throw "Not attached to address store object.";
             }
-            _this.cachedAddressStore.unregisterObserver(_this.cachedAddressStoreObserverId);
+            _this.cachedAddressStore.unregisterObserver(_this.cachedAddressObserverId);
             _this.cachedAddressStore = void 0;
-            _this.cachedAddressStoreObserverId = void 0;
+            _this.cachedAddressObserverId = void 0;
             return true;
           } catch (exception) {
             throw "ONMjs.observers.SelectedJsonModelView.detachFromCachedAddress failure: " + exception + ".";
@@ -3985,20 +3982,22 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
               throw "Not attached to an ONMjs.CachedAddress object.";
             }
             _this.cachedAddressStore.unregisterObserver(_this.cachedAddressStoreObserverId);
+            _this.cachedAddressStoreObserverId = void 0;
+            _this.cachedAddressStore = void 0;
             return true;
           } catch (exception) {
             throw "ONMjs.observers.SelectedPathModelView.detachFromCachedAddress failure: " + exception;
           }
         };
         this.cachedAddressObserverInterface = {
-          onAttachEnd: function(store_, observerId_) {
+          onObserverAttachEnd: function(store_, observerId_) {
             return _this.backchannel.log("ONMjs.observers.SelectedPathModelView has attached to and is observing in ONMjs.CachedAddress instance.");
           },
-          onDetachEnd: function(store_, observerId_) {
+          onObserverDetachEnd: function(store_, observerId_) {
             _this.pathElements.removeAll();
             _this.addressHashString("not connected");
             _this.addressHumanString("not connected");
-            _this.cachedAddress = void 0;
+            _this.cachedAddressStore = void 0;
             _this.cachedAddressStoreObserverId = void 0;
             return _this.backchannel.log("ONMjs.observers.SelectedPathModelView has detached from and is no longer observing an ONMjs.CachedAddress instance.");
           },
