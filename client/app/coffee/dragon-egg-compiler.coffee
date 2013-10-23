@@ -49,16 +49,12 @@ Encapsule.app = Encapsule.app? and Encapsule.app or @Encapsule.app = {}
 Encapsule.app.lib = Encapsule.app.lib? and Encapsule.app.lib or @Encapsule.app.lib = {}
 
 class Encapsule.app.lib.DragonEggCompiler
-    constructor: (backchannel_) ->
+    constructor: (backchannel_, callback_) ->
         try
             @backchannel = backchannel_? and backchannel_ or throw "Missing required backchannel input parameter."
+            # (store_, address_, dataModelDeclaration_) 
+            @callback = callback_? and callback_ or throw "Missing required callback input parameter."
             @title = "Dragon Egg Compiler"
-
-
-            @saveJSONAsLinkHtml = ko.computed =>
-                # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
-                html = """<a href=\"data:text/json;base64,#{window.btoa(@title)}\" target=\"_blank\" title="Open raw JSON in new tab..."> 
-                    <img src="./img/json_file-48x48.png" style="width: 24px; heigh: 24px; border: 0px solid black; vertical-align: middle;" ></a>"""
 
             @selectedDragonEggAddress = undefined
 
@@ -67,7 +63,13 @@ class Encapsule.app.lib.DragonEggCompiler
             @description = ko.observable ""
 
             @dataModelDeclarationObject = undefined
+
             @dataModelDeclarationJSON = ko.observable "<no selection>"
+
+            @saveJSONAsLinkHtml = ko.computed =>
+                # Inpsired by: http://stackoverflow.com/questions/3286423/is-it-possible-to-use-any-html5-fanciness-to-export-local-storage-to-excel/3293101#3293101
+                html = """<a href=\"data:text/json;base64,#{window.btoa(@dataModelDeclarationJSON())}\" target=\"_blank\" title="Open raw JSON in new tab..."> 
+                    <img src="./img/json_file-48x48.png" style="width: 24px; heigh: 24px; border: 0px solid black; vertical-align: middle;" ></a>"""
 
             copyProperty = (propertyName_, dataReferenceSource_, dataReferenceDestination_) ->
                 try
@@ -224,6 +226,8 @@ class Encapsule.app.lib.DragonEggCompiler
                             @description("")
                             @dataModelDeclarationJSON("<no selection>")
                             @selectedDragonEggAddress = undefined
+                            if @callback? and @callback
+                                @callback(undefined, undefined, undefined)
     
                         return true
 
@@ -251,8 +255,14 @@ class Encapsule.app.lib.DragonEggCompiler
                         namespace = store_.openNamespace(address_)
                         data = namespace.data()
 
+                        if not (data.jsonTag? and data.jsonTag)
+                            return true
+
                         compile(store_, address_)
-                        @backchannel.log("Dragon egg updated: #{address_.getHumanReadableString()}")
+                        @backchannel.log("Dragon egg updated: #{address_.getHumanReadableString()}. Notifying app...")
+
+                        if @callback? and @callback
+                            @callback(store_, address_, @dataModelDeclarationObject)
                         return true
 
                     catch exception

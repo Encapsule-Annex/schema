@@ -36,18 +36,19 @@ ONMjsRuntime.observers = ONMjsRuntime.observers? and ONMjsRuntime.observers or O
 ONMjsRuntime.observers.onmjs = ONMjsRuntime.observers.onmjs? and ONMjsRuntime.observers.onmjs or ONMjsRuntime.observers.onmjs = {}
 
 
-Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
+Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
 
-    id: "idSchemaPlaneONMjsEditor"
-    name: "Little Dragon"
+    id: "idSchemaPlaneONMjsDataModelHost"
+    name: "Dragon Egg"
     initialEnable: false
     splitterStack: [
+
         {
-            id: "idONMjsEditorSplit1"
+            id: "idONMjsDMHSplit1"
             name: "Split 1"
             type: "horizontal"
             Q1WindowDescriptor: {
-                id: "idONMjsEditorPathWindow"
+                id: "idONMjsDMHPathWindow"
                 name: "ONMjs Editor Path Window"
                 initialMode: "min"
                 initialEnable: true
@@ -66,11 +67,11 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
         Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom
 
         {                                                                    
-            id: "idONMjsEditorSplit2"
+            id: "idONMjsDMHSplit2"
             name: "Split 2"
             type: "vertical"                                                 
             Q1WindowDescriptor: {                                            
-                id: "idONMjsEditorNavigatorWindow"
+                id: "idONMjsDMHNavigatorWindow"
                 name: "ONMjs Editor Navigator Window"
                 initialMode: "min"
                 initialEnable: true
@@ -89,12 +90,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
         }
 
         {
-            id: "idONMjsEditorSplit3A"
+            id: "idONMjsDMHSplit3A"
             name: "Spit 3"
             type: "vertical"
             Q1WindowDescriptor: undefined
             Q2WindowDescriptor: {                                            
-                id: "idONMjsEditorCompiledJSONWindow"
+                id: "idONMjsDMHCompiledJSONWindow"
                 name: "Is this really necessary?"
                 initialMode: "min"
                 initialEnable: true
@@ -110,12 +111,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
 
 
         {
-            id: "idONMjsEditorSplit3"
+            id: "idONMjsDMHSplit3"
             name: "Spit 3"
             type: "vertical"
             Q1WindowDescriptor: undefined
             Q2WindowDescriptor: {                                            
-                id: "idONMjsEditorJSONWindow"
+                id: "idONMjsDMHJSONWindow"
                 name: "ONMjs Editor JSON Window"
                 initialMode: "min"
                 initialEnable: true
@@ -132,11 +133,11 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
         }   
 
         {                                                                    
-            id: "idONMjsEditorSplit4"
+            id: "idONMjsDMHSplit4"
             name: "Split 4"
             type: "horizontal"                                                 
             Q1WindowDescriptor: {                                            
-                id: "idONMjsEditorNamespaceWindow"
+                id: "idONMjsDMHNamespaceWindow"
                 name: "ONMjs Editor Namespace Window"
                 initialMode: "full"
                 initialEnable: true
@@ -154,6 +155,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
 
         }
 
-    ] # / END: splitter stack
 
+
+    ]
 }

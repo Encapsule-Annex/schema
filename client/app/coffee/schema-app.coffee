@@ -134,8 +134,9 @@ class Encapsule.code.app.Schema
             onmjsSelfObserverNamespace.attachToCachedAddress(onmjsSelfAddressStore)
             onmjsSelfObserverJson.attachToCachedAddress(onmjsSelfAddressStore)
 
+            dataModelHost = new Encapsule.app.lib.ONMjsDataModelHost(backchannel)
 
-            dragonEggCompiler = ONMjsRuntime.observers.onmjs.dragonEggCompiler = new Encapsule.app.lib.DragonEggCompiler(backchannel)
+            dragonEggCompiler = ONMjsRuntime.observers.onmjs.dragonEggCompiler = new Encapsule.app.lib.DragonEggCompiler(backchannel, dataModelHost.updateModel)
             dragonEggCompilerObserverId = onmjsSelfStore.registerObserver(dragonEggCompiler.dragonEggStoreObserverInterface, dragonEggCompiler)
             dragonEggCompilerObserverId2 = onmjsSelfAddressStore.registerObserver(dragonEggCompiler.dragonEggStoreAddressObserverInterface, dragonEggCompiler)
             
