@@ -54,7 +54,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 initialEnable: true
                 overflow: "hidden"
                 opacity: 1.0
-                backgroundColor: "rgba(0,255,0, 0.2)"
+                backgroundColor: "rgba(0,255,128,0.5)"
                 modes: { full: { reserve: 64 }, min: { reserve: 16 } }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.dataModelHost.observers.path
@@ -77,7 +77,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
-                backgroundColor: undefined
+                backgroundColor: "rgba(0,255,200, 0.1)"
                 modes: { full: { reserve: 450 }, min: { reserve: 350 } }
 
                 MVVM: {
@@ -101,13 +101,12 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 initialEnable: true
                 opacity: 1.0
                 overflow: "auto"
+                backgroundColor: "rgba(0,255,0,0.5)"
                 modes: {full: { reserve: 500 }, min: { reserve: 250} }
-                ###
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.observers.onmjs.dragonEggCompiler
                     viewModelTemplateId: "idKoTemplate_DragonEggCompilerView"
                 }
-                ###
             }
         }   
 
@@ -124,7 +123,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
-                backgroundColor: "rgba(255,255,255,0.1)"
+                backgroundColor: "rgba(0,255,200,0.5)"
                 modes: { full: { reserve: 500 }, min: { reserve: 250 } }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.dataModelHost.observers.json
@@ -145,7 +144,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 initialEnable: true
                 opacity: 1.0
                 overflow: "auto"
-                backgroundColor:  "rgba(255,255,255,0.4)"
+                backgroundColor:  "rgba(0,255,200,0.3)"
                 modes: { full: { reserve: 0 }, min: { reserve: 0 } }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.dataModelHost.observers.namespace

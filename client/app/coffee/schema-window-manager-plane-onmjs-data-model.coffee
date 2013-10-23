@@ -100,6 +100,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
                 initialEnable: true
                 opacity: 1.0
                 overflow: "auto"
+                backgroundColor: "rgba(0,255,0,0.5)"
                 modes: {full: { reserve: 500 }, min: { reserve: 250} }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.observers.onmjs.dragonEggCompiler
@@ -121,7 +122,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
                 initialEnable: true
                 overflow: "auto"
                 opacity: 1.0
-                backgroundColor: "rgba(255,255,255,0.1)"
+                backgroundColor: "rgba(0,255,0,0.25)"
                 modes: { full: { reserve: 500 }, min: { reserve: 250 } }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.observers.onmjs.json

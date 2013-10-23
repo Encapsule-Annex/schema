@@ -2728,13 +2728,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.23";
+  Encapsule.code.lib.onm.about.version = "0.0.24";
 
-  Encapsule.code.lib.onm.about.build = "Wed Oct 23 18:36:50 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Wed Oct 23 22:23:01 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1382553410";
+  Encapsule.code.lib.onm.about.epoch = "1382566981";
 
-  Encapsule.code.lib.onm.about.uuid = "9ec407f2-6b36-4922-85af-5e6df6167cab";
+  Encapsule.code.lib.onm.about.uuid = "d6daf547-11ba-4916-91a4-a77303acde82";
 
   /*
   ------------------------------------------------------------------------------
@@ -3366,7 +3366,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           throw "Missing backchannel input parameter.";
         })();
         this.objectStore = void 0;
-        this.rootMenuModelView = void 0;
+        this.rootMenuModelView = ko.observable(void 0);
         this.store = void 0;
         this.storeObserverId = void 0;
         this.selectedCachedAddressSink = void 0;
@@ -3392,6 +3392,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             }
             _this.store.unregisterObserver(_this.storeObserverId);
             _this.storeObserverId = void 0;
+            _this.store = void 0;
             return true;
           } catch (exception) {
             throw "ONMjs.observers.NavigatorModelView.detachFromStore failure: " + exception;
@@ -3481,7 +3482,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
               namespaceState.description = "Hey this is the ONMjs.observers.NavigatorModelView class saving some submenu state.";
               namespaceState.itemModelView = new ONMjs.observers.implementation.NavigatorItemModelView(store_, _this, address_, _this.backchannel);
               if (address_.isRoot()) {
-                _this.rootMenuModelView = namespaceState.itemModelView;
+                _this.rootMenuModelView(namespaceState.itemModelView);
               }
               parentAddress = address_.createParentAddress();
               if ((parentAddress != null) && (parentAddress != null)) {
@@ -3518,7 +3519,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
               }
               namespaceState = store_.openObserverNamespaceState(observerId_, address_);
               if (address_.isRoot()) {
-                _this.rootMenuModelView = void 0;
+                _this.rootMenuModelView(void 0);
               }
               parentAddress = address_.createParentAddress();
               if ((parentAddress != null) && parentAddress) {
@@ -3580,7 +3581,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_NavigatorViewModel", (function() {
-    return "<span data-bind=\"if: rootMenuModelView\">\n    <div class=\"classONMjsNavigator\">\n        <span data-bind=\"template: { name: 'idKoTemplate_NavigatorItemViewModel', foreach: rootMenuModelView.children }\"></span>\n    </div>\n</span>";
+    return "<span data-bind=\"if: rootMenuModelView\">\n    <div class=\"classONMjsNavigator\">\n        <span data-bind=\"template: { name: 'idKoTemplate_NavigatorItemViewModel', foreach: rootMenuModelView().children }\"></span>\n    </div>\n</span>";
   }));
 
   /*

@@ -98,7 +98,7 @@ class Encapsule.app.lib.DragonEggCompiler
                         true
                         )
 
-                    if not inputData.namespaceType == "extensionPoint"
+                    if not (inputData.namespaceType == "extensionPoint")
                         # \ BEGIN: if not extension point
                         outputData.namespaceProperties = {}
                         outputData.namespaceProperties.userImmutable = {}
