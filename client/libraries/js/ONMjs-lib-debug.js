@@ -499,8 +499,8 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
               throw "Namespace declaration missing required `jsonTag` property.";
             })();
             path = (path_ != null) && path_ && ("" + path_ + "." + tag) || tag;
-            label = (ONMD_.____label != null) && ONMD_.____label || "<no label provided>";
-            description = (ONMD_.____description != null) && ONMD_.____description || "<no description provided>";
+            label = (ONMD_.____label != null) && ONMD_.____label || ONMD_.jsonTag;
+            description = (ONMD_.____description != null) && ONMD_.____description || "no description provided";
             id = _this.countDescriptors++;
             namespaceType = ((ONMD_.namespaceType != null) && ONMD_.namespaceType) || (!id && (ONMD_.namespaceType = "root")) || (function() {
               throw "Internal error unable to determine namespace type.";
@@ -711,7 +711,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           throw "Missing required root namespace property 'jsonTag'.";
         }
         this.model.jsonTag = objectModelDeclaration_.jsonTag;
-        this.model.label = (objectModelDeclaration_.____label != null) && objectModelDeclaration_.____label || "<no label provided>";
+        this.model.label = (objectModelDeclaration_.____label != null) && objectModelDeclaration_.____label || objectModelDeclaration_.jsonTag;
         this.model.description = (objectModelDeclaration_.____description != null) && objectModelDeclaration_.____description || "<no description provided>";
         this.objectModelDeclaration = Encapsule.code.lib.js.clone(objectModelDeclaration_);
         Object.freeze(this.objectModelDeclaration);
@@ -1494,6 +1494,10 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           functions = _ref[memberName];
           if ((functions.fnCreate != null) && functions.fnCreate) {
             data_[memberName] = functions.fnCreate();
+          } else {
+            if ((functions.defaultValue != null) && functions.defaultValue) {
+              data_[memberName] = functions.defaultValue;
+            }
           }
         }
       }
@@ -1503,6 +1507,10 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           functions = _ref1[memberName];
           if ((functions.fnCreate != null) && functions.fnCreate) {
             data_[memberName] = functions.fnCreate();
+          } else {
+            if ((functions.defaultValue != null) && functions.defaultValue) {
+              data_[memberName] = functions.defaultValue;
+            }
           }
         }
       }
@@ -2728,13 +2736,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.24";
+  Encapsule.code.lib.onm.about.version = "0.0.25";
 
-  Encapsule.code.lib.onm.about.build = "Wed Oct 23 22:23:01 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Thu Oct 24 07:24:11 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1382566981";
+  Encapsule.code.lib.onm.about.epoch = "1382599451";
 
-  Encapsule.code.lib.onm.about.uuid = "d6daf547-11ba-4916-91a4-a77303acde82";
+  Encapsule.code.lib.onm.about.uuid = "7b161a48-3825-4afb-8250-332ab413e735";
 
   /*
   ------------------------------------------------------------------------------
@@ -4401,7 +4409,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceActionsViewModel", (function() {
-    return "<div class=\"classONMjsSelectedNamespaceSectionTitle\">\n    Actions:\n</div>\n<div class=\"classONMjsSelectedNamespaceSectionCommon classONMjsSelectedNamespaceActions\">\n    <span data-bind=\"if: actionsForNamespace\">\n        <div>\n            <span data-bind=\"if: callbackLinkAddSubcomponent\">\n                <span data-bind=\"with: callbackLinkAddSubcomponent\">\n                    <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                </span>\n            </span>\n            <span data-bind=\"if: callbackLinkRequestRemoveAllSubcomponents\">\n                <span data-bind=\"with: callbackLinkRequestRemoveAllSubcomponents\">\n                    <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                </span>\n            </span>\n            <span data-bind=\"if: callbackLinkRequestRemoveComponent\">\n                <span data-bind=\"with: callbackLinkRequestRemoveComponent\">\n                    <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                </span>\n            </span>\n\n            <span data-bind=\"if: showConfirmRemove\">\n                <div class=\"classONMjsActionConfirmation\">\n                    Please confirm <strong><span data-bind=\"text: callbackLinkRequestRemoveComponent.label\"></span></span></strong> request.<br><br>\n                    <span data-bind=\"with: callbackLinkCancelActionRequest\">\n                        <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                    </span>\n                    <span data-bind=\"with: callbackLinkRemoveComponent\">\n                        <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                    </span>\n                </div>\n            </span>\n\n            <span data-bind=\"if: showConfirmRemoveAll\">\n                <div class=\"classONMjsActionConfirmation\">\n                    Please confirm <strong><span data-bind=\"text: callbackLinkRequestRemoveAllSubcomponents.label\"></span></span></strong> request.<br><br>\n                    <span data-bind=\"with: callbackLinkCancelActionRequest\">\n                        <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                    </span>\n                    <span data-bind=\"with: callbackLinkRemoveAllSubcomponents\">\n                        <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                    </span>\n                </div>\n            </span>\n\n        </div>\n    </span>\n    <span data-bind=\"ifnot: actionsForNamespace\"><i>No actions defined for this namespace.</i></span>\n</div>";
+    return "<span data-bind=\"if: actionsForNamespace\">\n<div class=\"classONMjsSelectedNamespaceSectionTitle\">\n    Actions:\n</div>\n<div class=\"classONMjsSelectedNamespaceSectionCommon classONMjsSelectedNamespaceActions\">\n    <span data-bind=\"if: actionsForNamespace\">\n        <div>\n            <span data-bind=\"if: callbackLinkAddSubcomponent\">\n                <span data-bind=\"with: callbackLinkAddSubcomponent\">\n                    <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                </span>\n            </span>\n            <span data-bind=\"if: callbackLinkRequestRemoveAllSubcomponents\">\n                <span data-bind=\"with: callbackLinkRequestRemoveAllSubcomponents\">\n                    <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                </span>\n            </span>\n            <span data-bind=\"if: callbackLinkRequestRemoveComponent\">\n                <span data-bind=\"with: callbackLinkRequestRemoveComponent\">\n                    <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                </span>\n            </span>\n\n            <span data-bind=\"if: showConfirmRemove\">\n                <div class=\"classONMjsActionConfirmation\">\n                    Please confirm <strong><span data-bind=\"text: callbackLinkRequestRemoveComponent.label\"></span></span></strong> request.<br><br>\n                    <span data-bind=\"with: callbackLinkCancelActionRequest\">\n                        <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                    </span>\n                    <span data-bind=\"with: callbackLinkRemoveComponent\">\n                        <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                    </span>\n                </div>\n            </span>\n\n            <span data-bind=\"if: showConfirmRemoveAll\">\n                <div class=\"classONMjsActionConfirmation\">\n                    Please confirm <strong><span data-bind=\"text: callbackLinkRequestRemoveAllSubcomponents.label\"></span></span></strong> request.<br><br>\n                    <span data-bind=\"with: callbackLinkCancelActionRequest\">\n                        <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                    </span>\n                    <span data-bind=\"with: callbackLinkRemoveAllSubcomponents\">\n                        <span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span>\n                    </span>\n                </div>\n            </span>\n\n        </div>\n    </span>\n    <span data-bind=\"ifnot: actionsForNamespace\"><i>No actions defined for this namespace.</i></span>\n</div>\n</span>";
   }));
 
   /*
@@ -4467,13 +4475,11 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         index = 0;
         params_.selectedAddress.visitChildAddresses(function(address_) {
           var childNamespace, label, prefix;
-          childNamespace = params_.cachedAddressStore.referenceStore.openNamespace(address_);
-          prefix = "" + (index++ + 1) + ": ";
-          label = "" + (childNamespace.getResolvedLabel());
-          if (address_.getModel().namespaceType === "extensionPoint") {
-            label += " (" + (Encapsule.code.lib.js.dictionaryLength(childNamespace.data())) + ")";
+          if (address_.getModel().namespaceType !== "extensionPoint") {
+            childNamespace = params_.cachedAddressStore.referenceStore.openNamespace(address_);
+            prefix = "" + (index++ + 1) + ": ";
+            label = "" + (childNamespace.getResolvedLabel()) + "<br>";
           }
-          label += "<br>";
           return _this.childModelViews.push(new ONMjs.observers.helpers.AddressSelectionLinkModelView(prefix, label, address_, params_.cachedAddressStore, void 0, _this.backchannel));
         });
       } catch (exception) {

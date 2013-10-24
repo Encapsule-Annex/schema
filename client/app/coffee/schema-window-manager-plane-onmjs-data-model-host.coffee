@@ -54,7 +54,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 initialEnable: true
                 overflow: "hidden"
                 opacity: 1.0
-                backgroundColor: "rgba(0,255,128,0.5)"
+                backgroundColor: "rgba(0,255,200,0.2)"
                 modes: { full: { reserve: 64 }, min: { reserve: 16 } }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.dataModelHost.observers.path
