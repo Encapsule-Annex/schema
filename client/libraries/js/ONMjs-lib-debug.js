@@ -736,6 +736,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         }
         Object.freeze(this.objectModelPathMap);
         Object.freeze(this.objectModelDescriptorById);
+        this.semanticBindings = Encapsule.code.lib.js.clone(this.objectModelDeclaration.semanticBindings);
       } catch (exception) {
         throw "ONMjs.implementation.ModelDetails failure: " + exception;
       }
@@ -1495,9 +1496,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           if ((functions.fnCreate != null) && functions.fnCreate) {
             data_[memberName] = functions.fnCreate();
           } else {
-            if ((functions.defaultValue != null) && functions.defaultValue) {
-              data_[memberName] = functions.defaultValue;
-            }
+            data_[memberName] = (functions.defaultValue != null) && functions.defaultValue || "";
           }
         }
       }
@@ -1508,9 +1507,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           if ((functions.fnCreate != null) && functions.fnCreate) {
             data_[memberName] = functions.fnCreate();
           } else {
-            if ((functions.defaultValue != null) && functions.defaultValue) {
-              data_[memberName] = functions.defaultValue;
-            }
+            data_[memberName] = (functions.defaultValue != null) && functions.defaultValue || "";
           }
         }
       }
@@ -2736,13 +2733,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.25";
+  Encapsule.code.lib.onm.about.version = "0.0.26";
 
-  Encapsule.code.lib.onm.about.build = "Thu Oct 24 07:24:11 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Thu Oct 24 22:38:30 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1382599451";
+  Encapsule.code.lib.onm.about.epoch = "1382654310";
 
-  Encapsule.code.lib.onm.about.uuid = "7b161a48-3825-4afb-8250-332ab413e735";
+  Encapsule.code.lib.onm.about.uuid = "b8b8a088-adb1-4dc8-841e-7d7d459d4d15";
 
   /*
   ------------------------------------------------------------------------------
@@ -2854,15 +2851,19 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
       userMutable: {
         jsonTag: {
           ____type: "JSON tag string",
-          fnCreate: function() {
-            return "";
-          }
+          defaultValue: ""
         },
         value: {
           ____type: "string",
-          fnCreate: function() {
-            return "";
-          }
+          defaultValue: ""
+        },
+        ____type: {
+          ____type: "string",
+          defaultValue: ""
+        },
+        ____description: {
+          ____type: "string",
+          defaultValue: ""
         }
       }
     },
@@ -2891,6 +2892,37 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
     ]
   };
 
+  ONMjs.dataModels.implementation.selfDeclaration.semanticBindings = {
+    namespaceType: "child",
+    jsonTag: "semanticBindings",
+    ____label: "Semantic Bindings",
+    ____description: " Semantic binding options for this data model.",
+    namespaceProperties: {
+      userMutable: {
+        componentKeyGenerator: {
+          defaultValue: "internal",
+          ____type: "enum",
+          ____values: ["disabled", "internal", "external"]
+        },
+        componentKeyType: {
+          defaultValue: "locallyUnique",
+          ____type: "enum",
+          ____values: ["locallyUnique", "globallyUnique"]
+        },
+        namespaceVersioning: {
+          defaultValue: "disabled",
+          ____type: "enum",
+          ____values: ["disabled", "internal", "external"]
+        },
+        namespaceVersioningMode: {
+          defaultValue: "disabled",
+          ____type: "enum",
+          ____values: ["disabled", "simple", "advanced"]
+        }
+      }
+    }
+  };
+
   ONMjs.dataModels.selfDeclaration = {
     namespaceType: "root",
     jsonTag: "littleDragon",
@@ -2912,9 +2944,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             userImmutable: {
               revision: {
                 ____type: "integer",
-                fnCreate: function() {
-                  return 0;
-                }
+                defaultValue: 0
               },
               uuid: {
                 ____type: "uuid",
@@ -2930,34 +2960,26 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
               },
               namespaceType: {
                 ____type: "namespaceTypeEnum",
-                fnCreate: function() {
-                  return "root";
-                }
+                defaultValue: "root"
               }
             },
             userMutable: {
               jsonTag: {
                 ____type: "JSON tag string",
-                fnCreate: function() {
-                  return "";
-                }
+                defaultValue: ""
               },
               ____label: {
                 ____type: "String",
-                fnCreate: function() {
-                  return "";
-                }
+                defaultValue: ""
               },
               ____description: {
                 ____type: "String",
-                fnCreate: function() {
-                  return "";
-                }
+                defaultValue: ""
               }
             }
           },
           subNamespaces: [
-            ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties, ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties, {
+            ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties, ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties, ONMjs.dataModels.implementation.selfDeclaration.semanticBindings, {
               namespaceType: "extensionPoint",
               jsonTag: "namespaces",
               ____label: "namespaces",
@@ -2972,9 +2994,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
                   userImmutable: {
                     revision: {
                       ____type: "integer",
-                      fnCreate: function() {
-                        return 0;
-                      }
+                      defaultValue: 0
                     },
                     uuid: {
                       ____type: "uuid",
@@ -2992,27 +3012,19 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
                   userMutable: {
                     namespaceType: {
                       ____type: "Must be 'child' or 'extensionPoint' or 'component'",
-                      fnCreate: function() {
-                        return "invalid";
-                      }
+                      defaultValue: "invalid"
                     },
                     jsonTag: {
                       ____type: "JSON tag string",
-                      fnCreate: function() {
-                        return "";
-                      }
+                      defaultValue: ""
                     },
                     ____label: {
                       ____type: "String",
-                      fnCreate: function() {
-                        return "";
-                      }
+                      defaultValue: ""
                     },
                     ____description: {
                       ____type: "String",
-                      fnCreate: function() {
-                        return "";
-                      }
+                      defaultValue: ""
                     }
                   }
                 },

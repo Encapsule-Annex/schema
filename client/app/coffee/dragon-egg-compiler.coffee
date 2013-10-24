@@ -100,9 +100,6 @@ class Encapsule.app.lib.DragonEggCompiler
 
                     if not (inputData.namespaceType == "extensionPoint")
                         # \ BEGIN: if not extension point
-                        outputData.namespaceProperties = {}
-                        outputData.namespaceProperties.userImmutable = {}
-                        outputData.namespaceProperties.userMutable = {}
 
                         immutablePropertiesAddress = address_.createSubpathAddress("properties.userImmutable")
                         immutablePropertiesNamespace = store_.openNamespace(immutablePropertiesAddress)
@@ -110,8 +107,12 @@ class Encapsule.app.lib.DragonEggCompiler
                             immutablePropertyNamespace = store_.openNamespace(immutablePropertyAddress_)
                             immutablePropertyData = immutablePropertyNamespace.data()
                             if immutablePropertyData.jsonTag? and immutablePropertyData.jsonTag
-                                propertyReference = outputData.namespaceProperties.userImmutable[immutablePropertyData.jsonTag] = {}
+                                namespaceProperties = outputData.namespaceProperties? and outputData.namespaceProperties or outputData.namespaceProperties = {}
+                                immutableProperties = namespaceProperties.userImmutable? and namespaceProperties.userImmutable or namespaceProperties.userImmutable = {}
+                                propertyReference = immutableProperties[immutablePropertyData.jsonTag] = {}
                                 propertyReference.defaultValue = immutablePropertyData.value
+                                copyProperty("____type", immutablePropertyData, propertyReference)
+                                copyProperty("____description", immutablePropertyData, propertyReference)
                                 metaPropertiesAddress = immutablePropertyAddress_.createSubpathAddress("metaProperties")
                                 metaPropertiesNamespace = store_.openNamespace(metaPropertiesAddress)
                                 metaPropertiesNamespace.visitExtensionPointSubcomponents( (metaPropertyAddress_) =>
@@ -128,8 +129,12 @@ class Encapsule.app.lib.DragonEggCompiler
                             mutablePropertyNamespace = store_.openNamespace(mutablePropertyAddress_)
                             mutablePropertyData = mutablePropertyNamespace.data()
                             if mutablePropertyData.jsonTag? and mutablePropertyData.jsonTag
-                                propertyReference = outputData.namespaceProperties.userMutable[mutablePropertyData.jsonTag] = {}
+                                namespaceProperties = outputData.namespaceProperties? and outputData.namespaceProperties or outputData.namespaceProperties = {}
+                                mutableProperties = namespaceProperties.userMutable? and namespaceProperties.userMutable or namespaceProperties.userMutable = {}
+                                propertyReference = mutableProperties[mutablePropertyData.jsonTag] = {}
                                 propertyReference.defaultValue = mutablePropertyData.value
+                                copyProperty("____type", mutablePropertyData, propertyReference)
+                                copyProperty("____description", mutablePropertyData, propertyReference)
                                 metaPropertiesAddress = mutablePropertyAddress_.createSubpathAddress("metaProperties")
                                 metaPropertiesNamespace = store_.openNamespace(metaPropertiesAddress)
                                 metaPropertiesNamespace.visitExtensionPointSubcomponents( (metaPropertyAddress_) =>
@@ -141,23 +146,22 @@ class Encapsule.app.lib.DragonEggCompiler
                             )
                         # / END: if not extension point
                             
-                    outputData.subNamespaces = []
-
                     namespacesAddress = address_.createSubpathAddress("namespaces")
                     namespacesNamespace = store_.openNamespace(namespacesAddress)
                     namespacesNamespace.visitExtensionPointSubcomponents( (subnamespaceAddress_) =>
+                        subNamespacesData = outputData.subNamespaces? and outputData.subNamespaces and outputData.subNamespaces.length and outputData.subNamespaces or outputData.subNamespaces = []
                         subnamespaceNamespace = store_.openNamespace(subnamespaceAddress_)
                         subnamespaceData = subnamespaceNamespace.data()
                         switch subnamespaceData.namespaceType
                             when "child"
                                 namespaceDeclaration = {}
                                 compileComponent(store_, subnamespaceAddress_, namespaceDeclaration)
-                                outputData.subNamespaces.push namespaceDeclaration
+                                subNamespacesData.push namespaceDeclaration
                                 break
                             when "extensionPoint"
                                 namespaceDeclaration = {}
                                 compileComponent(store_, subnamespaceAddress_, namespaceDeclaration)
-                                outputData.subNamespaces.push namespaceDeclaration
+                                subNamespacesData.push namespaceDeclaration
                                 break
                             when "component"
                                 namespaceDeclaration = {}
@@ -168,6 +172,8 @@ class Encapsule.app.lib.DragonEggCompiler
                                 break
                         true
                         )
+
+                    copyProperty("semanticBindings", inputData, outputData)
 
                     true
 
