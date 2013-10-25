@@ -480,7 +480,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.implementation.ModelDetails = (function() {
 
     function ModelDetails(model_, objectModelDeclaration_) {
-      var buildOMDescriptorFromLayout,
+      var buildOMDescriptorFromLayout, declaredBindings,
         _this = this;
       try {
         this.model = ((model_ != null) && model_) || (function() {
@@ -736,7 +736,46 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         }
         Object.freeze(this.objectModelPathMap);
         Object.freeze(this.objectModelDescriptorById);
-        this.semanticBindings = Encapsule.code.lib.js.clone(this.objectModelDeclaration.semanticBindings);
+        this.semanticBindings = {};
+        this.componentKeyGenerator = "external";
+        this.namespaceUpdateRevision = "disabled";
+        if ((this.objectModelDeclaration.semanticBindings != null) && this.objectModelDeclaration.semanticBindings) {
+          declaredBindings = this.objectModelDeclaration.semanticBindings;
+          if ((declaredBindings.componentKeyGenerator != null) && declaredBindings.componentKeyGenerator) {
+            this.componentKeyGenerator = declaredBindings.componentKeyGenerator;
+          }
+          if ((declaredBindings.namespaceUpdateRevision != null) && declaredBindings.namespaceUpdateRevision) {
+            this.namespaceUpdateRevision = declaredBindings.namespaceUpdateRevision;
+          }
+        }
+        switch (this.componentKeyGenerator) {
+          case "disabled":
+            break;
+          case "internalLuid":
+            this.semanticBindings.getUniqueKey = function(data_) {
+              return data_.key;
+            };
+            this.semanticBindings.setUniqueKey = function(data_) {
+              var counter;
+              counter = (ONMjs.implementation.LUID != null) && ONMjs.implementation.LUID || (ONMjs.implementation.LUID = 1);
+              return counter++;
+            };
+            break;
+          case "internalUuid":
+            this.semanticBindings.getUniqueKey = function(data_) {
+              return data_.key;
+            };
+            this.semanticBindings.setUniqueKey = function(data_) {
+              return data_.key = uuid.v4();
+            };
+            break;
+          case "external":
+            this.semanticBindings.getUniqueKey = (this.objectModelDeclaration.semanticBindings != null) && this.objectModelDeclaration.semanticBindings && (this.objectModelDeclaration.semanticBindings.getUniqueKey != null) && this.objectModelDeclaration.semanticBindings.getUniqueKey || void 0;
+            this.semanticBindings.setUniqueKey = (this.objectModelDeclaration.semanticBindings != null) && this.objectModelDeclaration.semanticBindings && (this.objectModelDeclaration.semanticBindings.setUniqueKey != null) && this.objectModelDeclaration.semanticBindings.setUniqueKey || void 0;
+            break;
+          default:
+            throw "Unrecognized componentKeyGenerator='" + this.componentKeyGenerator + "'";
+        }
       } catch (exception) {
         throw "ONMjs.implementation.ModelDetails failure: " + exception;
       }
@@ -771,7 +810,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         };
         this.getSemanticBindings = function() {
           try {
-            return _this.implementation.objectModelDeclaration.semanticBindings;
+            return _this.implementation.semanticBindings;
           } catch (exception) {
             throw "ONMjs.Model.getSemanticBindings failure: " + exception;
           }
@@ -2733,13 +2772,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.26";
+  Encapsule.code.lib.onm.about.version = "0.0.27";
 
-  Encapsule.code.lib.onm.about.build = "Thu Oct 24 22:38:30 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Fri Oct 25 22:48:58 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1382654310";
+  Encapsule.code.lib.onm.about.epoch = "1382741338";
 
-  Encapsule.code.lib.onm.about.uuid = "b8b8a088-adb1-4dc8-841e-7d7d459d4d15";
+  Encapsule.code.lib.onm.about.uuid = "34a3db69-1cd8-430e-8ce8-61a36ff47297";
 
   /*
   ------------------------------------------------------------------------------
@@ -2900,24 +2939,14 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
     namespaceProperties: {
       userMutable: {
         componentKeyGenerator: {
-          defaultValue: "internal",
+          defaultValue: "internalLuid",
           ____type: "enum",
-          ____values: ["disabled", "internal", "external"]
-        },
-        componentKeyType: {
-          defaultValue: "locallyUnique",
-          ____type: "enum",
-          ____values: ["locallyUnique", "globallyUnique"]
+          ____values: ["disabled", "internalLuid", "internalUuid", "external"]
         },
         namespaceVersioning: {
           defaultValue: "disabled",
           ____type: "enum",
-          ____values: ["disabled", "internal", "external"]
-        },
-        namespaceVersioningMode: {
-          defaultValue: "disabled",
-          ____type: "enum",
-          ____values: ["disabled", "simple", "advanced"]
+          ____values: ["disabled", "internalSimple", "internalAdvanced", "external"]
         }
       }
     }
@@ -3326,6 +3355,115 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
     return GenericTest;
 
   })();
+
+  /*
+  ------------------------------------------------------------------------------
+  
+  The MIT License (MIT)
+  
+  Copyright (c) 2013 Encapsule Project
+    
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  
+  **** Encapsule Project :: Build better software with circuit models ****
+  
+  OPEN SOURCES: http://github.com/Encapsule HOMEPAGE: http://Encapsule.org
+  BLOG: http://blog.encapsule.org TWITTER: https://twitter.com/Encapsule
+  
+  ------------------------------------------------------------------------------
+  
+  
+  
+  ------------------------------------------------------------------------------
+  */
+
+
+  namespaceEncapsule = (typeof Encapsule !== "undefined" && Encapsule !== null) && Encapsule || (this.Encapsule = {});
+
+  Encapsule.code = (Encapsule.code != null) && Encapsule.code || (this.Encapsule.code = {});
+
+  Encapsule.code.lib = (Encapsule.code.lib != null) && Encapsule.code.lib || (this.Encapsule.code.lib = {});
+
+  Encapsule.code.lib.onm = (Encapsule.code.lib.onm != null) && Encapsule.code.lib.onm || (this.Encapsule.code.lib.onm = {});
+
+  ONMjs = Encapsule.code.lib.onm;
+
+  ONMjs.observers = (ONMjs.observers != null) && ONMjs.observers || (ONMjs.observers = {});
+
+  ONMjs.observers.BackchannelView = (function() {
+
+    function BackchannelView(backchannel_) {
+      var _this = this;
+      try {
+        this.backchannel = (backchannel_ != null) && backchannel_ || (function() {
+          throw "Missing backchannel parameter.";
+        })();
+        this.logHandlerOriginal = void 0;
+        this.errorHandlerOriginal = void 0;
+        this.viewEl = void 0;
+        this.setViewSelector = function(selectorString_) {
+          try {
+            if (!((selectorString_ != null) && selectorString_)) {
+              _this.viewEl = void 0;
+              _this.backchannel.logHandler = _this.logHandlerOriginal;
+              _this.backchannel.errorHandler = _this.errorHandlerOriginal;
+              return;
+            }
+            _this.viewEl = $(selectorString_);
+            if (!((_this.viewEl != null) && _this.viewEl)) {
+              throw "Cannot resolve selector string '" + selectorString + "'";
+            }
+            _this.logHandlerOriginal = backchannel_.logHandler;
+            _this.errorHandlerOriginal = backchannel_.errorHandler;
+            _this.backchannel.logHandler = function(message_) {
+              var message;
+              message = $("<div style=\"background-color: rgba(255,255,255,0.1); margin-bottom: 1px; white-space: nowrap;\" >" + message_ + "</div>");
+              return _this.viewEl.append(message);
+            };
+            _this.backchannel.errorHandler = function(message_) {
+              var message;
+              message = $("<div style=\"background-color: rgba(255,255,0,0.5); margin-bottom: 1px; white-space: nowrap;\" ><h1>error</h1></div>");
+              _this.viewEl.append(message);
+              message = $("<div style=\"background-color: rgba(255,255,0,0.3); margin-bottom: 1px; white-space: nowrap;\" >" + message_ + "</div>");
+              return _this.viewEl.append(message);
+            };
+            return _this.backchannel.clearLog = function() {
+              return _this.viewEl.html("");
+            };
+          } catch (exception) {
+            throw "ONMjs.observers.BackchannelView failure: " + exception;
+          }
+        };
+        this;
+
+      } catch (exception) {
+        throw "ONMjs.observers.BackchannelModelView failure: " + exception;
+      }
+    }
+
+    return BackchannelView;
+
+  })();
+
+  Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_BackchannelViewModel", (function() {
+    return "<div id=\"idBackchannelLogMessages\" style: position: relative; top: 0px;\" >setViewSelector has not yet been called</div>";
+  }));
 
   /*
   ------------------------------------------------------------------------------

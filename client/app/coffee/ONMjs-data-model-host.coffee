@@ -62,6 +62,7 @@ class Encapsule.app.lib.ONMjsDataModelHost
                 console? and console and console.error? and console.error and console.error("ONMjsDataModelHost:: #{message_}") or false
 
             @backchannel = new Encapsule.code.lib.base.BackChannel(bcLog, bcError)
+            @backchannelModelView = new ONMjs.observers.BackchannelView(@backchannel)
 
             @observers =
                 path:      new ONMjs.observers.SelectedPathModelView(@backchannel)
@@ -77,7 +78,6 @@ class Encapsule.app.lib.ONMjsDataModelHost
 
             @attachObservers = =>
                 try
-                    @backchannel.log("Attaching observer...")
                     if @observerId1? and @observerId1
                         throw "Observers are already attached."
                     @observerId1 = @store.registerObserver(@addressStore.objectStoreCallbacks, @addressStore)
@@ -87,7 +87,6 @@ class Encapsule.app.lib.ONMjsDataModelHost
                     @observers.navigator.setCachedAddressSink(@addressStore)
                     @observers.namespace.attachToCachedAddress(@addressStore)
                     @observers.json.attachToCachedAddress(@addressStore)
-                    @backchannel.log("... observers are now attached.")
                     true
                 catch exception
                     throw "Encapsule.app.lib.ONMjsDataModelHost.attachObservers failure: #{exception}"
@@ -95,9 +94,7 @@ class Encapsule.app.lib.ONMjsDataModelHost
 
             @detachObservers = =>
                 try
-                    @backchannel.log("Detaching observers...")
                     if not (@observerId1? and @observerId1)
-                        @backchannel.log("... observers are not currently attached. Ignoring superfluous request.")
                         return false
 
                     errors = 0
@@ -138,7 +135,6 @@ class Encapsule.app.lib.ONMjsDataModelHost
                         @backchannel.error(exception)
 
                     @observerId1 = @observerId2 = undefined
-                    @backchannel.log("... observers are now detached. Errors=#{errors}")
                     if errors
                         throw "#{errors} occurred during detach observers attempt."
                     true
@@ -154,12 +150,22 @@ class Encapsule.app.lib.ONMjsDataModelHost
                         @store = undefined
                         @addressStore = undefined
                         @status = "offline"
+                        @backchannel.clearLog()
+                        @backchannel.log("<h1>offline - no selection</h1>")
                         return true
+                    @backchannel.clearLog()
+                    @backchannel.log("<h1>ONMjs boot</h1>")
+                    @backchannel.log("ONMjs data model declaration object has been updated.")
+                    @backchannel.log("... creating ONMjs.Model class instance...")
                     @model = new ONMjs.Model(dataModelDeclaration_)
+                    @backchannel.log("... creating ONMjs.Store class instance...")
                     @store = new ONMjs.Store(@model)
+                    @backchannel.log("... creating ONMjs.AddressStore class instance...")
                     @addressStore = new ONMjs.AddressStore(@store, @model.createRootAddress())
+                    @backchannel.log("... attaching generic observers to new runtime data...")
                     @attachObservers()
-                    @backchannel.log("ONMjs data model host has been re-initialized with a new model declaration!")
+                    @backchannel.log("<h1>ONMjs online</h1>")
+                    @backchannel.log("data model '#{dataModelDeclaration_.jsonTag}' is online.")
 
                 catch exception
                     @backchannel.error("ONMjsDataModelHost failure: #{exception}")

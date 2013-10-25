@@ -44,6 +44,26 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
     splitterStack: [
 
         {
+            id: "5e33fd24-b2c8-43f4-9d49-3d31fce640ec"
+            type: "vertical"
+            Q1WindowDescriptor: {
+                id: "idONMjsDMHBackchannelHost"
+                name: "delete this"
+                initialMode: "min"
+                initialEnable: true
+                opacity: 1.0
+                overflow: "auto"
+                backgroundColor: "rgba(0,255,0,0.5)"
+                modes: { full: { reserve: 480 }, min: { reserve: 128 } }
+                MVVM: {
+                    fnModelView: -> ONMjsRuntime.dataModelHost.backchannelModelView
+                    viewModelTemplateId: "idKoTemplate_BackchannelViewModel"
+                }
+            }
+        }
+
+
+        {
             id: "idONMjsDMHSplit1"
             name: "Split 1"
             type: "horizontal"

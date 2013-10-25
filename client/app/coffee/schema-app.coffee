@@ -205,6 +205,8 @@ class Encapsule.code.app.Schema
             #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneD3")
             #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootLayoutDebugPlane")
 
+            dataModelHost.backchannelModelView.setViewSelector("#idBackchannelLogMessages")
+
             backchannel.log "Initializing local URI routing:"
             Encapsule.runtime.app.SchemaRouter = new Encapsule.code.app.SchemaRouter()
             Encapsule.runtime.boot.phase0.router.setApplicationRouteCallback(Encapsule.runtime.app.SchemaRouter.routeChangedCallback)
