@@ -151,7 +151,7 @@ class Encapsule.app.lib.ONMjsDataModelHost
                         @addressStore = undefined
                         @status = "offline"
                         @backchannel.clearLog()
-                        @backchannel.log("<h1>offline - no selection</h1>")
+                        @backchannel.log("<h1>offline</h1>")
                         return true
                     @backchannel.clearLog()
                     @backchannel.log("<h1>ONMjs boot</h1>")

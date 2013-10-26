@@ -43,6 +43,29 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
     initialEnable: false
     splitterStack: [
 
+
+        Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom
+
+        {
+            id: "idONMjsDMHSplit3A"
+            type: "vertical"
+            Q2WindowDescriptor: undefined
+            Q1WindowDescriptor: {                                            
+                id: "idONMjsDMHCompiledJSONWindow"
+                name: "Is this really necessary?"
+                initialMode: "min"
+                initialEnable: true
+                opacity: 1.0
+                overflow: "auto"
+                backgroundColor: "rgba(0,255,0,0.5)"
+                modes: {full: { reserve: 500 }, min: { reserve: 250} }
+                MVVM: {
+                    fnModelView: -> ONMjsRuntime.observers.onmjs.dragonEggCompiler
+                    viewModelTemplateId: "idKoTemplate_DragonEggCompilerView"
+                }
+            }
+        }   
+
         {
             id: "5e33fd24-b2c8-43f4-9d49-3d31fce640ec"
             type: "vertical"
@@ -54,7 +77,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 opacity: 1.0
                 overflow: "auto"
                 backgroundColor: "rgba(0,255,0,0.5)"
-                modes: { full: { reserve: 480 }, min: { reserve: 128 } }
+                modes: { full: { reserve: 480 }, min: { reserve: 250 } }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.dataModelHost.backchannelModelView
                     viewModelTemplateId: "idKoTemplate_BackchannelViewModel"
@@ -84,7 +107,6 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
             Q2WindowDescriptor: undefined
         }
 
-        Encapsule.code.app.winmgr.layout.PlaneSelectSplitterHorizontalBottom
 
         {                                                                    
             id: "idONMjsDMHSplit2"
@@ -108,27 +130,6 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
             }                                                            
             Q2WindowDescriptor: undefined                                    
         }
-
-        {
-            id: "idONMjsDMHSplit3A"
-            name: "Spit 3"
-            type: "vertical"
-            Q1WindowDescriptor: undefined
-            Q2WindowDescriptor: {                                            
-                id: "idONMjsDMHCompiledJSONWindow"
-                name: "Is this really necessary?"
-                initialMode: "min"
-                initialEnable: true
-                opacity: 1.0
-                overflow: "auto"
-                backgroundColor: "rgba(0,255,0,0.5)"
-                modes: {full: { reserve: 500 }, min: { reserve: 250} }
-                MVVM: {
-                    fnModelView: -> ONMjsRuntime.observers.onmjs.dragonEggCompiler
-                    viewModelTemplateId: "idKoTemplate_DragonEggCompilerView"
-                }
-            }
-        }   
 
 
         {

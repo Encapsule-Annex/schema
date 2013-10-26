@@ -47,6 +47,9 @@ Encapsule.code.app.ONMjs.SchemaAppData = {
                 namespaceDescriptor_.label
             return label
 
+        setUniqueKey: (dataReference_) ->
+            dataReference_.uuid = uuid.v4()
+
         getUniqueKey: (dataReference_) ->
             key = dataReference_["uuid"]? and dataReference_["uuid"] or undefined
             return key

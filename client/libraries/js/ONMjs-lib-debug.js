@@ -756,9 +756,9 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
               return data_.key;
             };
             this.semanticBindings.setUniqueKey = function(data_) {
-              var counter;
-              counter = (ONMjs.implementation.LUID != null) && ONMjs.implementation.LUID || (ONMjs.implementation.LUID = 1);
-              return counter++;
+              data_.key = (ONMjs.implementation.LUID != null) && ONMjs.implementation.LUID || (ONMjs.implementation.LUID = 1);
+              ONMjs.implementation.LUID++;
+              return data_.key;
             };
             break;
           case "internalUuid":
@@ -1670,8 +1670,12 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           newData = {};
           ONMjs.implementation.binding.InitializeNamespaceProperties(newData, descriptor_.namespaceModelPropertiesDeclaration);
           if (descriptor_.namespaceType === "component") {
+            if (!((resolveActions_.setUniqueKey != null) && resolveActions_.setUniqueKey)) {
+              throw "You must define semanticBindings.setUniqueKey function in your data model declaration.";
+            }
+            resolveActions_.setUniqueKey(newData);
             if (!((resolveActions_.getUniqueKey != null) && resolveActions_.getUniqueKey)) {
-              throw "In order to create new components at runtime you must define the semanticBindings.getUniqueKey function in your data model declaration object.";
+              throw "You must define semanticBindings.getUniqueKey function in your data model declaration.";
             }
             resolveResults.key = resolveResults.jsonTag = resolveActions_.getUniqueKey(newData);
             if (!((resolveResults.key != null) && resolveResults.key)) {
@@ -1699,7 +1703,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.implementation.AddressTokenBinder = (function() {
 
     function AddressTokenBinder(store_, parentDataReference_, token_, mode_) {
-      var descriptor, extensionPointId, generations, getUniqueKeyFunction, model, parentPathIds, pathId, resolveActions, resolveResults, semanticBindings, targetComponentDescriptor, targetNamespaceDescriptor, _i, _len;
+      var descriptor, extensionPointId, generations, getUniqueKeyFunction, model, parentPathIds, pathId, resolveActions, resolveResults, semanticBindings, setUniqueKeyFunction, targetComponentDescriptor, targetNamespaceDescriptor, _i, _len;
       try {
         this.store = (store_ != null) && store_ || (function() {
           throw "Missing object store input parameter.";
@@ -1719,8 +1723,10 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         targetNamespaceDescriptor = token_.namespaceDescriptor;
         targetComponentDescriptor = token_.componentDescriptor;
         semanticBindings = model.getSemanticBindings();
+        setUniqueKeyFunction = (semanticBindings != null) && semanticBindings && (semanticBindings.setUniqueKey != null) && semanticBindings.setUniqueKey || void 0;
         getUniqueKeyFunction = (semanticBindings != null) && semanticBindings && (semanticBindings.getUniqueKey != null) && semanticBindings.getUniqueKey || void 0;
         resolveActions = {
+          setUniqueKey: setUniqueKeyFunction,
           getUniqueKey: getUniqueKeyFunction
         };
         resolveResults = ONMjs.implementation.binding.ResolveNamespaceDescriptor(resolveActions, store_, this.parentDataReference, token_.componentDescriptor, token_.key, mode_);
@@ -2772,13 +2778,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.27";
+  Encapsule.code.lib.onm.about.version = "0.0.28";
 
-  Encapsule.code.lib.onm.about.build = "Fri Oct 25 22:48:58 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Sat Oct 26 01:16:16 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1382741338";
+  Encapsule.code.lib.onm.about.epoch = "1382750176";
 
-  Encapsule.code.lib.onm.about.uuid = "34a3db69-1cd8-430e-8ce8-61a36ff47297";
+  Encapsule.code.lib.onm.about.uuid = "e66c652e-07fc-4137-88e0-db5a10ab0648";
 
   /*
   ------------------------------------------------------------------------------
@@ -2857,15 +2863,11 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         userMutable: {
           jsonTag: {
             ____type: "JSON tag string",
-            fnCreate: function() {
-              return "";
-            }
+            defaultValue: ""
           },
           value: {
             ____type: "string",
-            fnCreate: function() {
-              return "";
-            }
+            defaultValue: ""
           }
         }
       }
@@ -3073,6 +3075,9 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
       }
     ],
     semanticBindings: {
+      setUniqueKey: function(data_) {
+        return data_.uuid = uuid.v4();
+      },
       getUniqueKey: function(data_) {
         return data_.uuid;
       },
@@ -3462,7 +3467,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_BackchannelViewModel", (function() {
-    return "<div id=\"idBackchannelLogMessages\" style: position: relative; top: 0px;\" >setViewSelector has not yet been called</div>";
+    return "<div id=\"idBackchannelLogMessages\" style: position: relative; top: 0px;\" ></div>";
   }));
 
   /*

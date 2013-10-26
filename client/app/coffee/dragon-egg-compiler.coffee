@@ -54,7 +54,7 @@ class Encapsule.app.lib.DragonEggCompiler
             @backchannel = backchannel_? and backchannel_ or throw "Missing required backchannel input parameter."
             # (store_, address_, dataModelDeclaration_) 
             @callback = callback_? and callback_ or throw "Missing required callback input parameter."
-            @title = "Dragon Egg Compiler"
+            @title = "Data Model"
 
             @selectedDragonEggAddress = undefined
 
@@ -293,22 +293,13 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_DragonEg
     <span data-bind="html: saveJSONAsLinkHtml"></span>
     <span class="titleString" data-bind="html: title"></span>
 </div>
-
 <div>
 jsonTag: <span data-bind="text: jsonTag"></span><br>
 label: <span data-bind="text: label"></span><br>
 description: <span data-bind="text: description"></span><br>
 </div>
-
-
-
 <!-- <span class="classONMjsSelectedJsonAddressHash" data-bind="html: selectorHash"></span> -->
-
-
-
-
 <div class="classObjectModelNavigatorJsonBody">
 <pre class="classONMjsSelectedJsonBody" data-bind="html: dataModelDeclarationJSON"></pre>
 </div>
-
 """))
