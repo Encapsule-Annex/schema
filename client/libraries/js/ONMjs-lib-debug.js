@@ -480,7 +480,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.implementation.ModelDetails = (function() {
 
     function ModelDetails(model_, objectModelDeclaration_) {
-      var buildOMDescriptorFromLayout, declaredBindings,
+      var buildOMDescriptorFromLayout,
         _this = this;
       try {
         this.model = ((model_ != null) && model_) || (function() {
@@ -736,20 +736,17 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         }
         Object.freeze(this.objectModelPathMap);
         Object.freeze(this.objectModelDescriptorById);
-        this.semanticBindings = {};
-        this.componentKeyGenerator = "external";
-        this.namespaceUpdateRevision = "disabled";
-        if ((this.objectModelDeclaration.semanticBindings != null) && this.objectModelDeclaration.semanticBindings) {
-          declaredBindings = this.objectModelDeclaration.semanticBindings;
-          if ((declaredBindings.componentKeyGenerator != null) && declaredBindings.componentKeyGenerator) {
-            this.componentKeyGenerator = declaredBindings.componentKeyGenerator;
-          }
-          if ((declaredBindings.namespaceUpdateRevision != null) && declaredBindings.namespaceUpdateRevision) {
-            this.namespaceUpdateRevision = declaredBindings.namespaceUpdateRevision;
-          }
-        }
+        this.semanticBindings = (this.objectModelDeclaration.semanticBindings != null) && this.objectModelDeclaration.semanticBindings || {};
+        this.componentKeyGenerator = (this.semanticBindings.componentKeyGenerator != null) && this.semanticBindings.componentKeyGenerator || "external";
+        this.namespaceUpdateRevision = (this.semanticBindings.namespaceUpdateRevision != null) && this.semanticBindings.namespaceUpdateRevision || "disabled";
         switch (this.componentKeyGenerator) {
           case "disabled":
+            if ((this.semanticBindings.getUniqueKey != null) && this.semanticBindings.getUniqueKey) {
+              delete this.semanticBindings.getUniqueKey;
+            }
+            if ((this.semanticBindings.setUniqueKey != null) && this.semanticBindings.setUniqueKey) {
+              delete this.semanticBindings.setUniqueKey;
+            }
             break;
           case "internalLuid":
             this.semanticBindings.getUniqueKey = function(data_) {
@@ -2778,13 +2775,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.28";
+  Encapsule.code.lib.onm.about.version = "0.0.29";
 
-  Encapsule.code.lib.onm.about.build = "Sat Oct 26 01:16:16 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Mon Oct 28 01:39:45 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1382750176";
+  Encapsule.code.lib.onm.about.epoch = "1382924385";
 
-  Encapsule.code.lib.onm.about.uuid = "e66c652e-07fc-4137-88e0-db5a10ab0648";
+  Encapsule.code.lib.onm.about.uuid = "00d454b5-880c-4d57-8f49-994ab3d9eba9";
 
   /*
   ------------------------------------------------------------------------------
@@ -5047,7 +5044,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceImmutablePropertiesViewModel", (function() {
-    return "<div class=\"classONMjsSelectedNamespaceSectionTitle\">\n    Immutable Properties (<span data-bind=\"text: propertyModelViews.length\"></span>):\n</div>\n<div class=\"classONMjsSelectedNamespaceSectionCommon\">\n    <span data-bind=\"if: propertyModelViews.length\">\n        <div class=\"classONMjsSelectedNamespacePropertiesCommon classONMjsSelectedNamespacePropertiesImmutable\">\n            <span data-bind=\"foreach: propertyModelViews\">\n                <div class=\"name\"><span class=\"immutable\" data-bind=\"text: declaration.property\"></span></div>\n                <div class=\"type\" data-bind=\"text: declaration.members.____type\"></div>\n                <div class=\"value\"><span class=\"immutable\" data-bind=\"text: store.value\"></span></div>\n                <div style=\"clear: both;\" />\n            </span>\n        </div>\n    </span>\n    <span data-bind=\"ifnot: propertyModelViews.length\">\n        <i>This namespace has no immutable properties.</i>\n    </span>\n</div>";
+    return "<div class=\"classONMjsSelectedNamespaceSectionTitle\">\n    Immutable Properties (<span data-bind=\"text: propertyModelViews.length\"></span>):\n</div>\n<div class=\"classONMjsSelectedNamespaceSectionCommon\">\n    <span data-bind=\"if: propertyModelViews.length\">\n        <div class=\"classONMjsSelectedNamespacePropertiesCommon classONMjsSelectedNamespacePropertiesImmutable\">\n            <span data-bind=\"foreach: propertyModelViews\">\n                <div class=\"name\"><span class=\"immutable\" data-bind=\"text: declaration.property\"></span></div>\n                <div class=\"type\" data-bind=\"text: declaration.members.____type\"></div>\n                <div style=\"clear: both;\" />\n                <span data-bind=\"if: declaration.members.____description\">\n                    <div class=\"description\" data-bind=\"text: declaration.members.____description\"></div>\n                </span>\n                <div class=\"value\"><span class=\"immutable\" data-bind=\"text: store.value\"></span></div>\n                <div style=\"clear: both;\" />\n            </span>\n        </div>\n    </span>\n    <span data-bind=\"ifnot: propertyModelViews.length\">\n        <i>This namespace has no immutable properties.</i>\n    </span>\n</div>";
   }));
 
   ONMjs.observers.SelectedNamespaceMutablePropertiesModelView = (function() {
@@ -5149,7 +5146,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceMutablePropertiesViewModel", (function() {
-    return "<div class=\"classONMjsSelectedNamespaceSectionTitle\">\n    Mutable Properties (<span data-bind=\"text: propertyModelViews.length\"></span>):\n</div>\n<div class=\"classONMjsSelectedNamespaceSectionCommon\">\n    <span data-bind=\"if: propertyModelViews.length\">\n        <div class=\"classONMjsSelectedNamespacePropertiesCommon classONMjsSelectedNamespacePropertiesMutable\">\n            <span data-bind=\"foreach: propertyModelViews\">\n                <div class=\"name\" data-bind=\"text: declaration.property\"></div>\n                <div class=\"type\" data-bind=\"text: declaration.members.____type\"></div>\n                <div style=\"clear: both;\" />\n                <div type=\"text\" class=\"value\" contentEditable=\"true\" data-bind=\"editableText: store.valueEdit\"></div>\n            </span>\n            <span data-bind=\"if: propertiesUpdated\">\n                <div class=\"buttons\">\n                    <span data-bind=\"with: discardLinkModelView\"><span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span></span>\n                    <span data-bind=\"with: updateLinkModelView\"><span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span></span>\n                </div>\n            </span>\n        </div>\n    </span>\n    <span data-bind=\"ifnot: propertyModelViews.length\">\n        <i>This namespace has no mutable properties.</i>\n    </span>\n</div>";
+    return "<div class=\"classONMjsSelectedNamespaceSectionTitle\">\n    Mutable Properties (<span data-bind=\"text: propertyModelViews.length\"></span>):\n</div>\n<div class=\"classONMjsSelectedNamespaceSectionCommon\">\n    <span data-bind=\"if: propertyModelViews.length\">\n        <div class=\"classONMjsSelectedNamespacePropertiesCommon classONMjsSelectedNamespacePropertiesMutable\">\n            <span data-bind=\"foreach: propertyModelViews\">\n                <div class=\"name\" data-bind=\"text: declaration.property\"></div>\n                <div class=\"type\" data-bind=\"text: declaration.members.____type\"></div>\n                <div style=\"clear: both;\" />\n                <span data-bind=\"if: declaration.members.____description\">\n                    <div class=\"description\" data-bind=\"text: declaration.members.____description\"></div>\n                </span>\n                <div type=\"text\" class=\"value\" contentEditable=\"true\" data-bind=\"editableText: store.valueEdit\"></div>\n            </span>\n            <span data-bind=\"if: propertiesUpdated\">\n                <div class=\"buttons\">\n                    <span data-bind=\"with: discardLinkModelView\"><span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span></span>\n                    <span data-bind=\"with: updateLinkModelView\"><span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span></span>\n                </div>\n            </span>\n        </div>\n    </span>\n    <span data-bind=\"ifnot: propertyModelViews.length\">\n        <i>This namespace has no mutable properties.</i>\n    </span>\n</div>";
   }));
 
   /*

@@ -361,17 +361,20 @@ background-color: rgba(0,255,0,0.1);
 font-weight: bold;
 float: left;
 width: 172px;
-border-bottom: 1px solid rgba(0,0,0,0.2);
 padding-left: 0.25em;
 }
 
 .classONMjsSelectedNamespacePropertiesImmutable .type {
 color: #006699;
 float: left;
-width: 128px;
 text-align: center;
 background-color: rgba(0,200,255,0.1);
-border-bottom: 1px solid rgba(0,0,0,0.2);
+overflow: hidden;
+}
+
+.classONMjsSelectedNamespacePropertiesImmutable .description
+{
+background-color: rgba(0,200,255,0.1);
 overflow: hidden;
 }
 
@@ -379,6 +382,10 @@ overflow: hidden;
 color: #666666;
 text-shadow: none;
 min-height: 1em;
+width: 100%;
+-moz-border-radius: 4px; border-radius: 4px;
+border: 1px solid rgba(0,0,0,0.05);
+margin-bottom: 0.5em;
 }
 
 .classONMjsSelectedNamespacePropertiesMutable {
@@ -412,6 +419,12 @@ background-color: rgba(0,200,255,0.1);
 overflow: hidden;
 }
 
+.classONMjsSelectedNamespacePropertiesMutable .description
+{
+background-color: rgba(0,200,255,0.1);
+overflow: hidden;
+}
+
 .classONMjsSelectedNamespacePropertiesMutable .value {
 color: white;
 font-weight: bold;
@@ -423,6 +436,7 @@ border-bottom: 1px solid rgba(0,0,0,0.2);
 margin-bottom: 0.5em;
 -moz-border-radius: 4px; border-radius: 4px;
 min-height: 1em;
+margin-bottom: 0.5em;
 }
 
 /* ----------------------------------------------------------------------------
