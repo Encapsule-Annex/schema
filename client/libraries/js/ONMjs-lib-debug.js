@@ -2777,11 +2777,11 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about.version = "0.0.30";
 
-  Encapsule.code.lib.onm.about.build = "Tue Oct 29 01:05:07 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Tue Oct 29 02:25:46 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1383008707";
+  Encapsule.code.lib.onm.about.epoch = "1383013546";
 
-  Encapsule.code.lib.onm.about.uuid = "6b689aae-77e2-4ee8-a4b9-ec4e45224693";
+  Encapsule.code.lib.onm.about.uuid = "ff4c137c-40d8-464d-a1e7-53826bd50be8";
 
   /*
   ------------------------------------------------------------------------------
@@ -3468,7 +3468,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
               var message;
               message = $("<div style=\"background-color: rgba(255,255,0,0.5); margin-bottom: 1px; white-space: nowrap;\" ><h1>error</h1></div>");
               _this.viewEl.append(message);
-              message = $("<div style=\"background-color: rgba(255,255,0,0.3); margin-bottom: 1px; white-space: nowrap;\" >" + message_ + "</div>");
+              message = $("<div style=\"background-color: rgba(255,255,0,0.3); margin-bottom: 1px; \" >" + message_ + "</div>");
               return _this.viewEl.append(message);
             };
             return _this.backchannel.clearLog = function() {
@@ -3490,7 +3490,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_BackchannelViewModel", (function() {
-    return "<div id=\"idBackchannelLogMessages\" style: position: relative; top: 0px;\" ></div>";
+    return "<div class=\"classONMjsSelectedJson\">\n    <span class=\"titleString\">Data Model Host</span>\n</div>\n<div id=\"idBackchannelLogMessages\" style: position: relative; top: 0px;\" ></div>";
   }));
 
   /*
@@ -3767,7 +3767,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_NavigatorViewModel", (function() {
-    return "<span data-bind=\"if: rootMenuModelView\">\n    <div class=\"classONMjsNavigator\">\n        <span data-bind=\"template: { name: 'idKoTemplate_NavigatorItemViewModel', foreach: rootMenuModelView().children }\"></span>\n    </div>\n</span>";
+    return "<span data-bind=\"if: rootMenuModelView()\">\n    <div class=\"classONMjsNavigator\">\n        <span data-bind=\"template: { name: 'idKoTemplate_NavigatorItemViewModel', foreach: rootMenuModelView().children }\"></span>\n    </div>\n</span>\n<span data-bind=\"ifnot: rootMenuModelView()\">\nOffline.\n</span>";
   }));
 
   /*
@@ -3948,6 +3948,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         this.title = ko.observable("<not connected>");
         this.selectorHash = ko.observable("<not connected>");
         this.jsonString = ko.observable("<not connected>");
+        this.observerAttached = ko.observable(false);
         this.cachedAddressStore = void 0;
         this.cachedAddressObserverId = void 0;
         this.saveJSONAsLinkHtml = ko.computed(function() {
@@ -3964,6 +3965,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             }
             _this.cachedAddressStore = cachedAddress_;
             _this.cachedAddressObserverId = cachedAddress_.registerObserver(_this.cachedAddressCallbackInterface, _this);
+            _this.observerAttached(true);
             return true;
           } catch (exception) {
             throw "ONMjs.observers.SelectedJsonModelView.attachToCachedAddress failure: " + exception + ".";
@@ -3977,6 +3979,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             _this.cachedAddressStore.unregisterObserver(_this.cachedAddressObserverId);
             _this.cachedAddressStore = void 0;
             _this.cachedAddressObserverId = void 0;
+            _this.observerAttached(false);
             return true;
           } catch (exception) {
             throw "ONMjs.observers.SelectedJsonModelView.detachFromCachedAddress failure: " + exception + ".";
@@ -4020,7 +4023,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_ObjectModelNavigatorJsonModelView", (function() {
-    return "<div class=\"classONMjsSelectedJson\">\n    <span data-bind=\"html: saveJSONAsLinkHtml\"></span>\n    <span class=\"titleString\" data-bind=\"html: title\"></span>\n</div>\naddress hash:<br>\n<span class=\"classONMjsSelectedJsonAddressHash\" data-bind=\"html: selectorHash\"></span>\n<div class=\"classObjectModelNavigatorJsonBody\">\n    <pre class=\"classONMjsSelectedJsonBody\" data-bind=\"html: jsonString\"></pre>\n</div>";
+    return "<span data-bind=\"if: observerAttached()\">\n<div class=\"classONMjsSelectedJson\">\n    <span data-bind=\"html: saveJSONAsLinkHtml\"></span>\n    <span class=\"titleString\" data-bind=\"html: title\"></span>\n</div>\naddress hash:<br>\n<span class=\"classONMjsSelectedJsonAddressHash\" data-bind=\"html: selectorHash\"></span>\n<div class=\"classObjectModelNavigatorJsonBody\">\n    <pre class=\"classONMjsSelectedJsonBody\" data-bind=\"html: jsonString\"></pre>\n</div>\n</span>\n<span data-bind=\"ifnot: observerAttached()\">\nOffline.\n</span>";
   }));
 
   /*
@@ -4233,7 +4236,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedPathViewModel", (function() {
-    return "<div class=\"classONMjsSelectedPath\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedPathElementViewModel', foreach: pathElements }\"></span></div>\n<div style=\"margin-top: 8px; font-family: Courier;\"><span data-bind=\"text: addressHumanString\"></span></div>\n<div style=\"font-family: Courier;\"><span data-bind=\"text: addressHashString\"></span></div>";
+    return "<span data-bind=\"if: pathElements().length\">\n<div class=\"classONMjsSelectedPath\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedPathElementViewModel', foreach: pathElements }\"></span></div>\n<div style=\"margin-top: 8px; font-family: Courier;\"><span data-bind=\"text: addressHumanString\"></span></div>\n<div style=\"font-family: Courier;\"><span data-bind=\"text: addressHashString\"></span></div>\n</span>\n<span data-bind=\"ifnot: pathElements().length\">\nOffline.\n</span>";
   }));
 
   /*
@@ -4296,6 +4299,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         })();
         this.objectStoreName = ko.observable("<not connected>");
         this.title = ko.observable("<not connected>");
+        this.observerAttached = ko.observable(false);
         this.modelviewActions = ko.observable(void 0);
         this.modelviewTitle = ko.observable(void 0);
         this.modelviewImmutable = ko.observable(void 0);
@@ -4315,6 +4319,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             }
             _this.cachedAddressStore = cachedAddress_;
             _this.cachedAddressStoreObserverId = cachedAddress_.registerObserver(_this.cachedAddressObserverInterface, _this);
+            _this.observerAttached(true);
             return true;
           } catch (exception) {
             throw "ONMjs.observers.SelectedNamespaceModelView.attachToCachedAddress failure: " + exception;
@@ -4328,6 +4333,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             _this.cachedAddressStore.unregisterObserver(_this.cachedAddressStoreObserverId);
             _this.cachedAddressStore = void 0;
             _this.cachedAddressStoreObserverId = void 0;
+            _this.observerAttached(false);
             return true;
           } catch (exception) {
             throw "ONMjs.observers.SelectedNamespaceModelView.detachFromCachedAddress failure: " + exception;
@@ -4411,7 +4417,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceViewModel", (function() {
-    return "<span data-bind=\"if: modelviewTitle\"><span data-bind=\"with: modelviewTitle\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceTitleViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewActions\"><span data-bind=\"with: modelviewActions\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceActionsViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewImmutable\"><span data-bind=\"with: modelviewImmutable\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceImmutablePropertiesViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewMutable\"><span data-bind=\"with: modelviewMutable\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceMutablePropertiesViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewCollection\"><span data-bind=\"with: modelviewCollection\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceCollectionViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewComponent\"><span data-bind=\"with: modelviewComponent\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceComponentViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewChildren\"><span data-bind=\"with: modelviewChildren\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceChildrenViewModel'}\"></span></span></span>";
+    return "<span data-bind=\"if: observerAttached()\">\n<span data-bind=\"if: modelviewTitle\"><span data-bind=\"with: modelviewTitle\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceTitleViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewActions\"><span data-bind=\"with: modelviewActions\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceActionsViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewImmutable\"><span data-bind=\"with: modelviewImmutable\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceImmutablePropertiesViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewMutable\"><span data-bind=\"with: modelviewMutable\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceMutablePropertiesViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewCollection\"><span data-bind=\"with: modelviewCollection\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceCollectionViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewComponent\"><span data-bind=\"with: modelviewComponent\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceComponentViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewChildren\"><span data-bind=\"with: modelviewChildren\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceChildrenViewModel'}\"></span></span></span>\n</span>\n<span data-bind=\"ifnot: observerAttached()\">\nOffline.\n</span>";
   }));
 
   /*
@@ -4657,8 +4663,8 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             childNamespace = params_.cachedAddressStore.referenceStore.openNamespace(address_);
             prefix = "" + (index++ + 1) + ": ";
             label = "" + (childNamespace.getResolvedLabel()) + "<br>";
+            return _this.childModelViews.push(new ONMjs.observers.helpers.AddressSelectionLinkModelView(prefix, label, address_, params_.cachedAddressStore, void 0, _this.backchannel));
           }
-          return _this.childModelViews.push(new ONMjs.observers.helpers.AddressSelectionLinkModelView(prefix, label, address_, params_.cachedAddressStore, void 0, _this.backchannel));
         });
       } catch (exception) {
         throw "ONMjs.observers.SelectedNamespaceChildrenModelView failure: " + exception;
@@ -4754,7 +4760,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceCollectionViewModel", (function() {
-    return "<div class=\"classONMjsSelectedNamespaceSectionTitle\">\n<span class=\"class=\"classONMjsAddressSelectionLinkLabelNoLink\" data-bind=\"html: namespaceLabel\"></span>\nSubcomponents (<span data-bind=\"text: subcomponentModelViews.length\"></span>):\n</div>\n<div class=\"classONMjsSelectedNamespaceSectionCommon classONMjsSelectedNamespaceCollection\">\n<span data-bind=\"ifnot: subcomponentModelViews.length\">\n<i><span class=\"classONMjsAddressSelectionLinkLabelNoLink\" data-bind=\"html: namespaceLabel\"></span> extension point is empty.</i>\n</span>\n<span data-bind=\"if: subcomponentModelViews.length\">\n<span class=\"link\" data-bind=\"template: { name: 'idKoTemplate_AddressSelectionLinkViewModel', foreach: subcomponentModelViews }\"></span>\n</span>\n</div>";
+    return "<span data-bind=\"if: subcomponentModelViews.length\">\n<div class=\"classONMjsSelectedNamespaceSectionTitle\">\n<span class=\"class=\"classONMjsAddressSelectionLinkLabelNoLink\" data-bind=\"html: namespaceLabel\"></span>\nSubcomponents (<span data-bind=\"text: subcomponentModelViews.length\"></span>):\n</div>\n<div class=\"classONMjsSelectedNamespaceSectionCommon classONMjsSelectedNamespaceCollection\">\n<span data-bind=\"ifnot: subcomponentModelViews.length\">\n<i><span class=\"classONMjsAddressSelectionLinkLabelNoLink\" data-bind=\"html: namespaceLabel\"></span> extension point is empty.</i>\n</span>\n<span data-bind=\"if: subcomponentModelViews.length\">\n<span class=\"link\" data-bind=\"template: { name: 'idKoTemplate_AddressSelectionLinkViewModel', foreach: subcomponentModelViews }\"></span>\n</span>\n</div>\n</span>";
   }));
 
   /*

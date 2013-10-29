@@ -47,6 +47,7 @@ ONMjs.about.version: #{Encapsule.code.lib.onm.about.version}<br>
 OMNjs.about.uuid: #{Encapsule.code.lib.onm.about.uuid}<br>
 ONMjs.about.build: #{Encapsule.code.lib.onm.about.build}<br>
 ONMjs.about.epoch: #{Encapsule.code.lib.onm.about.epoch}<br>
+ONMjs Library: <strong><a href="https://github.com/Encapsule/ONMjs" target="_blank">Encapsule/ONMjs Repository on GitHub</a></strong><br>
 <h2>App Build Info</h2>
 <p>
 Application Package Publisher: <strong><a href="#{appPackagePublisherUrl}" target="_blank"><span data-bind="text: appPackagePublisher"></span></a></strong><br>
@@ -62,7 +63,7 @@ Application License: <strong><a href="#{appLicenseUrl}" target="_blank"><span da
 Application ID: <strong><span data-bind="text: appId"></span></strong><br>
 Application Release ID: <strong><span data-bind="text: appReleaseId"></span></strong><br>
 Application Build ID: <strong><span data-bind="text: appBuildId"></span></strong><br>
-Application Source Code: <strong><a href="#{appGitHubRepoUrl}" target="_blank"><span data-bind="text: appGitHubRepoName"></span></a> (GitHub repo)</strong><br>
+Application Source Code: <strong><a href="#{appGitHubRepoUrl}" target="_blank"><span data-bind="text: appGitHubRepoName"></span></a></strong><br>
 </p>
 <h2>App Files</h2>
 <p>Use the following links to explore the deployed implementation of #{appName} v#{appVersion}:</p>

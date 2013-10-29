@@ -61,6 +61,7 @@ class Encapsule.app.lib.DragonEggCompiler
             @jsonTag = ko.observable "<no selection>"
             @label = ko.observable ""
             @description = ko.observable ""
+            @dataModelCompiled = ko.observable false
 
             @dataModelDeclarationObject = undefined
 
@@ -232,6 +233,7 @@ class Encapsule.app.lib.DragonEggCompiler
                             @description("")
                             @dataModelDeclarationJSON("<no selection>")
                             @selectedDragonEggAddress = undefined
+                            @dataModelCompiled(false)
                             if @callback? and @callback
                                 @callback(undefined, undefined, undefined)
     
@@ -257,6 +259,8 @@ class Encapsule.app.lib.DragonEggCompiler
                             # ignore - this is not the drone we're looking for
                             return true
 
+                        @dataModelCompiled(false)
+
                         namespace = store_.openNamespace(address_)
                         data = namespace.data()
 
@@ -265,6 +269,8 @@ class Encapsule.app.lib.DragonEggCompiler
 
                         compile(store_, address_)
                         @backchannel.log("Data model recompiled. Egg@#{address_.getHumanReadableString()}. Notifying app...")
+
+                        @dataModelCompiled(true)
 
                         if @callback? and @callback
                             @callback(store_, address_, @dataModelDeclarationObject)
@@ -293,13 +299,12 @@ Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_DragonEg
     <span data-bind="html: saveJSONAsLinkHtml"></span>
     <span class="titleString" data-bind="html: title"></span>
 </div>
-<div>
-jsonTag: <span data-bind="text: jsonTag"></span><br>
-label: <span data-bind="text: label"></span><br>
-description: <span data-bind="text: description"></span><br>
-</div>
-<!-- <span class="classONMjsSelectedJsonAddressHash" data-bind="html: selectorHash"></span> -->
+<span data-bind="if: dataModelCompiled">
 <div class="classObjectModelNavigatorJsonBody">
 <pre class="classONMjsSelectedJsonBody" data-bind="html: dataModelDeclarationJSON"></pre>
 </div>
+</span>
+<span data-bind="ifnot: dataModelCompiled">
+Offline.
+</span>
 """))
