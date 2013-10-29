@@ -39,7 +39,7 @@ ONMjsRuntime.observers.onmjs = ONMjsRuntime.observers.onmjs? and ONMjsRuntime.ob
 Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
 
     id: "idSchemaPlaneONMjsDataModelHost"
-    name: "Dragon Egg"
+    name: "ONMjs Data Model Host"
     initialEnable: false
     splitterStack: [
 

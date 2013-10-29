@@ -1532,7 +1532,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           if ((functions.fnCreate != null) && functions.fnCreate) {
             data_[memberName] = functions.fnCreate();
           } else {
-            data_[memberName] = (functions.defaultValue != null) && functions.defaultValue || "";
+            data_[memberName] = functions.defaultValue;
           }
         }
       }
@@ -1543,7 +1543,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           if ((functions.fnCreate != null) && functions.fnCreate) {
             data_[memberName] = functions.fnCreate();
           } else {
-            data_[memberName] = (functions.defaultValue != null) && functions.defaultValue || "";
+            data_[memberName] = functions.defaultValue;
           }
         }
       }
@@ -2775,13 +2775,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.29";
+  Encapsule.code.lib.onm.about.version = "0.0.30";
 
-  Encapsule.code.lib.onm.about.build = "Mon Oct 28 01:39:45 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Tue Oct 29 01:05:07 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1382924385";
+  Encapsule.code.lib.onm.about.epoch = "1383008707";
 
-  Encapsule.code.lib.onm.about.uuid = "00d454b5-880c-4d57-8f49-994ab3d9eba9";
+  Encapsule.code.lib.onm.about.uuid = "6b689aae-77e2-4ee8-a4b9-ec4e45224693";
 
   /*
   ------------------------------------------------------------------------------
@@ -2840,18 +2840,19 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties = {
     namespaceType: "extensionPoint",
     jsonTag: "metaProperties",
-    ____label: "meta properties",
-    ____descriptor: "Collection of this namespaces' meta-properties.",
+    ____label: "Meta-Properties",
+    ____description: "Collection of this namespaces' meta-properties. By convention, meta-properties start with four leading underscores.",
     componentArchetype: {
       namespaceType: "component",
       jsonTag: "metaproperty",
-      ____label: "meta property",
-      ____description: "Meta property",
+      ____label: "Meta-Property",
+      ____description: "Meta property declaration.",
       ____getLabelVariant: "jsonTagAndValue",
       namespaceProperties: {
         userImmutable: {
           uuid: {
             ____type: "uuid",
+            ____description: "A unique identifier assigned to this meta-property.",
             fnCreate: function() {
               return uuid.v4();
             }
@@ -2860,10 +2861,12 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         userMutable: {
           jsonTag: {
             ____type: "JSON tag string",
+            ____description: "The JavaScript/JSON name to be used for this meta-property.",
             defaultValue: ""
           },
           value: {
             ____type: "string",
+            ____description: "The default value to be assigned new instances this meta-property.",
             defaultValue: ""
           }
         }
@@ -2874,13 +2877,14 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.dataModels.implementation.selfDeclaration.namespaceProperty = {
     namespaceType: "component",
     jsonTag: "property",
-    ____label: "property",
+    ____label: "Property",
     ____description: "Namespace property.",
     ____getLabelVariant: "jsonTagAndValue",
     namespaceProperties: {
       userImmutable: {
         uuid: {
           ____type: "uuid",
+          ____description: "A unique identifier assigned to this immutable property.",
           fnCreate: function() {
             return uuid.v4();
           }
@@ -2889,18 +2893,22 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
       userMutable: {
         jsonTag: {
           ____type: "JSON tag string",
+          ____description: "The Javascript/JSON name to be used for this mutable property.",
           defaultValue: ""
         },
         value: {
           ____type: "string",
+          ____description: "The default value to be assigned new instances of this mutable property",
           defaultValue: ""
         },
         ____type: {
           ____type: "string",
+          ____description: "A flag leveraged by ONMjs observers to discriminate the type of the mutable property.",
           defaultValue: ""
         },
         ____description: {
           ____type: "string",
+          ____description: "A human-friendly string explaining what this mutable property is used for.",
           defaultValue: ""
         }
       }
@@ -2911,19 +2919,19 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties = {
     namespaceType: "child",
     jsonTag: "properties",
-    ____label: "properties",
-    ____description: "Namespace properties.",
+    ____label: "Namespace Properties",
+    ____description: "Immutable and mutable properties of this namespace.",
     subNamespaces: [
       {
         namespaceType: "extensionPoint",
         jsonTag: "userImmutable",
-        ____label: "immutable",
+        ____label: "Immutable Properties",
         ____description: "User immutable namespace properties.",
         componentArchetype: ONMjs.dataModels.implementation.selfDeclaration.namespaceProperty
       }, {
         namespaceType: "extensionPoint",
         jsonTag: "userMutable",
-        ____label: "mutable",
+        ____label: "Mutable Properties",
         ____description: "User mutable namespace properties.",
         componentArchetype: ONMjs.dataModels.implementation.selfDeclaration.namespaceProperty
       }
@@ -2934,17 +2942,19 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
     namespaceType: "child",
     jsonTag: "semanticBindings",
     ____label: "Semantic Bindings",
-    ____description: " Semantic binding options for this data model.",
+    ____description: "Semantic bindings control ONMjs behavior at runtime by leveraging either built-in library functionality, or callback functions you add to your data model declaration object manually.",
     namespaceProperties: {
       userMutable: {
         componentKeyGenerator: {
           defaultValue: "internalLuid",
           ____type: "enum",
+          ____description: "A flag that indicates to ONMjs how keys for new components are to be generated.",
           ____values: ["disabled", "internalLuid", "internalUuid", "external"]
         },
         namespaceVersioning: {
           defaultValue: "disabled",
           ____type: "enum",
+          ____description: "A flag that indicated to ONMjs if and how namespaces will be versioned.",
           ____values: ["disabled", "internalSimple", "internalAdvanced", "external"]
         }
       }
@@ -2954,53 +2964,58 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.dataModels.selfDeclaration = {
     namespaceType: "root",
     jsonTag: "littleDragon",
-    ____label: "Little Dragon",
+    ____label: "ONMjs Data Model Editor",
     ____description: "ONMjs data model declaration editor.",
     subNamespaces: [
       {
         namespaceType: "extensionPoint",
         jsonTag: "dragonEggs",
-        ____label: "Dragon Eggs",
+        ____label: "ONMjs Data Models",
         ____description: "ONMjs data model declaration collection.",
         componentArchetype: {
           namespaceType: "component",
           jsonTag: "dragonEgg",
-          ____label: "Dragon Egg",
+          ____label: "ONMjs Data Model",
           ____description: "ONMjs data model declaration.",
           ____getLabelVariant: "jsonTagAndNamespaceType",
           namespaceProperties: {
             userImmutable: {
               revision: {
                 ____type: "integer",
+                ____description: "Revision number of this namespace.",
                 defaultValue: 0
               },
               uuid: {
                 ____type: "uuid",
-                fnCreate: function() {
-                  return uuid.v4();
-                }
+                ____description: "The unique identifier and key of this namespace object.",
+                defaultValaue: void 0
               },
               uuidRevision: {
                 ____type: "uuid",
-                fnCreate: function() {
+                ____description: "A unique identifier assigned this namespace object every time it is revised.",
+                fnCreate: function(data_) {
                   return uuid.v4();
                 }
               },
               namespaceType: {
                 ____type: "namespaceTypeEnum",
+                ____description: "A flag indicating to ONMjs the type of namespace you're declaring.",
                 defaultValue: "root"
               }
             },
             userMutable: {
               jsonTag: {
                 ____type: "JSON tag string",
+                ____description: "The Javascript/JSON name to be used for this namespace.",
                 defaultValue: ""
               },
               ____label: {
                 ____type: "String",
+                ____description: "A human-friendly label used by ONMjs observers.",
                 defaultValue: ""
               },
               ____description: {
+                ____description: "A human-friendly description of this mutable property.",
                 ____type: "String",
                 defaultValue: ""
               }
@@ -3010,28 +3025,31 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties, ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties, ONMjs.dataModels.implementation.selfDeclaration.semanticBindings, {
               namespaceType: "extensionPoint",
               jsonTag: "namespaces",
-              ____label: "namespaces",
-              ____description: "collection of namespace declarations.",
+              ____label: "Namespaces",
+              ____description: "A collection of subnamespace declarations.",
               componentArchetype: {
                 namespaceType: "component",
                 jsonTag: "namespace",
-                ____label: "namespace",
+                ____label: "Namespace",
                 ____description: "ONMjs component namespace declaration.",
                 ____getLabelVariant: "jsonTagAndNamespaceType",
                 namespaceProperties: {
                   userImmutable: {
                     revision: {
                       ____type: "integer",
+                      ____description: "Revision number of this namespace.",
                       defaultValue: 0
                     },
                     uuid: {
                       ____type: "uuid",
+                      ____description: "The unique identifier and key of this namespace object.",
                       fnCreate: function() {
                         return uuid.v4();
                       }
                     },
                     uuidRevision: {
                       ____type: "uuid",
+                      ____description: "A unique identifier assigned this namespace object every time it is revised.",
                       fnCreate: function() {
                         return uuid.v4();
                       }
@@ -3040,18 +3058,23 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
                   userMutable: {
                     namespaceType: {
                       ____type: "Must be 'child' or 'extensionPoint' or 'component'",
+                      ____description: "A flag indicating to ONMjs the type of namespace you're declaring.",
                       defaultValue: "invalid"
                     },
                     jsonTag: {
                       ____type: "JSON tag string",
+                      ____description: "The Javascript/JSON name to be used for this namespace.",
+                      ____description: "A flag indicating to ONMjs the type of namespace you're declaring.",
                       defaultValue: ""
                     },
                     ____label: {
                       ____type: "String",
+                      ____description: "A human-friendly label used by ONMjs observers.",
                       defaultValue: ""
                     },
                     ____description: {
                       ____type: "String",
+                      ____description: "A human-friendly description of this mutable property.",
                       defaultValue: ""
                     }
                   }
@@ -3060,7 +3083,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
                   ONMjs.dataModels.implementation.selfDeclaration.namespaceProperties, ONMjs.dataModels.implementation.selfDeclaration.namespaceMetaProperties, {
                     namespaceType: "extensionPoint",
                     jsonTag: "namespaces",
-                    ____label: "namespaces",
+                    ____label: "Namespaces",
                     ____description: "Subnamespace collection.",
                     componentArchetypePath: "littleDragon.dragonEggs.dragonEgg.namespaces.namespace"
                   }
@@ -3419,6 +3442,9 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         this.logHandlerOriginal = void 0;
         this.errorHandlerOriginal = void 0;
         this.viewEl = void 0;
+        this.backchannel.clearLog = function() {
+          return true;
+        };
         this.setViewSelector = function(selectorString_) {
           try {
             if (!((selectorString_ != null) && selectorString_)) {

@@ -96,11 +96,9 @@ try
             }
 
         planes: [
-            Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor
             Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor
             Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost
-
-            # Encapsule.code.app.winmgr.layout.root.PlaneAdvanced # DEPRECATED NAVIGATOR LIBRARY MVVM WINDOW
+            Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor
             # Encapsule.code.app.winmgr.layout.root.SchemaD3 
             Encapsule.code.app.winmgr.layout.root.PlaneDebug # Now "About"
             ]

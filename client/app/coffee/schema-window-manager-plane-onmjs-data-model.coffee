@@ -39,7 +39,7 @@ ONMjsRuntime.observers.onmjs = ONMjsRuntime.observers.onmjs? and ONMjsRuntime.ob
 Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
 
     id: "idSchemaPlaneONMjsEditor"
-    name: "Little Dragon"
+    name: "ONMjs Data Model Editor"
     initialEnable: false
     splitterStack: [
         {

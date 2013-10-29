@@ -200,10 +200,8 @@ class Encapsule.code.app.Schema
             # Initialize the Encapsule Window Manager library.
             Encapsule.runtime.app.SchemaWindowManager = new Encapsule.code.lib.kohelpers.ObservableWindowManager(Encapsule.code.app.winmgr.layout.root.Layout)
 
-            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneSCDLEditor")
-            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneScdlCatalogueNavigator")
-            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneD3")
-            #Encapsule.runtime.app.SchemaWindowManager.displayPlane("idRootLayoutDebugPlane")
+            Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneONMjsEditor")
+            # Encapsule.runtime.app.SchemaWindowManager.displayPlane("idSchemaPlaneSCDLEditor")
 
             dataModelHost.backchannelModelView.setViewSelector("#idBackchannelLogMessages")
 

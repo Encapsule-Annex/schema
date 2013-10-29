@@ -40,7 +40,7 @@ ONMjsRuntime.observers.scdl = ONMjsRuntime.observers.scdl? and ONMjsRuntime.obse
 Encapsule.code.app.winmgr.layout.root.PlaneSCDLEditor = {
 
     id: "idSchemaPlaneSCDLEditor"
-    name: "SCDL Editor"
+    name: "SCDL Data Model Editor"
     initialEnable: false
     splitterStack: [
         {
