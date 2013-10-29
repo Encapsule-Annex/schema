@@ -117,7 +117,7 @@ class Encapsule.code.app.Schema
 
             onmjsSelfModel = new ONMjs.Model(ONMjs.dataModels.selfDeclaration)
             onmjsSelfModelRootAddress = onmjsSelfModel.createRootAddress()
-            onmjsSelfStore = new ONMjs.Store(onmjsSelfModel)
+            onmjsSelfStore = new ONMjs.Store(onmjsSelfModel, Encapsule.code.lib.onm.DECAddressBookSampleRawJSON )
 
             onmjsSelfAddressStore = new ONMjs.AddressStore(onmjsSelfStore, onmjsSelfModelRootAddress)
 
