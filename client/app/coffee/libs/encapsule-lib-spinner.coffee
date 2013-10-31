@@ -33,15 +33,15 @@ backchannel = Encapsule.runtime.backchannel? and Encapsule.runtime.backchannel o
 # http://fgnass.github.com/spin.js/#?
 
 optionsDefault = {
-    lines: 11,
-    length: 0,
-    width: 5,
-    radius: 7,
-    corners: 0,
+    lines: 12,
+    length: 2,
+    width: 4,
+    radius: 4,
+    corners: 0.2,
     rotate: 0,
-    trail: 33,
-    speed: 1.0,
-    color: "#006600",
+    trail: 50,
+    speed: 0.5,
+    color: "#006699"
     shadow: off,
     hwaccel: on
     }
@@ -53,7 +53,7 @@ class namespaceEncapsule_code_lib_view.spinner
     optionsDefault: optionsDefault
    
     constructor: ->
-        backchannel.log("Constructed a spinner wrapper object.")
+        #backchannel.log("Constructed a spinner wrapper object.")
         @captionUpdateTimer = undefined
 
     draw: (options_) =>

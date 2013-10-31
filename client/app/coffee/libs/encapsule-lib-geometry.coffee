@@ -309,20 +309,20 @@ Encapsule.code.lib.geometry.frame.createFromOffsetRectangleWithMargins = (offset
         frameObject.view.rectangle.extent.width -= horizontalMarginExtent
         frameObject.view.rectangle.extent.height -= verticalMarginExtent
 
-        backchannel.log("""
-            <b>Frame:</b>
-            #{frameObject.frame.rectangle.extent.width} x #{frameObject.frame.rectangle.extent.height}
-            w/offset (#{frameObject.frame.offset.top}, #{frameObject.frame.offset.left})
-            &bull; <b>Margins:</b>
-            {#{margins_.top}, #{margins_.left}, #{margins_.bottom}, #{margins_.top}}
-            &bull; <b>View:</b>
-            #{frameObject.view.rectangle.extent.width} x #{frameObject.view.rectangle.extent.height}
-            w/offset (#{frameObject.view.offset.top}, #{frameObject.view.offset.left})
-            &bull; <b>Size delta:</b>
-            #{frameObject.frame.rectangle.extent.width - frameObject.view.rectangle.extent.width}
-            x
-            #{frameObject.frame.rectangle.extent.height - frameObject.view.rectangle.extent.height}
-            """)
+        #backchannel.log("""
+        #    <b>Frame:</b>
+        #    #{frameObject.frame.rectangle.extent.width} x #{frameObject.frame.rectangle.extent.height}
+        #    w/offset (#{frameObject.frame.offset.top}, #{frameObject.frame.offset.left})
+        #    &bull; <b>Margins:</b>
+        #    {#{margins_.top}, #{margins_.left}, #{margins_.bottom}, #{margins_.top}}
+        #    &bull; <b>View:</b>
+        #    #{frameObject.view.rectangle.extent.width} x #{frameObject.view.rectangle.extent.height}
+        #    w/offset (#{frameObject.view.offset.top}, #{frameObject.view.offset.left})
+        #    &bull; <b>Size delta:</b>
+        #    #{frameObject.frame.rectangle.extent.width - frameObject.view.rectangle.extent.width}
+        #    x
+        #    #{frameObject.frame.rectangle.extent.height - frameObject.view.rectangle.extent.height}
+        #    """)
 
         frameObject
 

@@ -36,7 +36,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
     constructor: (sourceDescriptor_) ->
         try
             # \ BEGIN: constructor try scope
-            backchannel.log("""... + WindowManager creating new window host id="#{sourceDescriptor_.id}" name="#{sourceDescriptor_.name}""")
+            #backchannel.log("""... + WindowManager creating new window host id="#{sourceDescriptor_.id}" name="#{sourceDescriptor_.name}""")
 
             geo = Encapsule.code.lib.geometry
 
@@ -143,7 +143,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
 
             # \ BEGIN: onMouseOver
             @onMouseOver = =>
-                #backchannel.log("Mouse over #{@id}")
+                ##backchannel.log("Mouse over #{@id}")
                 @cssHostOpacity(1)
                 @cssChromeOpacity(1)
                 @cssWindowOpacity(1)
@@ -165,7 +165,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowHost
                     # \BEGIN: try scope
                         # We will do some checking here to ensure that a change actually occurred.
                         # If so, then we will update the Knockout.js observables contained by thie ObservableWindow instance
-                        backchannel.log("Observable window offset rectangle updated: #{offsetRectangle_.rectangle.extent.width} x #{offsetRectangle_.rectangle.extent.height} // #{offsetRectangle_.offset.left}, #{offsetRectangle_.offset.top}")
+                        #backchannel.log("Observable window offset rectangle updated: #{offsetRectangle_.rectangle.extent.width} x #{offsetRectangle_.rectangle.extent.height} // #{offsetRectangle_.offset.left}, #{offsetRectangle_.offset.top}")
                         @offsetRectangleHost(offsetRectangle_)
 
                         marginsChrome = geo.margins.createUniform(@sourceDescriptor.globalWindowAttributes.hostWindowPadding)

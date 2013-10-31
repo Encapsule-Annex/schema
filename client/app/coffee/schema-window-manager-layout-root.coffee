@@ -47,7 +47,7 @@ try
         # The color of the page background may optionally be set via bodyPageBackgroundColor and will be visible
         # if glassMargin > 0 or glassOpacity < 1
         #
-        pageBackgroundColor: "black"
+        pageBackgroundColor: "#003399"
 
         #
         # WINDOW MANAGER "GLASS" ATTRIBUTES
@@ -56,7 +56,7 @@ try
         # Note that setting glassBackgroundImage will occlude glassBackgroundColor if specified. You can however
         # acheive splendid blending effects by setting bodyPageBackgroundColor and glassOpacity.
         #        
-        glassOpacity: 0.5 # undefined #  0.8 # defaults to 1 if undefined
+        glassOpacity: 0.3 # undefined #  0.8 # defaults to 1 if undefined
         glassBackgroundColor: undefined
         glassMargin: 0 # document edge to glass edge (default is 10)
         glassBackgroundImage: "brushed-metal-background-1080p.jpg"

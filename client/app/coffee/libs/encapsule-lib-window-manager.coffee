@@ -47,8 +47,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
             if not layout_? or not layout_ then throw "You must specify a layout to construct an ObservableWindowManager instance."
 
-            backchannel.log("<h2>#{layout_.name}</h2>")
-            backchannel.log("#{appPackagePublisher} window manager boot for layout declaration id=#{layout_.id} name=\"#{layout_.name}\"")
+            #backchannel.log("<h2>#{layout_.name}</h2>")
+            #backchannel.log("#{appPackagePublisher} window manager boot for layout declaration id=#{layout_.id} name=\"#{layout_.name}\"")
 
             # ============================================================================
             # NAMESPACE ALIASES
@@ -141,7 +141,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     documentEl = $(document)
                     geo = Encapsule.code.lib.geometry
 
-                    backchannel.log("<h4>BASE WINDOW EXTENT UPDATE</h4>")
+                    #backchannel.log("<h4>BASE WINDOW EXTENT UPDATE</h4>")
 
                     # All extent properties one may obtain from the document object below.
                     # We're actually only using the outerWidth/Height(true) (aka margin extents)
@@ -156,7 +156,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     height = height - (height % 2)    
 
                     if (width == @documentOffsetRectangle.rectangle.extent.width) and (height == @documentOffsetRectangle.rectangle.extent.width)
-                        backchannel.log("Callback to document resize handler ignored: no change in base window dimensions.")
+                        #backchannel.log("Callback to document resize handler ignored: no change in base window dimensions.")
                         return;
 
                     @documentOffsetRectangle = geo.offsetRectangle.createFromDimensions(width, height)
@@ -174,7 +174,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     # / END: try
 
                 catch exception
-                    backchannel.error "Window geometries refresh failed: #{exception}"
+                    #backchannel.error "Window geometries refresh failed: #{exception}"
 
                 # / END: function scope
 
@@ -198,7 +198,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     if not request_? then throw "Missing refresh request parameter."
                     if not request_ then throw "Missing refresh request value."
 
-                    backchannel.log("<h4>WINDOW MANAGER VIEW STATE UPDATE</h4>")
+                    #backchannel.log("<h4>WINDOW MANAGER VIEW STATE UPDATE</h4>")
 
                     request = {
                         forceEval: request_.forceEval? and request_.forceEval or false
@@ -232,8 +232,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                                         # \ BEGIN: split scope
                                         try
                                             # \ BEGIN: try split scope
-                                            backchannel.log("<strong>Window manager refresh on plane #{plane.id} split #{split.id}</b>")
-                                            backchannel.log("... Available client offset rectangle #{windowManagerClientOffsetRectangle.rectangle.extent.width} x #{windowManagerOffsetRectangle.rectangle.extent.width}")
+                                            #backchannel.log("<strong>Window manager refresh on plane #{plane.id} split #{split.id}</b>")
+                                            #backchannel.log("... Available client offset rectangle #{windowManagerClientOffsetRectangle.rectangle.extent.width} x #{windowManagerOffsetRectangle.rectangle.extent.width}")
                                             windowManagerClientOffsetRectangle = split.setOffsetRectangle(windowManagerClientOffsetRectangle, true)
                                             # / END: try split scope
                                         catch exception
@@ -254,14 +254,14 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                     # / END: refreshWindowManagerViewState try scope
 
                 catch exception
-                    backchannel.error "Failed to refresh window manager view state: #{exception}"
+                    #backchannel.error "Failed to refresh window manager view state: #{exception}"
                 # / END: refreshWindowManagerViewState function scope
 
             # / END RUNTIME CALLBACKS
             # ============================================================================
 
-            backchannel.log("<h3>SYNTHESIZING MODEL-VIEW FROM LAYOUT DECLARATION</h3>")
-            backchannel.log("Building observable Javascript object hierarchy...")
+            #backchannel.log("<h3>SYNTHESIZING MODEL-VIEW FROM LAYOUT DECLARATION</h3>")
+            #backchannel.log("Building observable Javascript object hierarchy...")
 
             # ============================================================================
             # \ BEGIN: OBSERVABLE DATA MODEL INITIALIZATION
@@ -304,8 +304,8 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                                 try
                                     # @@@
                                     # \ BEGIN: split try scope
-                                    backchannel.log("Window manager: Starting plane #{planeIndex} split #{splitIndex} ...")
-                                    backchannel.log """... id = #{split.id} &bull; #{split.name} &bull; #{split.type} &bull; Q1 window descriptor = #{split.Q1WindowDescriptor} &bull; Q2 window descriptor = #{split.Q2WindowDescriptor}"""
+                                    #backchannel.log("Window manager: Starting plane #{planeIndex} split #{splitIndex} ...")
+                                    #backchannel.log """... id = #{split.id} &bull; #{split.name} &bull; #{split.type} &bull; Q1 window descriptor = #{split.Q1WindowDescriptor} &bull; Q2 window descriptor = #{split.Q2WindowDescriptor}"""
                                     splitterObservableWindows = []
                                     newSplit = undefined
                                     try
@@ -330,7 +330,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                                     catch exception
                                         throw "Observable window instantiation failure: #{exception}"
                                     #
-                                    backchannel.log("... Layout #{planeIndex} #{splitIndex} processed.")
+                                    #backchannel.log("... Layout #{planeIndex} #{splitIndex} processed.")
                                     splitIndex++
                                     # / END: split try scope
                                     # @@@
@@ -344,7 +344,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         @planes.push planeRuntime
                         @planesDictionary[planeRuntime.id] = planeRuntime
                         planeIndex++
-                        backchannel.log("Layout plane #{planeIndex} processed.")
+                        #backchannel.log("Layout plane #{planeIndex} processed.")
                         # / END: planeLayout scope
                     # / END: try scope
                     # @@@
@@ -355,7 +355,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                 throw "Data model init failure: #{exception}"
 
 
-            backchannel.log("Done transforming layout into view model :)")
+            #backchannel.log("Done transforming layout into view model :)")
 
             # / END OBSERVABLE DATA MODEL (VIEW-MODEL) INITIALIZATION
             # ============================================================================
@@ -364,14 +364,14 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
 
             # ============================================================================
             try
-                backchannel.log("<h3>SYNTHESIZING VIEW-MODEL TEMPLATES</h3>")
+                #backchannel.log("<h3>SYNTHESIZING VIEW-MODEL TEMPLATES</h3>")
                 Encapsule.code.app.setBootChrome("schemaViewModel")
                 try
                     Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate "idKoTemplate_EncapsuleWindowManager" , =>
                         Encapsule.code.lib.kohelpers.implementation.SynthesizeWindowManagerViewModelFromLayoutDeclaration(@layout)
                     $("BODY").append($("""<div id="idKnockoutViewTemplateCache" style="display: none;"></div>"""))
                     Encapsule.code.lib.kohelpers.InstallKnockoutViewTemplates("#idKnockoutViewTemplateCache")
-                    backchannel.log("Okay")
+                    #backchannel.log("Okay")
                 catch exception
                     throw "View template librarian init failure: #{exception}"
                     
@@ -383,12 +383,12 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # ============================================================================
             # BIND THE HTML VIEW TO THE WINDOW MANAGER'S OBVSERVABLE DATA MODELS USING KNOCKOUT.JS
             #
-            backchannel.log "<h3>BINDING MODEL-VIEW/VIEW-MODEL (MVVM) VIA KNOCKOUT.JS</h3>"
+            #backchannel.log "<h3>BINDING MODEL-VIEW/VIEW-MODEL (MVVM) VIA KNOCKOUT.JS</h3>"
             Encapsule.code.app.setBootChrome("schemaBind")
             try
                 windowManagerElement = Encapsule.code.lib.kohelpers.implementation.CreateWindowManagerView()
                 ko.applyBindings @ , windowManagerElement
-                backchannel.log("#{layout_.id} #{layout_.name} Model-View/View-Model (MVVM) binding completed.")
+                #backchannel.log("#{layout_.id} #{layout_.name} Model-View/View-Model (MVVM) binding completed.")
             catch exception
                 throw """MVVM binding operation failed. Knockout.js reports: #{exception}"""
 
@@ -409,29 +409,29 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
             # ============================================================================
             # Obtain the current extent of document and update the offset rectangles used to determine
             # the coordinates of the window manager glass and main windows.
-            backchannel.log("<h3>INITIALIZING SCREEN LAYOUT</h3>")
+            #backchannel.log("<h3>INITIALIZING SCREEN LAYOUT</h3>")
             Encapsule.code.app.setBootChrome("schemaRender")
             try
                 @refreshWindowManagerViewGeometriesFromDocument()
                 @setPageBackgroundColor()
-                backchannel.log("Okay")
+                #backchannel.log("Okay")
             catch exception
                 throw "Initial window manager geometries refresh failed: #{exception}"
 
-            backchannel.log("<h3>REGISTERING EVENT LISTENERS</h3>")
+            #backchannel.log("<h3>REGISTERING EVENT LISTENERS</h3>")
             # Automatically refresh the window manager's geometries when the the browser window resizes.
             window.addEventListener 'resize', @refreshWindowManagerViewGeometriesFromDocument
-            backchannel.log("Okay.")
+            #backchannel.log("Okay.")
 
             # setInterval @refreshWindowManagerViewState, 5000 # This catches everything (including browser restore) eventually
             $("#idEncapsuleWindowManagerHost").fadeIn layout_.fadeinTimeMs
 
-            backchannel.log("<p><strong>#{appPackagePublisher} window manager initialization complete.</strong></p>")
+            #backchannel.log("<p><strong>#{appPackagePublisher} window manager initialization complete.</strong></p>")
 
             # ============================================================================
             # ENTER INTERACTIVE MODE
             Encapsule.code.app.setBootChrome("schemaWelcome")
-            backchannel.log("<h2>#{appName} v#{appVersion} entering interactive mode :)</h2>")
+            #backchannel.log("<h2>#{appName} v#{appVersion} entering interactive mode :)</h2>")
 
             # ============================================================================
             # Window manager methods
@@ -459,7 +459,7 @@ class Encapsule.code.lib.kohelpers.ObservableWindowManager
                         @currentDisplayPlaneId = planeId_
 
                 catch exception
-                    backchannel.error("""ObservableWindowManger.displayPlane("#{planeId_}") fail: #{exception}""")
+                    #backchannel.error("""ObservableWindowManger.displayPlane("#{planeId_}") fail: #{exception}""")
 
 
             # / END INITIALIZATION OF WINDOW MANAGER OBJECT INSTANCE

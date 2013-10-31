@@ -231,9 +231,9 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                     # \ BEGIN: create frames
                     try
                         # \ BEGIN: create frames try scope
-                        backchannel.log("... q1SplitterFrame: ")
+                        #backchannel.log("... q1SplitterFrame: ")
                         q1SplitterFrame = geo.frame.createFromOffsetRectangleWithMargins(@offsetRectangle, q1SplitterFrameMargins)
-                        backchannel.log("... q2SplitterFrame: ")
+                        #backchannel.log("... q2SplitterFrame: ")
                         q2SplitterFrame = geo.frame.createFromOffsetRectangleWithMargins(@offsetRectangle, q2SplitterFrameMargins)
                         # / END: create frames try scope
                     catch exception
@@ -244,10 +244,10 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                     try
                         # \ BEGIN: update windows try scope
                         if q1Allocate
-                            backchannel.log("... ... Splitter id=#{@id} updating position of Q1 window id=#{@q1Window.id}")
+                            #backchannel.log("... ... Splitter id=#{@id} updating position of Q1 window id=#{@q1Window.id}")
                             @q1Window.setOffsetRectangle(q1SplitterFrame.view)
                         if q2Allocate
-                            backchannel.log("... ... Splitter id=#{@id} updating position of Q2 window id=#{@q2Window.id}")
+                            #backchannel.log("... ... Splitter id=#{@id} updating position of Q2 window id=#{@q2Window.id}")
                             @q2Window.setOffsetRectangle(q2SplitterFrame.view)
                         # / END: update windows try scope
                     catch exception
@@ -261,20 +261,20 @@ class Encapsule.code.lib.kohelpers.WindowSplitter
                         # \ BEGIN: set unallocated space try scope
                         if q1Allocate and q2Allocate
                             # The splitter has consumed its entire client area
-                            backchannel.log("... ... #{@id} client area exhaused.")
+                            #backchannel.log("... ... #{@id} client area exhaused.")
                             remainingClientOffsetRectangle = geo.offsetRectangle.create()
                         else
                             # \ BEGIN: else
                             if q1Allocate
-                                backchannel.log("... ... Assigning q2SplitterFrame.view to unallocated space for next split.")
+                                #backchannel.log("... ... Assigning q2SplitterFrame.view to unallocated space for next split.")
                                 remainingClientOffsetRectangle = q2SplitterFrame.view
                             else
                                 # \ BEGIN: else
                                 if q2Allocate
-                                    backchannel.log("... ... Assigning q1SplitterFrame.view to unallocated space for next split.")
+                                    #backchannel.log("... ... Assigning q1SplitterFrame.view to unallocated space for next split.")
                                     remainingClientOffsetRectangle = q1SplitterFrame.view
                                 else
-                                    backchannel.log("... ... This splitter allocated no client space.")
+                                    #backchannel.log("... ... This splitter allocated no client space.")
                                     remainingClientOffsetRectangle = offsetRectangle_
                                 # / END: else
                             # / END: else
