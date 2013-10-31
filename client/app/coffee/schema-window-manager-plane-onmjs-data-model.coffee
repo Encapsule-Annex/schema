@@ -77,7 +77,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: undefined
-                modes: { full: { reserve: 450 }, min: { reserve: 350 } }
+                modes: { full: { reserve: 450 }, min: { reserve: 280 } }
 
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.observers.onmjs.navigator
@@ -101,7 +101,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
                 opacity: 1.0
                 overflow: "auto"
                 backgroundColor: "rgba(0,255,0,0.5)"
-                modes: {full: { reserve: 500 }, min: { reserve: 250} }
+                modes: {full: { reserve: 500 }, min: { reserve: 128} }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.observers.onmjs.dragonEggCompiler
                     viewModelTemplateId: "idKoTemplate_DragonEggCompilerView"
@@ -123,7 +123,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsEditor = {
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "rgba(0,255,0,0.25)"
-                modes: { full: { reserve: 500 }, min: { reserve: 250 } }
+                modes: { full: { reserve: 500 }, min: { reserve: 128 } }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.observers.onmjs.json
                     viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorJsonModelView"

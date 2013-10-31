@@ -58,7 +58,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 opacity: 1.0
                 overflow: "auto"
                 backgroundColor: "rgba(0,255,0,0.5)"
-                modes: {full: { reserve: 500 }, min: { reserve: 250} }
+                modes: {full: { reserve: 500 }, min: { reserve: 128} }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.observers.onmjs.dragonEggCompiler
                     viewModelTemplateId: "idKoTemplate_DragonEggCompilerView"
@@ -68,16 +68,16 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
 
         {
             id: "5e33fd24-b2c8-43f4-9d49-3d31fce640ec"
-            type: "vertical"
-            Q1WindowDescriptor: {
+            type: "horizontal"
+            Q2WindowDescriptor: {
                 id: "idONMjsDMHBackchannelHost"
                 name: "delete this"
-                initialMode: "min"
+                initialMode: "full"
                 initialEnable: true
                 opacity: 1.0
                 overflow: "auto"
                 backgroundColor: "rgba(0,255,0,0.5)"
-                modes: { full: { reserve: 480 }, min: { reserve: 250 } }
+                modes: { full: { reserve: 300 }, min: { reserve: 100 } }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.dataModelHost.backchannelModelView
                     viewModelTemplateId: "idKoTemplate_BackchannelViewModel"
@@ -120,7 +120,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "rgba(0,255,200, 0.1)"
-                modes: { full: { reserve: 450 }, min: { reserve: 350 } }
+                modes: { full: { reserve: 450 }, min: { reserve: 280 } }
 
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.dataModelHost.observers.navigator
@@ -145,7 +145,7 @@ Encapsule.code.app.winmgr.layout.root.PlaneONMjsDataModelHost = {
                 overflow: "auto"
                 opacity: 1.0
                 backgroundColor: "rgba(0,255,200,0.5)"
-                modes: { full: { reserve: 500 }, min: { reserve: 250 } }
+                modes: { full: { reserve: 500 }, min: { reserve: 128 } }
                 MVVM: {
                     fnModelView: -> ONMjsRuntime.dataModelHost.observers.json
                     viewModelTemplateId: "idKoTemplate_ObjectModelNavigatorJsonModelView"

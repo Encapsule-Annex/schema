@@ -2775,13 +2775,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.30";
+  Encapsule.code.lib.onm.about.version = "0.0.31";
 
-  Encapsule.code.lib.onm.about.build = "Tue Oct 29 02:25:46 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Wed Oct 30 23:56:55 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1383013546";
+  Encapsule.code.lib.onm.about.epoch = "1383177415";
 
-  Encapsule.code.lib.onm.about.uuid = "ff4c137c-40d8-464d-a1e7-53826bd50be8";
+  Encapsule.code.lib.onm.about.uuid = "605e4b62-1d74-456d-afa7-1d9e3febcfdb";
 
   /*
   ------------------------------------------------------------------------------
@@ -2949,13 +2949,15 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           defaultValue: "internalLuid",
           ____type: "enum",
           ____description: "A flag that indicates to ONMjs how keys for new components are to be generated.",
-          ____values: ["disabled", "internalLuid", "internalUuid", "external"]
+          ____options: ["disabled", "internalLuid", "internalUuid", "external"],
+          ____defaultOption: "disabled"
         },
         namespaceVersioning: {
           defaultValue: "disabled",
           ____type: "enum",
           ____description: "A flag that indicated to ONMjs if and how namespaces will be versioned.",
-          ____values: ["disabled", "internalSimple", "internalAdvanced", "external"]
+          ____options: ["disabled", "internalSimple", "internalAdvanced", "external"],
+          ____defaultOption: "disabled"
         }
       }
     }
@@ -5082,7 +5084,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.observers.SelectedNamespaceMutablePropertiesModelView = (function() {
 
     function SelectedNamespaceMutablePropertiesModelView(params_) {
-      var label, members, name, namespaceDeclarationMutable, namespaceModelProperties, propertyDescriptor,
+      var label, members, name, namespaceDeclarationMutable, namespaceModelProperties, propertyDescriptor, type,
         _this = this;
       try {
         this.backchannel = (params_.backchannel != null) && params_.backchannel || (function() {
@@ -5147,12 +5149,18 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             declaration: {
               property: name,
               members: members
-            },
-            store: {
-              value: this.dataReference[name],
-              valueEdit: ko.observable(this.dataReference[name])
             }
           };
+          type = (members.____type != null) && members.____type || "string";
+          switch (type) {
+            case "enum":
+              break;
+            default:
+              propertyDescriptor.store = {
+                value: this.dataReference[name],
+                valueEdit: ko.observable(this.dataReference[name])
+              };
+          }
           this.propertyModelViews.push(propertyDescriptor);
         }
         this.propertiesUpdated = ko.computed(function() {
