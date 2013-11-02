@@ -268,7 +268,7 @@ class Encapsule.app.lib.DragonEggCompiler
                             return true
 
                         compile(store_, address_)
-                        @backchannel.log("ONMjs data model declaration recompiled: #{address_.getHumanReadableString()}. RebooNotifying ONMjs test host...")
+                        @backchannel.log("ONMjs data model declaration recompiled: #{address_.getHumanReadableString()}. Rebooting ONMjs test host...")
 
                         @dataModelCompiled(true)
 

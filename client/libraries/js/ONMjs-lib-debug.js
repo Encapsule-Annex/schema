@@ -2775,13 +2775,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.31";
+  Encapsule.code.lib.onm.about.version = "0.0.32";
 
-  Encapsule.code.lib.onm.about.build = "Wed Oct 30 23:56:55 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Sat Nov 2 02:40:42 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1383177415";
+  Encapsule.code.lib.onm.about.epoch = "1383360042";
 
-  Encapsule.code.lib.onm.about.uuid = "605e4b62-1d74-456d-afa7-1d9e3febcfdb";
+  Encapsule.code.lib.onm.about.uuid = "135234ae-81c4-4fa4-b1c6-4382949e8b5a";
 
   /*
   ------------------------------------------------------------------------------
@@ -2949,15 +2949,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           defaultValue: "internalLuid",
           ____type: "enum",
           ____description: "A flag that indicates to ONMjs how keys for new components are to be generated.",
-          ____options: ["disabled", "internalLuid", "internalUuid", "external"],
-          ____defaultOption: "disabled"
+          ____options: ["disabled", "internalLuid", "internalUuid", "external"]
         },
         namespaceVersioning: {
           defaultValue: "disabled",
           ____type: "enum",
           ____description: "A flag that indicated to ONMjs if and how namespaces will be versioned.",
-          ____options: ["disabled", "internalSimple", "internalAdvanced", "external"],
-          ____defaultOption: "disabled"
+          ____options: ["disabled", "internalSimple", "internalAdvanced", "external"]
         }
       }
     }
@@ -3000,9 +2998,9 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
                 }
               },
               namespaceType: {
-                ____type: "namespaceTypeEnum",
-                ____description: "A flag indicating to ONMjs the type of namespace you're declaring.",
-                defaultValue: "root"
+                defaultValue: "root",
+                ____type: "enum",
+                ____description: "A flag indicating to ONMjs the type of namespace you're declaring."
               }
             },
             userMutable: {
@@ -3059,9 +3057,10 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
                   },
                   userMutable: {
                     namespaceType: {
-                      ____type: "Must be 'child' or 'extensionPoint' or 'component'",
-                      ____description: "A flag indicating to ONMjs the type of namespace you're declaring.",
-                      defaultValue: "invalid"
+                      defaultValue: "invalid",
+                      ____type: "enum",
+                      ____options: ["child", "extensionPoint", "component"],
+                      ____description: "A flag indicating to ONMjs the type of namespace you're declaring."
                     },
                     jsonTag: {
                       ____type: "JSON tag string",
@@ -5084,7 +5083,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   ONMjs.observers.SelectedNamespaceMutablePropertiesModelView = (function() {
 
     function SelectedNamespaceMutablePropertiesModelView(params_) {
-      var label, members, name, namespaceDeclarationMutable, namespaceModelProperties, propertyDescriptor, type,
+      var label, members, name, namespaceDeclarationMutable, namespaceModelProperties, propertyModelView, type,
         _this = this;
       try {
         this.backchannel = (params_.backchannel != null) && params_.backchannel || (function() {
@@ -5144,27 +5143,34 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         }, this.onClickDiscardPropertyEdits, this.backchannel);
         for (name in namespaceDeclarationMutable) {
           members = namespaceDeclarationMutable[name];
-          propertyDescriptor = {
+          propertyModelView = {
             immutable: false,
             declaration: {
               property: name,
               members: members
-            }
+            },
+            store: {
+              value: this.dataReference[name],
+              valueEdit: ko.observable(this.dataReference[name])
+            },
+            viewModelTemplate: void 0
           };
           type = (members.____type != null) && members.____type || "string";
           switch (type) {
             case "enum":
+              if (!((members.____options != null) && members.____options && (members.____options.length != null) && members.____options.length)) {
+                throw "Mutable property of type 'enum' must specify an options list via ____options array of string(s).";
+              }
+              propertyModelView.viewModelTemplate = "idKoTemplate_MutableSelectProperty";
               break;
             default:
-              propertyDescriptor.store = {
-                value: this.dataReference[name],
-                valueEdit: ko.observable(this.dataReference[name])
-              };
+              propertyModelView.viewModelTemplate = "idKoTemplate_MutableStringProperty";
+              break;
           }
-          this.propertyModelViews.push(propertyDescriptor);
+          this.propertyModelViews.push(propertyModelView);
         }
         this.propertiesUpdated = ko.computed(function() {
-          var propertiesUpdated, propertyModelView, valueEdit, _i, _len, _ref;
+          var propertiesUpdated, valueEdit, _i, _len, _ref;
           propertiesUpdated = false;
           _ref = _this.propertyModelViews;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -5185,8 +5191,16 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   })();
 
+  Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_MutableStringProperty", (function() {
+    return "<div type=\"text\" class=\"value\" contentEditable=\"true\" data-bind=\"editableText: store.valueEdit\"></div>";
+  }));
+
+  Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_MutableSelectProperty", (function() {
+    return "<div class=\"select\"><select data-bind=\"value: store.valueEdit, options: declaration.members.____options\"></select></div>";
+  }));
+
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceMutablePropertiesViewModel", (function() {
-    return "<div class=\"classONMjsSelectedNamespaceSectionTitle\">\n    Mutable Properties (<span data-bind=\"text: propertyModelViews.length\"></span>):\n</div>\n<div class=\"classONMjsSelectedNamespaceSectionCommon\">\n    <span data-bind=\"if: propertyModelViews.length\">\n        <div class=\"classONMjsSelectedNamespacePropertiesCommon classONMjsSelectedNamespacePropertiesMutable\">\n            <span data-bind=\"foreach: propertyModelViews\">\n                <div class=\"name\" data-bind=\"text: declaration.property\"></div>\n                <div class=\"type\" data-bind=\"text: declaration.members.____type\"></div>\n                <div style=\"clear: both;\" />\n                <span data-bind=\"if: declaration.members.____description\">\n                    <div class=\"description\" data-bind=\"text: declaration.members.____description\"></div>\n                </span>\n                <div type=\"text\" class=\"value\" contentEditable=\"true\" data-bind=\"editableText: store.valueEdit\"></div>\n            </span>\n            <span data-bind=\"if: propertiesUpdated\">\n                <div class=\"buttons\">\n                    <span data-bind=\"with: discardLinkModelView\"><span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span></span>\n                    <span data-bind=\"with: updateLinkModelView\"><span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span></span>\n                </div>\n            </span>\n        </div>\n    </span>\n    <span data-bind=\"ifnot: propertyModelViews.length\">\n        <i>This namespace has no mutable properties.</i>\n    </span>\n</div>";
+    return "<div class=\"classONMjsSelectedNamespaceSectionTitle\">\n    Mutable Properties (<span data-bind=\"text: propertyModelViews.length\"></span>):\n</div>\n<div class=\"classONMjsSelectedNamespaceSectionCommon\">\n    <span data-bind=\"if: propertyModelViews.length\">\n        <div class=\"classONMjsSelectedNamespacePropertiesCommon classONMjsSelectedNamespacePropertiesMutable\">\n            <span data-bind=\"foreach: propertyModelViews\">\n                <div class=\"name\" data-bind=\"text: declaration.property\"></div>\n                <div class=\"type\" data-bind=\"text: declaration.members.____type\"></div>\n                <div style=\"clear: both;\" />\n                <span data-bind=\"if: declaration.members.____description\">\n                    <div class=\"description\" data-bind=\"text: declaration.members.____description\"></div>\n                </span>\n                <!-- <div type=\"text\" class=\"value\" contentEditable=\"true\" data-bind=\"editableText: store.valueEdit\"></div> -->\n                <span data-bind=\"template: { name: viewModelTemplate }\"></span>\n            </span>\n            <span data-bind=\"if: propertiesUpdated\">\n                <div class=\"buttons\">\n                    <span data-bind=\"with: discardLinkModelView\"><span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span></span>\n                    <span data-bind=\"with: updateLinkModelView\"><span data-bind=\"template: { name: 'idKoTemplate_CallbackLinkViewModel' }\"></span></span>\n                </div>\n            </span>\n        </div>\n    </span>\n    <span data-bind=\"ifnot: propertyModelViews.length\">\n        <i>This namespace has no mutable properties.</i>\n    </span>\n</div>";
   }));
 
   /*

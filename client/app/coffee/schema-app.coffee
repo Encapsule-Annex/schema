@@ -84,7 +84,7 @@ class Encapsule.code.app.Schema
             jsonView = ONMjsRuntime.observers.scdl.json = new ONMjs.observers.SelectedJsonModelView(backchannel)
 
             # TEST:: Create an instance of "GenericTest" - an ONMjs observer.
-            canaryMonitor = ONMjsRuntime.observers.scdl.canary = new ONMjs.observers.GenericTest(backchannel)
+            #canaryMonitor = ONMjsRuntime.observers.scdl.canary = new ONMjs.observers.GenericTest(backchannel)
 
             # REGISTER ONMjs OBSERVERS (i.e. ATTACH)
 
@@ -149,9 +149,8 @@ class Encapsule.code.app.Schema
             try
     
                 # Attach the canary to the store via ONMjs.Store.registerObserver.
-                storeDebugMonitorObserverId = store.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
-                selectedAddressDebugMonitorObserverId = selectedAddress.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
-
+                #storeDebugMonitorObserverId = store.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
+                #selectedAddressDebugMonitorObserverId = selectedAddress.registerObserver(canaryMonitor.callbackInterface, canaryMonitor)
                 # Detach the canary from the store via ONMjs.Store.unregisterObserver.
                 #store.unregisterObserver(canaryStoreObserverId)
 
@@ -219,8 +218,7 @@ class Encapsule.code.app.Schema
             Encapsule.runtime.boot.phase0.blipper.blip "system-normal"
 
             # Select the root namespace of the ONMjs.store.
-            rootAddress = model.createRootAddress()
-            selectedAddress.setAddress(rootAddress)
+            selectedAddress.setAddress(model.createRootAddress())
 
         catch exception
             backchannel.error """#{appPackagePublisher} #{appName} v#{appVersion} APP INIT FAIL:: #{exception}"""
