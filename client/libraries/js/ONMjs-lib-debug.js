@@ -294,6 +294,8 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.js = (Encapsule.code.lib.js != null) && Encapsule.code.lib.js || (this.Encapsule.code.lib.js = {});
 
+  Encapsule.code.lib.util = (Encapsule.code.lib.util != null) && Encapsule.code.lib.util || (this.Encapsule.code.lib.util = {});
+
   Encapsule.code.lib.js.clone = function(object_) {
     var flags, key, newInstance;
     try {
@@ -335,6 +337,12 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
     } catch (exception) {
       throw "Encapsule.code.lib.js.dictionaryLength: " + exception;
     }
+  };
+
+  Encapsule.code.lib.util.uuidNull = "00000000-0000-0000-0000-000000000000";
+
+  Encapsule.code.lib.util.getEpochTime = function() {
+    return Math.round(new Date().getTime() / 1000.0);
   };
 
   /*
@@ -738,7 +746,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         Object.freeze(this.objectModelDescriptorById);
         this.semanticBindings = (this.objectModelDeclaration.semanticBindings != null) && this.objectModelDeclaration.semanticBindings || {};
         this.componentKeyGenerator = (this.semanticBindings.componentKeyGenerator != null) && this.semanticBindings.componentKeyGenerator || "external";
-        this.namespaceUpdateRevision = (this.semanticBindings.namespaceUpdateRevision != null) && this.semanticBindings.namespaceUpdateRevision || "disabled";
+        this.namespaceVersioning = (this.semanticBindings.namespaceVersioning != null) && this.semanticBindings.namespaceVersioning || "disabled";
         switch (this.componentKeyGenerator) {
           case "disabled":
             if ((this.semanticBindings.getUniqueKey != null) && this.semanticBindings.getUniqueKey) {
@@ -767,11 +775,38 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             };
             break;
           case "external":
-            this.semanticBindings.getUniqueKey = (this.objectModelDeclaration.semanticBindings != null) && this.objectModelDeclaration.semanticBindings && (this.objectModelDeclaration.semanticBindings.getUniqueKey != null) && this.objectModelDeclaration.semanticBindings.getUniqueKey || void 0;
-            this.semanticBindings.setUniqueKey = (this.objectModelDeclaration.semanticBindings != null) && this.objectModelDeclaration.semanticBindings && (this.objectModelDeclaration.semanticBindings.setUniqueKey != null) && this.objectModelDeclaration.semanticBindings.setUniqueKey || void 0;
             break;
           default:
             throw "Unrecognized componentKeyGenerator='" + this.componentKeyGenerator + "'";
+        }
+        switch (this.namespaceVersioning) {
+          case "disabled":
+            if ((this.semanticBindings.update != null) && this.semanticBindings.update) {
+              delete this.semanticBindings.update;
+            }
+            break;
+          case "internalSimple":
+            this.semanticBindings.update = function(data_) {
+              if (data_.revision != null) {
+                return data_.revision++;
+              }
+            };
+            break;
+          case "internalAdvanced":
+            this.semanticBindings.update = function(data_) {
+              if (data_.revision != null) {
+                data_.revision++;
+              }
+              if (data_.uuidRevision != null) {
+                data_.uuidRevision = uuid.v4();
+              }
+              if (data_.revisionTime != null) {
+                return data_.revisionTime = Encapsule.code.lib.util.getEpochTime();
+              }
+            };
+            break;
+          default:
+            throw "Unrecognized namespaceVersionion=`" + this.namespaceUpdateRevision + "'";
         }
       } catch (exception) {
         throw "ONMjs.implementation.ModelDetails failure: " + exception;
@@ -2775,13 +2810,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.32";
+  Encapsule.code.lib.onm.about.version = "0.0.33";
 
-  Encapsule.code.lib.onm.about.build = "Sat Nov 2 02:40:42 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Mon Nov 4 08:11:14 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1383360042";
+  Encapsule.code.lib.onm.about.epoch = "1383552674";
 
-  Encapsule.code.lib.onm.about.uuid = "135234ae-81c4-4fa4-b1c6-4382949e8b5a";
+  Encapsule.code.lib.onm.about.uuid = "2bb8c4b0-e89b-4910-bcf4-d08bc67c5c5f";
 
   /*
   ------------------------------------------------------------------------------
