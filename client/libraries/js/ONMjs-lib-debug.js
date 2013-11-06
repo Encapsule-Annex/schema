@@ -1126,16 +1126,18 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           token = _ref[_i];
           if (!index) {
-            humanReadableString += "" + token.model.jsonTag + ".";
+            humanReadableString += token.model.jsonTag;
           }
           if ((token.key != null) && token.key) {
-            humanReadableString += "." + token.key + ".";
+            humanReadableString += "." + token.key;
           } else {
             if (token.idExtensionPoint > 0) {
-              humanReadableString += "-";
+              humanReadableString += ".-";
             }
           }
-          humanReadableString += "" + token.idNamespace;
+          if (token.idNamespace) {
+            humanReadableString += "." + token.namespaceDescriptor.jsonTag;
+          }
           index++;
         }
         this.implementation.humanReadableString = humanReadableString;
@@ -1146,13 +1148,32 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
     };
 
     Address.prototype.getHashString = function() {
-      var humanReadableString;
+      var hashSource, index, token, _i, _len, _ref;
       try {
         if ((this.implementation.hashString != null) && this.implementation.hashString) {
           return this.implementation.hashString;
         }
-        humanReadableString = this.getHumanReadableString();
-        this.implementation.hashString = encodeURIComponent(humanReadableString).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
+        index = 0;
+        hashSource = "";
+        _ref = this.implementation.tokenVector;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          token = _ref[_i];
+          if (!index) {
+            hashSource += "" + token.model.jsonTag;
+          }
+          if ((token.key != null) && token.key) {
+            hashSource += "." + token.key;
+          } else {
+            if (token.idExtensionPoint > 0) {
+              hashSource += ".-";
+            }
+          }
+          if (token.idNamespace) {
+            hashSource += "." + token.idNamespace;
+          }
+          index++;
+        }
+        this.implementation.hashString = encodeURIComponent(hashSource).replace(/[!'()]/g, escape).replace(/\*/g, "%2A");
         return this.implementation.hashString;
       } catch (exception) {
         throw "ONMjs.Address.getHashString failure: " + exception;
@@ -2810,13 +2831,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.33";
+  Encapsule.code.lib.onm.about.version = "0.0.34";
 
-  Encapsule.code.lib.onm.about.build = "Mon Nov 4 08:11:14 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Wed Nov 6 02:16:39 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1383552674";
+  Encapsule.code.lib.onm.about.epoch = "1383704199";
 
-  Encapsule.code.lib.onm.about.uuid = "2bb8c4b0-e89b-4910-bcf4-d08bc67c5c5f";
+  Encapsule.code.lib.onm.about.uuid = "ea88f25c-b8bf-47bf-bb21-5d5a0854cd2c";
 
   /*
   ------------------------------------------------------------------------------

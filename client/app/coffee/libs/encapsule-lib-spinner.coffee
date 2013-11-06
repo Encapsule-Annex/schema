@@ -33,15 +33,15 @@ backchannel = Encapsule.runtime.backchannel? and Encapsule.runtime.backchannel o
 # http://fgnass.github.com/spin.js/#?
 
 optionsDefault = {
-    lines: 12,
-    length: 2,
+    lines: 7,
+    length: 4,
     width: 4,
     radius: 4,
     corners: 0.2,
     rotate: 0,
-    trail: 50,
-    speed: 0.5,
-    color: "#006699"
+    trail: 0,
+    speed: 1,
+    color: "#007700"
     shadow: off,
     hwaccel: on
     }
