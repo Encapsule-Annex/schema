@@ -2104,7 +2104,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         getLabelBinding = (semanticBindings != null) && semanticBindings && (semanticBindings.getLabel != null) && semanticBindings.getLabel || void 0;
         resolvedLabel = void 0;
         if ((getLabelBinding != null) && getLabelBinding) {
-          resolvedLabel = getLabelBinding(this.data(), resolvedDescriptor);
+          resolvedLabel = getLabelBinding(this.data(), this.getResolvedAddress());
         } else {
           resolvedLabel = resolvedDescriptor.label;
         }
@@ -2831,13 +2831,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.0.34";
+  Encapsule.code.lib.onm.about.version = "0.0.35";
 
-  Encapsule.code.lib.onm.about.build = "Wed Nov 6 02:55:57 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Thu Nov 7 10:05:27 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1383706557";
+  Encapsule.code.lib.onm.about.epoch = "1383818727";
 
-  Encapsule.code.lib.onm.about.uuid = "766816b0-7691-4091-b059-bb56d06fc811";
+  Encapsule.code.lib.onm.about.uuid = "cc04d2a9-3f2a-470b-ba6a-8d253346f19d";
 
   /*
   ------------------------------------------------------------------------------
@@ -3166,14 +3166,15 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           return data_.uuidRevision = uuid.v4();
         }
       },
-      getLabel: function(data_, namespaceDescriptor_) {
-        var defaultLabel;
+      getLabel: function(data_, address_) {
+        var defaultLabel, model;
         try {
-          defaultLabel = (namespaceDescriptor_.label != null) && namespaceDescriptor_.label || "<no default label specified>";
-          if (!((namespaceDescriptor_.namespaceModelDeclaration.____getLabelVariant != null) && namespaceDescriptor_.namespaceModelDeclaration.____getLabelVariant)) {
+          model = address_.getModel();
+          defaultLabel = (model.____label != null) && model.____label || "<no default label specified>";
+          if (!((model.____getLabelVariant != null) && model.____getLabelVariant)) {
             return defaultLabel;
           }
-          switch (namespaceDescriptor_.namespaceModelDeclaration.____getLabelVariant) {
+          switch (model.____getLabelVariant) {
             case "jsonTagAndNamespaceType":
               if ((data_.jsonTag != null) && data_.jsonTag) {
                 return "" + data_.jsonTag + " (" + data_.namespaceType + ")";
@@ -3187,7 +3188,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             default:
               throw "Unrecognized getLabelVariant string specified.";
           }
-          return namespaceDescriptor_.namespaceModelDeclaration.____label;
+          return model.____label;
         } catch (exception) {
           throw "Failed in getLabel: " + exception;
         }

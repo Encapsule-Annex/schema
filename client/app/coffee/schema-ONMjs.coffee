@@ -41,10 +41,10 @@ Encapsule.code.app.ONMjs.SchemaAppData = {
                 dataReference_.uuidRevision = uuid.v4()
             return true
 
-        getLabel: (dataReference_, namespaceDescriptor_) ->
+        getLabel: (dataReference_, address_) ->
+            model = address_.getModel();
             label = (dataReference_["name"]? and dataReference_["name"]) or
-                (dataReference_["uuid"]? and dataReference_["uuid"] and "#{namespaceDescriptor_.label} #{dataReference_["uuid"]}") or
-                namespaceDescriptor_.label
+                (dataReference_["uuid"]? and dataReference_["uuid"] and "#{model.____label} #{dataReference_["uuid"]}") or model.____label
             return label
 
         setUniqueKey: (dataReference_) ->
