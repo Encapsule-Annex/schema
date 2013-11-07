@@ -39,8 +39,8 @@ optionsDefault = {
     radius: 4,
     corners: 0.2,
     rotate: 0,
-    trail: 0,
-    speed: 1,
+    trail: 100,
+    speed: 0.3,
     color: "#007700"
     shadow: off,
     hwaccel: on

@@ -2833,11 +2833,11 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about.version = "0.0.34";
 
-  Encapsule.code.lib.onm.about.build = "Wed Nov 6 02:16:39 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Wed Nov 6 02:55:57 UTC 2013";
 
-  Encapsule.code.lib.onm.about.epoch = "1383704199";
+  Encapsule.code.lib.onm.about.epoch = "1383706557";
 
-  Encapsule.code.lib.onm.about.uuid = "ea88f25c-b8bf-47bf-bb21-5d5a0854cd2c";
+  Encapsule.code.lib.onm.about.uuid = "766816b0-7691-4091-b059-bb56d06fc811";
 
   /*
   ------------------------------------------------------------------------------
@@ -4474,7 +4474,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceViewModel", (function() {
-    return "<span data-bind=\"if: observerAttached()\">\n<span data-bind=\"if: modelviewTitle\"><span data-bind=\"with: modelviewTitle\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceTitleViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewActions\"><span data-bind=\"with: modelviewActions\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceActionsViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewImmutable\"><span data-bind=\"with: modelviewImmutable\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceImmutablePropertiesViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewMutable\"><span data-bind=\"with: modelviewMutable\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceMutablePropertiesViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewCollection\"><span data-bind=\"with: modelviewCollection\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceCollectionViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewComponent\"><span data-bind=\"with: modelviewComponent\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceComponentViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewChildren\"><span data-bind=\"with: modelviewChildren\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceChildrenViewModel'}\"></span></span></span>\n</span>\n<span data-bind=\"ifnot: observerAttached()\">\nOffline.\n</span>";
+    return "<span data-bind=\"if: observerAttached()\">\n<span data-bind=\"if: modelviewTitle\"><span data-bind=\"with: modelviewTitle\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceTitleViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewActions\"><span data-bind=\"with: modelviewActions\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceActionsViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewImmutable\"><span data-bind=\"with: modelviewImmutable\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceImmutablePropertiesViewModel' }\"></span></span></span>\n<span data-bind=\"if: modelviewMutable\"><span data-bind=\"with: modelviewMutable\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceMutablePropertiesViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewCollection\"><span data-bind=\"with: modelviewCollection\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceCollectionViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewChildren\"><span data-bind=\"with: modelviewChildren\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceChildrenViewModel'}\"></span></span></span>\n<span data-bind=\"if: modelviewComponent\"><span data-bind=\"with: modelviewComponent\"><span data-bind=\"template: { name: 'idKoTemplate_SelectedNamespaceComponentViewModel'}\"></span></span></span>\n</span>\n<span data-bind=\"ifnot: observerAttached()\">\nOffline.\n</span>";
   }));
 
   /*
@@ -4908,7 +4908,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
   })();
 
   Encapsule.code.lib.kohelpers.RegisterKnockoutViewTemplate("idKoTemplate_SelectedNamespaceComponentViewModel", (function() {
-    return "\n<span data-bind=\"if: extensionPointModelViewArray.length\">\n    <div class=\"classONMjsSelectedNamespaceSectionTitle\">\n        Extension Points (<span data-bind=\"text: extensionPointModelViewArray.length\"></span>):\n    </div>\n    <span data-bind=\"ifnot: extensionPointModelViewArray.length\"><i>Extension point contains no subcomponents.</i></span>\n    <span data-bind=\"if: extensionPointModelViewArray.length\">\n    <div class=\"classONMjsSelectedNamespaceSectionCommon classONMjsSelectedNamespaceComponent\">\n        <span data-bind=\"template: { name: 'idKoTemplate_AddressSelectionLinkViewModel', foreach: extensionPointModelViewArray }\"></span>\n    </div>\n    </span>\n</span>";
+    return "\n<span data-bind=\"if: extensionPointModelViewArray.length\">\n    <div class=\"classONMjsSelectedNamespaceSectionTitle\">\n        Component Extension Points (<span data-bind=\"text: extensionPointModelViewArray.length\"></span>):\n    </div>\n    <span data-bind=\"ifnot: extensionPointModelViewArray.length\"><i>Extension point contains no subcomponents.</i></span>\n    <span data-bind=\"if: extensionPointModelViewArray.length\">\n    <div class=\"classONMjsSelectedNamespaceSectionCommon classONMjsSelectedNamespaceComponent\">\n        <span data-bind=\"template: { name: 'idKoTemplate_AddressSelectionLinkViewModel', foreach: extensionPointModelViewArray }\"></span>\n    </div>\n    </span>\n</span>";
   }));
 
   /*
