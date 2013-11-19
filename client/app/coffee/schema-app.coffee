@@ -114,10 +114,9 @@ class Encapsule.code.app.Schema
             # Tell the navigator which CachedAddress to route user address selections to.
             navigatorView.setCachedAddressSink(selectedAddress)
 
-
             onmjsSelfModel = new ONMjs.Model(ONMjs.dataModels.selfDeclaration)
             onmjsSelfModelRootAddress = onmjsSelfModel.createRootAddress()
-            onmjsSelfStore = new ONMjs.Store(onmjsSelfModel, Encapsule.code.lib.onm.DECAddressBookSampleRawJSON )
+            onmjsSelfStore = new ONMjs.Store(onmjsSelfModel)
 
             onmjsSelfAddressStore = new ONMjs.AddressStore(onmjsSelfStore, onmjsSelfModelRootAddress)
 
@@ -145,6 +144,7 @@ class Encapsule.code.app.Schema
 
             #
             # TESTS AND EXPERIMENTS
+            ###
 
             try
     
@@ -154,7 +154,6 @@ class Encapsule.code.app.Schema
                 # Detach the canary from the store via ONMjs.Store.unregisterObserver.
                 #store.unregisterObserver(canaryStoreObserverId)
 
-    
                 addressRoot = model.createRootAddress()
 
                 path = model.implementation.getPathFromPathId(40)
@@ -189,6 +188,7 @@ class Encapsule.code.app.Schema
                 backchannel.log("MAIN BODY TESTS FAILED: #{exception}")
                 alert("TEST FAILURE: #{exception}")
 
+            ###
             # ==============================================================================
 
             Encapsule.runtime.app.SchemaBootInfoWindow = new Encapsule.code.app.modelview.SchemaBootInfoWindow()
