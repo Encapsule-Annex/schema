@@ -746,7 +746,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
         Object.freeze(this.objectModelDescriptorById);
         this.semanticBindings = (this.objectModelDeclaration.semanticBindings != null) && this.objectModelDeclaration.semanticBindings || {};
         this.componentKeyGenerator = (this.semanticBindings.componentKeyGenerator != null) && this.semanticBindings.componentKeyGenerator || "external";
-        this.namespaceVersioning = (this.semanticBindings.namespaceVersioning != null) && this.semanticBindings.namespaceVersioning || "disabled";
+        this.namespaceVersioning = ((this.semanticBindings.update != null) && this.semanticBindings.update && "external") || ((this.semanticBindings.namespaceVersioning != null) && this.semanticBindings.namespaceVersioning || "disabled");
         switch (this.componentKeyGenerator) {
           case "disabled":
             if ((this.semanticBindings.getUniqueKey != null) && this.semanticBindings.getUniqueKey) {
@@ -780,6 +780,8 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             throw "Unrecognized componentKeyGenerator='" + this.componentKeyGenerator + "'";
         }
         switch (this.namespaceVersioning) {
+          case "external":
+            break;
           case "disabled":
             if ((this.semanticBindings.update != null) && this.semanticBindings.update) {
               delete this.semanticBindings.update;
@@ -806,7 +808,7 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
             };
             break;
           default:
-            throw "Unrecognized namespaceVersionion=`" + this.namespaceUpdateRevision + "'";
+            throw "Unrecognized namespaceVersioning=`" + this.namespaceUpdateRevision + "'";
         }
       } catch (exception) {
         throw "ONMjs.implementation.ModelDetails failure: " + exception;
@@ -938,12 +940,32 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
           }
         };
         this.getModelDescriptorFromSubpath = function(subpath_) {
-          var path;
+          var archetypeDescriptor, archetypePathId, currentDescriptor, currentModelPath, subpathTokens, token, _i, _len;
           try {
-            path = "" + (_this.getModelPath()) + "." + subpath_;
-            return _this.model.implementation.getNamespaceDescriptorFromPath(path);
+            currentModelPath = _this.getModelPath();
+            currentDescriptor = _this.getLastToken().namespaceDescriptor;
+            subpathTokens = subpath_.split('.');
+            for (_i = 0, _len = subpathTokens.length; _i < _len; _i++) {
+              token = subpathTokens[_i];
+              if (currentDescriptor.namespaceType !== "extensionPoint" || currentDescriptor.children.length) {
+                currentModelPath += "." + token;
+                currentDescriptor = _this.model.implementation.getNamespaceDescriptorFromPath(currentModelPath);
+              } else {
+                archetypePathId = (currentDescriptor.archetypePathId != null) && currentDescriptor.archetypePathId || (function() {
+                  throw 'WAT';
+                })();
+                archetypeDescriptor = _this.model.implementation.getNamespaceDescriptorFromPathId(archetypePathId);
+                if (token !== archetypeDescriptor.jsonTag) {
+                  throw "Expected component name of '" + token + "' but instead found '" + archetypeDescriptor.jsonTag + "'.";
+                }
+                currentModelPath = archetypeDescriptor.path;
+                currentDescriptor = archetypeDescriptor;
+              }
+            }
+            console.log(currentModelPath);
+            return currentDescriptor;
           } catch (exception) {
-            throw "ONMjs.implementation.AddressDetails.getModelDescriptorFromSubpath failure: " + exception;
+            throw "getModelDescriptorFromSubpath failure: " + exception;
           }
         };
         this.createSubpathIdAddress = function(pathId_) {
@@ -1258,42 +1280,49 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
     };
 
     Address.prototype.createSubpathAddress = function(subpath_) {
-      var baseDescriptor, baseDescriptorHeight, baseTokenVector, descriptor, newAddress, pathId, subpathDescriptor, subpathDescriptorHeight, subpathParentIdVector, token, _i, _len;
+      var archetypeDescriptor, archetypePathId, child, currentToken, nd, ndNew, newAddress, newTokenVector, subpathToken, subpathTokens, _i, _j, _len, _len1, _ref;
       try {
         if (!((subpath_ != null) && subpath_)) {
           throw "Missing subpath input parameter.";
         }
-        subpathDescriptor = this.implementation.getModelDescriptorFromSubpath(subpath_);
-        baseDescriptor = this.implementation.getDescriptor();
-        if ((baseDescriptor.namespaceType === "extensionPoint") && (subpathDescriptor.namespaceType !== "component")) {
-          throw "Invalid subpath string must begin with the name of the component contained by the base address' extension point.";
-        }
-        baseDescriptorHeight = baseDescriptor.parentPathIdVector.length;
-        subpathDescriptorHeight = subpathDescriptor.parentPathIdVector.length;
-        if ((subpathDescriptorHeight - baseDescriptorHeight) < 1) {
-          throw "Internal error due to failed consistency check.";
-        }
-        subpathParentIdVector = subpathDescriptor.parentPathIdVector.slice(baseDescriptorHeight + 1, subpathDescriptorHeight);
-        subpathParentIdVector.push(subpathDescriptor.id);
-        baseTokenVector = this.implementation.tokenVector.slice(0, this.implementation.tokenVector.length - 1) || [];
-        newAddress = new ONMjs.Address(this.model, baseTokenVector);
-        token = this.implementation.getLastToken().clone();
-        for (_i = 0, _len = subpathParentIdVector.length; _i < _len; _i++) {
-          pathId = subpathParentIdVector[_i];
-          descriptor = this.model.implementation.getNamespaceDescriptorFromPathId(pathId);
-          switch (descriptor.namespaceType) {
-            case "component":
-              newAddress.implementation.pushToken(token);
-              token = new ONMjs.implementation.AddressToken(token.model, token.namespaceDescriptor.id, void 0, pathId);
-              break;
-            default:
-              token = new ONMjs.implementation.AddressToken(token.model, token.idExtensionPoint, token.key, pathId);
+        newTokenVector = this.implementation.tokenVector.slice(0, this.implementation.tokenVector.length - 1) || [];
+        currentToken = this.implementation.getLastToken();
+        subpathTokens = subpath_.split('.');
+        for (_i = 0, _len = subpathTokens.length; _i < _len; _i++) {
+          subpathToken = subpathTokens[_i];
+          nd = currentToken.namespaceDescriptor;
+          ndNew = void 0;
+          if (nd.namespaceType !== 'extensionPoint') {
+            _ref = nd.children;
+            for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+              child = _ref[_j];
+              if (subpathToken === child.jsonTag) {
+                ndNew = child;
+                break;
+              }
+            }
+            if (!((ndNew != null) && ndNew)) {
+              throw "Invalid address token '" + subpathToken + "'.";
+            }
+            if (ndNew.namespaceType === 'component') {
+              throw "Internal error: components must be created within extension point namespaces. How did this happen?";
+            }
+            currentToken = new AddressToken(currentToken.model, currentToken.idExtensionPoint, currentToken.key, ndNew.id);
+          } else {
+            archetypePathId = nd.archetypePathId;
+            archetypeDescriptor = this.model.implementation.getNamespaceDescriptorFromPathId(archetypePathId);
+            if (subpathToken !== archetypeDescriptor.jsonTag) {
+              throw "Expected component name '" + archetypeDescriptor.jsonTag + "' but was given '" + subpathToken + "'.";
+            }
+            newTokenVector.push(currentToken);
+            currentToken = new AddressToken(currentToken.model, currentToken.idNamespace, void 0, archetypePathId);
           }
         }
-        newAddress.implementation.pushToken(token);
+        newTokenVector.push(currentToken);
+        newAddress = new Address(this.model, newTokenVector);
         return newAddress;
       } catch (exception) {
-        throw "ONMjs.Address.createSubpathAddress failure: " + exception;
+        throw "createSubpathAddress failure: " + exception;
       }
     };
 
@@ -2831,13 +2860,13 @@ Low-level library routines inspired by (and often copied) from http://coffeescri
 
   Encapsule.code.lib.onm.about = {};
 
-  Encapsule.code.lib.onm.about.version = "0.1.00";
+  Encapsule.code.lib.onm.about.version = "0.1.01";
 
-  Encapsule.code.lib.onm.about.build = "Mon Nov 11 20:26:10 UTC 2013";
+  Encapsule.code.lib.onm.about.build = "Fri Jan 10 20:00:45 UTC 2014";
 
-  Encapsule.code.lib.onm.about.epoch = "1384201570";
+  Encapsule.code.lib.onm.about.epoch = "1389384045";
 
-  Encapsule.code.lib.onm.about.uuid = "9059239b-f537-4b4f-88f5-722e50cb5b89";
+  Encapsule.code.lib.onm.about.uuid = "cfd53f2f-4c19-4e54-a489-22d34dd70639";
 
 }).call(this);
 // Generated by CoffeeScript 1.4.0
